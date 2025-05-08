@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TimedBodyKinematicsAndMagneticFluxDensity.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-inertial</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.inertial.calibration</a> &gt; <span class="el_source">TimedBodyKinematicsAndMagneticFluxDensity.java</span></div><h1>TimedBodyKinematicsAndMagneticFluxDensity.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2020 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.inertial.calibration;
+
+import com.irurueta.navigation.inertial.BodyKinematics;
+import com.irurueta.navigation.inertial.BodyKinematicsAndMagneticFluxDensity;
+import com.irurueta.navigation.inertial.BodyMagneticFluxDensity;
+import com.irurueta.units.Time;
+import com.irurueta.units.TimeConverter;
+import com.irurueta.units.TimeUnit;
+
+import java.io.Serial;
+import java.util.Objects;
+
+/**
+ * Contains body kinematics describing the forces and angular rate applied to a body,
+ * along with the sensed magnetic flux density resolved around body coordinates and the
+ * corresponding timestamp when measure was made.
+ * Notice that timestamp does not need to be absolute.
+ * Usually timestamps are used in sequences of measurements of body kinematics, where
+ * the first measurement can have any timestamp value (e.g. zero), and hence the subsequent
+ * measurements will have timestamps relative to the first one.
+ */
+public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAndMagneticFluxDensity {
+
+    /**
+     * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
+     * instances.
+     */
+    @Serial
+    private static final long serialVersionUID = 0L;
+
+    /**
+     * Timestamp value expressed in seconds.
+     */
+    private double timestampSeconds;
+
+    /**
+     * Constructor.
+     */
+    public TimedBodyKinematicsAndMagneticFluxDensity() {
+<span class="fc" id="L55">        super();</span>
+<span class="fc" id="L56">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param kinematics body kinematics containing sensed specific force
+     *                   and angular rate.
+     */
+    public TimedBodyKinematicsAndMagneticFluxDensity(final BodyKinematics kinematics) {
+<span class="fc" id="L65">        super(kinematics);</span>
+<span class="fc" id="L66">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param magneticFluxDensity body magnetic flux density.
+     */
+    public TimedBodyKinematicsAndMagneticFluxDensity(final BodyMagneticFluxDensity magneticFluxDensity) {
+<span class="fc" id="L74">        super(magneticFluxDensity);</span>
+<span class="fc" id="L75">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param kinematics          body kinematics containing sensed specific force
+     *                            and angular rate.
+     * @param magneticFluxDensity body magnetic flux density.
+     */
+    public TimedBodyKinematicsAndMagneticFluxDensity(
+            final BodyKinematics kinematics, final BodyMagneticFluxDensity magneticFluxDensity) {
+<span class="fc" id="L86">        super(kinematics, magneticFluxDensity);</span>
+<span class="fc" id="L87">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param timestampSeconds timestamp value expressed in seconds.
+     */
+<span class="fc" id="L94">    public TimedBodyKinematicsAndMagneticFluxDensity(final double timestampSeconds) {</span>
+<span class="fc" id="L95">        this.timestampSeconds = timestampSeconds;</span>
+<span class="fc" id="L96">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param timestamp timestamp value.
+     */
+<span class="fc" id="L103">    public TimedBodyKinematicsAndMagneticFluxDensity(final Time timestamp) {</span>
+<span class="fc" id="L104">        timestampSeconds = convertTime(timestamp);</span>
+<span class="fc" id="L105">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param kinematics       body kinematics containing sensed specific force
+     *                         and angular rate.
+     * @param timestampSeconds timestamp value expressed in seconds.
+     */
+    public TimedBodyKinematicsAndMagneticFluxDensity(final BodyKinematics kinematics, final double timestampSeconds) {
+<span class="fc" id="L115">        super(kinematics);</span>
+<span class="fc" id="L116">        this.timestampSeconds = timestampSeconds;</span>
+<span class="fc" id="L117">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param kinematics body kinematics containing sensed specific force
+     *                   and angular rate.
+     * @param timestamp  timestamp value.
+     */
+    public TimedBodyKinematicsAndMagneticFluxDensity(final BodyKinematics kinematics, final Time timestamp) {
+<span class="fc" id="L127">        super(kinematics);</span>
+<span class="fc" id="L128">        timestampSeconds = convertTime(timestamp);</span>
+<span class="fc" id="L129">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param magneticFluxDensity body magnetic flux density.
+     * @param timestampSeconds    timestamp value expressed in seconds.
+     */
+    public TimedBodyKinematicsAndMagneticFluxDensity(
+            final BodyMagneticFluxDensity magneticFluxDensity, final double timestampSeconds) {
+<span class="fc" id="L139">        super(magneticFluxDensity);</span>
+<span class="fc" id="L140">        this.timestampSeconds = timestampSeconds;</span>
+<span class="fc" id="L141">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param magneticFluxDensity body magnetic flux density.
+     * @param timestamp           timestamp value.
+     */
+    public TimedBodyKinematicsAndMagneticFluxDensity(
+            final BodyMagneticFluxDensity magneticFluxDensity, final Time timestamp) {
+<span class="fc" id="L151">        super(magneticFluxDensity);</span>
+<span class="fc" id="L152">        timestampSeconds = convertTime(timestamp);</span>
+<span class="fc" id="L153">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param kinematics          body kinematics containing sensed specific force
+     *                            and angular rate.
+     * @param magneticFluxDensity body magnetic flux density.
+     * @param timestampSeconds    timestamp value expressed in seconds.
+     */
+    public TimedBodyKinematicsAndMagneticFluxDensity(
+            final BodyKinematics kinematics, final BodyMagneticFluxDensity magneticFluxDensity,
+            final double timestampSeconds) {
+<span class="fc" id="L166">        super(kinematics, magneticFluxDensity);</span>
+<span class="fc" id="L167">        this.timestampSeconds = timestampSeconds;</span>
+<span class="fc" id="L168">    }</span>
+
+
+    /**
+     * Constructor.
+     *
+     * @param kinematics          body kinematics containing sensed specific force
+     *                            and angular rate.
+     * @param magneticFluxDensity body magnetic flux density.
+     * @param timestamp           timestamp value.
+     */
+    public TimedBodyKinematicsAndMagneticFluxDensity(
+            final BodyKinematics kinematics, final BodyMagneticFluxDensity magneticFluxDensity, final Time timestamp) {
+<span class="fc" id="L181">        super(kinematics, magneticFluxDensity);</span>
+<span class="fc" id="L182">        timestampSeconds = convertTime(timestamp);</span>
+<span class="fc" id="L183">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param input instance to copy data from.
+     */
+<span class="fc" id="L190">    public TimedBodyKinematicsAndMagneticFluxDensity(final TimedBodyKinematicsAndMagneticFluxDensity input) {</span>
+<span class="fc" id="L191">        copyFrom(input);</span>
+<span class="fc" id="L192">    }</span>
+
+    /**
+     * Gets timestamp value expressed in seconds.
+     *
+     * @return timestamp value expressed in seconds.
+     */
+    public double getTimestampSeconds() {
+<span class="fc" id="L200">        return timestampSeconds;</span>
+    }
+
+    /**
+     * Sets timestamp value expressed in seconds.
+     *
+     * @param timestampSeconds timestamp value expressed in seconds.
+     */
+    public void setTimestampSeconds(final double timestampSeconds) {
+<span class="fc" id="L209">        this.timestampSeconds = timestampSeconds;</span>
+<span class="fc" id="L210">    }</span>
+
+    /**
+     * Gets timestamp value.
+     *
+     * @return a new timestamp instance.
+     */
+    public Time getTimestamp() {
+<span class="fc" id="L218">        return new Time(timestampSeconds, TimeUnit.SECOND);</span>
+    }
+
+    /**
+     * Gets timestamp value.
+     *
+     * @param result instance where result data will be stored.
+     */
+    public void getTimestamp(final Time result) {
+<span class="fc" id="L227">        result.setValue(timestampSeconds);</span>
+<span class="fc" id="L228">        result.setUnit(TimeUnit.SECOND);</span>
+<span class="fc" id="L229">    }</span>
+
+    /**
+     * Sets timestamp.
+     *
+     * @param timestamp timestamp to be set.
+     */
+    public void setTimestamp(final Time timestamp) {
+<span class="fc" id="L237">        timestampSeconds = convertTime(timestamp);</span>
+<span class="fc" id="L238">    }</span>
+
+    /**
+     * Gets a timed body kinematics instance containing current body kinematics
+     * and timestamp.
+     *
+     * @return a timed body kinematics
+     */
+    public TimedBodyKinematics getTimedKinematics() {
+<span class="fc" id="L247">        return new TimedBodyKinematics(getKinematics(), timestampSeconds);</span>
+    }
+
+    /**
+     * Gets a timed body kinematics instance containing current body kinematics
+     * and timestamp.
+     *
+     * @param result instance where result will be stored.
+     */
+    public void getTimedKinematics(final TimedBodyKinematics result) {
+<span class="fc" id="L257">        result.setKinematics(getKinematics());</span>
+<span class="fc" id="L258">        result.setTimestampSeconds(timestampSeconds);</span>
+<span class="fc" id="L259">    }</span>
+
+    /**
+     * Sets data from provided timed body kinematics.
+     *
+     * @param timedKinematics timed body kinematics.
+     */
+    public void setTimedKinematics(final TimedBodyKinematics timedKinematics) {
+<span class="fc" id="L267">        setKinematics(timedKinematics.getKinematics());</span>
+<span class="fc" id="L268">        timestampSeconds = timedKinematics.getTimestampSeconds();</span>
+<span class="fc" id="L269">    }</span>
+
+    /**
+     * Copies data of provided instance into this instance.
+     *
+     * @param input instance to copy data from.
+     */
+    public void copyFrom(final TimedBodyKinematicsAndMagneticFluxDensity input) {
+<span class="fc" id="L277">        super.copyFrom(input);</span>
+<span class="fc" id="L278">        timestampSeconds = input.timestampSeconds;</span>
+<span class="fc" id="L279">    }</span>
+
+    /**
+     * Copies this instance data into provided instance.
+     *
+     * @param output destination instance where data will be copied to.
+     */
+    public void copyTo(final TimedBodyKinematicsAndMagneticFluxDensity output) {
+<span class="fc" id="L287">        output.copyFrom(this);</span>
+<span class="fc" id="L288">    }</span>
+
+    /**
+     * Computes and returns hash code for this instance. Hash codes are almost unique
+     * values that are useful for fast classification and storage of objects in collections.
+     *
+     * @return Hash code.
+     */
+    @Override
+    public int hashCode() {
+<span class="fc" id="L298">        return Objects.hash(super.hashCode(), timestampSeconds);</span>
+    }
+
+    /**
+     * Checks if provided instance has exactly the same contents as this instance.
+     *
+     * @param other instance to be compared.
+     * @return true if both instances are considered to be equal, false otherwise.
+     */
+    public boolean equals(final TimedBodyKinematicsAndMagneticFluxDensity other) {
+<span class="fc" id="L308">        return equals(other, 0.0);</span>
+    }
+
+    /**
+     * Checks if provided instance has contents similar to this instance up to provided
+     * threshold value.
+     *
+     * @param other     instance to be compared.
+     * @param threshold maximum allowed difference between kinematics and timestamp values.
+     * @return true if both instances are considered to be equal (up to provided
+     * threshold), false otherwise.
+     */
+    public boolean equals(final TimedBodyKinematicsAndMagneticFluxDensity other, final double threshold) {
+<span class="pc bpc" id="L321" title="1 of 4 branches missed.">        return super.equals(other, threshold) &amp;&amp; Math.abs(other.timestampSeconds - timestampSeconds) &lt;= threshold;</span>
+    }
+
+    /**
+     * Checks if provided object is a TimedBodyKinematics instance having exactly the same
+     * contents as this instance.
+     *
+     * @param obj object to be compared.
+     * @return true if both objects are considered to be equal, false otherwise.
+     */
+    @Override
+    public boolean equals(final Object obj) {
+<span class="fc bfc" id="L333" title="All 2 branches covered.">        if (this == obj) {</span>
+<span class="fc" id="L334">            return true;</span>
+        }
+<span class="pc bpc" id="L336" title="2 of 4 branches missed.">        if (obj == null || getClass() != obj.getClass()) {</span>
+<span class="nc" id="L337">            return false;</span>
+        }
+<span class="fc" id="L339">        final var other = (TimedBodyKinematicsAndMagneticFluxDensity) obj;</span>
+<span class="fc" id="L340">        return equals(other);</span>
+    }
+
+    /**
+     * Makes a copy of this instance.
+     *
+     * @return a copy of this instance.
+     * @throws CloneNotSupportedException if clone fails for some reason.
+     */
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+<span class="fc" id="L351">        final var result = (TimedBodyKinematicsAndMagneticFluxDensity) super.clone();</span>
+<span class="fc" id="L352">        copyTo(result);</span>
+<span class="fc" id="L353">        return result;</span>
+    }
+
+    /**
+     * Converts provided time instance to seconds.
+     *
+     * @param time timestamp to be converted.
+     * @return converted value expressed in seconds.
+     */
+    private static double convertTime(final Time time) {
+<span class="fc" id="L363">        return TimeConverter.convert(time.getValue().doubleValue(), time.getUnit(), TimeUnit.SECOND);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

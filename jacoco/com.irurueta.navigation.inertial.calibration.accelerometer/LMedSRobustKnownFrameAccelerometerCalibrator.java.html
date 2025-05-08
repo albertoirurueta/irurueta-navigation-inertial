@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LMedSRobustKnownFrameAccelerometerCalibrator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-inertial</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.inertial.calibration.accelerometer</a> &gt; <span class="el_source">LMedSRobustKnownFrameAccelerometerCalibrator.java</span></div><h1>LMedSRobustKnownFrameAccelerometerCalibrator.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2020 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.inertial.calibration.accelerometer;
+
+import com.irurueta.navigation.LockedException;
+import com.irurueta.navigation.NotReadyException;
+import com.irurueta.navigation.inertial.calibration.CalibrationException;
+import com.irurueta.navigation.inertial.calibration.StandardDeviationFrameBodyKinematics;
+import com.irurueta.numerical.robust.LMedSRobustEstimator;
+import com.irurueta.numerical.robust.LMedSRobustEstimatorListener;
+import com.irurueta.numerical.robust.RobustEstimator;
+import com.irurueta.numerical.robust.RobustEstimatorException;
+import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
+import java.util.List;
+
+/**
+ * Robustly estimates accelerometer biases, cross couplings and scaling factors
+ * using an LMedS algorithm to discard outliers.
+ * &lt;p&gt;
+ * To use this calibrator at least 4 measurements at different known frames must
+ * be provided. In other words, accelerometer samples must be obtained at 4
+ * different positions, orientations and velocities (although typically velocities are
+ * always zero).
+ * &lt;p&gt;
+ * Measured specific force is assumed to follow the model shown below:
+ * &lt;pre&gt;
+ *     fmeas = ba + (I + Ma) * ftrue + w
+ * &lt;/pre&gt;
+ * Where:
+ * - fmeas is the measured specific force. This is a 3x1 vector.
+ * - ba is accelerometer bias. Ideally, on a perfect accelerometer, this should be a
+ * 3x1 zero vector.
+ * - I is the 3x3 identity matrix.
+ * - Ma is the 3x3 matrix containing cross-couplings and scaling factors. Ideally, on
+ * a perfect accelerometer, this should be a 3x3 zero matrix.
+ * - ftrue is ground-truth specific force.
+ * - w is measurement noise.
+ */
+public class LMedSRobustKnownFrameAccelerometerCalibrator extends RobustKnownFrameAccelerometerCalibrator {
+
+    /**
+     * Default value to be used for stop threshold. Stop threshold can be used to
+     * avoid keeping the algorithm unnecessarily iterating in case that best
+     * estimated threshold using median of residuals is not small enough. Once a
+     * solution is found that generates a threshold below this value, the
+     * algorithm will stop.
+     * The stop threshold can be used to prevent the LMedS algorithm iterating
+     * too many times in cases where samples have a very similar accuracy.
+     * For instance, in cases where proportion of outliers is very small (close
+     * to 0%), and samples are very accurate (i.e. 1e-6), the algorithm would
+     * iterate for a long time trying to find the best solution when indeed
+     * there is no need to do that if a reasonable threshold has already been
+     * reached.
+     * Because of this behaviour the stop threshold can be set to a value much
+     * lower than the one typically used in RANSAC, and yet the algorithm could
+     * still produce even smaller thresholds in estimated results.
+     */
+    public static final double DEFAULT_STOP_THRESHOLD = 1e-8;
+
+    /**
+     * Minimum allowed stop threshold value.
+     */
+    public static final double MIN_STOP_THRESHOLD = 0.0;
+
+    /**
+     * Threshold to be used to keep the algorithm iterating in case that best
+     * estimated threshold using median of residuals is not small enough. Once
+     * a solution is found that generates a threshold below this value, the
+     * algorithm will stop.
+     * The stop threshold can be used to prevent the LMedS algorithm iterating
+     * too many times in cases where samples have a very similar accuracy.
+     * For instance, in cases where proportion of outliers is very small (close
+     * to 0%), and samples are very accurate (i.e. 1e-6), the algorithm would
+     * iterate for a long time trying to find the best solution when indeed
+     * there is no need to do that if a reasonable threshold has already been
+     * reached.
+     * Because of this behaviour the stop threshold can be set to a value much
+     * lower than the one typically used in RANSAC, and yet the algorithm could
+     * still produce even smaller thresholds in estimated results.
+     */
+<span class="fc" id="L95">    private double stopThreshold = DEFAULT_STOP_THRESHOLD;</span>
+
+    /**
+     * Constructor.
+     */
+<span class="fc" id="L100">    public LMedSRobustKnownFrameAccelerometerCalibrator() {</span>
+<span class="fc" id="L101">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param listener listener to be notified of events such as when estimation
+     *                 starts, ends or its progress significantly changes.
+     */
+    public LMedSRobustKnownFrameAccelerometerCalibrator(
+            final RobustKnownFrameAccelerometerCalibratorListener listener) {
+<span class="fc" id="L111">        super(listener);</span>
+<span class="fc" id="L112">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements list of body kinematics measurements with standard
+     *                     deviations taken at different frames (positions, orientations
+     *                     and velocities).
+     */
+    public LMedSRobustKnownFrameAccelerometerCalibrator(
+            final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements) {
+<span class="fc" id="L123">        super(measurements);</span>
+<span class="fc" id="L124">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements list of body kinematics measurements with standard
+     *                     deviations taken at different frames (positions, orientations
+     *                     and velocities).
+     * @param listener     listener to handle events raised by this calibrator.
+     */
+    public LMedSRobustKnownFrameAccelerometerCalibrator(
+            final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final RobustKnownFrameAccelerometerCalibratorListener listener) {
+<span class="fc" id="L137">        super(measurements, listener);</span>
+<span class="fc" id="L138">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     */
+    public LMedSRobustKnownFrameAccelerometerCalibrator(final boolean commonAxisUsed) {
+<span class="fc" id="L147">        super(commonAxisUsed);</span>
+<span class="fc" id="L148">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param listener       listener to handle events raised by this calibrator.
+     */
+    public LMedSRobustKnownFrameAccelerometerCalibrator(
+            final boolean commonAxisUsed, final RobustKnownFrameAccelerometerCalibratorListener listener) {
+<span class="fc" id="L159">        super(commonAxisUsed, listener);</span>
+<span class="fc" id="L160">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements   list of body kinematics measurements with standard
+     *                       deviations taken at different frames (positions, orientations
+     *                       and velocities).
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     */
+    public LMedSRobustKnownFrameAccelerometerCalibrator(
+            final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements, final boolean commonAxisUsed) {
+<span class="fc" id="L173">        super(measurements, commonAxisUsed);</span>
+<span class="fc" id="L174">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements   list of body kinematics measurements with standard
+     *                       deviations taken at different frames (positions, orientations
+     *                       and velocities).
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param listener       listener to handle events raised by this calibrator.
+     */
+    public LMedSRobustKnownFrameAccelerometerCalibrator(
+            final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements, final boolean commonAxisUsed,
+            final RobustKnownFrameAccelerometerCalibratorListener listener) {
+<span class="fc" id="L189">        super(measurements, commonAxisUsed, listener);</span>
+<span class="fc" id="L190">    }</span>
+
+    /**
+     * Returns threshold to be used to keep the algorithm iterating in case that
+     * best estimated threshold using median of residuals is not small enough.
+     * Once a solution is found that generates a threshold below this value, the
+     * algorithm will stop.
+     * The stop threshold can be used to prevent the LMedS algorithm to iterate
+     * too many times in cases where samples have a very similar accuracy.
+     * For instance, in cases where proportion of outliers is very small (close
+     * to 0%), and samples are very accurate (i.e. 1e-6), the algorithm would
+     * iterate for a long time trying to find the best solution when indeed
+     * there is no need to do that if a reasonable threshold has already been
+     * reached.
+     * Because of this behaviour the stop threshold can be set to a value much
+     * lower than the one typically used in RANSAC, and yet the algorithm could
+     * still produce even smaller thresholds in estimated results.
+     *
+     * @return stop threshold to stop the algorithm prematurely when a certain
+     * accuracy has been reached.
+     */
+    public double getStopThreshold() {
+<span class="fc" id="L212">        return stopThreshold;</span>
+    }
+
+    /**
+     * Sets threshold to be used to keep the algorithm iterating in case that
+     * best estimated threshold using median of residuals is not small enough.
+     * Once a solution is found that generates a threshold below this value,
+     * the algorithm will stop.
+     * The stop threshold can be used to prevent the LMedS algorithm to iterate
+     * too many times in cases where samples have a very similar accuracy.
+     * For instance, in cases where proportion of outliers is very small (close
+     * to 0%), and samples are very accurate (i.e. 1e-6), the algorithm would
+     * iterate for a long time trying to find the best solution when indeed
+     * there is no need to do that if a reasonable threshold has already been
+     * reached.
+     * Because of this behaviour the stop threshold can be set to a value much
+     * lower than the one typically used in RANSAC, and yet the algorithm could
+     * still produce even smaller thresholds in estimated results.
+     *
+     * @param stopThreshold stop threshold to stop the algorithm prematurely
+     *                      when a certain accuracy has been reached.
+     * @throws IllegalArgumentException if provided value is zero or negative.
+     * @throws LockedException          if calibrator is currently running.
+     */
+    public void setStopThreshold(final double stopThreshold) throws LockedException {
+<span class="fc bfc" id="L237" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L238">            throw new LockedException();</span>
+        }
+<span class="fc bfc" id="L240" title="All 2 branches covered.">        if (stopThreshold &lt;= MIN_STOP_THRESHOLD) {</span>
+<span class="fc" id="L241">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L244">        this.stopThreshold = stopThreshold;</span>
+<span class="fc" id="L245">    }</span>
+
+    /**
+     * Estimates accelerometer calibration parameters containing bias, scale factors
+     * and cross-coupling errors.
+     *
+     * @throws LockedException      if calibrator is currently running.
+     * @throws NotReadyException    if calibrator is not ready.
+     * @throws CalibrationException if estimation fails for numerical reasons.
+     */
+    @SuppressWarnings(&quot;DuplicatedCode&quot;)
+    @Override
+    public void calibrate() throws LockedException, NotReadyException, CalibrationException {
+<span class="fc bfc" id="L258" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L259">            throw new LockedException();</span>
+        }
+<span class="pc bpc" id="L261" title="1 of 2 branches missed.">        if (!isReady()) {</span>
+<span class="nc" id="L262">            throw new NotReadyException();</span>
+        }
+
+<span class="fc" id="L265">        final var innerEstimator = new LMedSRobustEstimator&lt;&gt;(new LMedSRobustEstimatorListener&lt;PreliminaryResult&gt;() {</span>
+            @Override
+            public int getTotalSamples() {
+<span class="fc" id="L268">                return measurements.size();</span>
+            }
+
+            @Override
+            public int getSubsetSize() {
+<span class="fc" id="L273">                return preliminarySubsetSize;</span>
+            }
+
+            @Override
+            public void estimatePreliminarSolutions(
+                    final int[] samplesIndices, final List&lt;PreliminaryResult&gt; solutions) {
+<span class="fc" id="L279">                computePreliminarySolutions(samplesIndices, solutions);</span>
+<span class="fc" id="L280">            }</span>
+
+            @Override
+            public double computeResidual(final PreliminaryResult currentEstimation, final int i) {
+<span class="fc" id="L284">                return computeError(measurements.get(i), currentEstimation);</span>
+            }
+
+            @Override
+            public boolean isReady() {
+<span class="fc" id="L289">                return LMedSRobustKnownFrameAccelerometerCalibrator.super.isReady();</span>
+            }
+
+            @Override
+            public void onEstimateStart(final RobustEstimator&lt;PreliminaryResult&gt; estimator) {
+                // no action needed
+<span class="fc" id="L295">            }</span>
+
+            @Override
+            public void onEstimateEnd(final RobustEstimator&lt;PreliminaryResult&gt; estimator) {
+                // no action needed
+<span class="fc" id="L300">            }</span>
+
+            @Override
+            public void onEstimateNextIteration(
+                    final RobustEstimator&lt;PreliminaryResult&gt; estimator, final int iteration) {
+<span class="pc bpc" id="L305" title="1 of 2 branches missed.">                if (listener != null) {</span>
+<span class="fc" id="L306">                    listener.onCalibrateNextIteration(</span>
+                            LMedSRobustKnownFrameAccelerometerCalibrator.this, iteration);
+                }
+<span class="fc" id="L309">            }</span>
+
+            @Override
+            public void onEstimateProgressChange(
+                    final RobustEstimator&lt;PreliminaryResult&gt; estimator, final float progress) {
+<span class="pc bpc" id="L314" title="1 of 2 branches missed.">                if (listener != null) {</span>
+<span class="fc" id="L315">                    listener.onCalibrateProgressChange(</span>
+                            LMedSRobustKnownFrameAccelerometerCalibrator.this, progress);
+                }
+<span class="fc" id="L318">            }</span>
+        });
+
+        try {
+<span class="fc" id="L322">            running = true;</span>
+
+<span class="pc bpc" id="L324" title="1 of 2 branches missed.">            if (listener != null) {</span>
+<span class="fc" id="L325">                listener.onCalibrateStart(this);</span>
+            }
+
+<span class="fc" id="L328">            inliersData = null;</span>
+<span class="fc" id="L329">            innerEstimator.setConfidence(confidence);</span>
+<span class="fc" id="L330">            innerEstimator.setMaxIterations(maxIterations);</span>
+<span class="fc" id="L331">            innerEstimator.setProgressDelta(progressDelta);</span>
+<span class="fc" id="L332">            innerEstimator.setStopThreshold(stopThreshold);</span>
+<span class="fc" id="L333">            final var preliminaryResult = innerEstimator.estimate();</span>
+<span class="fc" id="L334">            inliersData = innerEstimator.getInliersData();</span>
+
+<span class="fc" id="L336">            attemptRefine(preliminaryResult);</span>
+
+<span class="pc bpc" id="L338" title="1 of 2 branches missed.">            if (listener != null) {</span>
+<span class="fc" id="L339">                listener.onCalibrateEnd(this);</span>
+            }
+
+<span class="nc" id="L342">        } catch (final com.irurueta.numerical.LockedException e) {</span>
+<span class="nc" id="L343">            throw new LockedException(e);</span>
+<span class="nc" id="L344">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
+<span class="nc" id="L345">            throw new NotReadyException(e);</span>
+<span class="nc" id="L346">        } catch (final RobustEstimatorException e) {</span>
+<span class="nc" id="L347">            throw new CalibrationException(e);</span>
+        } finally {
+<span class="fc" id="L349">            running = false;</span>
+        }
+<span class="fc" id="L351">    }</span>
+
+    /**
+     * Returns method being used for robust estimation.
+     *
+     * @return method being used for robust estimation.
+     */
+    @Override
+    public RobustEstimatorMethod getMethod() {
+<span class="fc" id="L360">        return RobustEstimatorMethod.LMEDS;</span>
+    }
+
+    /**
+     * Indicates whether this calibrator requires quality scores for each
+     * measurement or not.
+     *
+     * @return true if quality scores are required, false otherwise.
+     */
+    @Override
+    public boolean isQualityScoresRequired() {
+<span class="fc" id="L371">        return false;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

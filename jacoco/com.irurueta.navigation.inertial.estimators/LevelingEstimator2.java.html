@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LevelingEstimator2.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-inertial</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.inertial.estimators</a> &gt; <span class="el_source">LevelingEstimator2.java</span></div><h1>LevelingEstimator2.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2020 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.inertial.estimators;
+
+import com.irurueta.algebra.ArrayUtils;
+import com.irurueta.algebra.Matrix;
+import com.irurueta.algebra.Utils;
+import com.irurueta.algebra.WrongSizeException;
+import com.irurueta.geometry.Quaternion;
+import com.irurueta.navigation.frames.CoordinateTransformation;
+import com.irurueta.navigation.frames.FrameType;
+import com.irurueta.navigation.frames.NEDPosition;
+import com.irurueta.navigation.inertial.BodyKinematics;
+
+/**
+ * This implementation provides slightly more accurate
+ * roll and pitch attitude angles than the ones obtained by
+ * {@link LevelingEstimator}, since north component of gravity in a
+ * local navigation frame is not neglected, because Earth is not
+ * considered to be fully spherical.
+ * &lt;p&gt;
+ * To get this slight improvement of accuracy, this estimator requires
+ * knowledge of device position (latitude and height) on Earth.
+ *
+ * @see LevelingEstimator
+ */
+public class LevelingEstimator2 {
+
+    /**
+     * Private constructor to prevent instantiation.
+     */
+    private LevelingEstimator2() {
+    }
+
+    /**
+     * Gets body attitude expressed in the local navigation frame.
+     *
+     * @param latitude     device latitude expressed in radians (rad).
+     * @param height       device height expressed in meters (m).
+     * @param fx           x-coordinate of measured body specific force
+     *                     expressed in meters per squared second (m/s^2).
+     * @param fy           y-coordinate of measured body specific force
+     *                     expressed in meters per squared second (m/s^2).
+     * @param fz           z-coordinate of measured body specific force
+     *                     expressed in meters per squared second (m/s^2).
+     * @param angularRateX x-coordinate of body angular rate expressed in
+     *                     radians per second (rad/s).
+     * @param angularRateY y-coordinate of body angular rate expressed in
+     *                     radians per second (rad/s).
+     * @param angularRateZ z-coordinate of body angular rate expressed in
+     *                     radians per second (rad/s).
+     * @param result       instance where attitude will be stored.
+     */
+    public static void getAttitude(
+            final double latitude, final double height,
+            final double fx, final double fy, final double fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ,
+            final CoordinateTransformation result) {
+
+<span class="fc" id="L73">        getPartialAttitude(latitude, height, fx, fy, fz, result);</span>
+
+        // fix yaw angle
+<span class="fc" id="L76">        final var roll = result.getRollEulerAngle();</span>
+<span class="fc" id="L77">        final var pitch = result.getPitchEulerAngle();</span>
+<span class="fc" id="L78">        final var yaw = LevelingEstimator.getYaw(roll, pitch, angularRateX, angularRateY, angularRateZ);</span>
+
+<span class="fc" id="L80">        result.setEulerAngles(roll, pitch, yaw);</span>
+<span class="fc" id="L81">    }</span>
+
+    /**
+     * Gets body attitude expressed in the local navigation frame.
+     *
+     * @param position     device position expressed in NED frame.
+     * @param fx           x-coordinate of measured body specific force
+     *                     expressed in meters per squared second (m/s^2).
+     * @param fy           y-coordinate of measured body specific force
+     *                     expressed in meters per squared second (m/s^2).
+     * @param fz           z-coordinate of measured body specific force
+     *                     expressed in meters per squared second (m/s^2).
+     * @param angularRateX x-coordinate of body angular rate expressed in
+     *                     radians per second (rad/s).
+     * @param angularRateY y-coordinate of body angular rate expressed in
+     *                     radians per second (rad/s).
+     * @param angularRateZ z-coordinate of body angular rate expressed in
+     *                     radians per second (rad/s).
+     * @param result       instance where attitude will be stored.
+     */
+    public static void getAttitude(
+            final NEDPosition position,
+            final double fx, final double fy, final double fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ,
+            final CoordinateTransformation result) {
+<span class="fc" id="L106">        getAttitude(position.getLatitude(), position.getHeight(), fx, fy, fz, angularRateX, angularRateY, angularRateZ,</span>
+                result);
+<span class="fc" id="L108">    }</span>
+
+    /**
+     * Gets body attitude expressed in the local navigation frame.
+     *
+     * @param latitude   device latitude expressed in radians (rad).
+     * @param height     device height expressed in meters (m).
+     * @param kinematics body kinematics containing measured
+     *                   body specific force and angular rate.
+     * @param result     instance where attitude will be stored.
+     */
+    public static void getAttitude(
+            final double latitude, final double height, final BodyKinematics kinematics,
+            final CoordinateTransformation result) {
+<span class="fc" id="L122">        getAttitude(latitude, height, kinematics.getFx(), kinematics.getFy(), kinematics.getFz(),</span>
+<span class="fc" id="L123">                kinematics.getAngularRateX(), kinematics.getAngularRateY(), kinematics.getAngularRateZ(), result);</span>
+<span class="fc" id="L124">    }</span>
+
+    /**
+     * Gets body attitude expressed in the local navigation frame.
+     *
+     * @param position   device position expressed in NED frame.
+     * @param kinematics body kinematics containing measured
+     *                   body specific force and angular rate.
+     * @param result     instance where attitude will be stored.
+     */
+    public static void getAttitude(
+            final NEDPosition position, final BodyKinematics kinematics, final CoordinateTransformation result) {
+<span class="fc" id="L136">        getAttitude(position.getLatitude(), position.getHeight(), kinematics, result);</span>
+<span class="fc" id="L137">    }</span>
+
+    /**
+     * Gets body attitude expressed in the local navigation frame.
+     *
+     * @param latitude     device latitude expressed in radians (rad).
+     * @param height       device height expressed in meters (m).
+     * @param fx           x-coordinate of measured body specific force
+     *                     expressed in meters per squared second (m/s^2).
+     * @param fy           y-coordinate of measured body specific force
+     *                     expressed in meters per squared second (m/s^2).
+     * @param fz           z-coordinate of measured body specific force
+     *                     expressed in meters per squared second (m/s^2).
+     * @param angularRateX x-coordinate of body angular rate expressed in
+     *                     radians per second (rad/s).
+     * @param angularRateY y-coordinate of body angular rate expressed in
+     *                     radians per second (rad/s).
+     * @param angularRateZ z-coordinate of body angular rate expressed in
+     *                     radians per second (rad/s).
+     * @return estimated attitude.
+     */
+    public static CoordinateTransformation getAttitude(
+            final double latitude, final double height,
+            final double fx, final double fy, final double fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ) {
+<span class="fc" id="L162">        final var result = new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);</span>
+<span class="fc" id="L163">        getAttitude(latitude, height, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);</span>
+<span class="fc" id="L164">        return result;</span>
+    }
+
+    /**
+     * Gets body attitude expressed in the local navigation frame.
+     *
+     * @param position     device position expressed in NED frame.
+     * @param fx           x-coordinate of measured body specific force
+     *                     expressed in meters per squared second (m/s^2).
+     * @param fy           y-coordinate of measured body specific force
+     *                     expressed in meters per squared second (m/s^2).
+     * @param fz           z-coordinate of measured body specific force
+     *                     expressed in meters per squared second (m/s^2).
+     * @param angularRateX x-coordinate of body angular rate expressed in
+     *                     radians per second (rad/s).
+     * @param angularRateY y-coordinate of body angular rate expressed in
+     *                     radians per second (rad/s).
+     * @param angularRateZ z-coordinate of body angular rate expressed in
+     *                     radians per second (rad/s).
+     * @return estimated attitude.
+     */
+    public static CoordinateTransformation getAttitude(
+            final NEDPosition position, final double fx, final double fy, final double fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ) {
+<span class="fc" id="L188">        final var result = new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);</span>
+<span class="fc" id="L189">        getAttitude(position, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);</span>
+<span class="fc" id="L190">        return result;</span>
+    }
+
+    /**
+     * Gets body attitude expressed in the local navigation frame.
+     *
+     * @param latitude   device latitude expressed in radians (rad).
+     * @param height     device height expressed in meters (m).
+     * @param kinematics body kinematics containing measured
+     *                   body specific force and angular rate.
+     * @return estimated attitude.
+     */
+    public static CoordinateTransformation getAttitude(
+            final double latitude, final double height, final BodyKinematics kinematics) {
+<span class="fc" id="L204">        final var result = new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);</span>
+<span class="fc" id="L205">        getAttitude(latitude, height, kinematics, result);</span>
+<span class="fc" id="L206">        return result;</span>
+    }
+
+    /**
+     * Gets body attitude expressed in the local navigation frame.
+     *
+     * @param position   device position expressed in NED frame.
+     * @param kinematics body kinematics containing measured
+     *                   body specific force and angular rate.
+     * @return estimated attitude.
+     */
+    public static CoordinateTransformation getAttitude(final NEDPosition position, final BodyKinematics kinematics) {
+<span class="fc" id="L218">        final var result = new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);</span>
+<span class="fc" id="L219">        getAttitude(position, kinematics, result);</span>
+<span class="fc" id="L220">        return result;</span>
+    }
+
+    /**
+     * Gets partial body attitude where only roll and pitch angles
+     * are reliable.
+     *
+     * @param latitude device latitude expressed in radians (rad).
+     * @param height   device height expressed in meters (m).
+     * @param fx       x-coordinate of measured body specific force
+     *                 expressed in meters per squared second (m/s^2).
+     * @param fy       y-coordinate of measured body specific force
+     *                 expressed in meters per squared second (m/s^2).
+     * @param fz       z-coordinate of measured body specific force
+     *                 expressed in meters per squared second (m/s^2).
+     * @param result   instance where partial body attitude will be stored.
+     */
+    static void getPartialAttitude(
+            final double latitude, final double height, final double fx, final double fy, final double fz,
+            final CoordinateTransformation result) {
+
+        try {
+            // get normalized vector from measured specific force, which
+            // mainly contains sensed gravity in the local navigation frame
+            // when device is static (Coriolis force is neglected in this
+            // implementation).
+
+            // obtain normalized specific force in local navigation coordinates
+<span class="fc" id="L248">            final var normF = new double[]{fx, fy, fz};</span>
+<span class="fc" id="L249">            ArrayUtils.normalize(normF);</span>
+
+            // obtain gravity in NED coordinates (locally equivalent to
+            // the one in local navigation frame).
+            // Because Earth is not fully spherical, normalized vector won't
+            // be (0, 0, 1), because there will always be a small north
+            // gravity component.
+<span class="fc" id="L256">            final var nedGravity = NEDGravityEstimator.estimateGravityAndReturnNew(latitude, height);</span>
+
+<span class="fc" id="L258">            final var normG = nedGravity.asArray();</span>
+
+            // ensure that down coordinate points towards Earth center, just
+            // like sensed specific force
+<span class="fc" id="L262">            ArrayUtils.multiplyByScalar(normG, -1.0, normG);</span>
+
+<span class="fc" id="L264">            ArrayUtils.normalize(normG);</span>
+
+            // compute angle between both normalized vectors using dot product
+            // cos(alpha) = normF' * normG
+<span class="fc" id="L268">            final var cosAlpha = ArrayUtils.dotProduct(normF, normG);</span>
+
+            // compute vector perpendicular to both normF and normG which will
+            // be the rotation axis
+<span class="fc" id="L272">            final var skew = Utils.skewMatrix(normG);</span>
+<span class="fc" id="L273">            final var tmp1 = Matrix.newFromArray(normF);</span>
+<span class="fc" id="L274">            final var tmp2 = skew.multiplyAndReturnNew(tmp1);</span>
+
+<span class="fc" id="L276">            final var sinAlpha = Utils.normF(tmp2);</span>
+
+<span class="fc" id="L278">            final var axis = tmp2.toArray();</span>
+<span class="fc" id="L279">            ArrayUtils.normalize(axis);</span>
+
+<span class="fc" id="L281">            final var alpha = Math.atan2(sinAlpha, cosAlpha);</span>
+
+<span class="fc" id="L283">            final var q = new Quaternion(axis, alpha);</span>
+
+            // set rotation (yaw angle will be arbitrary and will need
+            // to be fixed later on)
+<span class="fc" id="L287">            result.setSourceType(FrameType.LOCAL_NAVIGATION_FRAME);</span>
+<span class="fc" id="L288">            result.setDestinationType(FrameType.BODY_FRAME);</span>
+<span class="fc" id="L289">            result.fromRotation(q);</span>
+
+<span class="nc" id="L291">        } catch (final WrongSizeException ignore) {</span>
+            // never happens
+<span class="fc" id="L293">        }</span>
+<span class="fc" id="L294">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

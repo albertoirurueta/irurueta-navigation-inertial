@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MagnetometerMeasurementsGenerator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-inertial</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.inertial.calibration.generators</a> &gt; <span class="el_source">MagnetometerMeasurementsGenerator.java</span></div><h1>MagnetometerMeasurementsGenerator.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2020 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.inertial.calibration.generators;
+
+import com.irurueta.navigation.LockedException;
+import com.irurueta.navigation.inertial.BodyKinematicsAndMagneticFluxDensity;
+import com.irurueta.navigation.inertial.BodyMagneticFluxDensity;
+import com.irurueta.navigation.inertial.calibration.StandardDeviationBodyMagneticFluxDensity;
+import com.irurueta.navigation.inertial.calibration.intervals.TriadStaticIntervalDetector;
+import com.irurueta.navigation.inertial.calibration.noise.AccumulatedMagneticFluxDensityTriadNoiseEstimator;
+
+/**
+ * Generates measurements for the calibration of magnetometers by alternating
+ * static and dynamic intervals where device is kept static or moved.
+ * Generated measurements must be used with magnetometer calibrators based
+ * on the knowledge of position on Earth and time instant.
+ * Such calibrators are the following ones:
+ * - {@link com.irurueta.navigation.inertial.calibration.magnetometer.KnownPositionAndInstantMagnetometerCalibrator}
+ * - {@link com.irurueta.navigation.inertial.calibration.magnetometer.KnownHardIronPositionAndInstantMagnetometerCalibrator}
+ * - {@link com.irurueta.navigation.inertial.calibration.magnetometer.RobustKnownPositionAndInstantMagnetometerCalibrator}
+ * and all its implementations.
+ * - {@link com.irurueta.navigation.inertial.calibration.magnetometer.RobustKnownHardIronPositionAndInstantMagnetometerCalibrator}
+ * and all its implementations.
+ */
+public class MagnetometerMeasurementsGenerator extends
+        MeasurementsGenerator&lt;StandardDeviationBodyMagneticFluxDensity,
+                MagnetometerMeasurementsGenerator, MagnetometerMeasurementsGeneratorListener,
+                BodyKinematicsAndMagneticFluxDensity&gt; {
+
+    /**
+     * Accumulated noise estimator for magnetic flux density measurements.
+     */
+<span class="fc" id="L46">    private final AccumulatedMagneticFluxDensityTriadNoiseEstimator accumulatedEstimator =</span>
+            new AccumulatedMagneticFluxDensityTriadNoiseEstimator();
+
+    /**
+     * Accumulated average x-coordinate of magnetic flux density while body remains in a static interval and
+     * expressed in Teslas (T).
+     */
+    private double avgBx;
+
+    /**
+     * Accumulated average y-coordinate of magnetic flux density while body remains in a static interval and
+     * expressed in Teslas (T).
+     */
+    private double avgBy;
+
+    /**
+     * Accumulated average z-coordinate of magnetic flux density while body remains in a static interval and
+     * expressed in Teslas (T).
+     */
+    private double avgBz;
+
+    /**
+     * Contains standard deviation of magnetic flux density during initialization (i.e. base noise level)
+     * expressed in Teslas (T).
+     */
+    private double stdBNorm;
+
+    /**
+     * Constructor.
+     */
+    public MagnetometerMeasurementsGenerator() {
+<span class="fc" id="L77">        super();</span>
+<span class="fc" id="L78">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param listener listener to handle events raised by this generator.
+     */
+    public MagnetometerMeasurementsGenerator(final MagnetometerMeasurementsGeneratorListener listener) {
+<span class="fc" id="L86">        super(listener);</span>
+<span class="fc" id="L87">    }</span>
+
+    /**
+     * Resets this generator.
+     *
+     * @throws LockedException if generator is busy.
+     */
+    @Override
+    public void reset() throws LockedException {
+<span class="fc" id="L96">        super.reset();</span>
+
+<span class="fc" id="L98">        accumulatedEstimator.reset();</span>
+<span class="fc" id="L99">    }</span>
+
+    /**
+     * Post process provided input sample.
+     *
+     * @param sample an input sample.
+     * @throws LockedException if generator is busy.
+     */
+    @Override
+    protected void postProcess(final BodyKinematicsAndMagneticFluxDensity sample) throws LockedException {
+<span class="fc" id="L109">        final var b = sample.getMagneticFluxDensity();</span>
+<span class="fc bfc" id="L110" title="All 2 branches covered.">        if (staticIntervalDetector.getStatus() == TriadStaticIntervalDetector.Status.STATIC_INTERVAL</span>
+<span class="fc bfc" id="L111" title="All 2 branches covered.">                || staticIntervalDetector.getStatus() == TriadStaticIntervalDetector.Status.INITIALIZING) {</span>
+
+<span class="fc" id="L113">            accumulatedEstimator.addTriad(b.getBx(), b.getBy(), b.getBz());</span>
+<span class="fc" id="L114">            avgBx = accumulatedEstimator.getAvgX();</span>
+<span class="fc" id="L115">            avgBy = accumulatedEstimator.getAvgY();</span>
+<span class="fc" id="L116">            avgBz = accumulatedEstimator.getAvgZ();</span>
+
+        } else {
+<span class="fc" id="L119">            accumulatedEstimator.reset();</span>
+        }
+<span class="fc" id="L121">    }</span>
+
+    /**
+     * Gets corresponding acceleration triad from provided input sample.
+     * This method must store the result into {@link #triad}.
+     *
+     * @param sample input sample.
+     */
+    @Override
+    protected void getAccelerationTriadFromInputSample(final BodyKinematicsAndMagneticFluxDensity sample) {
+<span class="fc" id="L131">        sample.getKinematics().getSpecificForceTriad(triad);</span>
+<span class="fc" id="L132">    }</span>
+
+    /**
+     * Handles a static-to-dynamic interval change.
+     *
+     * @param accumulatedAvgX average x-coordinate of measurements during last
+     *                        static period expressed in meters per squared
+     *                        second (m/s^2).
+     * @param accumulatedAvgY average y-coordinate of specific force during last
+     *                        static period expressed in meters per squared
+     *                        second (m/s^2).
+     * @param accumulatedAvgZ average z-coordinate of specific force during last
+     *                        static period expressed in meters per squared
+     *                        second (m/s^2).
+     * @param accumulatedStdX standard deviation of x-coordinate of measurements
+     *                        during last static period expressed in meters per
+     *                        squared second (m/s^2).
+     * @param accumulatedStdY standard deviation of y-coordinate of measurements
+     *                        during last static period expressed in meters per
+     *                        squared second (m/s^2).
+     * @param accumulatedStdZ standard deviation of z-coordinate of measurements
+     *                        during last static period expressed in meters per
+     *                        squared second (m/s^2).
+     */
+    @Override
+    protected void handleStaticToDynamicChange(
+            final double accumulatedAvgX, final double accumulatedAvgY, final double accumulatedAvgZ,
+            final double accumulatedStdX, final double accumulatedStdY, final double accumulatedStdZ) {
+
+<span class="fc bfc" id="L161" title="All 2 branches covered.">        if (!isStaticIntervalSkipped()) {</span>
+
+<span class="fc" id="L163">            final var measurement = new StandardDeviationBodyMagneticFluxDensity(</span>
+                    new BodyMagneticFluxDensity(avgBx, avgBy, avgBz), stdBNorm);
+
+<span class="pc bpc" id="L166" title="1 of 2 branches missed.">            if (listener != null) {</span>
+<span class="fc" id="L167">                listener.onGeneratedMeasurement(this, measurement);</span>
+            }
+        }
+<span class="fc" id="L170">    }</span>
+
+    /**
+     * Handles a dynamic-to-static interval change.
+     */
+    @Override
+    protected void handleDynamicToStaticChange() {
+        // no action needed.
+<span class="fc" id="L178">    }</span>
+
+    /**
+     * Handles an initialization completion.
+     */
+    @Override
+    protected void handleInitializationCompleted() {
+<span class="fc" id="L185">        stdBNorm = accumulatedEstimator.getStandardDeviationNorm();</span>
+<span class="fc" id="L186">    }</span>
+
+    /**
+     * Handles an error during initialization.
+     */
+    @Override
+    protected void handleInitializationFailed() {
+        try {
+<span class="fc" id="L194">            accumulatedEstimator.reset();</span>
+<span class="nc" id="L195">        } catch (final LockedException ignore) {</span>
+            // no action needed
+<span class="fc" id="L197">        }</span>
+<span class="fc" id="L198">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

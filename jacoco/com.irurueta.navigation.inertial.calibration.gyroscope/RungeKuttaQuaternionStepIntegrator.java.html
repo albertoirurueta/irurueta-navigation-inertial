@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RungeKuttaQuaternionStepIntegrator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-inertial</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.inertial.calibration.gyroscope</a> &gt; <span class="el_source">RungeKuttaQuaternionStepIntegrator.java</span></div><h1>RungeKuttaQuaternionStepIntegrator.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2022 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.inertial.calibration.gyroscope;
+
+import com.irurueta.algebra.AlgebraException;
+import com.irurueta.algebra.Matrix;
+import com.irurueta.geometry.Quaternion;
+import com.irurueta.geometry.Rotation3D;
+import com.irurueta.geometry.RotationException;
+
+/**
+ * Computes one step of a Runge-Kutta (RK4) integration algorithm.
+ * More information available here:
+ * &lt;a href=&quot;https://en.wikipedia.org/wiki/Runge%E2%80%93Kutta_methods&quot;&gt;
+ *     https://en.wikipedia.org/wiki/Runge–Kutta_methods
+ * &lt;/a&gt;
+ */
+public class RungeKuttaQuaternionStepIntegrator extends QuaternionStepIntegrator {
+
+    /**
+     * Factor to multiply slopes k1 and k4.
+     */
+    private static final double ONE_SIXTH = 1.0 / 6.0;
+
+    /**
+     * Factor to multiply slopes k2 and k3.
+     */
+    private static final double ONE_THIRD = 1.0 / 3.0;
+
+    /**
+     * Angular speed at initial timestamp t0 to be reused.
+     */
+    private Matrix omega0;
+
+    /**
+     * Angular speed at end timestamp t1 to be reused.
+     */
+    private Matrix omega1;
+
+    /**
+     * Angular speed at mid-point timestamp between t0 and t1 to be reused.
+     */
+    private Matrix omega01;
+
+    /**
+     * Initial attitude to be reused.
+     */
+    private Matrix quat;
+
+    /**
+     * Instance where result of integration is stored in matrix form being reused.
+     */
+    private Matrix quatResult;
+
+    /**
+     * Temporal quaternion used to compute additional slopes that is being reused.
+     */
+    private Matrix tmpQ;
+
+    /**
+     * First Runge-Kutta coefficient. Quaternion derivative at initial timestamp t0 to be
+     * reused.
+     */
+    private Matrix k1;
+
+    /**
+     * Second Runge-Kutta coefficient. Quaternion derivative at mid-point timestamp
+     * between t0 and t1 to be reused.
+     */
+    private Matrix k2;
+
+    /**
+     * Third Runge-Kutta coefficient to be reused.
+     */
+    private Matrix k3;
+
+    /**
+     * Fourth Runge-Kutta coefficient. Quaternion derivative at end timestamp t1 to be
+     * reused.
+     */
+    private Matrix k4;
+
+    /**
+     * Skew antisymmetric matrix used for quaternion time derivative computation to be reused.
+     */
+    private Matrix omegaSkew;
+
+    /**
+     * Constructor.
+     * Initializes matrices being reused.
+     */
+<span class="fc" id="L105">    public RungeKuttaQuaternionStepIntegrator() {</span>
+        try {
+<span class="fc" id="L107">            omega0 = new Matrix(Rotation3D.INHOM_COORDS, 1);</span>
+<span class="fc" id="L108">            omega1 = new Matrix(Rotation3D.INHOM_COORDS, 1);</span>
+<span class="fc" id="L109">            omega01 = new Matrix(Rotation3D.INHOM_COORDS, 1);</span>
+<span class="fc" id="L110">            quat = new Matrix(Quaternion.N_PARAMS, 1);</span>
+<span class="fc" id="L111">            quatResult = new Matrix(Quaternion.N_PARAMS, 1);</span>
+<span class="fc" id="L112">            tmpQ = new Matrix(Quaternion.N_PARAMS, 1);</span>
+<span class="fc" id="L113">            k1 = new Matrix(Quaternion.N_PARAMS, 1);</span>
+<span class="fc" id="L114">            k2 = new Matrix(Quaternion.N_PARAMS, 1);</span>
+<span class="fc" id="L115">            k3 = new Matrix(Quaternion.N_PARAMS, 1);</span>
+<span class="fc" id="L116">            k4 = new Matrix(Quaternion.N_PARAMS, 1);</span>
+<span class="fc" id="L117">            omegaSkew = new Matrix(Quaternion.N_PARAMS, Quaternion.N_PARAMS);</span>
+<span class="nc" id="L118">        } catch (final AlgebraException ignore) {</span>
+            // never happens
+<span class="fc" id="L120">        }</span>
+<span class="fc" id="L121">    }</span>
+
+    /**
+     * Gets type of this integrator.
+     *
+     * @return indicates type of this integrator.
+     */
+    @Override
+    public QuaternionStepIntegratorType getType() {
+<span class="fc" id="L130">        return QuaternionStepIntegratorType.RUNGE_KUTTA;</span>
+    }
+
+    /**
+     * Performs an RK4 Runge-Kutta integration step.
+     * More information available here:
+     * &lt;a href=&quot;https://en.wikipedia.org/wiki/Runge%E2%80%93Kutta_methods&quot;&gt;
+     *     https://en.wikipedia.org/wiki/Runge–Kutta_methods
+     * &lt;/a&gt;–
+     *
+     * @param initialAttitude initial attitude.
+     * @param initialWx       initial x-coordinate rotation velocity at initial timestamp expressed in
+     *                        radians per second (rad/s).
+     * @param initialWy       initial y-coordinate rotation velocity at initial timestamp expressed in
+     *                        radians per second (rad/s).
+     * @param initialWz       initial z-coordinate rotation velocity at initial timestamp expressed in
+     *                        radians per second (rad/s).*
+     * @param currentWx       end x-coordinate rotation velocity at current timestamp expressed in radians
+     *                        per second (rad/s).
+     * @param currentWy       end y-coordinate rotation velocity at current timestamp expressed in radians
+     *                        per second (rad/s).
+     * @param currentWz       end z-coordinate rotation velocity at current timestamp expressed in radians
+     *                        per second (rad/s).
+     * @param dt              time step expressed in seconds.
+     * @param result          instance where result of integration will be stored.
+     * @throws RotationException if a numerical error occurs.
+     */
+    @Override
+    public void integrate(
+            final Quaternion initialAttitude, final double initialWx, final double initialWy, final double initialWz,
+            final double currentWx, final double currentWy, final double currentWz, final double dt,
+            final Quaternion result) throws RotationException {
+<span class="fc" id="L162">        integrationStep(initialAttitude, initialWx, initialWy, initialWz, currentWx, currentWy, currentWz, dt, result,</span>
+                omega0, omega1, omega01, quat, quatResult, tmpQ, k1, k2, k3, k4, omegaSkew);
+<span class="fc" id="L164">    }</span>
+
+    /**
+     * Performs an RK4 Runge-Kutta integration step.
+     * More information available here:
+     * &lt;a href=&quot;https://en.wikipedia.org/wiki/Runge%E2%80%93Kutta_methods&quot;&gt;
+     *     https://en.wikipedia.org/wiki/Runge–Kutta_methods
+     * &lt;/a&gt;
+     *
+     * @param initialAttitude initial attitude.
+     * @param initialWx       initial x-coordinate rotation velocity at initial timestamp expressed in
+     *                        radians per second (rad/s).
+     * @param initialWy       initial y-coordinate rotation velocity at initial timestamp expressed in
+     *                        radians per second (rad/s).
+     * @param initialWz       initial z-coordinate rotation velocity at initial timestamp expressed in
+     *                        radians per second (rad/s).
+     * @param currentWx       end x-coordinate rotation velocity at end timestamp expressed in radians
+     *                        per second (rad/s).
+     * @param currentWy       end y-coordinate rotation velocity at end timestamp expressed in radians
+     *                        per second (rad/s).
+     * @param currentWz       end z-coordinate rotation velocity at end timestamp expressed in radians
+     *                        per second (rad/s).
+     * @param dt              time step expressed in seconds (t1 - t0).
+     * @param result          instance where result of integration will be stored.
+     * @throws RotationException if a numerical error occurs.
+     */
+    public static void integrationStep(
+            final Quaternion initialAttitude, final double initialWx, final double initialWy, final double initialWz,
+            final double currentWx, final double currentWy, final double currentWz, final double dt,
+            final Quaternion result) throws RotationException {
+        try {
+<span class="fc" id="L195">            final var omega0 = new Matrix(Rotation3D.INHOM_COORDS, 1);</span>
+<span class="fc" id="L196">            final var omega1 = new Matrix(Rotation3D.INHOM_COORDS, 1);</span>
+<span class="fc" id="L197">            final var omega01 = new Matrix(Rotation3D.INHOM_COORDS, 1);</span>
+<span class="fc" id="L198">            final var quat = new Matrix(Quaternion.N_PARAMS, 1);</span>
+<span class="fc" id="L199">            final var quatResult = new Matrix(Quaternion.N_PARAMS, 1);</span>
+<span class="fc" id="L200">            final var tmpQ = new Matrix(Quaternion.N_PARAMS, 1);</span>
+<span class="fc" id="L201">            final var k1 = new Matrix(Quaternion.N_PARAMS, 1);</span>
+<span class="fc" id="L202">            final var k2 = new Matrix(Quaternion.N_PARAMS, 1);</span>
+<span class="fc" id="L203">            final var k3 = new Matrix(Quaternion.N_PARAMS, 1);</span>
+<span class="fc" id="L204">            final var k4 = new Matrix(Quaternion.N_PARAMS, 1);</span>
+<span class="fc" id="L205">            final var omegaSkew = new Matrix(Quaternion.N_PARAMS, Quaternion.N_PARAMS);</span>
+<span class="fc" id="L206">            integrationStep(initialAttitude, initialWx, initialWy, initialWz, currentWx, currentWy, currentWz, dt,</span>
+                    result, omega0, omega1, omega01, quat, quatResult, tmpQ, k1, k2, k3, k4, omegaSkew);
+<span class="nc" id="L208">        } catch (final AlgebraException ignore) {</span>
+            // never happens
+<span class="fc" id="L210">        }</span>
+<span class="fc" id="L211">    }</span>
+
+    /**
+     * Performs an RK4 Runge-Kutta integration step.
+     * More information available here:
+     * &lt;a href=&quot;https://en.wikipedia.org/wiki/Runge%E2%80%93Kutta_methods&quot;&gt;
+     *     https://en.wikipedia.org/wiki/Runge–Kutta_methods
+     * &lt;/a&gt;
+     *
+     * @param initialAttitude initial attitude.
+     * @param initialWx       initial x-coordinate rotation velocity at initial timestamp expressed in
+     *                        radians per second (rad/s).
+     * @param initialWy       initial y-coordinate rotation velocity at initial timestamp expressed in
+     *                        radians per second (rad/s).
+     * @param initialWz       initial z-coordinate rotation velocity at initial timestamp expressed in
+     *                        radians per second (rad/s).
+     * @param currentWx       end x-coordinate rotation velocity at end timestamp expressed in radians
+     *                        per second (rad/s).
+     * @param currentWy       end y-coordinate rotation velocity at end timestamp expressed in radians
+     *                        per second (rad/s).
+     * @param currentWz       end z-coordinate rotation velocity at end timestamp expressed in radians
+     *                        per second (rad/s).
+     * @param dt              time step expressed in seconds (t1 - t0).
+     * @param result          instance where result of integration will be stored.
+     * @param omega0          angular speed at initial timestamp t0 to be reused. Must be 3x1.
+     * @param omega1          angular speed at end timestamp t1 to be reused. Must be 3x1.
+     * @param omega01         angular speed at mid-point timestamp between t0 and t1 to be reused.
+     *                        Must be 3x1.
+     * @param quat            initial attitude to be reused. Must be 4x1.
+     * @param quatResult      instance where result of integration is stored in matrix form being
+     *                        reused. Must be 4x1.
+     * @param tmpQ            temporal quaternion used to compute additional slopes that is being
+     *                        reused. Must be 4x1.
+     * @param k1              slope of quaternion derivative at initial timestamp t0 to be reused.
+     *                        Must be 4x1.
+     * @param k2              slope of quaternion derivative at mid-point timestamp between t0 and
+     *                        t1 to be reused. Must be 4x1.
+     * @param k3              slope of quaternion derivative at mid-point timestamp between t0 and
+     *                        t1 to be reused. Must be 4x1.
+     * @param k4              slope of quaternion derivative at end timestamp t1 to be reused.
+     *                        Must be 4x1.
+     * @param omegaSkew       skew antisymmetric matrix used for quaternion time derivative
+     *                        computation to be reused. Must be 4x4.
+     * @throws RotationException if a numerical error occurs.
+     */
+    private static void integrationStep(
+            final Quaternion initialAttitude, final double initialWx, final double initialWy, final double initialWz,
+            final double currentWx, final double currentWy, final double currentWz, final double dt, Quaternion result,
+            final Matrix omega0, final Matrix omega1, final Matrix omega01, final Matrix quat, final Matrix quatResult,
+            final Matrix tmpQ, final Matrix k1, final Matrix k2, final Matrix k3, final Matrix k4,
+            final Matrix omegaSkew) throws RotationException {
+        try {
+            // normalize and copy initial attitude into matrix form
+<span class="fc" id="L264">            initialAttitude.normalize();</span>
+<span class="fc" id="L265">            initialAttitude.values(quat.getBuffer());</span>
+
+            // angular speed at initial timestamp t0
+<span class="fc" id="L268">            copyAngularSpeedToMatrix(initialWx, initialWy, initialWz, omega0);</span>
+
+            // angular speed at end timestamp t1
+<span class="fc" id="L271">            copyAngularSpeedToMatrix(currentWx, currentWy, currentWz, omega1);</span>
+
+            // compute average of angular speeds at mid-point between t0 and t1
+<span class="fc" id="L274">            computeAverageAngularSpeed(initialWx, initialWy, initialWz, currentWx, currentWy, currentWz, omega01);</span>
+
+            // Compute First Runge-Kutta coefficient k1 as the slope at initial point: k1 = f(t(n), x(n))
+            // so that x(t(n) + 0.5 * dt) = x(n) + 0.5 * dt * k1
+<span class="fc" id="L278">            computeOmegaSkew(omega0, omegaSkew);</span>
+<span class="fc" id="L279">            computeTimeDerivative(quat, omegaSkew, k1);</span>
+
+            // Compute Second Runge-Kutta coefficient k2 as the slope at mid-point:
+            // k2 = f(t(n) + 0.5 * dt, x(t(n) + 0.5 * dt))
+            // k2 = f(t(n) + 0.5 * dt, x(n) + 0.5 * dt * k1)
+<span class="fc" id="L284">            final var halfDt = 0.5 * dt;</span>
+<span class="fc" id="L285">            tmpQ.copyFrom(k1);</span>
+<span class="fc" id="L286">            tmpQ.multiplyByScalar(halfDt);</span>
+<span class="fc" id="L287">            tmpQ.add(quat);</span>
+<span class="fc" id="L288">            computeOmegaSkew(omega01, omegaSkew);</span>
+<span class="fc" id="L289">            computeTimeDerivative(tmpQ, omegaSkew, k2);</span>
+
+            // Third Runge-Kutta coefficient k3 as the slope at mid-point (same omega skew as k2):
+            // k3 = f(t(n) + 0.5 * dt, x(t(n) + 0.5 * dt))
+            // k3 = f(t(n) + 0.5 * dt, x(n) + 0.5 * dt * k2)
+<span class="fc" id="L294">            tmpQ.copyFrom(k2);</span>
+<span class="fc" id="L295">            tmpQ.multiplyByScalar(halfDt);</span>
+<span class="fc" id="L296">            tmpQ.add(quat);</span>
+<span class="fc" id="L297">            computeTimeDerivative(tmpQ, omegaSkew, k3);</span>
+
+            // Fourth Runge-Kutta coefficient k4 as the slope at end-point:
+            // k4 = f(t(n) + dt, x(t(n) + dt))
+            // k4 = f(t(n) + dt, x(n) + dt * k3)
+<span class="fc" id="L302">            tmpQ.copyFrom(k3);</span>
+<span class="fc" id="L303">            tmpQ.multiplyByScalar(dt);</span>
+<span class="fc" id="L304">            tmpQ.add(quat);</span>
+<span class="fc" id="L305">            computeOmegaSkew(omega1, omegaSkew);</span>
+<span class="fc" id="L306">            computeTimeDerivative(tmpQ, omegaSkew, k4);</span>
+
+            // result = quat + dt * (ONE_SIXTH * k1 + ONE_THIRD * k2 + ONE_THIRD * k3 + ONE_SIXTH * k4)
+<span class="fc" id="L309">            k1.multiplyByScalar(ONE_SIXTH);</span>
+<span class="fc" id="L310">            k2.multiplyByScalar(ONE_THIRD);</span>
+<span class="fc" id="L311">            k3.multiplyByScalar(ONE_THIRD);</span>
+<span class="fc" id="L312">            k4.multiplyByScalar(ONE_SIXTH);</span>
+
+<span class="fc" id="L314">            quatResult.copyFrom(k1);</span>
+<span class="fc" id="L315">            quatResult.add(k2);</span>
+<span class="fc" id="L316">            quatResult.add(k3);</span>
+<span class="fc" id="L317">            quatResult.add(k4);</span>
+<span class="fc" id="L318">            quatResult.multiplyByScalar(dt);</span>
+<span class="fc" id="L319">            quatResult.add(quat);</span>
+
+<span class="fc" id="L321">            result.setValues(quatResult.getBuffer());</span>
+<span class="fc" id="L322">            result.normalize();</span>
+<span class="nc" id="L323">        } catch (final AlgebraException e) {</span>
+<span class="nc" id="L324">            throw new RotationException(e);</span>
+<span class="fc" id="L325">        }</span>
+<span class="fc" id="L326">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

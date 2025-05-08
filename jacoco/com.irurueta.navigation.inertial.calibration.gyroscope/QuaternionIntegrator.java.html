@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>QuaternionIntegrator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-inertial</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.inertial.calibration.gyroscope</a> &gt; <span class="el_source">QuaternionIntegrator.java</span></div><h1>QuaternionIntegrator.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2022 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.inertial.calibration.gyroscope;
+
+import com.irurueta.geometry.Quaternion;
+import com.irurueta.geometry.RotationException;
+import com.irurueta.navigation.inertial.calibration.BodyKinematicsSequence;
+import com.irurueta.navigation.inertial.calibration.StandardDeviationTimedBodyKinematics;
+
+/**
+ * Class in charge of performing integration steps of rotations.
+ * This implementation uses a Runge-Kutta integration algorithm to obtain
+ * accurate results on {@link EasyGyroscopeCalibrator}
+ */
+public class QuaternionIntegrator {
+
+    /**
+     * Constructor.
+     * Prevents instantiation of helper class.
+     */
+    private QuaternionIntegrator() {
+        // no action needed
+    }
+
+    /**
+     * Integrates a sequence of gyroscope measurements contained within timed body kinematics,
+     * starting at an initial attitude to obtain a final attitude.
+     *
+     * @param sequence        sequence of gyroscope measurements to be integrated.
+     * @param initialAttitude (optional) initial attitude to be used. If null, then the
+     *                        identity attitude will be used.
+     * @param type            type of step integrator to be used.
+     * @param result          resulting rotation after integration.
+     * @throws RotationException if a numerical error occurs.
+     */
+    public static void integrateGyroSequence(
+            final BodyKinematicsSequence&lt;StandardDeviationTimedBodyKinematics&gt; sequence,
+            final Quaternion initialAttitude, final QuaternionStepIntegratorType type, final Quaternion result)
+            throws RotationException {
+
+<span class="fc bfc" id="L54" title="All 2 branches covered.">        if (initialAttitude != null) {</span>
+            // if provided initial attitude
+<span class="fc" id="L56">            result.fromRotation(initialAttitude);</span>
+        } else {
+            // if no initial attitude is provided, we use the identity
+<span class="fc" id="L59">            result.setA(1.0);</span>
+<span class="fc" id="L60">            result.setB(0.0);</span>
+<span class="fc" id="L61">            result.setC(0.0);</span>
+<span class="fc" id="L62">            result.setD(0.0);</span>
+        }
+
+
+<span class="fc" id="L66">        final var sortedMeasurements = sequence.getSortedItems();</span>
+<span class="fc" id="L67">        final var stepIntegrator = QuaternionStepIntegrator.create(type);</span>
+
+<span class="fc" id="L69">        var first = true;</span>
+<span class="fc" id="L70">        var previousTimestamp = 0.0;</span>
+<span class="fc" id="L71">        var previousWx = 0.0;</span>
+<span class="fc" id="L72">        var previousWy = 0.0;</span>
+<span class="fc" id="L73">        var previousWz = 0.0;</span>
+        double currentWx;
+        double currentWy;
+        double currentWz;
+<span class="fc bfc" id="L77" title="All 2 branches covered.">        for (final var measurement : sortedMeasurements) {</span>
+<span class="fc" id="L78">            final var kinematics = measurement.getKinematics();</span>
+
+<span class="fc" id="L80">            currentWx = kinematics.getAngularRateX();</span>
+<span class="fc" id="L81">            currentWy = kinematics.getAngularRateY();</span>
+<span class="fc" id="L82">            currentWz = kinematics.getAngularRateZ();</span>
+
+<span class="fc bfc" id="L84" title="All 2 branches covered.">            if (first) {</span>
+<span class="fc" id="L85">                previousTimestamp = measurement.getTimestampSeconds();</span>
+
+                // copy current angular rates to previous angular rates
+<span class="fc" id="L88">                previousWx = currentWx;</span>
+<span class="fc" id="L89">                previousWy = currentWy;</span>
+<span class="fc" id="L90">                previousWz = currentWz;</span>
+
+<span class="fc" id="L92">                first = false;</span>
+<span class="fc" id="L93">                continue;</span>
+            }
+
+<span class="fc" id="L96">            final var timestamp = measurement.getTimestampSeconds();</span>
+
+
+<span class="fc" id="L99">            final var dt = timestamp - previousTimestamp;</span>
+
+<span class="fc" id="L101">            stepIntegrator.integrate(result, previousWx, previousWy, previousWz, currentWx, currentWy, currentWz, dt,</span>
+                    result);
+
+            // prepare data for next iteration
+
+            // copy current angular rates to previous angular rates
+<span class="fc" id="L107">            previousWx = currentWx;</span>
+<span class="fc" id="L108">            previousWy = currentWy;</span>
+<span class="fc" id="L109">            previousWz = currentWz;</span>
+
+            // copy timestamp to previous timestamp
+<span class="fc" id="L112">            previousTimestamp = timestamp;</span>
+<span class="fc" id="L113">        }</span>
+<span class="fc" id="L114">    }</span>
+
+    /**
+     * Integrates a sequence of gyroscope measurements contained within timed body kinematics,
+     * starting at the identity attitude to obtain a final attitude.
+     *
+     * @param sequence sequence of gyroscope measurements to be integrated.
+     * @param type     type of step integrator to be used.
+     * @param result   resulting rotation after integration.
+     * @throws RotationException if a numerical error occurs.
+     */
+    public static void integrateGyroSequence(
+            final BodyKinematicsSequence&lt;StandardDeviationTimedBodyKinematics&gt; sequence,
+            final QuaternionStepIntegratorType type, final Quaternion result) throws RotationException {
+<span class="fc" id="L128">        integrateGyroSequence(sequence, null, type, result);</span>
+<span class="fc" id="L129">    }</span>
+
+    /**
+     * Integrates a sequence of gyroscope measurements contained within timed body kinematics,
+     * starting at an initial attitude to obtain a final attitude.
+     *
+     * @param sequence        sequence of gyroscope measurements to be integrated.
+     * @param initialAttitude (optional) initial attitude to be used. If null, then the
+     *                        identity attitude will be used.
+     * @param type            type of step integrator to be used.
+     * @return resulting rotation after integration.
+     * @throws RotationException if a numerical error occurs.
+     */
+    public static Quaternion integrateGyroSequenceAndReturnNew(
+            final BodyKinematicsSequence&lt;StandardDeviationTimedBodyKinematics&gt; sequence,
+            final Quaternion initialAttitude, final QuaternionStepIntegratorType type) throws RotationException {
+<span class="fc" id="L145">        final var result = new Quaternion();</span>
+<span class="fc" id="L146">        integrateGyroSequence(sequence, initialAttitude, type, result);</span>
+<span class="fc" id="L147">        return result;</span>
+    }
+
+    /**
+     * Integrates a sequence of gyroscope measurements contained within timed body kinematics,
+     * starting at the identity attitude to obtain a final attitude.
+     *
+     * @param sequence sequence of gyroscope measurements to be integrated.
+     * @param type     type of step integrator to be used.
+     * @return resulting rotation after integration.
+     * @throws RotationException if a numerical error occurs.
+     */
+    public static Quaternion integrateGyroSequenceAndReturnNew(
+            final BodyKinematicsSequence&lt;StandardDeviationTimedBodyKinematics&gt; sequence,
+            final QuaternionStepIntegratorType type) throws RotationException {
+<span class="fc" id="L162">        final var result = new Quaternion();</span>
+<span class="fc" id="L163">        integrateGyroSequence(sequence, type, result);</span>
+<span class="fc" id="L164">        return result;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

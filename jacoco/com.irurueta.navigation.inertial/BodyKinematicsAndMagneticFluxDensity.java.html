@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BodyKinematicsAndMagneticFluxDensity.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-inertial</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.inertial</a> &gt; <span class="el_source">BodyKinematicsAndMagneticFluxDensity.java</span></div><h1>BodyKinematicsAndMagneticFluxDensity.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2020 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.inertial;
+
+import java.io.Serial;
+import java.io.Serializable;
+import java.util.Objects;
+
+/**
+ * Contains body kinematics describing the forces and angular rate applied to a body,
+ * along with the sensed magnetic flux density resolved around body coordinates.
+ */
+public class BodyKinematicsAndMagneticFluxDensity implements Serializable, Cloneable {
+
+    /**
+     * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
+     * instances.
+     */
+    @Serial
+    private static final long serialVersionUID = 0L;
+
+    /**
+     * Body kinematics containing sensed specific force and angular rate.
+     */
+    private BodyKinematics kinematics;
+
+    /**
+     * Body magnetic flux density.
+     */
+    private BodyMagneticFluxDensity magneticFluxDensity;
+
+    /**
+     * Constructor.
+     */
+<span class="fc" id="L48">    public BodyKinematicsAndMagneticFluxDensity() {</span>
+<span class="fc" id="L49">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param kinematics body kinematics containing sensed specific force
+     *                   and angular rate.
+     */
+<span class="fc" id="L57">    public BodyKinematicsAndMagneticFluxDensity(final BodyKinematics kinematics) {</span>
+<span class="fc" id="L58">        this.kinematics = kinematics;</span>
+<span class="fc" id="L59">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param magneticFluxDensity body magnetic flux density.
+     */
+<span class="fc" id="L66">    public BodyKinematicsAndMagneticFluxDensity(final BodyMagneticFluxDensity magneticFluxDensity) {</span>
+<span class="fc" id="L67">        this.magneticFluxDensity = magneticFluxDensity;</span>
+<span class="fc" id="L68">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param kinematics          body kinematics containing sensed specific force
+     *                            and angular rate.
+     * @param magneticFluxDensity body magnetic flux density.
+     */
+    public BodyKinematicsAndMagneticFluxDensity(
+<span class="fc" id="L78">            final BodyKinematics kinematics, final BodyMagneticFluxDensity magneticFluxDensity) {</span>
+<span class="fc" id="L79">        this.kinematics = kinematics;</span>
+<span class="fc" id="L80">        this.magneticFluxDensity = magneticFluxDensity;</span>
+<span class="fc" id="L81">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param input instance to copy data from.
+     */
+<span class="fc" id="L88">    public BodyKinematicsAndMagneticFluxDensity(final BodyKinematicsAndMagneticFluxDensity input) {</span>
+<span class="fc" id="L89">        copyFrom(input);</span>
+<span class="fc" id="L90">    }</span>
+
+    /**
+     * Gets body kinematics containing sensed specific force and angular rate.
+     *
+     * @return body kinematics containing sensed specific force and angular rate.
+     */
+    public BodyKinematics getKinematics() {
+<span class="fc" id="L98">        return kinematics;</span>
+    }
+
+    /**
+     * Sets body kinematics containing sensed specific force and angular rate.
+     *
+     * @param kinematics body kinematics containing sensed specific force and
+     *                   angular rate.
+     */
+    public void setKinematics(final BodyKinematics kinematics) {
+<span class="fc" id="L108">        this.kinematics = kinematics;</span>
+<span class="fc" id="L109">    }</span>
+
+    /**
+     * Gets body magnetic flux density.
+     *
+     * @return body magnetic flux density.
+     */
+    public BodyMagneticFluxDensity getMagneticFluxDensity() {
+<span class="fc" id="L117">        return magneticFluxDensity;</span>
+    }
+
+    /**
+     * Sets body magnetic flux density.
+     *
+     * @param magneticFluxDensity body magnetic flux density.
+     */
+    public void setMagneticFluxDensity(final BodyMagneticFluxDensity magneticFluxDensity) {
+<span class="fc" id="L126">        this.magneticFluxDensity = magneticFluxDensity;</span>
+<span class="fc" id="L127">    }</span>
+
+    /**
+     * Copies data of provided instance into this instance.
+     *
+     * @param input instance to copy data from.
+     */
+    public void copyFrom(final BodyKinematicsAndMagneticFluxDensity input) {
+<span class="fc bfc" id="L135" title="All 2 branches covered.">        if (input.kinematics != null) {</span>
+<span class="fc bfc" id="L136" title="All 2 branches covered.">            if (kinematics == null) {</span>
+<span class="fc" id="L137">                kinematics = new BodyKinematics(input.kinematics);</span>
+            } else {
+<span class="fc" id="L139">                kinematics.copyFrom(input.kinematics);</span>
+            }
+        } else {
+<span class="fc" id="L142">            kinematics = null;</span>
+        }
+
+<span class="fc bfc" id="L145" title="All 2 branches covered.">        if (input.magneticFluxDensity != null) {</span>
+<span class="fc bfc" id="L146" title="All 2 branches covered.">            if (magneticFluxDensity == null) {</span>
+<span class="fc" id="L147">                magneticFluxDensity = new BodyMagneticFluxDensity(input.magneticFluxDensity);</span>
+            } else {
+<span class="fc" id="L149">                magneticFluxDensity.copyFrom(input.magneticFluxDensity);</span>
+            }
+        } else {
+<span class="fc" id="L152">            magneticFluxDensity = null;</span>
+        }
+<span class="fc" id="L154">    }</span>
+
+    /**
+     * Copies this instance data into provided instance.
+     *
+     * @param output destination instance where data will be copied to.
+     */
+    public void copyTo(final BodyKinematicsAndMagneticFluxDensity output) {
+<span class="fc" id="L162">        output.copyFrom(this);</span>
+<span class="fc" id="L163">    }</span>
+
+    /**
+     * Computes and returns hash code for this instance. Hash codes are almost unique
+     * values that are useful for fas classification and storage of objects in
+     * collections.
+     *
+     * @return Hash code.
+     */
+    @Override
+    public int hashCode() {
+<span class="fc" id="L174">        return Objects.hash(kinematics, magneticFluxDensity);</span>
+    }
+
+    /**
+     * Checks if provided instance has exactly the same contents as this instance.
+     *
+     * @param other instance to be compared.
+     * @return true if both instances are considered to be equal, false otherwise.
+     */
+    public boolean equals(final BodyKinematicsAndMagneticFluxDensity other) {
+<span class="fc" id="L184">        return equals(other, 0.0);</span>
+    }
+
+    /**
+     * Checks if provided instance has contents similar to this instance up to provided
+     * threshold value.
+     *
+     * @param other     instance to be compared.
+     * @param threshold maximum allowed difference between contents.
+     * @return true if both instances are considered to be equal (up to provided
+     * threshold), false otherwise.
+     */
+    public boolean equals(final BodyKinematicsAndMagneticFluxDensity other, final double threshold) {
+<span class="fc bfc" id="L197" title="All 2 branches covered.">        if (other == null) {</span>
+<span class="fc" id="L198">            return false;</span>
+        }
+
+<span class="pc bpc" id="L201" title="2 of 6 branches missed.">        return ((other.kinematics == null &amp;&amp; kinematics == null)</span>
+<span class="pc bpc" id="L202" title="2 of 8 branches missed.">                || (kinematics != null &amp;&amp; kinematics.equals(other.kinematics, threshold)))</span>
+                &amp;&amp; ((other.magneticFluxDensity == null &amp;&amp; magneticFluxDensity == null)
+<span class="pc bpc" id="L204" title="1 of 2 branches missed.">                || (magneticFluxDensity != null &amp;&amp; magneticFluxDensity.equals(other.magneticFluxDensity, threshold)));</span>
+    }
+
+    /**
+     * Checks if provided object is a BodyKinematicsAndMagneticFluxDensity instance
+     * having exactly the same contents as this instance.
+     *
+     * @param obj object to be compared.
+     * @return true if both objects are considered to be equal, false otherwise.
+     */
+    @Override
+    public boolean equals(final Object obj) {
+<span class="fc bfc" id="L216" title="All 2 branches covered.">        if (this == obj) {</span>
+<span class="fc" id="L217">            return true;</span>
+        }
+
+<span class="pc bpc" id="L220" title="2 of 4 branches missed.">        if (obj == null || getClass() != obj.getClass()) {</span>
+<span class="nc" id="L221">            return false;</span>
+        }
+
+<span class="fc" id="L224">        final var other = (BodyKinematicsAndMagneticFluxDensity) obj;</span>
+<span class="fc" id="L225">        return equals(other);</span>
+    }
+
+    /**
+     * Makes a copy of this instance.
+     *
+     * @return a copy of this instance.
+     * @throws CloneNotSupportedException if clone fails for some reason.
+     */
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+<span class="fc" id="L236">        final var result = (BodyKinematicsAndMagneticFluxDensity) super.clone();</span>
+<span class="fc" id="L237">        copyTo(result);</span>
+<span class="fc" id="L238">        return result;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

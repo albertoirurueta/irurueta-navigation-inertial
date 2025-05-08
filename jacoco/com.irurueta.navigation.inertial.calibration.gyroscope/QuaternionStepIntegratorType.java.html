@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>QuaternionStepIntegratorType.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-inertial</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.inertial.calibration.gyroscope</a> &gt; <span class="el_source">QuaternionStepIntegratorType.java</span></div><h1>QuaternionStepIntegratorType.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2022 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.inertial.calibration.gyroscope;
+
+/**
+ * Indicates type of quaternion integrator step.
+ * Different types exist with different levels of accuracy and computation complexity.
+ */
+<span class="fc" id="L22">public enum QuaternionStepIntegratorType {</span>
+    /**
+     * Performs quaternion integration using Euler's method, which is the less accurate and has the
+     * smallest computational complexity.
+     */
+<span class="fc" id="L27">    EULER_METHOD,</span>
+
+    /**
+     * Performs quaternion integration using mid-point algorithm, which offers a medium accuracy and
+     * computational complexity.
+     */
+<span class="fc" id="L33">    MID_POINT,</span>
+
+    /**
+     * Performs quaternion integration using Runge-Kutta of 4th order (aka RK4) algorithm, which
+     * offers high accuracy at the expense of higher computational complexity.
+     */
+<span class="fc" id="L39">    RUNGE_KUTTA,</span>
+
+    /**
+     * Performs quaternion integration Based on Young Soo Suh. &quot;Orientation estimation using a quaternion-based
+     * indirect Kalman filter with adaptive estimation of external acceleration&quot;. 2010.
+     * This method can achieve higher accuracy than Runge-Kutta
+     */
+<span class="fc" id="L46">    SUH,</span>
+
+    /**
+     * Performs quaternion integration based on Trawny, N. &quot;Indirect Kalman Filter for 3D Attitude Estimation&quot;. 2005,
+     * which offers a medium accuracy and computational complexity.
+     */
+<span class="fc" id="L52">    TRAWNY,</span>
+
+    /**
+     * Performs quaternion integration based on Yuan, S. &quot;Quaternion-based Unscented Kalman Filter for Real-time&quot;. 2015,
+     * which offers a medium accuracy and computational complexity.
+     */
+<span class="fc" id="L58">    YUAN</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

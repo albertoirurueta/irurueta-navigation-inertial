@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MSACRobustKnownFrameAccelerometerCalibrator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-inertial</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.inertial.calibration.accelerometer</a> &gt; <span class="el_source">MSACRobustKnownFrameAccelerometerCalibrator.java</span></div><h1>MSACRobustKnownFrameAccelerometerCalibrator.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2020 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.inertial.calibration.accelerometer;
+
+import com.irurueta.navigation.LockedException;
+import com.irurueta.navigation.NotReadyException;
+import com.irurueta.navigation.inertial.calibration.CalibrationException;
+import com.irurueta.navigation.inertial.calibration.StandardDeviationFrameBodyKinematics;
+import com.irurueta.numerical.robust.MSACRobustEstimator;
+import com.irurueta.numerical.robust.MSACRobustEstimatorListener;
+import com.irurueta.numerical.robust.RobustEstimator;
+import com.irurueta.numerical.robust.RobustEstimatorException;
+import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
+import java.util.List;
+
+/**
+ * Robustly estimates accelerometer biases, cross couplings and scaling factors
+ * using a MSAC algorithm to discard outliers.
+ * &lt;p&gt;
+ * To use this calibrator at least 4 measurements at different known frames must
+ * be provided. In other words, accelerometer samples must be obtained at 4
+ * different positions, orientations and velocities (although typically velocities are
+ * always zero).
+ * &lt;p&gt;
+ * Measured specific force is assumed to follow the model shown below:
+ * &lt;pre&gt;
+ *     fmeas = ba + (I + Ma) * ftrue + w
+ * &lt;/pre&gt;
+ * Where:
+ * - fmeas is the measured specific force. This is a 3x1 vector.
+ * - ba is accelerometer bias. Ideally, on a perfect accelerometer, this should be a
+ * 3x1 zero vector.
+ * - I is the 3x3 identity matrix.
+ * - Ma is the 3x3 matrix containing cross-couplings and scaling factors. Ideally, on
+ * a perfect accelerometer, this should be a 3x3 zero matrix.
+ * - ftrue is ground-truth specific force.
+ * - w is measurement noise.
+ */
+public class MSACRobustKnownFrameAccelerometerCalibrator extends RobustKnownFrameAccelerometerCalibrator {
+
+    /**
+     * Constant defining default threshold to determine whether samples are
+     * inliers or not.
+     */
+    public static final double DEFAULT_THRESHOLD = 1e-2;
+
+    /**
+     * Minimum value that can be set as threshold.
+     * Threshold must be strictly greater than 0.0.
+     */
+    public static final double MIN_THRESHOLD = 0.0;
+
+    /**
+     * Threshold to determine whether samples are inliers or not when
+     * testing possible estimation solutions.
+     */
+<span class="fc" id="L71">    private double threshold = DEFAULT_THRESHOLD;</span>
+
+    /**
+     * Constructor.
+     */
+<span class="fc" id="L76">    public MSACRobustKnownFrameAccelerometerCalibrator() {</span>
+<span class="fc" id="L77">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param listener listener to be notified of events such as when estimation
+     *                 starts, ends or its progress significantly changes.
+     */
+    public MSACRobustKnownFrameAccelerometerCalibrator(
+            final RobustKnownFrameAccelerometerCalibratorListener listener) {
+<span class="fc" id="L87">        super(listener);</span>
+<span class="fc" id="L88">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements list of body kinematics measurements with standard
+     *                     deviations taken at different frames (positions, orientations
+     *                     and velocities).
+     */
+    public MSACRobustKnownFrameAccelerometerCalibrator(final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements) {
+<span class="fc" id="L98">        super(measurements);</span>
+<span class="fc" id="L99">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements list of body kinematics measurements with standard
+     *                     deviations taken at different frames (positions, orientations
+     *                     and velocities).
+     * @param listener     listener to handle events raised by this calibrator.
+     */
+    public MSACRobustKnownFrameAccelerometerCalibrator(
+            final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final RobustKnownFrameAccelerometerCalibratorListener listener) {
+<span class="fc" id="L112">        super(measurements, listener);</span>
+<span class="fc" id="L113">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     */
+    public MSACRobustKnownFrameAccelerometerCalibrator(final boolean commonAxisUsed) {
+<span class="fc" id="L122">        super(commonAxisUsed);</span>
+<span class="fc" id="L123">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param listener       listener to handle events raised by this calibrator.
+     */
+    public MSACRobustKnownFrameAccelerometerCalibrator(
+            final boolean commonAxisUsed, final RobustKnownFrameAccelerometerCalibratorListener listener) {
+<span class="fc" id="L134">        super(commonAxisUsed, listener);</span>
+<span class="fc" id="L135">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements   list of body kinematics measurements with standard
+     *                       deviations taken at different frames (positions, orientations
+     *                       and velocities).
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     */
+    public MSACRobustKnownFrameAccelerometerCalibrator(
+            final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements, final boolean commonAxisUsed) {
+<span class="fc" id="L148">        super(measurements, commonAxisUsed);</span>
+<span class="fc" id="L149">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements   list of body kinematics measurements with standard
+     *                       deviations taken at different frames (positions, orientations
+     *                       and velocities).
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param listener       listener to handle events raised by this calibrator.
+     */
+    public MSACRobustKnownFrameAccelerometerCalibrator(
+            final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements, final boolean commonAxisUsed,
+            final RobustKnownFrameAccelerometerCalibratorListener listener) {
+<span class="fc" id="L164">        super(measurements, commonAxisUsed, listener);</span>
+<span class="fc" id="L165">    }</span>
+
+    /**
+     * Returns threshold to determine whether samples are inliers or not.
+     *
+     * @return threshold to determine whether samples are inliers or not.
+     */
+    public double getThreshold() {
+<span class="fc" id="L173">        return threshold;</span>
+    }
+
+    /**
+     * Sets threshold to determine whether samples are inliers or not.
+     *
+     * @param threshold threshold to be set.
+     * @throws IllegalArgumentException if provided value is equal or less than
+     *                                  zero.
+     * @throws LockedException          if calibrator is currently running.
+     */
+    public void setThreshold(final double threshold) throws LockedException {
+<span class="fc bfc" id="L185" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L186">            throw new LockedException();</span>
+        }
+<span class="fc bfc" id="L188" title="All 2 branches covered.">        if (threshold &lt;= MIN_THRESHOLD) {</span>
+<span class="fc" id="L189">            throw new IllegalArgumentException();</span>
+        }
+<span class="fc" id="L191">        this.threshold = threshold;</span>
+<span class="fc" id="L192">    }</span>
+
+    /**
+     * Estimates accelerometer calibration parameters containing bias, scale factors
+     * and cross-coupling errors.
+     *
+     * @throws LockedException      if calibrator is currently running.
+     * @throws NotReadyException    if calibrator is not ready.
+     * @throws CalibrationException if estimation fails for numerical reasons.
+     */
+    @SuppressWarnings(&quot;DuplicatedCode&quot;)
+    @Override
+    public void calibrate() throws LockedException, NotReadyException, CalibrationException {
+<span class="fc bfc" id="L205" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L206">            throw new LockedException();</span>
+        }
+<span class="pc bpc" id="L208" title="1 of 2 branches missed.">        if (!isReady()) {</span>
+<span class="nc" id="L209">            throw new NotReadyException();</span>
+        }
+
+<span class="fc" id="L212">        final var innerEstimator = new MSACRobustEstimator&lt;&gt;(new MSACRobustEstimatorListener&lt;PreliminaryResult&gt;() {</span>
+            @Override
+            public double getThreshold() {
+<span class="fc" id="L215">                return threshold;</span>
+            }
+
+            @Override
+            public int getTotalSamples() {
+<span class="fc" id="L220">                return measurements.size();</span>
+            }
+
+            @Override
+            public int getSubsetSize() {
+<span class="fc" id="L225">                return preliminarySubsetSize;</span>
+            }
+
+            @Override
+            public void estimatePreliminarSolutions(
+                    final int[] samplesIndices, final List&lt;PreliminaryResult&gt; solutions) {
+<span class="fc" id="L231">                computePreliminarySolutions(samplesIndices, solutions);</span>
+<span class="fc" id="L232">            }</span>
+
+            @Override
+            public double computeResidual(final PreliminaryResult currentEstimation, final int i) {
+<span class="fc" id="L236">                return computeError(measurements.get(i), currentEstimation);</span>
+            }
+
+            @Override
+            public boolean isReady() {
+<span class="fc" id="L241">                return MSACRobustKnownFrameAccelerometerCalibrator.super.isReady();</span>
+            }
+
+            @Override
+            public void onEstimateStart(final RobustEstimator&lt;PreliminaryResult&gt; estimator) {
+                // no action needed
+<span class="fc" id="L247">            }</span>
+
+            @Override
+            public void onEstimateEnd(final RobustEstimator&lt;PreliminaryResult&gt; estimator) {
+                // no action needed
+<span class="fc" id="L252">            }</span>
+
+            @Override
+            public void onEstimateNextIteration(
+                    final RobustEstimator&lt;PreliminaryResult&gt; estimator, final int iteration) {
+<span class="pc bpc" id="L257" title="1 of 2 branches missed.">                if (listener != null) {</span>
+<span class="fc" id="L258">                    listener.onCalibrateNextIteration(</span>
+                            MSACRobustKnownFrameAccelerometerCalibrator.this, iteration);
+                }
+<span class="fc" id="L261">            }</span>
+
+            @Override
+            public void onEstimateProgressChange(
+                    final RobustEstimator&lt;PreliminaryResult&gt; estimator, final float progress) {
+<span class="pc bpc" id="L266" title="1 of 2 branches missed.">                if (listener != null) {</span>
+<span class="fc" id="L267">                    listener.onCalibrateProgressChange(</span>
+                            MSACRobustKnownFrameAccelerometerCalibrator.this, progress);
+                }
+<span class="fc" id="L270">            }</span>
+        });
+
+        try {
+<span class="fc" id="L274">            running = true;</span>
+
+<span class="pc bpc" id="L276" title="1 of 2 branches missed.">            if (listener != null) {</span>
+<span class="fc" id="L277">                listener.onCalibrateStart(this);</span>
+            }
+
+<span class="fc" id="L280">            inliersData = null;</span>
+<span class="fc" id="L281">            innerEstimator.setConfidence(confidence);</span>
+<span class="fc" id="L282">            innerEstimator.setMaxIterations(maxIterations);</span>
+<span class="fc" id="L283">            innerEstimator.setProgressDelta(progressDelta);</span>
+<span class="fc" id="L284">            final var preliminaryResult = innerEstimator.estimate();</span>
+<span class="fc" id="L285">            inliersData = innerEstimator.getInliersData();</span>
+
+<span class="fc" id="L287">            attemptRefine(preliminaryResult);</span>
+
+<span class="pc bpc" id="L289" title="1 of 2 branches missed.">            if (listener != null) {</span>
+<span class="fc" id="L290">                listener.onCalibrateEnd(this);</span>
+            }
+
+<span class="nc" id="L293">        } catch (final com.irurueta.numerical.LockedException e) {</span>
+<span class="nc" id="L294">            throw new LockedException(e);</span>
+<span class="nc" id="L295">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
+<span class="nc" id="L296">            throw new NotReadyException(e);</span>
+<span class="nc" id="L297">        } catch (final RobustEstimatorException e) {</span>
+<span class="nc" id="L298">            throw new CalibrationException(e);</span>
+        } finally {
+<span class="fc" id="L300">            running = false;</span>
+        }
+<span class="fc" id="L302">    }</span>
+
+    /**
+     * Returns method being used for robust estimation.
+     *
+     * @return method being used for robust estimation.
+     */
+    @Override
+    public RobustEstimatorMethod getMethod() {
+<span class="fc" id="L311">        return RobustEstimatorMethod.MSAC;</span>
+    }
+
+    /**
+     * Indicates whether this calibrator requires quality scores for each
+     * measurement or not.
+     *
+     * @return true if quality scores are required, false otherwise.
+     */
+    @Override
+    public boolean isQualityScoresRequired() {
+<span class="fc" id="L322">        return false;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

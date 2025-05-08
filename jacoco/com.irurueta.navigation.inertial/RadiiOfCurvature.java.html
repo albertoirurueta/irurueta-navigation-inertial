@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RadiiOfCurvature.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-inertial</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.inertial</a> &gt; <span class="el_source">RadiiOfCurvature.java</span></div><h1>RadiiOfCurvature.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2019 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.inertial;
+
+import com.irurueta.units.Distance;
+import com.irurueta.units.DistanceConverter;
+import com.irurueta.units.DistanceUnit;
+
+import java.io.Serial;
+import java.io.Serializable;
+import java.util.Objects;
+
+/**
+ * Contains radii of curvature of the WGS84 ellipsoid at a given latitude.
+ */
+public class RadiiOfCurvature implements Serializable, Cloneable {
+
+    /**
+     * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
+     * instances.
+     */
+    @Serial
+    private static final long serialVersionUID = 0L;
+
+    /**
+     * Meridian radius of curvature expressed in meters (m).
+     * This is the radius of curvature for north-south motion.
+     * It is the radius of curvature of a meridian, a cross-section of the ellipsoid
+     * surface in the north-down plane, at the point of interest (a given latitude).
+     * This is the same as the radius of the best-fitting circle to the meridian
+     * ellipse at the point of interest.
+     * The meridian radius of curvature varies with latitude and is smallest at the
+     * equator, where the geocentric radius is largest, and largest at the poles.
+     */
+    private double rn;
+
+    /**
+     * Transverse radius of curvature expressed in meters (m).
+     * This is the radius of curvature for east-west motion.
+     * This is also known as the normal radius of curvature or prime vertical radius
+     * of curvature.
+     * It is the radius of curvature of a cross-section of the ellipsoid surface in
+     * the east-down plane at the point of interest.
+     * This is the vertical plane perpendicular to the meridian plane and is not
+     * the plane of constant latitude.
+     * The transverse radius of curvature varies with latitude and is smallest at the
+     * equator. It is also equal to the length of the normal from a point on the
+     * surface to the polar axis.
+     */
+    private double re;
+
+    /**
+     * Constructor.
+     */
+<span class="fc" id="L68">    public RadiiOfCurvature() {</span>
+<span class="fc" id="L69">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param rn meridian radius of curvature expressed in meters (m).
+     * @param re transverse radius of curvature expressed in meters (m).
+     */
+<span class="fc" id="L77">    public RadiiOfCurvature(final double rn, final double re) {</span>
+<span class="fc" id="L78">        setValues(rn, re);</span>
+<span class="fc" id="L79">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param rnDistance meridian radius of curvature.
+     * @param reDistance transverse radius of curvature.
+     */
+<span class="fc" id="L87">    public RadiiOfCurvature(final Distance rnDistance, final Distance reDistance) {</span>
+<span class="fc" id="L88">        setValues(rnDistance, reDistance);</span>
+<span class="fc" id="L89">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param input instance to copy data from.
+     */
+<span class="fc" id="L96">    public RadiiOfCurvature(final RadiiOfCurvature input) {</span>
+<span class="fc" id="L97">        copyFrom(input);</span>
+<span class="fc" id="L98">    }</span>
+
+    /**
+     * Gets meridian radius of curvature expressed in meters (m).
+     * This is the radius of curvature for north-south motion.
+     * It is the radius of curvature of a meridian, a cross-section of the ellipsoid
+     * surface in the north-down plane, at the point of interest (a given latitude).
+     * This is the same as the radius of the best-fitting circle to the meridian
+     * ellipse at the point of interest.
+     * The meridian radius of curvature varies with latitude and is smallest at the
+     * equator, where the geocentric radius is largest, and largest at the poles.
+     *
+     * @return meridian radius of curvature expressed in meters (m).
+     */
+    public double getRn() {
+<span class="fc" id="L113">        return rn;</span>
+    }
+
+    /**
+     * Sets meridian radius of curvature expressed in meters (m).
+     * This is the radius of curvature for north-south motion.
+     * It is the radius of curvature of a meridian, a cross-section of the ellipsoid
+     * surface in the north-down plane, at the point of interest (a given latitude).
+     * This is the same as the radius of the best-fitting circle to the meridian
+     * ellipse at the point of interest.
+     * The meridian radius of curvature varies with latitude and is smallest at the
+     * equator, where the geocentric radius is largest, and largest at the poles.
+     *
+     * @param rn meridian radius of curvature expressed in meters (m).
+     */
+    public void setRn(final double rn) {
+<span class="fc" id="L129">        this.rn = rn;</span>
+<span class="fc" id="L130">    }</span>
+
+    /**
+     * Gets transverse radius of curvature expressed in meters (m).
+     * This is the radius of curvature for east-wet motion.
+     * This is also known as the normal radius of curvature or prime vertical radius
+     * of curvature.
+     * It is the radius of curvature of a cross-section of the ellipsoid surface in
+     * the east-down plane at the point of interest.
+     * This is the vertical plane perpendicular to the meridian plane and is not
+     * the plane of constant latitude.
+     * The transverse radius of curvature varies with latitude and is smallest at the
+     * equator. It is also equal to the length of the normal from a point on the
+     * surface to the polar axis.
+     *
+     * @return transverse radius of curvature expressed in meters (m).
+     */
+    public double getRe() {
+<span class="fc" id="L148">        return re;</span>
+    }
+
+    /**
+     * Sets transverse radius of curvature expressed in meters (m).
+     * This is the radius of curvature for east-wet motion.
+     * This is also known as the normal radius of curvature or prime vertical radius
+     * of curvature.
+     * It is the radius of curvature of a cross-section of the ellipsoid surface in
+     * the east-down plane at the point of interest.
+     * This is the vertical plane perpendicular to the meridian plane and is not
+     * the plane of constant latitude.
+     * The transverse radius of curvature varies with latitude and is smallest at the
+     * equator. It is also equal to the length of the normal from a point on the
+     * surface to the polar axis.
+     *
+     * @param re transverse radius of curvature expressed in meters (m).
+     */
+    public void setRe(final double re) {
+<span class="fc" id="L167">        this.re = re;</span>
+<span class="fc" id="L168">    }</span>
+
+    /**
+     * Sets radii of curvature.
+     *
+     * @param rn meridian radius of curvature expressed in meters (m).
+     * @param re transverse radius of curvature expressed in meters (m).
+     */
+    public void setValues(final double rn, final double re) {
+<span class="fc" id="L177">        this.rn = rn;</span>
+<span class="fc" id="L178">        this.re = re;</span>
+<span class="fc" id="L179">    }</span>
+
+    /**
+     * Gets meridian radius of curvature.
+     * This is the radius of curvature for north-south motion.
+     * It is the radius of curvature of a meridian, a cross-section of the ellipsoid
+     * surface in the north-down plane, at the point of interest (a given latitude).
+     * This is the same as the radius of the best-fitting circle to the meridian
+     * ellipse at the point of interest.
+     * The meridian radius of curvature varies with latitude and is smallest at the
+     * equator, where the geocentric radius is largest, and largest at the poles.
+     *
+     * @param result instance where meridian radius of curvature will be stored.
+     */
+    public void getRnDistance(final Distance result) {
+<span class="fc" id="L194">        result.setValue(rn);</span>
+<span class="fc" id="L195">        result.setUnit(DistanceUnit.METER);</span>
+<span class="fc" id="L196">    }</span>
+
+    /**
+     * Gets meridian radius of curvature.
+     * This is the radius of curvature for north-south motion.
+     * It is the radius of curvature of a meridian, a cross-section of the ellipsoid
+     * surface in the north-down plane, at the point of interest (a given latitude).
+     * This is the same as the radius of the best-fitting circle to the meridian
+     * ellipse at the point of interest.
+     * The meridian radius of curvature varies with latitude and is smallest at the
+     * equator, where the geocentric radius is largest, and largest at the poles.
+     *
+     * @return meridian radius of curvature.
+     */
+    public Distance getRnDistance() {
+<span class="fc" id="L211">        return new Distance(rn, DistanceUnit.METER);</span>
+    }
+
+    /**
+     * Sets meridian radius of curvature.
+     * This is the radius of curvature for north-south motion.
+     * It is the radius of curvature of a meridian, a cross-section of the ellipsoid
+     * surface in the north-down plane, at the point of interest (a given latitude).
+     * This is the same as the radius of the best-fitting circle to the meridian
+     * ellipse at the point of interest.
+     * The meridian radius of curvature varies with latitude and is smallest at the
+     * equator, where the geocentric radius is largest, and largest at the poles.
+     *
+     * @param rnDistance meridian radius of curvature to be set.
+     */
+    public void setRnDistance(final Distance rnDistance) {
+<span class="fc" id="L227">        rn = DistanceConverter.convert(rnDistance.getValue().doubleValue(), rnDistance.getUnit(), DistanceUnit.METER);</span>
+<span class="fc" id="L228">    }</span>
+
+    /**
+     * Gets transverse radius or curvature.
+     * This is the radius of curvature for east-wet motion.
+     * This is also known as the normal radius of curvature or prime vertical radius
+     * of curvature.
+     * It is the radius of curvature of a cross-section of the ellipsoid surface in
+     * the east-down plane at the point of interest.
+     * This is the vertical plane perpendicular to the meridian plane and is not
+     * the plane of constant latitude.
+     * The transverse radius of curvature varies with latitude and is smallest at the
+     * equator. It is also equal to the length of the normal from a point on the
+     * surface to the polar axis.
+     *
+     * @param result instance where transverse radius of curvature will be stored.
+     */
+    public void getReDistance(final Distance result) {
+<span class="fc" id="L246">        result.setValue(re);</span>
+<span class="fc" id="L247">        result.setUnit(DistanceUnit.METER);</span>
+<span class="fc" id="L248">    }</span>
+
+    /**
+     * Gets transverse radius of curvature.
+     * This is the radius of curvature for east-wet motion.
+     * This is also known as the normal radius of curvature or prime vertical radius
+     * of curvature.
+     * It is the radius of curvature of a cross-section of the ellipsoid surface in
+     * the east-down plane at the point of interest.
+     * This is the vertical plane perpendicular to the meridian plane and is not
+     * the plane of constant latitude.
+     * The transverse radius of curvature varies with latitude and is smallest at the
+     * equator. It is also equal to the length of the normal from a point on the
+     * surface to the polar axis.
+     *
+     * @return transverse radius of curvature.
+     */
+    public Distance getReDistance() {
+<span class="fc" id="L266">        return new Distance(re, DistanceUnit.METER);</span>
+    }
+
+    /**
+     * Sets transverse radius of curvature.
+     * This is the radius of curvature for east-wet motion.
+     * This is also known as the normal radius of curvature or prime vertical radius
+     * of curvature.
+     * It is the radius of curvature of a cross-section of the ellipsoid surface in
+     * the east-down plane at the point of interest.
+     * This is the vertical plane perpendicular to the meridian plane and is not
+     * the plane of constant latitude.
+     * The transverse radius of curvature varies with latitude and is smallest at the
+     * equator. It is also equal to the length of the normal from a point on the
+     * surface to the polar axis.
+     *
+     * @param reDistance transverse radius of curvature to be set.
+     */
+    public void setReDistance(final Distance reDistance) {
+<span class="fc" id="L285">        re = DistanceConverter.convert(reDistance.getValue().doubleValue(), reDistance.getUnit(), DistanceUnit.METER);</span>
+<span class="fc" id="L286">    }</span>
+
+    /**
+     * Sets radii of curvature.
+     *
+     * @param rnDistance meridian radius of curvature.
+     * @param reDistance transverse radius of curvature.
+     */
+    public void setValues(final Distance rnDistance, final Distance reDistance) {
+<span class="fc" id="L295">        setRnDistance(rnDistance);</span>
+<span class="fc" id="L296">        setReDistance(reDistance);</span>
+<span class="fc" id="L297">    }</span>
+
+    /**
+     * Copies this instance data into provided instance.
+     *
+     * @param output destination instance where data will be copied to.
+     */
+    public void copyTo(final RadiiOfCurvature output) {
+<span class="fc" id="L305">        output.rn = rn;</span>
+<span class="fc" id="L306">        output.re = re;</span>
+<span class="fc" id="L307">    }</span>
+
+    /**
+     * Copies data of provided instance into this instance.
+     *
+     * @param input instance to copy data from.
+     */
+    public void copyFrom(final RadiiOfCurvature input) {
+<span class="fc" id="L315">        rn = input.rn;</span>
+<span class="fc" id="L316">        re = input.re;</span>
+<span class="fc" id="L317">    }</span>
+
+    /**
+     * Computes and returns hash code for this instance. Hash codes are almost unique
+     * values that are useful for fast classification and storage of objects in collections.
+     *
+     * @return Hash code.
+     */
+    @Override
+    public int hashCode() {
+<span class="fc" id="L327">        return Objects.hash(rn, re);</span>
+    }
+
+    /**
+     * Checks if provided object is a RadiiOfCurvature instance having exactly the same
+     * contents as this instance.
+     *
+     * @param obj object to be compared.
+     * @return true if both objects are considered to be equal, false otherwise.
+     */
+    @Override
+    public boolean equals(final Object obj) {
+<span class="pc bpc" id="L339" title="1 of 2 branches missed.">        if (obj == null) {</span>
+<span class="nc" id="L340">            return false;</span>
+        }
+<span class="fc bfc" id="L342" title="All 2 branches covered.">        if (obj == this) {</span>
+<span class="fc" id="L343">            return true;</span>
+        }
+<span class="pc bpc" id="L345" title="1 of 2 branches missed.">        if (!(obj instanceof RadiiOfCurvature)) {</span>
+<span class="nc" id="L346">            return false;</span>
+        }
+
+        //noinspection PatternVariableCanBeUsed
+<span class="fc" id="L350">        final var other = (RadiiOfCurvature) obj;</span>
+<span class="fc" id="L351">        return equals(other);</span>
+    }
+
+    /**
+     * Checks if provided instance has exactly the same contents as this instance.
+     *
+     * @param other instance to be compared.
+     * @return true if both instances are considered to be equal, false otherwise.
+     */
+    public boolean equals(final RadiiOfCurvature other) {
+<span class="fc" id="L361">        return equals(other, 0.0);</span>
+    }
+
+    /**
+     * Checks if provided instance has contents similar to this instance up to provided
+     * threshold value.
+     *
+     * @param other     instance to be compared.
+     * @param threshold maximum allowed difference between radii values.
+     * @return true if both instances are considered to be equal (up to provided
+     * threshold), false otherwise.
+     */
+    public boolean equals(final RadiiOfCurvature other, final double threshold) {
+<span class="fc bfc" id="L374" title="All 2 branches covered.">        if (other == null) {</span>
+<span class="fc" id="L375">            return false;</span>
+        }
+
+<span class="pc bpc" id="L378" title="1 of 4 branches missed.">        return Math.abs(rn - other.rn) &lt;= threshold &amp;&amp; Math.abs(re - other.re) &lt;= threshold;</span>
+    }
+
+    /**
+     * Makes a copy of this instance.
+     *
+     * @return a copy of this instance.
+     * @throws CloneNotSupportedException if clone fails for some reason.
+     */
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+<span class="fc" id="L389">        final var result = (RadiiOfCurvature) super.clone();</span>
+<span class="fc" id="L390">        copyTo(result);</span>
+<span class="fc" id="L391">        return result;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

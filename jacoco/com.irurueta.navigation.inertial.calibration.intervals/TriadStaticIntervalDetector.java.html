@@ -1,0 +1,1633 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TriadStaticIntervalDetector.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-inertial</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.inertial.calibration.intervals</a> &gt; <span class="el_source">TriadStaticIntervalDetector.java</span></div><h1>TriadStaticIntervalDetector.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2020 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.inertial.calibration.intervals;
+
+import com.irurueta.navigation.LockedException;
+import com.irurueta.navigation.inertial.calibration.Triad;
+import com.irurueta.navigation.inertial.calibration.noise.AccumulatedTriadNoiseEstimator;
+import com.irurueta.navigation.inertial.calibration.noise.WindowedTriadNoiseEstimator;
+import com.irurueta.units.Measurement;
+import com.irurueta.units.Time;
+import com.irurueta.units.TimeConverter;
+import com.irurueta.units.TimeUnit;
+
+/**
+ * Abstract base class for detectors in charge of determining when a static period of
+ * measurements starts and finishes.
+ * Static periods are periods of time where the device is considered to
+ * remain static (no movement applied to it).
+ *
+ * @param &lt;U&gt; type of unit.
+ * @param &lt;M&gt; a type of measurement.
+ * @param &lt;T&gt; a triad type.
+ * @param &lt;D&gt; a detector type.
+ * @param &lt;L&gt; a listener type.
+ */
+public abstract class TriadStaticIntervalDetector&lt;U extends Enum&lt;?&gt;, M extends Measurement&lt;U&gt;,
+        T extends Triad&lt;U, M&gt;, D extends TriadStaticIntervalDetector&lt;U, M, T, D, L&gt;,
+        L extends TriadStaticIntervalDetectorListener&lt;U, M, T, D&gt;&gt; {
+
+    /**
+     * Number of samples to keep within the window by default.
+     * For a sensor generating 100 samples/second, this is equivalent to 1 second.
+     * For a sensor generating 50 samples/second, this is equivalent to 2 seconds.
+     */
+    public static final int DEFAULT_WINDOW_SIZE = WindowedTriadNoiseEstimator.DEFAULT_WINDOW_SIZE;
+
+    /**
+     * Number of samples to process during the initial static period to determine the sensor
+     * (accelerometer, gyroscope or magnetometer) noise level.
+     * For a sensor generating 100 samples/second, this is equivalent to 50 seconds.
+     * For a sensor generating 50 samples/second, this is equivalent to 100 seconds.
+     */
+    public static final int DEFAULT_INITIAL_STATIC_SAMPLES = 5000;
+
+    /**
+     * Minimum allowed number of samples to be processed during the initial static period.
+     */
+    public static final int MINIMUM_INITIAL_STATIC_SAMPLES = 2;
+
+    /**
+     * Default factor to be applied to detected base noise level in order to determine
+     * threshold for static/dynamic period changes. This factor is unit-less.
+     */
+    public static final double DEFAULT_THRESHOLD_FACTOR = 2.0;
+
+    /**
+     * Default factor to determine that a sudden movement has occurred during initialization
+     * if instantaneous noise level exceeds accumulated noise level by this factor amount.
+     * This factor is unit-less.
+     */
+    public static final double DEFAULT_INSTANTANEOUS_NOISE_LEVEL_FACTOR = 2.0;
+
+    /**
+     * Default overall absolute threshold to determine whether there has been excessive motion
+     * during the whole initialization phase.
+     * This threshold is expressed in meters per squared second (m/s^2) for acceleration, radians
+     * per second (rad/s) for angular speed or Teslas (T) for magnetic flux density, and by
+     * default it is set to the maximum allowed value, thus effectively disabling this error
+     * condition check during initialization.
+     */
+    public static final double DEFAULT_BASE_NOISE_LEVEL_ABSOLUTE_THRESHOLD = Double.MAX_VALUE;
+
+    /**
+     * Number of samples to keep in window to find instantaneous noise level averaged within
+     * the window of samples.
+     * Window size should contain about 1 or 2 seconds of data to be averaged to obtain
+     * a more reliable instantaneous noise level.
+     */
+<span class="fc" id="L92">    private int windowSize = DEFAULT_WINDOW_SIZE;</span>
+
+    /**
+     * Number of samples to be processed initially while keeping the sensor static in order
+     * to find the base noise level when device is static.
+     */
+<span class="fc" id="L98">    private int initialStaticSamples = DEFAULT_INITIAL_STATIC_SAMPLES;</span>
+
+    /**
+     * Factor to be applied to detected base noise level in order to determine
+     * threshold for static/dynamic period changes. This factor is unit-less.
+     */
+<span class="fc" id="L104">    private double thresholdFactor = DEFAULT_THRESHOLD_FACTOR;</span>
+
+    /**
+     * Factor to determine that a sudden movement has occurred during initialization if
+     * instantaneous noise level exceeds accumulated noise level by this factor amount.
+     * This factor is unit-less.
+     */
+<span class="fc" id="L111">    private double instantaneousNoiseLevelFactor = DEFAULT_INSTANTANEOUS_NOISE_LEVEL_FACTOR;</span>
+
+    /**
+     * Overall absolute threshold to determine whether there has been excessive motion
+     * during the whole initialization phase.
+     * Failure will be detected if estimated base noise level exceeds this threshold when
+     * initialization completes.
+     * This threshold is expressed in meters per squared second (m/s^2) for acceleration,
+     * radians per second (rad/s) for angular speed or Teslas (T) for magnetic flux density.
+     */
+<span class="fc" id="L121">    private double baseNoiseLevelAbsoluteThreshold = DEFAULT_BASE_NOISE_LEVEL_ABSOLUTE_THRESHOLD;</span>
+
+    /**
+     * Listener to handle events generated by this detector.
+     */
+    private L listener;
+
+    /**
+     * Current status of this detector.
+     */
+<span class="fc" id="L131">    private Status status = Status.IDLE;</span>
+
+    /**
+     * Measurement base noise level that has been detected during initialization expressed in
+     * meters per squared second (m/s^2) for acceleration, radians per second (rad/s) for
+     * angular speed or Teslas (T) for magnetic flux density.
+     */
+    private double baseNoiseLevel;
+
+    /**
+     * Threshold to determine static/dynamic period changes expressed in meters per squared
+     * second (m/s^2) for acceleration, radians per second (rad/s) for angular speed or
+     * Teslas (T) for magnetic flux density.
+     */
+    private double threshold;
+
+    /**
+     * Indicates whether this detector is busy processing last provided sample.
+     */
+    private boolean running;
+
+    /**
+     * Number of samples that have been processed so far.
+     */
+    private int processedSamples;
+
+    /**
+     * Average x-coordinate of measurements accumulated during last static
+     * period expressed in meters per squared second (m/s^2) for acceleration,
+     * radians per second (rad/s) for angular speed or Teslas (T) for
+     * magnetic flux density.
+     * This value is updated when switching from a static period to a dynamic
+     * one or after completing initialization.
+     */
+    private double accumulatedAvgX;
+
+    /**
+     * Average y-coordinate of measurements accumulated during last static
+     * period expressed in meters per squared second (m/s^2) for acceleration,
+     * radians per second (rad/s) for angular speed or Teslas (T) for
+     * magnetic flux density.
+     * This value is updated when switching from a static period to a dynamic
+     * one or after completing initialization.
+     */
+    private double accumulatedAvgY;
+
+    /**
+     * Average z-coordinate of measurements accumulated during last static
+     * period expressed in meters per squared second (m/s^2) for acceleration,
+     * radians per second (rad/s) for angular speed or Teslas (T) for
+     * magnetic flux density.
+     * This value is updated when switching from a static period to a dynamic
+     * one or after completing initialization.
+     */
+    private double accumulatedAvgZ;
+
+    /**
+     * Standard deviation of x-coordinate of measurements accumulated during
+     * last static period expressed in meters per squared second (m/s^2) for
+     * acceleration, radians per second (rad/s) for angular speed or Teslas
+     * (T) for magnetic flux density.
+     * This value is updated when switching from a static period to a dynamic
+     * one or after completing initialization.
+     */
+    private double accumulatedStdX;
+
+    /**
+     * Standard deviation of y-coordinate of measurements accumulated during
+     * last static period expressed in meters per squared second (m/s^2) for
+     * acceleration, radians per second (rad/s) for angular speed or Teslas
+     * (T) for magnetic flux density.
+     * This value is updated when switching from a static period to a dynamic
+     * one or after completing initialization.
+     */
+    private double accumulatedStdY;
+
+    /**
+     * Standard deviation of z-coordinate of measurements accumulated during
+     * last static period expressed in meters per squared second (m/s^2) for
+     * acceleration, radians per second (rad/s) for angular speed or Teslas
+     * (T) for magnetic flux density.
+     * This value is updated when switching from a static period to a dynamic
+     * one or after completing initialization.
+     */
+    private double accumulatedStdZ;
+
+    /**
+     * Windowed average x-coordinate of measurements for each processed triad
+     * expressed in meters per squared second (m/s^2) for acceleration,
+     * radians per second (rad/s) for angular speed or Teslas (T) for
+     * magnetic flux density.
+     * This value is updated for each processed sample containing an average
+     * value for the samples within the window.
+     */
+    private double instantaneousAvgX;
+
+    /**
+     * Windowed average y-coordinate of measurements for each processed triad
+     * expressed in meters per squared second (m/s^2) for acceleration,
+     * radians per second (rad/s) for angular speed or Teslas (T) for
+     * magnetic flux density.
+     * This value is updated for each processed sample containing an average
+     * value for the samples within the window.
+     */
+    private double instantaneousAvgY;
+
+    /**
+     * Windowed average z-coordinate of measurements for each processed triad
+     * expressed in meters per squared second (m/s^2) for acceleration,
+     * radians per second (rad/s) for angular speed or Teslas (T) for
+     * magnetic flux density.
+     * This value is updated for each processed sample containing an average
+     * value for the samples within the window.
+     */
+    private double instantaneousAvgZ;
+
+    /**
+     * Windowed standard deviation of x-coordinate of measurements for each
+     * processed triad expressed in meters per squared second (m/s^2) for
+     * acceleration, radians per second (rad/s) for angular speed or Teslas (T)
+     * for magnetic flux density.
+     * This value is updated for each processed sample containing measured standard
+     * deviation for the samples within the window.
+     */
+    private double instantaneousStdX;
+
+    /**
+     * Windowed standard deviation of y-coordinate of measurements for each
+     * processed triad expressed in meters per squared second (m/s^2) for
+     * acceleration, radians per second (rad/s) for angular speed or Teslas (T)
+     * for magnetic flux density.
+     * This value is updated for each processed sample containing measured standard
+     * deviation for the samples within the window.
+     */
+    private double instantaneousStdY;
+
+    /**
+     * Windowed standard deviation of z-coordinate of measurements for each
+     * processed triad expressed in meters per squared second (m/s^2) for
+     * acceleration, radians per second (rad/s) for angular speed or Teslas (T)
+     * for magnetic flux density.
+     * This value is updated for each processed sample containing measured standard
+     * deviation for the samples within the window.
+     */
+    private double instantaneousStdZ;
+
+    /**
+     * Estimator to find instantaneous measurement noise level averaged for a certain window of samples.
+     */
+    private final WindowedTriadNoiseEstimator&lt;U, M, T, ?, ?&gt; windowedNoiseEstimator;
+
+    /**
+     * Estimator to find accumulated accelerometer noise level.
+     */
+    private final AccumulatedTriadNoiseEstimator&lt;U, M, T, ?, ?&gt; accumulatedNoiseEstimator;
+
+    /**
+     * Constructor.
+     *
+     * @param windowedNoiseEstimator    windowed noise estimator to estimate noise within a window of measures.
+     * @param accumulatedNoiseEstimator accumulated noise estimator to estimate accumulated noise and average.
+     */
+    protected TriadStaticIntervalDetector(
+            final WindowedTriadNoiseEstimator&lt;U, M, T, ?, ?&gt; windowedNoiseEstimator,
+<span class="fc" id="L295">            final AccumulatedTriadNoiseEstimator&lt;U, M, T, ?, ?&gt; accumulatedNoiseEstimator) {</span>
+<span class="fc" id="L296">        this.windowedNoiseEstimator = windowedNoiseEstimator;</span>
+<span class="fc" id="L297">        this.accumulatedNoiseEstimator = accumulatedNoiseEstimator;</span>
+<span class="fc" id="L298">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param windowedNoiseEstimator    windowed noise estimator to estimate noise within a window of measures.
+     * @param accumulatedNoiseEstimator accumulated noise estimator to estimate accumulated noise and average.
+     * @param listener                  listener to handle events generated by this detector.
+     */
+    protected TriadStaticIntervalDetector(
+            final WindowedTriadNoiseEstimator&lt;U, M, T, ?, ?&gt; windowedNoiseEstimator,
+            final AccumulatedTriadNoiseEstimator&lt;U, M, T, ?, ?&gt; accumulatedNoiseEstimator, final L listener) {
+<span class="fc" id="L310">        this(windowedNoiseEstimator, accumulatedNoiseEstimator);</span>
+<span class="fc" id="L311">        this.listener = listener;</span>
+<span class="fc" id="L312">    }</span>
+
+    /**
+     * Gets length of number of samples to keep within the window being processed
+     * to determine instantaneous accelerometer noise level.
+     *
+     * @return length of number of samples to keep within the window.
+     */
+    public int getWindowSize() {
+<span class="fc" id="L321">        return windowSize;</span>
+    }
+
+    /**
+     * Sets length of number of samples to keep within the window being processed
+     * to determine instantaneous accelerometer noise level.
+     * Window size must always be larger than allowed minimum value, which is 2 and
+     * must have and odd value.
+     *
+     * @param windowSize length of number of samples to keep within the window.
+     * @throws LockedException          if detector is busy processing a previous sample.
+     * @throws IllegalArgumentException if provided value is not valid.
+     */
+    public void setWindowSize(final int windowSize) throws LockedException {
+<span class="fc bfc" id="L335" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L336">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L339">        windowedNoiseEstimator.setWindowSize(windowSize);</span>
+<span class="fc" id="L340">        this.windowSize = windowSize;</span>
+<span class="fc" id="L341">    }</span>
+
+    /**
+     * Gets number of samples to be processed initially while keeping the sensor static in order
+     * to find the base noise level when device is static.
+     *
+     * @return number of samples to be processed initially.
+     */
+    public int getInitialStaticSamples() {
+<span class="fc" id="L350">        return initialStaticSamples;</span>
+    }
+
+    /**
+     * Sets number of samples to be processed initially while keeping the sensor static in order
+     * to find the base noise level when device is static.
+     *
+     * @param initialStaticSamples number of samples to be processed initially.
+     * @throws LockedException          if detector is busy.
+     * @throws IllegalArgumentException if provided value is less than {@link #MINIMUM_INITIAL_STATIC_SAMPLES}
+     */
+    public void setInitialStaticSamples(final int initialStaticSamples) throws LockedException {
+<span class="fc bfc" id="L362" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L363">            throw new LockedException();</span>
+        }
+
+<span class="fc bfc" id="L366" title="All 2 branches covered.">        if (initialStaticSamples &lt; MINIMUM_INITIAL_STATIC_SAMPLES) {</span>
+<span class="fc" id="L367">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L370">        this.initialStaticSamples = initialStaticSamples;</span>
+<span class="fc" id="L371">    }</span>
+
+    /**
+     * Gets factor to be applied to detected base noise level in order to
+     * determine threshold for static/dynamic period changes. This factor is
+     * unit-less.
+     *
+     * @return factor to be applied to detected base noise level.
+     */
+    public double getThresholdFactor() {
+<span class="fc" id="L381">        return thresholdFactor;</span>
+    }
+
+    /**
+     * Sets factor to be applied to detected base noise level in order to
+     * determine threshold for static/dynamic period changes. This factor is
+     * unit-less.
+     *
+     * @param thresholdFactor factor to be applied to detected base noise level.
+     * @throws LockedException          if detector is busy.
+     * @throws IllegalArgumentException if provided value is zero or negative.
+     */
+    public void setThresholdFactor(final double thresholdFactor) throws LockedException {
+<span class="fc bfc" id="L394" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L395">            throw new LockedException();</span>
+        }
+<span class="fc bfc" id="L397" title="All 2 branches covered.">        if (thresholdFactor &lt;= 0.0) {</span>
+<span class="fc" id="L398">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L401">        this.thresholdFactor = thresholdFactor;</span>
+<span class="fc" id="L402">    }</span>
+
+    /**
+     * Gets factor to determine that a sudden movement has occurred during
+     * initialization if instantaneous noise level exceeds accumulated noise
+     * level by this factor amount.
+     * This factor is unit-less.
+     *
+     * @return factor to determine that a sudden movement has occurred.
+     */
+    public double getInstantaneousNoiseLevelFactor() {
+<span class="fc" id="L413">        return instantaneousNoiseLevelFactor;</span>
+    }
+
+    /**
+     * Sets factor to determine that a sudden movement has occurred during
+     * initialization if instantaneous noise level exceeds accumulated noise
+     * level by this factor amount.
+     * This factor is unit-less.
+     *
+     * @param instantaneousNoiseLevelFactor factor to determine that a sudden
+     *                                      movement has occurred during
+     *                                      initialization.
+     * @throws LockedException          if detector is busy.
+     * @throws IllegalArgumentException if provided value is zero or negative.
+     */
+    public void setInstantaneousNoiseLevelFactor(
+            final double instantaneousNoiseLevelFactor) throws LockedException {
+<span class="fc bfc" id="L430" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L431">            throw new LockedException();</span>
+        }
+<span class="fc bfc" id="L433" title="All 2 branches covered.">        if (instantaneousNoiseLevelFactor &lt;= 0.0) {</span>
+<span class="fc" id="L434">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L437">        this.instantaneousNoiseLevelFactor = instantaneousNoiseLevelFactor;</span>
+<span class="fc" id="L438">    }</span>
+
+    /**
+     * Gets overall absolute threshold to determine whether there has been
+     * excessive motion during the whole initialization phase.
+     * Failure will be detected if estimated base noise level exceeds this
+     * threshold when initialization completes.
+     * This threshold is expressed in meters per squared second (m/s^2) for
+     * acceleration, radians per second (rad/s) for angular speed or Teslas
+     * (T) for magnetic flux density.
+     *
+     * @return overall absolute threshold to determine whether there has
+     * been excessive motion.
+     */
+    public double getBaseNoiseLevelAbsoluteThreshold() {
+<span class="fc" id="L453">        return baseNoiseLevelAbsoluteThreshold;</span>
+    }
+
+    /**
+     * Sets overall absolute threshold to determine whether there has been
+     * excessive motion during the whole initialization phase.
+     * Failure will be detected if estimated base noise level exceeds this
+     * threshold when initialization completes.
+     * This threshold is expressed in meters per squared second (m/s^2) for
+     * acceleration, radians per second (rad/s) for angular speed or Teslas
+     * (T) for magnetic flux density.
+     *
+     * @param baseNoiseLevelAbsoluteThreshold overall absolute threshold to
+     *                                        determine whether there has been
+     *                                        excessive motion.
+     * @throws LockedException          if detector is busy.
+     * @throws IllegalArgumentException if provided value is zero or negative.
+     */
+    public void setBaseNoiseLevelAbsoluteThreshold(
+            final double baseNoiseLevelAbsoluteThreshold) throws LockedException {
+<span class="fc bfc" id="L473" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L474">            throw new LockedException();</span>
+        }
+<span class="fc bfc" id="L476" title="All 2 branches covered.">        if (baseNoiseLevelAbsoluteThreshold &lt;= 0.0) {</span>
+<span class="fc" id="L477">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L480">        this.baseNoiseLevelAbsoluteThreshold = baseNoiseLevelAbsoluteThreshold;</span>
+<span class="fc" id="L481">    }</span>
+
+    /**
+     * Gets overall absolute threshold to determine whether there has been
+     * excessive motion during the whole initialization phase.
+     * Failure will be detected if estimated base noise level exceeds this
+     * threshold when initialization completes.
+     *
+     * @return overall absolute threshold to determine whether there has been
+     * excessive motion.
+     */
+    public M getBaseNoiseLevelAbsoluteThresholdAsMeasurement() {
+<span class="fc" id="L493">        return createMeasurement(baseNoiseLevelAbsoluteThreshold, getDefaultUnit());</span>
+    }
+
+    /**
+     * Gets overall absolute threshold to determine whether there has been
+     * excessive motion during the whole initialization phase.
+     * Failure will be detected if estimated base noise level exceeds this
+     * threshold when initialization completes.
+     *
+     * @param result instance where result will be stored.
+     */
+    public void getBaseNoiseLevelAbsoluteThresholdAsMeasurement(final M result) {
+<span class="fc" id="L505">        result.setValue(baseNoiseLevelAbsoluteThreshold);</span>
+<span class="fc" id="L506">        result.setUnit(getDefaultUnit());</span>
+<span class="fc" id="L507">    }</span>
+
+    /**
+     * Sets overall absolute threshold to determine whether there has been
+     * excessive motion during the whole initialization phase.
+     * Failure will be detected if estimated base noise level exceeds this
+     * threshold when initialization completes.
+     *
+     * @param baseNoiseLevelAbsoluteThreshold overall absolute threshold to
+     *                                        determine whether there has been
+     *                                        excessive motion.
+     * @throws LockedException          if detector is busy.
+     * @throws IllegalArgumentException if provided value is zero or negative.
+     */
+    public void setBaseNoiseLevelAbsoluteThreshold(
+            final M baseNoiseLevelAbsoluteThreshold) throws LockedException {
+<span class="pc bpc" id="L523" title="1 of 2 branches missed.">        if (running) {</span>
+<span class="nc" id="L524">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L527">        setBaseNoiseLevelAbsoluteThreshold(convertMeasurement(baseNoiseLevelAbsoluteThreshold));</span>
+<span class="fc" id="L528">    }</span>
+
+    /**
+     * Gets listener to handle events generated by this detector.
+     *
+     * @return listener to handle events.
+     */
+    public L getListener() {
+<span class="fc" id="L536">        return listener;</span>
+    }
+
+    /**
+     * Sets listener to handle events generated by this detector.
+     *
+     * @param listener listener to handle events.
+     * @throws LockedException if detector is busy.
+     */
+    public void setListener(final L listener) throws LockedException {
+<span class="fc bfc" id="L546" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L547">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L550">        this.listener = listener;</span>
+<span class="fc" id="L551">    }</span>
+
+    /**
+     * Gets time interval between triad samples expressed in seconds (s).
+     *
+     * @return time interval between triad samples.
+     */
+    public double getTimeInterval() {
+<span class="fc" id="L559">        return windowedNoiseEstimator.getTimeInterval();</span>
+    }
+
+    /**
+     * Sets time interval between triad samples expressed in
+     * seconds (s).
+     *
+     * @param timeInterval time interval between triad samples.
+     * @throws IllegalArgumentException if provided value is negative.
+     * @throws LockedException          if estimator is currently running.
+     */
+    public void setTimeInterval(final double timeInterval) throws LockedException {
+<span class="fc bfc" id="L571" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L572">            throw new LockedException();</span>
+        }
+
+<span class="fc bfc" id="L575" title="All 2 branches covered.">        if (timeInterval &lt; 0.0) {</span>
+<span class="fc" id="L576">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L579">        windowedNoiseEstimator.setTimeInterval(timeInterval);</span>
+<span class="fc" id="L580">        accumulatedNoiseEstimator.setTimeInterval(timeInterval);</span>
+<span class="fc" id="L581">    }</span>
+
+    /**
+     * Gets time interval between triad samples.
+     *
+     * @return time interval between triad samples.
+     */
+    public Time getTimeIntervalAsTime() {
+<span class="fc" id="L589">        return new Time(getTimeInterval(), TimeUnit.SECOND);</span>
+    }
+
+    /**
+     * Gets time interval between triad samples.
+     *
+     * @param result instance where time interval will be stored.
+     */
+    public void getTimeIntervalAsTime(final Time result) {
+<span class="fc" id="L598">        result.setValue(getTimeInterval());</span>
+<span class="fc" id="L599">        result.setUnit(TimeUnit.SECOND);</span>
+<span class="fc" id="L600">    }</span>
+
+    /**
+     * Sets time interval between triad samples.
+     *
+     * @param timeInterval time interval between triad samples.
+     * @throws IllegalArgumentException if provided value is negative.
+     * @throws LockedException          if estimator is currently running.
+     */
+    public void setTimeInterval(final Time timeInterval) throws LockedException {
+<span class="fc" id="L610">        setTimeInterval(TimeConverter.convert(timeInterval.getValue().doubleValue(), timeInterval.getUnit(),</span>
+                TimeUnit.SECOND));
+<span class="fc" id="L612">    }</span>
+
+    /**
+     * Gets current status of this detector.
+     *
+     * @return current status of this detector.
+     */
+    public Status getStatus() {
+<span class="fc" id="L620">        return status;</span>
+    }
+
+    /**
+     * Gets measurement base noise level that has been detected during
+     * initialization expressed in meters per squared second (m/s^2) for
+     * acceleration, radians per second (rad/s) for angular speed or
+     * Teslas (T) for magnetic flux density.
+     *
+     * @return base noise level.
+     */
+    public double getBaseNoiseLevel() {
+<span class="fc" id="L632">        return baseNoiseLevel;</span>
+    }
+
+    /**
+     * Gets measurement base noise level that has been detected during
+     * initialization.
+     *
+     * @return measurement base noise level.
+     */
+    public M getBaseNoiseLevelAsMeasurement() {
+<span class="fc" id="L642">        return createMeasurement(baseNoiseLevel, getDefaultUnit());</span>
+    }
+
+    /**
+     * Gets measurement base noise level that has been detected during
+     * initialization.
+     *
+     * @param result instance where result will be stored.
+     */
+    public void getBaseNoiseLevelAsMeasurement(final M result) {
+<span class="fc" id="L652">        result.setValue(baseNoiseLevel);</span>
+<span class="fc" id="L653">        result.setUnit(getDefaultUnit());</span>
+<span class="fc" id="L654">    }</span>
+
+    /**
+     * Gets measurement base noise level PSD (Power Spectral Density) expressed in
+     * (m^2 * s^-3) for accelerometer, (rad^2/s) for gyroscope or (T^2 * s) for
+     * magnetometer.
+     *
+     * @return measurement base noise level PSD.
+     */
+    public double getBaseNoiseLevelPsd() {
+<span class="fc" id="L664">        return baseNoiseLevel * baseNoiseLevel * getTimeInterval();</span>
+    }
+
+    /**
+     * Gets measurement base noise level root PSD (Power SpectralDensity) expressed
+     * in (m * s^-1.5) for accelerometer, (rad * s^-0.5) for gyroscope or (T * s^0.5)
+     * for magnetometer.
+     *
+     * @return measurement base noise level root PSD.
+     */
+    public double getBaseNoiseLevelRootPsd() {
+<span class="fc" id="L675">        return baseNoiseLevel * Math.sqrt(getTimeInterval());</span>
+    }
+
+    /**
+     * Gets threshold to determine static/dynamic period changes expressed in
+     * meters per squared second (m/s^2) for acceleration, radians per second
+     * (rad/s) for angular speed or Teslas (T) for magnetic flux density.
+     *
+     * @return threshold to determine static/dynamic period changes.
+     */
+    public double getThreshold() {
+<span class="fc" id="L686">        return threshold;</span>
+    }
+
+    /**
+     * Gets threshold to determine static/dynamic period changes.
+     *
+     * @return threshold to determine static/dynamic period changes.
+     */
+    public M getThresholdAsMeasurement() {
+<span class="fc" id="L695">        return createMeasurement(threshold, getDefaultUnit());</span>
+    }
+
+    /**
+     * Gets threshold to determine static/dynamic period changes.
+     *
+     * @param result instance where result will be stored.
+     */
+    public void getThresholdAsMeasurement(final M result) {
+<span class="fc" id="L704">        result.setValue(threshold);</span>
+<span class="fc" id="L705">        result.setUnit(getDefaultUnit());</span>
+<span class="fc" id="L706">    }</span>
+
+    /**
+     * Indicates whether this detector is busy processing last provided sample.
+     *
+     * @return true if this detector is busy, false otherwise.
+     */
+    public boolean isRunning() {
+<span class="fc" id="L714">        return running;</span>
+    }
+
+    /**
+     * Gets number of samples that have been processed so far.
+     *
+     * @return number of samples that have been processed so far.
+     */
+    public int getProcessedSamples() {
+<span class="fc" id="L723">        return processedSamples;</span>
+    }
+
+    /**
+     * Gets average x-coordinate of measurements accumulated during last static
+     * period expressed in meters per squared second (m/s^2) for acceleration,
+     * radians per second (rad/s) for angular speed or Teslas (T) for
+     * magnetic flux density.
+     * This value is updated when switching from a static period to a dynamic
+     * one or after completing initialization.
+     *
+     * @return accumulated average x-coordinate of measurement during last static
+     * period.
+     */
+    public double getAccumulatedAvgX() {
+<span class="fc" id="L738">        return accumulatedAvgX;</span>
+    }
+
+    /**
+     * Gets average x-coordinate of measurements accumulated during last static
+     * period.
+     * This value is updated when switching from a static period to a dynamic
+     * one or after completing initialization.
+     *
+     * @return accumulated average x-coordinate of measurement during last static
+     * period.
+     */
+    public M getAccumulatedAvgXAsMeasurement() {
+<span class="fc" id="L751">        return createMeasurement(accumulatedAvgX, getDefaultUnit());</span>
+    }
+
+    /**
+     * Gets average x-coordinate of measurements accumulated during last static
+     * period.
+     * This value is updated when switching from a static period to a dynamic
+     * one or after completing initialization.
+     *
+     * @param result instance where result will be stored.
+     */
+    public void getAccumulatedAvgXAsMeasurement(final M result) {
+<span class="fc" id="L763">        result.setValue(accumulatedAvgX);</span>
+<span class="fc" id="L764">        result.setUnit(getDefaultUnit());</span>
+<span class="fc" id="L765">    }</span>
+
+    /**
+     * Gets average y-coordinate of measurements accumulated during last static
+     * period expressed in meters per squared second (m/s^2) for acceleration,
+     * radians per second (rad/s) for angular speed or Teslas (T) for
+     * magnetic flux density.
+     * This value is updated when switching from a static period to a dynamic
+     * one or after completing initialization.
+     *
+     * @return accumulated average y-coordinate of measurement during last static
+     * period.
+     */
+    public double getAccumulatedAvgY() {
+<span class="fc" id="L779">        return accumulatedAvgY;</span>
+    }
+
+    /**
+     * Gets average y-coordinate of measurements accumulated during last static
+     * period.
+     * This value is updated when switching from a static period to a dynamic
+     * one or after completing initialization.
+     *
+     * @return accumulated average y-coordinate of measurement during last static
+     * period.
+     */
+    public M getAccumulatedAvgYAsMeasurement() {
+<span class="fc" id="L792">        return createMeasurement(accumulatedAvgY, getDefaultUnit());</span>
+    }
+
+    /**
+     * Gets average y-coordinate of measurements accumulated during last static
+     * period.
+     * This value is updated when switching from a static period to a dynamic
+     * one or after completing initialization.
+     *
+     * @param result instance where result will be stored.
+     */
+    public void getAccumulatedAvgYAsMeasurement(final M result) {
+<span class="fc" id="L804">        result.setValue(accumulatedAvgY);</span>
+<span class="fc" id="L805">        result.setUnit(getDefaultUnit());</span>
+<span class="fc" id="L806">    }</span>
+
+    /**
+     * Gets average z-coordinate of measurements accumulated during last static
+     * period expressed in meters per squared second (m/s^2) for acceleration,
+     * radians per second (rad/s) for angular speed or Teslas (T) for
+     * magnetic flux density.
+     * This value is updated when switching from a static period to a dynamic
+     * one or after completing initialization.
+     *
+     * @return accumulated average y-coordinate of measurement during last static
+     * period.
+     */
+    public double getAccumulatedAvgZ() {
+<span class="fc" id="L820">        return accumulatedAvgZ;</span>
+    }
+
+    /**
+     * Gets average z-coordinate of measurements accumulated during last static
+     * period.
+     * This value is updated when switching from a static period to a dynamic
+     * one or after completing initialization.
+     *
+     * @return accumulated average z-coordinate of measurement during last static
+     * period.
+     */
+    public M getAccumulatedAvgZAsMeasurement() {
+<span class="fc" id="L833">        return createMeasurement(accumulatedAvgZ, getDefaultUnit());</span>
+    }
+
+    /**
+     * Gets average z-coordinate of measurements accumulated during last static
+     * period.
+     * This value is updated when switching from a static period to a dynamic
+     * one or after completing initialization.
+     *
+     * @param result instance where result will be stored.
+     */
+    public void getAccumulatedAvgZAsMeasurement(final M result) {
+<span class="fc" id="L845">        result.setValue(accumulatedAvgZ);</span>
+<span class="fc" id="L846">        result.setUnit(getDefaultUnit());</span>
+<span class="fc" id="L847">    }</span>
+
+    /**
+     * Gets average measurements triad accumulated during last static period.
+     * This value is updated when switching from a static period to a dynamic
+     * one or after completing initialization.
+     *
+     * @return accumulated average measurements triad during last static period.
+     */
+    public T getAccumulatedAvgTriad() {
+<span class="fc" id="L857">        return createTriad(accumulatedAvgX, accumulatedAvgY, accumulatedAvgZ, getDefaultUnit());</span>
+    }
+
+    /**
+     * Gets average measurements triad accumulated during last static period.
+     * This value is updated when switching from a static period to a dynamic
+     * one or after completing initialization.
+     *
+     * @param result instance where result will be stored.
+     */
+    public void getAccumulatedAvgTriad(final T result) {
+<span class="fc" id="L868">        result.setValueCoordinatesAndUnit(accumulatedAvgX, accumulatedAvgY, accumulatedAvgZ, getDefaultUnit());</span>
+<span class="fc" id="L869">    }</span>
+
+    /**
+     * Gets standard deviation of x-coordinate of measurements accumulated during
+     * last static period expressed in meters per squared second (m/s^2) for
+     * acceleration, radians per second (rad/s) for angular speed or Teslas
+     * (T) for magnetic flux density.
+     * This value is updated when switching from a static period to a dynamic
+     * one or after completing initialization.
+     *
+     * @return standard deviation of x-coordinate of measurements accumulated
+     * during last static period.
+     */
+    public double getAccumulatedStdX() {
+<span class="fc" id="L883">        return accumulatedStdX;</span>
+    }
+
+    /**
+     * Gets standard deviation of x-coordinate of measurements accumulated during
+     * last static period.
+     * This value is updated when switching from a static period to a dynamic
+     * one or after completing initialization.
+     *
+     * @return standard deviation of x-coordinate of measurements accumulated
+     * during last static period.
+     */
+    public M getAccumulatedStdXAsMeasurement() {
+<span class="fc" id="L896">        return createMeasurement(accumulatedStdX, getDefaultUnit());</span>
+    }
+
+    /**
+     * Gets standard deviation of x-coordinate of measurements accumulated during
+     * last static period.
+     * This value is updated when switching from a static period to a dynamic
+     * one or after completing initialization.
+     *
+     * @param result instance where result will be stored.
+     */
+    public void getAccumulatedStdXAsMeasurement(final M result) {
+<span class="fc" id="L908">        result.setValue(accumulatedStdX);</span>
+<span class="fc" id="L909">        result.setUnit(getDefaultUnit());</span>
+<span class="fc" id="L910">    }</span>
+
+    /**
+     * Gets standard deviation of y-coordinate of measurements accumulated during
+     * last static period expressed in meters per squared second (m/s^2) for
+     * acceleration, radians per second (rad/s) for angular speed or Teslas
+     * (T) for magnetic flux density.
+     * This value is updated when switching from a static period to a dynamic
+     * one or after completing initialization.
+     *
+     * @return standard deviation of y-coordinate of measurements accumulated
+     * during last static period.
+     */
+    public double getAccumulatedStdY() {
+<span class="fc" id="L924">        return accumulatedStdY;</span>
+    }
+
+    /**
+     * Gets standard deviation of y-coordinate of measurements accumulated during
+     * last static period.
+     * This value is updated when switching from a static period to a dynamic
+     * one or after completing initialization.
+     *
+     * @return standard deviation of y-coordinate of measurements accumulated
+     * during last static period.
+     */
+    public M getAccumulatedStdYAsMeasurement() {
+<span class="fc" id="L937">        return createMeasurement(accumulatedStdY, getDefaultUnit());</span>
+    }
+
+    /**
+     * Gets standard deviation of y-coordinate of measurements accumulated during
+     * last static period.
+     * This value is updated when switching from a static period to a dynamic
+     * one or after completing initialization.
+     *
+     * @param result instance where result will be stored.
+     */
+    public void getAccumulatedStdYAsMeasurement(final M result) {
+<span class="fc" id="L949">        result.setValue(accumulatedStdY);</span>
+<span class="fc" id="L950">        result.setUnit(getDefaultUnit());</span>
+<span class="fc" id="L951">    }</span>
+
+    /**
+     * Gets standard deviation of z-coordinate of measurements accumulated during
+     * last static period expressed in meters per squared second (m/s^2) for
+     * acceleration, radians per second (rad/s) for angular speed or Teslas
+     * (T) for magnetic flux density.
+     * This value is updated when switching from a static period to a dynamic
+     * one or after completing initialization.
+     *
+     * @return standard deviation of z-coordinate of measurements accumulated
+     * during last static period.
+     */
+    public double getAccumulatedStdZ() {
+<span class="fc" id="L965">        return accumulatedStdZ;</span>
+    }
+
+    /**
+     * Gets standard deviation of z-coordinate of measurements accumulated during
+     * last static period.
+     * This value is updated when switching from a static period to a dynamic
+     * one or after completing initialization.
+     *
+     * @return standard deviation of z-coordinate of measurements accumulated
+     * during last static period.
+     */
+    public M getAccumulatedStdZAsMeasurement() {
+<span class="fc" id="L978">        return createMeasurement(accumulatedStdZ, getDefaultUnit());</span>
+    }
+
+    /**
+     * Gets standard deviation of z-coordinate of measurements accumulated during
+     * last static period.
+     * This value is updated when switching from a static period to a dynamic
+     * one or after completing initialization.
+     *
+     * @param result instance where result will be stored.
+     */
+    public void getAccumulatedStdZAsMeasurement(final M result) {
+<span class="fc" id="L990">        result.setValue(accumulatedStdZ);</span>
+<span class="fc" id="L991">        result.setUnit(getDefaultUnit());</span>
+<span class="fc" id="L992">    }</span>
+
+    /**
+     * Gets standard deviation of measurements accumulated during last static
+     * period.
+     * This value is updated when switching from a static period to a dynamic
+     * one or after completing initialization.
+     *
+     * @return standard deviation of measurements accumulated during last static
+     * period.
+     */
+    public T getAccumulatedStdTriad() {
+<span class="fc" id="L1004">        return createTriad(accumulatedStdX, accumulatedStdY, accumulatedStdZ, getDefaultUnit());</span>
+    }
+
+    /**
+     * Gets standard deviation of measurements accumulated during last static
+     * period.
+     * This value is updated when switching from a static period to a dynamic
+     * one or after completing initialization.
+     *
+     * @param result instance where result will be stored.
+     */
+    public void getAccumulatedStdTriad(final T result) {
+<span class="fc" id="L1016">        result.setValueCoordinatesAndUnit(accumulatedStdX, accumulatedStdY, accumulatedStdZ, getDefaultUnit());</span>
+<span class="fc" id="L1017">    }</span>
+
+    /**
+     * Gets windowed average x-coordinate of measurements for each processed triad
+     * expressed in meters per squared second (m/s^2) for acceleration,
+     * radians per second (rad/s) for angular speed or Teslas (T) for
+     * magnetic flux density.
+     * This value is updated for each processed sample containing an average
+     * value for the samples within the window.
+     *
+     * @return windowed average x-coordinate of measurements for each processed
+     * triad.
+     */
+    public double getInstantaneousAvgX() {
+<span class="fc" id="L1031">        return instantaneousAvgX;</span>
+    }
+
+    /**
+     * Gets windowed average x-coordinate of measurements for each processed triad.
+     * This value is updated for each processed sample containing an average
+     * value for the samples within the window.
+     *
+     * @return windowed average x-coordinate of measurements for each processed
+     * triad.
+     */
+    public M getInstantaneousAvgXAsMeasurement() {
+<span class="fc" id="L1043">        return createMeasurement(instantaneousAvgX, getDefaultUnit());</span>
+    }
+
+    /**
+     * Gets windowed average x-coordinate of measurements for each processed triad.
+     * This value is updated for each processed sample containing an average
+     * value for the samples within the window.
+     *
+     * @param result instance where result will be stored.
+     */
+    public void getInstantaneousAvgXAsMeasurement(final M result) {
+<span class="fc" id="L1054">        result.setValue(instantaneousAvgX);</span>
+<span class="fc" id="L1055">        result.setUnit(getDefaultUnit());</span>
+<span class="fc" id="L1056">    }</span>
+
+    /**
+     * Gets windowed average y-coordinate of measurements for each processed triad
+     * expressed in meters per squared second (m/s^2) for acceleration,
+     * radians per second (rad/s) for angular speed or Teslas (T) for
+     * magnetic flux density.
+     * This value is updated for each processed sample containing an average
+     * value for the samples within the window.
+     *
+     * @return windowed average y-coordinate of measurements for each processed
+     * triad.
+     */
+    public double getInstantaneousAvgY() {
+<span class="fc" id="L1070">        return instantaneousAvgY;</span>
+    }
+
+    /**
+     * Gets windowed average y-coordinate of measurements for each processed triad.
+     * This value is updated for each processed sample containing an average
+     * value for the samples within the window.
+     *
+     * @return windowed average y-coordinate of measurements for each processed
+     * triad.
+     */
+    public M getInstantaneousAvgYAsMeasurement() {
+<span class="fc" id="L1082">        return createMeasurement(instantaneousAvgY, getDefaultUnit());</span>
+    }
+
+    /**
+     * Gets windowed average y-coordinate of measurements for each processed triad.
+     * This value is updated for each processed sample containing an average
+     * value for the samples within the window.
+     *
+     * @param result instance where result will be stored.
+     */
+    public void getInstantaneousAvgYAsMeasurement(final M result) {
+<span class="fc" id="L1093">        result.setValue(instantaneousAvgY);</span>
+<span class="fc" id="L1094">        result.setUnit(getDefaultUnit());</span>
+<span class="fc" id="L1095">    }</span>
+
+    /**
+     * Gets windowed average z-coordinate of measurements for each processed triad
+     * expressed in meters per squared second (m/s^2) for acceleration,
+     * radians per second (rad/s) for angular speed or Teslas (T) for
+     * magnetic flux density.
+     * This value is updated for each processed sample containing an average
+     * value for the samples within the window.
+     *
+     * @return windowed average z-coordinate of measurements for each processed
+     * triad.
+     */
+    public double getInstantaneousAvgZ() {
+<span class="fc" id="L1109">        return instantaneousAvgZ;</span>
+    }
+
+    /**
+     * Gets windowed average z-coordinate of measurements for each processed triad.
+     * This value is updated for each processed sample containing an average
+     * value for the samples within the window.
+     *
+     * @return windowed average z-coordinate of measurements for each processed
+     * triad.
+     */
+    public M getInstantaneousAvgZAsMeasurement() {
+<span class="fc" id="L1121">        return createMeasurement(instantaneousAvgZ, getDefaultUnit());</span>
+    }
+
+    /**
+     * Gets windowed average z-coordinate of measurements for each processed triad.
+     * This value is updated for each processed sample containing an average
+     * value for the samples within the window.
+     *
+     * @param result instance where result will be stored.
+     */
+    public void getInstantaneousAvgZAsMeasurement(final M result) {
+<span class="fc" id="L1132">        result.setValue(instantaneousAvgZ);</span>
+<span class="fc" id="L1133">        result.setUnit(getDefaultUnit());</span>
+<span class="fc" id="L1134">    }</span>
+
+    /**
+     * Gets windowed average of measurements for each processed triad.
+     * This value is updated for each processed sample containing an average
+     * value for the samples within the window.
+     *
+     * @return windowed average of measurements for each processed triad.
+     */
+    public T getInstantaneousAvgTriad() {
+<span class="fc" id="L1144">        return createTriad(instantaneousAvgX, instantaneousAvgY, instantaneousAvgZ, getDefaultUnit());</span>
+    }
+
+    /**
+     * Gets windowed average of measurements for each processed triad.
+     * This value is updated for each processed sample containing an average
+     * value for the samples within the window.
+     *
+     * @param result instance where result will be stored.
+     */
+    public void getInstantaneousAvgTriad(final T result) {
+<span class="fc" id="L1155">        result.setValueCoordinatesAndUnit(instantaneousAvgX, instantaneousAvgY, instantaneousAvgZ, getDefaultUnit());</span>
+<span class="fc" id="L1156">    }</span>
+
+    /**
+     * Gets windowed standard deviation of x-coordinate of measurements for each
+     * processed triad expressed in meters per squared second (m/s^2) for
+     * acceleration, radians per second (rad/s) for angular speed or Teslas
+     * (T) for magnetic flux density.
+     * This value is updated for each processed sample containing measured standard
+     * deviation for the samples within the window.
+     *
+     * @return windowed standard deviation of x-coordinate of measurements for
+     * each processed triad.
+     */
+    public double getInstantaneousStdX() {
+<span class="fc" id="L1170">        return instantaneousStdX;</span>
+    }
+
+    /**
+     * Gets windowed standard deviation of x-coordinate of measurements for each
+     * processed triad.
+     * This value is updated for each processed sample containing measured standard
+     * deviation for the samples within the window.
+     *
+     * @return windowed standard deviation of x-coordinate of measurements for
+     * each processed triad.
+     */
+    public M getInstantaneousStdXAsMeasurement() {
+<span class="fc" id="L1183">        return createMeasurement(instantaneousStdX, getDefaultUnit());</span>
+    }
+
+    /**
+     * Gets windowed standard deviation of x-coordinate of measurements for each
+     * processed triad.
+     * This value is updated for each processed sample containing measured standard
+     * deviation for the samples within the window.
+     *
+     * @param result instance where result will be stored.
+     */
+    public void getInstantaneousStdXAsMeasurement(final M result) {
+<span class="fc" id="L1195">        result.setValue(instantaneousStdX);</span>
+<span class="fc" id="L1196">        result.setUnit(getDefaultUnit());</span>
+<span class="fc" id="L1197">    }</span>
+
+    /**
+     * Gets windowed standard deviation of y-coordinate of measurements for each
+     * processed triad expressed in meters per squared second (m/s^2) for
+     * acceleration, radians per second (rad/s) for angular speed or Teslas
+     * (T) for magnetic flux density.
+     * This value is updated for each processed sample containing measured standard
+     * deviation for the samples within the window.
+     *
+     * @return windowed standard deviation of y-coordinate of measurements for
+     * each processed triad.
+     */
+    public double getInstantaneousStdY() {
+<span class="fc" id="L1211">        return instantaneousStdY;</span>
+    }
+
+    /**
+     * Gets windowed standard deviation of y-coordinate of measurements for each
+     * processed triad.
+     * This value is updated for each processed sample containing measured standard
+     * deviation of the samples within the window.
+     *
+     * @return windowed standard deviation of y-coordinate of measurements for
+     * each processed triad.
+     */
+    public M getInstantaneousStdYAsMeasurement() {
+<span class="fc" id="L1224">        return createMeasurement(instantaneousStdY, getDefaultUnit());</span>
+    }
+
+    /**
+     * Gets windowed standard deviation of y-coordinate of measurements for each
+     * processed triad.
+     * This value is updated for each processed sample containing measured standard
+     * deviation of the samples within the window.
+     *
+     * @param result instance where result will be stored.
+     */
+    public void getInstantaneousStdYAsMeasurement(final M result) {
+<span class="fc" id="L1236">        result.setValue(instantaneousStdY);</span>
+<span class="fc" id="L1237">        result.setUnit(getDefaultUnit());</span>
+<span class="fc" id="L1238">    }</span>
+
+    /**
+     * Gets windowed standard deviation of z-coordinate of measurements for each
+     * processed triad expressed in meters per squared second (m/s^2) for
+     * acceleration, radians per second (rad/s) for angular speed or Teslas (T)
+     * for magnetic flux density.
+     * This value is updated for each processed sample containing measured standard
+     * deviation for the samples within the window.
+     *
+     * @return windowed standard deviation of z-coordinate of measurements for
+     * each processed triad.
+     */
+    public double getInstantaneousStdZ() {
+<span class="fc" id="L1252">        return instantaneousStdZ;</span>
+    }
+
+    /**
+     * Gets windowed standard deviation of z-coordinate of measurements for each
+     * processed triad.
+     * This value is updated for each processed sample containing measured standard
+     * deviation for the samples within the window.
+     *
+     * @return windowed standard deviation of z-coordinate of measurements for
+     * each processed triad.
+     */
+    public M getInstantaneousStdZAsMeasurement() {
+<span class="fc" id="L1265">        return createMeasurement(instantaneousStdZ, getDefaultUnit());</span>
+    }
+
+    /**
+     * Gets windowed standard deviation of z-coordinate of measurements for each
+     * processed triad.
+     * This value is updated for each processed sample containing measured standard
+     * deviation for the samples within the window.
+     *
+     * @param result instance where result will be stored.
+     */
+    public void getInstantaneousStdZAsMeasurement(final M result) {
+<span class="fc" id="L1277">        result.setValue(instantaneousStdZ);</span>
+<span class="fc" id="L1278">        result.setUnit(getDefaultUnit());</span>
+<span class="fc" id="L1279">    }</span>
+
+    /**
+     * Gets windowed standard deviation of measurements for each processed triad.
+     * This value is updated for each processed sample containing measured standard
+     * deviation for the samples within the window.
+     *
+     * @return windowed standard deviation of measurements for each processed
+     * triad.
+     */
+    public T getInstantaneousStdTriad() {
+<span class="fc" id="L1290">        return createTriad(instantaneousStdX, instantaneousStdY, instantaneousStdZ, getDefaultUnit());</span>
+    }
+
+    /**
+     * Gets windowed standard deviation of measurements for each processed triad.
+     * This value is updated for each processed sample containing measured standard
+     * deviation for the samples within the window.
+     *
+     * @param result instance where result will be stored.
+     */
+    public void getInstantaneousStdTriad(final T result) {
+<span class="fc" id="L1301">        result.setValueCoordinatesAndUnit(instantaneousStdX, instantaneousStdY, instantaneousStdZ, getDefaultUnit());</span>
+<span class="fc" id="L1302">    }</span>
+
+    /**
+     * Processes a new measurement triad sample.
+     *
+     * @param triad a new measurement triad to be processed.
+     * @return true if provided triad has been processed, false if provided triad has been skipped because detector
+     * previously failed. If detector previously failed, it will need to be reset before processing additional
+     * samples.
+     * @throws LockedException if detector is busy processing a previous sample.
+     */
+    public boolean process(final T triad) throws LockedException {
+<span class="fc" id="L1314">        return process(convertMeasurement(triad.getValueX(), triad.getUnit()),</span>
+<span class="fc" id="L1315">                convertMeasurement(triad.getValueY(), triad.getUnit()),</span>
+<span class="fc" id="L1316">                convertMeasurement(triad.getValueZ(), triad.getUnit()));</span>
+    }
+
+    /**
+     * Processes a new measurement triad sample.
+     *
+     * @param valueX x-coordinate of sensed measurement.
+     * @param valueY y-coordinate of sensed measurement.
+     * @param valueZ z-coordinate of sensed measurement.
+     * @return true if provided triad has been processed, false if provided triad has been skipped because detector
+     * previously failed. If detector previously failed, it will need to be reset before processing additional
+     * samples.
+     * @throws LockedException if detector is busy processing a previous sample.
+     */
+    public boolean process(final M valueX, final M valueY, final M valueZ) throws LockedException {
+<span class="fc" id="L1331">        return process(convertMeasurement(valueX), convertMeasurement(valueY), convertMeasurement(valueZ));</span>
+    }
+
+    /**
+     * Processes a new measurement triad sample.
+     * Provided measurement coordinates are expressed in meters per squared second (m/s^2) for acceleration,
+     * radians per second (rad/s) for angular speed or Teslas (T) for magnetic flux density.
+     *
+     * @param valueX x-coordinate of sensed measurement.
+     * @param valueY y-coordinate of sensed measurement.
+     * @param valueZ z-coordinate of sensed measurement.
+     * @return true if provided triad has been processed, false if provided triad has been skipped because detector
+     * previously failed. If detector previously failed, it will need to be reset before processing additional
+     * samples.
+     * @throws LockedException if detector is busy processing a previous sample.
+     */
+    public boolean process(final double valueX, final double valueY, final double valueZ) throws LockedException {
+<span class="fc bfc" id="L1348" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1349">            throw new LockedException();</span>
+        }
+
+<span class="fc bfc" id="L1352" title="All 2 branches covered.">        if (status == Status.FAILED) {</span>
+<span class="fc" id="L1353">            return false;</span>
+        }
+
+<span class="fc" id="L1356">        running = true;</span>
+
+<span class="fc bfc" id="L1358" title="All 2 branches covered.">        if (status == Status.IDLE) {</span>
+            // start initialization
+<span class="fc" id="L1360">            status = Status.INITIALIZING;</span>
+
+<span class="pc bpc" id="L1362" title="1 of 2 branches missed.">            if (listener != null) {</span>
+                //noinspection unchecked
+<span class="fc" id="L1364">                listener.onInitializationStarted((D) this);</span>
+            }
+        }
+
+<span class="fc" id="L1368">        processedSamples++;</span>
+
+<span class="fc" id="L1370">        windowedNoiseEstimator.addTriadAndProcess(valueX, valueY, valueZ);</span>
+
+<span class="fc" id="L1372">        instantaneousAvgX = windowedNoiseEstimator.getAvgX();</span>
+<span class="fc" id="L1373">        instantaneousAvgY = windowedNoiseEstimator.getAvgY();</span>
+<span class="fc" id="L1374">        instantaneousAvgZ = windowedNoiseEstimator.getAvgZ();</span>
+
+<span class="fc" id="L1376">        instantaneousStdX = windowedNoiseEstimator.getStandardDeviationX();</span>
+<span class="fc" id="L1377">        instantaneousStdY = windowedNoiseEstimator.getStandardDeviationY();</span>
+<span class="fc" id="L1378">        instantaneousStdZ = windowedNoiseEstimator.getStandardDeviationZ();</span>
+
+<span class="fc" id="L1380">        final var windowedStdNorm = windowedNoiseEstimator.getStandardDeviationNorm();</span>
+
+<span class="fc" id="L1382">        final var filledWindow = windowedNoiseEstimator.isWindowFilled();</span>
+
+<span class="fc bfc" id="L1384" title="All 2 branches covered.">        if (status == Status.INITIALIZING) {</span>
+            // process sample during initialization
+<span class="fc" id="L1386">            accumulatedNoiseEstimator.addTriad(valueX, valueY, valueZ);</span>
+<span class="fc" id="L1387">            final var accumulatedStdNorm = accumulatedNoiseEstimator.getStandardDeviationNorm();</span>
+
+<span class="fc bfc" id="L1389" title="All 2 branches covered.">            if (processedSamples &lt; initialStaticSamples) {</span>
+<span class="fc bfc" id="L1390" title="All 4 branches covered.">                if (filledWindow &amp;&amp; (windowedStdNorm / accumulatedStdNorm &gt; instantaneousNoiseLevelFactor)) {</span>
+                    // sudden motion detected
+<span class="fc" id="L1392">                    status = Status.FAILED;</span>
+
+                    // notify error
+<span class="pc bpc" id="L1395" title="1 of 2 branches missed.">                    if (listener != null) {</span>
+                        //noinspection unchecked
+<span class="fc" id="L1397">                        listener.onError((D) this, accumulatedStdNorm, windowedStdNorm,</span>
+                                ErrorReason.SUDDEN_EXCESSIVE_MOVEMENT_DETECTED);
+                    }
+                }
+
+<span class="pc bpc" id="L1402" title="1 of 2 branches missed.">            } else if (filledWindow) {</span>
+                // initialization completed
+                // set base noise level and threshold
+<span class="fc" id="L1405">                baseNoiseLevel = accumulatedStdNorm;</span>
+<span class="fc" id="L1406">                threshold = baseNoiseLevel * thresholdFactor;</span>
+
+                // keep average/std measurements triad in case we want to obtain
+                // its value since initial period must be static
+<span class="fc" id="L1410">                accumulatedAvgX = accumulatedNoiseEstimator.getAvgX();</span>
+<span class="fc" id="L1411">                accumulatedAvgY = accumulatedNoiseEstimator.getAvgY();</span>
+<span class="fc" id="L1412">                accumulatedAvgZ = accumulatedNoiseEstimator.getAvgZ();</span>
+
+<span class="fc" id="L1414">                accumulatedStdX = accumulatedNoiseEstimator.getStandardDeviationX();</span>
+<span class="fc" id="L1415">                accumulatedStdY = accumulatedNoiseEstimator.getStandardDeviationY();</span>
+<span class="fc" id="L1416">                accumulatedStdZ = accumulatedNoiseEstimator.getStandardDeviationZ();</span>
+
+                // reset accumulated estimator so that we can estimate
+                // average specific force in static periods
+<span class="fc" id="L1420">                accumulatedNoiseEstimator.reset();</span>
+
+<span class="fc bfc" id="L1422" title="All 2 branches covered.">                if (baseNoiseLevel &gt; baseNoiseLevelAbsoluteThreshold) {</span>
+                    // base noise level exceeds allowed value
+<span class="fc" id="L1424">                    status = Status.FAILED;</span>
+
+                    // notify error
+<span class="pc bpc" id="L1427" title="1 of 2 branches missed.">                    if (listener != null) {</span>
+                        //noinspection unchecked
+<span class="fc" id="L1429">                        listener.onError((D) this, accumulatedStdNorm, windowedStdNorm,</span>
+                                ErrorReason.OVERALL_EXCESSIVE_MOVEMENT_DETECTED);
+                    }
+
+                } else {
+                    // initialization has been successfully completed
+<span class="fc" id="L1435">                    status = Status.INITIALIZATION_COMPLETED;</span>
+
+<span class="pc bpc" id="L1437" title="1 of 2 branches missed.">                    if (listener != null) {</span>
+                        //noinspection unchecked
+<span class="fc" id="L1439">                        listener.onInitializationCompleted((D) this, baseNoiseLevel);</span>
+                    }
+                }
+
+            }
+
+<span class="fc" id="L1445">            running = false;</span>
+<span class="fc" id="L1446">            return true;</span>
+        } else {
+            // detect static or dynamic period
+<span class="fc" id="L1449">            final var previousStatus = status;</span>
+
+<span class="fc bfc" id="L1451" title="All 2 branches covered.">            if (windowedStdNorm &lt; threshold) {</span>
+<span class="fc" id="L1452">                status = Status.STATIC_INTERVAL;</span>
+            } else {
+<span class="fc" id="L1454">                status = Status.DYNAMIC_INTERVAL;</span>
+            }
+
+<span class="fc bfc" id="L1457" title="All 2 branches covered.">            if (status == Status.STATIC_INTERVAL) {</span>
+                // while we are in static interval, keep adding samples to estimate
+                // accumulated average measurement triad
+<span class="fc" id="L1460">                accumulatedNoiseEstimator.addTriad(valueX, valueY, valueZ);</span>
+            }
+
+<span class="fc bfc" id="L1463" title="All 2 branches covered.">            if (previousStatus != status) {</span>
+                // static/dynamic period change detected
+<span class="pc bpc" id="L1465" title="1 of 4 branches missed.">                if (status == Status.STATIC_INTERVAL &amp;&amp; listener != null) {</span>
+                    //noinspection unchecked
+<span class="fc" id="L1467">                    listener.onStaticIntervalDetected((D) this,</span>
+                            instantaneousAvgX, instantaneousAvgY, instantaneousAvgZ,
+                            instantaneousStdX, instantaneousStdY, instantaneousStdZ);
+<span class="pc bpc" id="L1470" title="1 of 2 branches missed.">                } else if (status == Status.DYNAMIC_INTERVAL) {</span>
+                    // when switching from static to dynamic interval,
+                    // pick accumulated average and standard deviation measurement triads
+<span class="fc" id="L1473">                    accumulatedAvgX = accumulatedNoiseEstimator.getAvgX();</span>
+<span class="fc" id="L1474">                    accumulatedAvgY = accumulatedNoiseEstimator.getAvgY();</span>
+<span class="fc" id="L1475">                    accumulatedAvgZ = accumulatedNoiseEstimator.getAvgZ();</span>
+
+<span class="fc" id="L1477">                    accumulatedStdX = accumulatedNoiseEstimator.getStandardDeviationX();</span>
+<span class="fc" id="L1478">                    accumulatedStdY = accumulatedNoiseEstimator.getStandardDeviationY();</span>
+<span class="fc" id="L1479">                    accumulatedStdZ = accumulatedNoiseEstimator.getStandardDeviationZ();</span>
+
+                    // reset accumulated estimator when switching to dynamic period
+<span class="fc" id="L1482">                    accumulatedNoiseEstimator.reset();</span>
+
+<span class="pc bpc" id="L1484" title="1 of 2 branches missed.">                    if (listener != null) {</span>
+                        //noinspection unchecked
+<span class="fc" id="L1486">                        listener.onDynamicIntervalDetected((D) this,</span>
+                                instantaneousAvgX, instantaneousAvgY, instantaneousAvgZ,
+                                instantaneousStdX, instantaneousStdY, instantaneousStdZ,
+                                accumulatedAvgX, accumulatedAvgY, accumulatedAvgZ,
+                                accumulatedStdX, accumulatedStdY, accumulatedStdZ);
+                    }
+                }
+            }
+        }
+
+<span class="fc" id="L1496">        running = false;</span>
+<span class="fc" id="L1497">        return true;</span>
+    }
+
+    /**
+     * Resets this detector so that it is initialized again when new samples are added.
+     *
+     * @throws LockedException if detector is busy.
+     */
+    public void reset() throws LockedException {
+<span class="fc bfc" id="L1506" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1507">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L1510">        running = true;</span>
+
+<span class="fc" id="L1512">        status = Status.IDLE;</span>
+<span class="fc" id="L1513">        processedSamples = 0;</span>
+<span class="fc" id="L1514">        baseNoiseLevel = 0.0;</span>
+<span class="fc" id="L1515">        threshold = 0.0;</span>
+
+<span class="fc" id="L1517">        windowedNoiseEstimator.reset();</span>
+<span class="fc" id="L1518">        accumulatedNoiseEstimator.reset();</span>
+
+<span class="pc bpc" id="L1520" title="1 of 2 branches missed.">        if (listener != null) {</span>
+            //noinspection unchecked
+<span class="fc" id="L1522">            listener.onReset((D) this);</span>
+        }
+
+<span class="fc" id="L1525">        running = false;</span>
+<span class="fc" id="L1526">    }</span>
+
+    /**
+     * Converts provided measurement instance to its default unit, which is
+     * meters per squared second (m/s^2) for acceleration, radians per second (rad/s) for
+     * angular speed or Teslas (T) for magnetic flux density.
+     *
+     * @param measurement measurement to be converted.
+     * @return converted value.
+     */
+    protected double convertMeasurement(M measurement) {
+<span class="fc" id="L1537">        return convertMeasurement(measurement.getValue().doubleValue(), measurement.getUnit());</span>
+    }
+
+    /**
+     * Converts provided measurement value expressed in provided unit to the
+     * default measurement value, which is meters per squared second (m/s^2) for acceleration,
+     * radians per second (rad/s) for angular speed or Teslas (t) for magnetic flux density.
+     *
+     * @param value value to be converted.
+     * @param unit  unit of value to be converted.
+     * @return converted value.
+     */
+    protected abstract double convertMeasurement(final double value, final U unit);
+
+    /**
+     * Creates a measurement instance using provided value and unit.
+     *
+     * @param value value of measurement.
+     * @param unit  unit of value.
+     * @return created measurement
+     */
+    protected abstract M createMeasurement(final double value, final U unit);
+
+    /**
+     * Gets default unit for measurements this implementation works with.
+     *
+     * @return default measurement unit.
+     */
+    protected abstract U getDefaultUnit();
+
+    /**
+     * Creates a triad.
+     *
+     * @param valueX x-coordinate value.
+     * @param valueY y-coordinate value.
+     * @param valueZ z-coordinate value.
+     * @param unit   unit of values.
+     * @return created triad.
+     */
+    protected abstract T createTriad(final double valueX, final double valueY, final double valueZ, final U unit);
+
+    /**
+     * Possible detector status values.
+     */
+<span class="fc" id="L1581">    public enum Status {</span>
+        /**
+         * Detector is in idle status when it hasn't processed any sample yet.
+         */
+<span class="fc" id="L1585">        IDLE,</span>
+
+        /**
+         * Detector is processing samples in the initial static process to determine base noise level.
+         */
+<span class="fc" id="L1590">        INITIALIZING,</span>
+
+        /**
+         * Detector has successfully completed processing samples on the initial
+         * static period.
+         */
+<span class="fc" id="L1596">        INITIALIZATION_COMPLETED,</span>
+
+        /**
+         * A static interval has been detected, where accelerometer is considered to be subject to no substantial
+         * movement forces.
+         */
+<span class="fc" id="L1602">        STATIC_INTERVAL,</span>
+
+        /**
+         * A dynamic interval has been detected, where accelerometer is considered to be subject to substantial
+         * movement forces.
+         */
+<span class="fc" id="L1608">        DYNAMIC_INTERVAL,</span>
+
+        /**
+         * Detector has failed. This happens if accelerometer is subject to sudden movement forces while detector
+         * is initializing during the initial static period.
+         * When detector has failed, no new samples will be allowed to be processed until detector is reset.
+         */
+<span class="fc" id="L1615">        FAILED</span>
+    }
+
+    /**
+     * Reason why this detector has failed during initialization.
+     */
+<span class="fc" id="L1621">    public enum ErrorReason {</span>
+        /**
+         * If a sudden movement is detected during initialization.
+         */
+<span class="fc" id="L1625">        SUDDEN_EXCESSIVE_MOVEMENT_DETECTED,</span>
+
+        /**
+         * If overall noise level is excessive during initialization.
+         */
+<span class="fc" id="L1630">        OVERALL_EXCESSIVE_MOVEMENT_DETECTED</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

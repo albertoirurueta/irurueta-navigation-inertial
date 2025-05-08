@@ -1,0 +1,2216 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-inertial</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.inertial.calibration.magnetometer</a> &gt; <span class="el_source">PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator.java</span></div><h1>PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2022 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.inertial.calibration.magnetometer;
+
+import com.irurueta.algebra.Matrix;
+import com.irurueta.navigation.LockedException;
+import com.irurueta.navigation.NotReadyException;
+import com.irurueta.navigation.inertial.calibration.CalibrationException;
+import com.irurueta.navigation.inertial.calibration.StandardDeviationBodyMagneticFluxDensity;
+import com.irurueta.numerical.robust.PROSACRobustEstimator;
+import com.irurueta.numerical.robust.PROSACRobustEstimatorListener;
+import com.irurueta.numerical.robust.RobustEstimator;
+import com.irurueta.numerical.robust.RobustEstimatorException;
+import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
+import java.util.List;
+
+/**
+ * Robustly estimates magnetometer hard-iron biases, cross couplings and
+ * scaling factors using PROSAC algorithm.
+ * &lt;p&gt;
+ * To use this calibrator at least 10 measurements with known magnetic field norm at
+ * an unknown position and instant must be taken at 10 different unknown orientations
+ * when common z-axis is assumed, otherwise at least 13
+ * measurements are required.
+ * &lt;p&gt;
+ * Measured magnetic flux density is assumed to follow the model shown below:
+ * &lt;pre&gt;
+ *     mBmeas = bm + (I + Mm) * mBtrue + w
+ * &lt;/pre&gt;
+ * Where:
+ * - mBmeas is the measured magnetic flux density. This is a 3x1 vector.
+ * - bm is magnetometer hard-iron bias. Ideally, on a perfect magnetometer,
+ * this should be a 3x1 zero vector.
+ * - I is the 3x3 identity matrix.
+ * - Mm is the 3x3 soft-iron matrix containing cross-couplings and scaling
+ * factors. Ideally, on a perfect magnetometer, this should be a 3x3 zero
+ * matrix.
+ * - mBtrue is ground-truth magnetic flux density. This is a 3x1 vector.
+ * - w is measurement noise. This is a 3x1 vector.
+ * Notice that this calibrator assumes that all measurements are taken in
+ * a short span of time, where Earth magnetic field can be assumed to be
+ * constant at provided location and instant.
+ */
+public class PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator extends
+        RobustKnownMagneticFluxDensityNormMagnetometerCalibrator {
+
+    /**
+     * Constant defining default threshold to determine whether samples are inliers or not.
+     */
+    public static final double DEFAULT_THRESHOLD = 1e-9;
+
+    /**
+     * Minimum value that can be set as threshold.
+     * Threshold must be strictly greater than 0.0.
+     */
+    public static final double MIN_THRESHOLD = 0.0;
+
+    /**
+     * Indicates that by default inliers will only be computed but not kept.
+     */
+    public static final boolean DEFAULT_COMPUTE_AND_KEEP_INLIERS = false;
+
+    /**
+     * Indicates that by default residuals will only be computed but not kept.
+     */
+    public static final boolean DEFAULT_COMPUTE_AND_KEEP_RESIDUALS = false;
+
+    /**
+     * Threshold to determine whether samples are inliers or not when testing possible solutions.
+     * The threshold refers to the amount of error on distance between estimated position and
+     * distances provided for each sample.
+     */
+<span class="fc" id="L87">    private double threshold = DEFAULT_THRESHOLD;</span>
+
+    /**
+     * Indicates whether inliers must be computed and kept.
+     */
+<span class="fc" id="L92">    private boolean computeAndKeepInliers = DEFAULT_COMPUTE_AND_KEEP_INLIERS;</span>
+
+    /**
+     * Indicates whether residuals must be computed and kept.
+     */
+<span class="fc" id="L97">    private boolean computeAndKeepResiduals = DEFAULT_COMPUTE_AND_KEEP_RESIDUALS;</span>
+
+    /**
+     * Quality scores corresponding to each provided sample.
+     * The larger the score value the better the quality of the sample.
+     */
+    private double[] qualityScores;
+
+
+    /**
+     * Constructor.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator() {
+<span class="fc" id="L110">        super();</span>
+<span class="fc" id="L111">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param listener listener to handle events raised by this calibrator.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
+<span class="fc" id="L120">        super(listener);</span>
+<span class="fc" id="L121">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements list of body magnetic flux density
+     *                     measurements with standard deviation of
+     *                     magnetometer measurements taken at the same
+     *                     position with zero velocity and unknown different
+     *                     orientations.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements) {
+<span class="fc" id="L134">        super(measurements);</span>
+<span class="fc" id="L135">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(final boolean commonAxisUsed) {
+<span class="fc" id="L144">        super(commonAxisUsed);</span>
+<span class="fc" id="L145">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialHardIron initial hard-iron to find a solution.
+     * @throws IllegalArgumentException if provided hard-iron array does
+     *                                  not have length 3.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(final double[] initialHardIron) {
+<span class="fc" id="L155">        super(initialHardIron);</span>
+<span class="fc" id="L156">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialHardIron initial hard-iron to find a solution.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(final Matrix initialHardIron) {
+<span class="fc" id="L166">        super(initialHardIron);</span>
+<span class="fc" id="L167">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialHardIron initial hard-iron to find a solution.
+     * @param initialMm       initial soft-iron matrix containing scale factors
+     *                        and cross coupling errors.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1 or if soft-iron matrix is not
+     *                                  3x3.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final Matrix initialHardIron, final Matrix initialMm) {
+<span class="fc" id="L181">        super(initialHardIron, initialMm);</span>
+<span class="fc" id="L182">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements list of body magnetic flux density
+     *                     measurements with standard deviation of
+     *                     magnetometer measurements taken at the same
+     *                     position with zero velocity and unknown different
+     *                     orientations.
+     * @param listener     listener to handle events raised by this calibrator.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
+<span class="fc" id="L197">        super(measurements, listener);</span>
+<span class="fc" id="L198">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements   collection of body magnetic flux density
+     *                       measurements with standard deviation of
+     *                       magnetometer measurements taken at the same
+     *                       position with zero velocity and unknown different
+     *                       orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final boolean commonAxisUsed) {
+<span class="fc" id="L213">        super(measurements, commonAxisUsed);</span>
+<span class="fc" id="L214">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements   collection of body magnetic flux density
+     *                       measurements with standard deviation of
+     *                       magnetometer measurements taken at the same
+     *                       position with zero velocity and unknown different
+     *                       orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     * @param listener       listener to handle events raised by this calibrator.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final boolean commonAxisUsed,
+            final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
+<span class="fc" id="L231">        super(measurements, commonAxisUsed, listener);</span>
+<span class="fc" id="L232">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements    collection of body magnetic flux density
+     *                        measurements with standard deviation of
+     *                        magnetometer measurements taken at the same
+     *                        position with zero velocity and unknown different
+     *                        orientations.
+     * @param initialHardIron initial hard-iron to find a solution.
+     * @throws IllegalArgumentException if provided hard-iron array does
+     *                                  not have length 3.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final double[] initialHardIron) {
+<span class="fc" id="L248">        super(measurements, initialHardIron);</span>
+<span class="fc" id="L249">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements    collection of body magnetic flux density
+     *                        measurements with standard deviation of
+     *                        magnetometer measurements taken at the same
+     *                        position with zero velocity and unknown different
+     *                        orientations.
+     * @param initialHardIron initial hard-iron to find a solution.
+     * @param listener        listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided hard-iron array does
+     *                                  not have length 3.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final double[] initialHardIron,
+            final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
+<span class="fc" id="L267">        super(measurements, initialHardIron, listener);</span>
+<span class="fc" id="L268">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements    collection of body magnetic flux density
+     *                        measurements with standard deviation of
+     *                        magnetometer measurements taken at the same
+     *                        position with zero velocity and unknown different
+     *                        orientations.
+     * @param commonAxisUsed  indicates whether z-axis is assumed to be common
+     *                        for the accelerometer, gyroscope and magnetometer.
+     * @param initialHardIron initial hard-iron to find a solution.
+     * @throws IllegalArgumentException if provided hard-iron array does
+     *                                  not have length 3.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final boolean commonAxisUsed,
+            final double[] initialHardIron) {
+<span class="fc" id="L287">        super(measurements, commonAxisUsed, initialHardIron);</span>
+<span class="fc" id="L288">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements    collection of body magnetic flux density
+     *                        measurements with standard deviation of
+     *                        magnetometer measurements taken at the same
+     *                        position with zero velocity and unknown different
+     *                        orientations.
+     * @param commonAxisUsed  indicates whether z-axis is assumed to be common
+     *                        for the accelerometer, gyroscope and magnetometer.
+     * @param initialHardIron initial hard-iron to find a solution.
+     * @param listener        listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided hard-iron array does
+     *                                  not have length 3.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final boolean commonAxisUsed,
+            final double[] initialHardIron,
+            final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
+<span class="fc" id="L309">        super(measurements, commonAxisUsed, initialHardIron, listener);</span>
+<span class="fc" id="L310">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements    collection of body magnetic flux density
+     *                        measurements with standard deviation of
+     *                        magnetometer measurements taken at the same
+     *                        position with zero velocity and unknown different
+     *                        orientations.
+     * @param initialHardIron initial hard-iron to find a solution.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final Matrix initialHardIron) {
+<span class="fc" id="L326">        super(measurements, initialHardIron);</span>
+<span class="fc" id="L327">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements    collection of body magnetic flux density
+     *                        measurements with standard deviation of
+     *                        magnetometer measurements taken at the same
+     *                        position with zero velocity and unknown different
+     *                        orientations.
+     * @param initialHardIron initial hard-iron to find a solution.
+     * @param listener        listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final Matrix initialHardIron,
+            final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
+<span class="fc" id="L345">        super(measurements, initialHardIron, listener);</span>
+<span class="fc" id="L346">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements    collection of body magnetic flux density
+     *                        measurements with standard deviation of
+     *                        magnetometer measurements taken at the same
+     *                        position with zero velocity and unknown different
+     *                        orientations.
+     * @param commonAxisUsed  indicates whether z-axis is assumed to be common
+     *                        for the accelerometer, gyroscope and magnetometer.
+     * @param initialHardIron initial hard-iron to find a solution.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final boolean commonAxisUsed,
+            final Matrix initialHardIron) {
+<span class="fc" id="L365">        super(measurements, commonAxisUsed, initialHardIron);</span>
+<span class="fc" id="L366">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements    collection of body magnetic flux density
+     *                        measurements with standard deviation of
+     *                        magnetometer measurements taken at the same
+     *                        position with zero velocity and unknown different
+     *                        orientations.
+     * @param commonAxisUsed  indicates whether z-axis is assumed to be common
+     *                        for the accelerometer, gyroscope and magnetometer.
+     * @param initialHardIron initial hard-iron to find a solution.
+     * @param listener        listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final boolean commonAxisUsed,
+            final Matrix initialHardIron,
+            final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
+<span class="fc" id="L387">        super(measurements, commonAxisUsed, initialHardIron, listener);</span>
+<span class="fc" id="L388">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements    collection of body magnetic flux density
+     *                        measurements with standard deviation of
+     *                        magnetometer measurements taken at the same
+     *                        position with zero velocity and unknown different
+     *                        orientations.
+     * @param initialHardIron initial hard-iron to find a solution.
+     * @param initialMm       initial soft-iron matrix containing scale factors
+     *                        and cross coupling errors.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1 or if soft-iron matrix is not
+     *                                  3x3.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final Matrix initialHardIron,
+            final Matrix initialMm) {
+<span class="fc" id="L408">        super(measurements, initialHardIron, initialMm);</span>
+<span class="fc" id="L409">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements    collection of body magnetic flux density
+     *                        measurements with standard deviation of
+     *                        magnetometer measurements taken at the same
+     *                        position with zero velocity and unknown different
+     *                        orientations.
+     * @param initialHardIron initial hard-iron to find a solution.
+     * @param initialMm       initial soft-iron matrix containing scale factors
+     *                        and cross coupling errors.
+     * @param listener        listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1 or if soft-iron matrix is not
+     *                                  3x3.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final Matrix initialHardIron,
+            final Matrix initialMm, final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
+<span class="fc" id="L430">        super(measurements, initialHardIron, initialMm, listener);</span>
+<span class="fc" id="L431">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements    collection of body magnetic flux density
+     *                        measurements with standard deviation of
+     *                        magnetometer measurements taken at the same
+     *                        position with zero velocity and unknown different
+     *                        orientations.
+     * @param commonAxisUsed  indicates whether z-axis is assumed to be common
+     *                        for the accelerometer, gyroscope and magnetometer.
+     * @param initialHardIron initial hard-iron to find a solution.
+     * @param initialMm       initial soft-iron matrix containing scale factors
+     *                        and cross coupling errors.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1 or if soft-iron matrix is not
+     *                                  3x3.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final boolean commonAxisUsed,
+            final Matrix initialHardIron, final Matrix initialMm) {
+<span class="fc" id="L453">        super(measurements, commonAxisUsed, initialHardIron, initialMm);</span>
+<span class="fc" id="L454">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements    collection of body magnetic flux density
+     *                        measurements with standard deviation of
+     *                        magnetometer measurements taken at the same
+     *                        position with zero velocity and unknown different
+     *                        orientations.
+     * @param commonAxisUsed  indicates whether z-axis is assumed to be common
+     *                        for the accelerometer, gyroscope and magnetometer.
+     * @param initialHardIron initial hard-iron to find a solution.
+     * @param initialMm       initial soft-iron matrix containing scale factors
+     *                        and cross coupling errors.
+     * @param listener        listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1 or if soft-iron matrix is not
+     *                                  3x3.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final boolean commonAxisUsed,
+            final Matrix initialHardIron, final Matrix initialMm,
+            final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
+<span class="fc" id="L478">        super(measurements, commonAxisUsed, initialHardIron, initialMm, listener);</span>
+<span class="fc" id="L479">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final Double groundTruthMagneticFluxDensityNorm) {
+<span class="fc" id="L489">        super(groundTruthMagneticFluxDensityNorm);</span>
+<span class="fc" id="L490">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param listener                           listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final Double groundTruthMagneticFluxDensityNorm,
+            final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
+<span class="fc" id="L502">        super(groundTruthMagneticFluxDensityNorm, listener);</span>
+<span class="fc" id="L503">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param measurements                       collection of body magnetic flux density
+     *                                           measurements with standard deviation of
+     *                                           magnetometer measurements taken at the same
+     *                                           position with zero velocity and unknown different
+     *                                           orientations.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final Double groundTruthMagneticFluxDensityNorm,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements) {
+<span class="fc" id="L519">        super(groundTruthMagneticFluxDensityNorm, measurements);</span>
+<span class="fc" id="L520">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param commonAxisUsed                     indicates whether z-axis is assumed to be common
+     *                                           for the accelerometer, gyroscope and magnetometer.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final Double groundTruthMagneticFluxDensityNorm, final boolean commonAxisUsed) {
+<span class="fc" id="L532">        super(groundTruthMagneticFluxDensityNorm, commonAxisUsed);</span>
+<span class="fc" id="L533">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param initialHardIron                    initial hard-iron to find a solution.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is
+     *                                  negative, or if provided hard-iron array does
+     *                                  not have length 3.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final Double groundTruthMagneticFluxDensityNorm, final double[] initialHardIron) {
+<span class="fc" id="L546">        super(groundTruthMagneticFluxDensityNorm, initialHardIron);</span>
+<span class="fc" id="L547">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param initialHardIron                    initial hard-iron to find a solution.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is
+     *                                  negative, or if provided hard-iron matrix is not
+     *                                  3x1.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final Double groundTruthMagneticFluxDensityNorm, final Matrix initialHardIron) {
+<span class="fc" id="L560">        super(groundTruthMagneticFluxDensityNorm, initialHardIron);</span>
+<span class="fc" id="L561">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param initialHardIron                    initial hard-iron to find a solution.
+     * @param initialMm                          initial soft-iron matrix containing scale factors
+     *                                           and cross coupling errors.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is
+     *                                  negative, or if provided hard-iron matrix is not
+     *                                  3x1 or if soft-iron matrix is not
+     *                                  3x3.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final Double groundTruthMagneticFluxDensityNorm, final Matrix initialHardIron, final Matrix initialMm) {
+<span class="fc" id="L577">        super(groundTruthMagneticFluxDensityNorm, initialHardIron, initialMm);</span>
+<span class="fc" id="L578">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param measurements                       collection of body magnetic flux density
+     *                                           measurements with standard deviation of
+     *                                           magnetometer measurements taken at the same
+     *                                           position with zero velocity and unknown different
+     *                                           orientations.
+     * @param listener                           listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final Double groundTruthMagneticFluxDensityNorm,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
+<span class="fc" id="L596">        super(groundTruthMagneticFluxDensityNorm, measurements, listener);</span>
+<span class="fc" id="L597">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param measurements                       collection of body magnetic flux density
+     *                                           measurements with standard deviation of
+     *                                           magnetometer measurements taken at the same
+     *                                           position with zero velocity and unknown different
+     *                                           orientations.
+     * @param commonAxisUsed                     indicates whether z-axis is assumed to be common
+     *                                           for the accelerometer, gyroscope and magnetometer.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final Double groundTruthMagneticFluxDensityNorm,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final boolean commonAxisUsed) {
+<span class="fc" id="L615">        super(groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed);</span>
+<span class="fc" id="L616">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param measurements                       collection of body magnetic flux density
+     *                                           measurements with standard deviation of
+     *                                           magnetometer measurements taken at the same
+     *                                           position with zero velocity and unknown different
+     *                                           orientations.
+     * @param commonAxisUsed                     indicates whether z-axis is assumed to be common
+     *                                           for the accelerometer, gyroscope and magnetometer.
+     * @param listener                           listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final Double groundTruthMagneticFluxDensityNorm,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final boolean commonAxisUsed,
+            final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
+<span class="fc" id="L636">        super(groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, listener);</span>
+<span class="fc" id="L637">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param measurements                       collection of body magnetic flux density
+     *                                           measurements with standard deviation of
+     *                                           magnetometer measurements taken at the same
+     *                                           position with zero velocity and unknown different
+     *                                           orientations.
+     * @param initialHardIron                    initial hard-iron to find a solution.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative,
+     *                                  or if provided hard-iron array does not have length 3.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final Double groundTruthMagneticFluxDensityNorm,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final double[] initialHardIron) {
+<span class="fc" id="L655">        super(groundTruthMagneticFluxDensityNorm, measurements, initialHardIron);</span>
+<span class="fc" id="L656">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param measurements                       collection of body magnetic flux density
+     *                                           measurements with standard deviation of
+     *                                           magnetometer measurements taken at the same
+     *                                           position with zero velocity and unknown different
+     *                                           orientations.
+     * @param initialHardIron                    initial hard-iron to find a solution.
+     * @param listener                           listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative,
+     *                                  or if provided hard-iron array does not have length 3.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final Double groundTruthMagneticFluxDensityNorm,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final double[] initialHardIron,
+            final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
+<span class="fc" id="L676">        super(groundTruthMagneticFluxDensityNorm, measurements, initialHardIron, listener);</span>
+<span class="fc" id="L677">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param measurements                       collection of body magnetic flux density
+     *                                           measurements with standard deviation of
+     *                                           magnetometer measurements taken at the same
+     *                                           position with zero velocity and unknown different
+     *                                           orientations.
+     * @param commonAxisUsed                     indicates whether z-axis is assumed to be common
+     *                                           for the accelerometer, gyroscope and magnetometer.
+     * @param initialHardIron                    initial hard-iron to find a solution.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative,
+     *                                  or if provided hard-iron array does not have length 3.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final Double groundTruthMagneticFluxDensityNorm,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final boolean commonAxisUsed,
+            final double[] initialHardIron) {
+<span class="fc" id="L698">        super(groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, initialHardIron);</span>
+<span class="fc" id="L699">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param measurements                       collection of body magnetic flux density
+     *                                           measurements with standard deviation of
+     *                                           magnetometer measurements taken at the same
+     *                                           position with zero velocity and unknown different
+     *                                           orientations.
+     * @param commonAxisUsed                     indicates whether z-axis is assumed to be common
+     *                                           for the accelerometer, gyroscope and magnetometer.
+     * @param initialHardIron                    initial hard-iron to find a solution.
+     * @param listener                           listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative,
+     *                                  or if provided hard-iron array does not have length 3.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final Double groundTruthMagneticFluxDensityNorm,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final boolean commonAxisUsed,
+            final double[] initialHardIron,
+            final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
+<span class="fc" id="L722">        super(groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, initialHardIron, listener);</span>
+<span class="fc" id="L723">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param measurements                       collection of body magnetic flux density
+     *                                           measurements with standard deviation of
+     *                                           magnetometer measurements taken at the same
+     *                                           position with zero velocity and unknown different
+     *                                           orientations.
+     * @param initialHardIron                    initial hard-iron to find a solution.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative,
+     *                                  or if provided hard-iron matrix is not 3x1.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final Double groundTruthMagneticFluxDensityNorm,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final Matrix initialHardIron) {
+<span class="fc" id="L741">        super(groundTruthMagneticFluxDensityNorm, measurements, initialHardIron);</span>
+<span class="fc" id="L742">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param measurements                       collection of body magnetic flux density
+     *                                           measurements with standard deviation of
+     *                                           magnetometer measurements taken at the same
+     *                                           position with zero velocity and unknown different
+     *                                           orientations.
+     * @param initialHardIron                    initial hard-iron to find a solution.
+     * @param listener                           listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative,
+     *                                  or if provided hard-iron matrix is not 3x1.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final Double groundTruthMagneticFluxDensityNorm,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final Matrix initialHardIron,
+            final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
+<span class="fc" id="L762">        super(groundTruthMagneticFluxDensityNorm, measurements, initialHardIron, listener);</span>
+<span class="fc" id="L763">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param measurements                       collection of body magnetic flux density
+     *                                           measurements with standard deviation of
+     *                                           magnetometer measurements taken at the same
+     *                                           position with zero velocity and unknown different
+     *                                           orientations.
+     * @param commonAxisUsed                     indicates whether z-axis is assumed to be common
+     *                                           for the accelerometer, gyroscope and magnetometer.
+     * @param initialHardIron                    initial hard-iron to find a solution.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative,
+     *                                  or if provided hard-iron matrix is not 3x1.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final Double groundTruthMagneticFluxDensityNorm,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final boolean commonAxisUsed,
+            final Matrix initialHardIron) {
+<span class="fc" id="L784">        super(groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, initialHardIron);</span>
+<span class="fc" id="L785">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param measurements                       collection of body magnetic flux density
+     *                                           measurements with standard deviation of
+     *                                           magnetometer measurements taken at the same
+     *                                           position with zero velocity and unknown different
+     *                                           orientations.
+     * @param commonAxisUsed                     indicates whether z-axis is assumed to be common
+     *                                           for the accelerometer, gyroscope and magnetometer.
+     * @param initialHardIron                    initial hard-iron to find a solution.
+     * @param listener                           listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative,
+     *                                  or if provided hard-iron matrix is not 3x1.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final Double groundTruthMagneticFluxDensityNorm,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final boolean commonAxisUsed,
+            final Matrix initialHardIron,
+            final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
+<span class="fc" id="L808">        super(groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, initialHardIron, listener);</span>
+<span class="fc" id="L809">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param measurements                       collection of body magnetic flux density
+     *                                           measurements with standard deviation of
+     *                                           magnetometer measurements taken at the same
+     *                                           position with zero velocity and unknown different
+     *                                           orientations.
+     * @param initialHardIron                    initial hard-iron to find a solution.
+     * @param initialMm                          initial soft-iron matrix containing scale factors
+     *                                           and cross coupling errors.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative,
+     *                                  or if provided hard-iron matrix is not 3x1 or if
+     *                                  soft-iron matrix is not 3x3.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final Double groundTruthMagneticFluxDensityNorm,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final Matrix initialHardIron,
+            final Matrix initialMm) {
+<span class="fc" id="L831">        super(groundTruthMagneticFluxDensityNorm, measurements, initialHardIron, initialMm);</span>
+<span class="fc" id="L832">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param measurements                       collection of body magnetic flux density
+     *                                           measurements with standard deviation of
+     *                                           magnetometer measurements taken at the same
+     *                                           position with zero velocity and unknown different
+     *                                           orientations.
+     * @param initialHardIron                    initial hard-iron to find a solution.
+     * @param initialMm                          initial soft-iron matrix containing scale factors
+     *                                           and cross coupling errors.
+     * @param listener                           listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative,
+     *                                  or if provided hard-iron matrix is not 3x1 or if
+     *                                  soft-iron matrix is not 3x3.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final Double groundTruthMagneticFluxDensityNorm,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final Matrix initialHardIron,
+            final Matrix initialMm, final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
+<span class="fc" id="L855">        super(groundTruthMagneticFluxDensityNorm, measurements, initialHardIron, initialMm, listener);</span>
+<span class="fc" id="L856">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param measurements                       collection of body magnetic flux density
+     *                                           measurements with standard deviation of
+     *                                           magnetometer measurements taken at the same
+     *                                           position with zero velocity and unknown different
+     *                                           orientations.
+     * @param commonAxisUsed                     indicates whether z-axis is assumed to be common
+     *                                           for the accelerometer, gyroscope and magnetometer.
+     * @param initialHardIron                    initial hard-iron to find a solution.
+     * @param initialMm                          initial soft-iron matrix containing scale factors
+     *                                           and cross coupling errors.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative,
+     *                                  or if provided hard-iron matrix is not 3x1
+     *                                  or if soft-iron matrix is not 3x3.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final Double groundTruthMagneticFluxDensityNorm,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final boolean commonAxisUsed,
+            final Matrix initialHardIron, final Matrix initialMm) {
+<span class="fc" id="L880">        super(groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, initialHardIron, initialMm);</span>
+<span class="fc" id="L881">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param measurements                       collection of body magnetic flux density
+     *                                           measurements with standard deviation of
+     *                                           magnetometer measurements taken at the same
+     *                                           position with zero velocity and unknown different
+     *                                           orientations.
+     * @param commonAxisUsed                     indicates whether z-axis is assumed to be common
+     *                                           for the accelerometer, gyroscope and magnetometer.
+     * @param initialHardIron                    initial hard-iron to find a solution.
+     * @param initialMm                          initial soft-iron matrix containing scale factors
+     *                                           and cross coupling errors.
+     * @param listener                           listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative,
+     *                                  or if provided hard-iron matrix is not 3x1
+     *                                  or if soft-iron matrix is not 3x3.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final Double groundTruthMagneticFluxDensityNorm,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final boolean commonAxisUsed,
+            final Matrix initialHardIron, final Matrix initialMm,
+            final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
+<span class="fc" id="L907">        super(groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, initialHardIron, initialMm, listener);</span>
+<span class="fc" id="L908">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param measurements  list of body magnetic flux density
+     *                      measurements with standard deviation of
+     *                      magnetometer measurements taken at the same
+     *                      position with zero velocity and unknown different
+     *                      orientations.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 10 samples.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final double[] qualityScores, final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements) {
+<span class="fc" id="L926">        super(measurements);</span>
+<span class="fc" id="L927">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L928">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 10 samples.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final double[] qualityScores, final boolean commonAxisUsed) {
+<span class="fc" id="L943">        super(commonAxisUsed);</span>
+<span class="fc" id="L944">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L945">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores   quality scores corresponding to each provided
+     *                        measurement. The larger the score value the better
+     *                        the quality of the sample.
+     * @param initialHardIron initial hard-iron to find a solution.
+     * @throws IllegalArgumentException if provided hard-iron array does
+     *                                  not have length 3 or if provided
+     *                                  quality scores length is smaller
+     *                                  than 10 samples.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final double[] qualityScores, final double[] initialHardIron) {
+<span class="fc" id="L961">        super(initialHardIron);</span>
+<span class="fc" id="L962">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L963">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores   quality scores corresponding to each provided
+     *                        measurement. The larger the score value the better
+     *                        the quality of the sample.
+     * @param initialHardIron initial hard-iron to find a solution.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1 or if provided quality scores
+     *                                  length is smaller than 10 samples.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final double[] qualityScores, final Matrix initialHardIron) {
+<span class="fc" id="L978">        super(initialHardIron);</span>
+<span class="fc" id="L979">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L980">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores   quality scores corresponding to each provided
+     *                        measurement. The larger the score value the better
+     *                        the quality of the sample.
+     * @param initialHardIron initial hard-iron to find a solution.
+     * @param initialMm       initial soft-iron matrix containing scale factors
+     *                        and cross coupling errors.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1 or if soft-iron matrix is not
+     *                                  3x3 or if provided quality scores
+     *                                  length is smaller than 10 samples.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final double[] qualityScores, final Matrix initialHardIron, final Matrix initialMm) {
+<span class="fc" id="L998">        super(initialHardIron, initialMm);</span>
+<span class="fc" id="L999">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1000">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param measurements  list of body magnetic flux density
+     *                      measurements with standard deviation of
+     *                      magnetometer measurements taken at the same
+     *                      position with zero velocity and unknown different
+     *                      orientations.
+     * @param listener      listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 10 samples.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final double[] qualityScores, final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
+<span class="fc" id="L1020">        super(measurements, listener);</span>
+<span class="fc" id="L1021">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1022">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param measurements   collection of body magnetic flux density
+     *                       measurements with standard deviation of
+     *                       magnetometer measurements taken at the same
+     *                       position with zero velocity and unknown different
+     *                       orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 10 samples.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final double[] qualityScores, final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final boolean commonAxisUsed) {
+<span class="fc" id="L1043">        super(measurements, commonAxisUsed);</span>
+<span class="fc" id="L1044">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1045">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param measurements   collection of body magnetic flux density
+     *                       measurements with standard deviation of
+     *                       magnetometer measurements taken at the same
+     *                       position with zero velocity and unknown different
+     *                       orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     * @param listener       listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 10 samples.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final double[] qualityScores, final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final boolean commonAxisUsed,
+            final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
+<span class="fc" id="L1068">        super(measurements, commonAxisUsed, listener);</span>
+<span class="fc" id="L1069">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1070">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores   quality scores corresponding to each provided
+     *                        measurement. The larger the score value the better
+     *                        the quality of the sample.
+     * @param measurements    collection of body magnetic flux density
+     *                        measurements with standard deviation of
+     *                        magnetometer measurements taken at the same
+     *                        position with zero velocity and unknown different
+     *                        orientations.
+     * @param initialHardIron initial hard-iron to find a solution.
+     * @throws IllegalArgumentException if provided hard-iron array does
+     *                                  not have length 3 or if provided quality
+     *                                  scores length is smaller than 10 samples.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final double[] qualityScores, final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final double[] initialHardIron) {
+<span class="fc" id="L1091">        super(measurements, initialHardIron);</span>
+<span class="fc" id="L1092">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1093">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores   quality scores corresponding to each provided
+     *                        measurement. The larger the score value the better
+     *                        the quality of the sample.
+     * @param measurements    collection of body magnetic flux density
+     *                        measurements with standard deviation of
+     *                        magnetometer measurements taken at the same
+     *                        position with zero velocity and unknown different
+     *                        orientations.
+     * @param initialHardIron initial hard-iron to find a solution.
+     * @param listener        listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided hard-iron array does
+     *                                  not have length 3 or if provided quality
+     *                                  scores length is smaller than 10 samples.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final double[] qualityScores, final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final double[] initialHardIron,
+            final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
+<span class="fc" id="L1116">        super(measurements, initialHardIron, listener);</span>
+<span class="fc" id="L1117">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1118">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores   quality scores corresponding to each provided
+     *                        measurement. The larger the score value the better
+     *                        the quality of the sample.
+     * @param measurements    collection of body magnetic flux density
+     *                        measurements with standard deviation of
+     *                        magnetometer measurements taken at the same
+     *                        position with zero velocity and unknown different
+     *                        orientations.
+     * @param commonAxisUsed  indicates whether z-axis is assumed to be common
+     *                        for the accelerometer, gyroscope and magnetometer.
+     * @param initialHardIron initial hard-iron to find a solution.
+     * @throws IllegalArgumentException if provided hard-iron array does
+     *                                  not have length 3 or if provided quality
+     *                                  scores length is smaller than 10 samples.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final double[] qualityScores, final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final boolean commonAxisUsed, final double[] initialHardIron) {
+<span class="fc" id="L1141">        super(measurements, commonAxisUsed, initialHardIron);</span>
+<span class="fc" id="L1142">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1143">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores   quality scores corresponding to each provided
+     *                        measurement. The larger the score value the better
+     *                        the quality of the sample.
+     * @param measurements    collection of body magnetic flux density
+     *                        measurements with standard deviation of
+     *                        magnetometer measurements taken at the same
+     *                        position with zero velocity and unknown different
+     *                        orientations.
+     * @param commonAxisUsed  indicates whether z-axis is assumed to be common
+     *                        for the accelerometer, gyroscope and magnetometer.
+     * @param initialHardIron initial hard-iron to find a solution.
+     * @param listener        listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided hard-iron array does
+     *                                  not have length 3 or if provided quality
+     *                                  scores length is smaller than 10 samples.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final double[] qualityScores, final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final boolean commonAxisUsed, final double[] initialHardIron,
+            final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
+<span class="fc" id="L1168">        super(measurements, commonAxisUsed, initialHardIron, listener);</span>
+<span class="fc" id="L1169">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1170">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores   quality scores corresponding to each provided
+     *                        measurement. The larger the score value the better
+     *                        the quality of the sample.
+     * @param measurements    collection of body magnetic flux density
+     *                        measurements with standard deviation of
+     *                        magnetometer measurements taken at the same
+     *                        position with zero velocity and unknown different
+     *                        orientations.
+     * @param initialHardIron initial hard-iron to find a solution.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1 or if provided quality scores length
+     *                                  is smaller than 10 samples.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final double[] qualityScores, final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final Matrix initialHardIron) {
+<span class="fc" id="L1191">        super(measurements, initialHardIron);</span>
+<span class="fc" id="L1192">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1193">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores   quality scores corresponding to each provided
+     *                        measurement. The larger the score value the better
+     *                        the quality of the sample.
+     * @param measurements    collection of body magnetic flux density
+     *                        measurements with standard deviation of
+     *                        magnetometer measurements taken at the same
+     *                        position with zero velocity and unknown different
+     *                        orientations.
+     * @param initialHardIron initial hard-iron to find a solution.
+     * @param listener        listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1 or if provided quality scores length
+     *                                  is smaller than 10 samples.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final double[] qualityScores, final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final Matrix initialHardIron,
+            final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
+<span class="fc" id="L1216">        super(measurements, initialHardIron, listener);</span>
+<span class="fc" id="L1217">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1218">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores   quality scores corresponding to each provided
+     *                        measurement. The larger the score value the better
+     *                        the quality of the sample.
+     * @param measurements    collection of body magnetic flux density
+     *                        measurements with standard deviation of
+     *                        magnetometer measurements taken at the same
+     *                        position with zero velocity and unknown different
+     *                        orientations.
+     * @param commonAxisUsed  indicates whether z-axis is assumed to be common
+     *                        for the accelerometer, gyroscope and magnetometer.
+     * @param initialHardIron initial hard-iron to find a solution.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1 or if provided quality scores length
+     *                                  is smaller than 10 samples.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final double[] qualityScores, final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final boolean commonAxisUsed, final Matrix initialHardIron) {
+<span class="fc" id="L1241">        super(measurements, commonAxisUsed, initialHardIron);</span>
+<span class="fc" id="L1242">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1243">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores   quality scores corresponding to each provided
+     *                        measurement. The larger the score value the better
+     *                        the quality of the sample.
+     * @param measurements    collection of body magnetic flux density
+     *                        measurements with standard deviation of
+     *                        magnetometer measurements taken at the same
+     *                        position with zero velocity and unknown different
+     *                        orientations.
+     * @param commonAxisUsed  indicates whether z-axis is assumed to be common
+     *                        for the accelerometer, gyroscope and magnetometer.
+     * @param initialHardIron initial hard-iron to find a solution.
+     * @param listener        listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1 or if provided quality scores length
+     *                                  is smaller than 10 samples.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final double[] qualityScores, final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final boolean commonAxisUsed, final Matrix initialHardIron,
+            final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
+<span class="fc" id="L1268">        super(measurements, commonAxisUsed, initialHardIron, listener);</span>
+<span class="fc" id="L1269">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1270">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores   quality scores corresponding to each provided
+     *                        measurement. The larger the score value the better
+     *                        the quality of the sample.*
+     * @param measurements    collection of body magnetic flux density
+     *                        measurements with standard deviation of
+     *                        magnetometer measurements taken at the same
+     *                        position with zero velocity and unknown different
+     *                        orientations.
+     * @param initialHardIron initial hard-iron to find a solution.
+     * @param initialMm       initial soft-iron matrix containing scale factors
+     *                        and cross coupling errors.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1 or if soft-iron matrix is not
+     *                                  3x3 or if provided quality scores length
+     *                                  is smaller than 10 samples.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final double[] qualityScores, final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final Matrix initialHardIron, final Matrix initialMm) {
+<span class="fc" id="L1294">        super(measurements, initialHardIron, initialMm);</span>
+<span class="fc" id="L1295">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1296">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores   quality scores corresponding to each provided
+     *                        measurement. The larger the score value the better
+     *                        the quality of the sample.
+     * @param measurements    collection of body magnetic flux density
+     *                        measurements with standard deviation of
+     *                        magnetometer measurements taken at the same
+     *                        position with zero velocity and unknown different
+     *                        orientations.
+     * @param initialHardIron initial hard-iron to find a solution.
+     * @param initialMm       initial soft-iron matrix containing scale factors
+     *                        and cross coupling errors.
+     * @param listener        listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1 or if soft-iron matrix is not
+     *                                  3x3 or if provided quality scores length
+     *                                  is smaller than 10 samples.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final double[] qualityScores, final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final Matrix initialHardIron, final Matrix initialMm,
+            final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
+<span class="fc" id="L1322">        super(measurements, initialHardIron, initialMm, listener);</span>
+<span class="fc" id="L1323">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1324">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores   quality scores corresponding to each provided
+     *                        measurement. The larger the score value the better
+     *                        the quality of the sample.
+     * @param measurements    collection of body magnetic flux density
+     *                        measurements with standard deviation of
+     *                        magnetometer measurements taken at the same
+     *                        position with zero velocity and unknown different
+     *                        orientations.
+     * @param commonAxisUsed  indicates whether z-axis is assumed to be common
+     *                        for the accelerometer, gyroscope and magnetometer.
+     * @param initialHardIron initial hard-iron to find a solution.
+     * @param initialMm       initial soft-iron matrix containing scale factors
+     *                        and cross coupling errors.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1 or if soft-iron matrix is not
+     *                                  3x3 or if provided quality scores length
+     *                                  is smaller than 10 samples.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final double[] qualityScores, final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final boolean commonAxisUsed, final Matrix initialHardIron, final Matrix initialMm) {
+<span class="fc" id="L1350">        super(measurements, commonAxisUsed, initialHardIron, initialMm);</span>
+<span class="fc" id="L1351">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1352">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores   quality scores corresponding to each provided
+     *                        measurement. The larger the score value the better
+     *                        the quality of the sample.
+     * @param measurements    collection of body magnetic flux density
+     *                        measurements with standard deviation of
+     *                        magnetometer measurements taken at the same
+     *                        position with zero velocity and unknown different
+     *                        orientations.
+     * @param commonAxisUsed  indicates whether z-axis is assumed to be common
+     *                        for the accelerometer, gyroscope and magnetometer.
+     * @param initialHardIron initial hard-iron to find a solution.
+     * @param initialMm       initial soft-iron matrix containing scale factors
+     *                        and cross coupling errors.
+     * @param listener        listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1 or if soft-iron matrix is not
+     *                                  3x3 or if provided quality scores length
+     *                                  is smaller than 10 samples.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final double[] qualityScores, final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final boolean commonAxisUsed, final Matrix initialHardIron, final Matrix initialMm,
+            final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
+<span class="fc" id="L1380">        super(measurements, commonAxisUsed, initialHardIron, initialMm, listener);</span>
+<span class="fc" id="L1381">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1382">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores                      quality scores corresponding to each provided
+     *                                           measurement. The larger the score value the better
+     *                                           the quality of the sample.
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative
+     *                                  or if provided quality scores length is smaller
+     *                                  than 10 samples.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm) {
+<span class="fc" id="L1397">        super(groundTruthMagneticFluxDensityNorm);</span>
+<span class="fc" id="L1398">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1399">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores                      quality scores corresponding to each provided
+     *                                           measurement. The larger the score value the better
+     *                                           the quality of the sample.
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param listener                           listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative
+     *                                  or if provided quality scores length is smaller
+     *                                  than 10 samples.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm,
+            final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
+<span class="fc" id="L1416">        super(groundTruthMagneticFluxDensityNorm, listener);</span>
+<span class="fc" id="L1417">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1418">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores                      quality scores corresponding to each provided
+     *                                           measurement. The larger the score value the better
+     *                                           the quality of the sample.
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param measurements                       collection of body magnetic flux density
+     *                                           measurements with standard deviation of
+     *                                           magnetometer measurements taken at the same
+     *                                           position with zero velocity and unknown different
+     *                                           orientations.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative
+     *                                  or if provided quality scores length is smaller
+     *                                  than 10 samples.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements) {
+<span class="fc" id="L1439">        super(groundTruthMagneticFluxDensityNorm, measurements);</span>
+<span class="fc" id="L1440">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1441">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores                      quality scores corresponding to each provided
+     *                                           measurement. The larger the score value the better
+     *                                           the quality of the sample.
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param commonAxisUsed                     indicates whether z-axis is assumed to be common
+     *                                           for the accelerometer, gyroscope and magnetometer.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative
+     *                                  or if provided quality scores length is smaller
+     *                                  than 10 samples.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm,
+            final boolean commonAxisUsed) {
+<span class="fc" id="L1459">        super(groundTruthMagneticFluxDensityNorm, commonAxisUsed);</span>
+<span class="fc" id="L1460">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1461">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores                      quality scores corresponding to each provided
+     *                                           measurement. The larger the score value the better
+     *                                           the quality of the sample.
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param initialHardIron                    initial hard-iron to find a solution.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is
+     *                                  negative, or if provided hard-iron array does
+     *                                  not have length 3, or if provided quality scores
+     *                                  length is smaller than 10 samples.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm,
+            final double[] initialHardIron) {
+<span class="fc" id="L1479">        super(groundTruthMagneticFluxDensityNorm, initialHardIron);</span>
+<span class="fc" id="L1480">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1481">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores                      quality scores corresponding to each provided
+     *                                           measurement. The larger the score value the better
+     *                                           the quality of the sample.
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param initialHardIron                    initial hard-iron to find a solution.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is
+     *                                  negative, or if provided hard-iron matrix is not
+     *                                  3x1, or if provided quality scores length
+     *                                  is smaller than 10 samples.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm,
+            final Matrix initialHardIron) {
+<span class="fc" id="L1499">        super(groundTruthMagneticFluxDensityNorm, initialHardIron);</span>
+<span class="fc" id="L1500">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1501">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores                      quality scores corresponding to each provided
+     *                                           measurement. The larger the score value the better
+     *                                           the quality of the sample.
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param initialHardIron                    initial hard-iron to find a solution.
+     * @param initialMm                          initial soft-iron matrix containing scale factors
+     *                                           and cross coupling errors.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is
+     *                                  negative, or if provided hard-iron matrix is not
+     *                                  3x1 or if soft-iron matrix is not
+     *                                  3x3 or if provided quality scores length
+     *                                  is smaller than 10 samples.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm, final Matrix initialHardIron,
+            final Matrix initialMm) {
+<span class="fc" id="L1522">        super(groundTruthMagneticFluxDensityNorm, initialHardIron, initialMm);</span>
+<span class="fc" id="L1523">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1524">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores                      quality scores corresponding to each provided
+     *                                           measurement. The larger the score value the better
+     *                                           the quality of the sample.
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param measurements                       collection of body magnetic flux density
+     *                                           measurements with standard deviation of
+     *                                           magnetometer measurements taken at the same
+     *                                           position with zero velocity and unknown different
+     *                                           orientations.
+     * @param listener                           listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative
+     *                                  or if provided quality scores length is
+     *                                  smaller than 10 samples.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
+<span class="fc" id="L1547">        super(groundTruthMagneticFluxDensityNorm, measurements, listener);</span>
+<span class="fc" id="L1548">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1549">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores                      quality scores corresponding to each provided
+     *                                           measurement. The larger the score value the better
+     *                                           the quality of the sample.
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param measurements                       collection of body magnetic flux density
+     *                                           measurements with standard deviation of
+     *                                           magnetometer measurements taken at the same
+     *                                           position with zero velocity and unknown different
+     *                                           orientations.
+     * @param commonAxisUsed                     indicates whether z-axis is assumed to be common
+     *                                           for the accelerometer, gyroscope and magnetometer.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative
+     *                                  or if provided quality scores length is smaller
+     *                                  than 10 samples.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final boolean commonAxisUsed) {
+<span class="fc" id="L1572">        super(groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed);</span>
+<span class="fc" id="L1573">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1574">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores                      quality scores corresponding to each provided
+     *                                           measurement. The larger the score value the better
+     *                                           the quality of the sample.
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param measurements                       collection of body magnetic flux density
+     *                                           measurements with standard deviation of
+     *                                           magnetometer measurements taken at the same
+     *                                           position with zero velocity and unknown different
+     *                                           orientations.
+     * @param commonAxisUsed                     indicates whether z-axis is assumed to be common
+     *                                           for the accelerometer, gyroscope and magnetometer.
+     * @param listener                           listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative
+     *                                  or if provided quality scores length is smaller
+     *                                  than 10 samples.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final boolean commonAxisUsed,
+            final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
+<span class="fc" id="L1599">        super(groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, listener);</span>
+<span class="fc" id="L1600">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1601">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores                      quality scores corresponding to each provided
+     *                                           measurement. The larger the score value the better
+     *                                           the quality of the sample.
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param measurements                       collection of body magnetic flux density
+     *                                           measurements with standard deviation of
+     *                                           magnetometer measurements taken at the same
+     *                                           position with zero velocity and unknown different
+     *                                           orientations.
+     * @param initialHardIron                    initial hard-iron to find a solution.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative,
+     *                                  or if provided hard-iron array does not have length 3,
+     *                                  or if provided quality scores length is smaller
+     *                                  than 10 samples.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final double[] initialHardIron) {
+<span class="fc" id="L1624">        super(groundTruthMagneticFluxDensityNorm, measurements, initialHardIron);</span>
+<span class="fc" id="L1625">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1626">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores                      quality scores corresponding to each provided
+     *                                           measurement. The larger the score value the better
+     *                                           the quality of the sample.
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param measurements                       collection of body magnetic flux density
+     *                                           measurements with standard deviation of
+     *                                           magnetometer measurements taken at the same
+     *                                           position with zero velocity and unknown different
+     *                                           orientations.
+     * @param initialHardIron                    initial hard-iron to find a solution.
+     * @param listener                           listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative,
+     *                                  or if provided hard-iron array does not have length 3,
+     *                                  or if provided quality scores length is smaller
+     *                                  than 10 samples.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final double[] initialHardIron,
+            final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
+<span class="fc" id="L1651">        super(groundTruthMagneticFluxDensityNorm, measurements, initialHardIron, listener);</span>
+<span class="fc" id="L1652">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1653">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores                      quality scores corresponding to each provided
+     *                                           measurement. The larger the score value the better
+     *                                           the quality of the sample.
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param measurements                       collection of body magnetic flux density
+     *                                           measurements with standard deviation of
+     *                                           magnetometer measurements taken at the same
+     *                                           position with zero velocity and unknown different
+     *                                           orientations.
+     * @param commonAxisUsed                     indicates whether z-axis is assumed to be common
+     *                                           for the accelerometer, gyroscope and magnetometer.
+     * @param initialHardIron                    initial hard-iron to find a solution.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative,
+     *                                  or if provided hard-iron array does not have length 3,
+     *                                  or if provided quality scores length is smaller
+     *                                  than 10 samples.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final boolean commonAxisUsed,
+            final double[] initialHardIron) {
+<span class="fc" id="L1679">        super(groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, initialHardIron);</span>
+<span class="fc" id="L1680">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1681">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores                      quality scores corresponding to each provided
+     *                                           measurement. The larger the score value the better
+     *                                           the quality of the sample.
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param measurements                       collection of body magnetic flux density
+     *                                           measurements with standard deviation of
+     *                                           magnetometer measurements taken at the same
+     *                                           position with zero velocity and unknown different
+     *                                           orientations.
+     * @param commonAxisUsed                     indicates whether z-axis is assumed to be common
+     *                                           for the accelerometer, gyroscope and magnetometer.
+     * @param initialHardIron                    initial hard-iron to find a solution.
+     * @param listener                           listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative,
+     *                                  or if provided hard-iron array does not have length 3,
+     *                                  or if provided quality scores length is smaller
+     *                                  than 10 samples.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final boolean commonAxisUsed,
+            final double[] initialHardIron,
+            final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
+<span class="fc" id="L1709">        super(groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, initialHardIron, listener);</span>
+<span class="fc" id="L1710">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1711">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores                      quality scores corresponding to each provided
+     *                                           measurement. The larger the score value the better
+     *                                           the quality of the sample.
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param measurements                       collection of body magnetic flux density
+     *                                           measurements with standard deviation of
+     *                                           magnetometer measurements taken at the same
+     *                                           position with zero velocity and unknown different
+     *                                           orientations.
+     * @param initialHardIron                    initial hard-iron to find a solution.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative,
+     *                                  or if provided hard-iron matrix is not 3x1,
+     *                                  or if provided quality scores length is smaller
+     *                                  than 10 samples.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final Matrix initialHardIron) {
+<span class="fc" id="L1734">        super(groundTruthMagneticFluxDensityNorm, measurements, initialHardIron);</span>
+<span class="fc" id="L1735">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1736">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores                      quality scores corresponding to each provided
+     *                                           measurement. The larger the score value the better
+     *                                           the quality of the sample.
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param measurements                       collection of body magnetic flux density
+     *                                           measurements with standard deviation of
+     *                                           magnetometer measurements taken at the same
+     *                                           position with zero velocity and unknown different
+     *                                           orientations.
+     * @param initialHardIron                    initial hard-iron to find a solution.
+     * @param listener                           listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative,
+     *                                  or if provided hard-iron matrix is not 3x1,
+     *                                  or if provided quality scores length is smaller
+     *                                  than 10 samples.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final Matrix initialHardIron,
+            final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
+<span class="fc" id="L1761">        super(groundTruthMagneticFluxDensityNorm, measurements, initialHardIron, listener);</span>
+<span class="fc" id="L1762">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1763">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores                      quality scores corresponding to each provided
+     *                                           measurement. The larger the score value the better
+     *                                           the quality of the sample.
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param measurements                       collection of body magnetic flux density
+     *                                           measurements with standard deviation of
+     *                                           magnetometer measurements taken at the same
+     *                                           position with zero velocity and unknown different
+     *                                           orientations.
+     * @param commonAxisUsed                     indicates whether z-axis is assumed to be common
+     *                                           for the accelerometer, gyroscope and magnetometer.
+     * @param initialHardIron                    initial hard-iron to find a solution.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative,
+     *                                  or if provided hard-iron matrix is not 3x1,
+     *                                  or if provided quality scores length is smaller
+     *                                  than 10 samples.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final boolean commonAxisUsed,
+            final Matrix initialHardIron) {
+<span class="fc" id="L1789">        super(groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, initialHardIron);</span>
+<span class="fc" id="L1790">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1791">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores                      quality scores corresponding to each provided
+     *                                           measurement. The larger the score value the better
+     *                                           the quality of the sample.
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param measurements                       collection of body magnetic flux density
+     *                                           measurements with standard deviation of
+     *                                           magnetometer measurements taken at the same
+     *                                           position with zero velocity and unknown different
+     *                                           orientations.
+     * @param commonAxisUsed                     indicates whether z-axis is assumed to be common
+     *                                           for the accelerometer, gyroscope and magnetometer.
+     * @param initialHardIron                    initial hard-iron to find a solution.
+     * @param listener                           listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative,
+     *                                  or if provided hard-iron matrix is not 3x1,
+     *                                  or if provided quality scores length is smaller
+     *                                  than 10 samples.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final boolean commonAxisUsed,
+            final Matrix initialHardIron,
+            final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
+<span class="fc" id="L1819">        super(groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, initialHardIron, listener);</span>
+<span class="fc" id="L1820">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1821">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores                      quality scores corresponding to each provided
+     *                                           measurement. The larger the score value the better
+     *                                           the quality of the sample.
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param measurements                       collection of body magnetic flux density
+     *                                           measurements with standard deviation of
+     *                                           magnetometer measurements taken at the same
+     *                                           position with zero velocity and unknown different
+     *                                           orientations.
+     * @param initialHardIron                    initial hard-iron to find a solution.
+     * @param initialMm                          initial soft-iron matrix containing scale factors
+     *                                           and cross coupling errors.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative,
+     *                                  or if provided hard-iron matrix is not 3x1 or if
+     *                                  soft-iron matrix is not 3x3, or if provided
+     *                                  quality scores length is smaller than 10 samples.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final Matrix initialHardIron,
+            final Matrix initialMm) {
+<span class="fc" id="L1847">        super(groundTruthMagneticFluxDensityNorm, measurements, initialHardIron, initialMm);</span>
+<span class="fc" id="L1848">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1849">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores                      quality scores corresponding to each provided
+     *                                           measurement. The larger the score value the better
+     *                                           the quality of the sample.
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param measurements                       collection of body magnetic flux density
+     *                                           measurements with standard deviation of
+     *                                           magnetometer measurements taken at the same
+     *                                           position with zero velocity and unknown different
+     *                                           orientations.
+     * @param initialHardIron                    initial hard-iron to find a solution.
+     * @param initialMm                          initial soft-iron matrix containing scale factors
+     *                                           and cross coupling errors.
+     * @param listener                           listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative,
+     *                                  or if provided hard-iron matrix is not 3x1 or if
+     *                                  soft-iron matrix is not 3x3, or if provided
+     *                                  quality scores length is smaller than 10 samples.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final Matrix initialHardIron,
+            final Matrix initialMm, final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
+<span class="fc" id="L1876">        super(groundTruthMagneticFluxDensityNorm, measurements, initialHardIron, initialMm, listener);</span>
+<span class="fc" id="L1877">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1878">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores                      quality scores corresponding to each provided
+     *                                           measurement. The larger the score value the better
+     *                                           the quality of the sample.
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param measurements                       collection of body magnetic flux density
+     *                                           measurements with standard deviation of
+     *                                           magnetometer measurements taken at the same
+     *                                           position with zero velocity and unknown different
+     *                                           orientations.
+     * @param commonAxisUsed                     indicates whether z-axis is assumed to be common
+     *                                           for the accelerometer, gyroscope and magnetometer.
+     * @param initialHardIron                    initial hard-iron to find a solution.
+     * @param initialMm                          initial soft-iron matrix containing scale factors
+     *                                           and cross coupling errors.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative,
+     *                                  or if provided hard-iron matrix is not 3x1
+     *                                  or if soft-iron matrix is not 3x3, or if
+     *                                  provided quality scores length is smaller
+     *                                  than 10 samples.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final boolean commonAxisUsed,
+            final Matrix initialHardIron, final Matrix initialMm) {
+<span class="fc" id="L1907">        super(groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, initialHardIron, initialMm);</span>
+<span class="fc" id="L1908">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1909">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores                      quality scores corresponding to each provided
+     *                                           measurement. The larger the score value the better
+     *                                           the quality of the sample.
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param measurements                       collection of body magnetic flux density
+     *                                           measurements with standard deviation of
+     *                                           magnetometer measurements taken at the same
+     *                                           position with zero velocity and unknown different
+     *                                           orientations.
+     * @param commonAxisUsed                     indicates whether z-axis is assumed to be common
+     *                                           for the accelerometer, gyroscope and magnetometer.
+     * @param initialHardIron                    initial hard-iron to find a solution.
+     * @param initialMm                          initial soft-iron matrix containing scale factors
+     *                                           and cross coupling errors.
+     * @param listener                           listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative,
+     *                                  or if provided hard-iron matrix is not 3x1
+     *                                  or if soft-iron matrix is not 3x3, or if
+     *                                  provided quality scores length is smaller
+     *                                  than 10 samples.
+     */
+    public PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final boolean commonAxisUsed,
+            final Matrix initialHardIron, final Matrix initialMm,
+            final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
+<span class="fc" id="L1940">        super(groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, initialHardIron, initialMm, listener);</span>
+<span class="fc" id="L1941">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1942">    }</span>
+
+    /**
+     * Gets threshold to determine whether samples are inliers or not when testing possible solutions.
+     * The threshold refers to the amount of error on norm between measured specific forces and the
+     * ones generated with estimated calibration parameters provided for each sample.
+     *
+     * @return threshold to determine whether samples are inliers or not.
+     */
+    public double getThreshold() {
+<span class="fc" id="L1952">        return threshold;</span>
+    }
+
+    /**
+     * Sets threshold to determine whether samples are inliers or not when testing possible solutions.
+     * The threshold refers to the amount of error on norm between measured specific forces and the
+     * ones generated with estimated calibration parameters provided for each sample.
+     *
+     * @param threshold threshold to determine whether samples are inliers or not.
+     * @throws IllegalArgumentException if provided value is equal or less than zero.
+     * @throws LockedException          if calibrator is currently running.
+     */
+    public void setThreshold(final double threshold) throws LockedException {
+<span class="fc bfc" id="L1965" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1966">            throw new LockedException();</span>
+        }
+<span class="fc bfc" id="L1968" title="All 2 branches covered.">        if (threshold &lt;= MIN_THRESHOLD) {</span>
+<span class="fc" id="L1969">            throw new IllegalArgumentException();</span>
+        }
+<span class="fc" id="L1971">        this.threshold = threshold;</span>
+<span class="fc" id="L1972">    }</span>
+
+    /**
+     * Returns quality scores corresponding to each provided sample.
+     * The larger the score value the better the quality of the sample.
+     *
+     * @return quality scores corresponding to each sample.
+     */
+    @Override
+    public double[] getQualityScores() {
+<span class="fc" id="L1982">        return qualityScores;</span>
+    }
+
+    /**
+     * Sets quality scores corresponding to each provided sample.
+     * The larger the score value the better the quality of the sample.
+     *
+     * @param qualityScores quality scores corresponding to each sample.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than minimum required samples.
+     * @throws LockedException          if calibrator is currently running.
+     */
+    @Override
+    public void setQualityScores(final double[] qualityScores) throws LockedException {
+<span class="pc bpc" id="L1996" title="1 of 2 branches missed.">        if (running) {</span>
+<span class="nc" id="L1997">            throw new LockedException();</span>
+        }
+<span class="fc" id="L1999">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L2000">    }</span>
+
+    /**
+     * Indicates whether calibrator is ready to find a solution.
+     *
+     * @return true if calibrator is ready, false otherwise.
+     */
+    @Override
+    public boolean isReady() {
+<span class="pc bpc" id="L2009" title="1 of 6 branches missed.">        return super.isReady() &amp;&amp; qualityScores != null &amp;&amp; qualityScores.length == measurements.size();</span>
+    }
+
+    /**
+     * Indicates whether inliers must be computed and kept.
+     *
+     * @return true if inliers must be computed and kept, false if inliers
+     * only need to be computed but not kept.
+     */
+    public boolean isComputeAndKeepInliersEnabled() {
+<span class="fc" id="L2019">        return computeAndKeepInliers;</span>
+    }
+
+    /**
+     * Specifies whether inliers must be computed and kept.
+     *
+     * @param computeAndKeepInliers true if inliers must be computed and kept,
+     *                              false if inliers only need to be computed but not kept.
+     * @throws LockedException if calibrator is currently running.
+     */
+    public void setComputeAndKeepInliersEnabled(final boolean computeAndKeepInliers) throws LockedException {
+<span class="pc bpc" id="L2030" title="1 of 2 branches missed.">        if (running) {</span>
+<span class="nc" id="L2031">            throw new LockedException();</span>
+        }
+<span class="fc" id="L2033">        this.computeAndKeepInliers = computeAndKeepInliers;</span>
+<span class="fc" id="L2034">    }</span>
+
+    /**
+     * Indicates whether residuals must be computed and kept.
+     *
+     * @return true if residuals must be computed and kept, false if residuals
+     * only need to be computed but not kept.
+     */
+    public boolean isComputeAndKeepResiduals() {
+<span class="fc" id="L2043">        return computeAndKeepResiduals;</span>
+    }
+
+    /**
+     * Specifies whether residuals must be computed and kept.
+     *
+     * @param computeAndKeepResiduals true if residuals must be computed and kept,
+     *                                false if residuals only need to be computed but not kept.
+     * @throws LockedException if calibrator is currently running.
+     */
+    public void setComputeAndKeepResidualsEnabled(final boolean computeAndKeepResiduals) throws LockedException {
+<span class="pc bpc" id="L2054" title="1 of 2 branches missed.">        if (running) {</span>
+<span class="nc" id="L2055">            throw new LockedException();</span>
+        }
+<span class="fc" id="L2057">        this.computeAndKeepResiduals = computeAndKeepResiduals;</span>
+<span class="fc" id="L2058">    }</span>
+
+    /**
+     * Estimates magnetometer calibration parameters containing hard-iron
+     * bias and soft-iron scale factors and cross-coupling errors.
+     *
+     * @throws LockedException      if calibrator is currently running.
+     * @throws NotReadyException    if calibrator is not ready.
+     * @throws CalibrationException if estimation fails for numerical reasons.
+     */
+    @Override
+    public void calibrate() throws LockedException, NotReadyException, CalibrationException {
+<span class="fc bfc" id="L2070" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L2071">            throw new LockedException();</span>
+        }
+<span class="pc bpc" id="L2073" title="1 of 2 branches missed.">        if (!isReady()) {</span>
+<span class="nc" id="L2074">            throw new NotReadyException();</span>
+        }
+
+<span class="fc" id="L2077">        final var innerEstimator = new PROSACRobustEstimator&lt;&gt;(new PROSACRobustEstimatorListener&lt;PreliminaryResult&gt;() {</span>
+            @Override
+            public double[] getQualityScores() {
+<span class="fc" id="L2080">                return qualityScores;</span>
+            }
+
+            @Override
+            public double getThreshold() {
+<span class="fc" id="L2085">                return threshold;</span>
+            }
+
+            @Override
+            public int getTotalSamples() {
+<span class="fc" id="L2090">                return measurements.size();</span>
+            }
+
+            @Override
+            public int getSubsetSize() {
+<span class="fc" id="L2095">                return preliminarySubsetSize;</span>
+            }
+
+            @Override
+            public void estimatePreliminarSolutions(
+                    final int[] samplesIndices, final List&lt;PreliminaryResult&gt; solutions) {
+<span class="fc" id="L2101">                computePreliminarySolutions(samplesIndices, solutions);</span>
+<span class="fc" id="L2102">            }</span>
+
+            @Override
+            public double computeResidual(final PreliminaryResult currentEstimation, final int i) {
+<span class="fc" id="L2106">                return computeError(measurements.get(i), currentEstimation);</span>
+            }
+
+            @Override
+            public boolean isReady() {
+<span class="fc" id="L2111">                return PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator.this.isReady();</span>
+            }
+
+            @Override
+            public void onEstimateStart(final RobustEstimator&lt;PreliminaryResult&gt; estimator) {
+                // no action needed
+<span class="fc" id="L2117">            }</span>
+
+            @Override
+            public void onEstimateEnd(final RobustEstimator&lt;PreliminaryResult&gt; estimator) {
+                // no action needed
+<span class="fc" id="L2122">            }</span>
+
+            @Override
+            public void onEstimateNextIteration(
+                    final RobustEstimator&lt;PreliminaryResult&gt; estimator, final int iteration) {
+<span class="pc bpc" id="L2127" title="1 of 2 branches missed.">                if (listener != null) {</span>
+<span class="fc" id="L2128">                    listener.onCalibrateNextIteration(</span>
+                            PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator.this, iteration);
+                }
+<span class="fc" id="L2131">            }</span>
+
+            @Override
+            public void onEstimateProgressChange(
+                    final RobustEstimator&lt;PreliminaryResult&gt; estimator, final float progress) {
+<span class="nc bnc" id="L2136" title="All 2 branches missed.">                if (listener != null) {</span>
+<span class="nc" id="L2137">                    listener.onCalibrateProgressChange(</span>
+                            PROSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator.this, progress);
+                }
+<span class="nc" id="L2140">            }</span>
+        });
+
+        try {
+<span class="fc" id="L2144">            running = true;</span>
+
+<span class="pc bpc" id="L2146" title="1 of 2 branches missed.">            if (listener != null) {</span>
+<span class="fc" id="L2147">                listener.onCalibrateStart(this);</span>
+            }
+
+<span class="fc" id="L2150">            inliersData = null;</span>
+
+<span class="pc bpc" id="L2152" title="1 of 4 branches missed.">            innerEstimator.setComputeAndKeepInliersEnabled(computeAndKeepInliers || refineResult);</span>
+<span class="pc bpc" id="L2153" title="1 of 4 branches missed.">            innerEstimator.setComputeAndKeepResidualsEnabled(computeAndKeepResiduals || refineResult);</span>
+<span class="fc" id="L2154">            innerEstimator.setConfidence(confidence);</span>
+<span class="fc" id="L2155">            innerEstimator.setMaxIterations(maxIterations);</span>
+<span class="fc" id="L2156">            innerEstimator.setProgressDelta(progressDelta);</span>
+<span class="fc" id="L2157">            final var preliminaryResult = innerEstimator.estimate();</span>
+<span class="fc" id="L2158">            inliersData = innerEstimator.getInliersData();</span>
+
+<span class="fc" id="L2160">            attemptRefine(preliminaryResult);</span>
+
+<span class="pc bpc" id="L2162" title="1 of 2 branches missed.">            if (listener != null) {</span>
+<span class="fc" id="L2163">                listener.onCalibrateEnd(this);</span>
+            }
+
+<span class="nc" id="L2166">        } catch (final com.irurueta.numerical.LockedException e) {</span>
+<span class="nc" id="L2167">            throw new LockedException(e);</span>
+<span class="nc" id="L2168">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
+<span class="nc" id="L2169">            throw new NotReadyException(e);</span>
+<span class="nc" id="L2170">        } catch (final RobustEstimatorException e) {</span>
+<span class="nc" id="L2171">            throw new CalibrationException(e);</span>
+        } finally {
+<span class="fc" id="L2173">            running = false;</span>
+        }
+<span class="fc" id="L2175">    }</span>
+
+    /**
+     * Returns method being used for robust estimation.
+     *
+     * @return method being used for robust estimation.
+     */
+    @Override
+    public RobustEstimatorMethod getMethod() {
+<span class="fc" id="L2184">        return RobustEstimatorMethod.PROSAC;</span>
+    }
+
+    /**
+     * Indicates whether this calibrator requires quality scores for each
+     * measurement or not.
+     *
+     * @return true if quality scores are required, false otherwise.
+     */
+    @Override
+    public boolean isQualityScoresRequired() {
+<span class="fc" id="L2195">        return true;</span>
+    }
+
+    /**
+     * Sets quality scores corresponding to each provided sample.
+     * This method is used internally and does not check whether instance is
+     * locked or not.
+     *
+     * @param qualityScores quality scores to be set.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 4 samples.
+     */
+    private void internalSetQualityScores(final double[] qualityScores) {
+<span class="pc bpc" id="L2208" title="1 of 4 branches missed.">        if (qualityScores == null || qualityScores.length &lt; MINIMUM_MEASUREMENTS_COMMON_Z_AXIS) {</span>
+<span class="fc" id="L2209">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L2212">        this.qualityScores = qualityScores;</span>
+<span class="fc" id="L2213">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

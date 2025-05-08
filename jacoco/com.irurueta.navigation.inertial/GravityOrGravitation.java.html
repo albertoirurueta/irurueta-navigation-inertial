@@ -1,0 +1,424 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GravityOrGravitation.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-inertial</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.inertial</a> &gt; <span class="el_source">GravityOrGravitation.java</span></div><h1>GravityOrGravitation.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2019 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.inertial;
+
+import com.irurueta.algebra.Matrix;
+import com.irurueta.algebra.WrongSizeException;
+import com.irurueta.units.Acceleration;
+import com.irurueta.units.AccelerationConverter;
+import com.irurueta.units.AccelerationUnit;
+
+import java.io.Serializable;
+import java.util.Objects;
+
+/**
+ * Contains acceleration due to gravity resolved about ECEF or ECI frame, depending
+ * on the implementation.
+ */
+@SuppressWarnings(&quot;CloneableClassWithoutClone&quot;)
+public abstract class GravityOrGravitation&lt;T extends GravityOrGravitation&lt;?&gt;&gt; implements Serializable, Cloneable {
+    /**
+     * Number of components.
+     */
+    public static final int COMPONENTS = 3;
+
+    /**
+     * Acceleration due to gravity through ECI or ECEF x-axis expressed in meters per squared second (m/s^2).
+     */
+    double gx;
+
+    /**
+     * Acceleration due to gravity through ECI or ECEF y-axis expressed in meters per squared second (m/s^2).
+     */
+    double gy;
+
+    /**
+     * Acceleration due to gravity through ECI or ECEF z-axis expressed in meters per squared second (m/s^2).
+     */
+    double gz;
+
+    /**
+     * Constructor.
+     */
+<span class="fc" id="L56">    protected GravityOrGravitation() {</span>
+<span class="fc" id="L57">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param gx acceleration due to gravity through ECI or ECEF x-axis expressed in meters per squared second (m/s^2).
+     * @param gy acceleration due to gravity through ECI or ECEF y-axis expressed in meters per squared second (m/s^2).
+     * @param gz acceleration due to gravity through ECI or ECEF z-axis expressed in meters per squared second (m/s^2).
+     */
+<span class="fc" id="L66">    protected GravityOrGravitation(final double gx, final double gy, final double gz) {</span>
+<span class="fc" id="L67">        setCoordinates(gx, gy, gz);</span>
+<span class="fc" id="L68">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param gx acceleration due to gravity through ECI or ECEF x-axis to be set.
+     * @param gy acceleration due to gravity through ECI or ECEF y-axis to be set.
+     * @param gz acceleration due to gravity through ECI or ECEF z-axis to be set.
+     */
+<span class="fc" id="L77">    protected GravityOrGravitation(final Acceleration gx, final Acceleration gy, final Acceleration gz) {</span>
+<span class="fc" id="L78">        setCoordinates(gx, gy, gz);</span>
+<span class="fc" id="L79">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param input instance to copy data from.
+     */
+<span class="fc" id="L86">    protected GravityOrGravitation(final T input) {</span>
+<span class="fc" id="L87">        copyFrom(input);</span>
+<span class="fc" id="L88">    }</span>
+
+    /**
+     * Gets acceleration due to gravity through ECI or ECEF x-axis expressed in meters per squared second (m/s^2).
+     *
+     * @return acceleration due to gravity through ECI or ECEF x-axis.
+     */
+    public double getGx() {
+<span class="fc" id="L96">        return gx;</span>
+    }
+
+    /**
+     * Sets acceleration due to gravity through ECI or ECEF x-axis expressed in meters per squared second (m/s^2).
+     *
+     * @param gx acceleration due to gravity through ECI or ECEF x-axis.
+     */
+    public void setGx(final double gx) {
+<span class="fc" id="L105">        this.gx = gx;</span>
+<span class="fc" id="L106">    }</span>
+
+    /**
+     * Gets acceleration due to gravity through ECI or ECEF y-axis expressed in meters per squared second (m/s^2).
+     *
+     * @return acceleration due to gravity through ECI or ECEF y-axis.
+     */
+    public double getGy() {
+<span class="fc" id="L114">        return gy;</span>
+    }
+
+    /**
+     * Sets acceleration due to gravity through ECI or ECEF y-axis expressed in meters per squared second (m/s^2).
+     *
+     * @param gy acceleration due to gravity through ECI or ECEF y-axis.
+     */
+    public void setGy(final double gy) {
+<span class="fc" id="L123">        this.gy = gy;</span>
+<span class="fc" id="L124">    }</span>
+
+    /**
+     * Gets acceleration due to gravity through ECI or ECEF z-axis expressed in meters per squared second (m/s^2).
+     *
+     * @return acceleration due to gravity through ECI or ECEF z-axis.
+     */
+    public double getGz() {
+<span class="fc" id="L132">        return gz;</span>
+    }
+
+    /**
+     * Sets acceleration due to gravity through ECI or ECEF z-axis expressed in meters per squared second (m/s^2).
+     *
+     * @param gz acceleration due to gravity through ECI or ECEF z-axis.
+     */
+    public void setGz(final double gz) {
+<span class="fc" id="L141">        this.gz = gz;</span>
+<span class="fc" id="L142">    }</span>
+
+    /**
+     * Sets gravity coordinates resolved about ECI or ECEF frame and expressed in meters per squared second (m/s^2).
+     *
+     * @param gx acceleration due to gravity through ECI or ECEF x-axis expressed in meters per squared second (m/s^2).
+     * @param gy acceleration due to gravity through ECI or ECEF y-axis expressed in meters per squared second (m/s^2).
+     * @param gz acceleration due to gravity through ECI or ECEF z-axis expressed in meters per squared second (m/s^2).
+     */
+    public void setCoordinates(final double gx, final double gy, final double gz) {
+<span class="fc" id="L152">        this.gx = gx;</span>
+<span class="fc" id="L153">        this.gy = gy;</span>
+<span class="fc" id="L154">        this.gz = gz;</span>
+<span class="fc" id="L155">    }</span>
+
+    /**
+     * Gets acceleration due to gravity through ECI or ECEF x-axis.
+     *
+     * @param result instance where acceleration due to gravity through ECI or ECEF x-axis will be stored.
+     */
+    public void getGxAsAcceleration(final Acceleration result) {
+<span class="fc" id="L163">        result.setValue(gx);</span>
+<span class="fc" id="L164">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L165">    }</span>
+
+    /**
+     * Gets acceleration due to gravity through ECI or ECEF x-axis.
+     *
+     * @return acceleration due to gravity through ECI or ECEF x-axis.
+     */
+    public Acceleration getGxAsAcceleration() {
+<span class="fc" id="L173">        return new Acceleration(gx, AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+    }
+
+    /**
+     * Sets acceleration due to gravity through ECI or ECEF x-axis.
+     *
+     * @param gravityX acceleration due to gravity through ECI or ECEF x-axis to be set.
+     */
+    public void setGx(final Acceleration gravityX) {
+<span class="fc" id="L182">        gx = AccelerationConverter.convert(gravityX.getValue().doubleValue(), gravityX.getUnit(),</span>
+                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+<span class="fc" id="L184">    }</span>
+
+    /**
+     * Gets acceleration due to gravity through ECI or ECEF y-axis.
+     *
+     * @param result instance where acceleration due to gravity through ECI or ECEF y-axis will be stored.
+     */
+    public void getGyAsAcceleration(final Acceleration result) {
+<span class="fc" id="L192">        result.setValue(gy);</span>
+<span class="fc" id="L193">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L194">    }</span>
+
+    /**
+     * Gets acceleration due to gravity through ECI or ECEF y-axis.
+     *
+     * @return acceleration due to gravity through ECI or ECEF y-axis.
+     */
+    public Acceleration getGyAsAcceleration() {
+<span class="fc" id="L202">        return new Acceleration(gy, AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+    }
+
+    /**
+     * Sets acceleration due to gravity through ECI or ECEF y-axis.
+     *
+     * @param gravityY acceleration due to gravity through ECI or ECEF y-axis to be set.
+     */
+    public void setGy(final Acceleration gravityY) {
+<span class="fc" id="L211">        gy = AccelerationConverter.convert(gravityY.getValue().doubleValue(), gravityY.getUnit(),</span>
+                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+<span class="fc" id="L213">    }</span>
+
+    /**
+     * Gets acceleration due to gravity through ECI or ECEF z-axis.
+     *
+     * @param result instance where acceleration due to gravity through ECI or ECEF z-axis will be stored.
+     */
+    public void getGzAsAcceleration(final Acceleration result) {
+<span class="fc" id="L221">        result.setValue(gz);</span>
+<span class="fc" id="L222">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L223">    }</span>
+
+    /**
+     * Gets acceleration due to gravity through ECI or ECEF z-axis.
+     *
+     * @return acceleration due to gravity through ECI or ECEF z-axis.
+     */
+    public Acceleration getGzAsAcceleration() {
+<span class="fc" id="L231">        return new Acceleration(gz, AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+    }
+
+    /**
+     * Sets acceleration due to gravity through ECI or ECEF z-axis.
+     *
+     * @param gravityZ acceleration due to gravity through ECI or ECEF z-axis to be set.
+     */
+    public void setGz(final Acceleration gravityZ) {
+<span class="fc" id="L240">        gz = AccelerationConverter.convert(gravityZ.getValue().doubleValue(), gravityZ.getUnit(),</span>
+                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+<span class="fc" id="L242">    }</span>
+
+    /**
+     * Sets gravity coordinates.
+     *
+     * @param gravityX acceleration due to gravity through ECI or ECEF x-axis to be set.
+     * @param gravityY acceleration due to gravity through ECI or ECEF y-axis to be set.
+     * @param gravityZ acceleration due to gravity through ECI or ECEF z-axis to be set.
+     */
+    public void setCoordinates(final Acceleration gravityX, final Acceleration gravityY, final Acceleration gravityZ) {
+<span class="fc" id="L252">        setGx(gravityX);</span>
+<span class="fc" id="L253">        setGy(gravityY);</span>
+<span class="fc" id="L254">        setGz(gravityZ);</span>
+<span class="fc" id="L255">    }</span>
+
+    /**
+     * Gets gravity norm.
+     *
+     * @return gravity norm.
+     */
+    public double getNorm() {
+<span class="fc" id="L263">        return Math.sqrt(gx * gx + gy * gy + gz * gz);</span>
+    }
+
+    /**
+     * Gets gravity norm as an acceleration.
+     *
+     * @param result instance where result will be stored.
+     */
+    public void getNormAsAcceleration(final Acceleration result) {
+<span class="fc" id="L272">        result.setValue(getNorm());</span>
+<span class="fc" id="L273">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L274">    }</span>
+
+    /**
+     * Gets gravity norm as an acceleration.
+     *
+     * @return an acceleration containing gravity norm.
+     */
+    public Acceleration getNormAsAcceleration() {
+<span class="fc" id="L282">        return new Acceleration(getNorm(), AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+    }
+
+    /**
+     * Copies this instance data into provided instance.
+     *
+     * @param output destination instance where data will be copied to.
+     */
+    public void copyTo(final T output) {
+<span class="fc" id="L291">        output.gx = gx;</span>
+<span class="fc" id="L292">        output.gy = gy;</span>
+<span class="fc" id="L293">        output.gz = gz;</span>
+<span class="fc" id="L294">    }</span>
+
+    /**
+     * Copies data of provided instance into this instance.
+     *
+     * @param input instance to copy data from.
+     */
+    public void copyFrom(final T input) {
+<span class="fc" id="L302">        gx = input.gx;</span>
+<span class="fc" id="L303">        gy = input.gy;</span>
+<span class="fc" id="L304">        gz = input.gz;</span>
+<span class="fc" id="L305">    }</span>
+
+    /**
+     * Gets gravity coordinates expressed in meters per squared second (m/s^2) as an array.
+     *
+     * @param result array instance where gravity coordinates will be stored in
+     *               x,y,z order.
+     * @throws IllegalArgumentException if provided array does not have length 3.
+     */
+    public void asArray(final double[] result) {
+<span class="fc bfc" id="L315" title="All 2 branches covered.">        if (result.length != COMPONENTS) {</span>
+<span class="fc" id="L316">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L319">        result[0] = gx;</span>
+<span class="fc" id="L320">        result[1] = gy;</span>
+<span class="fc" id="L321">        result[2] = gz;</span>
+<span class="fc" id="L322">    }</span>
+
+    /**
+     * Gets gravity coordinates expressed in meters per squared second (m/s^2) as an array.
+     *
+     * @return array containing gravity coordinates in x,y,z order.
+     */
+    public double[] asArray() {
+<span class="fc" id="L330">        final var result = new double[COMPONENTS];</span>
+<span class="fc" id="L331">        asArray(result);</span>
+<span class="fc" id="L332">        return result;</span>
+    }
+
+    /**
+     * Gets gravity coordinates expressed in meters per squared second (m/s^2) as a column matrix.
+     * If provided matrix does not have size 3x1, it will be resized.
+     *
+     * @param result matrix instance where gravity coordinates will be stored in
+     *               x,y,z order.
+     */
+    @SuppressWarnings(&quot;DuplicatedCode&quot;)
+    public void asMatrix(final Matrix result) {
+<span class="pc bpc" id="L344" title="1 of 4 branches missed.">        if (result.getRows() != COMPONENTS || result.getColumns() != 1) {</span>
+            try {
+<span class="fc" id="L346">                result.resize(COMPONENTS, 1);</span>
+<span class="nc" id="L347">            } catch (final WrongSizeException ignore) {</span>
+                // never happens
+<span class="fc" id="L349">            }</span>
+        }
+
+<span class="fc" id="L352">        result.setElementAtIndex(0, gx);</span>
+<span class="fc" id="L353">        result.setElementAtIndex(1, gy);</span>
+<span class="fc" id="L354">        result.setElementAtIndex(2, gz);</span>
+<span class="fc" id="L355">    }</span>
+
+    /**
+     * Gets gravity coordinates as a column matrix.
+     *
+     * @return a matrix containing gravity coordinates stored in x,y,z order.
+     */
+    public Matrix asMatrix() {
+        Matrix result;
+        try {
+<span class="fc" id="L365">            result = new Matrix(COMPONENTS, 1);</span>
+<span class="fc" id="L366">            asMatrix(result);</span>
+<span class="nc" id="L367">        } catch (final WrongSizeException ignore) {</span>
+            // never happens
+<span class="nc" id="L369">            result = null;</span>
+<span class="fc" id="L370">        }</span>
+<span class="fc" id="L371">        return result;</span>
+    }
+
+    /**
+     * Computes and returns hash code for this instance. Hash codes are almost unique
+     * values that are useful for fast classification and storage of objects in collections.
+     *
+     * @return Hash code.
+     */
+    @Override
+    public int hashCode() {
+<span class="fc" id="L382">        return Objects.hash(gx, gy, gz);</span>
+    }
+
+
+    /**
+     * Check if provided object is a T instance having exactly the same contents
+     * as this instance.
+     *
+     * @param obj object to be compared.
+     * @return true if both objects are considered to be equal, false otherwise.
+     */
+    @Override
+    public abstract boolean equals(final Object obj);
+
+    /**
+     * Checks if provided instance has exactly the same contents as this instance.
+     *
+     * @param other instance to be compared.
+     * @return true if both instances are considered to be equal, false otherwise.
+     */
+    public boolean equals(final T other) {
+<span class="fc" id="L403">        return equals(other, 0.0);</span>
+    }
+
+    /**
+     * Checks if provided instance has contents similar to this instance up to provided
+     * threshold value.
+     *
+     * @param other     instance to be compared.
+     * @param threshold maximum allowed difference between gravity coordinates.
+     * @return true if both instances are considered to be equal (up to provided
+     * threshold), false otherwise.
+     */
+    public boolean equals(final T other, final double threshold) {
+<span class="fc bfc" id="L416" title="All 2 branches covered.">        if (other == null) {</span>
+<span class="fc" id="L417">            return false;</span>
+        }
+
+<span class="pc bpc" id="L420" title="1 of 4 branches missed.">        return Math.abs(gx - other.gx) &lt;= threshold &amp;&amp; Math.abs(gy - other.gy) &lt;= threshold</span>
+<span class="pc bpc" id="L421" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(gz - other.gz) &lt;= threshold;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

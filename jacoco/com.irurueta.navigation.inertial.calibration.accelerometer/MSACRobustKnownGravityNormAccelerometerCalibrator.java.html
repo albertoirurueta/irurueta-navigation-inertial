@@ -1,0 +1,962 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MSACRobustKnownGravityNormAccelerometerCalibrator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-inertial</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.inertial.calibration.accelerometer</a> &gt; <span class="el_source">MSACRobustKnownGravityNormAccelerometerCalibrator.java</span></div><h1>MSACRobustKnownGravityNormAccelerometerCalibrator.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2020 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.inertial.calibration.accelerometer;
+
+import com.irurueta.algebra.Matrix;
+import com.irurueta.navigation.LockedException;
+import com.irurueta.navigation.NotReadyException;
+import com.irurueta.navigation.inertial.calibration.CalibrationException;
+import com.irurueta.navigation.inertial.calibration.StandardDeviationBodyKinematics;
+import com.irurueta.numerical.robust.MSACRobustEstimator;
+import com.irurueta.numerical.robust.MSACRobustEstimatorListener;
+import com.irurueta.numerical.robust.RobustEstimator;
+import com.irurueta.numerical.robust.RobustEstimatorException;
+import com.irurueta.numerical.robust.RobustEstimatorMethod;
+import com.irurueta.units.Acceleration;
+
+import java.util.List;
+
+/**
+ * Robustly estimates accelerometer biases, cross couplings and scaling factors
+ * using a MSAC algorithm to discard outliers.
+ * &lt;p&gt;
+ * To use this calibrator at least 10 measurements taken at a single position
+ * where gravity norm is known must be taken at 10 different unknown
+ * orientations and zero velocity when common z-axis is assumed, otherwise at
+ * least 13 measurements are required.
+ * &lt;p&gt;
+ * Measured specific force is assumed to follow the model shown below:
+ * &lt;pre&gt;
+ *     fmeas = ba + (I + Ma) * ftrue + w
+ * &lt;/pre&gt;
+ * Where:
+ * - fmeas is the measured specific force. This is a 3x1 vector.
+ * - ba is accelerometer bias. Ideally, on a perfect accelerometer, this should be a
+ * 3x1 zero vector.
+ * - I is the 3x3 identity matrix.
+ * - Ma is the 3x3 matrix containing cross-couplings and scaling factors. Ideally, on
+ * a perfect accelerometer, this should be a 3x3 zero matrix.
+ * - ftrue is ground-truth specific force.
+ * - w is measurement noise.
+ */
+public class MSACRobustKnownGravityNormAccelerometerCalibrator extends RobustKnownGravityNormAccelerometerCalibrator {
+
+    /**
+     * Constant defining default threshold to determine whether samples are
+     * inliers or not.
+     */
+    public static final double DEFAULT_THRESHOLD = 1e-2;
+
+    /**
+     * Minimum value that can be set as threshold.
+     * Threshold must be strictly greater than 0.0.
+     */
+    public static final double MIN_THRESHOLD = 0.0;
+
+    /**
+     * Threshold to determine whether samples are inliers or not when
+     * testing possible estimation solutions.
+     */
+<span class="fc" id="L73">    private double threshold = DEFAULT_THRESHOLD;</span>
+
+    /**
+     * Constructor.
+     */
+    public MSACRobustKnownGravityNormAccelerometerCalibrator() {
+<span class="fc" id="L79">        super();</span>
+<span class="fc" id="L80">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param listener listener to be notified of events such as when estimation
+     *                 starts, ends or its progress significantly changes.
+     */
+    public MSACRobustKnownGravityNormAccelerometerCalibrator(
+            final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
+<span class="fc" id="L90">        super(listener);</span>
+<span class="fc" id="L91">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements collection of body kinematics measurements with standard
+     *                     deviations taken at the same position with zero velocity
+     *                     and unknown different orientations.
+     */
+    public MSACRobustKnownGravityNormAccelerometerCalibrator(final List&lt;StandardDeviationBodyKinematics&gt; measurements) {
+<span class="fc" id="L101">        super(measurements);</span>
+<span class="fc" id="L102">    }</span>
+
+
+    /**
+     * Constructor.
+     *
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     */
+    public MSACRobustKnownGravityNormAccelerometerCalibrator(final boolean commonAxisUsed) {
+<span class="fc" id="L112">        super(commonAxisUsed);</span>
+<span class="fc" id="L113">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialBias initial accelerometer bias to be used to find a solution.
+     *                    This must have length 3 and is expressed in meters per
+     *                    squared second (m/s^2).
+     * @throws IllegalArgumentException if provided bias array does not have length 3.
+     */
+    public MSACRobustKnownGravityNormAccelerometerCalibrator(final double[] initialBias) {
+<span class="fc" id="L124">        super(initialBias);</span>
+<span class="fc" id="L125">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialBias initial bias to find a solution.
+     * @throws IllegalArgumentException if provided bias matrix is not 3x1.
+     */
+    public MSACRobustKnownGravityNormAccelerometerCalibrator(final Matrix initialBias) {
+<span class="fc" id="L134">        super(initialBias);</span>
+<span class="fc" id="L135">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialBias initial bias to find a solution.
+     * @param initialMa   initial scale factors and cross coupling errors matrix.
+     * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
+     *                                  scaling and coupling error matrix is not 3x3.
+     */
+    public MSACRobustKnownGravityNormAccelerometerCalibrator(final Matrix initialBias, final Matrix initialMa) {
+<span class="fc" id="L146">        super(initialBias, initialMa);</span>
+<span class="fc" id="L147">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @throws IllegalArgumentException if provided gravity norm value is negative.
+     */
+    public MSACRobustKnownGravityNormAccelerometerCalibrator(final Double groundTruthGravityNorm) {
+<span class="fc" id="L157">        super(groundTruthGravityNorm);</span>
+<span class="fc" id="L158">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           list of body kinematics measurements taken at a given position with
+     *                               different unknown orientations and containing the standard deviations
+     *                               of accelerometer and gyroscope measurements.
+     * @throws IllegalArgumentException if provided gravity norm value is negative.
+     */
+    public MSACRobustKnownGravityNormAccelerometerCalibrator(
+            final Double groundTruthGravityNorm, final List&lt;StandardDeviationBodyKinematics&gt; measurements) {
+<span class="fc" id="L172">        super(groundTruthGravityNorm, measurements);</span>
+<span class="fc" id="L173">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           list of body kinematics measurements taken at a given position with
+     *                               different unknown orientations and containing the standard deviations
+     *                               of accelerometer and gyroscope measurements.
+     * @param listener               listener to be notified of events such as when estimation
+     *                               starts, ends or its progress significantly changes.
+     * @throws IllegalArgumentException if provided gravity norm value is negative.
+     */
+    public MSACRobustKnownGravityNormAccelerometerCalibrator(
+            final Double groundTruthGravityNorm, final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
+<span class="fc" id="L190">        super(groundTruthGravityNorm, measurements, listener);</span>
+<span class="fc" id="L191">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           list of body kinematics measurements taken at a given position with
+     *                               different unknown orientations and containing the standard deviations
+     *                               of accelerometer and gyroscope measurements.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @throws IllegalArgumentException if provided gravity norm value is negative.
+     */
+    public MSACRobustKnownGravityNormAccelerometerCalibrator(
+            final Double groundTruthGravityNorm, final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed) {
+<span class="fc" id="L208">        super(groundTruthGravityNorm, measurements, commonAxisUsed);</span>
+<span class="fc" id="L209">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           list of body kinematics measurements taken at a given position with
+     *                               different unknown orientations and containing the standard deviations
+     *                               of accelerometer and gyroscope measurements.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param listener               listener to be notified of events such as when estimation
+     *                               starts, ends or its progress significantly changes.
+     * @throws IllegalArgumentException if provided gravity norm value is negative.
+     */
+    public MSACRobustKnownGravityNormAccelerometerCalibrator(
+            final Double groundTruthGravityNorm, final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed, final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
+<span class="fc" id="L228">        super(groundTruthGravityNorm, measurements, commonAxisUsed, listener);</span>
+<span class="fc" id="L229">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param initialBias            initial accelerometer bias to be used to find a solution.
+     *                               This must have length 3 and is expressed in meters per
+     *                               squared second (m/s^2).
+     * @throws IllegalArgumentException if provided bias array does not have length 3 or
+     *                                  if provided gravity norm value is negative.
+     */
+    public MSACRobustKnownGravityNormAccelerometerCalibrator(
+            final Double groundTruthGravityNorm, final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final double[] initialBias) {
+<span class="fc" id="L248">        super(groundTruthGravityNorm, measurements, initialBias);</span>
+<span class="fc" id="L249">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param initialBias            initial accelerometer bias to be used to find a solution.
+     *                               This must have length 3 and is expressed in meters per
+     *                               squared second (m/s^2).
+     * @param listener               listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided bias array does not have length 3 or
+     *                                  if provided gravity norm value is negative.
+     */
+    public MSACRobustKnownGravityNormAccelerometerCalibrator(
+            final Double groundTruthGravityNorm, final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final double[] initialBias, final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
+<span class="fc" id="L269">        super(groundTruthGravityNorm, measurements, initialBias, listener);</span>
+<span class="fc" id="L270">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param initialBias            initial accelerometer bias to be used to find a solution.
+     *                               This must have length 3 and is expressed in meters per
+     *                               squared second (m/s^2).
+     * @throws IllegalArgumentException if provided bias array does not have length 3 or
+     *                                  if provided gravity norm value is negative.
+     */
+    public MSACRobustKnownGravityNormAccelerometerCalibrator(
+            final Double groundTruthGravityNorm, final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed, final double[] initialBias) {
+<span class="fc" id="L291">        super(groundTruthGravityNorm, measurements, commonAxisUsed, initialBias);</span>
+<span class="fc" id="L292">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param initialBias            initial accelerometer bias to be used to find a solution.
+     *                               This must have length 3 and is expressed in meters per
+     *                               squared second (m/s^2).
+     * @param listener               listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided bias array does not have length 3 or
+     *                                  if provided gravity norm value is negative.
+     */
+    public MSACRobustKnownGravityNormAccelerometerCalibrator(
+            final Double groundTruthGravityNorm, final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed, final double[] initialBias,
+            final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
+<span class="fc" id="L315">        super(groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, listener);</span>
+<span class="fc" id="L316">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param initialBias            initial bias to find a solution.
+     * @throws IllegalArgumentException if provided bias matrix is not 3x1 or
+     *                                  if provided gravity norm value is negative.
+     */
+    public MSACRobustKnownGravityNormAccelerometerCalibrator(
+            final Double groundTruthGravityNorm, final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final Matrix initialBias) {
+<span class="fc" id="L333">        super(groundTruthGravityNorm, measurements, initialBias);</span>
+<span class="fc" id="L334">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param initialBias            initial bias to find a solution.
+     * @param listener               listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided bias matrix is not 3x1 or
+     *                                  if provided gravity norm value is negative.
+     */
+    public MSACRobustKnownGravityNormAccelerometerCalibrator(
+            final Double groundTruthGravityNorm, final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final Matrix initialBias, final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
+<span class="fc" id="L352">        super(groundTruthGravityNorm, measurements, initialBias, listener);</span>
+<span class="fc" id="L353">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param initialBias            initial bias to find a solution.
+     * @throws IllegalArgumentException if provided bias matrix is not 3x1 or
+     *                                  if provided gravity norm value is negative.
+     */
+    public MSACRobustKnownGravityNormAccelerometerCalibrator(
+            final Double groundTruthGravityNorm, final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed, final Matrix initialBias) {
+<span class="fc" id="L372">        super(groundTruthGravityNorm, measurements, commonAxisUsed, initialBias);</span>
+<span class="fc" id="L373">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param initialBias            initial bias to find a solution.
+     * @param listener               listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided bias matrix is not 3x1 or
+     *                                  if provided gravity norm value is negative.
+     */
+    public MSACRobustKnownGravityNormAccelerometerCalibrator(
+            final Double groundTruthGravityNorm, final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed, final Matrix initialBias,
+            final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
+<span class="fc" id="L394">        super(groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, listener);</span>
+<span class="fc" id="L395">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param initialBias            initial bias to find a solution.
+     * @param initialMa              initial scale factors and cross coupling errors matrix.
+     * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
+     *                                  scaling and coupling error matrix is not 3x3 or
+     *                                  if provided gravity norm value is negative.
+     */
+    public MSACRobustKnownGravityNormAccelerometerCalibrator(
+            final Double groundTruthGravityNorm, final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final Matrix initialBias, final Matrix initialMa) {
+<span class="fc" id="L414">        super(groundTruthGravityNorm, measurements, initialBias, initialMa);</span>
+<span class="fc" id="L415">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param initialBias            initial bias to find a solution.
+     * @param initialMa              initial scale factors and cross coupling errors matrix.
+     * @param listener               listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
+     *                                  scaling and coupling error matrix is not 3x3 or
+     *                                  if provided gravity norm value is negative.
+     */
+    public MSACRobustKnownGravityNormAccelerometerCalibrator(
+            final Double groundTruthGravityNorm, final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final Matrix initialBias, final Matrix initialMa,
+            final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
+<span class="fc" id="L436">        super(groundTruthGravityNorm, measurements, initialBias, initialMa, listener);</span>
+<span class="fc" id="L437">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param initialBias            initial bias to find a solution.
+     * @param initialMa              initial scale factors and cross coupling errors matrix.
+     * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
+     *                                  scaling and coupling error matrix is not 3x3 or
+     *                                  if provided gravity norm value is negative.
+     */
+    public MSACRobustKnownGravityNormAccelerometerCalibrator(
+            final Double groundTruthGravityNorm, final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed, final Matrix initialBias, final Matrix initialMa) {
+<span class="fc" id="L458">        super(groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, initialMa);</span>
+<span class="fc" id="L459">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param initialBias            initial bias to find a solution.
+     * @param initialMa              initial scale factors and cross coupling errors matrix.
+     * @param listener               listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
+     *                                  scaling and coupling error matrix is not 3x3 or
+     *                                  if provided gravity norm value is negative.
+     */
+    public MSACRobustKnownGravityNormAccelerometerCalibrator(
+            final Double groundTruthGravityNorm, final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed, final Matrix initialBias, final Matrix initialMa,
+            final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
+<span class="fc" id="L482">        super(groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, initialMa, listener);</span>
+<span class="fc" id="L483">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @throws IllegalArgumentException if provided gravity norm value is negative.
+     */
+    public MSACRobustKnownGravityNormAccelerometerCalibrator(final Acceleration groundTruthGravityNorm) {
+<span class="fc" id="L492">        super(groundTruthGravityNorm);</span>
+<span class="fc" id="L493">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param measurements           list of body kinematics measurements taken at a given position with
+     *                               different unknown orientations and containing the standard deviations
+     *                               of accelerometer and gyroscope measurements.
+     * @throws IllegalArgumentException if provided gravity norm value is negative.
+     */
+    public MSACRobustKnownGravityNormAccelerometerCalibrator(
+            final Acceleration groundTruthGravityNorm, final List&lt;StandardDeviationBodyKinematics&gt; measurements) {
+<span class="fc" id="L506">        super(groundTruthGravityNorm, measurements);</span>
+<span class="fc" id="L507">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param measurements           list of body kinematics measurements taken at a given position with
+     *                               different unknown orientations and containing the standard deviations
+     *                               of accelerometer and gyroscope measurements.
+     * @param listener               listener to be notified of events such as when estimation
+     *                               starts, ends or its progress significantly changes.
+     * @throws IllegalArgumentException if provided gravity norm value is negative.
+     */
+    public MSACRobustKnownGravityNormAccelerometerCalibrator(
+            final Acceleration groundTruthGravityNorm, final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
+<span class="fc" id="L523">        super(groundTruthGravityNorm, measurements, listener);</span>
+<span class="fc" id="L524">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param measurements           list of body kinematics measurements taken at a given position with
+     *                               different unknown orientations and containing the standard deviations
+     *                               of accelerometer and gyroscope measurements.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @throws IllegalArgumentException if provided gravity norm value is negative.
+     */
+    public MSACRobustKnownGravityNormAccelerometerCalibrator(
+            final Acceleration groundTruthGravityNorm, final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed) {
+<span class="fc" id="L540">        super(groundTruthGravityNorm, measurements, commonAxisUsed);</span>
+<span class="fc" id="L541">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param measurements           list of body kinematics measurements taken at a given position with
+     *                               different unknown orientations and containing the standard deviations
+     *                               of accelerometer and gyroscope measurements.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param listener               listener to be notified of events such as when estimation
+     *                               starts, ends or its progress significantly changes.
+     * @throws IllegalArgumentException if provided gravity norm value is negative.
+     */
+    public MSACRobustKnownGravityNormAccelerometerCalibrator(
+            final Acceleration groundTruthGravityNorm, final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed, final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
+<span class="fc" id="L559">        super(groundTruthGravityNorm, measurements, commonAxisUsed, listener);</span>
+<span class="fc" id="L560">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param initialBias            initial accelerometer bias to be used to find a solution.
+     *                               This must have length 3 and is expressed in meters per
+     *                               squared second (m/s^2).
+     * @throws IllegalArgumentException if provided bias array does not have length 3 or
+     *                                  if provided gravity norm value is negative.
+     */
+    public MSACRobustKnownGravityNormAccelerometerCalibrator(
+            final Acceleration groundTruthGravityNorm, final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final double[] initialBias) {
+<span class="fc" id="L578">        super(groundTruthGravityNorm, measurements, initialBias);</span>
+<span class="fc" id="L579">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param initialBias            initial accelerometer bias to be used to find a solution.
+     *                               This must have length 3 and is expressed in meters per
+     *                               squared second (m/s^2).
+     * @param listener               listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided bias array does not have length 3 or
+     *                                  if provided gravity norm value is negative.
+     */
+    public MSACRobustKnownGravityNormAccelerometerCalibrator(
+            final Acceleration groundTruthGravityNorm, final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final double[] initialBias, final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
+<span class="fc" id="L598">        super(groundTruthGravityNorm, measurements, initialBias, listener);</span>
+<span class="fc" id="L599">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param initialBias            initial accelerometer bias to be used to find a solution.
+     *                               This must have length 3 and is expressed in meters per
+     *                               squared second (m/s^2).
+     * @throws IllegalArgumentException if provided bias array does not have length 3 or
+     *                                  if provided gravity norm value is negative.
+     */
+    public MSACRobustKnownGravityNormAccelerometerCalibrator(
+            final Acceleration groundTruthGravityNorm, final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed, final double[] initialBias) {
+<span class="fc" id="L619">        super(groundTruthGravityNorm, measurements, commonAxisUsed, initialBias);</span>
+<span class="fc" id="L620">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param initialBias            initial accelerometer bias to be used to find a solution.
+     *                               This must have length 3 and is expressed in meters per
+     *                               squared second (m/s^2).
+     * @param listener               listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided bias array does not have length 3 or
+     *                                  if provided gravity norm value is negative.
+     */
+    public MSACRobustKnownGravityNormAccelerometerCalibrator(
+            final Acceleration groundTruthGravityNorm, final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed, final double[] initialBias,
+            final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
+<span class="fc" id="L642">        super(groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, listener);</span>
+<span class="fc" id="L643">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param initialBias            initial bias to find a solution.
+     * @throws IllegalArgumentException if provided bias matrix is not 3x1 or
+     *                                  if provided gravity norm value is negative.
+     */
+    public MSACRobustKnownGravityNormAccelerometerCalibrator(
+            final Acceleration groundTruthGravityNorm, final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final Matrix initialBias) {
+<span class="fc" id="L659">        super(groundTruthGravityNorm, measurements, initialBias);</span>
+<span class="fc" id="L660">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param initialBias            initial bias to find a solution.
+     * @param listener               listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided bias matrix is not 3x1 or
+     *                                  if provided gravity norm value is negative.
+     */
+    public MSACRobustKnownGravityNormAccelerometerCalibrator(
+            final Acceleration groundTruthGravityNorm, final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final Matrix initialBias, final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
+<span class="fc" id="L677">        super(groundTruthGravityNorm, measurements, initialBias, listener);</span>
+<span class="fc" id="L678">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param initialBias            initial bias to find a solution.
+     * @throws IllegalArgumentException if provided bias matrix is not 3x1 or
+     *                                  if provided gravity norm value is negative.
+     */
+    public MSACRobustKnownGravityNormAccelerometerCalibrator(
+            final Acceleration groundTruthGravityNorm, final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed, final Matrix initialBias) {
+<span class="fc" id="L696">        super(groundTruthGravityNorm, measurements, commonAxisUsed, initialBias);</span>
+<span class="fc" id="L697">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param initialBias            initial bias to find a solution.
+     * @param listener               listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided bias matrix is not 3x1 or
+     *                                  if provided gravity norm value is negative.
+     */
+    public MSACRobustKnownGravityNormAccelerometerCalibrator(
+            final Acceleration groundTruthGravityNorm, final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed, final Matrix initialBias,
+            final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
+<span class="fc" id="L717">        super(groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, listener);</span>
+<span class="fc" id="L718">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param initialBias            initial bias to find a solution.
+     * @param initialMa              initial scale factors and cross coupling errors matrix.
+     * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
+     *                                  scaling and coupling error matrix is not 3x3 or
+     *                                  if provided gravity norm value is negative.
+     */
+    public MSACRobustKnownGravityNormAccelerometerCalibrator(
+            final Acceleration groundTruthGravityNorm, final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final Matrix initialBias, final Matrix initialMa) {
+<span class="fc" id="L736">        super(groundTruthGravityNorm, measurements, initialBias, initialMa);</span>
+<span class="fc" id="L737">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param initialBias            initial bias to find a solution.
+     * @param initialMa              initial scale factors and cross coupling errors matrix.
+     * @param listener               listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
+     *                                  scaling and coupling error matrix is not 3x3 or
+     *                                  if provided gravity norm value is negative.
+     */
+    public MSACRobustKnownGravityNormAccelerometerCalibrator(
+            final Acceleration groundTruthGravityNorm, final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final Matrix initialBias, final Matrix initialMa,
+            final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
+<span class="fc" id="L757">        super(groundTruthGravityNorm, measurements, initialBias, initialMa, listener);</span>
+<span class="fc" id="L758">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param initialBias            initial bias to find a solution.
+     * @param initialMa              initial scale factors and cross coupling errors matrix.
+     * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
+     *                                  scaling and coupling error matrix is not 3x3 or
+     *                                  if provided gravity norm value is negative.
+     */
+    public MSACRobustKnownGravityNormAccelerometerCalibrator(
+            final Acceleration groundTruthGravityNorm, final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed, final Matrix initialBias, final Matrix initialMa) {
+<span class="fc" id="L778">        super(groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, initialMa);</span>
+<span class="fc" id="L779">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param initialBias            initial bias to find a solution.
+     * @param initialMa              initial scale factors and cross coupling errors matrix.
+     * @param listener               listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
+     *                                  scaling and coupling error matrix is not 3x3 or
+     *                                  if provided gravity norm value is negative.
+     */
+    public MSACRobustKnownGravityNormAccelerometerCalibrator(
+            final Acceleration groundTruthGravityNorm, final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed, final Matrix initialBias, final Matrix initialMa,
+            final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
+<span class="fc" id="L801">        super(groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, initialMa, listener);</span>
+<span class="fc" id="L802">    }</span>
+
+    /**
+     * Returns threshold to determine whether samples are inliers or not.
+     *
+     * @return threshold to determine whether samples are inliers or not.
+     */
+    public double getThreshold() {
+<span class="fc" id="L810">        return threshold;</span>
+    }
+
+    /**
+     * Sets threshold to determine whether samples are inliers or not.
+     *
+     * @param threshold threshold to be set.
+     * @throws IllegalArgumentException if provided value is equal or less than
+     *                                  zero.
+     * @throws LockedException          if calibrator is currently running.
+     */
+    public void setThreshold(final double threshold) throws LockedException {
+<span class="fc bfc" id="L822" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L823">            throw new LockedException();</span>
+        }
+<span class="fc bfc" id="L825" title="All 2 branches covered.">        if (threshold &lt;= MIN_THRESHOLD) {</span>
+<span class="fc" id="L826">            throw new IllegalArgumentException();</span>
+        }
+<span class="fc" id="L828">        this.threshold = threshold;</span>
+<span class="fc" id="L829">    }</span>
+
+    /**
+     * Estimates accelerometer calibration parameters containing bias, scale factors
+     * and cross-coupling errors.
+     *
+     * @throws LockedException      if calibrator is currently running.
+     * @throws NotReadyException    if calibrator is not ready.
+     * @throws CalibrationException if estimation fails for numerical reasons.
+     */
+    @SuppressWarnings(&quot;DuplicatedCode&quot;)
+    @Override
+    public void calibrate() throws LockedException, NotReadyException, CalibrationException {
+<span class="fc bfc" id="L842" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L843">            throw new LockedException();</span>
+        }
+<span class="pc bpc" id="L845" title="1 of 2 branches missed.">        if (!isReady()) {</span>
+<span class="nc" id="L846">            throw new NotReadyException();</span>
+        }
+
+<span class="fc" id="L849">        final var innerEstimator = new MSACRobustEstimator&lt;&gt;(new MSACRobustEstimatorListener&lt;PreliminaryResult&gt;() {</span>
+            @Override
+            public double getThreshold() {
+<span class="fc" id="L852">                return threshold;</span>
+            }
+
+            @Override
+            public int getTotalSamples() {
+<span class="fc" id="L857">                return measurements.size();</span>
+            }
+
+            @Override
+            public int getSubsetSize() {
+<span class="fc" id="L862">                return preliminarySubsetSize;</span>
+            }
+
+            @Override
+            public void estimatePreliminarSolutions(
+                    final int[] samplesIndices, final List&lt;PreliminaryResult&gt; solutions) {
+<span class="fc" id="L868">                computePreliminarySolutions(samplesIndices, solutions);</span>
+<span class="fc" id="L869">            }</span>
+
+            @Override
+            public double computeResidual(final PreliminaryResult currentEstimation, final int i) {
+<span class="fc" id="L873">                return computeError(measurements.get(i), currentEstimation);</span>
+            }
+
+            @Override
+            public boolean isReady() {
+<span class="fc" id="L878">                return MSACRobustKnownGravityNormAccelerometerCalibrator.super.isReady();</span>
+            }
+
+            @Override
+            public void onEstimateStart(final RobustEstimator&lt;PreliminaryResult&gt; estimator) {
+                // no action needed
+<span class="fc" id="L884">            }</span>
+
+            @Override
+            public void onEstimateEnd(final RobustEstimator&lt;PreliminaryResult&gt; estimator) {
+                // no action needed
+<span class="fc" id="L889">            }</span>
+
+            @Override
+            public void onEstimateNextIteration(
+                    final RobustEstimator&lt;PreliminaryResult&gt; estimator, final int iteration) {
+<span class="pc bpc" id="L894" title="1 of 2 branches missed.">                if (listener != null) {</span>
+<span class="fc" id="L895">                    listener.onCalibrateNextIteration(</span>
+                            MSACRobustKnownGravityNormAccelerometerCalibrator.this, iteration);
+                }
+<span class="fc" id="L898">            }</span>
+
+            @Override
+            public void onEstimateProgressChange(
+                    final RobustEstimator&lt;PreliminaryResult&gt; estimator, final float progress) {
+<span class="pc bpc" id="L903" title="1 of 2 branches missed.">                if (listener != null) {</span>
+<span class="fc" id="L904">                    listener.onCalibrateProgressChange(</span>
+                            MSACRobustKnownGravityNormAccelerometerCalibrator.this, progress);
+                }
+<span class="fc" id="L907">            }</span>
+        });
+
+        try {
+<span class="fc" id="L911">            running = true;</span>
+
+<span class="pc bpc" id="L913" title="1 of 2 branches missed.">            if (listener != null) {</span>
+<span class="fc" id="L914">                listener.onCalibrateStart(this);</span>
+            }
+
+<span class="fc" id="L917">            inliersData = null;</span>
+<span class="fc" id="L918">            innerEstimator.setConfidence(confidence);</span>
+<span class="fc" id="L919">            innerEstimator.setMaxIterations(maxIterations);</span>
+<span class="fc" id="L920">            innerEstimator.setProgressDelta(progressDelta);</span>
+<span class="fc" id="L921">            final var preliminaryResult = innerEstimator.estimate();</span>
+<span class="fc" id="L922">            inliersData = innerEstimator.getInliersData();</span>
+
+<span class="fc" id="L924">            attemptRefine(preliminaryResult);</span>
+
+<span class="pc bpc" id="L926" title="1 of 2 branches missed.">            if (listener != null) {</span>
+<span class="fc" id="L927">                listener.onCalibrateEnd(this);</span>
+            }
+
+<span class="nc" id="L930">        } catch (final com.irurueta.numerical.LockedException e) {</span>
+<span class="nc" id="L931">            throw new LockedException(e);</span>
+<span class="nc" id="L932">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
+<span class="nc" id="L933">            throw new NotReadyException(e);</span>
+<span class="nc" id="L934">        } catch (final RobustEstimatorException e) {</span>
+<span class="nc" id="L935">            throw new CalibrationException(e);</span>
+        } finally {
+<span class="fc" id="L937">            running = false;</span>
+        }
+<span class="fc" id="L939">    }</span>
+
+    /**
+     * Returns method being used for robust estimation.
+     *
+     * @return method being used for robust estimation.
+     */
+    @Override
+    public RobustEstimatorMethod getMethod() {
+<span class="fc" id="L948">        return RobustEstimatorMethod.MSAC;</span>
+    }
+
+    /**
+     * Indicates whether this calibrator requires quality scores for each
+     * measurement or not.
+     *
+     * @return true if quality scores are required, false otherwise.
+     */
+    @Override
+    public boolean isQualityScoresRequired() {
+<span class="fc" id="L959">        return false;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

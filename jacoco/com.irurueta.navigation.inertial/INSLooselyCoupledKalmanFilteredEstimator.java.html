@@ -1,0 +1,1654 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>INSLooselyCoupledKalmanFilteredEstimator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-inertial</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.inertial</a> &gt; <span class="el_source">INSLooselyCoupledKalmanFilteredEstimator.java</span></div><h1>INSLooselyCoupledKalmanFilteredEstimator.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2020 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.inertial;
+
+import com.irurueta.algebra.AlgebraException;
+import com.irurueta.navigation.LockedException;
+import com.irurueta.navigation.NotReadyException;
+import com.irurueta.navigation.frames.ECEFFrame;
+import com.irurueta.navigation.inertial.navigators.ECEFInertialNavigator;
+import com.irurueta.navigation.inertial.navigators.InertialNavigatorException;
+import com.irurueta.units.Time;
+import com.irurueta.units.TimeConverter;
+import com.irurueta.units.TimeUnit;
+
+/**
+ * Calculates position, velocity, attitude and IMU biases using an INS loosely
+ * coupled Kalman filter to take into account inertial measurements to
+ * smooth results and taking into account an initial position.
+ * This implementation is based on the equations defined in &quot;Principles of GNSS, Inertial, and Multisensor
+ * Integrated Navigation Systems, Second Edition&quot; and on the companion software available at:
+ * &lt;a href=&quot;https://github.com/ymjdz/MATLAB-Codes/blob/master/Loosely_coupled_INS_GNSS.m&quot;&gt;
+ *     https://github.com/ymjdz/MATLAB-Codes/blob/master/Loosely_coupled_INS_GNSS.m
+ * &lt;/a&gt;
+ */
+@SuppressWarnings(&quot;DuplicatedCode&quot;)
+public class INSLooselyCoupledKalmanFilteredEstimator {
+
+    /**
+     * Listener to notify events raised by this instance.
+     */
+    private INSLooselyCoupledKalmanFilteredEstimatorListener listener;
+
+    /**
+     * Minimum epoch interval expressed in seconds (s) between consecutive
+     * propagations or measurements.
+     * Attempting to propagate results using Kalman filter or updating measurements
+     * when intervals are less than this value, will be ignored.
+     */
+    private double epochInterval;
+
+    /**
+     * INS loosely coupled Kalman filter configuration parameters (usually
+     * obtained through calibration).
+     */
+    private INSLooselyCoupledKalmanConfig config;
+
+    /**
+     * Last provided user kinematics containing applied specific force and
+     * angular rates resolved in body axes.
+     */
+    private BodyKinematics kinematics;
+
+    /**
+     * Contains last provided user kinematics minus currently estimated bias
+     * for acceleration and angular rate values.
+     */
+    private BodyKinematics correctedKinematics;
+
+    /**
+     * Contains current or initial user position, velocity and attitude.
+     */
+    private ECEFFrame frame;
+
+    /**
+     * Configuration containing uncertainty measures to set initial covariance matrix
+     * within estimated state.
+     * Once this estimator is initialized, covariance will be updated with new provided
+     * INS measurements until convergence is reached.
+     */
+    private INSLooselyCoupledKalmanInitializerConfig initialConfig;
+
+    /**
+     * Current Kalman filter state containing current INS estimation along with
+     * Kalman filter covariance error matrix.
+     */
+    private INSLooselyCoupledKalmanState state;
+
+    /**
+     * Timestamp expressed in seconds since epoch time when Kalman filter state
+     * was last propagated.
+     */
+    private Double lastStateTimestamp;
+
+    /**
+     * Indicates whether this estimator is running or not.
+     */
+    private boolean running;
+
+    /**
+     * Constructor.
+     */
+<span class="fc" id="L105">    public INSLooselyCoupledKalmanFilteredEstimator() {</span>
+<span class="fc" id="L106">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param config INS Kalman filter configuration parameters (usually obtained
+     *               through calibration).
+     */
+<span class="fc" id="L114">    public INSLooselyCoupledKalmanFilteredEstimator(final INSLooselyCoupledKalmanConfig config) {</span>
+<span class="fc" id="L115">        this.config = new INSLooselyCoupledKalmanConfig(config);</span>
+<span class="fc" id="L116">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param epochInterval minimum epoch interval expressed in seconds (s) between
+     *                      consecutive propagations or measurements.
+     * @throws IllegalArgumentException if provided epoch interval is negative.
+     */
+<span class="fc" id="L125">    public INSLooselyCoupledKalmanFilteredEstimator(final double epochInterval) {</span>
+        try {
+<span class="fc" id="L127">            setEpochInterval(epochInterval);</span>
+<span class="nc" id="L128">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L130">        }</span>
+<span class="fc" id="L131">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param listener listener to notify events raised by this instance.
+     */
+<span class="fc" id="L138">    public INSLooselyCoupledKalmanFilteredEstimator(final INSLooselyCoupledKalmanFilteredEstimatorListener listener) {</span>
+<span class="fc" id="L139">        this.listener = listener;</span>
+<span class="fc" id="L140">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param config        INS loosely coupled Kalman filter configuration
+     *                      parameters (usually obtained through calibration).
+     * @param epochInterval minimum epoch interval expressed in seconds (s) between
+     *                      consecutive propagations or measurements.
+     * @throws IllegalArgumentException if provided epoch interval is negative.
+     */
+    public INSLooselyCoupledKalmanFilteredEstimator(
+            final INSLooselyCoupledKalmanConfig config, final double epochInterval) {
+<span class="fc" id="L153">        this(epochInterval);</span>
+<span class="fc" id="L154">        this.config = new INSLooselyCoupledKalmanConfig(config);</span>
+<span class="fc" id="L155">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param config   INS tightly coupled Kalman filter configuration parameters
+     *                 (usually obtained through calibration).
+     * @param listener listener to notify events raised by this instance.
+     */
+    public INSLooselyCoupledKalmanFilteredEstimator(
+            final INSLooselyCoupledKalmanConfig config,
+            final INSLooselyCoupledKalmanFilteredEstimatorListener listener) {
+<span class="fc" id="L167">        this(config);</span>
+<span class="fc" id="L168">        this.listener = listener;</span>
+<span class="fc" id="L169">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param epochInterval minimum epoch interval expressed in seconds (s) between
+     *                      consecutive propagations or measurements.
+     * @param listener      listener to notify events raised by this instance.
+     * @throws IllegalArgumentException if provided epoch interval is negative.
+     */
+    public INSLooselyCoupledKalmanFilteredEstimator(
+            final double epochInterval, final INSLooselyCoupledKalmanFilteredEstimatorListener listener) {
+<span class="fc" id="L181">        this(epochInterval);</span>
+<span class="fc" id="L182">        this.listener = listener;</span>
+<span class="fc" id="L183">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param config        INS loosely coupled Kalman filter configuration
+     *                      parameters (usually obtained through calibration).
+     * @param epochInterval minimum epoch interval expressed in seconds (s) between
+     *                      consecutive propagations or measurements.
+     * @param listener      listener to notify events raised by this instance.
+     * @throws IllegalArgumentException if provided epoch interval is negative.
+     */
+    public INSLooselyCoupledKalmanFilteredEstimator(
+            final INSLooselyCoupledKalmanConfig config, final double epochInterval,
+            final INSLooselyCoupledKalmanFilteredEstimatorListener listener) {
+<span class="fc" id="L198">        this(config, epochInterval);</span>
+<span class="fc" id="L199">        this.listener = listener;</span>
+<span class="fc" id="L200">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param epochInterval minimum epoch interval between consecutive
+     *                      propagations or measurements.
+     * @throws IllegalArgumentException if provided epoch interval is negative.
+     */
+    public INSLooselyCoupledKalmanFilteredEstimator(final Time epochInterval) {
+<span class="fc" id="L210">        this(TimeConverter.convert(epochInterval.getValue().doubleValue(), epochInterval.getUnit(), TimeUnit.SECOND));</span>
+<span class="fc" id="L211">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param config        INS tightly coupled Kalman filter configuration
+     *                      parameters (usually obtained through calibration).
+     * @param epochInterval minimum epoch interval between consecutive
+     *                      propagations or measurements.
+     * @throws IllegalArgumentException if provided epoch interval is negative.
+     */
+    public INSLooselyCoupledKalmanFilteredEstimator(
+            final INSLooselyCoupledKalmanConfig config, final Time epochInterval) {
+<span class="fc" id="L224">        this(config, TimeConverter.convert(epochInterval.getValue().doubleValue(), epochInterval.getUnit(),</span>
+                TimeUnit.SECOND));
+<span class="fc" id="L226">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param epochInterval minimum epoch interval between consecutive
+     *                      propagations or measurements.
+     * @param listener      listener to notify events raised by this instance.
+     * @throws IllegalArgumentException if provided epoch interval is negative.
+     */
+    public INSLooselyCoupledKalmanFilteredEstimator(
+            final Time epochInterval, final INSLooselyCoupledKalmanFilteredEstimatorListener listener) {
+<span class="fc" id="L238">        this(epochInterval);</span>
+<span class="fc" id="L239">        this.listener = listener;</span>
+<span class="fc" id="L240">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param config        INS loosely coupled Kalman filter configuration
+     *                      parameters (usually obtained through calibration).
+     * @param epochInterval minimum epoch interval between consecutive
+     *                      propagations or measurements.
+     * @param listener      listener to notify events raised by this instance.
+     * @throws IllegalArgumentException if provided epoch interval is negative.
+     */
+    public INSLooselyCoupledKalmanFilteredEstimator(
+            final INSLooselyCoupledKalmanConfig config, final Time epochInterval,
+            final INSLooselyCoupledKalmanFilteredEstimatorListener listener) {
+<span class="fc" id="L255">        this(config, epochInterval);</span>
+<span class="fc" id="L256">        this.listener = listener;</span>
+<span class="fc" id="L257">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param frame frame containing initial user position, velocity and attitude
+     *              resolved along ECEF axes.
+     */
+    public INSLooselyCoupledKalmanFilteredEstimator(final ECEFFrame frame) {
+<span class="fc" id="L266">        this();</span>
+        try {
+<span class="fc" id="L268">            setFrame(frame);</span>
+<span class="nc" id="L269">        } catch (final LockedException ignore) {</span>
+            // never happens.
+<span class="fc" id="L271">        }</span>
+<span class="fc" id="L272">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param config INS Kalman filter configuration parameters (usually obtained
+     *               through calibration).
+     * @param frame  frame containing initial user position, velocity and attitude
+     *               resolved along ECEF axes.
+     */
+    public INSLooselyCoupledKalmanFilteredEstimator(final INSLooselyCoupledKalmanConfig config, final ECEFFrame frame) {
+<span class="fc" id="L283">        this(frame);</span>
+<span class="fc" id="L284">        this.config = new INSLooselyCoupledKalmanConfig(config);</span>
+<span class="fc" id="L285">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param epochInterval minimum epoch interval expressed in seconds (s) between
+     *                      consecutive propagations or measurements.
+     * @param frame         frame containing initial user position, velocity and attitude
+     *                      resolved along ECEF axes.
+     * @throws IllegalArgumentException if provided epoch interval is negative.
+     */
+    public INSLooselyCoupledKalmanFilteredEstimator(final double epochInterval, final ECEFFrame frame) {
+<span class="fc" id="L297">        this(epochInterval);</span>
+        try {
+<span class="fc" id="L299">            setFrame(frame);</span>
+<span class="nc" id="L300">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L302">        }</span>
+<span class="fc" id="L303">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param frame    frame containing initial user position, velocity and attitude
+     *                 resolved along ECEF axes.
+     * @param listener listener to notify events raised by this instance.
+     */
+    public INSLooselyCoupledKalmanFilteredEstimator(
+            final ECEFFrame frame, final INSLooselyCoupledKalmanFilteredEstimatorListener listener) {
+<span class="fc" id="L314">        this(frame);</span>
+<span class="fc" id="L315">        this.listener = listener;</span>
+<span class="fc" id="L316">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param config        INS loosely coupled Kalman filter configuration
+     *                      parameters (usually obtained through calibration).
+     * @param epochInterval minimum epoch interval expressed in seconds (s) between
+     *                      consecutive propagations or measurements.
+     * @param frame         frame containing initial user position, velocity and attitude
+     *                      resolved along ECEF axes.
+     * @throws IllegalArgumentException if provided epoch interval is negative.
+     */
+    public INSLooselyCoupledKalmanFilteredEstimator(
+            final INSLooselyCoupledKalmanConfig config, final double epochInterval, final ECEFFrame frame) {
+<span class="fc" id="L331">        this(config, epochInterval);</span>
+        try {
+<span class="fc" id="L333">            setFrame(frame);</span>
+<span class="nc" id="L334">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L336">        }</span>
+<span class="fc" id="L337">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param config   INS loosely coupled Kalman filter configuration parameters
+     *                 (usually obtained through calibration).
+     * @param frame    frame containing initial user position, velocity and attitude
+     *                 resolved along ECEF axes.
+     * @param listener listener to notify events raised by this instance.
+     */
+    public INSLooselyCoupledKalmanFilteredEstimator(
+            final INSLooselyCoupledKalmanConfig config, final ECEFFrame frame,
+            final INSLooselyCoupledKalmanFilteredEstimatorListener listener) {
+<span class="fc" id="L351">        this(config, listener);</span>
+        try {
+<span class="fc" id="L353">            setFrame(frame);</span>
+<span class="nc" id="L354">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L356">        }</span>
+<span class="fc" id="L357">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param epochInterval minimum epoch interval expressed in seconds (s) between
+     *                      consecutive propagations or measurements.
+     * @param frame         frame containing initial user position, velocity and attitude
+     *                      resolved along ECEF axes.
+     * @param listener      listener to notify events raised by this instance.
+     * @throws IllegalArgumentException if provided epoch interval is negative.
+     */
+    public INSLooselyCoupledKalmanFilteredEstimator(
+            final double epochInterval, final ECEFFrame frame,
+            final INSLooselyCoupledKalmanFilteredEstimatorListener listener) {
+<span class="fc" id="L372">        this(epochInterval, listener);</span>
+        try {
+<span class="fc" id="L374">            setFrame(frame);</span>
+<span class="nc" id="L375">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L377">        }</span>
+<span class="fc" id="L378">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param config        INS loosely coupled Kalman filter configuration
+     *                      parameters (usually obtained through calibration).
+     * @param epochInterval minimum epoch interval expressed in seconds (s) between
+     *                      consecutive propagations or measurements.
+     * @param frame         frame containing initial user position, velocity and attitude
+     *                      resolved along ECEF axes.
+     * @param listener      listener to notify events raised by this instance.
+     * @throws IllegalArgumentException if provided epoch interval is negative.
+     */
+    public INSLooselyCoupledKalmanFilteredEstimator(
+            final INSLooselyCoupledKalmanConfig config, final double epochInterval, final ECEFFrame frame,
+            final INSLooselyCoupledKalmanFilteredEstimatorListener listener) {
+<span class="fc" id="L395">        this(config, epochInterval, listener);</span>
+        try {
+<span class="fc" id="L397">            setFrame(frame);</span>
+<span class="nc" id="L398">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L400">        }</span>
+<span class="fc" id="L401">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param epochInterval minimum epoch interval between consecutive
+     *                      propagations or measurements.
+     * @param frame         frame containing initial user position, velocity and attitude
+     *                      resolved along eCEF axes.
+     * @throws IllegalArgumentException if provided epoch interval is negative.
+     */
+    public INSLooselyCoupledKalmanFilteredEstimator(final Time epochInterval, final ECEFFrame frame) {
+<span class="fc" id="L413">        this(epochInterval);</span>
+        try {
+<span class="fc" id="L415">            setFrame(frame);</span>
+<span class="nc" id="L416">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L418">        }</span>
+<span class="fc" id="L419">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param config        INS loosely coupled Kalman filter configuration
+     *                      parameters (usually obtained through calibration).
+     * @param epochInterval minimum epoch interval between consecutive
+     *                      propagations or measurements.
+     * @param frame         frame containing initial user position, velocity and attitude
+     *                      resolved along ECEF axes.
+     * @throws IllegalArgumentException if provided epoch interval is negative.
+     */
+    public INSLooselyCoupledKalmanFilteredEstimator(
+            final INSLooselyCoupledKalmanConfig config, final Time epochInterval, final ECEFFrame frame) {
+<span class="fc" id="L434">        this(config, epochInterval);</span>
+        try {
+<span class="fc" id="L436">            setFrame(frame);</span>
+<span class="nc" id="L437">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L439">        }</span>
+<span class="fc" id="L440">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param epochInterval minimum epoch interval between consecutive
+     *                      propagations or measurements.
+     * @param frame         frame containing initial user position, velocity and attitude
+     *                      resolved along ECEF axes.
+     * @param listener      listener to notify events raised by this instance.
+     * @throws IllegalArgumentException if provided epoch interval is negative.
+     */
+    public INSLooselyCoupledKalmanFilteredEstimator(final Time epochInterval, final ECEFFrame frame,
+                                                    final INSLooselyCoupledKalmanFilteredEstimatorListener listener) {
+<span class="fc" id="L454">        this(epochInterval, listener);</span>
+        try {
+<span class="fc" id="L456">            setFrame(frame);</span>
+<span class="nc" id="L457">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L459">        }</span>
+<span class="fc" id="L460">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param config        INS loosely coupled Kalman filter configuration
+     *                      parameters (usually obtained through calibration).
+     * @param epochInterval minimum epoch interval between consecutive
+     *                      propagations or measurements.
+     * @param frame         frame containing initial user position, velocity and attitude
+     *                      resolved along ECEF axes.
+     * @param listener      listener to notify events raised by this instance.
+     * @throws IllegalArgumentException if provided epoch interval is negative.
+     */
+    public INSLooselyCoupledKalmanFilteredEstimator(
+            final INSLooselyCoupledKalmanConfig config, final Time epochInterval, final ECEFFrame frame,
+            final INSLooselyCoupledKalmanFilteredEstimatorListener listener) {
+<span class="fc" id="L477">        this(config, epochInterval, listener);</span>
+        try {
+<span class="fc" id="L479">            setFrame(frame);</span>
+<span class="nc" id="L480">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L482">        }</span>
+<span class="fc" id="L483">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialConfig initial INS loosely coupled Kalman configuration to
+     *                      set proper initial covariance during filter initialization.
+     */
+    public INSLooselyCoupledKalmanFilteredEstimator(final INSLooselyCoupledKalmanInitializerConfig initialConfig) {
+<span class="fc" id="L492">        this();</span>
+        try {
+<span class="fc" id="L494">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L495">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L497">        }</span>
+<span class="fc" id="L498">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param config        INS Kalman filter configuration parameters (usually obtained
+     *                      through calibration).
+     * @param initialConfig initial INS loosely coupled Kalman configuration to
+     *                      set proper initial covariance during filter initialization.
+     */
+    public INSLooselyCoupledKalmanFilteredEstimator(
+            final INSLooselyCoupledKalmanConfig config, final INSLooselyCoupledKalmanInitializerConfig initialConfig) {
+<span class="fc" id="L510">        this(config);</span>
+        try {
+<span class="fc" id="L512">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L513">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L515">        }</span>
+<span class="fc" id="L516">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param epochInterval minimum epoch interval expressed in seconds (s) between
+     *                      consecutive propagations or measurements.
+     * @param initialConfig initial INS loosely coupled Kalman configuration to
+     *                      set proper initial covariance during filter initialization.
+     * @throws IllegalArgumentException if provided epoch interval is negative.
+     */
+    public INSLooselyCoupledKalmanFilteredEstimator(
+            final double epochInterval, final INSLooselyCoupledKalmanInitializerConfig initialConfig) {
+<span class="fc" id="L529">        this(epochInterval);</span>
+        try {
+<span class="fc" id="L531">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L532">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L534">        }</span>
+<span class="fc" id="L535">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialConfig initial INS loosely coupled Kalman configuration to
+     *                      set proper initial covariance during filter initialization.
+     * @param listener      listener to notify events raised by this instance.
+     */
+    public INSLooselyCoupledKalmanFilteredEstimator(
+            final INSLooselyCoupledKalmanInitializerConfig initialConfig,
+            final INSLooselyCoupledKalmanFilteredEstimatorListener listener) {
+<span class="fc" id="L547">        this(initialConfig);</span>
+<span class="fc" id="L548">        this.listener = listener;</span>
+<span class="fc" id="L549">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param config        INS loosely coupled Kalman filter configuration
+     *                      parameters (usually obtained through calibration).
+     * @param epochInterval minimum epoch interval expressed in seconds (s) between
+     *                      consecutive propagations or measurements.
+     * @param initialConfig initial INS loosely coupled Kalman configuration to
+     *                      set proper initial covariance during filter initialization.
+     * @throws IllegalArgumentException if provided epoch interval is negative.
+     */
+    public INSLooselyCoupledKalmanFilteredEstimator(
+            final INSLooselyCoupledKalmanConfig config, final double epochInterval,
+            final INSLooselyCoupledKalmanInitializerConfig initialConfig) {
+<span class="fc" id="L565">        this(config, epochInterval);</span>
+        try {
+<span class="fc" id="L567">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L568">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L570">        }</span>
+<span class="fc" id="L571">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param config        INS loosely coupled Kalman filter configuration parameters
+     *                      (usually obtained through calibration).
+     * @param initialConfig initial INS loosely coupled Kalman configuration to
+     *                      set proper initial covariance during filter initialization.
+     * @param listener      listener to notify events raised by this instance.
+     */
+    public INSLooselyCoupledKalmanFilteredEstimator(
+            final INSLooselyCoupledKalmanConfig config, final INSLooselyCoupledKalmanInitializerConfig initialConfig,
+            final INSLooselyCoupledKalmanFilteredEstimatorListener listener) {
+<span class="fc" id="L585">        this(config, listener);</span>
+        try {
+<span class="fc" id="L587">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L588">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L590">        }</span>
+<span class="fc" id="L591">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param epochInterval minimum epoch interval expressed in seconds (s) between
+     *                      consecutive propagations or measurements.
+     * @param initialConfig initial INS loosely coupled Kalman configuration to
+     *                      set proper initial covariance during filter initialization.
+     * @param listener      listener to notify events raised by this instance.
+     * @throws IllegalArgumentException if provided epoch interval is negative.
+     */
+    public INSLooselyCoupledKalmanFilteredEstimator(
+            final double epochInterval, final INSLooselyCoupledKalmanInitializerConfig initialConfig,
+            final INSLooselyCoupledKalmanFilteredEstimatorListener listener) {
+<span class="fc" id="L606">        this(epochInterval, listener);</span>
+        try {
+<span class="fc" id="L608">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L609">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L611">        }</span>
+<span class="fc" id="L612">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param config        INS loosely coupled Kalman filter configuration
+     *                      parameters (usually obtained through calibration).
+     * @param epochInterval minimum epoch interval expressed in seconds (s) between
+     *                      consecutive propagations or measurements.
+     * @param initialConfig initial INS loosely coupled Kalman configuration to
+     *                      set proper initial covariance during filter initialization.
+     * @param listener      listener to notify events raised by this instance.
+     * @throws IllegalArgumentException if provided epoch interval is negative.
+     */
+    public INSLooselyCoupledKalmanFilteredEstimator(
+            final INSLooselyCoupledKalmanConfig config, final double epochInterval,
+            final INSLooselyCoupledKalmanInitializerConfig initialConfig,
+            final INSLooselyCoupledKalmanFilteredEstimatorListener listener) {
+<span class="fc" id="L630">        this(config, epochInterval, listener);</span>
+        try {
+<span class="fc" id="L632">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L633">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L635">        }</span>
+<span class="fc" id="L636">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param epochInterval minimum epoch interval between consecutive
+     *                      propagations or measurements.
+     * @param initialConfig initial INS loosely coupled Kalman configuration to
+     *                      set proper initial covariance during filter initialization.
+     * @throws IllegalArgumentException if provided epoch interval is negative.
+     */
+    public INSLooselyCoupledKalmanFilteredEstimator(
+            final Time epochInterval, final INSLooselyCoupledKalmanInitializerConfig initialConfig) {
+<span class="fc" id="L649">        this(epochInterval);</span>
+        try {
+<span class="fc" id="L651">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L652">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L654">        }</span>
+<span class="fc" id="L655">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param config        INS loosely coupled Kalman filter configuration
+     *                      parameters (usually obtained through calibration).
+     * @param epochInterval minimum epoch interval between consecutive
+     *                      propagations or measurements.
+     * @param initialConfig initial INS loosely coupled Kalman configuration to
+     *                      set proper initial covariance during filter initialization.
+     * @throws IllegalArgumentException if provided epoch interval is negative.
+     */
+    public INSLooselyCoupledKalmanFilteredEstimator(
+            final INSLooselyCoupledKalmanConfig config, final Time epochInterval,
+            final INSLooselyCoupledKalmanInitializerConfig initialConfig) {
+<span class="fc" id="L671">        this(config, epochInterval);</span>
+        try {
+<span class="fc" id="L673">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L674">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L676">        }</span>
+<span class="fc" id="L677">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param epochInterval minimum epoch interval between consecutive
+     *                      propagations or measurements.
+     * @param initialConfig initial INS loosely coupled Kalman configuration to
+     *                      set proper initial covariance during filter initialization.
+     * @param listener      listener to notify events raised by this instance.
+     * @throws IllegalArgumentException if provided epoch interval is negative.
+     */
+    public INSLooselyCoupledKalmanFilteredEstimator(
+            final Time epochInterval, final INSLooselyCoupledKalmanInitializerConfig initialConfig,
+            final INSLooselyCoupledKalmanFilteredEstimatorListener listener) {
+<span class="fc" id="L692">        this(epochInterval, listener);</span>
+        try {
+<span class="fc" id="L694">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L695">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L697">        }</span>
+<span class="fc" id="L698">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param config        INS loosely coupled Kalman filter configuration
+     *                      parameters (usually obtained through calibration).
+     * @param epochInterval minimum epoch interval between consecutive
+     *                      propagations or measurements.
+     * @param initialConfig initial INS loosely coupled Kalman configuration to
+     *                      set proper initial covariance during filter initialization.
+     * @param listener      listener to notify events raised by this instance.
+     * @throws IllegalArgumentException if provided epoch interval is negative.
+     */
+    public INSLooselyCoupledKalmanFilteredEstimator(
+            final INSLooselyCoupledKalmanConfig config, final Time epochInterval,
+            final INSLooselyCoupledKalmanInitializerConfig initialConfig,
+            final INSLooselyCoupledKalmanFilteredEstimatorListener listener) {
+<span class="fc" id="L716">        this(config, epochInterval, listener);</span>
+        try {
+<span class="fc" id="L718">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L719">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L721">        }</span>
+<span class="fc" id="L722">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialConfig initial INS loosely coupled Kalman configuration to
+     *                      set proper initial covariance during filter initialization.
+     * @param frame         frame containing initial user position, velocity and attitude
+     *                      resolved along ECEF axes.
+     */
+    public INSLooselyCoupledKalmanFilteredEstimator(
+            final INSLooselyCoupledKalmanInitializerConfig initialConfig, final ECEFFrame frame) {
+<span class="fc" id="L734">        this(frame);</span>
+        try {
+<span class="fc" id="L736">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L737">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L739">        }</span>
+<span class="fc" id="L740">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param config        INS Kalman filter configuration parameters (usually obtained
+     *                      through calibration).
+     * @param initialConfig initial INS loosely coupled Kalman configuration to
+     *                      set proper initial covariance during filter initialization.
+     * @param frame         frame containing initial user position, velocity and attitude
+     *                      resolved along ECEF axes.
+     */
+    public INSLooselyCoupledKalmanFilteredEstimator(
+            final INSLooselyCoupledKalmanConfig config, final INSLooselyCoupledKalmanInitializerConfig initialConfig,
+            final ECEFFrame frame) {
+<span class="fc" id="L755">        this(config, frame);</span>
+        try {
+<span class="fc" id="L757">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L758">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L760">        }</span>
+<span class="fc" id="L761">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param epochInterval minimum epoch interval expressed in seconds (s) between
+     *                      consecutive propagations or measurements.
+     * @param initialConfig initial INS loosely coupled Kalman configuration to
+     *                      set proper initial covariance during filter initialization.
+     * @param frame         frame containing initial user position, velocity and attitude
+     *                      resolved along ECEF axes.
+     * @throws IllegalArgumentException if provided epoch interval is negative.
+     */
+    public INSLooselyCoupledKalmanFilteredEstimator(
+            final double epochInterval, final INSLooselyCoupledKalmanInitializerConfig initialConfig,
+            final ECEFFrame frame) {
+<span class="fc" id="L777">        this(epochInterval, frame);</span>
+        try {
+<span class="fc" id="L779">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L780">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L782">        }</span>
+<span class="fc" id="L783">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialConfig initial INS loosely coupled Kalman configuration to
+     *                      set proper initial covariance during filter initialization.
+     * @param frame         frame containing initial user position, velocity and attitude
+     *                      resolved along ECEF axes.
+     * @param listener      listener to notify events raised by this instance.
+     */
+    public INSLooselyCoupledKalmanFilteredEstimator(
+            final INSLooselyCoupledKalmanInitializerConfig initialConfig, final ECEFFrame frame,
+            final INSLooselyCoupledKalmanFilteredEstimatorListener listener) {
+<span class="fc" id="L797">        this(frame, listener);</span>
+        try {
+<span class="fc" id="L799">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L800">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L802">        }</span>
+<span class="fc" id="L803">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param config        INS loosely coupled Kalman filter configuration
+     *                      parameters (usually obtained through calibration).
+     * @param epochInterval minimum epoch interval expressed in seconds (s) between
+     *                      consecutive propagations or measurements.
+     * @param initialConfig initial INS loosely coupled Kalman configuration to
+     *                      set proper initial covariance during filter initialization.
+     * @param frame         frame containing initial user position, velocity and attitude
+     *                      resolved along ECEF axes.
+     * @throws IllegalArgumentException if provided epoch interval is negative.
+     */
+    public INSLooselyCoupledKalmanFilteredEstimator(
+            final INSLooselyCoupledKalmanConfig config, final double epochInterval,
+            final INSLooselyCoupledKalmanInitializerConfig initialConfig, final ECEFFrame frame) {
+<span class="fc" id="L821">        this(config, epochInterval, frame);</span>
+        try {
+<span class="fc" id="L823">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L824">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L826">        }</span>
+<span class="fc" id="L827">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param config        INS loosely coupled Kalman filter configuration parameters
+     *                      (usually obtained through calibration).
+     * @param initialConfig initial INS loosely coupled Kalman configuration to
+     *                      set proper initial covariance during filter initialization.
+     * @param frame         frame containing initial user position, velocity and attitude
+     *                      resolved along ECEF axes.
+     * @param listener      listener to notify events raised by this instance.
+     */
+    public INSLooselyCoupledKalmanFilteredEstimator(
+            final INSLooselyCoupledKalmanConfig config,
+            final INSLooselyCoupledKalmanInitializerConfig initialConfig, final ECEFFrame frame,
+            final INSLooselyCoupledKalmanFilteredEstimatorListener listener) {
+<span class="fc" id="L844">        this(config, frame, listener);</span>
+        try {
+<span class="fc" id="L846">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L847">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L849">        }</span>
+<span class="fc" id="L850">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param epochInterval minimum epoch interval expressed in seconds (s) between
+     *                      consecutive propagations or measurements.
+     * @param initialConfig initial INS loosely coupled Kalman configuration to
+     *                      set proper initial covariance during filter initialization.
+     * @param frame         frame containing initial user position, velocity and attitude
+     *                      resolved along ECEF axes.
+     * @param listener      listener to notify events raised by this instance.
+     * @throws IllegalArgumentException if provided epoch interval is negative.
+     */
+    public INSLooselyCoupledKalmanFilteredEstimator(
+            final double epochInterval, final INSLooselyCoupledKalmanInitializerConfig initialConfig,
+            final ECEFFrame frame, final INSLooselyCoupledKalmanFilteredEstimatorListener listener) {
+<span class="fc" id="L867">        this(epochInterval, frame, listener);</span>
+        try {
+<span class="fc" id="L869">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L870">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L872">        }</span>
+<span class="fc" id="L873">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param config        INS loosely coupled Kalman filter configuration
+     *                      parameters (usually obtained through calibration).
+     * @param epochInterval minimum epoch interval expressed in seconds (s) between
+     *                      consecutive propagations or measurements.
+     * @param initialConfig initial INS loosely coupled Kalman configuration to
+     *                      set proper initial covariance during filter initialization.
+     * @param frame         frame containing initial user position, velocity and attitude
+     *                      resolved along ECEF axes.
+     * @param listener      listener to notify events raised by this instance.
+     * @throws IllegalArgumentException if provided epoch interval is negative.
+     */
+    public INSLooselyCoupledKalmanFilteredEstimator(
+            final INSLooselyCoupledKalmanConfig config, final double epochInterval,
+            final INSLooselyCoupledKalmanInitializerConfig initialConfig, final ECEFFrame frame,
+            final INSLooselyCoupledKalmanFilteredEstimatorListener listener) {
+<span class="fc" id="L893">        this(config, epochInterval, frame, listener);</span>
+        try {
+<span class="fc" id="L895">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L896">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L898">        }</span>
+<span class="fc" id="L899">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param epochInterval minimum epoch interval between consecutive
+     *                      propagations or measurements.
+     * @param initialConfig initial INS loosely coupled Kalman configuration to
+     *                      set proper initial covariance during filter initialization.
+     * @param frame         frame containing initial user position, velocity and attitude
+     *                      resolved along ECEF axes.
+     * @throws IllegalArgumentException if provided epoch interval is negative.
+     */
+    public INSLooselyCoupledKalmanFilteredEstimator(
+            final Time epochInterval, final INSLooselyCoupledKalmanInitializerConfig initialConfig,
+            final ECEFFrame frame) {
+<span class="fc" id="L915">        this(epochInterval, frame);</span>
+        try {
+<span class="fc" id="L917">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L918">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L920">        }</span>
+<span class="fc" id="L921">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param config        INS loosely coupled Kalman filter configuration
+     *                      parameters (usually obtained through calibration).
+     * @param epochInterval minimum epoch interval between consecutive
+     *                      propagations or measurements.
+     * @param initialConfig initial INS loosely coupled Kalman configuration to
+     *                      set proper initial covariance during filter initialization.
+     * @param frame         frame containing initial user position, velocity and attitude
+     *                      resolved along ECEF axes.
+     * @throws IllegalArgumentException if provided epoch interval is negative.
+     */
+    public INSLooselyCoupledKalmanFilteredEstimator(
+            final INSLooselyCoupledKalmanConfig config, final Time epochInterval,
+            final INSLooselyCoupledKalmanInitializerConfig initialConfig, final ECEFFrame frame) {
+<span class="fc" id="L939">        this(config, epochInterval, frame);</span>
+        try {
+<span class="fc" id="L941">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L942">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L944">        }</span>
+<span class="fc" id="L945">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param epochInterval minimum epoch interval between consecutive
+     *                      propagations or measurements.
+     * @param initialConfig initial INS loosely coupled Kalman configuration to
+     *                      set proper initial covariance during filter initialization.
+     * @param frame         frame containing initial user position, velocity and attitude
+     *                      resolved along ECEF axes.
+     * @param listener      listener to notify events raised by this instance.
+     * @throws IllegalArgumentException if provided epoch interval is negative.
+     */
+    public INSLooselyCoupledKalmanFilteredEstimator(
+            final Time epochInterval, final INSLooselyCoupledKalmanInitializerConfig initialConfig,
+            final ECEFFrame frame, final INSLooselyCoupledKalmanFilteredEstimatorListener listener) {
+<span class="fc" id="L962">        this(epochInterval, frame, listener);</span>
+        try {
+<span class="fc" id="L964">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L965">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L967">        }</span>
+<span class="fc" id="L968">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param config        INS loosely coupled Kalman filter configuration
+     *                      parameters (usually obtained through calibration).
+     * @param epochInterval minimum epoch interval between consecutive
+     *                      propagations or measurements.
+     * @param initialConfig initial INS loosely coupled Kalman configuration to
+     *                      set proper initial covariance during filter initialization.
+     * @param frame         frame containing initial user position, velocity and attitude
+     *                      resolved along ECEF axes.
+     * @param listener      listener to notify events raised by this instance.
+     * @throws IllegalArgumentException if provided epoch interval is negative.
+     */
+    public INSLooselyCoupledKalmanFilteredEstimator(
+            final INSLooselyCoupledKalmanConfig config, final Time epochInterval,
+            final INSLooselyCoupledKalmanInitializerConfig initialConfig, final ECEFFrame frame,
+            final INSLooselyCoupledKalmanFilteredEstimatorListener listener) {
+<span class="fc" id="L988">        this(config, epochInterval, frame, listener);</span>
+        try {
+<span class="fc" id="L990">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L991">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L993">        }</span>
+<span class="fc" id="L994">    }</span>
+
+    /**
+     * Gets listener to notify events raised by this instance.
+     *
+     * @return listener to notify events raised by this instance.
+     */
+    public INSLooselyCoupledKalmanFilteredEstimatorListener getListener() {
+<span class="fc" id="L1002">        return listener;</span>
+    }
+
+    /**
+     * Sets listener to notify events raised by this instance.
+     *
+     * @param listener listener to notify events raised by this instance.
+     * @throws LockedException if this estimator is already running.
+     */
+    public void setListener(
+            final INSLooselyCoupledKalmanFilteredEstimatorListener listener) throws LockedException {
+<span class="fc bfc" id="L1013" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1014">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L1017">        this.listener = listener;</span>
+<span class="fc" id="L1018">    }</span>
+
+    /**
+     * Gets minimum epoch interval expressed in seconds (s) between consecutive
+     * propagations or measurements expressed in seconds.
+     * Attempting to propagate results using Kalman filter or updating measurements
+     * when intervals are less than this value, will be ignored.
+     *
+     * @return minimum epoch interval between consecutive propagations or
+     * measurements.
+     */
+    public double getEpochInterval() {
+<span class="fc" id="L1030">        return epochInterval;</span>
+    }
+
+    /**
+     * Sets minimum epoch interval expressed in seconds (s) between consecutive
+     * propagations or measurements expressed in seconds.
+     * Attempting to propagate results using Kalman filter or updating measurements
+     * when interval are less than this value, will be ignored.
+     *
+     * @param epochInterval minimum epoch interval expressed in seconds (s) between
+     *                      consecutive propagations or measurements.
+     * @throws LockedException          if this estimator is already running.
+     * @throws IllegalArgumentException if provided epoch interval is negative.
+     */
+    public void setEpochInterval(final double epochInterval) throws LockedException {
+<span class="fc bfc" id="L1045" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1046">            throw new LockedException();</span>
+        }
+
+<span class="fc bfc" id="L1049" title="All 2 branches covered.">        if (epochInterval &lt; 0.0) {</span>
+<span class="fc" id="L1050">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L1053">        this.epochInterval = epochInterval;</span>
+<span class="fc" id="L1054">    }</span>
+
+    /**
+     * Gets minimum epoch interval between consecutive propagations or measurements.
+     * Attempting to propagate results using Kalman filter or updating measurements
+     * when intervals are less than this value, will be ignored.
+     *
+     * @param result instance where minimum epoch interval will be stored.
+     */
+    public void getEpochIntervalAsTime(final Time result) {
+<span class="fc" id="L1064">        result.setValue(epochInterval);</span>
+<span class="fc" id="L1065">        result.setUnit(TimeUnit.SECOND);</span>
+<span class="fc" id="L1066">    }</span>
+
+    /**
+     * Gets minimum epoch interval between consecutive propagations or measurements.
+     * Attempting to propagate results using Kalman filter or updating measurements
+     * when intervals are less than this value, will be ignored.
+     *
+     * @return minimum epoch interval.
+     */
+    public Time getEpochIntervalAsTime() {
+<span class="fc" id="L1076">        return new Time(epochInterval, TimeUnit.SECOND);</span>
+    }
+
+    /**
+     * Sets minimum epoch interval between consecutive propagations or measurements.
+     * Attempting to propagate results using Kalman filter or updating measurements
+     * when intervals are less than this value, will be ignored.
+     *
+     * @param epochInterval minimum epoch interval.
+     * @throws LockedException          if this estimator is already running.
+     * @throws IllegalArgumentException if provided epoch interval is negative.
+     */
+    public void setEpochInterval(final Time epochInterval) throws LockedException {
+<span class="fc" id="L1089">        final var epochIntervalSeconds = TimeConverter.convert(epochInterval.getValue().doubleValue(),</span>
+<span class="fc" id="L1090">                epochInterval.getUnit(), TimeUnit.SECOND);</span>
+<span class="fc" id="L1091">        setEpochInterval(epochIntervalSeconds);</span>
+<span class="fc" id="L1092">    }</span>
+
+    /**
+     * Gets INS loosely coupled Kalman configuration parameters (usually
+     * obtained through calibration).
+     *
+     * @param result instance where INS loosely coupled Kalman configuration
+     *               parameters will be stored.
+     * @return true if result instance is updated, false otherwise.
+     */
+    public boolean getConfig(final INSLooselyCoupledKalmanConfig result) {
+<span class="fc bfc" id="L1103" title="All 2 branches covered.">        if (config != null) {</span>
+<span class="fc" id="L1104">            result.copyFrom(config);</span>
+<span class="fc" id="L1105">            return true;</span>
+        } else {
+<span class="fc" id="L1107">            return false;</span>
+        }
+    }
+
+    /**
+     * Gets INS loosely coupled Kalman configuration parameters (usually
+     * obtained through calibration).
+     *
+     * @return INS loosely coupled Kalman configuration parameters.
+     */
+    public INSLooselyCoupledKalmanConfig getConfig() {
+<span class="fc" id="L1118">        return config;</span>
+    }
+
+    /**
+     * Sets INS loosely coupled Kalman configuration parameters (usually
+     * obtained through calibration).
+     *
+     * @param config INS loosely coupled Kalman configuration parameters
+     *               to be set.
+     * @throws LockedException if this estimator is already running.
+     */
+    public void setConfig(final INSLooselyCoupledKalmanConfig config) throws LockedException {
+<span class="fc bfc" id="L1130" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1131">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L1134">        this.config = new INSLooselyCoupledKalmanConfig(config);</span>
+<span class="fc" id="L1135">    }</span>
+
+    /**
+     * Gets ECEF frame containing current or initial user position, velocity and
+     * attitude.
+     *
+     * @param result instance where current ECEF frame will be stored.
+     * @return true if provided result instance is updated, false otherwise.
+     */
+    public boolean getFrame(final ECEFFrame result) {
+<span class="fc bfc" id="L1145" title="All 2 branches covered.">        if (frame != null) {</span>
+<span class="fc" id="L1146">            frame.copyTo(result);</span>
+<span class="fc" id="L1147">            return true;</span>
+        } else {
+<span class="fc" id="L1149">            return false;</span>
+        }
+    }
+
+    /**
+     * Gets ECEF frame containing current or initial user position, velocity and
+     * attitude.
+     *
+     * @return ECEF frame containing current or initial user position, velocity
+     * and attitude.
+     */
+    public ECEFFrame getFrame() {
+<span class="fc bfc" id="L1161" title="All 2 branches covered.">        return frame != null ? new ECEFFrame(frame) : null;</span>
+    }
+
+    /**
+     * Sets ECEF frame containing current or initial user position, velocity and
+     * attitude.
+     *
+     * @param frame ECEF frame containing current or initial user position, velocity
+     *              and attitude to be set.
+     * @throws LockedException if this estimator is already running.
+     */
+    public void setFrame(final ECEFFrame frame) throws LockedException {
+<span class="fc bfc" id="L1173" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1174">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L1177">        this.frame = frame;</span>
+<span class="fc" id="L1178">    }</span>
+
+    /**
+     * Gets initial INS loosely coupled Kalman configuration to set a proper
+     * initial covariance matrix during the first Kalman filter propagation.
+     * Once this estimator is initialized, covariance will be updated with new provided
+     * INS measurements until convergence is reached.
+     *
+     * @param result instance where configuration data will be stored.
+     * @return true if result instance was updated, false otherwise.
+     */
+    public boolean getInitialConfig(final INSLooselyCoupledKalmanInitializerConfig result) {
+<span class="fc bfc" id="L1190" title="All 2 branches covered.">        if (initialConfig != null) {</span>
+<span class="fc" id="L1191">            result.copyFrom(initialConfig);</span>
+<span class="fc" id="L1192">            return true;</span>
+        } else {
+<span class="fc" id="L1194">            return false;</span>
+        }
+    }
+
+    /**
+     * Gets initial INS loosely coupled Kalman configuration to set a proper
+     * initial covariance matrix during the first Kalman filter propagation.
+     * Once this estimator is initialized, covariance will be updated with new provided
+     * INS measurements until convergence is reached.
+     *
+     * @return initial INS loosely coupled Kalman configuration.
+     */
+    public INSLooselyCoupledKalmanInitializerConfig getInitialConfig() {
+<span class="fc" id="L1207">        return initialConfig;</span>
+    }
+
+    /**
+     * Sets initial INS loosely coupled Kalman configuration to set a proper
+     * initial covariance matrix during the first Kalman filter propagation.
+     * Once this estimator is initialized, covariance will be updated with new provided
+     * INS measurements until convergence is reached.
+     *
+     * @param initialConfig initial configuration to be set.
+     * @throws LockedException if this estimator is already running.
+     */
+    public void setInitialConfig(final INSLooselyCoupledKalmanInitializerConfig initialConfig) throws LockedException {
+<span class="fc bfc" id="L1220" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1221">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L1224">        this.initialConfig = initialConfig;</span>
+<span class="fc" id="L1225">    }</span>
+
+    /**
+     * Gets last provided user kinematics containing applied specific force and
+     * angular rates resolved in body axes.
+     *
+     * @return last provided user kinematics.
+     */
+    public BodyKinematics getKinematics() {
+<span class="fc bfc" id="L1234" title="All 2 branches covered.">        return kinematics != null ? new BodyKinematics(kinematics) : null;</span>
+    }
+
+    /**
+     * Gets last provided user kinematics containing applied specific force and
+     * angular rates resolved in body axes.
+     *
+     * @param result instance where last provided body kinematics will be stored.
+     * @return true if provided result instance was updated, false otherwise.
+     */
+    public boolean getKinematics(final BodyKinematics result) {
+<span class="fc bfc" id="L1245" title="All 2 branches covered.">        if (kinematics != null) {</span>
+<span class="fc" id="L1246">            result.copyFrom(kinematics);</span>
+<span class="fc" id="L1247">            return true;</span>
+        } else {
+<span class="fc" id="L1249">            return false;</span>
+        }
+    }
+
+    /**
+     * Gets corrected kinematics which are the last provided user kinematics after
+     * removal of the biases estimated by the Kalman filter.
+     *
+     * @return corrected kinematics.
+     * @see #getKinematics()
+     */
+    public BodyKinematics getCorrectedKinematics() {
+<span class="fc bfc" id="L1261" title="All 2 branches covered.">        return correctedKinematics != null ? new BodyKinematics(correctedKinematics) : null;</span>
+    }
+
+    /**
+     * Gets corrected kinematics which are the las provided user kinematics after
+     * removal of the biases estimated by the Kalman filter.
+     *
+     * @param result instance where corrected body kinematics will be stored.
+     * @return true if provided result instance was updated, false otherwise.
+     */
+    public boolean getCorrectedKinematics(final BodyKinematics result) {
+<span class="fc bfc" id="L1272" title="All 2 branches covered.">        if (correctedKinematics != null) {</span>
+<span class="fc" id="L1273">            result.copyFrom(correctedKinematics);</span>
+<span class="fc" id="L1274">            return true;</span>
+        } else {
+<span class="fc" id="L1276">            return false;</span>
+        }
+    }
+
+    /**
+     * Gets current Kalman filter state containing current INS estimation along
+     * with Kalman filter covariance error matrix.
+     *
+     * @return current Kalman filter state containing current INS estimation
+     * along with Kalman filter covariance error matrix.
+     */
+    public INSLooselyCoupledKalmanState getState() {
+<span class="fc bfc" id="L1288" title="All 2 branches covered.">        return state != null ? new INSLooselyCoupledKalmanState(state) : null;</span>
+    }
+
+    /**
+     * Gets current Kalman filter state containing current INS estimation along
+     * with Kalman filter covariance error matrix.
+     * This method does not update result instance if no state is available.
+     *
+     * @param result instance where state will be stored.
+     * @return true if result state was updated, false otherwise.
+     */
+    public boolean getState(final INSLooselyCoupledKalmanState result) {
+<span class="fc bfc" id="L1300" title="All 2 branches covered.">        if (state != null) {</span>
+<span class="fc" id="L1301">            result.copyFrom(state);</span>
+<span class="fc" id="L1302">            return true;</span>
+        } else {
+<span class="fc" id="L1304">            return false;</span>
+        }
+    }
+
+    /**
+     * Gets timestamp expressed in seconds since epoch time when Kalman filter state
+     * was last propagated.
+     *
+     * @return timestamp expressed in seconds since epoch time when Kalman filter
+     * state was last propagated.
+     */
+    public Double getLastStateTimestamp() {
+<span class="fc" id="L1316">        return lastStateTimestamp;</span>
+    }
+
+    /**
+     * Gets timestamp since epoch time when Kalman filter state was last propagated.
+     *
+     * @param result instance where timestamp since epoch time when Kalman filter
+     *               state was last propagated will be stored.
+     * @return true if result instance is updated, false otherwise.
+     */
+    public boolean getLastStateTimestampAsTime(final Time result) {
+<span class="fc bfc" id="L1327" title="All 2 branches covered.">        if (lastStateTimestamp != null) {</span>
+<span class="fc" id="L1328">            result.setValue(lastStateTimestamp);</span>
+<span class="fc" id="L1329">            result.setUnit(TimeUnit.SECOND);</span>
+<span class="fc" id="L1330">            return true;</span>
+        } else {
+<span class="fc" id="L1332">            return false;</span>
+        }
+    }
+
+    /**
+     * Gets timestamp since epoch time when Kalman filter state was last propagated.
+     *
+     * @return timestamp since epoch time when Kalman filter state was last
+     * propagated.
+     */
+    public Time getLastStateTimestampAsTime() {
+<span class="fc bfc" id="L1343" title="All 2 branches covered.">        return lastStateTimestamp != null ? new Time(lastStateTimestamp, TimeUnit.SECOND) : null;</span>
+    }
+
+    /**
+     * Indicates whether this estimator is running or not.
+     *
+     * @return true if this estimator is running, false otherwise.
+     */
+    public boolean isRunning() {
+<span class="fc" id="L1352">        return running;</span>
+    }
+
+    /**
+     * Indicates whether this instance is ready to update state using available
+     * IMU data (specific force and angular rates).
+     *
+     * @return true if ready, false otherwise.
+     */
+    public boolean isUpdateReady() {
+<span class="fc bfc" id="L1362" title="All 2 branches covered.">        return frame != null;</span>
+    }
+
+    /**
+     * Updates specific force and angular rate applied to the user's
+     * body expressed in coordinates resolved along body-frame axes.
+     *
+     * @param kinematics kinematics applied to body (specific force and angular rate)
+     *                   during las period of time. These measures are obtained from
+     *                   an inertial unit (IMU).
+     * @param timestamp  timestamp since epoch time when specific force and
+     *                   angular rate values were updated.
+     * @return true if body kinematics values were updated, false otherwise.
+     * @throws LockedException   if this estimator is already running.
+     * @throws NotReadyException if this estimator is not ready to be updated.
+     * @throws INSException      if estimation fails due to numerical instabilities.
+     */
+    public boolean update(final BodyKinematics kinematics, final Time timestamp) throws LockedException,
+            NotReadyException, INSException {
+<span class="fc" id="L1381">        return update(kinematics, TimeConverter.convert(timestamp.getValue().doubleValue(), timestamp.getUnit(),</span>
+                TimeUnit.SECOND));
+    }
+
+    /**
+     * Updates specific force and angular rate applied to the user's
+     * body expressed in coordinates resolved along body-frame axes.
+     *
+     * @param kinematics kinematics applied to body (specific force and angular rate)
+     *                   during las period of time. These measures are obtained from
+     *                   an inertial unit (IMU).
+     * @param timestamp  timestamp expressed in seconds since epoch time when specific
+     *                   force and angular rate values were updated.
+     * @return true if body kinematics values were updated, false otherwise.
+     * @throws LockedException   if this estimator is already running.
+     * @throws NotReadyException if this estimator is not ready to be updated.
+     * @throws INSException      if estimation fails due to numerical instabilities.
+     */
+    public boolean update(final BodyKinematics kinematics, final double timestamp) throws LockedException,
+            NotReadyException, INSException {
+
+<span class="fc bfc" id="L1402" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1403">            throw new LockedException();</span>
+        }
+
+<span class="fc bfc" id="L1406" title="All 2 branches covered.">        if (!isUpdateReady()) {</span>
+<span class="fc" id="L1407">            throw new NotReadyException();</span>
+        }
+
+<span class="fc bfc" id="L1410" title="All 2 branches covered.">        final var propagationInterval = lastStateTimestamp != null ? timestamp - lastStateTimestamp : 0.0;</span>
+<span class="fc bfc" id="L1411" title="All 4 branches covered.">        if (lastStateTimestamp != null &amp;&amp; propagationInterval &lt;= epochInterval) {</span>
+<span class="fc" id="L1412">            return false;</span>
+        }
+
+        try {
+<span class="fc" id="L1416">            running = true;</span>
+
+<span class="pc bpc" id="L1418" title="1 of 2 branches missed.">            if (listener != null) {</span>
+<span class="fc" id="L1419">                listener.onUpdateStart(this);</span>
+            }
+
+<span class="fc bfc" id="L1422" title="All 2 branches covered.">            if (kinematics != null) {</span>
+<span class="fc" id="L1423">                correctKinematics(kinematics);</span>
+<span class="fc" id="L1424">                ECEFInertialNavigator.navigateECEF(propagationInterval, frame, correctedKinematics, frame);</span>
+            }
+
+<span class="fc" id="L1427">            this.kinematics = kinematics;</span>
+
+<span class="pc bpc" id="L1429" title="1 of 2 branches missed.">            if (listener != null) {</span>
+<span class="fc" id="L1430">                listener.onUpdateEnd(this);</span>
+            }
+
+<span class="nc" id="L1433">        } catch (final InertialNavigatorException e) {</span>
+<span class="nc" id="L1434">            throw new INSException(e);</span>
+        } finally {
+<span class="fc" id="L1436">            running = false;</span>
+        }
+
+<span class="fc" id="L1439">        propagate(timestamp);</span>
+
+<span class="fc" id="L1441">        return true;</span>
+    }
+
+    /**
+     * Indicates whether this estimator is ready for state propagations.
+     *
+     * @return true if estimator is ready, false otherwise.
+     */
+    public boolean isPropagateReady() {
+<span class="fc bfc" id="L1450" title="All 4 branches covered.">        return config != null &amp;&amp; frame != null;</span>
+    }
+
+    /**
+     * Propagates Kalman filter state held by this estimator at provided
+     * timestamp.
+     * Call to this method will be ignored if interval between provided timestamp
+     * and last timestamp when Kalman filter was updated is less than epoch interval.
+     *
+     * @param timestamp timestamp since epoch to propagate state.
+     * @return true if state was propagated, false otherwise.
+     * @throws LockedException   if this estimator is already running.
+     * @throws NotReadyException if estimator is not ready for measurements updates.
+     * @throws INSException      if estimation fails due to numerical instabilities.
+     */
+    public boolean propagate(final Time timestamp) throws LockedException, NotReadyException, INSException {
+<span class="fc" id="L1466">        return propagate(TimeConverter.convert(timestamp.getValue().doubleValue(), timestamp.getUnit(),</span>
+                TimeUnit.SECOND));
+    }
+
+    /**
+     * Propagates Kalman filter state held by this estimator at provided
+     * timestamp.
+     * Call to this method will be ignored if interval between provided timestamp
+     * and last timestamp when Kalman filter was updated is less than epoch interval.
+     *
+     * @param timestamp timestamp expressed in seconds since epoch to propagate state.
+     * @return true if state was propagated, false otherwise.
+     * @throws LockedException   if this estimator is already running.
+     * @throws NotReadyException if estimator is not ready for measurements updates.
+     * @throws INSException      if estimation fails due to numerical instabilities.
+     */
+    public boolean propagate(final double timestamp) throws LockedException, NotReadyException, INSException {
+
+<span class="fc bfc" id="L1484" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1485">            throw new LockedException();</span>
+        }
+
+<span class="fc bfc" id="L1488" title="All 2 branches covered.">        if (!isPropagateReady()) {</span>
+<span class="fc" id="L1489">            throw new NotReadyException();</span>
+        }
+
+<span class="fc bfc" id="L1492" title="All 2 branches covered.">        final var propagationInterval = lastStateTimestamp != null ? timestamp - lastStateTimestamp : 0.0;</span>
+<span class="fc bfc" id="L1493" title="All 4 branches covered.">        if (lastStateTimestamp != null &amp;&amp; propagationInterval &lt;= epochInterval) {</span>
+<span class="fc" id="L1494">            return false;</span>
+        }
+
+        try {
+<span class="fc" id="L1498">            running = true;</span>
+
+<span class="pc bpc" id="L1500" title="1 of 2 branches missed.">            if (listener != null) {</span>
+<span class="fc" id="L1501">                listener.onPropagateStart(this);</span>
+            }
+
+<span class="fc bfc" id="L1504" title="All 2 branches covered.">            if (state == null) {</span>
+                // initialize state
+<span class="fc" id="L1506">                initInitialConfig();</span>
+<span class="fc" id="L1507">                final var covariance = INSLooselyCoupledKalmanInitializer.initialize(initialConfig);</span>
+
+<span class="fc" id="L1509">                state = new INSLooselyCoupledKalmanState();</span>
+<span class="fc" id="L1510">                state.setFrame(frame);</span>
+<span class="fc" id="L1511">                state.setCovariance(covariance);</span>
+            }
+
+<span class="fc bfc" id="L1514" title="All 2 branches covered.">            if (kinematics != null) {</span>
+<span class="fc" id="L1515">                correctKinematics(kinematics);</span>
+            }
+
+            final double fx;
+            final double fy;
+            final double fz;
+<span class="fc bfc" id="L1521" title="All 2 branches covered.">            if (correctedKinematics != null) {</span>
+<span class="fc" id="L1522">                fx = correctedKinematics.getFx();</span>
+<span class="fc" id="L1523">                fy = correctedKinematics.getFy();</span>
+<span class="fc" id="L1524">                fz = correctedKinematics.getFz();</span>
+            } else {
+<span class="fc" id="L1526">                fx = 0.0;</span>
+<span class="fc" id="L1527">                fy = 0.0;</span>
+<span class="fc" id="L1528">                fz = 0.0;</span>
+            }
+
+<span class="fc" id="L1531">            final var x = frame.getX();</span>
+<span class="fc" id="L1532">            final var y = frame.getY();</span>
+<span class="fc" id="L1533">            final var z = frame.getZ();</span>
+<span class="fc" id="L1534">            final var vx = frame.getVx();</span>
+<span class="fc" id="L1535">            final var vy = frame.getVy();</span>
+<span class="fc" id="L1536">            final var vz = frame.getVz();</span>
+<span class="fc" id="L1537">            INSLooselyCoupledKalmanEpochEstimator.estimate(x, y, z, vx, vy, vz, propagationInterval, state, fx, fy, fz,</span>
+                    config, state);
+<span class="fc" id="L1539">            lastStateTimestamp = timestamp;</span>
+
+<span class="fc" id="L1541">            state.getFrame(frame);</span>
+
+<span class="pc bpc" id="L1543" title="1 of 2 branches missed.">            if (listener != null) {</span>
+<span class="fc" id="L1544">                listener.onPropagateEnd(this);</span>
+            }
+
+<span class="nc" id="L1547">        } catch (final AlgebraException e) {</span>
+<span class="nc" id="L1548">            throw new INSException(e);</span>
+        } finally {
+<span class="fc" id="L1550">            running = false;</span>
+        }
+
+<span class="fc" id="L1553">        return true;</span>
+    }
+
+    /**
+     * Resets this estimator.
+     *
+     * @throws LockedException if this estimator is already running.
+     */
+    public void reset() throws LockedException {
+<span class="fc bfc" id="L1562" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1563">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L1566">        running = true;</span>
+<span class="fc" id="L1567">        state = null;</span>
+<span class="fc" id="L1568">        lastStateTimestamp = null;</span>
+<span class="fc" id="L1569">        kinematics = null;</span>
+<span class="fc" id="L1570">        correctedKinematics = null;</span>
+<span class="fc" id="L1571">        frame = null;</span>
+
+<span class="pc bpc" id="L1573" title="1 of 2 branches missed.">        if (listener != null) {</span>
+<span class="fc" id="L1574">            listener.onReset(this);</span>
+        }
+
+<span class="fc" id="L1577">        running = false;</span>
+<span class="fc" id="L1578">    }</span>
+
+    /**
+     * Initializes initial INS loosely coupled Kalman configuration to set
+     * a proper initial covariance matrix.
+     * This method makes no action if an initial configuration already exists.
+     */
+    private void initInitialConfig() {
+<span class="pc bpc" id="L1586" title="1 of 2 branches missed.">        if (initialConfig == null) {</span>
+<span class="nc" id="L1587">            initialConfig = new INSLooselyCoupledKalmanInitializerConfig();</span>
+        }
+<span class="fc" id="L1589">    }</span>
+
+    /**
+     * Corrects provided kinematics by taking into account currently estimated
+     * specific force and angular rate biases.
+     * This method stores the result into the variable member containing corrected
+     * kinematics values.
+     *
+     * @param kinematics kinematics instance to be corrected.
+     */
+    private void correctKinematics(final BodyKinematics kinematics) {
+<span class="fc bfc" id="L1600" title="All 2 branches covered.">        if (correctedKinematics == null) {</span>
+<span class="fc" id="L1601">            correctedKinematics = new BodyKinematics();</span>
+        }
+
+        final double accelBiasX;
+        final double accelBiasY;
+        final double accelBiasZ;
+        final double gyroBiasX;
+        final double gyroBiasY;
+        final double gyroBiasZ;
+<span class="fc bfc" id="L1610" title="All 2 branches covered.">        if (state != null) {</span>
+<span class="fc" id="L1611">            accelBiasX = getValueOrZero(state.getAccelerationBiasX());</span>
+<span class="fc" id="L1612">            accelBiasY = getValueOrZero(state.getAccelerationBiasY());</span>
+<span class="fc" id="L1613">            accelBiasZ = getValueOrZero(state.getAccelerationBiasZ());</span>
+<span class="fc" id="L1614">            gyroBiasX = getValueOrZero(state.getGyroBiasX());</span>
+<span class="fc" id="L1615">            gyroBiasY = getValueOrZero(state.getGyroBiasY());</span>
+<span class="fc" id="L1616">            gyroBiasZ = getValueOrZero(state.getGyroBiasZ());</span>
+        } else {
+<span class="fc" id="L1618">            accelBiasX = 0.0;</span>
+<span class="fc" id="L1619">            accelBiasY = 0.0;</span>
+<span class="fc" id="L1620">            accelBiasZ = 0.0;</span>
+<span class="fc" id="L1621">            gyroBiasX = 0.0;</span>
+<span class="fc" id="L1622">            gyroBiasY = 0.0;</span>
+<span class="fc" id="L1623">            gyroBiasZ = 0.0;</span>
+        }
+
+<span class="fc" id="L1626">        final var fx = kinematics.getFx();</span>
+<span class="fc" id="L1627">        final var fy = kinematics.getFy();</span>
+<span class="fc" id="L1628">        final var fz = kinematics.getFz();</span>
+<span class="fc" id="L1629">        final var angularRateX = kinematics.getAngularRateX();</span>
+<span class="fc" id="L1630">        final var angularRateY = kinematics.getAngularRateY();</span>
+<span class="fc" id="L1631">        final var angularRateZ = kinematics.getAngularRateZ();</span>
+
+<span class="fc" id="L1633">        correctedKinematics.setSpecificForceCoordinates(fx - accelBiasX, fy - accelBiasY, fz - accelBiasZ);</span>
+<span class="fc" id="L1634">        correctedKinematics.setAngularRateCoordinates(</span>
+                angularRateX - gyroBiasX,
+                angularRateY - gyroBiasY,
+                angularRateZ - gyroBiasZ);
+<span class="fc" id="L1638">    }</span>
+
+    /**
+     * Returns provided value if not infinity and not NaN.
+     *
+     * @param value value to be returned.
+     * @return value or 0.0.
+     */
+    private double getValueOrZero(final double value) {
+<span class="pc bpc" id="L1647" title="2 of 4 branches missed.">        if (Double.isNaN(value) || Double.isInfinite(value)) {</span>
+<span class="nc" id="L1648">            return 0.0;</span>
+        } else {
+<span class="fc" id="L1650">            return value;</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

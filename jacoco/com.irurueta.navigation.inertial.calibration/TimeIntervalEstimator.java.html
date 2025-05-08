@@ -1,0 +1,450 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TimeIntervalEstimator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-inertial</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.inertial.calibration</a> &gt; <span class="el_source">TimeIntervalEstimator.java</span></div><h1>TimeIntervalEstimator.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2020 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.inertial.calibration;
+
+import com.irurueta.navigation.LockedException;
+import com.irurueta.units.Time;
+import com.irurueta.units.TimeConverter;
+import com.irurueta.units.TimeUnit;
+
+
+/**
+ * Estimates average time interval between processed samples.
+ */
+public class TimeIntervalEstimator {
+
+    /**
+     * Default total samples to be processed.
+     */
+    public static final int DEFAULT_TOTAL_SAMPLES = 100000;
+
+    /**
+     * Total samples to be processed to finish estimation.
+     */
+<span class="fc" id="L37">    private int totalSamples = DEFAULT_TOTAL_SAMPLES;</span>
+
+    /**
+     * Listener to handle events raised by this estimator.
+     */
+    private TimeIntervalEstimatorListener listener;
+
+    /**
+     * Last provided timestamp expressed in seconds (s).
+     */
+    private Double lastTimestamp;
+
+    /**
+     * Estimated average time interval between body kinematics samples expressed in
+     * seconds (s).
+     */
+    private double averageTimeInterval;
+
+    /**
+     * Estimated variance of time interval between body kinematics samples expressed
+     * in squared seconds (s^2).
+     */
+    private double timeIntervalVariance;
+
+    /**
+     * Number of processed timestamp samples.
+     */
+    private int numberOfProcessedSamples;
+
+    /**
+     * Number of processed timestamp samples plus one.
+     */
+<span class="fc" id="L69">    private int numberOfProcessedSamplesPlusOne = 1;</span>
+
+    /**
+     * Indicates that estimator is running.
+     */
+    private boolean running;
+
+    /**
+     * Constructor.
+     */
+<span class="fc" id="L79">    public TimeIntervalEstimator() {</span>
+<span class="fc" id="L80">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param listener listener to handle events raised by this estimator.
+     */
+<span class="fc" id="L87">    public TimeIntervalEstimator(final TimeIntervalEstimatorListener listener) {</span>
+<span class="fc" id="L88">        this.listener = listener;</span>
+<span class="fc" id="L89">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param totalSamples total samples to be processed to finish estimation.
+     * @throws IllegalArgumentException if provided total samples is zero or negative.
+     */
+<span class="fc" id="L97">    public TimeIntervalEstimator(final int totalSamples) {</span>
+<span class="fc bfc" id="L98" title="All 2 branches covered.">        if (totalSamples &lt;= 0) {</span>
+<span class="fc" id="L99">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L102">        this.totalSamples = totalSamples;</span>
+<span class="fc" id="L103">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param totalSamples total samples to be processed to finish estimation.
+     * @param listener     listener to handle events raised by this estimator.
+     * @throws IllegalArgumentException if provided total samples is zero or negative.
+     */
+    public TimeIntervalEstimator(final int totalSamples, final TimeIntervalEstimatorListener listener) {
+<span class="fc" id="L113">        this(totalSamples);</span>
+<span class="fc" id="L114">        this.listener = listener;</span>
+<span class="fc" id="L115">    }</span>
+
+    /**
+     * Copy constructor.
+     *
+     * @param input instance to get a copy from.
+     */
+<span class="fc" id="L122">    public TimeIntervalEstimator(final TimeIntervalEstimator input) {</span>
+<span class="fc" id="L123">        copyFrom(input);</span>
+<span class="fc" id="L124">    }</span>
+
+    /**
+     * Gets total samples to be processed to finish estimation.
+     *
+     * @return total samples to be processed to finish estimation.
+     */
+    public int getTotalSamples() {
+<span class="fc" id="L132">        return totalSamples;</span>
+    }
+
+    /**
+     * Sets total samples to be processed to finish estimation.
+     *
+     * @param totalSamples total samples to be processed to finish estimation.
+     * @throws LockedException if estimator is currently running.
+     */
+    public void setTotalSamples(final int totalSamples) throws LockedException {
+<span class="fc bfc" id="L142" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L143">            throw new LockedException();</span>
+        }
+
+<span class="fc bfc" id="L146" title="All 2 branches covered.">        if (totalSamples &lt;= 0) {</span>
+<span class="fc" id="L147">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L150">        this.totalSamples = totalSamples;</span>
+<span class="fc" id="L151">    }</span>
+
+    /**
+     * Gets listener to handle events raised by this estimator.
+     *
+     * @return listener to handle events raised by this estimator.
+     */
+    public TimeIntervalEstimatorListener getListener() {
+<span class="fc" id="L159">        return listener;</span>
+    }
+
+    /**
+     * Sets listener to handle events raised by this estimator.
+     *
+     * @param listener listener to handle events raised by this estimator.
+     * @throws LockedException if this estimator is running.
+     */
+    public void setListener(final TimeIntervalEstimatorListener listener) throws LockedException {
+<span class="fc bfc" id="L169" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L170">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L173">        this.listener = listener;</span>
+<span class="fc" id="L174">    }</span>
+
+    /**
+     * Gets last provided timestamp expressed in seconds or null if none has been
+     * provided yet.
+     *
+     * @return last provided timestamp or null.
+     */
+    public Double getLastTimestamp() {
+<span class="fc" id="L183">        return lastTimestamp;</span>
+    }
+
+    /**
+     * Gets last provided timestamp or null if none has been provided yet.
+     *
+     * @return last provided timestamp or null.
+     */
+    public Time getLastTimestampAsTime() {
+<span class="fc bfc" id="L192" title="All 2 branches covered.">        return lastTimestamp != null ? new Time(lastTimestamp, TimeUnit.SECOND) : null;</span>
+    }
+
+    /**
+     * Gets last provided timestamp.
+     *
+     * @param result instance where last provided timestamp will be stored.
+     * @return true if last provided timestamp was available, false otherwise.
+     */
+    public boolean getLastTimestampAsTime(final Time result) {
+<span class="fc bfc" id="L202" title="All 2 branches covered.">        if (lastTimestamp != null) {</span>
+<span class="fc" id="L203">            result.setValue(lastTimestamp);</span>
+<span class="fc" id="L204">            result.setUnit(TimeUnit.SECOND);</span>
+<span class="fc" id="L205">            return true;</span>
+        } else {
+<span class="fc" id="L207">            return false;</span>
+        }
+    }
+
+    /**
+     * Gets estimated average time interval between body kinematics samples expressed in
+     * seconds (s).
+     * Calling this method before the estimator is finished will return a provisional
+     * value containing current estimation.
+     *
+     * @return estimated average time interval.
+     */
+    public double getAverageTimeInterval() {
+<span class="fc" id="L220">        return averageTimeInterval;</span>
+    }
+
+    /**
+     * Gets estimated average time interval between body kinematics samples.
+     * Calling this method before the estimator is finished will return a provisional
+     * value containing current estimation.
+     *
+     * @return estimate average time interval.
+     */
+    public Time getAverageTimeIntervalAsTime() {
+<span class="fc" id="L231">        return new Time(averageTimeInterval, TimeUnit.SECOND);</span>
+    }
+
+    /**
+     * Gets estimated average time interval between body kinematics samples.
+     * Calling this method before the estimator is finished will return a provisional
+     * value containing current estimation.
+     *
+     * @param result instance where estimated average time interval will be stored.
+     */
+    public void getAverageTimeIntervalAsTime(final Time result) {
+<span class="fc" id="L242">        result.setValue(averageTimeInterval);</span>
+<span class="fc" id="L243">        result.setUnit(TimeUnit.SECOND);</span>
+<span class="fc" id="L244">    }</span>
+
+    /**
+     * Gets estimated variance of time interval between body kinematics samples
+     * expressed in squared seconds (s^2).
+     * Calling this method before the estimator is finished will return a provisional
+     * value containing current estimation.
+     *
+     * @return estimated variance of time interval between body kinematics samples.
+     */
+    public double getTimeIntervalVariance() {
+<span class="fc" id="L255">        return timeIntervalVariance;</span>
+    }
+
+    /**
+     * Gets estimate standard deviation of time interval between body kinematics
+     * samples expressed in seconds (s).
+     * Calling this method before the estimator is finished will return a provisional
+     * value containing current estimation.
+     *
+     * @return estimated standard deviation of time interval between body kinematics
+     * samples.
+     */
+    public double getTimeIntervalStandardDeviation() {
+<span class="fc" id="L268">        return Math.sqrt(timeIntervalVariance);</span>
+    }
+
+    /**
+     * Gets estimate standard deviation of time interval between body kinematics
+     * samples.
+     * Calling this method before the estimator is finished will return a provisional
+     * value containing current estimation.
+     *
+     * @return estimated standard deviation of time interval between body kinematics
+     * samples.
+     */
+    public Time getTimeIntervalStandardDeviationAsTime() {
+<span class="fc" id="L281">        return new Time(getTimeIntervalStandardDeviation(), TimeUnit.SECOND);</span>
+    }
+
+    /**
+     * Gets estimate standard deviation of time interval between body kinematics
+     * samples.
+     * Calling this method before the estimator is finished will return a provisional
+     * value containing current estimation.
+     *
+     * @param result instance where estimated standard deviation of time interval
+     *               between body kinematics samples will be stored.
+     */
+    public void getTimeIntervalStandardDeviationAsTime(final Time result) {
+<span class="fc" id="L294">        result.setValue(getTimeIntervalStandardDeviation());</span>
+<span class="fc" id="L295">        result.setUnit(TimeUnit.SECOND);</span>
+<span class="fc" id="L296">    }</span>
+
+    /**
+     * Gets number of samples that have been processed so far.
+     *
+     * @return number of samples that have been processed so far.
+     */
+    public int getNumberOfProcessedSamples() {
+<span class="fc" id="L304">        return numberOfProcessedSamples;</span>
+    }
+
+    /**
+     * Indicates whether estimator is currently running or not.
+     *
+     * @return true if estimator is running, false otherwise.
+     */
+    public boolean isRunning() {
+<span class="fc" id="L313">        return running;</span>
+    }
+
+    /**
+     * Indicates whether estimator has finished the estimation.
+     *
+     * @return true if estimator has finished, false otherwise.
+     */
+    public boolean isFinished() {
+<span class="fc bfc" id="L322" title="All 2 branches covered.">        return numberOfProcessedSamples == totalSamples;</span>
+    }
+
+    /**
+     * Adds a timestamp value to current estimation.
+     * If estimator is already finished, provided timestamp will be ignored.
+     *
+     * @param timestamp timestamp since epoch time.
+     * @return true if provided timestamp has been processed, false if it has been
+     * ignored.
+     * @throws LockedException if estimator is currently running.
+     */
+    public boolean addTimestamp(final Time timestamp) throws LockedException {
+<span class="fc" id="L335">        return addTimestamp(TimeConverter.convert(timestamp.getValue().doubleValue(), timestamp.getUnit(),</span>
+                TimeUnit.SECOND));
+    }
+
+    /**
+     * Adds a timestamp value to current estimation.
+     * If estimator is already finished, provided timestamp will be ignored.
+     *
+     * @param timestamp timestamp since epoch time expressed in seconds (s).
+     * @return true if provided timestamp has been processed, false if it has been
+     * ignored.
+     * @throws LockedException if estimator is currently running.
+     */
+    public boolean addTimestamp(final double timestamp) throws LockedException {
+<span class="fc bfc" id="L349" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L350">            throw new LockedException();</span>
+        }
+
+<span class="fc bfc" id="L353" title="All 2 branches covered.">        if (isFinished()) {</span>
+<span class="fc" id="L354">            return false;</span>
+        }
+
+<span class="fc" id="L357">        running = true;</span>
+
+<span class="pc bpc" id="L359" title="1 of 4 branches missed.">        if (lastTimestamp == null &amp;&amp; listener != null) {</span>
+<span class="fc" id="L360">            listener.onStart(this);</span>
+        }
+
+<span class="fc bfc" id="L363" title="All 2 branches covered.">        if (lastTimestamp != null) {</span>
+<span class="fc" id="L364">            final var timeInterval = timestamp - lastTimestamp;</span>
+
+<span class="fc" id="L366">            averageTimeInterval = averageTimeInterval * numberOfProcessedSamples / numberOfProcessedSamplesPlusOne</span>
+                    + timeInterval / numberOfProcessedSamplesPlusOne;
+
+<span class="fc" id="L369">            final var diff = timeInterval - averageTimeInterval;</span>
+<span class="fc" id="L370">            final var diff2 = diff * diff;</span>
+<span class="fc" id="L371">            timeIntervalVariance = timeIntervalVariance * numberOfProcessedSamples / numberOfProcessedSamplesPlusOne</span>
+                    + diff2 / numberOfProcessedSamplesPlusOne;
+        }
+
+<span class="fc" id="L375">        lastTimestamp = timestamp;</span>
+
+<span class="fc" id="L377">        numberOfProcessedSamples++;</span>
+<span class="fc" id="L378">        numberOfProcessedSamplesPlusOne++;</span>
+
+<span class="pc bpc" id="L380" title="1 of 2 branches missed.">        if (listener != null) {</span>
+<span class="fc" id="L381">            listener.onTimestampAdded(this);</span>
+        }
+
+<span class="fc" id="L384">        running = false;</span>
+
+<span class="pc bpc" id="L386" title="1 of 4 branches missed.">        if (isFinished() &amp;&amp; listener != null) {</span>
+<span class="fc" id="L387">            listener.onFinish(this);</span>
+        }
+
+<span class="fc" id="L390">        return true;</span>
+    }
+
+    /**
+     * Resets current estimator.
+     *
+     * @return true if estimator was successfully reset, false if no reset was needed.
+     * @throws LockedException if estimator is currently running.
+     */
+    @SuppressWarnings(&quot;DuplicatedCode&quot;)
+    public boolean reset() throws LockedException {
+<span class="fc bfc" id="L401" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L402">            throw new LockedException();</span>
+        }
+
+<span class="pc bpc" id="L405" title="1 of 2 branches missed.">        if (numberOfProcessedSamples == 0) {</span>
+<span class="nc" id="L406">            return false;</span>
+        }
+
+<span class="fc" id="L409">        running = true;</span>
+<span class="fc" id="L410">        lastTimestamp = null;</span>
+<span class="fc" id="L411">        averageTimeInterval = 0.0;</span>
+<span class="fc" id="L412">        timeIntervalVariance = 0.0;</span>
+<span class="fc" id="L413">        numberOfProcessedSamples = 0;</span>
+<span class="fc" id="L414">        numberOfProcessedSamplesPlusOne = 1;</span>
+
+<span class="pc bpc" id="L416" title="1 of 2 branches missed.">        if (listener != null) {</span>
+<span class="fc" id="L417">            listener.onReset(this);</span>
+        }
+
+<span class="fc" id="L420">        running = false;</span>
+
+<span class="fc" id="L422">        return true;</span>
+    }
+
+    /**
+     * Copies instance from provided one into this one.
+     *
+     * @param input input instance to be copied.
+     */
+    public void copyFrom(final TimeIntervalEstimator input) {
+<span class="fc" id="L431">        totalSamples = input.totalSamples;</span>
+<span class="fc" id="L432">        listener = input.listener;</span>
+<span class="fc" id="L433">        lastTimestamp = input.lastTimestamp;</span>
+<span class="fc" id="L434">        averageTimeInterval = input.averageTimeInterval;</span>
+<span class="fc" id="L435">        timeIntervalVariance = input.timeIntervalVariance;</span>
+<span class="fc" id="L436">        numberOfProcessedSamples = input.numberOfProcessedSamples;</span>
+<span class="fc" id="L437">        numberOfProcessedSamplesPlusOne = input.numberOfProcessedSamplesPlusOne;</span>
+<span class="fc" id="L438">        running = input.running;</span>
+<span class="fc" id="L439">    }</span>
+
+    /**
+     * Copies current instance into provided instance.
+     *
+     * @param output output instance to copy to.
+     */
+    public void copyTo(final TimeIntervalEstimator output) {
+<span class="fc" id="L447">        output.copyFrom(this);</span>
+<span class="fc" id="L448">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

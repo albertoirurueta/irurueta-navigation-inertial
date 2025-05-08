@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>INSTightlyCoupledKalmanInitializer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-inertial</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.inertial</a> &gt; <span class="el_source">INSTightlyCoupledKalmanInitializer.java</span></div><h1>INSTightlyCoupledKalmanInitializer.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2019 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.inertial;
+
+import com.irurueta.algebra.Matrix;
+import com.irurueta.algebra.WrongSizeException;
+
+/**
+ * Initializes the tightly coupled INS/GNSS extended Kalman filter error covariance
+ * matrix.
+ * This implementation is based on the equations defined in &quot;Principles of GNSS, Inertial, and Multisensor
+ * Integrated Navigation Systems, Second Edition&quot; and on the companion software available at:
+ * &lt;a href=&quot;https://github.com/ymjdz/MATLAB-Codes/blob/master/Initialize_TC_P_matrix.m&quot;&gt;
+ *     https://github.com/ymjdz/MATLAB-Codes/blob/master/Initialize_TC_P_matrix.m
+ * &lt;/a&gt;
+ */
+public class INSTightlyCoupledKalmanInitializer {
+
+    /**
+     * Number of parameters of the Kalman filter.
+     */
+    public static final int NUM_PARAMS = 17;
+
+    /**
+     * Constructor.
+     * Prevents instantiation of helper class.
+     */
+    private INSTightlyCoupledKalmanInitializer() {
+    }
+
+    /**
+     * Initializes INS/GNS tightly coupled Kalman filter error covariance matrix.
+     *
+     * @param config Kalman filter configuration.
+     * @param result instance where resulting initialized error covariance matrix
+     *               will be stored. Matrix must be 17x17, otherwise it will be resized.
+     */
+    @SuppressWarnings(&quot;DuplicatedCode&quot;)
+    public static void initialize(final INSTightlyCoupledKalmanInitializerConfig config, final Matrix result) {
+<span class="pc bpc" id="L53" title="1 of 4 branches missed.">        if (result.getRows() != NUM_PARAMS || result.getColumns() != NUM_PARAMS) {</span>
+            try {
+<span class="fc" id="L55">                result.resize(NUM_PARAMS, NUM_PARAMS);</span>
+<span class="nc" id="L56">            } catch (final WrongSizeException ignore) {</span>
+                // never happens
+<span class="fc" id="L58">            }</span>
+        }
+
+<span class="fc" id="L61">        final var initAttUnc = config.getInitialAttitudeUncertainty();</span>
+<span class="fc" id="L62">        final var initVelUnc = config.getInitialVelocityUncertainty();</span>
+<span class="fc" id="L63">        final var initPosUnc = config.getInitialPositionUncertainty();</span>
+<span class="fc" id="L64">        final var initBaUnc = config.getInitialAccelerationBiasUncertainty();</span>
+<span class="fc" id="L65">        final var initBgUnc = config.getInitialGyroscopeBiasUncertainty();</span>
+<span class="fc" id="L66">        final var initClockOffset = config.getInitialClockOffsetUncertainty();</span>
+<span class="fc" id="L67">        final var initClockDrift = config.getInitialClockDriftUncertainty();</span>
+
+<span class="fc" id="L69">        final var initAttUnc2 = initAttUnc * initAttUnc;</span>
+<span class="fc" id="L70">        final var initVelUnc2 = initVelUnc * initVelUnc;</span>
+<span class="fc" id="L71">        final var initPosUnc2 = initPosUnc * initPosUnc;</span>
+<span class="fc" id="L72">        final var initBaUnc2 = initBaUnc * initBaUnc;</span>
+<span class="fc" id="L73">        final var initBgUnc2 = initBgUnc * initBgUnc;</span>
+<span class="fc" id="L74">        final var initClockOffset2 = initClockOffset * initClockOffset;</span>
+<span class="fc" id="L75">        final var initClockDrift2 = initClockDrift * initClockDrift;</span>
+
+<span class="fc" id="L77">        result.initialize(0.0);</span>
+
+<span class="fc bfc" id="L79" title="All 2 branches covered.">        for (var i = 0; i &lt; 3; i++) {</span>
+<span class="fc" id="L80">            result.setElementAt(i, i, initAttUnc2);</span>
+        }
+<span class="fc bfc" id="L82" title="All 2 branches covered.">        for (var i = 3; i &lt; 6; i++) {</span>
+<span class="fc" id="L83">            result.setElementAt(i, i, initVelUnc2);</span>
+        }
+<span class="fc bfc" id="L85" title="All 2 branches covered.">        for (var i = 6; i &lt; 9; i++) {</span>
+<span class="fc" id="L86">            result.setElementAt(i, i, initPosUnc2);</span>
+        }
+<span class="fc bfc" id="L88" title="All 2 branches covered.">        for (var i = 9; i &lt; 12; i++) {</span>
+<span class="fc" id="L89">            result.setElementAt(i, i, initBaUnc2);</span>
+        }
+<span class="fc bfc" id="L91" title="All 2 branches covered.">        for (var i = 12; i &lt; 15; i++) {</span>
+<span class="fc" id="L92">            result.setElementAt(i, i, initBgUnc2);</span>
+        }
+<span class="fc" id="L94">        result.setElementAt(15, 15, initClockOffset2);</span>
+<span class="fc" id="L95">        result.setElementAt(16, 16, initClockDrift2);</span>
+<span class="fc" id="L96">    }</span>
+
+    /**
+     * Initializes INS/GNS tightly coupled Kalman filter error covariance matrix.
+     *
+     * @param config Kalman filter configuration.
+     * @return initialized error covariance matrix.
+     */
+    public static Matrix initialize(final INSTightlyCoupledKalmanInitializerConfig config) {
+<span class="fc" id="L105">        Matrix result = null;</span>
+        try {
+<span class="fc" id="L107">            result = new Matrix(NUM_PARAMS, NUM_PARAMS);</span>
+<span class="fc" id="L108">            initialize(config, result);</span>
+<span class="nc" id="L109">        } catch (final WrongSizeException ignore) {</span>
+            // never happens
+<span class="fc" id="L111">        }</span>
+
+<span class="fc" id="L113">        return result;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

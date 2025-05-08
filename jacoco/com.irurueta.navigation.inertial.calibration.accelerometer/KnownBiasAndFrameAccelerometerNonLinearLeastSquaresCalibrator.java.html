@@ -1,0 +1,3428 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-inertial</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.inertial.calibration.accelerometer</a> &gt; <span class="el_source">KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator.java</span></div><h1>KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2020 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.inertial.calibration.accelerometer;
+
+import com.irurueta.algebra.AlgebraException;
+import com.irurueta.algebra.Matrix;
+import com.irurueta.algebra.WrongSizeException;
+import com.irurueta.navigation.LockedException;
+import com.irurueta.navigation.NotReadyException;
+import com.irurueta.navigation.inertial.BodyKinematics;
+import com.irurueta.navigation.inertial.calibration.AccelerationTriad;
+import com.irurueta.navigation.inertial.calibration.CalibrationException;
+import com.irurueta.navigation.inertial.calibration.StandardDeviationFrameBodyKinematics;
+import com.irurueta.navigation.inertial.estimators.ECEFKinematicsEstimator;
+import com.irurueta.numerical.fitting.FittingException;
+import com.irurueta.numerical.fitting.LevenbergMarquardtMultiVariateFitter;
+import com.irurueta.numerical.fitting.LevenbergMarquardtMultiVariateFunctionEvaluator;
+import com.irurueta.units.Acceleration;
+import com.irurueta.units.AccelerationConverter;
+import com.irurueta.units.AccelerationUnit;
+
+import java.util.Collection;
+
+/**
+ * Estimates accelerometer cross couplings and scaling factors.
+ * This estimator assumes that biases are known.
+ * &lt;p&gt;
+ * This calibrator uses an iterative approach to find a minimum least squared error
+ * solution.
+ * &lt;p&gt;
+ * To use this calibrator it is assumed that body position and orientation is known and
+ * that body remains static on the same position while being calibrated.
+ * &lt;p&gt;
+ * Measured specific force is assumed to follow the model shown below:
+ * &lt;pre&gt;
+ *     fmeas = ba + (I + Ma) * ftrue + w
+ * &lt;/pre&gt;
+ * Where:
+ * - fmeas is the measured specific force. This is a 3x1 vector.
+ * - ba is accelerometer bias. This is a known 3x1 vector.
+ * - I is the 3x3 identity matrix.
+ * - Ma is the 3x3 matrix containing cross-couplings and scaling factors. Ideally, on
+ * a perfect accelerometer, this should be a 3x3 zero matrix.
+ * - ftrue is ground-trush specific force.
+ * - w is measurement noise.
+ */
+public class KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator implements
+        KnownBiasAndFrameAccelerometerCalibrator&lt;StandardDeviationFrameBodyKinematics,
+                KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibratorListener&gt;,
+        AccelerometerNonLinearCalibrator,
+        UnorderedStandardDeviationFrameBodyKinematicsAccelerometerCalibrator {
+
+    /**
+     * Indicates whether by default a common z-axis is assumed for both the accelerometer
+     * and gyroscope.
+     */
+    public static final boolean DEFAULT_USE_COMMON_Z_AXIS = false;
+
+    /**
+     * Required minimum number of measurements.
+     */
+    public static final int MINIMUM_MEASUREMENTS = 3;
+
+    /**
+     * Number of unknowns when common z-axis is assumed for both the accelerometer
+     * and gyroscope.
+     */
+    private static final int COMMON_Z_AXIS_UNKNOWNS = 6;
+
+    /**
+     * Number of unknowns for the general case.
+     */
+    private static final int GENERAL_UNKNOWNS = 9;
+
+    /**
+     * Levenberg-Marquardt  fitter to find a non-linear solution.
+     */
+<span class="fc" id="L91">    private final LevenbergMarquardtMultiVariateFitter fitter = new LevenbergMarquardtMultiVariateFitter();</span>
+
+    /**
+     * Known x coordinate of accelerometer bias expressed in meters per squared
+     * second (m/s^2).
+     */
+    private double biasX;
+
+    /**
+     * Known y coordinate of accelerometer bias expressed in meters per squared
+     * second (m/s^2).
+     */
+    private double biasY;
+
+    /**
+     * Known z coordinate of accelerometer bias expressed in meters per squared
+     * second (m/s^2).
+     */
+    private double biasZ;
+
+    /**
+     * Initial x scaling factor.
+     */
+    private double initialSx;
+
+    /**
+     * Initial y scaling factor.
+     */
+    private double initialSy;
+
+    /**
+     * Initial z scaling factor.
+     */
+    private double initialSz;
+
+    /**
+     * Initial x-y cross coupling error.
+     */
+    private double initialMxy;
+
+    /**
+     * Initial x-z cross coupling error.
+     */
+    private double initialMxz;
+
+    /**
+     * Initial y-x cross coupling error.
+     */
+    private double initialMyx;
+
+    /**
+     * Initial y-z cross coupling error.
+     */
+    private double initialMyz;
+
+    /**
+     * Initial z-x cross coupling error.
+     */
+    private double initialMzx;
+
+    /**
+     * Initial z-y cross coupling error.
+     */
+    private double initialMzy;
+
+    /**
+     * Contains a collections of body kinematics measurements taken at different
+     * frames (positions, orientations and velocities) and containing the standard
+     * deviations of accelerometer and gyroscope measurements.
+     * If a single device IMU needs to be calibrated, typically all measurements are
+     * taken at the same position, with zero velocity and multiple orientations.
+     * However, if we just want to calibrate a given IMU model (e.g. obtain
+     * an average and less precise calibration for the IMU of a given phone model),
+     * we could take measurements collected throughout the planet at multiple positions
+     * while the phone remains static (e.g. while charging), hence each measurement
+     * position will change, velocity will remain zero and orientation will be
+     * typically constant at horizontal orientation while the phone remains on a
+     * flat surface.
+     */
+    private Collection&lt;StandardDeviationFrameBodyKinematics&gt; measurements;
+
+    /**
+     * This flag indicates whether z-axis is assumed to be common for accelerometer
+     * and gyroscope.
+     * When enabled, this eliminates 3 variables from Ma matrix.
+     */
+<span class="fc" id="L177">    private boolean commonAxisUsed = DEFAULT_USE_COMMON_Z_AXIS;</span>
+
+    /**
+     * Listener to handle events raised by this estimator.
+     */
+    private KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener;
+
+    /**
+     * Estimated accelerometer scale factors and cross coupling errors.
+     * This is the product of matrix Ta containing cross coupling errors and Ka
+     * containing scaling factors.
+     * So tat:
+     * &lt;pre&gt;
+     *     Ma = [sx    mxy  mxz] = Ta*Ka
+     *          [myx   sy   myz]
+     *          [mzx   mzy  sz ]
+     * &lt;/pre&gt;
+     * Where:
+     * &lt;pre&gt;
+     *     Ka = [sx 0   0 ]
+     *          [0  sy  0 ]
+     *          [0  0   sz]
+     * &lt;/pre&gt;
+     * and
+     * &lt;pre&gt;
+     *     Ta = [1          -alphaXy    alphaXz ]
+     *          [alphaYx    1           -alphaYz]
+     *          [-alphaZx   alphaZy     1       ]
+     * &lt;/pre&gt;
+     * Hence:
+     * &lt;pre&gt;
+     *     Ma = [sx    mxy  mxz] = Ta*Ka =  [sx             -sy * alphaXy   sz * alphaXz ]
+     *          [myx   sy   myz]            [sx * alphaYx   sy              -sz * alphaYz]
+     *          [mzx   mzy  sz ]            [-sx * alphaZx  sy * alphaZy    sz           ]
+     * &lt;/pre&gt;
+     * This instance allows any 3x3 matrix however, typically alphaYx, alphaZx and alphaZy
+     * are considered to be zero if the accelerometer z-axis is assumed to be the same
+     * as the body z-axis. When this is assumed, myx = mzx = mzy = 0 and the Ma matrix
+     * becomes upper diagonal:
+     * &lt;pre&gt;
+     *     Ma = [sx    mxy  mxz]
+     *          [0     sy   myz]
+     *          [0     0    sz ]
+     * &lt;/pre&gt;
+     * Values of this matrix are unit-less.
+     */
+    private Matrix estimatedMa;
+
+    /**
+     * Estimated covariance matrix for estimated position.
+     */
+    private Matrix estimatedCovariance;
+
+    /**
+     * Estimated chi square value.
+     */
+    private double estimatedChiSq;
+
+    /**
+     * Estimated mean square error respect to provided measurements.
+     */
+    private double estimatedMse;
+
+    /**
+     * Indicates whether estimator is running.
+     */
+    private boolean running;
+
+    /**
+     * Constructor.
+     */
+<span class="fc" id="L248">    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator() {</span>
+<span class="fc" id="L249">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param listener listener to handle events raised by this calibrator.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+<span class="fc" id="L257">            final KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {</span>
+<span class="fc" id="L258">        this.listener = listener;</span>
+<span class="fc" id="L259">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements collection of body kinematics measurements with standard
+     *                     deviations taken at different frames (positions, orientations
+     *                     and velocities).
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+<span class="fc" id="L269">            final Collection&lt;StandardDeviationFrameBodyKinematics&gt; measurements) {</span>
+<span class="fc" id="L270">        this.measurements = measurements;</span>
+<span class="fc" id="L271">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements collection of body kinematics measurements with standard
+     *                     deviations taken at different frames (positions, orientations
+     *                     and velocities).
+     * @param listener     listener to handle events raised by this calibrator.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final Collection&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
+<span class="fc" id="L284">        this(measurements);</span>
+<span class="fc" id="L285">        this.listener = listener;</span>
+<span class="fc" id="L286">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     */
+<span class="fc" id="L294">    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(final boolean commonAxisUsed) {</span>
+<span class="fc" id="L295">        this.commonAxisUsed = commonAxisUsed;</span>
+<span class="fc" id="L296">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param listener       listener to handle events raised by this calibrator.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final boolean commonAxisUsed,
+            final KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
+<span class="fc" id="L308">        this(commonAxisUsed);</span>
+<span class="fc" id="L309">        this.listener = listener;</span>
+<span class="fc" id="L310">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements   collection of body kinematics measurements with standard
+     *                       deviations taken at different frames (positions, orientations
+     *                       and velocities).
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final Collection&lt;StandardDeviationFrameBodyKinematics&gt; measurements, final boolean commonAxisUsed) {
+<span class="fc" id="L323">        this(measurements);</span>
+<span class="fc" id="L324">        this.commonAxisUsed = commonAxisUsed;</span>
+<span class="fc" id="L325">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements   collection of body kinematics measurements with standard
+     *                       deviations taken at different frames (positions, orientations
+     *                       and velocities).
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param listener       listener to handle events raised by this calibrator.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final Collection&lt;StandardDeviationFrameBodyKinematics&gt; measurements, final boolean commonAxisUsed,
+            final KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
+<span class="fc" id="L340">        this(measurements, commonAxisUsed);</span>
+<span class="fc" id="L341">        this.listener = listener;</span>
+<span class="fc" id="L342">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param biasX known x coordinate of accelerometer bias expressed in meters per
+     *              squared second (m/s^2).
+     * @param biasY known y coordinate of accelerometer bias expressed in meters per
+     *              squared second (m/s^2).
+     * @param biasZ known z coordinate of accelerometer bias expressed in meters per
+     *              squared second (m/s^2).
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+<span class="fc" id="L355">            final double biasX, final double biasY, final double biasZ) {</span>
+        try {
+<span class="fc" id="L357">            setBiasCoordinates(biasX, biasY, biasZ);</span>
+<span class="nc" id="L358">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L360">        }</span>
+<span class="fc" id="L361">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param biasX    known x coordinate of accelerometer bias expressed in meters per
+     *                 squared second (m/s^2).
+     * @param biasY    known y coordinate of accelerometer bias expressed in meters per
+     *                 squared second (m/s^2).
+     * @param biasZ    known z coordinate of accelerometer bias expressed in meters per
+     *                 squared second (m/s^2).
+     * @param listener listener to handle events raised by this calibrator.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final double biasX, final double biasY, final double biasZ,
+            final KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
+<span class="fc" id="L377">        this(biasX, biasY, biasZ);</span>
+<span class="fc" id="L378">        this.listener = listener;</span>
+<span class="fc" id="L379">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements collection of body kinematics measurements with standard
+     *                     deviations taken at different frames (positions, orientations
+     *                     and velocities).
+     * @param biasX        known x coordinate of accelerometer bias expressed in meters
+     *                     per squared second (m/s^2).
+     * @param biasY        known y coordinate of accelerometer bias expressed in meters
+     *                     per squared second (m/s^2).
+     * @param biasZ        known z coordinate of accelerometer bias expressed in meters
+     *                     per squared second (m/s^2).
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final Collection&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final double biasX, final double biasY, final double biasZ) {
+<span class="fc" id="L397">        this(biasX, biasY, biasZ);</span>
+<span class="fc" id="L398">        this.measurements = measurements;</span>
+<span class="fc" id="L399">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements collection of body kinematics measurements with standard
+     *                     deviations taken at different frames (positions, orientations
+     *                     and velocities).
+     * @param biasX        known x coordinate of accelerometer bias expressed in meters
+     *                     per squared second (m/s^2).
+     * @param biasY        known y coordinate of accelerometer bias expressed in meters
+     *                     per squared second (m/s^2).
+     * @param biasZ        known z coordinate of accelerometer bias expressed in meters
+     *                     per squared second (m/s^2).
+     * @param listener     listener to handle events raised by this calibrator.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final Collection&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final double biasX, final double biasY, final double biasZ,
+            final KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
+<span class="fc" id="L419">        this(measurements, biasX, biasY, biasZ);</span>
+<span class="fc" id="L420">        this.listener = listener;</span>
+<span class="fc" id="L421">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param biasX          known x coordinate of accelerometer bias expressed in
+     *                       meters per squared second (m/s^2).
+     * @param biasY          known y coordinate of accelerometer bias expressed in
+     *                       meters per squared second (m/s^2).
+     * @param biasZ          known z coordinate of accelerometer bias expressed in
+     *                       meters per squared second (m/s^2).
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final double biasX, final double biasY, final double biasZ, final boolean commonAxisUsed) {
+<span class="fc" id="L437">        this(biasX, biasY, biasZ);</span>
+<span class="fc" id="L438">        this.commonAxisUsed = commonAxisUsed;</span>
+<span class="fc" id="L439">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param biasX          known x coordinate of accelerometer bias expressed in
+     *                       meters per squared second (m/s^2).
+     * @param biasY          known y coordinate of accelerometer bias expressed in
+     *                       meters per squared second (m/s^2).
+     * @param biasZ          known z coordinate of accelerometer bias expressed in
+     *                       meters per squared second (m/s^2).
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param listener       listener to handle events raised by this calibrator.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final double biasX, final double biasY, final double biasZ, final boolean commonAxisUsed,
+            final KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
+<span class="fc" id="L457">        this(biasX, biasY, biasZ, commonAxisUsed);</span>
+<span class="fc" id="L458">        this.listener = listener;</span>
+<span class="fc" id="L459">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements   collection of body kinematics measurements with standard
+     *                       deviations taken at different frames (positions, orientations
+     *                       and velocities).
+     * @param biasX          known x coordinate of accelerometer bias expressed in
+     *                       meters per squared second (m/s^2).
+     * @param biasY          known y coordinate of accelerometer bias expressed in
+     *                       meters per squared second (m/s^2).
+     * @param biasZ          known z coordinate of accelerometer bias expressed in
+     *                       meters per squared second (m/s^2).
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final Collection&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final double biasX, final double biasY, final double biasZ, final boolean commonAxisUsed) {
+<span class="fc" id="L479">        this(measurements, biasX, biasY, biasZ);</span>
+<span class="fc" id="L480">        this.commonAxisUsed = commonAxisUsed;</span>
+<span class="fc" id="L481">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements   collection of body kinematics measurements with standard
+     *                       deviations taken at different frames (positions, orientations
+     *                       and velocities).
+     * @param biasX          known x coordinate of accelerometer bias expressed in
+     *                       meters per squared second (m/s^2).
+     * @param biasY          known y coordinate of accelerometer bias expressed in
+     *                       meters per squared second (m/s^2).
+     * @param biasZ          known z coordinate of accelerometer bias expressed in
+     *                       meters per squared second (m/s^2).
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param listener       listener to handle events raised by this calibrator.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final Collection&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final double biasX, final double biasY, final double biasZ, final boolean commonAxisUsed,
+            final KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
+<span class="fc" id="L503">        this(measurements, biasX, biasY, biasZ, commonAxisUsed);</span>
+<span class="fc" id="L504">        this.listener = listener;</span>
+<span class="fc" id="L505">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param biasX known x coordinate of accelerometer bias.
+     * @param biasY known y coordinate of accelerometer bias.
+     * @param biasZ known z coordinate of accelerometer bias.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+<span class="fc" id="L515">            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ) {</span>
+        try {
+<span class="fc" id="L517">            setBiasCoordinates(biasX, biasY, biasZ);</span>
+<span class="nc" id="L518">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L520">        }</span>
+<span class="fc" id="L521">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param biasX    known x coordinate of accelerometer bias.
+     * @param biasY    known y coordinate of accelerometer bias.
+     * @param biasZ    known z coordinate of accelerometer bias.
+     * @param listener listener to handle events raised by this calibrator.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
+            final KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
+<span class="fc" id="L534">        this(biasX, biasY, biasZ);</span>
+<span class="fc" id="L535">        this.listener = listener;</span>
+<span class="fc" id="L536">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements collection of body kinematics measurements with standard
+     *                     deviations taken at different frames (positions, orientations
+     *                     and velocities).
+     * @param biasX        known x coordinate of accelerometer bias.
+     * @param biasY        known y coordinate of accelerometer bias.
+     * @param biasZ        known z coordinate of accelerometer bias.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final Collection&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ) {
+<span class="fc" id="L551">        this(biasX, biasY, biasZ);</span>
+<span class="fc" id="L552">        this.measurements = measurements;</span>
+<span class="fc" id="L553">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements collection of body kinematics measurements with standard
+     *                     deviations taken at different frames (positions, orientations
+     *                     and velocities).
+     * @param biasX        known x coordinate of accelerometer bias.
+     * @param biasY        known y coordinate of accelerometer bias.
+     * @param biasZ        known z coordinate of accelerometer bias.
+     * @param listener     listener to handle events raised by this calibrator.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final Collection&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
+            final KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
+<span class="fc" id="L570">        this(measurements, biasX, biasY, biasZ);</span>
+<span class="fc" id="L571">        this.listener = listener;</span>
+<span class="fc" id="L572">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param biasX          known x coordinate of accelerometer bias.
+     * @param biasY          known y coordinate of accelerometer bias.
+     * @param biasZ          known z coordinate of accelerometer bias.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
+            final boolean commonAxisUsed) {
+<span class="fc" id="L586">        this(biasX, biasY, biasZ);</span>
+<span class="fc" id="L587">        this.commonAxisUsed = commonAxisUsed;</span>
+<span class="fc" id="L588">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param biasX          known x coordinate of accelerometer bias.
+     * @param biasY          known y coordinate of accelerometer bias.
+     * @param biasZ          known z coordinate of accelerometer bias.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param listener       listener to handle events raised by this calibrator.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ, final boolean commonAxisUsed,
+            final KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
+<span class="fc" id="L603">        this(biasX, biasY, biasZ, commonAxisUsed);</span>
+<span class="fc" id="L604">        this.listener = listener;</span>
+<span class="fc" id="L605">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements   collection of body kinematics measurements with standard
+     *                       deviations taken at different frames (positions, orientations
+     *                       and velocities).
+     * @param biasX          known x coordinate of accelerometer bias.
+     * @param biasY          known y coordinate of accelerometer bias.
+     * @param biasZ          known z coordinate of accelerometer bias.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final Collection&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
+            final boolean commonAxisUsed) {
+<span class="fc" id="L623">        this(measurements, biasX, biasY, biasZ);</span>
+<span class="fc" id="L624">        this.commonAxisUsed = commonAxisUsed;</span>
+<span class="fc" id="L625">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements   collection of body kinematics measurements with standard
+     *                       deviations taken at different frames (positions, orientations
+     *                       and velocities).
+     * @param biasX          known x coordinate of accelerometer bias.
+     * @param biasY          known y coordinate of accelerometer bias.
+     * @param biasZ          known z coordinate of accelerometer bias.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param listener       listener to handle events raised by this calibrator.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final Collection&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ, final boolean commonAxisUsed,
+            final KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
+<span class="fc" id="L644">        this(measurements, biasX, biasY, biasZ, commonAxisUsed);</span>
+<span class="fc" id="L645">        this.listener = listener;</span>
+<span class="fc" id="L646">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param biasX     known x coordinate of accelerometer bias.
+     * @param biasY     known y coordinate of accelerometer bias.
+     * @param biasZ     known z coordinate of accelerometer bias.
+     * @param initialSx initial x scaling factor.
+     * @param initialSy initial y scaling factor.
+     * @param initialSz initial z scaling factor.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final double biasX, final double biasY, final double biasZ,
+            final double initialSx, final double initialSy, final double initialSz) {
+<span class="fc" id="L661">        this(biasX, biasY, biasZ);</span>
+        try {
+<span class="fc" id="L663">            setInitialScalingFactors(initialSx, initialSy, initialSz);</span>
+<span class="nc" id="L664">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L666">        }</span>
+<span class="fc" id="L667">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements collection of body kinematics measurements with standard
+     *                     deviations taken at different frames (positions, orientations
+     *                     and velocities).
+     * @param biasX        known x coordinate of accelerometer bias.
+     * @param biasY        known y coordinate of accelerometer bias.
+     * @param biasZ        known z coordinate of accelerometer bias.
+     * @param initialSx    initial x scaling factor.
+     * @param initialSy    initial y scaling factor.
+     * @param initialSz    initial z scaling factor.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final Collection&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final double biasX, final double biasY, final double biasZ,
+            final double initialSx, final double initialSy, final double initialSz) {
+<span class="fc" id="L686">        this(biasX, biasY, biasZ, initialSx, initialSy, initialSz);</span>
+<span class="fc" id="L687">        this.measurements = measurements;</span>
+<span class="fc" id="L688">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements collection of body kinematics measurements with standard
+     *                     deviations taken at different frames (positions, orientations
+     *                     and velocities).
+     * @param biasX        known x coordinate of accelerometer bias.
+     * @param biasY        known y coordinate of accelerometer bias.
+     * @param biasZ        known z coordinate of accelerometer bias.
+     * @param initialSx    initial x scaling factor.
+     * @param initialSy    initial y scaling factor.
+     * @param initialSz    initial z scaling factor.
+     * @param listener     listener to handle events raised by this calibrator.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final Collection&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final double biasX, final double biasY, final double biasZ,
+            final double initialSx, final double initialSy, final double initialSz,
+            final KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
+<span class="fc" id="L709">        this(measurements, biasX, biasY, biasZ, initialSx, initialSy, initialSz);</span>
+<span class="fc" id="L710">        this.listener = listener;</span>
+<span class="fc" id="L711">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param biasX          known x coordinate of accelerometer bias.
+     * @param biasY          known y coordinate of accelerometer bias.
+     * @param biasZ          known z coordinate of accelerometer bias.
+     * @param initialSx      initial x scaling factor.
+     * @param initialSy      initial y scaling factor.
+     * @param initialSz      initial z scaling factor.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final boolean commonAxisUsed, final double biasX, final double biasY, final double biasZ,
+            final double initialSx, final double initialSy, final double initialSz) {
+<span class="fc" id="L728">        this(biasX, biasY, biasZ, initialSx, initialSy, initialSz);</span>
+<span class="fc" id="L729">        this.commonAxisUsed = commonAxisUsed;</span>
+<span class="fc" id="L730">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param biasX          known x coordinate of accelerometer bias.
+     * @param biasY          known y coordinate of accelerometer bias.
+     * @param biasZ          known z coordinate of accelerometer bias.
+     * @param initialSx      initial x scaling factor.
+     * @param initialSy      initial y scaling factor.
+     * @param initialSz      initial z scaling factor.
+     * @param listener       listener to handle events raised by this calibrator.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final boolean commonAxisUsed, final double biasX, final double biasY, final double biasZ,
+            final double initialSx, final double initialSy, final double initialSz,
+            final KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
+<span class="fc" id="L749">        this(commonAxisUsed, biasX, biasY, biasZ, initialSx, initialSy, initialSz);</span>
+<span class="fc" id="L750">        this.listener = listener;</span>
+<span class="fc" id="L751">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements   collection of body kinematics measurements with standard
+     *                       deviations taken at different frames (positions, orientations
+     *                       and velocities).
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param biasX          known x coordinate of accelerometer bias.
+     * @param biasY          known y coordinate of accelerometer bias.
+     * @param biasZ          known z coordinate of accelerometer bias.
+     * @param initialSx      initial x scaling factor.
+     * @param initialSy      initial y scaling factor.
+     * @param initialSz      initial z scaling factor.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final Collection&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed, final double biasX, final double biasY, final double biasZ,
+            final double initialSx, final double initialSy, final double initialSz) {
+<span class="fc" id="L772">        this(commonAxisUsed, biasX, biasY, biasZ, initialSx, initialSy, initialSz);</span>
+<span class="fc" id="L773">        this.measurements = measurements;</span>
+<span class="fc" id="L774">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements   collection of body kinematics measurements with standard
+     *                       deviations taken at different frames (positions, orientations
+     *                       and velocities).
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param biasX          known x coordinate of accelerometer bias.
+     * @param biasY          known y coordinate of accelerometer bias.
+     * @param biasZ          known z coordinate of accelerometer bias.
+     * @param initialSx      initial x scaling factor.
+     * @param initialSy      initial y scaling factor.
+     * @param initialSz      initial z scaling factor.
+     * @param listener       listener to handle events raised by this calibrator.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final Collection&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed, final double biasX, final double biasY, final double biasZ,
+            final double initialSx, final double initialSy, final double initialSz,
+            final KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
+<span class="fc" id="L797">        this(measurements, commonAxisUsed, biasX, biasY, biasZ,</span>
+                initialSx, initialSy, initialSz);
+<span class="fc" id="L799">        this.listener = listener;</span>
+<span class="fc" id="L800">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param biasX     known x coordinate of accelerometer bias.
+     * @param biasY     known y coordinate of accelerometer bias.
+     * @param biasZ     known z coordinate of accelerometer bias.
+     * @param initialSx initial x scaling factor.
+     * @param initialSy initial y scaling factor.
+     * @param initialSz initial z scaling factor.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
+            final double initialSx, final double initialSy, final double initialSz) {
+<span class="fc" id="L815">        this(biasX, biasY, biasZ);</span>
+        try {
+<span class="fc" id="L817">            setInitialScalingFactors(initialSx, initialSy, initialSz);</span>
+<span class="nc" id="L818">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L820">        }</span>
+<span class="fc" id="L821">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param biasX     known x coordinate of accelerometer bias.
+     * @param biasY     known y coordinate of accelerometer bias.
+     * @param biasZ     known z coordinate of accelerometer bias.
+     * @param initialSx initial x scaling factor.
+     * @param initialSy initial y scaling factor.
+     * @param initialSz initial z scaling factor.
+     * @param listener  listener to handle events raised by this calibrator.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
+            final double initialSx, final double initialSy, final double initialSz,
+            final KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
+<span class="fc" id="L838">        this(biasX, biasY, biasZ, initialSx, initialSy, initialSz);</span>
+<span class="fc" id="L839">        this.listener = listener;</span>
+<span class="fc" id="L840">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements collection of body kinematics measurements with standard
+     *                     deviations taken at different frames (positions, orientations
+     *                     and velocities).
+     * @param biasX        known x coordinate of accelerometer bias.
+     * @param biasY        known y coordinate of accelerometer bias.
+     * @param biasZ        known z coordinate of accelerometer bias.
+     * @param initialSx    initial x scaling factor.
+     * @param initialSy    initial y scaling factor.
+     * @param initialSz    initial z scaling factor.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final Collection&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
+            final double initialSx, final double initialSy, final double initialSz) {
+<span class="fc" id="L859">        this(biasX, biasY, biasZ, initialSx, initialSy, initialSz);</span>
+<span class="fc" id="L860">        this.measurements = measurements;</span>
+<span class="fc" id="L861">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements collection of body kinematics measurements with standard
+     *                     deviations taken at different frames (positions, orientations
+     *                     and velocities).
+     * @param biasX        known x coordinate of accelerometer bias.
+     * @param biasY        known y coordinate of accelerometer bias.
+     * @param biasZ        known z coordinate of accelerometer bias.
+     * @param initialSx    initial x scaling factor.
+     * @param initialSy    initial y scaling factor.
+     * @param initialSz    initial z scaling factor.
+     * @param listener     listener to handle events raised by this calibrator.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final Collection&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
+            final double initialSx, final double initialSy, final double initialSz,
+            final KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
+<span class="fc" id="L882">        this(measurements, biasX, biasY, biasZ, initialSx, initialSy, initialSz);</span>
+<span class="fc" id="L883">        this.listener = listener;</span>
+<span class="fc" id="L884">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param biasX          known x coordinate of accelerometer bias.
+     * @param biasY          known y coordinate of accelerometer bias.
+     * @param biasZ          known z coordinate of accelerometer bias.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param initialSx      initial x scaling factor.
+     * @param initialSy      initial y scaling factor.
+     * @param initialSz      initial z scaling factor.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
+            final boolean commonAxisUsed, final double initialSx, final double initialSy, final double initialSz) {
+<span class="fc" id="L901">        this(biasX, biasY, biasZ, initialSx, initialSy, initialSz);</span>
+<span class="fc" id="L902">        this.commonAxisUsed = commonAxisUsed;</span>
+<span class="fc" id="L903">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements   collection of body kinematics measurements with standard
+     *                       deviations taken at different frames (positions, orientations
+     *                       and velocities).
+     * @param biasX          known x coordinate of accelerometer bias.
+     * @param biasY          known y coordinate of accelerometer bias.
+     * @param biasZ          known z coordinate of accelerometer bias.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param initialSx      initial x scaling factor.
+     * @param initialSy      initial y scaling factor.
+     * @param initialSz      initial z scaling factor.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final Collection&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
+            final boolean commonAxisUsed, final double initialSx, final double initialSy, final double initialSz) {
+<span class="fc" id="L924">        this(biasX, biasY, biasZ, commonAxisUsed, initialSx, initialSy, initialSz);</span>
+<span class="fc" id="L925">        this.measurements = measurements;</span>
+<span class="fc" id="L926">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements   collection of body kinematics measurements with standard
+     *                       deviations taken at different frames (positions, orientations
+     *                       and velocities).
+     * @param biasX          known x coordinate of accelerometer bias.
+     * @param biasY          known y coordinate of accelerometer bias.
+     * @param biasZ          known z coordinate of accelerometer bias.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param initialSx      initial x scaling factor.
+     * @param initialSy      initial y scaling factor.
+     * @param initialSz      initial z scaling factor.
+     * @param listener       listener to handle events raised by this calibrator.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final Collection&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
+            final boolean commonAxisUsed, final double initialSx, final double initialSy, final double initialSz,
+            final KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
+<span class="fc" id="L949">        this(measurements, biasX, biasY, biasZ, commonAxisUsed, initialSx, initialSy, initialSz);</span>
+<span class="fc" id="L950">        this.listener = listener;</span>
+<span class="fc" id="L951">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param biasX      known x coordinate of accelerometer bias expressed in meters per
+     *                   squared second (m/s^2).
+     * @param biasY      known y coordinate of accelerometer bias expressed in meters per
+     *                   squared second (m/s^2).
+     * @param biasZ      known z coordinate of accelerometer bias expressed in meters per
+     *                   squared second (m/s^2).
+     * @param initialSx  initial x scaling factor.
+     * @param initialSy  initial y scaling factor.
+     * @param initialSz  initial z scaling factor.
+     * @param initialMxy initial x-y cross coupling error.
+     * @param initialMxz initial x-z cross coupling error.
+     * @param initialMyx initial y-x cross coupling error.
+     * @param initialMyz initial y-z cross coupling error.
+     * @param initialMzx initial z-x cross coupling error.
+     * @param initialMzy initial z-y cross coupling error.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final double biasX, final double biasY, final double biasZ,
+            final double initialSx, final double initialSy, final double initialSz,
+            final double initialMxy, final double initialMxz, final double initialMyx,
+            final double initialMyz, final double initialMzx, final double initialMzy) {
+<span class="fc" id="L977">        this(biasX, biasY, biasZ);</span>
+        try {
+<span class="fc" id="L979">            setInitialScalingFactorsAndCrossCouplingErrors(initialSx, initialSy, initialSz,</span>
+                    initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
+<span class="nc" id="L981">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L983">        }</span>
+<span class="fc" id="L984">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements collection of body kinematics measurements with standard
+     *                     deviations taken at different frames (positions, orientations
+     *                     and velocities).
+     * @param biasX        known x coordinate of accelerometer bias expressed in meters per
+     *                     squared second (m/s^2).
+     * @param biasY        known y coordinate of accelerometer bias expressed in meters per
+     *                     squared second (m/s^2).
+     * @param biasZ        known z coordinate of accelerometer bias expressed in meters per
+     *                     squared second (m/s^2).
+     * @param initialSx    initial x scaling factor.
+     * @param initialSy    initial y scaling factor.
+     * @param initialSz    initial z scaling factor.
+     * @param initialMxy   initial x-y cross coupling error.
+     * @param initialMxz   initial x-z cross coupling error.
+     * @param initialMyx   initial y-x cross coupling error.
+     * @param initialMyz   initial y-z cross coupling error.
+     * @param initialMzx   initial z-x cross coupling error.
+     * @param initialMzy   initial z-y cross coupling error.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final Collection&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final double biasX, final double biasY, final double biasZ,
+            final double initialSx, final double initialSy, final double initialSz,
+            final double initialMxy, final double initialMxz, final double initialMyx,
+            final double initialMyz, final double initialMzx, final double initialMzy) {
+<span class="fc" id="L1014">        this(biasX, biasY, biasZ, initialSx, initialSy, initialSz, initialMxy, initialMxz, initialMyx,</span>
+                initialMyz, initialMzx, initialMzy);
+<span class="fc" id="L1016">        this.measurements = measurements;</span>
+<span class="fc" id="L1017">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param biasX          known x coordinate of accelerometer bias expressed in meters per
+     *                       squared second (m/s^2).
+     * @param biasY          known y coordinate of accelerometer bias expressed in meters per
+     *                       squared second (m/s^2).
+     * @param biasZ          known z coordinate of accelerometer bias expressed in meters per
+     *                       squared second (m/s^2).
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param initialSx      initial x scaling factor.
+     * @param initialSy      initial y scaling factor.
+     * @param initialSz      initial z scaling factor.
+     * @param initialMxy     initial x-y cross coupling error.
+     * @param initialMxz     initial x-z cross coupling error.
+     * @param initialMyx     initial y-x cross coupling error.
+     * @param initialMyz     initial y-z cross coupling error.
+     * @param initialMzx     initial z-x cross coupling error.
+     * @param initialMzy     initial z-y cross coupling error.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final double biasX, final double biasY, final double biasZ, final boolean commonAxisUsed,
+            final double initialSx, final double initialSy, final double initialSz,
+            final double initialMxy, final double initialMxz, final double initialMyx,
+            final double initialMyz, final double initialMzx, final double initialMzy) {
+<span class="fc" id="L1045">        this(biasX, biasY, biasZ, initialSx, initialSy, initialSz, initialMxy, initialMxz, initialMyx,</span>
+                initialMyz, initialMzx, initialMzy);
+<span class="fc" id="L1047">        this.commonAxisUsed = commonAxisUsed;</span>
+<span class="fc" id="L1048">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param biasX          known x coordinate of accelerometer bias expressed in meters per
+     *                       squared second (m/s^2).
+     * @param biasY          known y coordinate of accelerometer bias expressed in meters per
+     *                       squared second (m/s^2).
+     * @param biasZ          known z coordinate of accelerometer bias expressed in meters per
+     *                       squared second (m/s^2).
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param initialSx      initial x scaling factor.
+     * @param initialSy      initial y scaling factor.
+     * @param initialSz      initial z scaling factor.
+     * @param initialMxy     initial x-y cross coupling error.
+     * @param initialMxz     initial x-z cross coupling error.
+     * @param initialMyx     initial y-x cross coupling error.
+     * @param initialMyz     initial y-z cross coupling error.
+     * @param initialMzx     initial z-x cross coupling error.
+     * @param initialMzy     initial z-y cross coupling error.
+     * @param listener       listener to handle events raised by this calibrator.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final double biasX, final double biasY, final double biasZ, final boolean commonAxisUsed,
+            final double initialSx, final double initialSy, final double initialSz, final double initialMxy,
+            final double initialMxz, final double initialMyx, final double initialMyz, final double initialMzx,
+            final double initialMzy,
+            final KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
+<span class="fc" id="L1078">        this(biasX, biasY, biasZ, commonAxisUsed, initialSx, initialSy, initialSz, initialMxy, initialMxz, initialMyx,</span>
+                initialMyz, initialMzx, initialMzy);
+<span class="fc" id="L1080">        this.listener = listener;</span>
+<span class="fc" id="L1081">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements   collection of body kinematics measurements with standard
+     *                       deviations taken at different frames (positions, orientations
+     *                       and velocities).
+     * @param biasX          known x coordinate of accelerometer bias expressed in meters per
+     *                       squared second (m/s^2).
+     * @param biasY          known y coordinate of accelerometer bias expressed in meters per
+     *                       squared second (m/s^2).
+     * @param biasZ          known z coordinate of accelerometer bias expressed in meters per
+     *                       squared second (m/s^2).
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param initialSx      initial x scaling factor.
+     * @param initialSy      initial y scaling factor.
+     * @param initialSz      initial z scaling factor.
+     * @param initialMxy     initial x-y cross coupling error.
+     * @param initialMxz     initial x-z cross coupling error.
+     * @param initialMyx     initial y-x cross coupling error.
+     * @param initialMyz     initial y-z cross coupling error.
+     * @param initialMzx     initial z-x cross coupling error.
+     * @param initialMzy     initial z-y cross coupling error.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final Collection&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final double biasX, final double biasY, final double biasZ, final boolean commonAxisUsed,
+            final double initialSx, final double initialSy, final double initialSz, final double initialMxy,
+            final double initialMxz, final double initialMyx, final double initialMyz, final double initialMzx,
+            final double initialMzy) {
+<span class="fc" id="L1113">        this(biasX, biasY, biasZ, commonAxisUsed, initialSx, initialSy, initialSz, initialMxy, initialMxz, initialMyx,</span>
+                initialMyz, initialMzx, initialMzy);
+<span class="fc" id="L1115">        this.measurements = measurements;</span>
+<span class="fc" id="L1116">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements   collection of body kinematics measurements with standard
+     *                       deviations taken at different frames (positions, orientations
+     *                       and velocities).
+     * @param biasX          known x coordinate of accelerometer bias expressed in meters per
+     *                       squared second (m/s^2).
+     * @param biasY          known y coordinate of accelerometer bias expressed in meters per
+     *                       squared second (m/s^2).
+     * @param biasZ          known z coordinate of accelerometer bias expressed in meters per
+     *                       squared second (m/s^2).
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param initialSx      initial x scaling factor.
+     * @param initialSy      initial y scaling factor.
+     * @param initialSz      initial z scaling factor.
+     * @param initialMxy     initial x-y cross coupling error.
+     * @param initialMxz     initial x-z cross coupling error.
+     * @param initialMyx     initial y-x cross coupling error.
+     * @param initialMyz     initial y-z cross coupling error.
+     * @param initialMzx     initial z-x cross coupling error.
+     * @param initialMzy     initial z-y cross coupling error.
+     * @param listener       listener to handle events raised by this calibrator.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final Collection&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final double biasX, final double biasY, final double biasZ, final boolean commonAxisUsed,
+            final double initialSx, final double initialSy, final double initialSz, final double initialMxy,
+            final double initialMxz, final double initialMyx, final double initialMyz, final double initialMzx,
+            final double initialMzy,
+            final KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
+<span class="fc" id="L1150">        this(measurements, biasX, biasY, biasZ, commonAxisUsed, initialSx, initialSy, initialSz, initialMxy,</span>
+                initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
+<span class="fc" id="L1152">        this.listener = listener;</span>
+<span class="fc" id="L1153">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param biasX      known x coordinate of accelerometer bias.
+     * @param biasY      known y coordinate of accelerometer bias.
+     * @param biasZ      known z coordinate of accelerometer bias.
+     * @param initialSx  initial x scaling factor.
+     * @param initialSy  initial y scaling factor.
+     * @param initialSz  initial z scaling factor.
+     * @param initialMxy initial x-y cross coupling error.
+     * @param initialMxz initial x-z cross coupling error.
+     * @param initialMyx initial y-x cross coupling error.
+     * @param initialMyz initial y-z cross coupling error.
+     * @param initialMzx initial z-x cross coupling error.
+     * @param initialMzy initial z-y cross coupling error.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
+            final double initialSx, final double initialSy, final double initialSz, final double initialMxy,
+            final double initialMxz, final double initialMyx, final double initialMyz, final double initialMzx,
+            final double initialMzy) {
+<span class="fc" id="L1176">        this(biasX, biasY, biasZ);</span>
+        try {
+<span class="fc" id="L1178">            setInitialScalingFactorsAndCrossCouplingErrors(initialSx, initialSy, initialSz, initialMxy, initialMxz,</span>
+                    initialMyx, initialMyz, initialMzx, initialMzy);
+<span class="nc" id="L1180">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L1182">        }</span>
+<span class="fc" id="L1183">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param biasX      known x coordinate of accelerometer bias.
+     * @param biasY      known y coordinate of accelerometer bias.
+     * @param biasZ      known z coordinate of accelerometer bias.
+     * @param initialSx  initial x scaling factor.
+     * @param initialSy  initial y scaling factor.
+     * @param initialSz  initial z scaling factor.
+     * @param initialMxy initial x-y cross coupling error.
+     * @param initialMxz initial x-z cross coupling error.
+     * @param initialMyx initial y-x cross coupling error.
+     * @param initialMyz initial y-z cross coupling error.
+     * @param initialMzx initial z-x cross coupling error.
+     * @param initialMzy initial z-y cross coupling error.
+     * @param listener   listener to handle events raised by this calibrator.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
+            final double initialSx, final double initialSy, final double initialSz,
+            final double initialMxy, final double initialMxz, final double initialMyx,
+            final double initialMyz, final double initialMzx, final double initialMzy,
+            final KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
+<span class="fc" id="L1208">        this(biasX, biasY, biasZ, initialSx, initialSy, initialSz, initialMxy, initialMxz, initialMyx,</span>
+                initialMyz, initialMzx, initialMzy);
+<span class="fc" id="L1210">        this.listener = listener;</span>
+<span class="fc" id="L1211">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements collection of body kinematics measurements with standard
+     *                     deviations taken at different frames (positions, orientations
+     *                     and velocities).
+     * @param biasX        known x coordinate of accelerometer bias.
+     * @param biasY        known y coordinate of accelerometer bias.
+     * @param biasZ        known z coordinate of accelerometer bias.
+     * @param initialSx    initial x scaling factor.
+     * @param initialSy    initial y scaling factor.
+     * @param initialSz    initial z scaling factor.
+     * @param initialMxy   initial x-y cross coupling error.
+     * @param initialMxz   initial x-z cross coupling error.
+     * @param initialMyx   initial y-x cross coupling error.
+     * @param initialMyz   initial y-z cross coupling error.
+     * @param initialMzx   initial z-x cross coupling error.
+     * @param initialMzy   initial z-y cross coupling error.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final Collection&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
+            final double initialSx, final double initialSy, final double initialSz,
+            final double initialMxy, final double initialMxz, final double initialMyx,
+            final double initialMyz, final double initialMzx, final double initialMzy) {
+<span class="fc" id="L1238">        this(biasX, biasY, biasZ, initialSx, initialSy, initialSz, initialMxy, initialMxz, initialMyx,</span>
+                initialMyz, initialMzx, initialMzy);
+<span class="fc" id="L1240">        this.measurements = measurements;</span>
+<span class="fc" id="L1241">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements collection of body kinematics measurements with standard
+     *                     deviations taken at different frames (positions, orientations
+     *                     and velocities).
+     * @param biasX        known x coordinate of accelerometer bias.
+     * @param biasY        known y coordinate of accelerometer bias.
+     * @param biasZ        known z coordinate of accelerometer bias.
+     * @param initialSx    initial x scaling factor.
+     * @param initialSy    initial y scaling factor.
+     * @param initialSz    initial z scaling factor.
+     * @param initialMxy   initial x-y cross coupling error.
+     * @param initialMxz   initial x-z cross coupling error.
+     * @param initialMyx   initial y-x cross coupling error.
+     * @param initialMyz   initial y-z cross coupling error.
+     * @param initialMzx   initial z-x cross coupling error.
+     * @param initialMzy   initial z-y cross coupling error.
+     * @param listener     listener to handle events raised by this calibrator.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final Collection&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
+            final double initialSx, final double initialSy, final double initialSz,
+            final double initialMxy, final double initialMxz, final double initialMyx,
+            final double initialMyz, final double initialMzx, final double initialMzy,
+            final KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
+<span class="fc" id="L1270">        this(measurements, biasX, biasY, biasZ, initialSx, initialSy, initialSz, initialMxy, initialMxz, initialMyx,</span>
+                initialMyz, initialMzx, initialMzy);
+<span class="fc" id="L1272">        this.listener = listener;</span>
+<span class="fc" id="L1273">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param biasX          known x coordinate of accelerometer bias.
+     * @param biasY          known y coordinate of accelerometer bias.
+     * @param biasZ          known z coordinate of accelerometer bias.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param initialSx      initial x scaling factor.
+     * @param initialSy      initial y scaling factor.
+     * @param initialSz      initial z scaling factor.
+     * @param initialMxy     initial x-y cross coupling error.
+     * @param initialMxz     initial x-z cross coupling error.
+     * @param initialMyx     initial y-x cross coupling error.
+     * @param initialMyz     initial y-z cross coupling error.
+     * @param initialMzx     initial z-x cross coupling error.
+     * @param initialMzy     initial z-y cross coupling error.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
+            final boolean commonAxisUsed, final double initialSx, final double initialSy,
+            final double initialSz, final double initialMxy, final double initialMxz,
+            final double initialMyx, final double initialMyz, final double initialMzx, final double initialMzy) {
+<span class="fc" id="L1298">        this(biasX, biasY, biasZ, initialSx, initialSy, initialSz, initialMxy, initialMxz, initialMyx,</span>
+                initialMyz, initialMzx, initialMzy);
+<span class="fc" id="L1300">        this.commonAxisUsed = commonAxisUsed;</span>
+<span class="fc" id="L1301">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param biasX          known x coordinate of accelerometer bias.
+     * @param biasY          known y coordinate of accelerometer bias.
+     * @param biasZ          known z coordinate of accelerometer bias.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param initialSx      initial x scaling factor.
+     * @param initialSy      initial y scaling factor.
+     * @param initialSz      initial z scaling factor.
+     * @param initialMxy     initial x-y cross coupling error.
+     * @param initialMxz     initial x-z cross coupling error.
+     * @param initialMyx     initial y-x cross coupling error.
+     * @param initialMyz     initial y-z cross coupling error.
+     * @param initialMzx     initial z-x cross coupling error.
+     * @param initialMzy     initial z-y cross coupling error.
+     * @param listener       listener to handle events raised by this calibrator.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ, final boolean commonAxisUsed,
+            final double initialSx, final double initialSy, final double initialSz, final double initialMxy,
+            final double initialMxz, final double initialMyx, final double initialMyz, final double initialMzx,
+            final double initialMzy,
+            final KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
+<span class="fc" id="L1328">        this(biasX, biasY, biasZ, commonAxisUsed, initialSx, initialSy, initialSz, initialMxy, initialMxz, initialMyx,</span>
+                initialMyz, initialMzx, initialMzy);
+<span class="fc" id="L1330">        this.listener = listener;</span>
+<span class="fc" id="L1331">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements   collection of body kinematics measurements with standard
+     *                       deviations taken at different frames (positions, orientations
+     *                       and velocities).
+     * @param biasX          known x coordinate of accelerometer bias.
+     * @param biasY          known y coordinate of accelerometer bias.
+     * @param biasZ          known z coordinate of accelerometer bias.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param initialSx      initial x scaling factor.
+     * @param initialSy      initial y scaling factor.
+     * @param initialSz      initial z scaling factor.
+     * @param initialMxy     initial x-y cross coupling error.
+     * @param initialMxz     initial x-z cross coupling error.
+     * @param initialMyx     initial y-x cross coupling error.
+     * @param initialMyz     initial y-z cross coupling error.
+     * @param initialMzx     initial z-x cross coupling error.
+     * @param initialMzy     initial z-y cross coupling error.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final Collection&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ, final boolean commonAxisUsed,
+            final double initialSx, final double initialSy, final double initialSz, final double initialMxy,
+            final double initialMxz, final double initialMyx, final double initialMyz, final double initialMzx,
+            final double initialMzy) {
+<span class="fc" id="L1360">        this(biasX, biasY, biasZ, commonAxisUsed, initialSx, initialSy, initialSz, initialMxy, initialMxz, initialMyx,</span>
+                initialMyz, initialMzx, initialMzy);
+<span class="fc" id="L1362">        this.measurements = measurements;</span>
+<span class="fc" id="L1363">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements   collection of body kinematics measurements with standard
+     *                       deviations taken at different frames (positions, orientations
+     *                       and velocities).
+     * @param biasX          known x coordinate of accelerometer bias.
+     * @param biasY          known y coordinate of accelerometer bias.
+     * @param biasZ          known z coordinate of accelerometer bias.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param initialSx      initial x scaling factor.
+     * @param initialSy      initial y scaling factor.
+     * @param initialSz      initial z scaling factor.
+     * @param initialMxy     initial x-y cross coupling error.
+     * @param initialMxz     initial x-z cross coupling error.
+     * @param initialMyx     initial y-x cross coupling error.
+     * @param initialMyz     initial y-z cross coupling error.
+     * @param initialMzx     initial z-x cross coupling error.
+     * @param initialMzy     initial z-y cross coupling error.
+     * @param listener       listener to handle events raised by this calibrator.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final Collection&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
+            final boolean commonAxisUsed, final double initialSx, final double initialSy, final double initialSz,
+            final double initialMxy, final double initialMxz, final double initialMyx, final double initialMyz,
+            final double initialMzx, final double initialMzy,
+            final KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
+<span class="fc" id="L1394">        this(measurements, biasX, biasY, biasZ, commonAxisUsed, initialSx, initialSy, initialSz, initialMxy,</span>
+                initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
+<span class="fc" id="L1396">        this.listener = listener;</span>
+<span class="fc" id="L1397">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param bias known bias. This must have length 3 and is expressed in meters per
+     *             squared second (m/s^2).
+     * @throws IllegalArgumentException if provided bias array does not have length 3.
+     */
+<span class="fc" id="L1406">    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(final double[] bias) {</span>
+        try {
+<span class="fc" id="L1408">            setBias(bias);</span>
+<span class="nc" id="L1409">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L1411">        }</span>
+<span class="fc" id="L1412">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param bias     known bias. This must have length 3 and is expressed in meters per
+     *                 squared second (m/s^2).
+     * @param listener listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided bias array does not have length 3.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final double[] bias,
+            final KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
+<span class="fc" id="L1425">        this(bias);</span>
+<span class="fc" id="L1426">        this.listener = listener;</span>
+<span class="fc" id="L1427">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements collection of body kinematics measurements with standard
+     *                     deviations taken at different frames (positions, orientations
+     *                     and velocities).
+     * @param bias         known bias. This must have length 3 and is expressed in meters per
+     *                     squared second (m/s^2).
+     * @throws IllegalArgumentException if provided bias array does not have length 3.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final Collection&lt;StandardDeviationFrameBodyKinematics&gt; measurements, final double[] bias) {
+<span class="fc" id="L1441">        this(bias);</span>
+<span class="fc" id="L1442">        this.measurements = measurements;</span>
+<span class="fc" id="L1443">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements collection of body kinematics measurements with standard
+     *                     deviations taken at different frames (positions, orientations
+     *                     and velocities).
+     * @param bias         known bias. This must have length 3 and is expressed in meters per
+     *                     squared second (m/s^2).
+     * @param listener     listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided bias array does not have length 3.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final Collection&lt;StandardDeviationFrameBodyKinematics&gt; measurements, final double[] bias,
+            final KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
+<span class="fc" id="L1459">        this(measurements, bias);</span>
+<span class="fc" id="L1460">        this.listener = listener;</span>
+<span class="fc" id="L1461">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param bias           known bias. This must have length 3 and is expressed in meters per
+     *                       squared second (m/s^2).
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @throws IllegalArgumentException if provided bias array does not have length 3.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final double[] bias, final boolean commonAxisUsed) {
+<span class="fc" id="L1474">        this(bias);</span>
+<span class="fc" id="L1475">        this.commonAxisUsed = commonAxisUsed;</span>
+<span class="fc" id="L1476">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param bias           known bias. This must have length 3 and is expressed in meters per
+     *                       squared second (m/s^2).
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param listener       listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided bias array does not have length 3.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final double[] bias, final boolean commonAxisUsed,
+            final KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
+<span class="fc" id="L1491">        this(bias, commonAxisUsed);</span>
+<span class="fc" id="L1492">        this.listener = listener;</span>
+<span class="fc" id="L1493">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements   collection of body kinematics measurements with standard
+     *                       deviations taken at different frames (positions, orientations
+     *                       and velocities).
+     * @param bias           known bias. This must have length 3 and is expressed in meters per
+     *                       squared second (m/s^2).
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @throws IllegalArgumentException if provided bias array does not have length 3.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final Collection&lt;StandardDeviationFrameBodyKinematics&gt; measurements, final double[] bias,
+            final boolean commonAxisUsed) {
+<span class="fc" id="L1510">        this(bias, commonAxisUsed);</span>
+<span class="fc" id="L1511">        this.measurements = measurements;</span>
+<span class="fc" id="L1512">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements   collection of body kinematics measurements with standard
+     *                       deviations taken at different frames (positions, orientations
+     *                       and velocities).
+     * @param bias           known bias. This must have length 3 and is expressed in meters per
+     *                       squared second (m/s^2).
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param listener       listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided bias array does not have length 3.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final Collection&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final double[] bias, final boolean commonAxisUsed,
+            final KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
+<span class="fc" id="L1531">        this(measurements, bias, commonAxisUsed);</span>
+<span class="fc" id="L1532">        this.listener = listener;</span>
+<span class="fc" id="L1533">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param bias known bias. This must be a 3x1 matrix expressed in meters per
+     *             squared second (m/s^2).
+     * @throws IllegalArgumentException if provided bias matrix is not 3x1.
+     */
+<span class="fc" id="L1542">    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(final Matrix bias) {</span>
+        try {
+<span class="fc" id="L1544">            setBias(bias);</span>
+<span class="nc" id="L1545">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L1547">        }</span>
+<span class="fc" id="L1548">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param bias     known bias. This must be a 3x1 matrix expressed in meters per
+     *                 squared second (m/s^2).
+     * @param listener listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided bias matrix is not 3x1.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final Matrix bias, final KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
+<span class="fc" id="L1560">        this(bias);</span>
+<span class="fc" id="L1561">        this.listener = listener;</span>
+<span class="fc" id="L1562">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements collection of body kinematics measurements with standard
+     *                     deviations taken at different frames (positions, orientations
+     *                     and velocities).
+     * @param bias         known bias. This must be a 3x1 matrix expressed in meters per
+     *                     squared second (m/s^2).
+     * @throws IllegalArgumentException if provided bias matrix is not 3x1.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final Collection&lt;StandardDeviationFrameBodyKinematics&gt; measurements, final Matrix bias) {
+<span class="fc" id="L1576">        this(bias);</span>
+<span class="fc" id="L1577">        this.measurements = measurements;</span>
+<span class="fc" id="L1578">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements collection of body kinematics measurements with standard
+     *                     deviations taken at different frames (positions, orientations
+     *                     and velocities).
+     * @param bias         known bias. This must be a 3x1 matrix expressed in meters per
+     *                     squared second (m/s^2).
+     * @param listener     listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided bias matrix is not 3x1.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final Collection&lt;StandardDeviationFrameBodyKinematics&gt; measurements, final Matrix bias,
+            final KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
+<span class="fc" id="L1594">        this(measurements, bias);</span>
+<span class="fc" id="L1595">        this.listener = listener;</span>
+<span class="fc" id="L1596">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param bias           known bias. This must be a 3x1 matrix expressed in meters per
+     *                       squared second (m/s^2).
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @throws IllegalArgumentException if provided bias matrix is not 3x1.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final Matrix bias, final boolean commonAxisUsed) {
+<span class="fc" id="L1609">        this(bias);</span>
+<span class="fc" id="L1610">        this.commonAxisUsed = commonAxisUsed;</span>
+<span class="fc" id="L1611">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param bias           known bias. This must be a 3x1 matrix expressed in meters per
+     *                       squared second (m/s^2).
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param listener       listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided bias matrix is not 3x1.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final Matrix bias, final boolean commonAxisUsed,
+            final KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
+<span class="fc" id="L1626">        this(bias, commonAxisUsed);</span>
+<span class="fc" id="L1627">        this.listener = listener;</span>
+<span class="fc" id="L1628">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements   collection of body kinematics measurements with standard
+     *                       deviations taken at different frames (positions, orientations
+     *                       and velocities).
+     * @param bias           known bias. This must be a 3x1 matrix expressed in meters per
+     *                       squared second (m/s^2).
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @throws IllegalArgumentException if provided bias matrix is not 3x1.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final Collection&lt;StandardDeviationFrameBodyKinematics&gt; measurements, final Matrix bias,
+            final boolean commonAxisUsed) {
+<span class="fc" id="L1645">        this(bias, commonAxisUsed);</span>
+<span class="fc" id="L1646">        this.measurements = measurements;</span>
+<span class="fc" id="L1647">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements   collection of body kinematics measurements with standard
+     *                       deviations taken at different frames (positions, orientations
+     *                       and velocities).
+     * @param bias           known bias. This must be a 3x1 matrix expressed in meters per
+     *                       squared second (m/s^2).
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param listener       listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided bias matrix is not 3x1.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final Collection&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final Matrix bias, final boolean commonAxisUsed,
+            final KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
+<span class="fc" id="L1666">        this(measurements, bias, commonAxisUsed);</span>
+<span class="fc" id="L1667">        this.listener = listener;</span>
+<span class="fc" id="L1668">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param bias      known bias. This must be a 3x1 matrix expressed in meters per
+     *                  squared second (m/s^2).
+     * @param initialMa initial scale factors and cross coupling errors matrix.
+     * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
+     *                                  scaling and coupling error matrix is not 3x3.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final Matrix bias, final Matrix initialMa) {
+<span class="fc" id="L1681">        this(bias);</span>
+        try {
+<span class="fc" id="L1683">            setInitialMa(initialMa);</span>
+<span class="nc" id="L1684">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L1686">        }</span>
+<span class="fc" id="L1687">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param bias      known bias. This must be a 3x1 matrix expressed in meters per
+     *                  squared second (m/s^2).
+     * @param initialMa initial scale factors and cross coupling errors matrix.
+     * @param listener  listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
+     *                                  scaling and coupling error matrix is not 3x3.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final Matrix bias, final Matrix initialMa,
+            final KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
+<span class="fc" id="L1702">        this(bias, initialMa);</span>
+<span class="fc" id="L1703">        this.listener = listener;</span>
+<span class="fc" id="L1704">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements collection of body kinematics measurements with standard
+     *                     deviations taken at different frames (positions, orientations
+     *                     and velocities).
+     * @param bias         known bias. This must be a 3x1 matrix expressed in meters per
+     *                     squared second (m/s^2).
+     * @param initialMa    initial scale factors and cross coupling errors matrix.
+     * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
+     *                                  scaling and coupling error matrix is not 3x3.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final Collection&lt;StandardDeviationFrameBodyKinematics&gt; measurements, final Matrix bias,
+            final Matrix initialMa) {
+<span class="fc" id="L1721">        this(bias, initialMa);</span>
+<span class="fc" id="L1722">        this.measurements = measurements;</span>
+<span class="fc" id="L1723">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements collection of body kinematics measurements with standard
+     *                     deviations taken at different frames (positions, orientations
+     *                     and velocities).
+     * @param bias         known bias. This must be a 3x1 matrix expressed in meters per
+     *                     squared second (m/s^2).
+     * @param initialMa    initial scale factors and cross coupling errors matrix.
+     * @param listener     listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
+     *                                  scaling and coupling error matrix is not 3x3.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final Collection&lt;StandardDeviationFrameBodyKinematics&gt; measurements, final Matrix bias,
+            final Matrix initialMa,
+            final KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
+<span class="fc" id="L1742">        this(measurements, bias, initialMa);</span>
+<span class="fc" id="L1743">        this.listener = listener;</span>
+<span class="fc" id="L1744">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param bias           known bias. This must be a 3x1 matrix expressed in meters per
+     *                       squared second (m/s^2).
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param initialMa      initial scale factors and cross coupling errors matrix.
+     * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
+     *                                  scaling and coupling error matrix is not 3x3.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final Matrix bias, final boolean commonAxisUsed, final Matrix initialMa) {
+<span class="fc" id="L1759">        this(bias, initialMa);</span>
+<span class="fc" id="L1760">        this.commonAxisUsed = commonAxisUsed;</span>
+<span class="fc" id="L1761">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param bias           known bias. This must be a 3x1 matrix expressed in meters per
+     *                       squared second (m/s^2).
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param initialMa      initial scale factors and cross coupling errors matrix.
+     * @param listener       listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
+     *                                  scaling and coupling error matrix is not 3x3.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final Matrix bias, final boolean commonAxisUsed, final Matrix initialMa,
+            final KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
+<span class="fc" id="L1778">        this(bias, commonAxisUsed, initialMa);</span>
+<span class="fc" id="L1779">        this.listener = listener;</span>
+<span class="fc" id="L1780">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements   collection of body kinematics measurements with standard
+     *                       deviations taken at different frames (positions, orientations
+     *                       and velocities).
+     * @param bias           known bias. This must be a 3x1 matrix expressed in meters per
+     *                       squared second (m/s^2).
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param initialMa      initial scale factors and cross coupling errors matrix.
+     * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
+     *                                  scaling and coupling error matrix is not 3x3.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final Collection&lt;StandardDeviationFrameBodyKinematics&gt; measurements, final Matrix bias,
+            final boolean commonAxisUsed, final Matrix initialMa) {
+<span class="fc" id="L1799">        this(bias, commonAxisUsed, initialMa);</span>
+<span class="fc" id="L1800">        this.measurements = measurements;</span>
+<span class="fc" id="L1801">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements   collection of body kinematics measurements with standard
+     *                       deviations taken at different frames (positions, orientations
+     *                       and velocities).
+     * @param bias           known bias. This must be a 3x1 matrix expressed in meters per
+     *                       squared second (m/s^2).
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param initialMa      initial scale factors and cross coupling errors matrix.
+     * @param listener       listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
+     *                                  scaling and coupling error matrix is not 3x3.
+     */
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator(
+            final Collection&lt;StandardDeviationFrameBodyKinematics&gt; measurements, final Matrix bias,
+            final boolean commonAxisUsed, final Matrix initialMa,
+            final KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener) {
+<span class="fc" id="L1822">        this(measurements, bias, commonAxisUsed, initialMa);</span>
+<span class="fc" id="L1823">        this.listener = listener;</span>
+<span class="fc" id="L1824">    }</span>
+
+    /**
+     * Gets known x coordinate of accelerometer bias expressed in meters per squared
+     * second (m/s^2).
+     *
+     * @return known x coordinate of accelerometer bias.
+     */
+    @Override
+    public double getBiasX() {
+<span class="fc" id="L1834">        return biasX;</span>
+    }
+
+    /**
+     * Sets known x coordinate of accelerometer bias expressed in meters per squared
+     * second (m/s^2).
+     *
+     * @param biasX known x coordinate of accelerometer bias.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setBiasX(final double biasX) throws LockedException {
+<span class="fc bfc" id="L1846" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1847">            throw new LockedException();</span>
+        }
+<span class="fc" id="L1849">        this.biasX = biasX;</span>
+<span class="fc" id="L1850">    }</span>
+
+    /**
+     * Gets known y coordinate of accelerometer bias expressed in meters per squared
+     * second (m/s^2).
+     *
+     * @return known y coordinate of accelerometer bias.
+     */
+    @Override
+    public double getBiasY() {
+<span class="fc" id="L1860">        return biasY;</span>
+    }
+
+    /**
+     * Sets known y coordinate of accelerometer bias expressed in meters per squared
+     * second (m/s^2).
+     *
+     * @param biasY known y coordinate of accelerometer bias.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setBiasY(final double biasY) throws LockedException {
+<span class="fc bfc" id="L1872" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1873">            throw new LockedException();</span>
+        }
+<span class="fc" id="L1875">        this.biasY = biasY;</span>
+<span class="fc" id="L1876">    }</span>
+
+    /**
+     * Gets known z coordinate of accelerometer bias expressed in meters per squared
+     * second (m/s^2).
+     *
+     * @return known z coordinate of accelerometer bias.
+     */
+    @Override
+    public double getBiasZ() {
+<span class="fc" id="L1886">        return biasZ;</span>
+    }
+
+    /**
+     * Sets known z coordinate of accelerometer bias expressed in meters per squared
+     * second (m/s^2).
+     *
+     * @param biasZ known z coordinate of accelerometer bias.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setBiasZ(final double biasZ) throws LockedException {
+<span class="fc bfc" id="L1898" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1899">            throw new LockedException();</span>
+        }
+<span class="fc" id="L1901">        this.biasZ = biasZ;</span>
+<span class="fc" id="L1902">    }</span>
+
+    /**
+     * Gets known x coordinate of accelerometer bias.
+     *
+     * @return known x coordinate of accelerometer bias.
+     */
+    @Override
+    public Acceleration getBiasXAsAcceleration() {
+<span class="fc" id="L1911">        return new Acceleration(biasX, AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+    }
+
+    /**
+     * Gets known x coordinate of accelerometer bias.
+     *
+     * @param result instance where result data will be stored.
+     */
+    @Override
+    public void getBiasXAsAcceleration(final Acceleration result) {
+<span class="fc" id="L1921">        result.setValue(biasX);</span>
+<span class="fc" id="L1922">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L1923">    }</span>
+
+    /**
+     * Sets known x coordinate of accelerometer bias.
+     *
+     * @param biasX known x coordinate of accelerometer bias.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setBiasX(final Acceleration biasX) throws LockedException {
+<span class="fc bfc" id="L1933" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1934">            throw new LockedException();</span>
+        }
+<span class="fc" id="L1936">        this.biasX = convertAcceleration(biasX);</span>
+<span class="fc" id="L1937">    }</span>
+
+    /**
+     * Gets known y coordinate of accelerometer bias.
+     *
+     * @return known y coordinate of accelerometer bias.
+     */
+    @Override
+    public Acceleration getBiasYAsAcceleration() {
+<span class="fc" id="L1946">        return new Acceleration(biasY, AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+    }
+
+    /**
+     * Gets known y coordinate of accelerometer bias.
+     *
+     * @param result instance where result data will be stored.
+     */
+    @Override
+    public void getBiasYAsAcceleration(final Acceleration result) {
+<span class="fc" id="L1956">        result.setValue(biasY);</span>
+<span class="fc" id="L1957">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L1958">    }</span>
+
+    /**
+     * Sets known y coordinate of accelerometer bias.
+     *
+     * @param biasY known y coordinate of accelerometer bias.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setBiasY(final Acceleration biasY) throws LockedException {
+<span class="fc bfc" id="L1968" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1969">            throw new LockedException();</span>
+        }
+<span class="fc" id="L1971">        this.biasY = convertAcceleration(biasY);</span>
+<span class="fc" id="L1972">    }</span>
+
+    /**
+     * Gets known z coordinate of accelerometer bias.
+     *
+     * @return known z coordinate of accelerometer bias.
+     */
+    @Override
+    public Acceleration getBiasZAsAcceleration() {
+<span class="fc" id="L1981">        return new Acceleration(biasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+    }
+
+    /**
+     * Gets known z coordinate of accelerometer bias.
+     *
+     * @param result instance where result data will be stored.
+     */
+    @Override
+    public void getBiasZAsAcceleration(final Acceleration result) {
+<span class="fc" id="L1991">        result.setValue(biasZ);</span>
+<span class="fc" id="L1992">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L1993">    }</span>
+
+    /**
+     * Sets known z coordinate of accelerometer bias.
+     *
+     * @param biasZ known z coordinate of accelerometer bias.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setBiasZ(final Acceleration biasZ) throws LockedException {
+<span class="fc bfc" id="L2003" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L2004">            throw new LockedException();</span>
+        }
+<span class="fc" id="L2006">        this.biasZ = convertAcceleration(biasZ);</span>
+<span class="fc" id="L2007">    }</span>
+
+    /**
+     * Sets known accelerometer bias coordinates expressed in meters per squared
+     * second (m/s^2).
+     *
+     * @param biasX known x coordinate of accelerometer bias.
+     * @param biasY known y coordinate of accelerometer bias.
+     * @param biasZ known z coordinate of accelerometer bias.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setBiasCoordinates(final double biasX, final double biasY, final double biasZ) throws LockedException {
+<span class="fc bfc" id="L2020" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L2021">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L2024">        this.biasX = biasX;</span>
+<span class="fc" id="L2025">        this.biasY = biasY;</span>
+<span class="fc" id="L2026">        this.biasZ = biasZ;</span>
+<span class="fc" id="L2027">    }</span>
+
+    /**
+     * Sets known accelerometer bias coordinates.
+     *
+     * @param biasX known x coordinate of accelerometer bias.
+     * @param biasY known y coordinate of accelerometer bias.
+     * @param biasZ known z coordinate of accelerometer bias.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setBiasCoordinates(final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ)
+            throws LockedException {
+<span class="fc bfc" id="L2040" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L2041">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L2044">        this.biasX = convertAcceleration(biasX);</span>
+<span class="fc" id="L2045">        this.biasY = convertAcceleration(biasY);</span>
+<span class="fc" id="L2046">        this.biasZ = convertAcceleration(biasZ);</span>
+<span class="fc" id="L2047">    }</span>
+
+    /**
+     * Gets known accelerometer bias.
+     *
+     * @return known accelerometer bias.
+     */
+    @Override
+    public AccelerationTriad getBiasAsTriad() {
+<span class="fc" id="L2056">        return new AccelerationTriad(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasX, biasY, biasZ);</span>
+    }
+
+    /**
+     * Gets known accelerometer bias.
+     *
+     * @param result instance where result will be stored.
+     */
+    @Override
+    public void getBiasAsTriad(final AccelerationTriad result) {
+<span class="fc" id="L2066">        result.setValueCoordinatesAndUnit(biasX, biasY, biasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L2067">    }</span>
+
+    /**
+     * Sets known accelerometer bias.
+     *
+     * @param bias accelerometer bias to be set.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setBias(final AccelerationTriad bias) throws LockedException {
+<span class="fc bfc" id="L2077" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L2078">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L2081">        biasX = convertAcceleration(bias.getValueX(), bias.getUnit());</span>
+<span class="fc" id="L2082">        biasY = convertAcceleration(bias.getValueY(), bias.getUnit());</span>
+<span class="fc" id="L2083">        biasZ = convertAcceleration(bias.getValueZ(), bias.getUnit());</span>
+<span class="fc" id="L2084">    }</span>
+
+    /**
+     * Gets initial x scaling factor.
+     *
+     * @return initial x scaling factor.
+     */
+    @Override
+    public double getInitialSx() {
+<span class="fc" id="L2093">        return initialSx;</span>
+    }
+
+    /**
+     * Sets initial x scaling factor.
+     *
+     * @param initialSx initial x scaling factor.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setInitialSx(final double initialSx) throws LockedException {
+<span class="fc bfc" id="L2104" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L2105">            throw new LockedException();</span>
+        }
+<span class="fc" id="L2107">        this.initialSx = initialSx;</span>
+<span class="fc" id="L2108">    }</span>
+
+    /**
+     * Gets initial y scaling factor.
+     *
+     * @return initial y scaling factor.
+     */
+    @Override
+    public double getInitialSy() {
+<span class="fc" id="L2117">        return initialSy;</span>
+    }
+
+    /**
+     * Sets initial y scaling factor.
+     *
+     * @param initialSy initial y scaling factor.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setInitialSy(final double initialSy) throws LockedException {
+<span class="fc bfc" id="L2128" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L2129">            throw new LockedException();</span>
+        }
+<span class="fc" id="L2131">        this.initialSy = initialSy;</span>
+<span class="fc" id="L2132">    }</span>
+
+    /**
+     * Gets initial z scaling factor.
+     *
+     * @return initial z scaling factor.
+     */
+    @Override
+    public double getInitialSz() {
+<span class="fc" id="L2141">        return initialSz;</span>
+    }
+
+    /**
+     * Sets initial z scaling factor.
+     *
+     * @param initialSz initial z scaling factor.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setInitialSz(final double initialSz) throws LockedException {
+<span class="fc bfc" id="L2152" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L2153">            throw new LockedException();</span>
+        }
+<span class="fc" id="L2155">        this.initialSz = initialSz;</span>
+<span class="fc" id="L2156">    }</span>
+
+    /**
+     * Gets initial x-y cross coupling error.
+     *
+     * @return initial x-y cross coupling error.
+     */
+    @Override
+    public double getInitialMxy() {
+<span class="fc" id="L2165">        return initialMxy;</span>
+    }
+
+    /**
+     * Sets initial x-y cross coupling error.
+     *
+     * @param initialMxy initial x-y cross coupling error.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setInitialMxy(final double initialMxy) throws LockedException {
+<span class="fc bfc" id="L2176" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L2177">            throw new LockedException();</span>
+        }
+<span class="fc" id="L2179">        this.initialMxy = initialMxy;</span>
+<span class="fc" id="L2180">    }</span>
+
+    /**
+     * Gets initial x-z cross coupling error.
+     *
+     * @return initial x-z cross coupling error.
+     */
+    @Override
+    public double getInitialMxz() {
+<span class="fc" id="L2189">        return initialMxz;</span>
+    }
+
+    /**
+     * Sets initial x-z cross coupling error.
+     *
+     * @param initialMxz initial x-z cross coupling error.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setInitialMxz(final double initialMxz) throws LockedException {
+<span class="fc bfc" id="L2200" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L2201">            throw new LockedException();</span>
+        }
+<span class="fc" id="L2203">        this.initialMxz = initialMxz;</span>
+<span class="fc" id="L2204">    }</span>
+
+    /**
+     * Gets initial y-x cross coupling error.
+     *
+     * @return initial y-x cross coupling error.
+     */
+    @Override
+    public double getInitialMyx() {
+<span class="fc" id="L2213">        return initialMyx;</span>
+    }
+
+    /**
+     * Sets initial y-x cross coupling error.
+     *
+     * @param initialMyx initial y-x cross coupling error.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setInitialMyx(final double initialMyx) throws LockedException {
+<span class="fc bfc" id="L2224" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L2225">            throw new LockedException();</span>
+        }
+<span class="fc" id="L2227">        this.initialMyx = initialMyx;</span>
+<span class="fc" id="L2228">    }</span>
+
+    /**
+     * Gets initial y-z cross coupling error.
+     *
+     * @return initial y-z cross coupling error.
+     */
+    @Override
+    public double getInitialMyz() {
+<span class="fc" id="L2237">        return initialMyz;</span>
+    }
+
+    /**
+     * Sets initial y-z cross coupling error.
+     *
+     * @param initialMyz initial y-z cross coupling error.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setInitialMyz(final double initialMyz) throws LockedException {
+<span class="fc bfc" id="L2248" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L2249">            throw new LockedException();</span>
+        }
+<span class="fc" id="L2251">        this.initialMyz = initialMyz;</span>
+<span class="fc" id="L2252">    }</span>
+
+    /**
+     * Gets initial z-x cross coupling error.
+     *
+     * @return initial z-x cross coupling error.
+     */
+    @Override
+    public double getInitialMzx() {
+<span class="fc" id="L2261">        return initialMzx;</span>
+    }
+
+    /**
+     * Sets initial z-x cross coupling error.
+     *
+     * @param initialMzx initial z-x cross coupling error.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setInitialMzx(final double initialMzx) throws LockedException {
+<span class="fc bfc" id="L2272" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L2273">            throw new LockedException();</span>
+        }
+<span class="fc" id="L2275">        this.initialMzx = initialMzx;</span>
+<span class="fc" id="L2276">    }</span>
+
+    /**
+     * Gets initial z-y cross coupling error.
+     *
+     * @return initial z-y cross coupling error.
+     */
+    @Override
+    public double getInitialMzy() {
+<span class="fc" id="L2285">        return initialMzy;</span>
+    }
+
+    /**
+     * Sets initial z-y cross coupling error.
+     *
+     * @param initialMzy initial z-y cross coupling error.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setInitialMzy(final double initialMzy) throws LockedException {
+<span class="fc bfc" id="L2296" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L2297">            throw new LockedException();</span>
+        }
+<span class="fc" id="L2299">        this.initialMzy = initialMzy;</span>
+<span class="fc" id="L2300">    }</span>
+
+    /**
+     * Sets initial scaling factors.
+     *
+     * @param initialSx initial x scaling factor.
+     * @param initialSy initial y scaling factor.
+     * @param initialSz initial z scaling factor.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setInitialScalingFactors(final double initialSx, final double initialSy, final double initialSz)
+            throws LockedException {
+<span class="fc bfc" id="L2313" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L2314">            throw new LockedException();</span>
+        }
+<span class="fc" id="L2316">        this.initialSx = initialSx;</span>
+<span class="fc" id="L2317">        this.initialSy = initialSy;</span>
+<span class="fc" id="L2318">        this.initialSz = initialSz;</span>
+<span class="fc" id="L2319">    }</span>
+
+    /**
+     * Sets initial cross coupling errors.
+     *
+     * @param initialMxy initial x-y cross coupling error.
+     * @param initialMxz initial x-z cross coupling error.
+     * @param initialMyx initial y-x cross coupling error.
+     * @param initialMyz initial y-z cross coupling error.
+     * @param initialMzx initial z-x cross coupling error.
+     * @param initialMzy initial z-y cross coupling error.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setInitialCrossCouplingErrors(
+            final double initialMxy, final double initialMxz, final double initialMyx,
+            final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
+<span class="fc bfc" id="L2336" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L2337">            throw new LockedException();</span>
+        }
+<span class="fc" id="L2339">        this.initialMxy = initialMxy;</span>
+<span class="fc" id="L2340">        this.initialMxz = initialMxz;</span>
+<span class="fc" id="L2341">        this.initialMyx = initialMyx;</span>
+<span class="fc" id="L2342">        this.initialMyz = initialMyz;</span>
+<span class="fc" id="L2343">        this.initialMzx = initialMzx;</span>
+<span class="fc" id="L2344">        this.initialMzy = initialMzy;</span>
+<span class="fc" id="L2345">    }</span>
+
+    /**
+     * Sets initial scaling factors and cross coupling errors.
+     *
+     * @param initialSx  initial x scaling factor.
+     * @param initialSy  initial y scaling factor.
+     * @param initialSz  initial z scaling factor.
+     * @param initialMxy initial x-y cross coupling error.
+     * @param initialMxz initial x-z cross coupling error.
+     * @param initialMyx initial y-x cross coupling error.
+     * @param initialMyz initial y-z cross coupling error.
+     * @param initialMzx initial z-x cross coupling error.
+     * @param initialMzy initial z-y cross coupling error.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setInitialScalingFactorsAndCrossCouplingErrors(
+            final double initialSx, final double initialSy, final double initialSz,
+            final double initialMxy, final double initialMxz, final double initialMyx,
+            final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
+<span class="fc bfc" id="L2366" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L2367">            throw new LockedException();</span>
+        }
+<span class="fc" id="L2369">        setInitialScalingFactors(initialSx, initialSy, initialSz);</span>
+<span class="fc" id="L2370">        setInitialCrossCouplingErrors(initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);</span>
+<span class="fc" id="L2371">    }</span>
+
+    /**
+     * Gets known accelerometer bias as an array.
+     * Array values are expressed in meters per squared second (m/s^2).
+     *
+     * @return array containing coordinates of known bias.
+     */
+    @Override
+    public double[] getBias() {
+<span class="fc" id="L2381">        final var result = new double[BodyKinematics.COMPONENTS];</span>
+<span class="fc" id="L2382">        getBias(result);</span>
+<span class="fc" id="L2383">        return result;</span>
+    }
+
+    /**
+     * Gets known accelerometer bias as an array.
+     * Array values are expressed in meters per squared second (m/s^2).
+     *
+     * @param result instance where result data will be copied to.
+     * @throws IllegalArgumentException if provided array does not have length 3.
+     */
+    @Override
+    public void getBias(final double[] result) {
+<span class="fc bfc" id="L2395" title="All 2 branches covered.">        if (result.length != BodyKinematics.COMPONENTS) {</span>
+<span class="fc" id="L2396">            throw new IllegalArgumentException();</span>
+        }
+<span class="fc" id="L2398">        result[0] = biasX;</span>
+<span class="fc" id="L2399">        result[1] = biasY;</span>
+<span class="fc" id="L2400">        result[2] = biasZ;</span>
+<span class="fc" id="L2401">    }</span>
+
+    /**
+     * Sets known accelerometer bias as an array.
+     * Array values are expressed in meters per squared second (m/s^2).
+     *
+     * @param bias known accelerometer bias.
+     * @throws LockedException          if calibrator is currently running.
+     * @throws IllegalArgumentException if provided array does not have length 3.
+     */
+    @Override
+    public void setBias(final double[] bias) throws LockedException {
+<span class="fc bfc" id="L2413" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L2414">            throw new LockedException();</span>
+        }
+
+<span class="fc bfc" id="L2417" title="All 2 branches covered.">        if (bias.length != BodyKinematics.COMPONENTS) {</span>
+<span class="fc" id="L2418">            throw new IllegalArgumentException();</span>
+        }
+<span class="fc" id="L2420">        biasX = bias[0];</span>
+<span class="fc" id="L2421">        biasY = bias[1];</span>
+<span class="fc" id="L2422">        biasZ = bias[2];</span>
+<span class="fc" id="L2423">    }</span>
+
+    /**
+     * Gets known accelerometer bias as a column matrix.
+     *
+     * @return known accelerometer bias as a column matrix.
+     */
+    @Override
+    public Matrix getBiasAsMatrix() {
+        Matrix result;
+        try {
+<span class="fc" id="L2434">            result = new Matrix(BodyKinematics.COMPONENTS, 1);</span>
+<span class="fc" id="L2435">            getBiasAsMatrix(result);</span>
+<span class="nc" id="L2436">        } catch (final WrongSizeException ignore) {</span>
+            // never happens
+<span class="nc" id="L2438">            result = null;</span>
+<span class="fc" id="L2439">        }</span>
+<span class="fc" id="L2440">        return result;</span>
+    }
+
+    /**
+     * Gets known accelerometer bias as a column matrix.
+     *
+     * @param result instance where result data will be copied to.
+     * @throws IllegalArgumentException if provided matrix is not 3x1.
+     */
+    @Override
+    public void getBiasAsMatrix(final Matrix result) {
+<span class="fc bfc" id="L2451" title="All 4 branches covered.">        if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != 1) {</span>
+<span class="fc" id="L2452">            throw new IllegalArgumentException();</span>
+        }
+<span class="fc" id="L2454">        result.setElementAtIndex(0, biasX);</span>
+<span class="fc" id="L2455">        result.setElementAtIndex(1, biasY);</span>
+<span class="fc" id="L2456">        result.setElementAtIndex(2, biasZ);</span>
+<span class="fc" id="L2457">    }</span>
+
+    /**
+     * Sets known accelerometer bias as a column matrix.
+     *
+     * @param bias accelerometer bias to be set.
+     * @throws LockedException          if calibrator is currently running
+     * @throws IllegalArgumentException if provided matrix is not 3x1.
+     */
+    @Override
+    public void setBias(final Matrix bias) throws LockedException {
+<span class="fc bfc" id="L2468" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L2469">            throw new LockedException();</span>
+        }
+<span class="fc bfc" id="L2471" title="All 4 branches covered.">        if (bias.getRows() != BodyKinematics.COMPONENTS || bias.getColumns() != 1) {</span>
+<span class="fc" id="L2472">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L2475">        biasX = bias.getElementAtIndex(0);</span>
+<span class="fc" id="L2476">        biasY = bias.getElementAtIndex(1);</span>
+<span class="fc" id="L2477">        biasZ = bias.getElementAtIndex(2);</span>
+<span class="fc" id="L2478">    }</span>
+
+    /**
+     * Gets initial scale factors and cross coupling errors matrix.
+     *
+     * @return initial scale factors and cross coupling errors matrix.
+     */
+    @Override
+    public Matrix getInitialMa() {
+        Matrix result;
+        try {
+<span class="fc" id="L2489">            result = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);</span>
+<span class="fc" id="L2490">            getInitialMa(result);</span>
+<span class="nc" id="L2491">        } catch (final WrongSizeException ignore) {</span>
+            // never happens
+<span class="nc" id="L2493">            result = null;</span>
+<span class="fc" id="L2494">        }</span>
+<span class="fc" id="L2495">        return result;</span>
+    }
+
+    /**
+     * Gets initial scale factors and cross coupling errors matrix.
+     *
+     * @param result instance where data will be stored.
+     * @throws IllegalArgumentException if provided matrix is not 3x3.
+     */
+    @Override
+    public void getInitialMa(final Matrix result) {
+<span class="fc bfc" id="L2506" title="All 4 branches covered.">        if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != BodyKinematics.COMPONENTS) {</span>
+<span class="fc" id="L2507">            throw new IllegalArgumentException();</span>
+        }
+<span class="fc" id="L2509">        result.setElementAtIndex(0, initialSx);</span>
+<span class="fc" id="L2510">        result.setElementAtIndex(1, initialMyx);</span>
+<span class="fc" id="L2511">        result.setElementAtIndex(2, initialMzx);</span>
+
+<span class="fc" id="L2513">        result.setElementAtIndex(3, initialMxy);</span>
+<span class="fc" id="L2514">        result.setElementAtIndex(4, initialSy);</span>
+<span class="fc" id="L2515">        result.setElementAtIndex(5, initialMzy);</span>
+
+<span class="fc" id="L2517">        result.setElementAtIndex(6, initialMxz);</span>
+<span class="fc" id="L2518">        result.setElementAtIndex(7, initialMyz);</span>
+<span class="fc" id="L2519">        result.setElementAtIndex(8, initialSz);</span>
+<span class="fc" id="L2520">    }</span>
+
+    /**
+     * Sets initial scale factors and cross coupling errors matrix.
+     *
+     * @param initialMa initial scale factors and cross coupling errors matrix.
+     * @throws IllegalArgumentException if provided matrix is not 3x3.
+     * @throws LockedException          if calibrator is currently running.
+     */
+    @Override
+    public void setInitialMa(final Matrix initialMa) throws LockedException {
+<span class="fc bfc" id="L2531" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L2532">            throw new LockedException();</span>
+        }
+<span class="fc bfc" id="L2534" title="All 4 branches covered.">        if (initialMa.getRows() != BodyKinematics.COMPONENTS || initialMa.getColumns() != BodyKinematics.COMPONENTS) {</span>
+<span class="fc" id="L2535">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L2538">        initialSx = initialMa.getElementAtIndex(0);</span>
+<span class="fc" id="L2539">        initialMyx = initialMa.getElementAtIndex(1);</span>
+<span class="fc" id="L2540">        initialMzx = initialMa.getElementAtIndex(2);</span>
+
+<span class="fc" id="L2542">        initialMxy = initialMa.getElementAtIndex(3);</span>
+<span class="fc" id="L2543">        initialSy = initialMa.getElementAtIndex(4);</span>
+<span class="fc" id="L2544">        initialMzy = initialMa.getElementAtIndex(5);</span>
+
+<span class="fc" id="L2546">        initialMxz = initialMa.getElementAtIndex(6);</span>
+<span class="fc" id="L2547">        initialMyz = initialMa.getElementAtIndex(7);</span>
+<span class="fc" id="L2548">        initialSz = initialMa.getElementAtIndex(8);</span>
+<span class="fc" id="L2549">    }</span>
+
+    /**
+     * Gets a collection of body kinematics measurements taken at different
+     * frames (positions, orientations and velocities) and containing the standard
+     * deviations of accelerometer and gyroscope measurements.
+     * If a single device IMU needs to be calibrated, typically all measurements are
+     * taken at the same position, with zero velocity and multiple orientations.
+     * However, if we just want to calibrate the a given IMU model (e.g. obtain
+     * an average and less precise calibration for the IMU of a given phone model),
+     * we could take measurements collected throughout the planet at multiple positions
+     * while the phone remains static (e.g. while charging), hence each measurement
+     * position will change, velocity will remain zero and orientation will be
+     * typically constant at horizontal orientation while the phone remains on a
+     * flat surface.
+     *
+     * @return a collection of body kinematics measurements taken at different
+     * frames (positions, orientations and velocities).
+     */
+    @Override
+    public Collection&lt;StandardDeviationFrameBodyKinematics&gt; getMeasurements() {
+<span class="fc" id="L2570">        return measurements;</span>
+    }
+
+    /**
+     * Sets a collection of body kinematics measurements taken at different
+     * frames (positions, orientations and velocities) and containing the standard
+     * deviations of accelerometer and gyroscope measurements.
+     * If a single device IMU needs to be calibrated, typically all measurements are
+     * taken at the same position, with zero velocity and multiple orientations.
+     * However, if we just want to calibrate the a given IMU model (e.g. obtain
+     * an average and less precise calibration for the IMU of a given phone model),
+     * we could take measurements collected throughout the planet at multiple positions
+     * while the phone remains static (e.g. while charging), hence each measurement
+     * position will change, velocity will remain zero and orientation will be
+     * typically constant at horizontal orientation while the phone remains on a
+     * flat surface.
+     *
+     * @param measurements collection of body kinematics measurements taken at different
+     *                     frames (positions, orientations and velocities).
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setMeasurements(final Collection&lt;? extends StandardDeviationFrameBodyKinematics&gt; measurements)
+            throws LockedException {
+<span class="fc bfc" id="L2594" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L2595">            throw new LockedException();</span>
+        }
+        //noinspection unchecked
+<span class="fc" id="L2598">        this.measurements = (Collection&lt;StandardDeviationFrameBodyKinematics&gt;) measurements;</span>
+<span class="fc" id="L2599">    }</span>
+
+    /**
+     * Indicates the type of measurement used by this calibrator.
+     *
+     * @return type of measurement used by this calibrator.
+     */
+    @Override
+    public AccelerometerCalibratorMeasurementType getMeasurementType() {
+<span class="fc" id="L2608">        return AccelerometerCalibratorMeasurementType.STANDARD_DEVIATION_FRAME_BODY_KINEMATICS;</span>
+    }
+
+    /**
+     * Indicates whether this calibrator requires ordered measurements in a
+     * list or not.
+     *
+     * @return true if measurements must be ordered, false otherwise.
+     */
+    @Override
+    public boolean isOrderedMeasurementsRequired() {
+<span class="fc" id="L2619">        return false;</span>
+    }
+
+    /**
+     * Indicates whether this calibrator requires quality scores for each
+     * measurement or not.
+     *
+     * @return true if quality scores are required, false otherwise.
+     */
+    @Override
+    public boolean isQualityScoresRequired() {
+<span class="fc" id="L2630">        return false;</span>
+    }
+
+    /**
+     * Indicates whether z-axis is assumed to be common for accelerometer and
+     * gyroscope.
+     * When enabled, this eliminates 3 variables from Ma matrix.
+     *
+     * @return true if z-axis is assumed to be common for accelerometer and gyroscope,
+     * false otherwise.
+     */
+    @Override
+    public boolean isCommonAxisUsed() {
+<span class="fc" id="L2643">        return commonAxisUsed;</span>
+    }
+
+    /**
+     * Specifies whether z-axis is assumed to be common for accelerometer and
+     * gyroscope.
+     * When enabled, this eliminates 3 variables from Ma matrix.
+     *
+     * @param commonAxisUsed true if z-axis is assumed to be common for accelerometer
+     *                       and gyroscope, false otherwise.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setCommonAxisUsed(final boolean commonAxisUsed) throws LockedException {
+<span class="fc bfc" id="L2657" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L2658">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L2661">        this.commonAxisUsed = commonAxisUsed;</span>
+<span class="fc" id="L2662">    }</span>
+
+    /**
+     * Gets listener to handle events raised by this estimator.
+     *
+     * @return listener to handle events raised by this estimator.
+     */
+    @Override
+    public KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibratorListener getListener() {
+<span class="fc" id="L2671">        return listener;</span>
+    }
+
+    /**
+     * Sets listener to handle events raised by this estimator.
+     *
+     * @param listener listener to handle events raised by this estimator.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setListener(final KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibratorListener listener)
+            throws LockedException {
+<span class="fc bfc" id="L2683" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L2684">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L2687">        this.listener = listener;</span>
+<span class="fc" id="L2688">    }</span>
+
+    /**
+     * Gets minimum number of required measurements.
+     *
+     * @return minimum number of required measurements.
+     */
+    @Override
+    public int getMinimumRequiredMeasurements() {
+<span class="fc" id="L2697">        return MINIMUM_MEASUREMENTS;</span>
+    }
+
+    /**
+     * Indicates whether calibrator is ready to start.
+     *
+     * @return true if calibrator is ready, false otherwise.
+     */
+    @Override
+    public boolean isReady() {
+<span class="fc bfc" id="L2707" title="All 4 branches covered.">        return measurements != null &amp;&amp; measurements.size() &gt;= MINIMUM_MEASUREMENTS;</span>
+    }
+
+    /**
+     * Indicates whether calibrator is currently running or not.
+     *
+     * @return true if calibrator is running, false otherwise.
+     */
+    @Override
+    public boolean isRunning() {
+<span class="fc" id="L2717">        return running;</span>
+    }
+
+    /**
+     * Estimates accelerometer calibration parameters containing bias, scale factors
+     * and cross-coupling errors.
+     *
+     * @throws LockedException      if calibrator is currently running.
+     * @throws NotReadyException    if calibrator is not ready.
+     * @throws CalibrationException if estimation fails for numerical reasons.
+     */
+    @Override
+    public void calibrate() throws LockedException, NotReadyException, CalibrationException {
+<span class="fc bfc" id="L2730" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L2731">            throw new LockedException();</span>
+        }
+
+<span class="pc bpc" id="L2734" title="1 of 2 branches missed.">        if (!isReady()) {</span>
+<span class="nc" id="L2735">            throw new NotReadyException();</span>
+        }
+
+        try {
+<span class="fc" id="L2739">            running = true;</span>
+
+<span class="fc bfc" id="L2741" title="All 2 branches covered.">            if (listener != null) {</span>
+<span class="fc" id="L2742">                listener.onCalibrateStart(this);</span>
+            }
+
+<span class="fc bfc" id="L2745" title="All 2 branches covered.">            if (commonAxisUsed) {</span>
+<span class="fc" id="L2746">                calibrateCommonAxis();</span>
+            } else {
+<span class="fc" id="L2748">                calibrateGeneral();</span>
+            }
+
+<span class="fc bfc" id="L2751" title="All 2 branches covered.">            if (listener != null) {</span>
+<span class="fc" id="L2752">                listener.onCalibrateEnd(this);</span>
+            }
+
+<span class="nc" id="L2755">        } catch (final AlgebraException | FittingException | com.irurueta.numerical.NotReadyException e) {</span>
+<span class="nc" id="L2756">            throw new CalibrationException(e);</span>
+        } finally {
+<span class="fc" id="L2758">            running = false;</span>
+        }
+<span class="fc" id="L2760">    }</span>
+
+    /**
+     * Gets estimated accelerometer scale factors and ross coupling errors.
+     * This is the product of matrix Ta containing cross coupling errors and Ka
+     * containing scaling factors.
+     * So tat:
+     * &lt;pre&gt;
+     *     Ma = [sx    mxy  mxz] = Ta*Ka
+     *          [myx   sy   myz]
+     *          [mzx   mzy  sz ]
+     * &lt;/pre&gt;
+     * Where:
+     * &lt;pre&gt;
+     *     Ka = [sx 0   0 ]
+     *          [0  sy  0 ]
+     *          [0  0   sz]
+     * &lt;/pre&gt;
+     * and
+     * &lt;pre&gt;
+     *     Ta = [1          -alphaXy    alphaXz ]
+     *          [alphaYx    1           -alphaYz]
+     *          [-alphaZx   alphaZy     1       ]
+     * &lt;/pre&gt;
+     * Hence:
+     * &lt;pre&gt;
+     *     Ma = [sx    mxy  mxz] = Ta*Ka =  [sx             -sy * alphaXy   sz * alphaXz ]
+     *          [myx   sy   myz]            [sx * alphaYx   sy              -sz * alphaYz]
+     *          [mzx   mzy  sz ]            [-sx * alphaZx  sy * alphaZy    sz           ]
+     * &lt;/pre&gt;
+     * This instance allows any 3x3 matrix however, typically alphaYx, alphaZx and alphaZy
+     * are considered to be zero if the accelerometer z-axis is assumed to be the same
+     * as the body z-axis. When this is assumed, myx = mzx = mzy = 0 and the Ma matrix
+     * becomes upper diagonal:
+     * &lt;pre&gt;
+     *     Ma = [sx    mxy  mxz]
+     *          [0     sy   myz]
+     *          [0     0    sz ]
+     * &lt;/pre&gt;
+     * Values of this matrix are unit-less.
+     *
+     * @return estimated accelerometer scale factors and cross coupling errors, or null
+     * if not available.
+     */
+    @Override
+    public Matrix getEstimatedMa() {
+<span class="fc" id="L2806">        return estimatedMa;</span>
+    }
+
+    /**
+     * Gets estimated x-axis scale factor.
+     *
+     * @return estimated x-axis scale factor or null if not available.
+     */
+    @Override
+    public Double getEstimatedSx() {
+<span class="fc bfc" id="L2816" title="All 2 branches covered.">        return estimatedMa != null ? estimatedMa.getElementAt(0, 0) : null;</span>
+    }
+
+    /**
+     * Gets estimated y-axis scale factor.
+     *
+     * @return estimated y-axis scale factor or null if not available.
+     */
+    @Override
+    public Double getEstimatedSy() {
+<span class="fc bfc" id="L2826" title="All 2 branches covered.">        return estimatedMa != null ? estimatedMa.getElementAt(1, 1) : null;</span>
+    }
+
+    /**
+     * Gets estimated z-axis scale factor.
+     *
+     * @return estimated z-axis scale factor or null if not available.
+     */
+    @Override
+    public Double getEstimatedSz() {
+<span class="fc bfc" id="L2836" title="All 2 branches covered.">        return estimatedMa != null ? estimatedMa.getElementAt(2, 2) : null;</span>
+    }
+
+    /**
+     * Gets estimated x-y cross-coupling error.
+     *
+     * @return estimated x-y cross-coupling error or null if not available.
+     */
+    @Override
+    public Double getEstimatedMxy() {
+<span class="fc bfc" id="L2846" title="All 2 branches covered.">        return estimatedMa != null ? estimatedMa.getElementAt(0, 1) : null;</span>
+    }
+
+    /**
+     * Gets estimated x-z cross-coupling error.
+     *
+     * @return estimated x-z cross-coupling error or null if not available.
+     */
+    @Override
+    public Double getEstimatedMxz() {
+<span class="fc bfc" id="L2856" title="All 2 branches covered.">        return estimatedMa != null ? estimatedMa.getElementAt(0, 2) : null;</span>
+    }
+
+    /**
+     * Gets estimated y-x cross-coupling error.
+     *
+     * @return estimated y-x cross-coupling error or null if not available.
+     */
+    @Override
+    public Double getEstimatedMyx() {
+<span class="fc bfc" id="L2866" title="All 2 branches covered.">        return estimatedMa != null ? estimatedMa.getElementAt(1, 0) : null;</span>
+    }
+
+    /**
+     * Gets estimated y-z cross-coupling error.
+     *
+     * @return estimated y-z cross-coupling error or null if not available.
+     */
+    @Override
+    public Double getEstimatedMyz() {
+<span class="fc bfc" id="L2876" title="All 2 branches covered.">        return estimatedMa != null ? estimatedMa.getElementAt(1, 2) : null;</span>
+    }
+
+    /**
+     * Gets estimated z-x cross-coupling error.
+     *
+     * @return estimated z-x cross-coupling error or null if not available.
+     */
+    @Override
+    public Double getEstimatedMzx() {
+<span class="fc bfc" id="L2886" title="All 2 branches covered.">        return estimatedMa != null ? estimatedMa.getElementAt(2, 0) : null;</span>
+    }
+
+    /**
+     * Gets estimated z-y cross-coupling error.
+     *
+     * @return estimated z-y cross-coupling error or null if not available.
+     */
+    @Override
+    public Double getEstimatedMzy() {
+<span class="fc bfc" id="L2896" title="All 2 branches covered.">        return estimatedMa != null ? estimatedMa.getElementAt(2, 1) : null;</span>
+    }
+
+    /**
+     * Gets estimated covariance matrix for estimated calibration parameters.
+     * Diagonal elements of the matrix contains variance for the following
+     * parameters (following indicated order): sx, sy, sz, mxy, mxz, myx,
+     * myz, mzx, mzy.
+     *
+     * @return estimated covariance matrix for estimated calibration parameters.
+     */
+    @Override
+    public Matrix getEstimatedCovariance() {
+<span class="fc" id="L2909">        return estimatedCovariance;</span>
+    }
+
+    /**
+     * Gets estimated chi square value.
+     *
+     * @return estimated chi square value.
+     */
+    @Override
+    public double getEstimatedChiSq() {
+<span class="fc" id="L2919">        return estimatedChiSq;</span>
+    }
+
+    /**
+     * Gets estimated mean square error respect to provided measurements.
+     *
+     * @return estimated mean square error respect to provided measurements.
+     */
+    @Override
+    public double getEstimatedMse() {
+<span class="fc" id="L2929">        return estimatedMse;</span>
+    }
+
+    /**
+     * Internal method to perform calibration when common z-axis is assumed for both
+     * the accelerometer and gyroscope.
+     *
+     * @throws AlgebraException                         if there are numerical errors.
+     * @throws FittingException                         if no convergence to solution is found.
+     * @throws com.irurueta.numerical.NotReadyException if fitter is not ready.
+     */
+    private void calibrateCommonAxis() throws AlgebraException, FittingException,
+            com.irurueta.numerical.NotReadyException {
+        // The accelerometer model is:
+        // fmeas = ba + (I + Ma) * ftrue + w
+
+        // Ideally a least squares solution tries to minimize noise component, so:
+        // fmeas = ba + (I + Ma) * ftrue
+
+        // Hence:
+        // [fmeasx] = [bx] + ( [1  0   0] + [sx    mxy mxz])   [ftruex]
+        // [fmeasy] = [by]     [0  1   0]   [myx   sy  myz]    [ftruey]
+        // [fmeasz] = [bz]     [0  0   1]   [mzx   mzy sz ]    [ftruez]
+
+        // where myx = mzx = mzy = 0
+
+        // Hence:
+        // [fmeasx] = [bx] + ( [1  0   0] + [sx    mxy mxz])   [ftruex]
+        // [fmeasy] = [by]     [0  1   0]   [0     sy  myz]    [ftruey]
+        // [fmeasz] = [bz]     [0  0   1]   [0     0   sz ]    [ftruez]
+
+        // [fmeasx] = [bx] +   [1+sx   mxy     mxz ][ftruex]
+        // [fmeasy]   [by]     [0      1+sy    myz ][ftruey]
+        // [fmeasz]   [bz]     [0      0       1+sz][ftruez]
+
+        // fmeasx = bx + (1+sx) * ftruex + mxy * ftruey + mxz * ftruez
+        // fmeasy = by + (1+sy) * ftruey + myz * ftruez
+        // fmeasz = bz + (1+sz) * ftruez
+
+        // Where the unknowns are: sx, sy, sz, mxy mxz, myz
+        // Reordering:
+        // fmeasx = bx + ftruex + sx * ftruex + mxy * ftruey + mxz * ftruez
+        // fmeasy = by + ftruey + sy * ftruey + myz * ftruez
+        // fmeasz = bz + ftruez + sz * ftruez
+
+        // fmeasx - ftruex - bx = sx * ftruex + mxy * ftruey + mxz * ftruez
+        // fmeasy - ftruey - by = sy * ftruey + myz * ftruez
+        // fmeasz - ftruez - bz = sz * ftruez
+
+        // [ftruex  0       0       ftruey  ftruez  0     ][sx ] = [fmeasx - ftruex - bx]
+        // [0       ftruey  0       0       0       ftruez][sy ]   [fmeasy - ftruey - by]
+        // [0       0       ftruez  0       0       0     ][sz ]   [fmeasz - ftruez - bz]
+        //                                                 [mxy]
+        //                                                 [mxz]
+        //                                                 [myz]
+
+<span class="fc" id="L2985">        fitter.setFunctionEvaluator(new LevenbergMarquardtMultiVariateFunctionEvaluator() {</span>
+            @Override
+            public int getNumberOfDimensions() {
+                // Input points are true specific force coordinates
+<span class="fc" id="L2989">                return BodyKinematics.COMPONENTS;</span>
+            }
+
+            @Override
+            public int getNumberOfVariables() {
+                // The multivariate function returns the components of measured specific force
+<span class="fc" id="L2995">                return BodyKinematics.COMPONENTS;</span>
+            }
+
+            @Override
+            public double[] createInitialParametersArray() {
+<span class="fc" id="L3000">                final var initial = new double[COMMON_Z_AXIS_UNKNOWNS];</span>
+
+<span class="fc" id="L3002">                initial[0] = initialSx;</span>
+<span class="fc" id="L3003">                initial[1] = initialSy;</span>
+<span class="fc" id="L3004">                initial[2] = initialSz;</span>
+
+<span class="fc" id="L3006">                initial[3] = initialMxy;</span>
+<span class="fc" id="L3007">                initial[4] = initialMxz;</span>
+<span class="fc" id="L3008">                initial[5] = initialMyz;</span>
+
+<span class="fc" id="L3010">                return initial;</span>
+            }
+
+            @Override
+            public void evaluate(
+                    final int i, final double[] point, final double[] result,
+                    final double[] params, final Matrix jacobian) {
+                // We know that
+                // fmeasx = bx + ftruex + sx * ftruex + mxy * ftruey + mxz * ftruez
+                // fmeasy = by + ftruey + sy * ftruey + myz * ftruez
+                // fmeasz = bz + ftruez + sz * ftruez
+
+                // Hence, the derivatives respect the parameters sx, sy, sz, mxy, mxz, myz are:
+
+                // d(fmeasx)/d(sx) = ftruex
+                // d(fmeasx)/d(sy) = 0.0
+                // d(fmeasx)/d(sz) = 0.0
+                // d(fmeasx)/d(mxy) = ftruey
+                // d(fmeasx)/d(mxz) = ftruez
+                // d(fmeasx)/d(myz) = 0.0
+
+                // d(fmeasy)/d(sx) = 0.0
+                // d(fmeasy)/d(sy) = ftruey
+                // d(fmeasy)/d(sz) = 0.0
+                // d(fmeasy)/d(mxy) = 0.0
+                // d(fmeasy)/d(mxz) = 0.0
+                // d(fmeasy)/d(myz) = ftruez
+
+                // d(fmeasy)/d(sx) = 0.0
+                // d(fmeasy)/d(sy) = 0.0
+                // d(fmeasy)/d(sz) = ftruez
+                // d(fmeasy)/d(mxy) = 0.0
+                // d(fmeasy)/d(mxz) = 0.0
+                // d(fmeasy)/d(myz) = 0.0
+
+<span class="fc" id="L3045">                final var sx = params[0];</span>
+<span class="fc" id="L3046">                final var sy = params[1];</span>
+<span class="fc" id="L3047">                final var sz = params[2];</span>
+
+<span class="fc" id="L3049">                final var mxy = params[3];</span>
+<span class="fc" id="L3050">                final var mxz = params[4];</span>
+<span class="fc" id="L3051">                final var myz = params[5];</span>
+
+<span class="fc" id="L3053">                final var ftruex = point[0];</span>
+<span class="fc" id="L3054">                final var ftruey = point[1];</span>
+<span class="fc" id="L3055">                final var ftruez = point[2];</span>
+
+<span class="fc" id="L3057">                result[0] = biasX + ftruex + sx * ftruex + mxy * ftruey + mxz * ftruez;</span>
+<span class="fc" id="L3058">                result[1] = biasY + ftruey + sy * ftruey + myz * ftruez;</span>
+<span class="fc" id="L3059">                result[2] = biasZ + ftruez + sz * ftruez;</span>
+
+<span class="fc" id="L3061">                jacobian.setElementAt(0, 0, ftruex);</span>
+<span class="fc" id="L3062">                jacobian.setElementAt(0, 1, 0.0);</span>
+<span class="fc" id="L3063">                jacobian.setElementAt(0, 2, 0.0);</span>
+<span class="fc" id="L3064">                jacobian.setElementAt(0, 3, ftruey);</span>
+<span class="fc" id="L3065">                jacobian.setElementAt(0, 4, ftruez);</span>
+<span class="fc" id="L3066">                jacobian.setElementAt(0, 5, 0.0);</span>
+
+<span class="fc" id="L3068">                jacobian.setElementAt(1, 0, 0.0);</span>
+<span class="fc" id="L3069">                jacobian.setElementAt(1, 1, ftruey);</span>
+<span class="fc" id="L3070">                jacobian.setElementAt(1, 2, 0.0);</span>
+<span class="fc" id="L3071">                jacobian.setElementAt(1, 3, 0.0);</span>
+<span class="fc" id="L3072">                jacobian.setElementAt(1, 4, 0.0);</span>
+<span class="fc" id="L3073">                jacobian.setElementAt(1, 5, ftruez);</span>
+
+<span class="fc" id="L3075">                jacobian.setElementAt(2, 0, 0.0);</span>
+<span class="fc" id="L3076">                jacobian.setElementAt(2, 1, 0.0);</span>
+<span class="fc" id="L3077">                jacobian.setElementAt(2, 2, ftruez);</span>
+<span class="fc" id="L3078">                jacobian.setElementAt(2, 3, 0.0);</span>
+<span class="fc" id="L3079">                jacobian.setElementAt(2, 4, 0.0);</span>
+<span class="fc" id="L3080">                jacobian.setElementAt(2, 5, 0.0);</span>
+<span class="fc" id="L3081">            }</span>
+        });
+
+<span class="fc" id="L3084">        setInputData();</span>
+
+<span class="fc" id="L3086">        fitter.fit();</span>
+
+<span class="fc" id="L3088">        final var result = fitter.getA();</span>
+
+<span class="fc" id="L3090">        final var sx = result[0];</span>
+<span class="fc" id="L3091">        final var sy = result[1];</span>
+<span class="fc" id="L3092">        final var sz = result[2];</span>
+
+<span class="fc" id="L3094">        final var mxy = result[3];</span>
+<span class="fc" id="L3095">        final var mxz = result[4];</span>
+<span class="fc" id="L3096">        final var myz = result[5];</span>
+
+<span class="pc bpc" id="L3098" title="1 of 2 branches missed.">        if (estimatedMa == null) {</span>
+<span class="fc" id="L3099">            estimatedMa = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);</span>
+        } else {
+<span class="nc" id="L3101">            estimatedMa.initialize(0.0);</span>
+        }
+
+<span class="fc" id="L3104">        estimatedMa.setElementAt(0, 0, sx);</span>
+
+<span class="fc" id="L3106">        estimatedMa.setElementAt(0, 1, mxy);</span>
+<span class="fc" id="L3107">        estimatedMa.setElementAt(1, 1, sy);</span>
+
+<span class="fc" id="L3109">        estimatedMa.setElementAt(0, 2, mxz);</span>
+<span class="fc" id="L3110">        estimatedMa.setElementAt(1, 2, myz);</span>
+<span class="fc" id="L3111">        estimatedMa.setElementAt(2, 2, sz);</span>
+
+<span class="fc" id="L3113">        estimatedCovariance = fitter.getCovar();</span>
+
+        // propagate covariance matrix so that all parameters are taken into
+        // account in the order: sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy
+
+        // We define a lineal function mapping original parameters for the common
+        // axis case to the general case
+        // [sx'] = [1  0  0  0  0  0][sx]
+        // [sy']   [0  1  0  0  0  0][sy]
+        // [sz']   [0  0  1  0  0  0][sz]
+        // [mxy']  [0  0  0  1  0  0][mxy]
+        // [mxz']  [0  0  0  0  1  0][mxz]
+        // [myx']  [0  0  0  0  0  0][myz]
+        // [myz']  [0  0  0  0  0  1]
+        // [mzx']  [0  0  0  0  0  0]
+        // [mzy']  [0  0  0  0  0  0]
+
+        // As defined in com.irurueta.statistics.MultivariateNormalDist,
+        // if we consider the jacobian of the lineal application the matrix shown
+        // above, then covariance can be propagated as follows
+<span class="fc" id="L3133">        final var jacobian = Matrix.identity(GENERAL_UNKNOWNS, COMMON_Z_AXIS_UNKNOWNS);</span>
+<span class="fc" id="L3134">        jacobian.setElementAt(5, 5, 0.0);</span>
+<span class="fc" id="L3135">        jacobian.setElementAt(6, 5, 1.0);</span>
+
+        // propagated covariance is J * Cov * J'
+<span class="fc" id="L3138">        final var jacobianTrans = jacobian.transposeAndReturnNew();</span>
+<span class="fc" id="L3139">        jacobian.multiply(estimatedCovariance);</span>
+<span class="fc" id="L3140">        jacobian.multiply(jacobianTrans);</span>
+<span class="fc" id="L3141">        estimatedCovariance = jacobian;</span>
+<span class="fc" id="L3142">        estimatedChiSq = fitter.getChisq();</span>
+<span class="fc" id="L3143">        estimatedMse = fitter.getMse();</span>
+<span class="fc" id="L3144">    }</span>
+
+    /**
+     * Internal method to perform general calibration.
+     *
+     * @throws AlgebraException                         if there are numerical errors.
+     * @throws FittingException                         if no convergence to solution is found.
+     * @throws com.irurueta.numerical.NotReadyException if fitter is not ready.
+     */
+    private void calibrateGeneral() throws AlgebraException, FittingException,
+            com.irurueta.numerical.NotReadyException {
+        // The accelerometer model is:
+        // fmeas = ba + (I + Ma) * ftrue + w
+
+        // Ideally a least squares solution tries to minimize noise component, so:
+        // fmeas = ba + (I + Ma) * ftrue
+
+        // Hence:
+        // [fmeasx] = [bx] + ( [1  0   0] + [sx    mxy mxz])   [ftruex]
+        // [fmeasy] = [by]     [0  1   0]   [myx   sy  myz]    [ftruey]
+        // [fmeasz] = [bz]     [0  0   1]   [mzx   mzy sz ]    [ftruez]
+
+        // [fmeasx] = [bx] +   [1+sx   mxy     mxz ][ftruex]
+        // [fmeasy]   [by]     [myx    1+sy    myz ][ftruey]
+        // [fmeasz]   [bz]     [mzx    mzy     1+sz][ftruez]
+
+        // fmeasx = bx + (1+sx) * ftruex + mxy * ftruey + mxz * ftruez
+        // fmeasy = by + myx * ftruex + (1+sy) * ftruey + myz * ftruez
+        // fmeasz = bz + mzx * ftruex + mzy * ftruey + (1+sz) * ftruez
+
+        // Where the unknowns are: sx, sy, sz, mxy mxz, myx, myz, mzx, mzy
+        // Reordering:
+        // fmeasx = bx + ftruex + sx * ftruex + mxy * ftruey + mxz * ftruez
+        // fmeasy = by + myx * ftruex + ftruey + sy * ftruey + myz * ftruez
+        // fmeasz = bz + mzx * ftruex + mzy * ftruey + ftruez + sz * ftruez
+
+        // fmeasx - ftruex - bx = sx * ftruex + mxy * ftruey + mxz * ftruez
+        // fmeasy - ftruey - by = myx * ftruex + sy * ftruey + myz * ftruez
+        // fmeasz - ftruez - bz = mzx * ftruex + mzy * ftruey + sz * ftruez
+
+        // [ftruex  0       0       ftruey  ftruez  0       0       0       0     ][sx ] = [fmeasx - ftruex - bx]
+        // [0       ftruey  0       0       0       ftruex  ftruez  0       0     ][sy ]   [fmeasy - ftruey - by]
+        // [0       0       ftruez  0       0       0       0       ftruex  ftruey][sz ]   [fmeasz - ftruez - bz]
+        //                                                                         [mxy]
+        //                                                                         [mxz]
+        //                                                                         [myx]
+        //                                                                         [myz]
+        //                                                                         [mzx]
+        //                                                                         [mzy]
+
+<span class="fc" id="L3194">        fitter.setFunctionEvaluator(new LevenbergMarquardtMultiVariateFunctionEvaluator() {</span>
+            @Override
+            public int getNumberOfDimensions() {
+                // Input points are true specific force coordinates
+<span class="fc" id="L3198">                return BodyKinematics.COMPONENTS;</span>
+            }
+
+            @Override
+            public int getNumberOfVariables() {
+                // The multivariate function returns the components of measured specific force
+<span class="fc" id="L3204">                return BodyKinematics.COMPONENTS;</span>
+            }
+
+            @Override
+            public double[] createInitialParametersArray() {
+<span class="fc" id="L3209">                final var initial = new double[GENERAL_UNKNOWNS];</span>
+
+<span class="fc" id="L3211">                initial[0] = initialSx;</span>
+<span class="fc" id="L3212">                initial[1] = initialSy;</span>
+<span class="fc" id="L3213">                initial[2] = initialSz;</span>
+
+<span class="fc" id="L3215">                initial[3] = initialMxy;</span>
+<span class="fc" id="L3216">                initial[4] = initialMxz;</span>
+<span class="fc" id="L3217">                initial[5] = initialMyx;</span>
+<span class="fc" id="L3218">                initial[6] = initialMyz;</span>
+<span class="fc" id="L3219">                initial[7] = initialMzx;</span>
+<span class="fc" id="L3220">                initial[8] = initialMzy;</span>
+
+<span class="fc" id="L3222">                return initial;</span>
+            }
+
+            @Override
+            public void evaluate(
+                    final int i, final double[] point, final double[] result,
+                    final double[] params, final Matrix jacobian) {
+                // We know that:
+                // fmeasx = bx + ftruex + sx * ftruex + mxy * ftruey + mxz * ftruez
+                // fmeasy = by + myx * ftruex + ftruey + sy * ftruey + myz * ftruez
+                // fmeasz = bz + mzx * ftruex + mzy * ftruey + ftruez + sz * ftruez
+
+                // Hence, the derivatives respect the parameters sx, sy, sz,
+                // mxy, mxz, myx, myz, mzx and mzy is:
+
+                // d(fmeasx)/d(sx) = ftruex
+                // d(fmeasx)/d(sy) = 0.0
+                // d(fmeasx)/d(sz) = 0.0
+                // d(fmeasx)/d(mxy) = ftruey
+                // d(fmeasx)/d(mxz) = ftruez
+                // d(fmeasx)/d(myx) = 0.0
+                // d(fmeasx)/d(myz) = 0.0
+                // d(fmeasx)/d(mzx) = 0.0
+                // d(fmeasx)/d(mzy) = 0.0
+
+                // d(fmeasy)/d(sx) = 0.0
+                // d(fmeasy)/d(sy) = ftruey
+                // d(fmeasy)/d(sz) = 0.0
+                // d(fmeasy)/d(mxy) = 0.0
+                // d(fmeasy)/d(mxz) = 0.0
+                // d(fmeasy)/d(myx) = ftruex
+                // d(fmeasy)/d(myz) = ftruez
+                // d(fmeasy)/d(mzx) = 0.0
+                // d(fmeasy)/d(mzy) = 0.0
+
+                // d(fmeasz)/d(sx) = 0.0
+                // d(fmeasz)/d(sy) = 0.0
+                // d(fmeasz)/d(sz) = ftruez
+                // d(fmeasz)/d(mxy) = 0.0
+                // d(fmeasz)/d(mxz) = 0.0
+                // d(fmeasz)/d(myx) = 0.0
+                // d(fmeasz)/d(myz) = 0.0
+                // d(fmeasz)/d(mzx) = ftruex
+                // d(fmeasz)/d(mzy) = ftruey
+
+<span class="fc" id="L3267">                final var sx = params[0];</span>
+<span class="fc" id="L3268">                final var sy = params[1];</span>
+<span class="fc" id="L3269">                final var sz = params[2];</span>
+
+<span class="fc" id="L3271">                final var mxy = params[3];</span>
+<span class="fc" id="L3272">                final var mxz = params[4];</span>
+<span class="fc" id="L3273">                final var myx = params[5];</span>
+<span class="fc" id="L3274">                final var myz = params[6];</span>
+<span class="fc" id="L3275">                final var mzx = params[7];</span>
+<span class="fc" id="L3276">                final var mzy = params[8];</span>
+
+<span class="fc" id="L3278">                final var ftruex = point[0];</span>
+<span class="fc" id="L3279">                final var ftruey = point[1];</span>
+<span class="fc" id="L3280">                final var ftruez = point[2];</span>
+
+<span class="fc" id="L3282">                result[0] = biasX + ftruex + sx * ftruex + mxy * ftruey + mxz * ftruez;</span>
+<span class="fc" id="L3283">                result[1] = biasY + myx * ftruex + ftruey + sy * ftruey + myz * ftruez;</span>
+<span class="fc" id="L3284">                result[2] = biasZ + mzx * ftruex + mzy * ftruey + ftruez + sz * ftruez;</span>
+
+<span class="fc" id="L3286">                jacobian.setElementAt(0, 0, ftruex);</span>
+<span class="fc" id="L3287">                jacobian.setElementAt(0, 1, 0.0);</span>
+<span class="fc" id="L3288">                jacobian.setElementAt(0, 2, 0.0);</span>
+<span class="fc" id="L3289">                jacobian.setElementAt(0, 3, ftruey);</span>
+<span class="fc" id="L3290">                jacobian.setElementAt(0, 4, ftruez);</span>
+<span class="fc" id="L3291">                jacobian.setElementAt(0, 5, 0.0);</span>
+<span class="fc" id="L3292">                jacobian.setElementAt(0, 6, 0.0);</span>
+<span class="fc" id="L3293">                jacobian.setElementAt(0, 7, 0.0);</span>
+<span class="fc" id="L3294">                jacobian.setElementAt(0, 8, 0.0);</span>
+
+<span class="fc" id="L3296">                jacobian.setElementAt(1, 0, 0.0);</span>
+<span class="fc" id="L3297">                jacobian.setElementAt(1, 1, ftruey);</span>
+<span class="fc" id="L3298">                jacobian.setElementAt(1, 2, 0.0);</span>
+<span class="fc" id="L3299">                jacobian.setElementAt(1, 3, 0.0);</span>
+<span class="fc" id="L3300">                jacobian.setElementAt(1, 4, 0.0);</span>
+<span class="fc" id="L3301">                jacobian.setElementAt(1, 5, ftruex);</span>
+<span class="fc" id="L3302">                jacobian.setElementAt(1, 6, ftruez);</span>
+<span class="fc" id="L3303">                jacobian.setElementAt(1, 7, 0.0);</span>
+<span class="fc" id="L3304">                jacobian.setElementAt(1, 8, 0.0);</span>
+
+<span class="fc" id="L3306">                jacobian.setElementAt(2, 0, 0.0);</span>
+<span class="fc" id="L3307">                jacobian.setElementAt(2, 1, 0.0);</span>
+<span class="fc" id="L3308">                jacobian.setElementAt(2, 2, ftruez);</span>
+<span class="fc" id="L3309">                jacobian.setElementAt(2, 3, 0.0);</span>
+<span class="fc" id="L3310">                jacobian.setElementAt(2, 4, 0.0);</span>
+<span class="fc" id="L3311">                jacobian.setElementAt(2, 5, 0.0);</span>
+<span class="fc" id="L3312">                jacobian.setElementAt(2, 6, 0.0);</span>
+<span class="fc" id="L3313">                jacobian.setElementAt(2, 7, ftruex);</span>
+<span class="fc" id="L3314">                jacobian.setElementAt(2, 8, ftruey);</span>
+<span class="fc" id="L3315">            }</span>
+        });
+
+<span class="fc" id="L3318">        setInputData();</span>
+
+<span class="fc" id="L3320">        fitter.fit();</span>
+
+<span class="fc" id="L3322">        final var result = fitter.getA();</span>
+
+<span class="fc" id="L3324">        final var sx = result[0];</span>
+<span class="fc" id="L3325">        final var sy = result[1];</span>
+<span class="fc" id="L3326">        final var sz = result[2];</span>
+
+<span class="fc" id="L3328">        final var mxy = result[3];</span>
+<span class="fc" id="L3329">        final var mxz = result[4];</span>
+<span class="fc" id="L3330">        final var myx = result[5];</span>
+<span class="fc" id="L3331">        final var myz = result[6];</span>
+<span class="fc" id="L3332">        final var mzx = result[7];</span>
+<span class="fc" id="L3333">        final var mzy = result[8];</span>
+
+<span class="fc bfc" id="L3335" title="All 2 branches covered.">        if (estimatedMa == null) {</span>
+<span class="fc" id="L3336">            estimatedMa = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);</span>
+        } else {
+<span class="fc" id="L3338">            estimatedMa.initialize(0.0);</span>
+        }
+
+<span class="fc" id="L3341">        estimatedMa.setElementAt(0, 0, sx);</span>
+<span class="fc" id="L3342">        estimatedMa.setElementAt(1, 0, myx);</span>
+<span class="fc" id="L3343">        estimatedMa.setElementAt(2, 0, mzx);</span>
+
+<span class="fc" id="L3345">        estimatedMa.setElementAt(0, 1, mxy);</span>
+<span class="fc" id="L3346">        estimatedMa.setElementAt(1, 1, sy);</span>
+<span class="fc" id="L3347">        estimatedMa.setElementAt(2, 1, mzy);</span>
+
+<span class="fc" id="L3349">        estimatedMa.setElementAt(0, 2, mxz);</span>
+<span class="fc" id="L3350">        estimatedMa.setElementAt(1, 2, myz);</span>
+<span class="fc" id="L3351">        estimatedMa.setElementAt(2, 2, sz);</span>
+
+<span class="fc" id="L3353">        estimatedCovariance = fitter.getCovar();</span>
+<span class="fc" id="L3354">        estimatedChiSq = fitter.getChisq();</span>
+<span class="fc" id="L3355">        estimatedMse = fitter.getMse();</span>
+<span class="fc" id="L3356">    }</span>
+
+    /**
+     * Sets input data into Levenberg-Marquardt fitter.
+     *
+     * @throws WrongSizeException never happens.
+     */
+    private void setInputData() throws WrongSizeException {
+        // set input data using:
+        // fmeasx = bx + ftruex + sx * ftruex + mxy * ftruey + mxz * ftruez
+        // fmeasy = by + myx * ftruex + ftruey + sy * ftruey + myz * ftruez
+        // fmeasz = bz + mzx * ftruex + mzy * ftruey + ftruez + sz * ftruez
+
+<span class="fc" id="L3369">        final var expectedKinematics = new BodyKinematics();</span>
+
+<span class="fc" id="L3371">        final var numMeasurements = measurements.size();</span>
+<span class="fc" id="L3372">        final var x = new Matrix(numMeasurements, BodyKinematics.COMPONENTS);</span>
+<span class="fc" id="L3373">        final var y = new Matrix(numMeasurements, BodyKinematics.COMPONENTS);</span>
+<span class="fc" id="L3374">        final var specificForceStandardDeviations = new double[numMeasurements];</span>
+<span class="fc" id="L3375">        var i = 0;</span>
+<span class="fc bfc" id="L3376" title="All 2 branches covered.">        for (final var measurement : measurements) {</span>
+<span class="fc" id="L3377">            final var measuredKinematics = measurement.getKinematics();</span>
+<span class="fc" id="L3378">            final var ecefFrame = measurement.getFrame();</span>
+<span class="fc" id="L3379">            final var previousEcefFrame = measurement.getPreviousFrame();</span>
+<span class="fc" id="L3380">            final var timeInterval = measurement.getTimeInterval();</span>
+
+<span class="fc" id="L3382">            ECEFKinematicsEstimator.estimateKinematics(timeInterval, ecefFrame, previousEcefFrame, expectedKinematics);</span>
+
+<span class="fc" id="L3384">            final var fMeasX = measuredKinematics.getFx();</span>
+<span class="fc" id="L3385">            final var fMeasY = measuredKinematics.getFy();</span>
+<span class="fc" id="L3386">            final var fMeasZ = measuredKinematics.getFz();</span>
+
+<span class="fc" id="L3388">            final var fTrueX = expectedKinematics.getFx();</span>
+<span class="fc" id="L3389">            final var fTrueY = expectedKinematics.getFy();</span>
+<span class="fc" id="L3390">            final var fTrueZ = expectedKinematics.getFz();</span>
+
+<span class="fc" id="L3392">            x.setElementAt(i, 0, fTrueX);</span>
+<span class="fc" id="L3393">            x.setElementAt(i, 1, fTrueY);</span>
+<span class="fc" id="L3394">            x.setElementAt(i, 2, fTrueZ);</span>
+
+<span class="fc" id="L3396">            y.setElementAt(i, 0, fMeasX);</span>
+<span class="fc" id="L3397">            y.setElementAt(i, 1, fMeasY);</span>
+<span class="fc" id="L3398">            y.setElementAt(i, 2, fMeasZ);</span>
+
+<span class="fc" id="L3400">            specificForceStandardDeviations[i] = measurement.getSpecificForceStandardDeviation();</span>
+<span class="fc" id="L3401">            i++;</span>
+<span class="fc" id="L3402">        }</span>
+
+<span class="fc" id="L3404">        fitter.setInputData(x, y, specificForceStandardDeviations);</span>
+<span class="fc" id="L3405">    }</span>
+
+    /**
+     * Converts acceleration value and unit to meters per squared second.
+     *
+     * @param value acceleration value.
+     * @param unit  unit of acceleration value.
+     * @return converted value.
+     */
+    private static double convertAcceleration(final double value, final AccelerationUnit unit) {
+<span class="fc" id="L3415">        return AccelerationConverter.convert(value, unit, AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+    }
+
+    /**
+     * Converts acceleration instance to meters per squared second.
+     *
+     * @param acceleration acceleration instance to be converted.
+     * @return converted value.
+     */
+    private static double convertAcceleration(final Acceleration acceleration) {
+<span class="fc" id="L3425">        return convertAcceleration(acceleration.getValue().doubleValue(), acceleration.getUnit());</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

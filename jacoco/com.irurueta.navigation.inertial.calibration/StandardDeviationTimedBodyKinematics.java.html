@@ -1,0 +1,568 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StandardDeviationTimedBodyKinematics.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-inertial</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.inertial.calibration</a> &gt; <span class="el_source">StandardDeviationTimedBodyKinematics.java</span></div><h1>StandardDeviationTimedBodyKinematics.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2020 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.inertial.calibration;
+
+import com.irurueta.navigation.inertial.BodyKinematics;
+import com.irurueta.units.Acceleration;
+import com.irurueta.units.AccelerationConverter;
+import com.irurueta.units.AccelerationUnit;
+import com.irurueta.units.AngularSpeed;
+import com.irurueta.units.AngularSpeedConverter;
+import com.irurueta.units.AngularSpeedUnit;
+import com.irurueta.units.Time;
+
+import java.io.Serial;
+import java.util.Objects;
+
+/**
+ * Contains a body kinematics measurement (accelerometer + gyroscope) along with the
+ * corresponding timestamp when measure was made and standard deviations of measured
+ * specific force and angular rates.
+ * Notice that timestamp does not need to be absolute.
+ * Usually timestamps are used in sequences of measurements of body kinematics, where
+ * the first measurement can have any timestamp value (e.g. zero), and hence the subsequent
+ * measurements will have timestamps relative to the first one.
+ */
+public class StandardDeviationTimedBodyKinematics extends TimedBodyKinematics {
+
+    /**
+     * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
+     * instances.
+     */
+    @Serial
+    private static final long serialVersionUID = 0L;
+
+    /**
+     * Standard deviation of measured specific force expressed in meters per squared
+     * second (m/s^2).
+     */
+    private double specificForceStandardDeviation;
+
+    /**
+     * Standard deviation of measured angular rate expressed in radians per second (rad/s).
+     */
+    private double angularRateStandardDeviation;
+
+    /**
+     * Constructor.
+     */
+    public StandardDeviationTimedBodyKinematics() {
+<span class="fc" id="L63">        super();</span>
+<span class="fc" id="L64">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param kinematics current body kinematics measurement.
+     */
+    public StandardDeviationTimedBodyKinematics(final BodyKinematics kinematics) {
+<span class="fc" id="L72">        super(kinematics);</span>
+<span class="fc" id="L73">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param timestampSeconds timestamp value expressed in seconds.
+     */
+    public StandardDeviationTimedBodyKinematics(final double timestampSeconds) {
+<span class="fc" id="L81">        super(timestampSeconds);</span>
+<span class="fc" id="L82">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param timestamp timestamp value.
+     */
+    public StandardDeviationTimedBodyKinematics(final Time timestamp) {
+<span class="fc" id="L90">        super(timestamp);</span>
+<span class="fc" id="L91">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param kinematics       current body kinematics measurement.
+     * @param timestampSeconds timestamp value expressed in seconds.
+     */
+    public StandardDeviationTimedBodyKinematics(final BodyKinematics kinematics, final double timestampSeconds) {
+<span class="fc" id="L100">        super(kinematics, timestampSeconds);</span>
+<span class="fc" id="L101">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param kinematics current body kinematics measurement.
+     * @param timestamp  timestamp value.
+     */
+    public StandardDeviationTimedBodyKinematics(final BodyKinematics kinematics, final Time timestamp) {
+<span class="fc" id="L110">        super(kinematics, timestamp);</span>
+<span class="fc" id="L111">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param specificForceStandardDeviation standard deviation of measured specific
+     *                                       force expressed in meters per squared
+     *                                       second (m/s^2).
+     * @param angularRateStandardDeviation   standard deviation of measured angular rate
+     *                                       expressed in radians per second (rad/s).
+     * @throws IllegalArgumentException if either specific force standard deviation or
+     *                                  angular rate standard deviation is negative.
+     */
+    public StandardDeviationTimedBodyKinematics(
+            final double specificForceStandardDeviation, final double angularRateStandardDeviation) {
+<span class="fc" id="L126">        super();</span>
+<span class="fc" id="L127">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
+<span class="fc" id="L128">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
+<span class="fc" id="L129">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param kinematics                     current body kinematics measurement.
+     * @param specificForceStandardDeviation standard deviation of measured specific
+     *                                       force expressed in meters per squared
+     *                                       second (m/s^2).
+     * @param angularRateStandardDeviation   standard deviation of measured angular rate
+     *                                       expressed in radians per second (rad/s).
+     * @throws IllegalArgumentException if either specific force standard deviation or
+     *                                  angular rate standard deviation is negative.
+     */
+    public StandardDeviationTimedBodyKinematics(
+            final BodyKinematics kinematics, final double specificForceStandardDeviation,
+            final double angularRateStandardDeviation) {
+<span class="fc" id="L146">        super(kinematics);</span>
+<span class="fc" id="L147">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
+<span class="fc" id="L148">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
+<span class="fc" id="L149">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param timestampSeconds               timestamp value expressed in seconds.
+     * @param specificForceStandardDeviation standard deviation of measured specific
+     *                                       force expressed in meters per squared
+     *                                       second (m/s^2).
+     * @param angularRateStandardDeviation   standard deviation of measured angular rate
+     *                                       expressed in radians per second (rad/s).
+     * @throws IllegalArgumentException if either specific force standard deviation or
+     *                                  angular rate standard deviation is negative.
+     */
+    public StandardDeviationTimedBodyKinematics(
+            final double timestampSeconds, final double specificForceStandardDeviation,
+            final double angularRateStandardDeviation) {
+<span class="fc" id="L166">        super(timestampSeconds);</span>
+<span class="fc" id="L167">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
+<span class="fc" id="L168">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
+<span class="fc" id="L169">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param timestamp                      timestamp value.
+     * @param specificForceStandardDeviation standard deviation of measured specific
+     *                                       force expressed in meters per squared
+     *                                       second (m/s^2).
+     * @param angularRateStandardDeviation   standard deviation of measured angular rate
+     *                                       expressed in radians per second (rad/s).
+     * @throws IllegalArgumentException if either specific force standard deviation or
+     *                                  angular rate standard deviation is negative.
+     */
+    public StandardDeviationTimedBodyKinematics(
+            final Time timestamp, final double specificForceStandardDeviation,
+            final double angularRateStandardDeviation) {
+<span class="fc" id="L186">        super(timestamp);</span>
+<span class="fc" id="L187">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
+<span class="fc" id="L188">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
+<span class="fc" id="L189">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param kinematics                     current body kinematics measurement.
+     * @param timestampSeconds               timestamp value expressed in seconds.
+     * @param specificForceStandardDeviation standard deviation of measured specific
+     *                                       force expressed in meters per squared
+     *                                       second (m/s^2).
+     * @param angularRateStandardDeviation   standard deviation of measured angular rate
+     *                                       expressed in radians per second (rad/s).
+     * @throws IllegalArgumentException if either specific force standard deviation or
+     *                                  angular rate standard deviation is negative.
+     */
+    public StandardDeviationTimedBodyKinematics(
+            final BodyKinematics kinematics, final double timestampSeconds, final double specificForceStandardDeviation,
+            final double angularRateStandardDeviation) {
+<span class="fc" id="L207">        super(kinematics, timestampSeconds);</span>
+<span class="fc" id="L208">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
+<span class="fc" id="L209">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
+<span class="fc" id="L210">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param kinematics                     current body kinematics measurement.
+     * @param timestamp                      timestamp value.
+     * @param specificForceStandardDeviation standard deviation of measured specific
+     *                                       force expressed in meters per squared
+     *                                       second (m/s^2).
+     * @param angularRateStandardDeviation   standard deviation of measured angular rate
+     *                                       expressed in radians per second (rad/s).
+     * @throws IllegalArgumentException if either specific force standard deviation or
+     *                                  angular rate standard deviation is negative.
+     */
+    public StandardDeviationTimedBodyKinematics(
+            final BodyKinematics kinematics, final Time timestamp, final double specificForceStandardDeviation,
+            final double angularRateStandardDeviation) {
+<span class="fc" id="L228">        super(kinematics, timestamp);</span>
+<span class="fc" id="L229">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
+<span class="fc" id="L230">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
+<span class="fc" id="L231">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param specificForceStandardDeviation standard deviation of measured specific
+     *                                       force.
+     * @param angularRateStandardDeviation   standard deviation of measured angular
+     *                                       rate.
+     * @throws IllegalArgumentException if either specific force standard deviation or
+     *                                  angular rate standard deviation is negative.
+     */
+    public StandardDeviationTimedBodyKinematics(
+            final Acceleration specificForceStandardDeviation, final AngularSpeed angularRateStandardDeviation) {
+<span class="fc" id="L245">        this(convertAcceleration(specificForceStandardDeviation), convertAngularSpeed(angularRateStandardDeviation));</span>
+<span class="fc" id="L246">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param kinematics                     current body kinematics measurement.
+     * @param specificForceStandardDeviation standard deviation of measured specific
+     *                                       force.
+     * @param angularRateStandardDeviation   standard deviation of measured angular
+     *                                       rate.
+     * @throws IllegalArgumentException if either specific force standard deviation or
+     *                                  angular rate standard deviation is negative.
+     */
+    public StandardDeviationTimedBodyKinematics(
+            final BodyKinematics kinematics, final Acceleration specificForceStandardDeviation,
+            final AngularSpeed angularRateStandardDeviation) {
+<span class="fc" id="L262">        this(kinematics, convertAcceleration(specificForceStandardDeviation),</span>
+<span class="fc" id="L263">                convertAngularSpeed(angularRateStandardDeviation));</span>
+<span class="fc" id="L264">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param timestampSeconds               timestamp value expressed in seconds.
+     * @param specificForceStandardDeviation standard deviation of measured specific
+     *                                       force.
+     * @param angularRateStandardDeviation   standard deviation of measured angular
+     *                                       rate.
+     * @throws IllegalArgumentException if either specific force standard deviation or
+     *                                  angular rate standard deviation is negative.
+     */
+    public StandardDeviationTimedBodyKinematics(
+            final double timestampSeconds, final Acceleration specificForceStandardDeviation,
+            final AngularSpeed angularRateStandardDeviation) {
+<span class="fc" id="L280">        this(timestampSeconds, convertAcceleration(specificForceStandardDeviation),</span>
+<span class="fc" id="L281">                convertAngularSpeed(angularRateStandardDeviation));</span>
+<span class="fc" id="L282">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param timestamp                      timestamp value.
+     * @param specificForceStandardDeviation standard deviation of measured specific
+     *                                       force.
+     * @param angularRateStandardDeviation   standard deviation of measured angular
+     *                                       rate.
+     * @throws IllegalArgumentException if either specific force standard deviation or
+     *                                  angular rate standard deviation is negative.
+     */
+    public StandardDeviationTimedBodyKinematics(
+            final Time timestamp, final Acceleration specificForceStandardDeviation,
+            final AngularSpeed angularRateStandardDeviation) {
+<span class="fc" id="L298">        this(timestamp, convertAcceleration(specificForceStandardDeviation),</span>
+<span class="fc" id="L299">                convertAngularSpeed(angularRateStandardDeviation));</span>
+<span class="fc" id="L300">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param kinematics                     current body kinematics measurement.
+     * @param timestampSeconds               timestamp value expressed in seconds.
+     * @param specificForceStandardDeviation standard deviation of measured specific
+     *                                       force.
+     * @param angularRateStandardDeviation   standard deviation of measured angular
+     *                                       rate.
+     * @throws IllegalArgumentException if either specific force standard deviation or
+     *                                  angular rate standard deviation is negative.
+     */
+    public StandardDeviationTimedBodyKinematics(
+            final BodyKinematics kinematics, final double timestampSeconds,
+            final Acceleration specificForceStandardDeviation, final AngularSpeed angularRateStandardDeviation) {
+<span class="fc" id="L317">        this(kinematics, timestampSeconds, convertAcceleration(specificForceStandardDeviation),</span>
+<span class="fc" id="L318">                convertAngularSpeed(angularRateStandardDeviation));</span>
+<span class="fc" id="L319">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param kinematics                     current body kinematics measurement.
+     * @param timestamp                      timestamp value.
+     * @param specificForceStandardDeviation standard deviation of measured specific
+     *                                       force.
+     * @param angularRateStandardDeviation   standard deviation of measured angular
+     *                                       rate.
+     * @throws IllegalArgumentException if either specific force standard deviation or
+     *                                  angular rate standard deviation is negative.
+     */
+    public StandardDeviationTimedBodyKinematics(
+            final BodyKinematics kinematics, final Time timestamp,
+            final Acceleration specificForceStandardDeviation, final AngularSpeed angularRateStandardDeviation) {
+<span class="fc" id="L336">        this(kinematics, timestamp, convertAcceleration(specificForceStandardDeviation),</span>
+<span class="fc" id="L337">                convertAngularSpeed(angularRateStandardDeviation));</span>
+<span class="fc" id="L338">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param input instance to copy data from.
+     */
+<span class="fc" id="L345">    public StandardDeviationTimedBodyKinematics(final StandardDeviationTimedBodyKinematics input) {</span>
+<span class="fc" id="L346">        copyFrom(input);</span>
+<span class="fc" id="L347">    }</span>
+
+    /**
+     * Gets standard deviation of measured specific force expressed in meters per squared
+     * second (m/s^2).
+     *
+     * @return standard deviation of measured specific force.
+     */
+    public double getSpecificForceStandardDeviation() {
+<span class="fc" id="L356">        return specificForceStandardDeviation;</span>
+    }
+
+    /**
+     * Sets standard deviation of measured specific force expressed in meters per squared
+     * second (m/s^2).
+     *
+     * @param specificForceStandardDeviation standard deviation of measured specific force.
+     * @throws IllegalArgumentException if provided value is negative.
+     */
+    public void setSpecificForceStandardDeviation(final double specificForceStandardDeviation) {
+<span class="fc bfc" id="L367" title="All 2 branches covered.">        if (specificForceStandardDeviation &lt; 0.0) {</span>
+<span class="fc" id="L368">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L371">        this.specificForceStandardDeviation = specificForceStandardDeviation;</span>
+<span class="fc" id="L372">    }</span>
+
+    /**
+     * Gets standard deviation of measured specific force.
+     *
+     * @return standard deviation of measured specific force.
+     */
+    public Acceleration getSpecificForceStandardDeviationAsAcceleration() {
+<span class="fc" id="L380">        return new Acceleration(specificForceStandardDeviation, AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+    }
+
+    /**
+     * Gets standard deviation of measured specific force.
+     *
+     * @param result instance where standard deviation of measured specific force will be
+     *               stored.
+     */
+    public void getSpecificForceStandardDeviationAsAcceleration(final Acceleration result) {
+<span class="fc" id="L390">        result.setValue(specificForceStandardDeviation);</span>
+<span class="fc" id="L391">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L392">    }</span>
+
+    /**
+     * Sets standard deviation of measured specific force.
+     *
+     * @param specificForceStandardDeviation standard deviation of measured specific force.
+     * @throws IllegalArgumentException if provided value is negative.
+     */
+    public void setSpecificForceStandardDeviation(final Acceleration specificForceStandardDeviation) {
+<span class="fc" id="L401">        setSpecificForceStandardDeviation(convertAcceleration(specificForceStandardDeviation));</span>
+<span class="fc" id="L402">    }</span>
+
+    /**
+     * Gets standard deviation of measured angular rate expressed in radians per second (rad/s).
+     *
+     * @return standard deviation of measured angular rate.
+     */
+    public double getAngularRateStandardDeviation() {
+<span class="fc" id="L410">        return angularRateStandardDeviation;</span>
+    }
+
+    /**
+     * Sets standard deviation of measured angular rate expressed in radians per second (rad/s).
+     *
+     * @param angularRateStandardDeviation standard deviation of measured angular rate.
+     * @throws IllegalArgumentException if provided value is negative.
+     */
+    public void setAngularRateStandardDeviation(final double angularRateStandardDeviation) {
+<span class="fc bfc" id="L420" title="All 2 branches covered.">        if (angularRateStandardDeviation &lt; 0.0) {</span>
+<span class="fc" id="L421">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L424">        this.angularRateStandardDeviation = angularRateStandardDeviation;</span>
+<span class="fc" id="L425">    }</span>
+
+    /**
+     * Gets standard deviation of measured angular rate.
+     *
+     * @return standard deviation of measured angular rate.
+     */
+    public AngularSpeed getAngularRateStandardDeviationAsAngularSpeed() {
+<span class="fc" id="L433">        return new AngularSpeed(angularRateStandardDeviation, AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+    }
+
+    /**
+     * Gets standard deviation of measured angular rate.
+     *
+     * @param result instance where standard deviation of measured angular rate will be
+     *               stored.
+     */
+    public void getAngularRateStandardDeviationAsAngularSpeed(final AngularSpeed result) {
+<span class="fc" id="L443">        result.setValue(angularRateStandardDeviation);</span>
+<span class="fc" id="L444">        result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+<span class="fc" id="L445">    }</span>
+
+    /**
+     * Sets standard deviation of measured angular rate.
+     *
+     * @param angularRateStandardDeviation standard deviation of measured angular rate.
+     * @throws IllegalArgumentException if provided value is negative.
+     */
+    public void setAngularRateStandardDeviation(final AngularSpeed angularRateStandardDeviation) {
+<span class="fc" id="L454">        setAngularRateStandardDeviation(convertAngularSpeed(angularRateStandardDeviation));</span>
+<span class="fc" id="L455">    }</span>
+
+    /**
+     * Copies data of provided instance into this instance.
+     *
+     * @param input instance to copy data from.
+     */
+    public void copyFrom(final StandardDeviationTimedBodyKinematics input) {
+<span class="fc" id="L463">        super.copyFrom(input);</span>
+<span class="fc" id="L464">        specificForceStandardDeviation = input.specificForceStandardDeviation;</span>
+<span class="fc" id="L465">        angularRateStandardDeviation = input.angularRateStandardDeviation;</span>
+<span class="fc" id="L466">    }</span>
+
+    @Override
+    public void copyFrom(final TimedBodyKinematics input) {
+<span class="fc" id="L470">        copyFrom((StandardDeviationTimedBodyKinematics) input);</span>
+<span class="fc" id="L471">    }</span>
+
+    /**
+     * Computes and returns hash code for this instance. Hash codes are almost unique
+     * values that are useful for fast classification and storage of objects in collections.
+     *
+     * @return Hash code.
+     */
+    @Override
+    public int hashCode() {
+<span class="fc" id="L481">        return Objects.hash(super.hashCode(), specificForceStandardDeviation, angularRateStandardDeviation);</span>
+    }
+
+    /**
+     * Checks if provided instance has exactly the same contents as this instance.
+     *
+     * @param other instance to be compared.
+     * @return true if both instances are considered to be equal, false otherwise.
+     */
+    public boolean equals(final StandardDeviationTimedBodyKinematics other) {
+<span class="fc" id="L491">        return equals(other, 0.0);</span>
+    }
+
+    /**
+     * Checks if provided instance has contents similar to this instance up to provided
+     * threshold value.
+     *
+     * @param other     instance to be compared.
+     * @param threshold maximum allowed difference between kinematics and standard deviation
+     *                  values.
+     * @return true if both instances are considered to be equal (up to provided
+     * threshold), false otherwise.
+     */
+    public boolean equals(final StandardDeviationTimedBodyKinematics other, final double threshold) {
+<span class="fc bfc" id="L505" title="All 2 branches covered.">        if (other == null) {</span>
+<span class="fc" id="L506">            return false;</span>
+        }
+
+<span class="fc bfc" id="L509" title="All 2 branches covered.">        return super.equals(other, threshold)</span>
+<span class="pc bpc" id="L510" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(specificForceStandardDeviation - other.specificForceStandardDeviation) &lt;= threshold</span>
+<span class="pc bpc" id="L511" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(angularRateStandardDeviation - other.angularRateStandardDeviation) &lt;= threshold;</span>
+    }
+
+    /**
+     * Makes a copy of this instance.
+     *
+     * @return a copy of this instance.
+     * @throws CloneNotSupportedException if clone fails for some reason.
+     */
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+<span class="fc" id="L522">        final var result = (StandardDeviationTimedBodyKinematics) super.clone();</span>
+<span class="fc" id="L523">        copyTo(result);</span>
+<span class="fc" id="L524">        return result;</span>
+    }
+
+    /**
+     * Checks if provided object is a StandardDeviationTimedBodyKinematics instance having exactly the
+     * same contents as this instance.
+     *
+     * @param obj object to be compared.
+     * @return true if both objects are considered to be equal, false otherwise.
+     */
+    @Override
+    public boolean equals(final Object obj) {
+<span class="fc bfc" id="L536" title="All 2 branches covered.">        if (this == obj) {</span>
+<span class="fc" id="L537">            return true;</span>
+        }
+<span class="pc bpc" id="L539" title="2 of 4 branches missed.">        if (obj == null || getClass() != obj.getClass()) {</span>
+<span class="nc" id="L540">            return false;</span>
+        }
+<span class="fc" id="L542">        final var other = (StandardDeviationTimedBodyKinematics) obj;</span>
+<span class="fc" id="L543">        return equals(other);</span>
+    }
+
+    /**
+     * Converts provided acceleration to meters per squared second (m/s^2).
+     *
+     * @param acceleration instance to be converted.
+     * @return converted value.
+     */
+    private static double convertAcceleration(final Acceleration acceleration) {
+<span class="fc" id="L553">        return AccelerationConverter.convert(acceleration.getValue().doubleValue(), acceleration.getUnit(),</span>
+                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+    }
+
+    /**
+     * Converts provided angular speed to radians per second (rad/s).
+     *
+     * @param angularSpeed instance to be converted.
+     * @return converted value.
+     */
+    private static double convertAngularSpeed(final AngularSpeed angularSpeed) {
+<span class="fc" id="L564">        return AngularSpeedConverter.convert(angularSpeed.getValue().doubleValue(), angularSpeed.getUnit(),</span>
+                AngularSpeedUnit.RADIANS_PER_SECOND);
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

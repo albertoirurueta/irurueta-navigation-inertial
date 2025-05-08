@@ -1,0 +1,1574 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AttitudeEstimator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-inertial</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.inertial.estimators</a> &gt; <span class="el_source">AttitudeEstimator.java</span></div><h1>AttitudeEstimator.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2020 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.inertial.estimators;
+
+import com.irurueta.navigation.frames.CoordinateTransformation;
+import com.irurueta.navigation.frames.FrameType;
+import com.irurueta.navigation.frames.NEDPosition;
+import com.irurueta.navigation.inertial.BodyKinematics;
+import com.irurueta.navigation.inertial.BodyMagneticFluxDensity;
+import com.irurueta.navigation.inertial.wmm.EarthMagneticFluxDensityEstimator;
+import com.irurueta.navigation.inertial.wmm.NEDMagneticFluxDensity;
+import com.irurueta.navigation.inertial.wmm.WMMEarthMagneticFluxDensityEstimator;
+import com.irurueta.navigation.inertial.wmm.WorldMagneticModel;
+import com.irurueta.units.Acceleration;
+import com.irurueta.units.AccelerationConverter;
+import com.irurueta.units.AccelerationUnit;
+import com.irurueta.units.Angle;
+import com.irurueta.units.AngleConverter;
+import com.irurueta.units.AngleUnit;
+import com.irurueta.units.Distance;
+import com.irurueta.units.DistanceConverter;
+import com.irurueta.units.DistanceUnit;
+
+import java.io.IOException;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
+/**
+ * Estimates the attitude of a body by taking into account both accelerometer
+ * and magnetometer measurements.
+ * Although {@link LevelingEstimator} and {@link LevelingEstimator2} can
+ * estimate body attitude just by using IMU measurements (accelerometer +
+ * gyroscope), they require the gyroscope to be accurate enough (aviation
+ * grade accuracy) to obtain reliable results.
+ * When the gyroscope is known to not be accurate (e.g. mobile devices),
+ * this class should be used instead to use a magnetometer to obtain a
+ * reliable attitude estimation.
+ */
+public class AttitudeEstimator {
+
+    /**
+     * Estimator of the World Magnetic Model.
+     * This is used to determine magnetic declination angle at a given Earth
+     * position and instant.
+     */
+    private final WMMEarthMagneticFluxDensityEstimator wmmEstimator;
+
+    /**
+     * Constructor.
+     * This constructor loads the default WMM, which is valid from
+     * 2020, January 1st until 2025, January 1st.
+     *
+     * @throws IOException if an I/O error occurs while loading the WMM
+     *                     model.
+     */
+<span class="fc" id="L69">    public AttitudeEstimator() throws IOException {</span>
+<span class="fc" id="L70">        wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();</span>
+<span class="fc" id="L71">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param model a World Magnetic Model. The model is only valid for
+     *              a certain timespan.
+     * @throws NullPointerException if provided model is null.
+     */
+<span class="fc" id="L80">    public AttitudeEstimator(final WorldMagneticModel model) {</span>
+<span class="fc" id="L81">        wmmEstimator = new WMMEarthMagneticFluxDensityEstimator(model);</span>
+<span class="fc" id="L82">    }</span>
+
+    /**
+     * Gets body attitude expressed in the local navigation frame.
+     * Internally this implementation uses a given World Magnetic Model (WMM)
+     * to estimate the magnetic declination angle at a given Earth position
+     * and timestamp.
+     * Besides, a leveling algorithm is used to estimate roll and pitch
+     * attitude angles, which can later be used to estimate yaw attitude angle
+     * with estimated declination angle and provided magnetometer measurements.
+     *
+     * @param latitude  Earth position latitude expressed in radians (rad).
+     * @param longitude Earth position longitude expressed in radians (rad).
+     * @param height    Earth position height respect average sea level expressed
+     *                  in meters (m).
+     * @param year      a year expressed in decimal value.
+     * @param fx        x-coordinate of measured body specific force
+     *                  expressed in meters per squared second (m/s^2).
+     * @param fy        y-coordinate of measured body specific force
+     *                  expressed in meters per squared second (m/s^2).
+     * @param fz        z-coordinate of measured body specific force
+     *                  expressed in meters per squared second (m/s^2).
+     * @param bx        x coordinate of measured magnetic flux density resolved
+     *                  around body axes and expressed in Teslas (T).
+     * @param by        y coordinate of measured magnetic flux density resolved
+     *                  around body axes and expressed in Teslas (T).
+     * @param bz        z coordinate of measured magnetic flux density resolved
+     *                  around body axes and expressed in Teslas (T).
+     * @param result    instance where body attitude will be stored.
+     * @see LevelingEstimator2
+     * @see WMMEarthMagneticFluxDensityEstimator
+     */
+    public void getAttitude(
+            final double latitude, final double longitude, final double height,
+            final double year, final double fx, final double fy, final double fz,
+            final double bx, final double by, final double bz, final CoordinateTransformation result) {
+<span class="fc" id="L118">        final var declination = wmmEstimator.getDeclination(latitude, longitude, height, year);</span>
+<span class="fc" id="L119">        getAttitude(latitude, height, fx, fy, fz, bx, by, bz, declination, result);</span>
+<span class="fc" id="L120">    }</span>
+
+    /**
+     * Gets body attitude expressed in the local navigation frame.
+     * Internally this implementation uses a given World Magnetic Model (WMM)
+     * to estimate the magnetic declination angle at a given Earth position
+     * and timestamp.
+     * Besides, a leveling algorithm is used to estimate roll and pitch
+     * attitude angles, which can later be used to estimate yaw attitude angle
+     * with estimated declination angle and provided magnetometer measurements.
+     *
+     * @param latitude  Earth position latitude expressed in radians (rad).
+     * @param longitude Earth position longitude expressed in radians (rad).
+     * @param height    Earth position height respect average sea level expressed
+     *                  in meters (m).
+     * @param year      a year expressed in decimal value.
+     * @param fx        x-coordinate of measured body specific force
+     *                  expressed in meters per squared second (m/s^2).
+     * @param fy        y-coordinate of measured body specific force
+     *                  expressed in meters per squared second (m/s^2).
+     * @param fz        z-coordinate of measured body specific force
+     *                  expressed in meters per squared second (m/s^2).
+     * @param bx        x coordinate of measured magnetic flux density resolved
+     *                  around body axes and expressed in Teslas (T).
+     * @param by        y coordinate of measured magnetic flux density resolved
+     *                  around body axes and expressed in Teslas (T).
+     * @param bz        z coordinate of measured magnetic flux density resolved
+     *                  around body axes and expressed in Teslas (T).
+     * @return a coordinate transformation containing body attitude.
+     * @see LevelingEstimator2
+     * @see WMMEarthMagneticFluxDensityEstimator
+     */
+    public CoordinateTransformation getAttitude(
+            final double latitude, final double longitude, final double height,
+            final double year, final double fx, final double fy, final double fz,
+            final double bx, final double by, final double bz) {
+<span class="fc" id="L156">        final var declination = wmmEstimator.getDeclination(latitude, longitude, height, year);</span>
+<span class="fc" id="L157">        return getAttitude(latitude, height, fx, fy, fz, bx, by, bz, declination);</span>
+    }
+
+    /**
+     * Gets body attitude expressed in the local navigation frame.
+     * Internally this implementation uses a given World Magnetic Model (WMM)
+     * to estimate the magnetic declination angle at a given Earth position
+     * and timestamp.
+     * Besides, a leveling algorithm is used to estimate roll and pitch
+     * attitude angles, which can later be used to estimate yaw attitude angle
+     * with estimated declination angle and provided magnetometer measurements.
+     *
+     * @param latitude  Earth position latitude expressed in radians (rad).
+     * @param longitude Earth position longitude expressed in radians (rad).
+     * @param height    Earth position height respect average sea level expressed
+     *                  in meters (m).
+     * @param calendar  a calendar indicating a given timestamp.
+     * @param fx        x-coordinate of measured body specific force
+     *                  expressed in meters per squared second (m/s^2).
+     * @param fy        y-coordinate of measured body specific force
+     *                  expressed in meters per squared second (m/s^2).
+     * @param fz        z-coordinate of measured body specific force
+     *                  expressed in meters per squared second (m/s^2).
+     * @param bx        x coordinate of measured magnetic flux density resolved
+     *                  around body axes and expressed in Teslas (T).
+     * @param by        y coordinate of measured magnetic flux density resolved
+     *                  around body axes and expressed in Teslas (T).
+     * @param bz        z coordinate of measured magnetic flux density resolved
+     *                  around body axes and expressed in Teslas (T).
+     * @param result    instance where body attitude will be stored.
+     * @see LevelingEstimator2
+     * @see WMMEarthMagneticFluxDensityEstimator
+     */
+    public void getAttitude(
+            final double latitude, final double longitude, final double height,
+            final GregorianCalendar calendar, final double fx, final double fy, final double fz,
+            final double bx, final double by, final double bz, final CoordinateTransformation result) {
+<span class="fc" id="L194">        final var declination = wmmEstimator.getDeclination(latitude, longitude, height, calendar);</span>
+<span class="fc" id="L195">        getAttitude(latitude, height, fx, fy, fz, bx, by, bz, declination, result);</span>
+<span class="fc" id="L196">    }</span>
+
+    /**
+     * Gets body attitude expressed in the local navigation frame.
+     * Internally this implementation uses a given World Magnetic Model (WMM)
+     * to estimate the magnetic declination angle at a given Earth position
+     * and timestamp.
+     * Besides, a leveling algorithm is used to estimate roll and pitch
+     * attitude angles, which can later be used to estimate yaw attitude angle
+     * with estimated declination angle and provided magnetometer measurements.
+     *
+     * @param latitude  Earth position latitude expressed in radians (rad).
+     * @param longitude Earth position longitude expressed in radians (rad).
+     * @param height    Earth position height respect average sea level expressed
+     *                  in meters (m).
+     * @param calendar  a calendar indicating a given timestamp.
+     * @param fx        x-coordinate of measured body specific force
+     *                  expressed in meters per squared second (m/s^2).
+     * @param fy        y-coordinate of measured body specific force
+     *                  expressed in meters per squared second (m/s^2).
+     * @param fz        z-coordinate of measured body specific force
+     *                  expressed in meters per squared second (m/s^2).
+     * @param bx        x coordinate of measured magnetic flux density resolved
+     *                  around body axes and expressed in Teslas (T).
+     * @param by        y coordinate of measured magnetic flux density resolved
+     *                  around body axes and expressed in Teslas (T).
+     * @param bz        z coordinate of measured magnetic flux density resolved
+     *                  around body axes and expressed in Teslas (T).
+     * @return a coordinate transformation containing body attitude.
+     * @see LevelingEstimator2
+     * @see WMMEarthMagneticFluxDensityEstimator
+     */
+    public CoordinateTransformation getAttitude(
+            final double latitude, final double longitude, final double height,
+            final GregorianCalendar calendar, final double fx, final double fy, final double fz,
+            final double bx, final double by, final double bz) {
+<span class="fc" id="L232">        final var declination = wmmEstimator.getDeclination(latitude, longitude, height, calendar);</span>
+<span class="fc" id="L233">        return getAttitude(latitude, height, fx, fy, fz, bx, by, bz, declination);</span>
+    }
+
+    /**
+     * Gets body attitude expressed in the local navigation frame.
+     * Internally this implementation uses a given World Magnetic Model (WMM)
+     * to estimate the magnetic declination angle at a given Earth position
+     * and timestamp.
+     * Besides, a leveling algorithm is used to estimate roll and pitch
+     * attitude angles, which can later be used to estimate yaw attitude angle
+     * with estimated declination angle and provided magnetometer measurements.
+     *
+     * @param latitude  Earth position latitude expressed in radians (rad).
+     * @param longitude Earth position longitude expressed in radians (rad).
+     * @param height    Earth position height respect average sea level expressed
+     *                  in meters (m).
+     * @param timestamp a timestamp.
+     * @param fx        x-coordinate of measured body specific force
+     *                  expressed in meters per squared second (m/s^2).
+     * @param fy        y-coordinate of measured body specific force
+     *                  expressed in meters per squared second (m/s^2).
+     * @param fz        z-coordinate of measured body specific force
+     *                  expressed in meters per squared second (m/s^2).
+     * @param bx        x coordinate of measured magnetic flux density resolved
+     *                  around body axes and expressed in Teslas (T).
+     * @param by        y coordinate of measured magnetic flux density resolved
+     *                  around body axes and expressed in Teslas (T).
+     * @param bz        z coordinate of measured magnetic flux density resolved
+     *                  around body axes and expressed in Teslas (T).
+     * @param result    instance where body attitude will be stored.
+     * @see LevelingEstimator2
+     * @see WMMEarthMagneticFluxDensityEstimator
+     */
+    public void getAttitude(
+            final double latitude, final double longitude, final double height, final Date timestamp,
+            final double fx, final double fy, final double fz, final double bx, final double by, final double bz,
+            final CoordinateTransformation result) {
+<span class="fc" id="L270">        final var declination = wmmEstimator.getDeclination(latitude, longitude, height, timestamp);</span>
+<span class="fc" id="L271">        getAttitude(latitude, height, fx, fy, fz, bx, by, bz, declination, result);</span>
+<span class="fc" id="L272">    }</span>
+
+    /**
+     * Gets body attitude expressed in the local navigation frame.
+     * Internally this implementation uses a given World Magnetic Model (WMM)
+     * to estimate the magnetic declination angle at a given Earth position
+     * and timestamp.
+     * Besides, a leveling algorithm is used to estimate roll and pitch
+     * attitude angles, which can later be used to estimate yaw attitude angle
+     * with estimated declination angle and provided magnetometer measurements.
+     *
+     * @param latitude  Earth position latitude expressed in radians (rad).
+     * @param longitude Earth position longitude expressed in radians (rad).
+     * @param height    Earth position height respect average sea level expressed
+     *                  in meters (m).
+     * @param timestamp a timestamp.
+     * @param fx        x-coordinate of measured body specific force
+     *                  expressed in meters per squared second (m/s^2).
+     * @param fy        y-coordinate of measured body specific force
+     *                  expressed in meters per squared second (m/s^2).
+     * @param fz        z-coordinate of measured body specific force
+     *                  expressed in meters per squared second (m/s^2).
+     * @param bx        x coordinate of measured magnetic flux density resolved
+     *                  around body axes and expressed in Teslas (T).
+     * @param by        y coordinate of measured magnetic flux density resolved
+     *                  around body axes and expressed in Teslas (T).
+     * @param bz        z coordinate of measured magnetic flux density resolved
+     *                  around body axes and expressed in Teslas (T).
+     * @return a coordinate transformation containing body attitude.
+     * @see LevelingEstimator2
+     * @see WMMEarthMagneticFluxDensityEstimator
+     */
+    public CoordinateTransformation getAttitude(
+            final double latitude, final double longitude, final double height, final Date timestamp,
+            final double fx, final double fy, final double fz, final double bx, final double by, final double bz) {
+<span class="fc" id="L307">        final var declination = wmmEstimator.getDeclination(latitude, longitude, height, timestamp);</span>
+<span class="fc" id="L308">        return getAttitude(latitude, height, fx, fy, fz, bx, by, bz, declination);</span>
+    }
+
+    /**
+     * Gets body attitude expressed in the local navigation frame.
+     * Internally this implementation uses a given World Magnetic Model (WMM)
+     * to estimate the magnetic declination angle at a given Earth position
+     * and timestamp.
+     * Besides, a leveling algorithm is used to estimate roll and pitch
+     * attitude angles, which can later be used to estimate yaw attitude angle
+     * with estimated declination angle and provided magnetometer measurements.
+     *
+     * @param position   Earth position resolved in NED coordinates.
+     * @param year       a year expressed in decimal value.
+     * @param kinematics body kinematics containing measured specific force.
+     * @param b          measured body magnetic flux density.
+     * @param result     instance where body attitude will be stored.
+     * @see LevelingEstimator2
+     * @see WMMEarthMagneticFluxDensityEstimator
+     */
+    public void getAttitude(
+            final NEDPosition position, final double year, final BodyKinematics kinematics,
+            final BodyMagneticFluxDensity b, final CoordinateTransformation result) {
+<span class="fc" id="L331">        getAttitude(position.getLatitude(), position.getLongitude(), position.getHeight(), year, kinematics.getFx(),</span>
+<span class="fc" id="L332">                kinematics.getFy(), kinematics.getFz(), b.getBx(), b.getBy(), b.getBz(), result);</span>
+<span class="fc" id="L333">    }</span>
+
+    /**
+     * Gets body attitude expressed in the local navigation frame.
+     * Internally this implementation uses a given World Magnetic Model (WMM)
+     * to estimate the magnetic declination angle at a given Earth position
+     * and timestamp.
+     * Besides, a leveling algorithm is used to estimate roll and pitch
+     * attitude angles, which can later be used to estimate yaw attitude angle
+     * with estimated declination angle and provided magnetometer measurements.
+     *
+     * @param position   Earth position resolved in NED coordinates.
+     * @param year       a year expressed in decimal value.
+     * @param kinematics body kinematics containing measured specific force.
+     * @param b          measured body magnetic flux density.
+     * @return a coordinate transformation containing body attitude.
+     * @see LevelingEstimator2
+     * @see WMMEarthMagneticFluxDensityEstimator
+     */
+    public CoordinateTransformation getAttitude(
+            final NEDPosition position, final double year, final BodyKinematics kinematics,
+            final BodyMagneticFluxDensity b) {
+<span class="fc" id="L355">        return getAttitude(position.getLatitude(), position.getLongitude(), position.getHeight(), year,</span>
+<span class="fc" id="L356">                kinematics.getFx(), kinematics.getFy(), kinematics.getFz(), b.getBx(), b.getBy(), b.getBz());</span>
+    }
+
+    /**
+     * Gets body attitude expressed in the local navigation frame.
+     * Internally this implementation uses a given World Magnetic Model (WMM)
+     * to estimate the magnetic declination angle at a given Earth position
+     * and timestamp.
+     * Besides, a leveling algorithm is used to estimate roll and pitch
+     * attitude angles, which can later be used to estimate yaw attitude angle
+     * with estimated declination angle and provided magnetometer measurements.
+     *
+     * @param position   Earth position resolved in NED coordinates.
+     * @param calendar   a calendar indicating a given timestamp.
+     * @param kinematics body kinematics containing measured specific force.
+     * @param b          measured body magnetic flux density.
+     * @param result     instance where body attitude will be stored.
+     * @see LevelingEstimator2
+     * @see WMMEarthMagneticFluxDensityEstimator
+     */
+    public void getAttitude(
+            final NEDPosition position, final GregorianCalendar calendar, final BodyKinematics kinematics,
+            final BodyMagneticFluxDensity b, final CoordinateTransformation result) {
+<span class="fc" id="L379">        getAttitude(position.getLatitude(), position.getLongitude(), position.getHeight(), calendar, kinematics.getFx(),</span>
+<span class="fc" id="L380">                kinematics.getFy(), kinematics.getFz(), b.getBx(), b.getBy(), b.getBz(), result);</span>
+<span class="fc" id="L381">    }</span>
+
+    /**
+     * Gets body attitude expressed in the local navigation frame.
+     * Internally this implementation uses a given World Magnetic Model (WMM)
+     * to estimate the magnetic declination angle at a given Earth position
+     * and timestamp.
+     * Besides, a leveling algorithm is used to estimate roll and pitch
+     * attitude angles, which can later be used to estimate yaw attitude angle
+     * with estimated declination angle and provided magnetometer measurements.
+     *
+     * @param position   Earth position resolved in NED coordinates.
+     * @param calendar   a calendar indicating a given timestamp.
+     * @param kinematics body kinematics containing measured specific force.
+     * @param b          measured body magnetic flux density.
+     * @return a coordinate transformation containing body attitude.
+     * @see LevelingEstimator2
+     * @see WMMEarthMagneticFluxDensityEstimator
+     */
+    public CoordinateTransformation getAttitude(
+            final NEDPosition position, final GregorianCalendar calendar, final BodyKinematics kinematics,
+            final BodyMagneticFluxDensity b) {
+<span class="fc" id="L403">        return getAttitude(position.getLatitude(), position.getLongitude(), position.getHeight(), calendar,</span>
+<span class="fc" id="L404">                kinematics.getFx(), kinematics.getFy(), kinematics.getFz(), b.getBx(), b.getBy(), b.getBz());</span>
+    }
+
+    /**
+     * Gets body attitude expressed in the local navigation frame.
+     * Internally this implementation uses a given World Magnetic Model (WMM)
+     * to estimate the magnetic declination angle at a given Earth position
+     * and timestamp.
+     * Besides, a leveling algorithm is used to estimate roll and pitch
+     * attitude angles, which can later be used to estimate yaw attitude angle
+     * with estimated declination angle and provided magnetometer measurements.
+     *
+     * @param position   Earth position resolved in NED coordinates.
+     * @param timestamp  a timestamp.
+     * @param kinematics body kinematics containing measured specific force.
+     * @param b          measured body magnetic flux density.
+     * @param result     instance where body attitude will be stored.
+     * @see LevelingEstimator2
+     * @see WMMEarthMagneticFluxDensityEstimator
+     */
+    public void getAttitude(
+            final NEDPosition position, final Date timestamp, final BodyKinematics kinematics,
+            final BodyMagneticFluxDensity b, final CoordinateTransformation result) {
+<span class="fc" id="L427">        getAttitude(position.getLatitude(), position.getLongitude(), position.getHeight(), timestamp,</span>
+<span class="fc" id="L428">                kinematics.getFx(), kinematics.getFy(), kinematics.getFz(), b.getBx(), b.getBy(), b.getBz(), result);</span>
+<span class="fc" id="L429">    }</span>
+
+    /**
+     * Gets body attitude expressed in the local navigation frame.
+     * Internally this implementation uses a given World Magnetic Model (WMM)
+     * to estimate the magnetic declination angle at a given Earth position
+     * and timestamp.
+     * Besides, a leveling algorithm is used to estimate roll and pitch
+     * attitude angles, which can later be used to estimate yaw attitude angle
+     * with estimated declination angle and provided magnetometer measurements.
+     *
+     * @param position   Earth position resolved in NED coordinates.
+     * @param timestamp  a timestamp.
+     * @param kinematics body kinematics containing measured specific force.
+     * @param b          measured body magnetic flux density.
+     * @return a coordinate transformation containing body attitude.
+     * @see LevelingEstimator2
+     * @see WMMEarthMagneticFluxDensityEstimator
+     */
+    public CoordinateTransformation getAttitude(
+            final NEDPosition position, final Date timestamp, final BodyKinematics kinematics,
+            final BodyMagneticFluxDensity b) {
+<span class="fc" id="L451">        return getAttitude(position.getLatitude(), position.getLongitude(), position.getHeight(), timestamp,</span>
+<span class="fc" id="L452">                kinematics.getFx(), kinematics.getFy(), kinematics.getFz(), b.getBx(), b.getBy(), b.getBz());</span>
+    }
+
+    /**
+     * Gets body attitude expressed in the local navigation frame.
+     * Internally this implementation uses a leveling algorithm to estimate
+     * roll and pitch attitude angles, which can later be used to find
+     * yaw attitude angle along with magnetometer measurements.
+     *
+     * @param fx          x-coordinate of measured body specific force
+     *                    expressed in meters per squared second (m/s^2).
+     * @param fy          y-coordinate of measured body specific force
+     *                    expressed in meters per squared second (m/s^2).
+     * @param fz          z-coordinate of measured body specific force
+     *                    expressed in meters per squared second (m/s^2).
+     * @param bx          x coordinate of measured magnetic flux density resolved
+     *                    around body axes and expressed in Teslas (T).
+     * @param by          y coordinate of measured magnetic flux density resolved
+     *                    around body axes and expressed in Teslas (T).
+     * @param bz          z coordinate of measured magnetic flux density resolved
+     *                    around body axes and expressed in Teslas (T).
+     * @param declination declination angle of Earth magnetic flux density
+     *                    at current Earth position and instant expressed in
+     *                    radians. Declination angle changes depending on
+     *                    instant and location. Declination angle can be
+     *                    obtained through
+     *                    {@link WMMEarthMagneticFluxDensityEstimator#getDeclination(NEDPosition, Date)}
+     *                    or using {@link EarthMagneticFluxDensityEstimator#getDeclination(NEDMagneticFluxDensity)}
+     * @param result      instance where body attitude will be stored.
+     * @see WMMEarthMagneticFluxDensityEstimator
+     * @see EarthMagneticFluxDensityEstimator
+     * @see LevelingEstimator
+     */
+    public static void getAttitude(
+            final double fx, final double fy, final double fz,
+            final double bx, final double by, final double bz, final double declination,
+            final CoordinateTransformation result) {
+<span class="fc" id="L489">        result.setSourceType(FrameType.LOCAL_NAVIGATION_FRAME);</span>
+<span class="fc" id="L490">        result.setDestinationType(FrameType.BODY_FRAME);</span>
+
+<span class="fc" id="L492">        final var roll = LevelingEstimator.getRoll(fy, fz);</span>
+<span class="fc" id="L493">        final var pitch = LevelingEstimator.getPitch(fx, fy, fz);</span>
+<span class="fc" id="L494">        final var yaw = getYaw(bx, by, bz, declination, roll, pitch);</span>
+
+<span class="fc" id="L496">        result.setEulerAngles(roll, pitch, yaw);</span>
+<span class="fc" id="L497">    }</span>
+
+    /**
+     * Gets body attitude expressed in the local navigation frame.
+     * Internally this implementation uses a leveling algorithm to estimate
+     * roll and pitch attitude angles, which can later be used to find
+     * yaw attitude angle along with magnetometer measurements.
+     *
+     * @param fx          x-coordinate of measured body specific force
+     *                    expressed in meters per squared second (m/s^2).
+     * @param fy          y-coordinate of measured body specific force
+     *                    expressed in meters per squared second (m/s^2).
+     * @param fz          z-coordinate of measured body specific force
+     *                    expressed in meters per squared second (m/s^2).
+     * @param bx          x coordinate of measured magnetic flux density resolved
+     *                    around body axes and expressed in Teslas (T).
+     * @param by          y coordinate of measured magnetic flux density resolved
+     *                    around body axes and expressed in Teslas (T).
+     * @param bz          z coordinate of measured magnetic flux density resolved
+     *                    around body axes and expressed in Teslas (T).
+     * @param declination declination angle of Earth magnetic flux density
+     *                    at current Earth position and instant expressed in
+     *                    radians. Declination angle changes depending on
+     *                    instant and location. Declination angle can be
+     *                    obtained through
+     *                    {@link WMMEarthMagneticFluxDensityEstimator#getDeclination(NEDPosition, Date)}
+     *                    or using {@link EarthMagneticFluxDensityEstimator#getDeclination(NEDMagneticFluxDensity)}
+     * @return a coordinate transformation containing body attitude.
+     * @see WMMEarthMagneticFluxDensityEstimator
+     * @see EarthMagneticFluxDensityEstimator
+     * @see LevelingEstimator
+     */
+    public static CoordinateTransformation getAttitude(
+            final double fx, final double fy, final double fz,
+            final double bx, final double by, final double bz, final double declination) {
+
+<span class="fc" id="L533">        final var roll = LevelingEstimator.getRoll(fy, fz);</span>
+<span class="fc" id="L534">        final var pitch = LevelingEstimator.getPitch(fx, fy, fz);</span>
+<span class="fc" id="L535">        final var yaw = getYaw(bx, by, bz, declination, roll, pitch);</span>
+
+<span class="fc" id="L537">        return new CoordinateTransformation(roll, pitch, yaw, FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);</span>
+    }
+
+    /**
+     * Gets body attitude expressed in the local navigation frame.
+     * Internally this implementation uses a leveling algorithm to estimate
+     * roll and pitch attitude angles, which can later be used to find
+     * yaw attitude angle along with magnetometer measurements.
+     *
+     * @param fx          x-coordinate of measured body specific force.
+     * @param fy          y-coordinate of measured body specific force.
+     * @param fz          z-coordinate of measured body specific force.
+     * @param bx          x coordinate of measured magnetic flux density resolved
+     *                    around body axes and expressed in Teslas (T).
+     * @param by          y coordinate of measured magnetic flux density resolved
+     *                    around body axes and expressed in Teslas (T).
+     * @param bz          z coordinate of measured magnetic flux density resolved
+     *                    around body axes and expressed in Teslas (T).
+     * @param declination declination angle of Earth magnetic flux density
+     *                    at current Earth position and instant. Declination
+     *                    angle changes depending on instant and location.
+     *                    Declination angle can be obtained through
+     *                    {@link WMMEarthMagneticFluxDensityEstimator#getDeclination(NEDPosition, Date)}
+     *                    or using {@link EarthMagneticFluxDensityEstimator#getDeclination(NEDMagneticFluxDensity)}
+     * @param result      instance where body attitude will be stored.
+     * @see WMMEarthMagneticFluxDensityEstimator
+     * @see EarthMagneticFluxDensityEstimator
+     * @see LevelingEstimator
+     */
+    public static void getAttitude(
+            final Acceleration fx, final Acceleration fy, final Acceleration fz,
+            final double bx, final double by, final double bz, final Angle declination,
+            final CoordinateTransformation result) {
+<span class="fc" id="L570">        getAttitude(convertAcceleration(fx), convertAcceleration(fy), convertAcceleration(fz), bx, by, bz,</span>
+<span class="fc" id="L571">                convertAngle(declination), result);</span>
+<span class="fc" id="L572">    }</span>
+
+    /**
+     * Gets body attitude expressed in the local navigation frame.
+     * Internally this implementation uses a leveling algorithm to estimate
+     * roll and pitch attitude angles, which can later be used to find
+     * yaw attitude angle along with magnetometer measurements.
+     *
+     * @param fx          x-coordinate of measured body specific force.
+     * @param fy          y-coordinate of measured body specific force.
+     * @param fz          z-coordinate of measured body specific force.
+     * @param bx          x coordinate of measured magnetic flux density resolved
+     *                    around body axes and expressed in Teslas (T).
+     * @param by          y coordinate of measured magnetic flux density resolved
+     *                    around body axes and expressed in Teslas (T).
+     * @param bz          z coordinate of measured magnetic flux density resolved
+     *                    around body axes and expressed in Teslas (T).
+     * @param declination declination angle of Earth magnetic flux density
+     *                    at current Earth position and instant. Declination
+     *                    angle changes depending on instant and location.
+     *                    Declination angle can be obtained through
+     *                    {@link WMMEarthMagneticFluxDensityEstimator#getDeclination(NEDPosition, Date)}
+     *                    or using {@link EarthMagneticFluxDensityEstimator#getDeclination(NEDMagneticFluxDensity)}
+     * @return a coordinate transformation containing body attitude.
+     * @see WMMEarthMagneticFluxDensityEstimator
+     * @see EarthMagneticFluxDensityEstimator
+     * @see LevelingEstimator
+     */
+    public static CoordinateTransformation getAttitude(
+            final Acceleration fx, final Acceleration fy, final Acceleration fz,
+            final double bx, final double by, final double bz, final Angle declination) {
+<span class="fc" id="L603">        return getAttitude(convertAcceleration(fx), convertAcceleration(fy), convertAcceleration(fz), bx, by, bz,</span>
+<span class="fc" id="L604">                convertAngle(declination));</span>
+    }
+
+    /**
+     * Gets body attitude expressed in the local navigation frame.
+     * Internally this implementation uses a leveling algorithm to estimate
+     * roll and pitch attitude angles, which can later be used to find
+     * yaw attitude angle along with magnetometer measurements.
+     *
+     * @param kinematics  body kinematics containing measured specific force.
+     * @param b           measured body magnetic flux density.
+     * @param declination declination angle of Earth magnetic flux density
+     *                    at current Earth position and instant expressed in
+     *                    radians. Declination angle changes depending on
+     *                    instant and location. Declination angle can be
+     *                    obtained through
+     *                    {@link WMMEarthMagneticFluxDensityEstimator#getDeclination(NEDPosition, Date)}
+     *                    or using {@link EarthMagneticFluxDensityEstimator#getDeclination(NEDMagneticFluxDensity)}
+     * @param result      instance where body attitude will be stored.
+     * @see WMMEarthMagneticFluxDensityEstimator
+     * @see EarthMagneticFluxDensityEstimator
+     * @see LevelingEstimator
+     */
+    public static void getAttitude(
+            final BodyKinematics kinematics, final BodyMagneticFluxDensity b, final double declination,
+            final CoordinateTransformation result) {
+<span class="fc" id="L630">        getAttitude(kinematics.getFx(), kinematics.getFy(), kinematics.getFz(), b.getBx(), b.getBy(), b.getBz(),</span>
+                declination, result);
+<span class="fc" id="L632">    }</span>
+
+    /**
+     * Gets body attitude expressed in the local navigation frame.
+     * Internally this implementation uses a leveling algorithm to estimate
+     * roll and pitch attitude angles, which can later be used to find
+     * yaw attitude angle along with magnetometer measurements.
+     *
+     * @param kinematics  body kinematics containing measured specific force.
+     * @param b           measured body magnetic flux density.
+     * @param declination declination angle of Earth magnetic flux density
+     *                    at current Earth position and instant expressed in
+     *                    radians. Declination angle changes depending on
+     *                    instant and location. Declination angle can be
+     *                    obtained through
+     *                    {@link WMMEarthMagneticFluxDensityEstimator#getDeclination(NEDPosition, Date)}
+     *                    or using {@link EarthMagneticFluxDensityEstimator#getDeclination(NEDMagneticFluxDensity)}
+     * @return a coordinate transformation containing body attitude.
+     * @see WMMEarthMagneticFluxDensityEstimator
+     * @see EarthMagneticFluxDensityEstimator
+     * @see LevelingEstimator
+     */
+    public static CoordinateTransformation getAttitude(
+            final BodyKinematics kinematics, final BodyMagneticFluxDensity b, final double declination) {
+<span class="fc" id="L656">        return getAttitude(kinematics.getFx(), kinematics.getFy(), kinematics.getFz(), b.getBx(), b.getBy(), b.getBz(),</span>
+                declination);
+    }
+
+    /**
+     * Gets body attitude expressed in the local navigation frame.
+     * Internally this implementation uses a leveling algorithm to estimate
+     * roll and pitch attitude angles, which can later be used to find
+     * yaw attitude angle along with magnetometer measurements.
+     *
+     * @param kinematics  body kinematics containing measured specific force.
+     * @param b           measured body magnetic flux density.
+     * @param declination declination angle of Earth magnetic flux density
+     *                    at current Earth position and instant. Declination
+     *                    angle changes depending on instant and location.
+     *                    Declination angle can be obtained through
+     *                    {@link WMMEarthMagneticFluxDensityEstimator#getDeclination(NEDPosition, Date)}
+     *                    or using {@link EarthMagneticFluxDensityEstimator#getDeclination(NEDMagneticFluxDensity)}
+     * @param result      instance where body attitude will be stored.
+     * @see WMMEarthMagneticFluxDensityEstimator
+     * @see EarthMagneticFluxDensityEstimator
+     * @see LevelingEstimator
+     */
+    public static void getAttitude(
+            final BodyKinematics kinematics, final BodyMagneticFluxDensity b, final Angle declination,
+            final CoordinateTransformation result) {
+<span class="fc" id="L682">        getAttitude(kinematics, b, convertAngle(declination), result);</span>
+<span class="fc" id="L683">    }</span>
+
+    /**
+     * Gets body attitude expressed in the local navigation frame.
+     * Internally this implementation uses a leveling algorithm to estimate
+     * roll and pitch attitude angles, which can later be used to find
+     * yaw attitude angle along with magnetometer measurements.
+     *
+     * @param kinematics  body kinematics containing measured specific force.
+     * @param b           measured body magnetic flux density.
+     * @param declination declination angle of Earth magnetic flux density
+     *                    at current Earth position and instant. Declination
+     *                    angle changes depending on instant and location.
+     *                    Declination angle can be obtained through
+     *                    {@link WMMEarthMagneticFluxDensityEstimator#getDeclination(NEDPosition, Date)}
+     *                    or using {@link EarthMagneticFluxDensityEstimator#getDeclination(NEDMagneticFluxDensity)}
+     * @return a coordinate transformation containing body attitude.
+     * @see WMMEarthMagneticFluxDensityEstimator
+     * @see EarthMagneticFluxDensityEstimator
+     * @see LevelingEstimator
+     */
+    public static CoordinateTransformation getAttitude(
+            final BodyKinematics kinematics, final BodyMagneticFluxDensity b, final Angle declination) {
+<span class="fc" id="L706">        return getAttitude(kinematics, b, convertAngle(declination));</span>
+    }
+
+    /**
+     * Gets body attitude expressed in the local navigation frame.
+     * Internally this implementation uses a leveling algorithm to estimate
+     * roll and pitch attitude angles, which can later be used to find
+     * yaw attitude angle along with magnetometer measurements.
+     * Because latitude and height are also known, those are taken into
+     * account considering actual Earth shape to obtain a slightly more
+     * accurate estimation of roll and pitch attitude angles (and thus also
+     * a more accurate yaw angle estimation).
+     *
+     * @param latitude    device latitude expressed in radians (rad).
+     * @param height      device height expressed in meters (m).
+     * @param fx          x-coordinate of measured body specific force
+     *                    expressed in meters per squared second (m/s^2).
+     * @param fy          y-coordinate of measured body specific force
+     *                    expressed in meters per squared second (m/s^2).
+     * @param fz          z-coordinate of measured body specific force
+     *                    expressed in meters per squared second (m/s^2).
+     * @param bx          x coordinate of measured magnetic flux density resolved
+     *                    around body axes and expressed in Teslas (T).
+     * @param by          y coordinate of measured magnetic flux density resolved
+     *                    around body axes and expressed in Teslas (T).
+     * @param bz          z coordinate of measured magnetic flux density resolved
+     *                    around body axes and expressed in Teslas (T).
+     * @param declination declination angle of Earth magnetic flux density
+     *                    at current Earth position and instant expressed in
+     *                    radians. Declination angle changes depending on
+     *                    instant and location. Declination angle can be
+     *                    obtained through
+     *                    {@link WMMEarthMagneticFluxDensityEstimator#getDeclination(NEDPosition, Date)}
+     *                    or using {@link EarthMagneticFluxDensityEstimator#getDeclination(NEDMagneticFluxDensity)}
+     * @param result      instance where body attitude will be stored.
+     * @see WMMEarthMagneticFluxDensityEstimator
+     * @see EarthMagneticFluxDensityEstimator
+     * @see LevelingEstimator2
+     */
+    public static void getAttitude(
+            final double latitude, final double height, final double fx, final double fy, final double fz,
+            final double bx, final double by, final double bz, final double declination,
+            final CoordinateTransformation result) {
+
+<span class="fc" id="L750">        LevelingEstimator2.getPartialAttitude(latitude, height, fx, fy, fz, result);</span>
+
+        // fix yaw angle
+<span class="fc" id="L753">        final var roll = result.getRollEulerAngle();</span>
+<span class="fc" id="L754">        final var pitch = result.getPitchEulerAngle();</span>
+<span class="fc" id="L755">        final var yaw = getYaw(bx, by, bz, declination, roll, pitch);</span>
+
+<span class="fc" id="L757">        result.setEulerAngles(roll, pitch, yaw);</span>
+<span class="fc" id="L758">    }</span>
+
+    /**
+     * Gets body attitude expressed in the local navigation frame.
+     * Internally this implementation uses a leveling algorithm to estimate
+     * roll and pitch attitude angles, which can later be used to find
+     * yaw attitude angle along with magnetometer measurements.
+     * Because latitude and height are also known, those are taken into
+     * account considering actual Earth shape to obtain a slightly more
+     * accurate estimation of roll and pitch attitude angles (and thus also
+     * a more accurate yaw angle estimation).
+     *
+     * @param latitude    device latitude expressed in radians (rad).
+     * @param height      device height expressed in meters (m).
+     * @param fx          x-coordinate of measured body specific force
+     *                    expressed in meters per squared second (m/s^2).
+     * @param fy          y-coordinate of measured body specific force
+     *                    expressed in meters per squared second (m/s^2).
+     * @param fz          z-coordinate of measured body specific force
+     *                    expressed in meters per squared second (m/s^2).
+     * @param bx          x coordinate of measured magnetic flux density resolved
+     *                    around body axes and expressed in Teslas (T).
+     * @param by          y coordinate of measured magnetic flux density resolved
+     *                    around body axes and expressed in Teslas (T).
+     * @param bz          z coordinate of measured magnetic flux density resolved
+     *                    around body axes and expressed in Teslas (T).
+     * @param declination declination angle of Earth magnetic flux density
+     *                    at current Earth position and instant expressed in
+     *                    radians. Declination angle changes depending on
+     *                    instant and location. Declination angle can be
+     *                    obtained through
+     *                    {@link WMMEarthMagneticFluxDensityEstimator#getDeclination(NEDPosition, Date)}
+     *                    or using {@link EarthMagneticFluxDensityEstimator#getDeclination(NEDMagneticFluxDensity)}
+     * @return a coordinate transformation containing body attitude.
+     * @see WMMEarthMagneticFluxDensityEstimator
+     * @see EarthMagneticFluxDensityEstimator
+     * @see LevelingEstimator2
+     */
+    public static CoordinateTransformation getAttitude(
+            final double latitude, final double height, final double fx, final double fy, final double fz,
+            final double bx, final double by, final double bz, final double declination) {
+
+<span class="fc" id="L800">        final var result = new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);</span>
+<span class="fc" id="L801">        getAttitude(latitude, height, fx, fy, fz, bx, by, bz, declination, result);</span>
+<span class="fc" id="L802">        return result;</span>
+    }
+
+    /**
+     * Gets body attitude expressed in the local navigation frame.
+     * Internally this implementation uses a leveling algorithm to estimate
+     * roll and pitch attitude angles, which can later be used to find
+     * yaw attitude angle along with magnetometer measurements.
+     * Because latitude and height are also known, those are taken into
+     * account considering actual Earth shape to obtain a slightly more
+     * accurate estimation of roll and pitch attitude angles (and thus also
+     * a more accurate yaw angle estimation).
+     *
+     * @param latitude    device latitude.
+     * @param height      device height.
+     * @param fx          x-coordinate of measured body specific force.
+     * @param fy          y-coordinate of measured body specific force.
+     * @param fz          z-coordinate of measured body specific force.
+     * @param bx          x coordinate of measured magnetic flux density resolved
+     *                    around body axes and expressed in Teslas (T).
+     * @param by          y coordinate of measured magnetic flux density resolved
+     *                    around body axes and expressed in Teslas (T).
+     * @param bz          z coordinate of measured magnetic flux density resolved
+     *                    around body axes and expressed in Teslas (T).
+     * @param declination declination angle of Earth magnetic flux density
+     *                    at current Earth position and instant. Declination
+     *                    angle changes depending on instant and location.
+     *                    Declination angle can be obtained through
+     *                    {@link WMMEarthMagneticFluxDensityEstimator#getDeclination(NEDPosition, Date)}
+     *                    or using {@link EarthMagneticFluxDensityEstimator#getDeclination(NEDMagneticFluxDensity)}
+     * @param result      instance where body attitude will be stored.
+     * @see WMMEarthMagneticFluxDensityEstimator
+     * @see EarthMagneticFluxDensityEstimator
+     * @see LevelingEstimator2
+     */
+    public static void getAttitude(
+            final Angle latitude, final Distance height,
+            final Acceleration fx, final Acceleration fy, final Acceleration fz,
+            final double bx, final double by, final double bz, final Angle declination,
+            final CoordinateTransformation result) {
+<span class="fc" id="L842">        getAttitude(convertAngle(latitude), convertDistance(height), convertAcceleration(fx), convertAcceleration(fy),</span>
+<span class="fc" id="L843">                convertAcceleration(fz), bx, by, bz, convertAngle(declination), result);</span>
+<span class="fc" id="L844">    }</span>
+
+    /**
+     * Gets body attitude expressed in the local navigation frame.
+     * Internally this implementation uses a leveling algorithm to estimate
+     * roll and pitch attitude angles, which can later be used to find
+     * yaw attitude angle along with magnetometer measurements.
+     * Because latitude and height are also known, those are taken into
+     * account considering actual Earth shape to obtain a slightly more
+     * accurate estimation of roll and pitch attitude angles (and thus also
+     * a more accurate yaw angle estimation).
+     *
+     * @param latitude    device latitude.
+     * @param height      device height.
+     * @param fx          x-coordinate of measured body specific force.
+     * @param fy          y-coordinate of measured body specific force.
+     * @param fz          z-coordinate of measured body specific force.
+     * @param bx          x coordinate of measured magnetic flux density resolved
+     *                    around body axes and expressed in Teslas (T).
+     * @param by          y coordinate of measured magnetic flux density resolved
+     *                    around body axes and expressed in Teslas (T).
+     * @param bz          z coordinate of measured magnetic flux density resolved
+     *                    around body axes and expressed in Teslas (T).
+     * @param declination declination angle of Earth magnetic flux density
+     *                    at current Earth position and instant. Declination
+     *                    angle changes depending on instant and location.
+     *                    Declination angle can be obtained through
+     *                    {@link WMMEarthMagneticFluxDensityEstimator#getDeclination(NEDPosition, Date)}
+     *                    or using {@link EarthMagneticFluxDensityEstimator#getDeclination(NEDMagneticFluxDensity)}
+     * @return a coordinate transformation containing body attitude.
+     * @see WMMEarthMagneticFluxDensityEstimator
+     * @see EarthMagneticFluxDensityEstimator
+     * @see LevelingEstimator2
+     */
+    public static CoordinateTransformation getAttitude(
+            final Angle latitude, final Distance height,
+            final Acceleration fx, final Acceleration fy, final Acceleration fz,
+            final double bx, final double by, final double bz, final Angle declination) {
+<span class="fc" id="L882">        return getAttitude(convertAngle(latitude), convertDistance(height),</span>
+<span class="fc" id="L883">                convertAcceleration(fx), convertAcceleration(fy), convertAcceleration(fz), bx, by, bz,</span>
+<span class="fc" id="L884">                convertAngle(declination));</span>
+    }
+
+    /**
+     * Gets body attitude expressed in the local navigation frame.
+     * Internally this implementation uses a leveling algorithm to estimate
+     * roll and pitch attitude angles, which can later be used to find
+     * yaw attitude angle along with magnetometer measurements.
+     * Because Earth position is also known, it is taken into
+     * account considering actual Earth shape to obtain a slightly more
+     * accurate estimation of roll and pitch attitude angles (and thus also
+     * a more accurate yaw angle estimation).
+     *
+     * @param position    Earth position expressed in NED coordinates.
+     * @param kinematics  body kinematics containing measured specific force.
+     * @param b           measured body magnetic flux density.
+     * @param declination declination angle of Earth magnetic flux density
+     *                    at current Earth position and instant expressed in
+     *                    radians. Declination angle changes depending on
+     *                    instant and location. Declination angle can be
+     *                    obtained through
+     *                    {@link WMMEarthMagneticFluxDensityEstimator#getDeclination(NEDPosition, Date)}
+     *                    or using {@link EarthMagneticFluxDensityEstimator#getDeclination(NEDMagneticFluxDensity)}
+     * @param result      instance where body attitude will be stored.
+     * @see WMMEarthMagneticFluxDensityEstimator
+     * @see EarthMagneticFluxDensityEstimator
+     * @see LevelingEstimator2
+     */
+    public static void getAttitude(
+            final NEDPosition position, final BodyKinematics kinematics, final BodyMagneticFluxDensity b,
+            final double declination, final CoordinateTransformation result) {
+<span class="fc" id="L915">        getAttitude(position.getLatitude(), position.getHeight(),</span>
+<span class="fc" id="L916">                kinematics.getFx(), kinematics.getFy(), kinematics.getFz(), b.getBx(), b.getBy(), b.getBz(),</span>
+                declination, result);
+<span class="fc" id="L918">    }</span>
+
+    /**
+     * Gets body attitude expressed in the local navigation frame.
+     * Internally this implementation uses a leveling algorithm to estimate
+     * roll and pitch attitude angles, which can later be used to find
+     * yaw attitude angle along with magnetometer measurements.
+     * Because Earth position is also known, it is taken into
+     * account considering actual Earth shape to obtain a slightly more
+     * accurate estimation of roll and pitch attitude angles (and thus also
+     * a more accurate yaw angle estimation).
+     *
+     * @param position    Earth position expressed in NED coordinates.
+     * @param kinematics  body kinematics containing measured specific force.
+     * @param b           measured body magnetic flux density.
+     * @param declination declination angle of Earth magnetic flux density
+     *                    at current Earth position and instant expressed in
+     *                    radians. Declination angle changes depending on
+     *                    instant and location. Declination angle can be
+     *                    obtained through
+     *                    {@link WMMEarthMagneticFluxDensityEstimator#getDeclination(NEDPosition, Date)}
+     *                    or using {@link EarthMagneticFluxDensityEstimator#getDeclination(NEDMagneticFluxDensity)}
+     * @return a coordinate transformation containing body attitude.
+     * @see WMMEarthMagneticFluxDensityEstimator
+     * @see EarthMagneticFluxDensityEstimator
+     * @see LevelingEstimator2
+     */
+    public static CoordinateTransformation getAttitude(
+            final NEDPosition position, final BodyKinematics kinematics, final BodyMagneticFluxDensity b,
+            final double declination) {
+<span class="fc" id="L948">        return getAttitude(position.getLatitude(), position.getHeight(),</span>
+<span class="fc" id="L949">                kinematics.getFx(), kinematics.getFy(), kinematics.getFz(),</span>
+<span class="fc" id="L950">                b.getBx(), b.getBy(), b.getBz(), declination);</span>
+    }
+
+    /**
+     * Gets body attitude expressed in the local navigation frame.
+     * Internally this implementation uses a leveling algorithm to estimate
+     * roll and pitch attitude angles, which can later be used to find
+     * yaw attitude angle along with magnetometer measurements.
+     * Because Earth position is also known, it is taken into
+     * account considering actual Earth shape to obtain a slightly more
+     * accurate estimation of roll and pitch attitude angles (and thus also
+     * a more accurate yaw angle estimation).
+     *
+     * @param position    Earth position expressed in NED coordinates.
+     * @param kinematics  body kinematics containing measured specific force.
+     * @param b           measured body magnetic flux density.
+     * @param declination declination angle of Earth magnetic flux density
+     *                    at current Earth position and instant. Declination
+     *                    angle changes depending on instant and location.
+     *                    Declination angle can be obtained through
+     *                    {@link WMMEarthMagneticFluxDensityEstimator#getDeclination(NEDPosition, Date)}
+     *                    or using {@link EarthMagneticFluxDensityEstimator#getDeclination(NEDMagneticFluxDensity)}
+     * @param result      instance where body attitude will be stored.
+     * @see WMMEarthMagneticFluxDensityEstimator
+     * @see EarthMagneticFluxDensityEstimator
+     * @see LevelingEstimator2
+     */
+    public static void getAttitude(
+            final NEDPosition position, final BodyKinematics kinematics, final BodyMagneticFluxDensity b,
+            final Angle declination, final CoordinateTransformation result) {
+<span class="fc" id="L980">        getAttitude(position, kinematics, b, convertAngle(declination), result);</span>
+<span class="fc" id="L981">    }</span>
+
+    /**
+     * Gets body attitude expressed in the local navigation frame.
+     * Internally this implementation uses a leveling algorithm to estimate
+     * roll and pitch attitude angles, which can later be used to find
+     * yaw attitude angle along with magnetometer measurements.
+     * Because Earth position is also known, it is taken into
+     * account considering actual Earth shape to obtain a slightly more
+     * accurate estimation of roll and pitch attitude angles (and thus also
+     * a more accurate yaw angle estimation).
+     *
+     * @param position    Earth position expressed in NED coordinates.
+     * @param kinematics  body kinematics containing measured specific force.
+     * @param b           measured body magnetic flux density.
+     * @param declination declination angle of Earth magnetic flux density
+     *                    at current Earth position and instant. Declination
+     *                    angle changes depending on instant and location.
+     *                    Declination angle can be obtained through
+     *                    {@link WMMEarthMagneticFluxDensityEstimator#getDeclination(NEDPosition, Date)}
+     *                    or using {@link EarthMagneticFluxDensityEstimator#getDeclination(NEDMagneticFluxDensity)}
+     * @return a coordinate transformation containing body attitude.
+     * @see WMMEarthMagneticFluxDensityEstimator
+     * @see EarthMagneticFluxDensityEstimator
+     * @see LevelingEstimator
+     */
+    public static CoordinateTransformation getAttitude(
+            final NEDPosition position, final BodyKinematics kinematics, final BodyMagneticFluxDensity b,
+            final Angle declination) {
+<span class="fc" id="L1010">        return getAttitude(position, kinematics, b, convertAngle(declination));</span>
+    }
+
+    /**
+     * Returns magnetic heading (angle respect Earth magnetic north).
+     *
+     * @param bx    x coordinate of measured magnetic flux density resolved
+     *              around body axes and expressed in Teslas (T).
+     * @param by    y coordinate of measured magnetic flux density resolved
+     *              around body axes and expressed in Teslas (T).
+     * @param bz    z coordinate of measured magnetic flux density resolved
+     *              around body axes and expressed in Teslas (T).
+     * @param roll  known body roll angle expressed in radians (rad).
+     * @param pitch known body pitch angle expressed in radians (rad).
+     * @return magnetic heading expressed in radians (rad).
+     */
+    @SuppressWarnings(&quot;DuplicatedCode&quot;)
+    public static double getMagneticHeading(
+            final double bx, final double by, final double bz, final double roll, final double pitch) {
+
+<span class="fc" id="L1030">        final var sinRoll = Math.sin(roll);</span>
+<span class="fc" id="L1031">        final var cosRoll = Math.cos(roll);</span>
+
+<span class="fc" id="L1033">        final var sinPitch = Math.sin(pitch);</span>
+<span class="fc" id="L1034">        final var cosPitch = Math.cos(pitch);</span>
+
+<span class="fc" id="L1036">        final var tmp1 = -by * cosRoll + bz * sinRoll;</span>
+<span class="fc" id="L1037">        final var tmp2 = bx * cosPitch + by * sinRoll * sinPitch + bz * cosRoll * sinPitch;</span>
+
+<span class="fc" id="L1039">        return Math.atan2(tmp1, tmp2);</span>
+    }
+
+    /**
+     * Returns magnetic heading (angle respect Earth magnetic north).
+     *
+     * @param b     measured magnetic flux density resolved around body axes.
+     * @param roll  known body roll angle expressed in radians (rad).
+     * @param pitch known body pitch angle expressed in radians (rad).
+     * @return magnetic heading expressed in radians (rad).
+     */
+    public static double getMagneticHeading(final BodyMagneticFluxDensity b, final double roll, final double pitch) {
+<span class="fc" id="L1051">        return getMagneticHeading(b.getBx(), b.getBy(), b.getBz(), roll, pitch);</span>
+    }
+
+    /**
+     * Returns magnetic heading (angle respect Earth magnetic north).
+     *
+     * @param bx    x coordinate of measured magnetic flux density resolved
+     *              around body axes and expressed in Teslas (T).
+     * @param by    y coordinate of measured magnetic flux density resolved
+     *              around body axes and expressed in Teslas (T).
+     * @param bz    z coordinate of measured magnetic flux density resolved
+     *              around body axes and expressed in Teslas (T).
+     * @param roll  known body roll angle.
+     * @param pitch known body pitch angle.
+     * @return magnetic heading expressed in radians (rad).
+     */
+    public static double getMagneticHeading(
+            final double bx, final double by, final double bz, final Angle roll, final Angle pitch) {
+<span class="fc" id="L1069">        return getMagneticHeading(bx, by, bz, convertAngle(roll), convertAngle(pitch));</span>
+    }
+
+    /**
+     * Returns magnetic heading (angle respect Earth magnetic north).
+     *
+     * @param b     measured magnetic flux density resolved around body axes.
+     * @param roll  known body roll angle.
+     * @param pitch known body pitch angle.
+     * @return magnetic heading expressed in radians (rad).
+     */
+    public static double getMagneticHeading(
+            final BodyMagneticFluxDensity b, final Angle roll, final Angle pitch) {
+<span class="fc" id="L1082">        return getMagneticHeading(b, convertAngle(roll), convertAngle(pitch));</span>
+    }
+
+    /**
+     * Returns magnetic heading (angle respect Earth magnetic north).
+     *
+     * @param bx     x coordinate of measured magnetic flux density resolved
+     *               around body axes and expressed in Teslas (T).
+     * @param by     y coordinate of measured magnetic flux density resolved
+     *               around body axes and expressed in Teslas (T).
+     * @param bz     z coordinate of measured magnetic flux density resolved
+     *               around body axes and expressed in Teslas (T).
+     * @param roll   known body roll angle expressed in radians (rad).
+     * @param pitch  known body pitch angle expressed in radians (rad).
+     * @param result instance where magnetic heading will be stored.
+     */
+    public static void getMagneticHeadingAsAngle(
+            final double bx, final double by, final double bz,
+            final double roll, final double pitch, final Angle result) {
+<span class="fc" id="L1101">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L1102">        result.setValue(getMagneticHeading(bx, by, bz, roll, pitch));</span>
+<span class="fc" id="L1103">    }</span>
+
+    /**
+     * Returns magnetic heading (angle respect Earth magnetic north).
+     *
+     * @param bx    x coordinate of measured magnetic flux density resolved
+     *              around body axes and expressed in Teslas (T).
+     * @param by    y coordinate of measured magnetic flux density resolved
+     *              around body axes and expressed in Teslas (T).
+     * @param bz    z coordinate of measured magnetic flux density resolved
+     *              around body axes and expressed in Teslas (T).
+     * @param roll  known body roll angle expressed in radians (rad).
+     * @param pitch known body pitch angle expressed in radians (rad).
+     * @return magnetic heading.
+     */
+    public static Angle getMagneticHeadingAsAngle(
+            final double bx, final double by, final double bz, final double roll, final double pitch) {
+<span class="fc" id="L1120">        return new Angle(getMagneticHeading(bx, by, bz, roll, pitch), AngleUnit.RADIANS);</span>
+    }
+
+    /**
+     * Returns magnetic heading (angle respect Earth magnetic north).
+     *
+     * @param b      measured magnetic flux density resolved around body axes.
+     * @param roll   known body roll angle expressed in radians (rad).
+     * @param pitch  known body pitch angle expressed in radians (rad).
+     * @param result instance where magnetic heading will be stored.
+     */
+    public static void getMagneticHeadingAsAngle(
+            final BodyMagneticFluxDensity b, final double roll, final double pitch, final Angle result) {
+<span class="fc" id="L1133">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L1134">        result.setValue(getMagneticHeading(b, roll, pitch));</span>
+<span class="fc" id="L1135">    }</span>
+
+    /**
+     * Returns magnetic heading (angle respect Earth magnetic north).
+     *
+     * @param b     measured magnetic flux density resolved around body axes.
+     * @param roll  known body roll angle expressed in radians (rad).
+     * @param pitch known body pitch angle expressed in radians (rad).
+     * @return magnetic heading.
+     */
+    public static Angle getMagneticHeadingAsAngle(
+            final BodyMagneticFluxDensity b, final double roll, final double pitch) {
+<span class="fc" id="L1147">        return new Angle(getMagneticHeading(b, roll, pitch), AngleUnit.RADIANS);</span>
+    }
+
+    /**
+     * Returns magnetic heading (angle respect Earth magnetic north).
+     *
+     * @param bx     x coordinate of measured magnetic flux density resolved
+     *               around body axes and expressed in Teslas (T).
+     * @param by     y coordinate of measured magnetic flux density resolved
+     *               around body axes and expressed in Teslas (T).
+     * @param bz     z coordinate of measured magnetic flux density resolved
+     *               around body axes and expressed in Teslas (T).
+     * @param roll   known body roll angle.
+     * @param pitch  known body pitch angle.
+     * @param result instance where magnetic heading will be stored.
+     */
+    public static void getMagneticHeadingAsAngle(
+            final double bx, final double by, final double bz,
+            final Angle roll, final Angle pitch, final Angle result) {
+<span class="fc" id="L1166">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L1167">        result.setValue(getMagneticHeading(bx, by, bz, roll, pitch));</span>
+<span class="fc" id="L1168">    }</span>
+
+    /**
+     * Returns magnetic heading (angle respect Earth magnetic north).
+     *
+     * @param bx    x coordinate of measured magnetic flux density resolved
+     *              around body axes and expressed in Teslas (T).
+     * @param by    y coordinate of measured magnetic flux density resolved
+     *              around body axes and expressed in Teslas (T).
+     * @param bz    z coordinate of measured magnetic flux density resolved
+     *              around body axes and expressed in Teslas (T).
+     * @param roll  known body roll angle.
+     * @param pitch known body pitch angle.
+     * @return magnetic heading.
+     */
+    public static Angle getMagneticHeadingAsAngle(
+            final double bx, final double by, final double bz, final Angle roll, final Angle pitch) {
+<span class="fc" id="L1185">        return new Angle(getMagneticHeading(bx, by, bz, roll, pitch), AngleUnit.RADIANS);</span>
+    }
+
+    /**
+     * Returns magnetic heading (angle respect Earth magnetic north).
+     *
+     * @param b      measured magnetic flux density resolved around body axes.
+     * @param roll   known body roll angle.
+     * @param pitch  known body pitch angle.
+     * @param result instance where magnetic heading will be stored.
+     */
+    public static void getMagneticHeadingAsAngle(
+            final BodyMagneticFluxDensity b, final Angle roll, final Angle pitch, final Angle result) {
+<span class="fc" id="L1198">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L1199">        result.setValue(getMagneticHeading(b, roll, pitch));</span>
+<span class="fc" id="L1200">    }</span>
+
+    /**
+     * Returns magnetic heading (angle respect Earth magnetic north).
+     *
+     * @param b     measured magnetic flux density resolved around body axes.
+     * @param roll  known body roll angle.
+     * @param pitch known body pitch angle.
+     * @return magnetic heading.
+     */
+    public static Angle getMagneticHeadingAsAngle(
+            final BodyMagneticFluxDensity b, final Angle roll, final Angle pitch) {
+<span class="fc" id="L1212">        return new Angle(getMagneticHeading(b, roll, pitch), AngleUnit.RADIANS);</span>
+    }
+
+    /**
+     * Returns body yaw angle resolved around NED frame.
+     * Yaw angle represents the true heading, and indicates the angle respect
+     * the true geographic north.
+     *
+     * @param bx          x coordinate of measured magnetic flux density resolved
+     *                    around body axes and expressed in Teslas (T).
+     * @param by          y coordinate of measured magnetic flux density resolved
+     *                    around body axes and expressed in Teslas (T).
+     * @param bz          z coordinate of measured magnetic flux density resolved
+     *                    around body axes and expressed in Teslas (T).
+     * @param declination declination angle of Earth magnetic flux density
+     *                    at current Earth position and instant expressed in
+     *                    radians. Declination angle changes depending on
+     *                    instant and location. Declination angle can be
+     *                    obtained through
+     *                    {@link WMMEarthMagneticFluxDensityEstimator#getDeclination(NEDPosition, Date)}
+     *                    or using {@link EarthMagneticFluxDensityEstimator#getDeclination(NEDMagneticFluxDensity)}
+     * @param roll        known body roll angle expressed in radians (rad).
+     * @param pitch       known body pitch angle expressed in radians (rad).
+     * @return body yaw angle (a.k.a. true heading) expressed in radians (rad).
+     * @see WMMEarthMagneticFluxDensityEstimator
+     * @see EarthMagneticFluxDensityEstimator
+     */
+    public static double getYaw(
+            final double bx, final double by, final double bz, final double declination,
+            final double roll, final double pitch) {
+<span class="fc" id="L1242">        return getMagneticHeading(bx, by, bz, roll, pitch) + declination;</span>
+    }
+
+    /**
+     * Returns body yaw angle resolved around NED frame.
+     * Yaw angle represents the true heading, and indicates the angle respect
+     * the true geographic north.
+     *
+     * @param b           measured magnetic flux density resolved around body axes.
+     * @param declination declination angle of Earth magnetic flux density
+     *                    at current Earth position and instant expressed in
+     *                    radians. Declination angle changes depending on
+     *                    instant and location. Declination angle can be
+     *                    obtained through
+     *                    {@link WMMEarthMagneticFluxDensityEstimator#getDeclination(NEDPosition, Date)}
+     *                    or using {@link EarthMagneticFluxDensityEstimator#getDeclination(NEDMagneticFluxDensity)}
+     * @param roll        known body roll angle expressed in radians (rad).
+     * @param pitch       known body pitch angle expressed in radians (rad).
+     * @return body yaw angle (a.k.a. true heading) expressed in radians (rad).
+     * @see WMMEarthMagneticFluxDensityEstimator
+     * @see EarthMagneticFluxDensityEstimator
+     */
+    public static double getYaw(
+            final BodyMagneticFluxDensity b, final double declination, final double roll, final double pitch) {
+<span class="fc" id="L1266">        return getYaw(b.getBx(), b.getBy(), b.getBz(), declination, roll, pitch);</span>
+    }
+
+    /**
+     * Returns body yaw angle resolved around NED frame.
+     * Yaw angle represents the true heading, and indicates the angle respect
+     * the true geographic north.
+     *
+     * @param bx          x coordinate of measured magnetic flux density resolved
+     *                    around body axes and expressed in Teslas (T).
+     * @param by          y coordinate of measured magnetic flux density resolved
+     *                    around body axes and expressed in Teslas (T).
+     * @param bz          z coordinate of measured magnetic flux density resolved
+     *                    around body axes and expressed in Teslas (T).
+     * @param declination declination angle of Earth magnetic flux density
+     *                    at current Earth position and instant. Declination
+     *                    angle changes depending on instant and location.
+     *                    Declination angle can be obtained through
+     *                    {@link WMMEarthMagneticFluxDensityEstimator#getDeclination(NEDPosition, Date)}
+     *                    or using {@link EarthMagneticFluxDensityEstimator#getDeclination(NEDMagneticFluxDensity)}
+     * @param roll        known body roll angle.
+     * @param pitch       known body pitch angle.
+     * @return body yaw angle (a.k.a. true heading) expressed in radians (rad).
+     * @see WMMEarthMagneticFluxDensityEstimator
+     * @see EarthMagneticFluxDensityEstimator
+     */
+    public static double getYaw(
+            final double bx, final double by, final double bz,
+            final Angle declination, final Angle roll, final Angle pitch) {
+<span class="fc" id="L1295">        return getYaw(bx, by, bz, convertAngle(declination), convertAngle(roll), convertAngle(pitch));</span>
+    }
+
+    /**
+     * Returns body yaw angle resolved around NED frame.
+     * Yaw angle represents the true heading, and indicates the angle respect
+     * the true geographic north.
+     *
+     * @param b           measured magnetic flux density resolved around body axes.
+     * @param declination declination angle of Earth magnetic flux density
+     *                    at current Earth position and instant. Declination
+     *                    angle changes depending on instant and location.
+     *                    Declination angle can be obtained through
+     *                    {@link WMMEarthMagneticFluxDensityEstimator#getDeclination(NEDPosition, Date)}
+     *                    or using {@link EarthMagneticFluxDensityEstimator#getDeclination(NEDMagneticFluxDensity)}
+     * @param roll        known body roll angle.
+     * @param pitch       known body pitch angle.
+     * @return body yaw angle (a.k.a. true heading) expressed in radians (rad).
+     * @see WMMEarthMagneticFluxDensityEstimator
+     * @see EarthMagneticFluxDensityEstimator
+     */
+    public static double getYaw(
+            final BodyMagneticFluxDensity b, final Angle declination, final Angle roll, final Angle pitch) {
+<span class="fc" id="L1318">        return getYaw(b, convertAngle(declination), convertAngle(roll), convertAngle(pitch));</span>
+    }
+
+    /**
+     * Returns body yaw angle resolved around NED frame.
+     * Yaw angle represents the true heading, and indicates the angle respect
+     * the true geographic north.
+     *
+     * @param bx          x coordinate of measured magnetic flux density resolved
+     *                    around body axes and expressed in Teslas (T).
+     * @param by          y coordinate of measured magnetic flux density resolved
+     *                    around body axes and expressed in Teslas (T).
+     * @param bz          z coordinate of measured magnetic flux density resolved
+     *                    around body axes and expressed in Teslas (T).
+     * @param declination declination angle of Earth magnetic flux density
+     *                    at current Earth position and instant expressed in
+     *                    radians. Declination angle changes depending on
+     *                    instant and location. Declination angle can be
+     *                    obtained through
+     *                    {@link WMMEarthMagneticFluxDensityEstimator#getDeclination(NEDPosition, Date)}
+     *                    or using {@link EarthMagneticFluxDensityEstimator#getDeclination(NEDMagneticFluxDensity)}
+     * @param roll        known body roll angle expressed in radians (rad).
+     * @param pitch       known body pitch angle expressed in radians (rad).
+     * @param result      instance where body yaw angle (a.k.a. true heading)
+     *                    will be stored.
+     * @see WMMEarthMagneticFluxDensityEstimator
+     * @see EarthMagneticFluxDensityEstimator
+     */
+    public static void getYawAsAngle(
+            final double bx, final double by, final double bz,
+            final double declination, final double roll, final double pitch, final Angle result) {
+<span class="fc" id="L1349">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L1350">        result.setValue(getYaw(bx, by, bz, declination, roll, pitch));</span>
+<span class="fc" id="L1351">    }</span>
+
+    /**
+     * Returns body yaw angle resolved around NED frame.
+     * Yaw angle represents the true heading, and indicates the angle respect
+     * the true geographic north.
+     *
+     * @param bx          x coordinate of measured magnetic flux density resolved
+     *                    around body axes and expressed in Teslas (T).
+     * @param by          y coordinate of measured magnetic flux density resolved
+     *                    around body axes and expressed in Teslas (T).
+     * @param bz          z coordinate of measured magnetic flux density resolved
+     *                    around body axes and expressed in Teslas (T).
+     * @param declination declination angle of Earth magnetic flux density
+     *                    at current Earth position and instant expressed in
+     *                    radians. Declination angle changes depending on
+     *                    instant and location. Declination angle can be
+     *                    obtained through
+     *                    {@link WMMEarthMagneticFluxDensityEstimator#getDeclination(NEDPosition, Date)}
+     *                    or using {@link EarthMagneticFluxDensityEstimator#getDeclination(NEDMagneticFluxDensity)}
+     * @param roll        known body roll angle expressed in radians (rad).
+     * @param pitch       known body pitch angle expressed in radians (rad).
+     * @return body yaw angle (a.k.a. true heading).
+     * @see WMMEarthMagneticFluxDensityEstimator
+     * @see EarthMagneticFluxDensityEstimator
+     */
+    public static Angle getYawAsAngle(
+            final double bx, final double by, final double bz, final double declination,
+            final double roll, final double pitch) {
+<span class="fc" id="L1380">        return new Angle(getYaw(bx, by, bz, declination, roll, pitch), AngleUnit.RADIANS);</span>
+    }
+
+    /**
+     * Returns body yaw angle resolved around NED frame.
+     * Yaw angle represents the true heading, and indicates the angle respect
+     * the true geographic north.
+     *
+     * @param b           measured magnetic flux density resolved around body axes.
+     * @param declination declination angle of Earth magnetic flux density
+     *                    at current Earth position and instant expressed in
+     *                    radians. Declination angle changes depending on
+     *                    instant and location. Declination angle can be
+     *                    obtained through
+     *                    {@link WMMEarthMagneticFluxDensityEstimator#getDeclination(NEDPosition, Date)}
+     *                    or using {@link EarthMagneticFluxDensityEstimator#getDeclination(NEDMagneticFluxDensity)}
+     * @param roll        known body roll angle expressed in radians (rad).
+     * @param pitch       known body pitch angle expressed in radians (rad).
+     * @param result      instance where body yaw angle (a.k.a. true heading)
+     *                    will be stored.
+     * @see WMMEarthMagneticFluxDensityEstimator
+     * @see EarthMagneticFluxDensityEstimator
+     */
+    public static void getYawAsAngle(
+            final BodyMagneticFluxDensity b, final double declination, final double roll, final double pitch,
+            final Angle result) {
+<span class="fc" id="L1406">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L1407">        result.setValue(getYaw(b, declination, roll, pitch));</span>
+<span class="fc" id="L1408">    }</span>
+
+    /**
+     * Returns body yaw angle resolved around NED frame.
+     * Yaw angle represents the true heading, and indicates the angle respect
+     * the true geographic north.
+     *
+     * @param b           measured magnetic flux density resolved around body axes.
+     * @param declination declination angle of Earth magnetic flux density
+     *                    at current Earth position and instant expressed in
+     *                    radians. Declination angle changes depending on
+     *                    instant and location. Declination angle can be
+     *                    obtained through
+     *                    {@link WMMEarthMagneticFluxDensityEstimator#getDeclination(NEDPosition, Date)}
+     *                    or using {@link EarthMagneticFluxDensityEstimator#getDeclination(NEDMagneticFluxDensity)}
+     * @param roll        known body roll angle expressed in radians (rad).
+     * @param pitch       known body pitch angle expressed in radians (rad).
+     * @return body yaw angle (a.k.a. true heading).
+     * @see WMMEarthMagneticFluxDensityEstimator
+     * @see EarthMagneticFluxDensityEstimator
+     */
+    public static Angle getYawAsAngle(
+            final BodyMagneticFluxDensity b, final double declination, final double roll, final double pitch) {
+<span class="fc" id="L1431">        return new Angle(getYaw(b, declination, roll, pitch), AngleUnit.RADIANS);</span>
+    }
+
+    /**
+     * Returns body yaw angle resolved around NED frame.
+     * Yaw angle represents the true heading, and indicates the angle respect
+     * the true geographic north.
+     *
+     * @param bx          x coordinate of measured magnetic flux density resolved
+     *                    around body axes and expressed in Teslas (T).
+     * @param by          y coordinate of measured magnetic flux density resolved
+     *                    around body axes and expressed in Teslas (T).
+     * @param bz          z coordinate of measured magnetic flux density resolved
+     *                    around body axes and expressed in Teslas (T).
+     * @param declination declination angle of Earth magnetic flux density
+     *                    at current Earth position and instant. Declination
+     *                    angle changes depending on instant and location.
+     *                    Declination angle can be obtained through
+     *                    {@link WMMEarthMagneticFluxDensityEstimator#getDeclination(NEDPosition, Date)}
+     *                    or using {@link EarthMagneticFluxDensityEstimator#getDeclination(NEDMagneticFluxDensity)}
+     * @param roll        known body roll angle.
+     * @param pitch       known body pitch angle.
+     * @param result      instance where body yaw angle (a.k.a. true heading)
+     *                    will be stored.
+     * @see WMMEarthMagneticFluxDensityEstimator
+     * @see EarthMagneticFluxDensityEstimator
+     */
+    public static void getYawAsAngle(
+            final double bx, final double by, final double bz,
+            final Angle declination, final Angle roll, final Angle pitch, final Angle result) {
+<span class="fc" id="L1461">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L1462">        result.setValue(getYaw(bx, by, bz, declination, roll, pitch));</span>
+<span class="fc" id="L1463">    }</span>
+
+    /**
+     * Returns body yaw angle resolved around NED frame.
+     * Yaw angle represents the true heading, and indicates the angle respect
+     * the true geographic north.
+     *
+     * @param bx          x coordinate of measured magnetic flux density resolved
+     *                    around body axes and expressed in Teslas (T).
+     * @param by          y coordinate of measured magnetic flux density resolved
+     *                    around body axes and expressed in Teslas (T).
+     * @param bz          z coordinate of measured magnetic flux density resolved
+     *                    around body axes and expressed in Teslas (T).
+     * @param declination declination angle of Earth magnetic flux density
+     *                    at current Earth position and instant. Declination
+     *                    angle changes depending on instant and location.
+     *                    Declination angle can be obtained through
+     *                    {@link WMMEarthMagneticFluxDensityEstimator#getDeclination(NEDPosition, Date)}
+     *                    or using {@link EarthMagneticFluxDensityEstimator#getDeclination(NEDMagneticFluxDensity)}
+     * @param roll        known body roll angle.
+     * @param pitch       known body pitch angle.
+     * @return body yaw angle (a.k.a. true heading).
+     * @see WMMEarthMagneticFluxDensityEstimator
+     * @see EarthMagneticFluxDensityEstimator
+     */
+    public static Angle getYawAsAngle(
+            final double bx, final double by, final double bz,
+            final Angle declination, final Angle roll, final Angle pitch) {
+<span class="fc" id="L1491">        return new Angle(getYaw(bx, by, bz, declination, roll, pitch), AngleUnit.RADIANS);</span>
+    }
+
+    /**
+     * Returns body yaw angle resolved around NED frame.
+     * Yaw angle represents the true heading, and indicates the angle respect
+     * the true geographic north.
+     *
+     * @param b           measured magnetic flux density resolved around body axes.
+     * @param declination declination angle of Earth magnetic flux density
+     *                    at current Earth position and instant. Declination
+     *                    angle changes depending on instant and location.
+     *                    Declination angle can be obtained through
+     *                    {@link WMMEarthMagneticFluxDensityEstimator#getDeclination(NEDPosition, Date)}
+     *                    or using {@link EarthMagneticFluxDensityEstimator#getDeclination(NEDMagneticFluxDensity)}
+     * @param roll        known body roll angle.
+     * @param pitch       known body pitch angle.
+     * @param result      instance where body yaw angle (a.k.a. true heading)
+     *                    will be stored.
+     * @see WMMEarthMagneticFluxDensityEstimator
+     * @see EarthMagneticFluxDensityEstimator
+     */
+    public static void getYawAsAngle(
+            final BodyMagneticFluxDensity b, final Angle declination,
+            final Angle roll, final Angle pitch, final Angle result) {
+<span class="fc" id="L1516">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L1517">        result.setValue(getYaw(b, declination, roll, pitch));</span>
+<span class="fc" id="L1518">    }</span>
+
+    /**
+     * Returns body yaw angle resolved around NED frame.
+     * Yaw angle represents the true heading, and indicates the angle respect
+     * the true geographic north.
+     *
+     * @param b           measured magnetic flux density resolved around body axes.
+     * @param declination declination angle of Earth magnetic flux density
+     *                    at current Earth position and instant. Declination
+     *                    angle changes depending on instant and location.
+     *                    Declination angle can be obtained through
+     *                    {@link WMMEarthMagneticFluxDensityEstimator#getDeclination(NEDPosition, Date)}
+     *                    or using {@link EarthMagneticFluxDensityEstimator#getDeclination(NEDMagneticFluxDensity)}
+     * @param roll        known body roll angle.
+     * @param pitch       known body pitch angle.
+     * @return body yaw angle (a.k.a. true heading).
+     * @see WMMEarthMagneticFluxDensityEstimator
+     * @see EarthMagneticFluxDensityEstimator
+     */
+    public static Angle getYawAsAngle(
+            final BodyMagneticFluxDensity b, final Angle declination, final Angle roll, final Angle pitch) {
+<span class="fc" id="L1540">        return new Angle(getYaw(b, declination, roll, pitch), AngleUnit.RADIANS);</span>
+    }
+
+    /**
+     * Converts a given distance instance into meters.
+     *
+     * @param distance distance to be converted.
+     * @return converted value expressed in meters.
+     */
+    private static double convertDistance(final Distance distance) {
+<span class="fc" id="L1550">        return DistanceConverter.convert(distance.getValue().doubleValue(), distance.getUnit(), DistanceUnit.METER);</span>
+    }
+
+    /**
+     * Converts a given angle instance into radians.
+     *
+     * @param angle angle to be converted.
+     * @return converted value expressed in radians.
+     */
+    private static double convertAngle(final Angle angle) {
+<span class="fc" id="L1560">        return AngleConverter.convert(angle.getValue().doubleValue(), angle.getUnit(), AngleUnit.RADIANS);</span>
+    }
+
+    /**
+     * Converts an instance of acceleration to meters per squared second (m/s^2).
+     *
+     * @param acceleration acceleration instance to be converted.
+     * @return converted acceleration value.
+     */
+    private static double convertAcceleration(final Acceleration acceleration) {
+<span class="fc" id="L1570">        return AccelerationConverter.convert(acceleration.getValue().doubleValue(), acceleration.getUnit(),</span>
+                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

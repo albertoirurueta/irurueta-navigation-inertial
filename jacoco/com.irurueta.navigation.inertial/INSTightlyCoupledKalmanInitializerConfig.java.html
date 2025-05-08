@@ -1,0 +1,643 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>INSTightlyCoupledKalmanInitializerConfig.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-inertial</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.inertial</a> &gt; <span class="el_source">INSTightlyCoupledKalmanInitializerConfig.java</span></div><h1>INSTightlyCoupledKalmanInitializerConfig.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2019 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.inertial;
+
+import com.irurueta.units.*;
+
+import java.io.Serial;
+import java.io.Serializable;
+import java.util.Objects;
+
+/**
+ * Contains INS/GNS Tightly Coupled Kalman filter configuration parameters (usually
+ * obtained through calibration) to determine the system noise covariance matrix.
+ */
+public class INSTightlyCoupledKalmanInitializerConfig implements Serializable, Cloneable {
+
+    /**
+     * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
+     * instances.
+     */
+    @Serial
+    private static final long serialVersionUID = 0L;
+
+    /**
+     * Initial attitude uncertainty per axis expressed in radians (rad).
+     */
+    private double initialAttitudeUncertainty;
+
+    /**
+     * Initial velocity uncertainty per axis expressed in meters per second (m/s).
+     */
+    private double initialVelocityUncertainty;
+
+    /**
+     * Initial position uncertainty per axis expressed in meters (m).
+     */
+    private double initialPositionUncertainty;
+
+    /**
+     * Initial acceleration bias uncertainty expressed in meters per squared second (m/s^2).
+     */
+    private double initialAccelerationBiasUncertainty;
+
+    /**
+     * Initial gyroscope bias uncertainty expressed in radians per second (rad/s).
+     */
+    private double initialGyroscopeBiasUncertainty;
+
+    /**
+     * Initial clock offset uncertainty per axis expressed in meters (m).
+     */
+    private double initialClockOffsetUncertainty;
+
+    /**
+     * Initial clock drift uncertainty per axis expressed in meters per second (m/s).
+     */
+    private double initialClockDriftUncertainty;
+
+    /**
+     * Constructor.
+     */
+<span class="fc" id="L75">    public INSTightlyCoupledKalmanInitializerConfig() {</span>
+<span class="fc" id="L76">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialAttitudeUncertainty         initial attitude uncertainty per axis
+     *                                           expressed in radians (rad).
+     * @param initialVelocityUncertainty         initial velocity uncertainty per axis
+     *                                           expressed in meters per second (m/s).
+     * @param initialPositionUncertainty         initial position uncertainty per axis
+     *                                           expressed in meters (m).
+     * @param initialAccelerationBiasUncertainty initial acceleration bias uncertainty
+     *                                           expressed in meters per squared second (m/s^2).
+     * @param initialGyroscopeBiasUncertainty    initial gyroscope bias uncertainty
+     *                                           expressed in radians per second (rad/s).
+     * @param initialClockOffsetUncertainty      initial clock offset uncertainty per axis
+     *                                           expressed in meters (m).
+     * @param initialClockDriftUncertainty       initial clock drift uncertainty per axis
+     *                                           expressed in meters per second (m/s).
+     */
+    public INSTightlyCoupledKalmanInitializerConfig(
+            final double initialAttitudeUncertainty, final double initialVelocityUncertainty,
+            final double initialPositionUncertainty, final double initialAccelerationBiasUncertainty,
+            final double initialGyroscopeBiasUncertainty, final double initialClockOffsetUncertainty,
+<span class="fc" id="L100">            final double initialClockDriftUncertainty) {</span>
+<span class="fc" id="L101">        setValues(initialAttitudeUncertainty, initialVelocityUncertainty, initialPositionUncertainty,</span>
+                initialAccelerationBiasUncertainty, initialGyroscopeBiasUncertainty, initialClockOffsetUncertainty,
+                initialClockDriftUncertainty);
+<span class="fc" id="L104">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialAttitudeUncertainty         initial attitude uncertainty per axis.
+     * @param initialVelocityUncertainty         initial velocity uncertainty per axis.
+     * @param initialPositionUncertainty         initial position uncertainty per axis.
+     * @param initialAccelerationBiasUncertainty initial acceleration bias uncertainty.
+     * @param initialGyroscopeBiasUncertainty    initial gyroscope bias uncertainty.
+     * @param initialClockOffsetUncertainty      initial clock offset uncertainty per axis.
+     * @param initialClockDriftUncertainty       initial clock drift uncertainty per axis.
+     */
+    public INSTightlyCoupledKalmanInitializerConfig(
+            final Angle initialAttitudeUncertainty, final Speed initialVelocityUncertainty,
+            final Distance initialPositionUncertainty, final Acceleration initialAccelerationBiasUncertainty,
+            final AngularSpeed initialGyroscopeBiasUncertainty, final Distance initialClockOffsetUncertainty,
+<span class="fc" id="L121">            final Speed initialClockDriftUncertainty) {</span>
+<span class="fc" id="L122">        setValues(initialAttitudeUncertainty, initialVelocityUncertainty, initialPositionUncertainty,</span>
+                initialAccelerationBiasUncertainty, initialGyroscopeBiasUncertainty, initialClockOffsetUncertainty,
+                initialClockDriftUncertainty);
+<span class="fc" id="L125">    }</span>
+
+    /**
+     * Copy constructor.
+     *
+     * @param input input instance to copy data from.
+     */
+<span class="fc" id="L132">    public INSTightlyCoupledKalmanInitializerConfig(final INSTightlyCoupledKalmanInitializerConfig input) {</span>
+<span class="fc" id="L133">        copyFrom(input);</span>
+<span class="fc" id="L134">    }</span>
+
+    /**
+     * Gets initial attitude uncertainty per axis expressed in radians (rad).
+     *
+     * @return initial attitude uncertainty per axis expressed in radians (rad).
+     */
+    public double getInitialAttitudeUncertainty() {
+<span class="fc" id="L142">        return initialAttitudeUncertainty;</span>
+    }
+
+    /**
+     * Sets initial attitude uncertainty per axis expressed in radians (rad).
+     *
+     * @param initialAttitudeUncertainty initial attitude uncertainty per axis expressed
+     *                                   in radians (rad).
+     */
+    public void setInitialAttitudeUncertainty(final double initialAttitudeUncertainty) {
+<span class="fc" id="L152">        this.initialAttitudeUncertainty = initialAttitudeUncertainty;</span>
+<span class="fc" id="L153">    }</span>
+
+    /**
+     * Gets initial attitude uncertainty per axis.
+     *
+     * @param result instance where initial attitude uncertainty per axis will be stored.
+     */
+    public void getInitialAttitudeUncertaintyAngle(final Angle result) {
+<span class="fc" id="L161">        result.setValue(initialAttitudeUncertainty);</span>
+<span class="fc" id="L162">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L163">    }</span>
+
+    /**
+     * Gets initial attitude uncertainty per axis.
+     *
+     * @return initial attitude uncertainty per axis.
+     */
+    public Angle getInitialAttitudeUncertaintyAngle() {
+<span class="fc" id="L171">        return new Angle(initialAttitudeUncertainty, AngleUnit.RADIANS);</span>
+    }
+
+    /**
+     * Sets initial attitude uncertainty per axis.
+     *
+     * @param initialAttitudeUncertainty initial attitude uncertainty per axis.
+     */
+    public void setInitialAttitudeUncertainty(final Angle initialAttitudeUncertainty) {
+<span class="fc" id="L180">        this.initialAttitudeUncertainty = AngleConverter.convert(initialAttitudeUncertainty.getValue().doubleValue(),</span>
+<span class="fc" id="L181">                initialAttitudeUncertainty.getUnit(), AngleUnit.RADIANS);</span>
+<span class="fc" id="L182">    }</span>
+
+    /**
+     * Gets initial velocity uncertainty per axis expressed in meters per second (m/s).
+     *
+     * @return initial velocity uncertainty per axis expressed in meters per second (m/s).
+     */
+    public double getInitialVelocityUncertainty() {
+<span class="fc" id="L190">        return initialVelocityUncertainty;</span>
+    }
+
+    /**
+     * Sets initial velocity uncertainty per axis expressed in meters per second (m/s).
+     *
+     * @param initialVelocityUncertainty initial velocity uncertainty per axis expressed
+     *                                   in meters per second (m/s).
+     */
+    public void setInitialVelocityUncertainty(final double initialVelocityUncertainty) {
+<span class="fc" id="L200">        this.initialVelocityUncertainty = initialVelocityUncertainty;</span>
+<span class="fc" id="L201">    }</span>
+
+    /**
+     * Gets initial velocity uncertainty per axis.
+     *
+     * @param result instance where initial attitude uncertainty per axis will be stored.
+     */
+    public void getInitialVelocityUncertaintySpeed(final Speed result) {
+<span class="fc" id="L209">        result.setValue(initialVelocityUncertainty);</span>
+<span class="fc" id="L210">        result.setUnit(SpeedUnit.METERS_PER_SECOND);</span>
+<span class="fc" id="L211">    }</span>
+
+    /**
+     * Gets initial velocity uncertainty per axis.
+     *
+     * @return initial velocity uncertainty per axis.
+     */
+    public Speed getInitialVelocityUncertaintySpeed() {
+<span class="fc" id="L219">        return new Speed(initialVelocityUncertainty, SpeedUnit.METERS_PER_SECOND);</span>
+    }
+
+    /**
+     * Sets initial velocity uncertainty per axis.
+     *
+     * @param initialVelocityUncertainty initial velocity uncertainty per axis.
+     */
+    public void setInitialVelocityUncertainty(final Speed initialVelocityUncertainty) {
+<span class="fc" id="L228">        this.initialVelocityUncertainty = SpeedConverter.convert(</span>
+<span class="fc" id="L229">                initialVelocityUncertainty.getValue().doubleValue(), initialVelocityUncertainty.getUnit(),</span>
+                SpeedUnit.METERS_PER_SECOND);
+<span class="fc" id="L231">    }</span>
+
+    /**
+     * Gets initial position uncertainty per axis expressed in meters (m)
+     *
+     * @return initial position uncertainty per axis expressed in meters (m).
+     */
+    public double getInitialPositionUncertainty() {
+<span class="fc" id="L239">        return initialPositionUncertainty;</span>
+    }
+
+    /**
+     * Sets initial position uncertainty per axis expressed in meters (m)
+     *
+     * @param initialPositionUncertainty initial position uncertainty per axis expressed
+     *                                   in meters (m).
+     */
+    public void setInitialPositionUncertainty(final double initialPositionUncertainty) {
+<span class="fc" id="L249">        this.initialPositionUncertainty = initialPositionUncertainty;</span>
+<span class="fc" id="L250">    }</span>
+
+    /**
+     * Gets initial position uncertainty per axis.
+     *
+     * @param result instance where initial position uncertainty per axis will be stored.
+     */
+    public void getInitialPositionUncertaintyDistance(final Distance result) {
+<span class="fc" id="L258">        result.setValue(initialPositionUncertainty);</span>
+<span class="fc" id="L259">        result.setUnit(DistanceUnit.METER);</span>
+<span class="fc" id="L260">    }</span>
+
+    /**
+     * Gets initial position uncertainty per axis.
+     *
+     * @return initial position uncertainty per axis.
+     */
+    public Distance getInitialPositionUncertaintyDistance() {
+<span class="fc" id="L268">        return new Distance(initialPositionUncertainty, DistanceUnit.METER);</span>
+    }
+
+    /**
+     * Sets initial position uncertainty per axis.
+     *
+     * @param initialPositionUncertainty initial position uncertainty per axis.
+     */
+    public void setInitialPositionUncertainty(final Distance initialPositionUncertainty) {
+<span class="fc" id="L277">        this.initialPositionUncertainty = DistanceConverter.convert(initialPositionUncertainty.getValue().doubleValue(),</span>
+<span class="fc" id="L278">                initialPositionUncertainty.getUnit(), DistanceUnit.METER);</span>
+<span class="fc" id="L279">    }</span>
+
+    /**
+     * Gets initial acceleration bias uncertainty expressed in meters per squared second (m/s^2).
+     *
+     * @return initial acceleration bias uncertainty expressed in meters per squared second (m/s^2).
+     */
+    public double getInitialAccelerationBiasUncertainty() {
+<span class="fc" id="L287">        return initialAccelerationBiasUncertainty;</span>
+    }
+
+    /**
+     * Sets initial acceleration bias uncertainty expressed in meters per squared second (m/s^2).
+     *
+     * @param initialAccelerationBiasUncertainty initial acceleration bias uncertainty expressed in
+     *                                           meters per squared second (m/s^2).
+     */
+    public void setInitialAccelerationBiasUncertainty(final double initialAccelerationBiasUncertainty) {
+<span class="fc" id="L297">        this.initialAccelerationBiasUncertainty = initialAccelerationBiasUncertainty;</span>
+<span class="fc" id="L298">    }</span>
+
+    /**
+     * Gets initial acceleration bias uncertainty.
+     *
+     * @param result instance where initial acceleration bias uncertainty will be stored.
+     */
+    public void getInitialAccelerationBiasUncertaintyAcceleration(final Acceleration result) {
+<span class="fc" id="L306">        result.setValue(initialAccelerationBiasUncertainty);</span>
+<span class="fc" id="L307">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L308">    }</span>
+
+    /**
+     * Gets initial acceleration bias uncertainty.
+     *
+     * @return initial acceleration bias uncertainty.
+     */
+    public Acceleration getInitialAccelerationBiasUncertaintyAcceleration() {
+<span class="fc" id="L316">        return new Acceleration(initialAccelerationBiasUncertainty, AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+    }
+
+    /**
+     * Sets initial acceleration bias uncertainty.
+     *
+     * @param initialAccelerationUncertainty initial acceleration bias uncertainty.
+     */
+    public void setInitialAccelerationBiasUncertainty(final Acceleration initialAccelerationUncertainty) {
+<span class="fc" id="L325">        initialAccelerationBiasUncertainty = AccelerationConverter.convert(</span>
+<span class="fc" id="L326">                initialAccelerationUncertainty.getValue().doubleValue(), initialAccelerationUncertainty.getUnit(),</span>
+                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+<span class="fc" id="L328">    }</span>
+
+    /**
+     * Gets initial gyroscope bias uncertainty expressed in radians per second (rad/s).
+     *
+     * @return initial gyroscope bias uncertainty expressed in radians per second (rad/s).
+     */
+    public double getInitialGyroscopeBiasUncertainty() {
+<span class="fc" id="L336">        return initialGyroscopeBiasUncertainty;</span>
+    }
+
+    /**
+     * Sets initial gyroscope bias uncertainty expressed in radians per second (rad/s).
+     *
+     * @param initialGyroscopeBiasUncertainty initial gyroscope bias uncertainty expressed
+     *                                        in radians per second (rad/s).
+     */
+    public void setInitialGyroscopeBiasUncertainty(final double initialGyroscopeBiasUncertainty) {
+<span class="fc" id="L346">        this.initialGyroscopeBiasUncertainty = initialGyroscopeBiasUncertainty;</span>
+<span class="fc" id="L347">    }</span>
+
+    /**
+     * Gets initial gyroscope bias uncertainty.
+     *
+     * @param result instance where initial gyroscope bias uncertainty will be stored.
+     */
+    public void getInitialGyroscopeBiasUncertaintyAngularSpeed(final AngularSpeed result) {
+<span class="fc" id="L355">        result.setValue(initialGyroscopeBiasUncertainty);</span>
+<span class="fc" id="L356">        result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+<span class="fc" id="L357">    }</span>
+
+    /**
+     * Gets initial gyroscope bias uncertainty.
+     *
+     * @return initial gyroscope bias uncertainty.
+     */
+    public AngularSpeed getInitialGyroscopeBiasUncertaintyAngularSpeed() {
+<span class="fc" id="L365">        return new AngularSpeed(initialGyroscopeBiasUncertainty, AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+    }
+
+    /**
+     * Sets initial gyroscope bias uncertainty.
+     *
+     * @param initialGyroscopeBiasUncertainty initial gyroscope bias uncertainty.
+     */
+    public void setInitialGyroscopeBiasUncertainty(final AngularSpeed initialGyroscopeBiasUncertainty) {
+<span class="fc" id="L374">        this.initialGyroscopeBiasUncertainty = AngularSpeedConverter.convert(</span>
+<span class="fc" id="L375">                initialGyroscopeBiasUncertainty.getValue().doubleValue(), initialGyroscopeBiasUncertainty.getUnit(),</span>
+                AngularSpeedUnit.RADIANS_PER_SECOND);
+<span class="fc" id="L377">    }</span>
+
+    /**
+     * Gets initial clock offset uncertainty per axis expressed in meters (m).
+     *
+     * @return initial clock offset uncertainty per axis expressed in meters (m).
+     */
+    public double getInitialClockOffsetUncertainty() {
+<span class="fc" id="L385">        return initialClockOffsetUncertainty;</span>
+    }
+
+    /**
+     * Sets initial clock offset uncertainty per axis expressed in meters (m).
+     *
+     * @param initialClockOffsetUncertainty initial clock offset uncertainty per
+     *                                      axis expressed in meters (m).
+     */
+    public void setInitialClockOffsetUncertainty(final double initialClockOffsetUncertainty) {
+<span class="fc" id="L395">        this.initialClockOffsetUncertainty = initialClockOffsetUncertainty;</span>
+<span class="fc" id="L396">    }</span>
+
+    /**
+     * Gets initial clock offset uncertainty per axis.
+     *
+     * @param result instance where initial clock offset uncertainty per axis will be stored.
+     */
+    public void getInitialClockOffsetUncertaintyDistance(final Distance result) {
+<span class="fc" id="L404">        result.setValue(initialClockOffsetUncertainty);</span>
+<span class="fc" id="L405">        result.setUnit(DistanceUnit.METER);</span>
+<span class="fc" id="L406">    }</span>
+
+    /**
+     * Gets initial clock offset uncertainty per axis.
+     *
+     * @return initial clock offset uncertainty per axis.
+     */
+    public Distance getInitialClockOffsetUncertaintyDistance() {
+<span class="fc" id="L414">        return new Distance(initialClockOffsetUncertainty, DistanceUnit.METER);</span>
+    }
+
+    /**
+     * Sets initial clock offset uncertainty per axis.
+     *
+     * @param initialClockOffsetUncertainty initial clock offset uncertainty per axis.
+     */
+    public void setInitialClockOffsetUncertainty(final Distance initialClockOffsetUncertainty) {
+<span class="fc" id="L423">        this.initialClockOffsetUncertainty = DistanceConverter.convert(</span>
+<span class="fc" id="L424">                initialClockOffsetUncertainty.getValue().doubleValue(), initialClockOffsetUncertainty.getUnit(),</span>
+                DistanceUnit.METER);
+<span class="fc" id="L426">    }</span>
+
+    /**
+     * Gets initial clock drift uncertainty per axis expressed in meters per second (m/s).
+     *
+     * @return initial clock drift uncertainty per axis expressed in meters per second (m/s).
+     */
+    public double getInitialClockDriftUncertainty() {
+<span class="fc" id="L434">        return initialClockDriftUncertainty;</span>
+    }
+
+    /**
+     * Sets initial clock drift uncertainty per axis expressed in meters per second (m/s).
+     *
+     * @param initialClockDriftUncertainty initial clock drift uncertainty per axis expressed
+     *                                     in meters per second (m/s).
+     */
+    public void setInitialClockDriftUncertainty(final double initialClockDriftUncertainty) {
+<span class="fc" id="L444">        this.initialClockDriftUncertainty = initialClockDriftUncertainty;</span>
+<span class="fc" id="L445">    }</span>
+
+    /**
+     * Gets initial clock drift uncertainty per axis.
+     *
+     * @param result instance where initial clock drift uncertainty per axis will be stored.
+     */
+    public void getInitialClockDriftUncertaintySpeed(final Speed result) {
+<span class="fc" id="L453">        result.setValue(initialClockDriftUncertainty);</span>
+<span class="fc" id="L454">        result.setUnit(SpeedUnit.METERS_PER_SECOND);</span>
+<span class="fc" id="L455">    }</span>
+
+    /**
+     * Gets initial clock drift uncertainty per axis.
+     *
+     * @return initial clock drift uncertainty per axis.
+     */
+    public Speed getInitialClockDriftUncertaintySpeed() {
+<span class="fc" id="L463">        return new Speed(initialClockDriftUncertainty, SpeedUnit.METERS_PER_SECOND);</span>
+    }
+
+    /**
+     * Sets initial clock drift uncertainty per axis.
+     *
+     * @param initialClockDriftUncertainty initial clock drift uncertainty per axis.
+     */
+    public void setInitialClockDriftUncertainty(final Speed initialClockDriftUncertainty) {
+<span class="fc" id="L472">        this.initialClockDriftUncertainty = SpeedConverter.convert(</span>
+<span class="fc" id="L473">                initialClockDriftUncertainty.getValue().doubleValue(),</span>
+<span class="fc" id="L474">                initialClockDriftUncertainty.getUnit(),</span>
+                SpeedUnit.METERS_PER_SECOND);
+<span class="fc" id="L476">    }</span>
+
+    /**
+     * Sets configuration parameters.
+     *
+     * @param initialAttitudeUncertainty         initial attitude uncertainty per axis
+     *                                           expressed in radians (rad).
+     * @param initialVelocityUncertainty         initial velocity uncertainty per axis
+     *                                           expressed in meters per second (m/s).
+     * @param initialPositionUncertainty         initial position uncertainty per axis
+     *                                           expressed in meters (m).
+     * @param initialAccelerationBiasUncertainty initial acceleration bias uncertainty
+     *                                           expressed in meters per squared second (m/s^2).
+     * @param initialGyroscopeBiasUncertainty    initial gyroscope bias uncertainty
+     *                                           expressed in radians per second (rad/s).
+     * @param initialClockOffsetUncertainty      initial clock offset uncertainty per axis
+     *                                           expressed in meters (m).
+     * @param initialClockDriftUncertainty       initial clock drift uncertainty per axis
+     *                                           expressed in meters per second (m/s).
+     */
+    public void setValues(
+            final double initialAttitudeUncertainty, final double initialVelocityUncertainty,
+            final double initialPositionUncertainty, final double initialAccelerationBiasUncertainty,
+            final double initialGyroscopeBiasUncertainty, final double initialClockOffsetUncertainty,
+            final double initialClockDriftUncertainty) {
+<span class="fc" id="L501">        this.initialAttitudeUncertainty = initialAttitudeUncertainty;</span>
+<span class="fc" id="L502">        this.initialVelocityUncertainty = initialVelocityUncertainty;</span>
+<span class="fc" id="L503">        this.initialPositionUncertainty = initialPositionUncertainty;</span>
+<span class="fc" id="L504">        this.initialAccelerationBiasUncertainty = initialAccelerationBiasUncertainty;</span>
+<span class="fc" id="L505">        this.initialGyroscopeBiasUncertainty = initialGyroscopeBiasUncertainty;</span>
+<span class="fc" id="L506">        this.initialClockOffsetUncertainty = initialClockOffsetUncertainty;</span>
+<span class="fc" id="L507">        this.initialClockDriftUncertainty = initialClockDriftUncertainty;</span>
+<span class="fc" id="L508">    }</span>
+
+    /**
+     * Sets configuration parameters.
+     *
+     * @param initialAttitudeUncertainty         initial attitude uncertainty per axis.
+     * @param initialVelocityUncertainty         initial velocity uncertainty per axis.
+     * @param initialPositionUncertainty         initial position uncertainty per axis.
+     * @param initialAccelerationBiasUncertainty initial acceleration bias uncertainty.
+     * @param initialGyroscopeBiasUncertainty    initial gyroscope bias uncertainty.
+     * @param initialClockOffsetUncertainty      initial clock offset uncertainty per axis.
+     * @param initialClockDriftUncertainty       initial clock drift uncertainty per axis.
+     */
+    public void setValues(
+            final Angle initialAttitudeUncertainty, final Speed initialVelocityUncertainty,
+            final Distance initialPositionUncertainty, final Acceleration initialAccelerationBiasUncertainty,
+            final AngularSpeed initialGyroscopeBiasUncertainty, final Distance initialClockOffsetUncertainty,
+            final Speed initialClockDriftUncertainty) {
+<span class="fc" id="L526">        setInitialAttitudeUncertainty(initialAttitudeUncertainty);</span>
+<span class="fc" id="L527">        setInitialVelocityUncertainty(initialVelocityUncertainty);</span>
+<span class="fc" id="L528">        setInitialPositionUncertainty(initialPositionUncertainty);</span>
+<span class="fc" id="L529">        setInitialAccelerationBiasUncertainty(initialAccelerationBiasUncertainty);</span>
+<span class="fc" id="L530">        setInitialGyroscopeBiasUncertainty(initialGyroscopeBiasUncertainty);</span>
+<span class="fc" id="L531">        setInitialClockOffsetUncertainty(initialClockOffsetUncertainty);</span>
+<span class="fc" id="L532">        setInitialClockDriftUncertainty(initialClockDriftUncertainty);</span>
+<span class="fc" id="L533">    }</span>
+
+    /**
+     * Copies this instance data into provided instance.
+     *
+     * @param output destination instance where data will be copied to.
+     */
+    public void copyTo(final INSTightlyCoupledKalmanInitializerConfig output) {
+<span class="fc" id="L541">        output.initialAttitudeUncertainty = initialAttitudeUncertainty;</span>
+<span class="fc" id="L542">        output.initialVelocityUncertainty = initialVelocityUncertainty;</span>
+<span class="fc" id="L543">        output.initialPositionUncertainty = initialPositionUncertainty;</span>
+<span class="fc" id="L544">        output.initialAccelerationBiasUncertainty = initialAccelerationBiasUncertainty;</span>
+<span class="fc" id="L545">        output.initialGyroscopeBiasUncertainty = initialGyroscopeBiasUncertainty;</span>
+<span class="fc" id="L546">        output.initialClockOffsetUncertainty = initialClockOffsetUncertainty;</span>
+<span class="fc" id="L547">        output.initialClockDriftUncertainty = initialClockDriftUncertainty;</span>
+<span class="fc" id="L548">    }</span>
+
+    /**
+     * Copies data of provided instance into this instance.
+     *
+     * @param input instance to copy data from.
+     */
+    public void copyFrom(final INSTightlyCoupledKalmanInitializerConfig input) {
+<span class="fc" id="L556">        initialAttitudeUncertainty = input.initialAttitudeUncertainty;</span>
+<span class="fc" id="L557">        initialVelocityUncertainty = input.initialVelocityUncertainty;</span>
+<span class="fc" id="L558">        initialPositionUncertainty = input.initialPositionUncertainty;</span>
+<span class="fc" id="L559">        initialAccelerationBiasUncertainty = input.initialAccelerationBiasUncertainty;</span>
+<span class="fc" id="L560">        initialGyroscopeBiasUncertainty = input.initialGyroscopeBiasUncertainty;</span>
+<span class="fc" id="L561">        initialClockOffsetUncertainty = input.initialClockOffsetUncertainty;</span>
+<span class="fc" id="L562">        initialClockDriftUncertainty = input.initialClockDriftUncertainty;</span>
+<span class="fc" id="L563">    }</span>
+
+    /**
+     * Computes and returns hash code for this instance. Hash codes are almost unique
+     * values that are useful for fast classification and storage of objects in collections.
+     *
+     * @return Hash code.
+     */
+    @Override
+    public int hashCode() {
+<span class="fc" id="L573">        return Objects.hash(initialAttitudeUncertainty, initialVelocityUncertainty,</span>
+<span class="fc" id="L574">                initialPositionUncertainty, initialAccelerationBiasUncertainty,</span>
+<span class="fc" id="L575">                initialGyroscopeBiasUncertainty, initialClockOffsetUncertainty,</span>
+<span class="fc" id="L576">                initialClockDriftUncertainty);</span>
+    }
+
+    /**
+     * Checks if provided instance has exactly the same contents as this instance.
+     *
+     * @param obj instance to be compared.
+     * @return true if both instances are considered to be equal, false otherwise.
+     */
+    @Override
+    public boolean equals(final Object obj) {
+<span class="fc bfc" id="L587" title="All 2 branches covered.">        if (this == obj) {</span>
+<span class="fc" id="L588">            return true;</span>
+        }
+<span class="pc bpc" id="L590" title="2 of 4 branches missed.">        if (obj == null || getClass() != obj.getClass()) {</span>
+<span class="nc" id="L591">            return false;</span>
+        }
+<span class="fc" id="L593">        final var other = (INSTightlyCoupledKalmanInitializerConfig) obj;</span>
+<span class="fc" id="L594">        return equals(other);</span>
+    }
+
+    /**
+     * Checks if provided instance has exactly the same contents as this instance.
+     *
+     * @param other instance to be compared.
+     * @return true if both instances are considered to be equal, false otherwise.
+     */
+    public boolean equals(final INSTightlyCoupledKalmanInitializerConfig other) {
+<span class="fc" id="L604">        return equals(other, 0.0);</span>
+    }
+
+    /**
+     * Checks if provided instance has contents similar to this instance up to provided
+     * threshold value.
+     *
+     * @param other     instance to be compared.
+     * @param threshold maximum difference allowed for values.
+     * @return true if both instances are considered to be equal (up to provided threshold),
+     * false otherwise.
+     */
+    public boolean equals(final INSTightlyCoupledKalmanInitializerConfig other, final double threshold) {
+<span class="fc bfc" id="L617" title="All 2 branches covered.">        if (other == null) {</span>
+<span class="fc" id="L618">            return false;</span>
+        }
+
+<span class="fc bfc" id="L621" title="All 2 branches covered.">        return Math.abs(initialAttitudeUncertainty - other.initialAttitudeUncertainty) &lt;= threshold</span>
+<span class="pc bpc" id="L622" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(initialVelocityUncertainty - other.initialVelocityUncertainty) &lt;= threshold</span>
+<span class="pc bpc" id="L623" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(initialPositionUncertainty - other.initialPositionUncertainty) &lt;= threshold</span>
+<span class="pc bpc" id="L624" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(initialAccelerationBiasUncertainty - other.initialAccelerationBiasUncertainty) &lt;= threshold</span>
+<span class="pc bpc" id="L625" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(initialGyroscopeBiasUncertainty - other.initialGyroscopeBiasUncertainty) &lt;= threshold</span>
+<span class="pc bpc" id="L626" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(initialClockOffsetUncertainty - other.initialClockOffsetUncertainty) &lt;= threshold</span>
+<span class="pc bpc" id="L627" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(initialClockDriftUncertainty - other.initialClockDriftUncertainty) &lt;= threshold;</span>
+    }
+
+    /**
+     * Makes a copy of this instance.
+     *
+     * @return a copy of this instance.
+     * @throws CloneNotSupportedException if clone fails for some reason.
+     */
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+<span class="fc" id="L638">        final var result = (INSTightlyCoupledKalmanInitializerConfig) super.clone();</span>
+<span class="fc" id="L639">        copyTo(result);</span>
+<span class="fc" id="L640">        return result;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

@@ -1,0 +1,3152 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BodyKinematicsBiasEstimator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-inertial</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.inertial.calibration.bias</a> &gt; <span class="el_source">BodyKinematicsBiasEstimator.java</span></div><h1>BodyKinematicsBiasEstimator.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2020 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.inertial.calibration.bias;
+
+import com.irurueta.algebra.Matrix;
+import com.irurueta.algebra.WrongSizeException;
+import com.irurueta.geometry.Point3D;
+import com.irurueta.navigation.LockedException;
+import com.irurueta.navigation.frames.CoordinateTransformation;
+import com.irurueta.navigation.frames.ECEFFrame;
+import com.irurueta.navigation.frames.ECEFPosition;
+import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeException;
+import com.irurueta.navigation.frames.NEDFrame;
+import com.irurueta.navigation.frames.NEDPosition;
+import com.irurueta.navigation.frames.converters.ECEFtoNEDFrameConverter;
+import com.irurueta.navigation.frames.converters.NEDtoECEFFrameConverter;
+import com.irurueta.navigation.inertial.BodyKinematics;
+import com.irurueta.navigation.inertial.calibration.AccelerationTriad;
+import com.irurueta.navigation.inertial.calibration.AngularSpeedTriad;
+import com.irurueta.navigation.inertial.estimators.ECEFKinematicsEstimator;
+import com.irurueta.units.Acceleration;
+import com.irurueta.units.AccelerationUnit;
+import com.irurueta.units.Angle;
+import com.irurueta.units.AngularSpeed;
+import com.irurueta.units.AngularSpeedUnit;
+import com.irurueta.units.Distance;
+import com.irurueta.units.Time;
+import com.irurueta.units.TimeConverter;
+import com.irurueta.units.TimeUnit;
+
+/**
+ * Approximately estimates accelerometer and gyroscope biases and noise PSD's
+ * by averaging all provided samples when body position and orientation is known
+ * while assuming that any cross coupling errors can be neglected.
+ * &lt;p&gt;
+ * This estimator must be used when the body where the accelerometer and gyroscope
+ * is attached remains static on the same position with zero velocity and no rotation
+ * speed while capturing data.
+ * &lt;p&gt;
+ * To compute PSD's this estimator assumes that accelerometer samples are obtained
+ * at a constant provided rate equal to {@link #getTimeInterval()} seconds.
+ * If not available, accelerometer and gyroscope sampling rate average can be
+ * estimated using {@link com.irurueta.navigation.inertial.calibration.TimeIntervalEstimator}.
+ * &lt;p&gt;
+ * Notice that in order to compute accelerometer and gyroscope biases, body position
+ * and orientation must be known to account for gravity and Earth rotation effects.
+ * &lt;p&gt;
+ * Even though this estimator obtains approximate bias values, the obtained
+ * result can be used to initialize some non-linear calibrators to obtain
+ * more accurate results. Such calibrators are:
+ * - com.irurueta.navigation.inertial.calibration.accelerometer.KnownFrameAccelerometerNonLinearLeastSquaresCalibrator
+ * - com.irurueta.navigation.inertial.calibration.accelerometer.KnownGravityNormAccelerometerCalibrator
+ * - com.irurueta.navigation.inertial.calibration.accelerometer.KnownPositionAccelerometerCalibrator}
+ * - com.irurueta.navigation.inertial.calibration.accelerometer.RobustKnownFrameAccelerometerCalibrator and
+ * any of its subclasses.
+ * - com.irurueta.navigation.inertial.calibration.accelerometer.RobustKnownGravityNormAccelerometerCalibrator
+ * and any of its subclasses.
+ * - com.irurueta.navigation.inertial.calibration.accelerometer.RobustKnownPositionAccelerometerCalibrator and
+ * any of its subclasses.
+ * - com.irurueta.navigation.inertial.calibration.gyroscope.KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator
+ * - com.irurueta.navigation.inertial.calibration.gyroscope.KnownBiasAndFrameGyroscopeNonLinearLeastSquaresCalibrator
+ * - com.irurueta.navigation.inertial.calibration.gyroscope.KnownBiasEasyGyroscopeCalibrator
+ * - com.irurueta.navigation.inertial.calibration.gyroscope.KnownBiasTurntableGyroscopeCalibrator
+ * - com.irurueta.navigation.inertial.calibration.gyroscope.RobustKnownBiasAndFrameGyroscopeCalibrator and any
+ * of its subclasses.
+ * - com.irurueta.navigation.inertial.calibration.gyroscope.RobustKnownBiasEasyGyroscopeCalibrator and any of
+ * its subclasses.
+ * - com.irurueta.navigation.inertial.calibration.gyroscope.RobustKnownBiasTurntableGyroscopeCalibrator and any
+ * of its subclasses.
+ * &lt;p&gt;
+ * Even though this estimator can compute noise PSD's, if only noise PSD's levels
+ * are required, estimators in {@link com.irurueta.navigation.inertial.calibration.noise} package should
+ * be used instead.
+ * &lt;p&gt;
+ * This estimator does NOT compute average bias values over a period of time, it only
+ * computes accumulated averages.
+ */
+public class BodyKinematicsBiasEstimator {
+
+    /**
+     * Default time interval between kinematics samples expressed in seconds (s).
+     */
+    public static final double DEFAULT_TIME_INTERVAL_SECONDS = 0.02;
+
+    /**
+     * Time interval expressed in seconds (s) between body kinematics samples.
+     */
+<span class="fc" id="L101">    private double timeInterval = DEFAULT_TIME_INTERVAL_SECONDS;</span>
+
+    /**
+     * Contains body position, velocity (which will always be zero) and orientation
+     * resolved around ECEF axes.
+     * By default it is assumed that body is located at zero NED coordinates (latitude,
+     * longitude and height) and with zero Euler angles representing rotation (roll = 0,
+     * pith = 0, yaw = 0), which for Android devices it means that the device is flat
+     * on a horizontal surface with the screen facing down.
+     */
+    private final ECEFFrame frame;
+
+    /**
+     * Listener to handle events raised by this estimator.
+     */
+    private BodyKinematicsBiasEstimatorListener listener;
+
+    /**
+     * Last provided body kinematics values.
+     */
+    private BodyKinematics lastBodyKinematics;
+
+    /**
+     * Contains estimated bias of x coordinate of accelerometer sensed specific force
+     * expressed in meters per squared second (m/s^2).
+     */
+    private double biasFx;
+
+    /**
+     * Contains estimated bias of y coordinate of accelerometer sensed specific force
+     * expressed in meters per squared second (m/s^2).
+     */
+    private double biasFy;
+
+    /**
+     * Contains estimated bias of z coordinate of accelerometer sensed specific force
+     * expressed in meters per squared second (m/s^2).
+     */
+    private double biasFz;
+
+    /**
+     * Contains estimated bias of x coordinate of gyroscope sensed angular rate
+     * expressed in radians per second (rad/s).
+     */
+    private double biasAngularRateX;
+
+    /**
+     * Contains estimated bias of y coordinate of gyroscope sensed angular rate
+     * expressed in radians per second (rad/s).
+     */
+    private double biasAngularRateY;
+
+    /**
+     * Contains estimated bias of z coordinate of gyroscope sensed angular rate
+     * expressed in radians per second (rad/s).
+     */
+    private double biasAngularRateZ;
+
+    /**
+     * Contains estimated variance of x coordinate of accelerometer sensed specific
+     * force expressed in (m^2/s^4).
+     */
+    private double varianceFx;
+
+    /**
+     * Contains estimated variance of y coordinate of accelerometer sensed specific
+     * force expressed in (m^2/s^4).
+     */
+    private double varianceFy;
+
+    /**
+     * Contains estimated variance of z coordinate of accelerometer sensed specific
+     * force expressed in (m^2/s4).
+     */
+    private double varianceFz;
+
+    /**
+     * Contains estimated variance of x coordinate of gyroscope sensed angular rate
+     * expressed in (rad^2/s^2).
+     */
+    private double varianceAngularRateX;
+
+    /**
+     * Contains estimated variance of y coordinate of gyroscope sensed angular rate
+     * expressed in (rad^2/s^2).
+     */
+    private double varianceAngularRateY;
+
+    /**
+     * Contains estimated variance of z coordinate of gyroscope sensed angular rate
+     * expressed in (rad^2/s^2).
+     */
+    private double varianceAngularRateZ;
+
+    /**
+     * Number of processed body kinematics samples.
+     */
+    private int numberOfProcessedSamples;
+
+    /**
+     * Number of processed body kinematics samples plus one.
+     */
+<span class="fc" id="L203">    private int numberOfProcessedSamplesPlusOne = 1;</span>
+
+    /**
+     * Indicates that estimator is running.
+     */
+    private boolean running;
+
+    /**
+     * Theoretical expected body kinematics for provided body position and orientation,
+     * and provided time interval, assuming that body remains at the same position
+     * (zero velocity).
+     * When body remains static, sensed specific force and angular rates will remain
+     * constant due to gravity and Earth rotation.
+     */
+    private BodyKinematics expectedKinematics;
+
+    /**
+     * Constructor.
+     * It is assumed that body is located at zero NED coordinates (latitude = 0,
+     * longitude = 0 and height = 0) and with zero Euler angles representing rotation
+     * (roll = 0, pith = 0, yaw = 0), which for Android devices it means that the
+     * device is flat on a horizontal surface with the screen facing down.
+     */
+<span class="fc" id="L226">    public BodyKinematicsBiasEstimator() {</span>
+<span class="fc" id="L227">        frame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(new NEDFrame());</span>
+<span class="fc" id="L228">        rebuildExpectedKinematics();</span>
+<span class="fc" id="L229">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body is located at zero NED coordinates (latitude = 0,
+     * longitude = 0, and height = 0) with provided orientation.
+     *
+     * @param nedC coordinate transformation from body to local navigation
+     *             (NED) coordinates. This contains orientation respect the horizon
+     *             at current body location.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not
+     *                                                       from body to local
+     *                                                       navigation coordinates.
+     */
+    public BodyKinematicsBiasEstimator(final CoordinateTransformation nedC)
+<span class="fc" id="L245">            throws InvalidSourceAndDestinationFrameTypeException {</span>
+<span class="fc" id="L246">        frame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(new NEDFrame(nedC));</span>
+<span class="fc" id="L247">        rebuildExpectedKinematics();</span>
+<span class="fc" id="L248">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body has zero Euler angles representing rotation (roll = 0,
+     * pitch = 0, yaw = 0) respect the horizon at provided body location.
+     * For Android devices this means that the device is flat on a horizontal surface
+     * with the screen facing down.
+     *
+     * @param latitude  latitude expressed in radians (rad).
+     * @param longitude longitude expressed in radians (rad).
+     * @param height    height expressed in meters (m).
+     */
+<span class="fc" id="L261">    public BodyKinematicsBiasEstimator(final double latitude, final double longitude, final double height) {</span>
+<span class="fc" id="L262">        frame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(new NEDFrame(latitude, longitude, height));</span>
+<span class="fc" id="L263">        rebuildExpectedKinematics();</span>
+<span class="fc" id="L264">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body has zero Euler angles representing rotation (roll = 0,
+     * pitch = 0, yaw = 0) respect the horizon at provided body location.
+     * For Android devices this means that the device is flat on a horizontal surface
+     * with the screen facing down.
+     *
+     * @param latitude  latitude.
+     * @param longitude longitude.
+     * @param height    height expressed in meters (m).
+     */
+<span class="fc" id="L277">    public BodyKinematicsBiasEstimator(final Angle latitude, final Angle longitude, final double height) {</span>
+<span class="fc" id="L278">        frame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(new NEDFrame(latitude, longitude, height));</span>
+<span class="fc" id="L279">        rebuildExpectedKinematics();</span>
+<span class="fc" id="L280">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body has zero Euler angles representing rotation (roll = 0,
+     * pitch = 0, yaw = 0) respect the horizon at provided body location.
+     * For Android devices this means that the device is flat on a horizontal surface
+     * with the screen facing down.
+     *
+     * @param latitude  latitude.
+     * @param longitude longitude.
+     * @param height    height.
+     */
+<span class="fc" id="L293">    public BodyKinematicsBiasEstimator(final Angle latitude, final Angle longitude, final Distance height) {</span>
+<span class="fc" id="L294">        frame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(new NEDFrame(latitude, longitude, height));</span>
+<span class="fc" id="L295">        rebuildExpectedKinematics();</span>
+<span class="fc" id="L296">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position body position expressed in NED coordinates.
+     * @param nedC     coordinate transformation from body to local navigation
+     *                 (NED) coordinates. This contains orientation respect the
+     *                 horizon at current body location.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not
+     *                                                       from body to local
+     *                                                       navigation coordinates.
+     */
+    public BodyKinematicsBiasEstimator(final NEDPosition position, final CoordinateTransformation nedC)
+<span class="fc" id="L311">            throws InvalidSourceAndDestinationFrameTypeException {</span>
+<span class="fc" id="L312">        frame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(new NEDFrame(position, nedC));</span>
+<span class="fc" id="L313">        rebuildExpectedKinematics();</span>
+<span class="fc" id="L314">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position body position expressed in ECEF coordinates.
+     * @param nedC     coordinate transformation from body to local navigation
+     *                 (NED) coordinates. This contains orientation respect the
+     *                 horizon at current body location.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not
+     *                                                       from body to local
+     *                                                       navigation coordinates.
+     */
+    public BodyKinematicsBiasEstimator(final ECEFPosition position, final CoordinateTransformation nedC)
+<span class="fc" id="L329">            throws InvalidSourceAndDestinationFrameTypeException {</span>
+<span class="fc" id="L330">        frame = new ECEFFrame(position);</span>
+<span class="fc" id="L331">        final var nedFrame = ECEFtoNEDFrameConverter.convertECEFtoNEDAndReturnNew(frame);</span>
+<span class="fc" id="L332">        nedFrame.setCoordinateTransformation(nedC);</span>
+<span class="fc" id="L333">        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, frame);</span>
+<span class="fc" id="L334">        rebuildExpectedKinematics();</span>
+<span class="fc" id="L335">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body is located at zero NED coordinates (latitude = 0,
+     * longitude = 0 and height = 0) and with zero Euler angles representing rotation
+     * (roll = 0, pith = 0, yaw = 0), which for Android devices it means that the
+     * device is flat on a horizontal surface with the screen facing down.
+     *
+     * @param listener listener to handle events raised by this estimator.
+     */
+    public BodyKinematicsBiasEstimator(final BodyKinematicsBiasEstimatorListener listener) {
+<span class="fc" id="L347">        this();</span>
+<span class="fc" id="L348">        this.listener = listener;</span>
+<span class="fc" id="L349">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body is located at zero NED coordinates (latitude = 0,
+     * longitude = 0, and height = 0) with provided orientation.
+     *
+     * @param nedC     coordinate transformation from body to local navigation
+     *                 (NED) coordinates. This contains orientation respect the
+     *                 horizon at current body location.
+     * @param listener listener to handle events raised by this estimator.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not
+     *                                                       from body to local
+     *                                                       navigation coordinates.
+     */
+    public BodyKinematicsBiasEstimator(
+            final CoordinateTransformation nedC, final BodyKinematicsBiasEstimatorListener listener)
+            throws InvalidSourceAndDestinationFrameTypeException {
+<span class="fc" id="L368">        this(nedC);</span>
+<span class="fc" id="L369">        this.listener = listener;</span>
+<span class="fc" id="L370">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body has zero Euler angles representing rotation (roll = 0,
+     * pitch = 0, yaw = 0) respect the horizon at provided body location.
+     * For Android devices this means that the device is flat on a horizontal surface
+     * with the screen facing down.
+     *
+     * @param latitude  latitude expressed in radians (rad).
+     * @param longitude longitude expressed in radians (rad).
+     * @param height    height expressed in meters (m).
+     * @param listener  listener to handle events raised by this estimator.
+     */
+    public BodyKinematicsBiasEstimator(
+            final double latitude, final double longitude, final double height,
+            final BodyKinematicsBiasEstimatorListener listener) {
+<span class="fc" id="L387">        this(latitude, longitude, height);</span>
+<span class="fc" id="L388">        this.listener = listener;</span>
+<span class="fc" id="L389">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body has zero Euler angles representing rotation (roll = 0,
+     * pitch = 0, yaw = 0) respect the horizon at provided body location.
+     * For Android devices this means that the device is flat on a horizontal surface
+     * with the screen facing down.
+     *
+     * @param latitude  latitude.
+     * @param longitude longitude.
+     * @param height    height expressed in meters (m).
+     * @param listener  listener to handle events raised by this estimator.
+     */
+    public BodyKinematicsBiasEstimator(
+            final Angle latitude, final Angle longitude, final double height,
+            final BodyKinematicsBiasEstimatorListener listener) {
+<span class="fc" id="L406">        this(latitude, longitude, height);</span>
+<span class="fc" id="L407">        this.listener = listener;</span>
+<span class="fc" id="L408">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body has zero Euler angles representing rotation (roll = 0,
+     * pitch = 0, yaw = 0) respect the horizon at provided body location.
+     * For Android devices this means that the device is flat on a horizontal surface
+     * with the screen facing down.
+     *
+     * @param latitude  latitude.
+     * @param longitude longitude.
+     * @param height    height.
+     * @param listener  listener to handle events raised by this estimator.
+     */
+    public BodyKinematicsBiasEstimator(
+            final Angle latitude, final Angle longitude, final Distance height,
+            final BodyKinematicsBiasEstimatorListener listener) {
+<span class="fc" id="L425">        this(latitude, longitude, height);</span>
+<span class="fc" id="L426">        this.listener = listener;</span>
+<span class="fc" id="L427">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position body position expressed in NED coordinates.
+     * @param nedC     coordinate transformation from body to local navigation
+     *                 (NED) coordinates. This contains orientation respect the
+     *                 horizon at current body location.
+     * @param listener listener to handle events raised by this estimator.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not
+     *                                                       from body to local
+     *                                                       navigation coordinates.
+     */
+    public BodyKinematicsBiasEstimator(
+            final NEDPosition position, final CoordinateTransformation nedC,
+            final BodyKinematicsBiasEstimatorListener listener) throws InvalidSourceAndDestinationFrameTypeException {
+<span class="fc" id="L445">        this(position, nedC);</span>
+<span class="fc" id="L446">        this.listener = listener;</span>
+<span class="fc" id="L447">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position body position expressed in ECEF coordinates.
+     * @param nedC     coordinate transformation from body to local navigation
+     *                 (NED) coordinates. This contains orientation respect the
+     *                 horizon at current body location.
+     * @param listener listener to handle events raised by this estimator.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not
+     *                                                       from body to local
+     *                                                       navigation coordinates.
+     */
+    public BodyKinematicsBiasEstimator(
+            final ECEFPosition position, final CoordinateTransformation nedC,
+            final BodyKinematicsBiasEstimatorListener listener) throws InvalidSourceAndDestinationFrameTypeException {
+<span class="fc" id="L465">        this(position, nedC);</span>
+<span class="fc" id="L466">        this.listener = listener;</span>
+<span class="fc" id="L467">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body is located at zero NED coordinates (latitude = 0,
+     * longitude = 0 and height = 0) and with zero Euler angles representing rotation
+     * (roll = 0, pith = 0, yaw = 0), which for Android devices it means that the
+     * device is flat on a horizontal surface with the screen facing down.
+     *
+     * @param timeInterval time interval between body kinematics
+     *                     (IMU acceleration + gyroscope) samples
+     *                     expressed in seconds (s).
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public BodyKinematicsBiasEstimator(final double timeInterval) {
+<span class="fc" id="L482">        this();</span>
+        try {
+<span class="fc" id="L484">            setTimeInterval(timeInterval);</span>
+<span class="nc" id="L485">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L487">        }</span>
+<span class="fc" id="L488">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body is located at zero NED coordinates (latitude = 0,
+     * longitude = 0, and height = 0) with provided orientation.
+     *
+     * @param nedC         coordinate transformation from body to local navigation
+     *                     (NED) coordinates. This contains orientation respect the
+     *                     horizon at current body location.
+     * @param timeInterval time interval between body kinematics
+     *                     (IMU acceleration + gyroscope) samples
+     *                     expressed in seconds (s).
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not
+     *                                                       from body to local
+     *                                                       navigation coordinates.
+     * @throws IllegalArgumentException                      if provided time interval
+     *                                                       is negative.
+     */
+    public BodyKinematicsBiasEstimator(
+            final CoordinateTransformation nedC, final double timeInterval)
+            throws InvalidSourceAndDestinationFrameTypeException {
+<span class="fc" id="L511">        this(nedC);</span>
+        try {
+<span class="fc" id="L513">            setTimeInterval(timeInterval);</span>
+<span class="nc" id="L514">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L516">        }</span>
+<span class="fc" id="L517">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body has zero Euler angles representing rotation (roll = 0,
+     * pitch = 0, yaw = 0) respect the horizon at provided body location.
+     * For Android devices this means that the device is flat on a horizontal surface
+     * with the screen facing down.
+     *
+     * @param latitude     latitude expressed in radians (rad).
+     * @param longitude    longitude expressed in radians (rad).
+     * @param height       height expressed in meters (m).
+     * @param timeInterval time interval between body kinematics
+     *                     (IMU acceleration + gyroscope) samples
+     *                     expressed in seconds (s).
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public BodyKinematicsBiasEstimator(
+            final double latitude, final double longitude, final double height, final double timeInterval) {
+<span class="fc" id="L536">        this(latitude, longitude, height);</span>
+        try {
+<span class="fc" id="L538">            setTimeInterval(timeInterval);</span>
+<span class="nc" id="L539">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L541">        }</span>
+<span class="fc" id="L542">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body has zero Euler angles representing rotation (roll = 0,
+     * pitch = 0, yaw = 0) respect the horizon at provided body location.
+     * For Android devices this means that the device is flat on a horizontal surface
+     * with the screen facing down.
+     *
+     * @param latitude     latitude.
+     * @param longitude    longitude.
+     * @param height       height expressed in meters (m).
+     * @param timeInterval time interval between body kinematics
+     *                     (IMU acceleration + gyroscope) samples
+     *                     expressed in seconds (s).
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public BodyKinematicsBiasEstimator(
+            final Angle latitude, final Angle longitude, final double height, final double timeInterval) {
+<span class="fc" id="L561">        this(latitude, longitude, height);</span>
+        try {
+<span class="fc" id="L563">            setTimeInterval(timeInterval);</span>
+<span class="nc" id="L564">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L566">        }</span>
+<span class="fc" id="L567">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body has zero Euler angles representing rotation (roll = 0,
+     * pitch = 0, yaw = 0) respect the horizon at provided body location.
+     * For Android devices this means that the device is flat on a horizontal surface
+     * with the screen facing down.
+     *
+     * @param latitude     latitude.
+     * @param longitude    longitude.
+     * @param height       height.
+     * @param timeInterval time interval between body kinematics
+     *                     (IMU acceleration + gyroscope) samples
+     *                     expressed in seconds (s).
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public BodyKinematicsBiasEstimator(
+            final Angle latitude, final Angle longitude, final Distance height, final double timeInterval) {
+<span class="fc" id="L586">        this(latitude, longitude, height);</span>
+        try {
+<span class="fc" id="L588">            setTimeInterval(timeInterval);</span>
+<span class="nc" id="L589">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L591">        }</span>
+<span class="fc" id="L592">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position     body position expressed in NED coordinates.
+     * @param nedC         coordinate transformation from body to local navigation
+     *                     (NED) coordinates. This contains orientation respect the
+     *                     horizon at current body location.
+     * @param timeInterval time interval between body kinematics
+     *                     (IMU acceleration + gyroscope) samples
+     *                     expressed in seconds (s).
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not
+     *                                                       from body to local
+     *                                                       navigation coordinates.
+     * @throws IllegalArgumentException                      if provided time interval
+     *                                                       is negative.
+     */
+    public BodyKinematicsBiasEstimator(
+            final NEDPosition position, final CoordinateTransformation nedC, final double timeInterval)
+            throws InvalidSourceAndDestinationFrameTypeException {
+<span class="fc" id="L614">        this(position, nedC);</span>
+        try {
+<span class="fc" id="L616">            setTimeInterval(timeInterval);</span>
+<span class="nc" id="L617">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L619">        }</span>
+<span class="fc" id="L620">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position     body position expressed in ECEF coordinates.
+     * @param nedC         coordinate transformation from body to local navigation
+     *                     (NED) coordinates. This contains orientation respect the
+     *                     horizon at current body location.
+     * @param timeInterval time interval between body kinematics
+     *                     (IMU acceleration + gyroscope) samples
+     *                     expressed in seconds (s).
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not
+     *                                                       from body to local
+     *                                                       navigation coordinates.
+     * @throws IllegalArgumentException                      if provided time interval
+     *                                                       is negative.
+     */
+    public BodyKinematicsBiasEstimator(
+            final ECEFPosition position, final CoordinateTransformation nedC, final double timeInterval)
+            throws InvalidSourceAndDestinationFrameTypeException {
+<span class="fc" id="L642">        this(position, nedC);</span>
+        try {
+<span class="fc" id="L644">            setTimeInterval(timeInterval);</span>
+<span class="nc" id="L645">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L647">        }</span>
+<span class="fc" id="L648">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body is located at zero NED coordinates (latitude = 0,
+     * longitude = 0 and height = 0) and with zero Euler angles representing rotation
+     * (roll = 0, pith = 0, yaw = 0), which for Android devices it means that the
+     * device is flat on a horizontal surface with the screen facing down.
+     *
+     * @param timeInterval time interval between body kinematics
+     *                     (IMU acceleration + gyroscope) samples
+     *                     expressed in seconds (s).
+     * @param listener     listener to handle events raised by this estimator.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public BodyKinematicsBiasEstimator(final double timeInterval, final BodyKinematicsBiasEstimatorListener listener) {
+<span class="fc" id="L664">        this(timeInterval);</span>
+<span class="fc" id="L665">        this.listener = listener;</span>
+<span class="fc" id="L666">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body is located at zero NED coordinates (latitude = 0,
+     * longitude = 0, and height = 0) with provided orientation.
+     *
+     * @param nedC         coordinate transformation from body to local navigation
+     *                     (NED) coordinates. This contains orientation respect the
+     *                     horizon at current body location.
+     * @param timeInterval time interval between body kinematics
+     *                     (IMU acceleration + gyroscope) samples
+     *                     expressed in seconds (s).
+     * @param listener     listener to handle events raised by this estimator.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not
+     *                                                       from body to local
+     *                                                       navigation coordinates.
+     * @throws IllegalArgumentException                      if provided time interval
+     *                                                       is negative.
+     */
+    public BodyKinematicsBiasEstimator(
+            final CoordinateTransformation nedC, final double timeInterval,
+            final BodyKinematicsBiasEstimatorListener listener) throws InvalidSourceAndDestinationFrameTypeException {
+<span class="fc" id="L690">        this(nedC, timeInterval);</span>
+<span class="fc" id="L691">        this.listener = listener;</span>
+<span class="fc" id="L692">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body has zero Euler angles representing rotation (roll = 0,
+     * pitch = 0, yaw = 0) respect the horizon at provided body location.
+     * For Android devices this means that the device is flat on a horizontal surface
+     * with the screen facing down.
+     *
+     * @param latitude     latitude expressed in radians (rad).
+     * @param longitude    longitude expressed in radians (rad).
+     * @param height       height expressed in meters (m).
+     * @param timeInterval time interval between body kinematics
+     *                     (IMU acceleration + gyroscope) samples
+     *                     expressed in seconds (s).
+     * @param listener     listener to handle events raised by this estimator.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public BodyKinematicsBiasEstimator(
+            final double latitude, final double longitude, final double height,
+            final double timeInterval, final BodyKinematicsBiasEstimatorListener listener) {
+<span class="fc" id="L713">        this(latitude, longitude, height, timeInterval);</span>
+<span class="fc" id="L714">        this.listener = listener;</span>
+<span class="fc" id="L715">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body has zero Euler angles representing rotation (roll = 0,
+     * pitch = 0, yaw = 0) respect the horizon at provided body location.
+     * For Android devices this means that the device is flat on a horizontal surface
+     * with the screen facing down.
+     *
+     * @param latitude     latitude.
+     * @param longitude    longitude.
+     * @param height       height expressed in meters (m).
+     * @param timeInterval time interval between body kinematics
+     *                     (IMU acceleration + gyroscope) samples
+     *                     expressed in seconds (s).
+     * @param listener     listener to handle events raised by this estimator.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public BodyKinematicsBiasEstimator(
+            final Angle latitude, final Angle longitude, final double height,
+            final double timeInterval, final BodyKinematicsBiasEstimatorListener listener) {
+<span class="fc" id="L736">        this(latitude, longitude, height, timeInterval);</span>
+<span class="fc" id="L737">        this.listener = listener;</span>
+<span class="fc" id="L738">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body has zero Euler angles representing rotation (roll = 0,
+     * pitch = 0, yaw = 0) respect the horizon at provided body location.
+     * For Android devices this means that the device is flat on a horizontal surface
+     * with the screen facing down.
+     *
+     * @param latitude     latitude.
+     * @param longitude    longitude.
+     * @param height       height.
+     * @param timeInterval time interval between body kinematics
+     *                     (IMU acceleration + gyroscope) samples
+     *                     expressed in seconds (s).
+     * @param listener     listener to handle events raised by this estimator.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public BodyKinematicsBiasEstimator(
+            final Angle latitude, final Angle longitude, final Distance height,
+            final double timeInterval, final BodyKinematicsBiasEstimatorListener listener) {
+<span class="fc" id="L759">        this(latitude, longitude, height, timeInterval);</span>
+<span class="fc" id="L760">        this.listener = listener;</span>
+<span class="fc" id="L761">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position     body position expressed in NED coordinates.
+     * @param nedC         coordinate transformation from body to local navigation
+     *                     (NED) coordinates. This contains orientation respect the
+     *                     horizon at current body location.
+     * @param timeInterval time interval between body kinematics
+     *                     (IMU acceleration + gyroscope) samples
+     *                     expressed in seconds (s).
+     * @param listener     listener to handle events raised by this estimator.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not
+     *                                                       from body to local
+     *                                                       navigation coordinates.
+     * @throws IllegalArgumentException                      if provided time interval
+     *                                                       is negative.
+     */
+    public BodyKinematicsBiasEstimator(
+            final NEDPosition position, final CoordinateTransformation nedC,
+            final double timeInterval, final BodyKinematicsBiasEstimatorListener listener)
+            throws InvalidSourceAndDestinationFrameTypeException {
+<span class="fc" id="L785">        this(position, nedC, timeInterval);</span>
+<span class="fc" id="L786">        this.listener = listener;</span>
+<span class="fc" id="L787">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position     body position expressed in ECEF coordinates.
+     * @param nedC         coordinate transformation from body to local navigation
+     *                     (NED) coordinates. This contains orientation respect the
+     *                     horizon at current body location.
+     * @param timeInterval time interval between body kinematics
+     *                     (IMU acceleration + gyroscope) samples
+     *                     expressed in seconds (s).
+     * @param listener     listener to handle events raised by this estimator.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not
+     *                                                       from body to local
+     *                                                       navigation coordinates.
+     * @throws IllegalArgumentException                      if provided time interval
+     *                                                       is negative.
+     */
+    public BodyKinematicsBiasEstimator(
+            final ECEFPosition position, final CoordinateTransformation nedC,
+            final double timeInterval, final BodyKinematicsBiasEstimatorListener listener)
+            throws InvalidSourceAndDestinationFrameTypeException {
+<span class="fc" id="L811">        this(position, nedC, timeInterval);</span>
+<span class="fc" id="L812">        this.listener = listener;</span>
+<span class="fc" id="L813">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body is located at zero NED coordinates (latitude = 0,
+     * longitude = 0 and height = 0) and with zero Euler angles representing rotation
+     * (roll = 0, pith = 0, yaw = 0), which for Android devices it means that the
+     * device is flat on a horizontal surface with the screen facing down.
+     *
+     * @param timeInterval time interval between body kinematics
+     *                     (IMU acceleration + gyroscope) samples.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public BodyKinematicsBiasEstimator(final Time timeInterval) {
+<span class="fc" id="L827">        this(convertTime(timeInterval));</span>
+<span class="fc" id="L828">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body is located at zero NED coordinates (latitude = 0,
+     * longitude = 0, and height = 0) with provided orientation.
+     *
+     * @param nedC         coordinate transformation from body to local navigation
+     *                     (NED) coordinates. This contains orientation respect the
+     *                     horizon at current body location.
+     * @param timeInterval time interval between body kinematics
+     *                     (IMU acceleration + gyroscope) samples.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not
+     *                                                       from body to local
+     *                                                       navigation coordinates.
+     * @throws IllegalArgumentException                      if provided time interval
+     *                                                       is negative.
+     */
+    public BodyKinematicsBiasEstimator(final CoordinateTransformation nedC, final Time timeInterval)
+            throws InvalidSourceAndDestinationFrameTypeException {
+<span class="fc" id="L849">        this(nedC, convertTime(timeInterval));</span>
+<span class="fc" id="L850">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body has zero Euler angles representing rotation (roll = 0,
+     * pitch = 0, yaw = 0) respect the horizon at provided body location.
+     * For Android devices this means that the device is flat on a horizontal surface
+     * with the screen facing down.
+     *
+     * @param latitude     latitude expressed in radians (rad).
+     * @param longitude    longitude expressed in radians (rad).
+     * @param height       height expressed in meters (m).
+     * @param timeInterval time interval between body kinematics
+     *                     (IMU acceleration + gyroscope) samples.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public BodyKinematicsBiasEstimator(
+            final double latitude, final double longitude, final double height, final Time timeInterval) {
+<span class="fc" id="L868">        this(latitude, longitude, height, convertTime(timeInterval));</span>
+<span class="fc" id="L869">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body has zero Euler angles representing rotation (roll = 0,
+     * pitch = 0, yaw = 0) respect the horizon at provided body location.
+     * For Android devices this means that the device is flat on a horizontal surface
+     * with the screen facing down.
+     *
+     * @param latitude     latitude.
+     * @param longitude    longitude.
+     * @param height       height expressed in meters (m).
+     * @param timeInterval time interval between body kinematics
+     *                     (IMU acceleration + gyroscope) samples.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public BodyKinematicsBiasEstimator(
+            final Angle latitude, final Angle longitude, final double height, final Time timeInterval) {
+<span class="fc" id="L887">        this(latitude, longitude, height, convertTime(timeInterval));</span>
+<span class="fc" id="L888">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body has zero Euler angles representing rotation (roll = 0,
+     * pitch = 0, yaw = 0) respect the horizon at provided body location.
+     * For Android devices this means that the device is flat on a horizontal surface
+     * with the screen facing down.
+     *
+     * @param latitude     latitude.
+     * @param longitude    longitude.
+     * @param height       height.
+     * @param timeInterval time interval between body kinematics
+     *                     (IMU acceleration + gyroscope) samples.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public BodyKinematicsBiasEstimator(
+            final Angle latitude, final Angle longitude, final Distance height, final Time timeInterval) {
+<span class="fc" id="L906">        this(latitude, longitude, height, convertTime(timeInterval));</span>
+<span class="fc" id="L907">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position     body position expressed in NED coordinates.
+     * @param nedC         coordinate transformation from body to local navigation
+     *                     (NED) coordinates. This contains orientation respect the
+     *                     horizon at current body location.
+     * @param timeInterval time interval between body kinematics
+     *                     (IMU acceleration + gyroscope) samples.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not
+     *                                                       from body to local
+     *                                                       navigation coordinates.
+     * @throws IllegalArgumentException                      if provided time interval
+     *                                                       is negative.
+     */
+    public BodyKinematicsBiasEstimator(
+            final NEDPosition position, final CoordinateTransformation nedC, final Time timeInterval)
+            throws InvalidSourceAndDestinationFrameTypeException {
+<span class="fc" id="L928">        this(position, nedC, convertTime(timeInterval));</span>
+<span class="fc" id="L929">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position     body position expressed in ECEF coordinates.
+     * @param nedC         coordinate transformation from body to local navigation
+     *                     (NED) coordinates. This contains orientation respect the
+     *                     horizon at current body location.
+     * @param timeInterval time interval between body kinematics
+     *                     (IMU acceleration + gyroscope) samples.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not
+     *                                                       from body to local
+     *                                                       navigation coordinates.
+     * @throws IllegalArgumentException                      if provided time interval
+     *                                                       is negative.
+     */
+    public BodyKinematicsBiasEstimator(
+            final ECEFPosition position, final CoordinateTransformation nedC, final Time timeInterval)
+            throws InvalidSourceAndDestinationFrameTypeException {
+<span class="fc" id="L950">        this(position, nedC, convertTime(timeInterval));</span>
+<span class="fc" id="L951">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body is located at zero NED coordinates (latitude = 0,
+     * longitude = 0 and height = 0) and with zero Euler angles representing rotation
+     * (roll = 0, pith = 0, yaw = 0), which for Android devices it means that the
+     * device is flat on a horizontal surface with the screen facing down.
+     *
+     * @param timeInterval time interval between body kinematics
+     *                     (IMU acceleration + gyroscope) samples.
+     * @param listener     listener to handle events raised by this estimator.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public BodyKinematicsBiasEstimator(final Time timeInterval, final BodyKinematicsBiasEstimatorListener listener) {
+<span class="fc" id="L966">        this(convertTime(timeInterval), listener);</span>
+<span class="fc" id="L967">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body is located at zero NED coordinates (latitude = 0,
+     * longitude = 0, and height = 0) with provided orientation.
+     *
+     * @param nedC         coordinate transformation from body to local navigation
+     *                     (NED) coordinates. This contains orientation respect the
+     *                     horizon at current body location.
+     * @param timeInterval time interval between body kinematics
+     *                     (IMU acceleration + gyroscope) samples.
+     * @param listener     listener to handle events raised by this estimator.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not
+     *                                                       from body to local
+     *                                                       navigation coordinates.
+     * @throws IllegalArgumentException                      if provided time interval
+     *                                                       is negative.
+     */
+    public BodyKinematicsBiasEstimator(
+            final CoordinateTransformation nedC, final Time timeInterval,
+            final BodyKinematicsBiasEstimatorListener listener) throws InvalidSourceAndDestinationFrameTypeException {
+<span class="fc" id="L990">        this(nedC, convertTime(timeInterval), listener);</span>
+<span class="fc" id="L991">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body has zero Euler angles representing rotation (roll = 0,
+     * pitch = 0, yaw = 0) respect the horizon at provided body location.
+     * For Android devices this means that the device is flat on a horizontal surface
+     * with the screen facing down.
+     *
+     * @param latitude     latitude expressed in radians (rad).
+     * @param longitude    longitude expressed in radians (rad).
+     * @param height       height expressed in meters (m).
+     * @param timeInterval time interval between body kinematics
+     *                     (IMU acceleration + gyroscope) samples.
+     * @param listener     listener to handle events raised by this estimator.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public BodyKinematicsBiasEstimator(
+            final double latitude, final double longitude, final double height,
+            final Time timeInterval, final BodyKinematicsBiasEstimatorListener listener) {
+<span class="fc" id="L1011">        this(latitude, longitude, height, convertTime(timeInterval), listener);</span>
+<span class="fc" id="L1012">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body has zero Euler angles representing rotation (roll = 0,
+     * pitch = 0, yaw = 0) respect the horizon at provided body location.
+     * For Android devices this means that the device is flat on a horizontal surface
+     * with the screen facing down.
+     *
+     * @param latitude     latitude.
+     * @param longitude    longitude.
+     * @param height       height expressed in meters (m).
+     * @param timeInterval time interval between body kinematics
+     *                     (IMU acceleration + gyroscope) samples.
+     * @param listener     listener to handle events raised by this estimator.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public BodyKinematicsBiasEstimator(
+            final Angle latitude, final Angle longitude, final double height, final Time timeInterval,
+            final BodyKinematicsBiasEstimatorListener listener) {
+<span class="fc" id="L1032">        this(latitude, longitude, height, convertTime(timeInterval), listener);</span>
+<span class="fc" id="L1033">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body has zero Euler angles representing rotation (roll = 0,
+     * pitch = 0, yaw = 0) respect the horizon at provided body location.
+     * For Android devices this means that the device is flat on a horizontal surface
+     * with the screen facing down.
+     *
+     * @param latitude     latitude.
+     * @param longitude    longitude.
+     * @param height       height.
+     * @param timeInterval time interval between body kinematics
+     *                     (IMU acceleration + gyroscope) samples.
+     * @param listener     listener to handle events raised by this estimator.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public BodyKinematicsBiasEstimator(
+            final Angle latitude, final Angle longitude, final Distance height,
+            final Time timeInterval, final BodyKinematicsBiasEstimatorListener listener) {
+<span class="fc" id="L1053">        this(latitude, longitude, height, convertTime(timeInterval), listener);</span>
+<span class="fc" id="L1054">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position     body position expressed in NED coordinates.
+     * @param nedC         coordinate transformation from body to local navigation
+     *                     (NED) coordinates. This contains orientation respect the
+     *                     horizon at current body location.
+     * @param timeInterval time interval between body kinematics
+     *                     (IMU acceleration + gyroscope) samples.
+     * @param listener     listener to handle events raised by this estimator.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not
+     *                                                       from body to local
+     *                                                       navigation coordinates.
+     * @throws IllegalArgumentException                      if provided time interval
+     *                                                       is negative.
+     */
+    public BodyKinematicsBiasEstimator(
+            final NEDPosition position, final CoordinateTransformation nedC,
+            final Time timeInterval, final BodyKinematicsBiasEstimatorListener listener)
+            throws InvalidSourceAndDestinationFrameTypeException {
+<span class="fc" id="L1077">        this(position, nedC, convertTime(timeInterval), listener);</span>
+<span class="fc" id="L1078">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position     body position expressed in ECEF coordinates.
+     * @param nedC         coordinate transformation from body to local navigation
+     *                     (NED) coordinates. This contains orientation respect the
+     *                     horizon at current body location.
+     * @param timeInterval time interval between body kinematics
+     *                     (IMU acceleration + gyroscope) samples.
+     * @param listener     listener to handle events raised by this estimator.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not
+     *                                                       from body to local
+     *                                                       navigation coordinates.
+     * @throws IllegalArgumentException                      if provided time interval
+     *                                                       is negative.
+     */
+    public BodyKinematicsBiasEstimator(
+            final ECEFPosition position, final CoordinateTransformation nedC,
+            final Time timeInterval, final BodyKinematicsBiasEstimatorListener listener)
+            throws InvalidSourceAndDestinationFrameTypeException {
+<span class="fc" id="L1101">        this(position, nedC, convertTime(timeInterval), listener);</span>
+<span class="fc" id="L1102">    }</span>
+
+    /**
+     * Gets time interval between body kinematics (IMU acceleration + gyroscope)
+     * samples expressed in seconds (s).
+     *
+     * @return time interval between body kinematics samples.
+     */
+    public double getTimeInterval() {
+<span class="fc" id="L1111">        return timeInterval;</span>
+    }
+
+    /**
+     * Sets time interval between body kinematics (IMU acceleration + gyroscope)
+     * samples expressed in seconds (s).
+     *
+     * @param timeInterval time interval between body kinematics samples.
+     * @throws LockedException if estimator is currently running.
+     */
+    public void setTimeInterval(final double timeInterval) throws LockedException {
+<span class="fc bfc" id="L1122" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1123">            throw new LockedException();</span>
+        }
+
+<span class="fc bfc" id="L1126" title="All 2 branches covered.">        if (timeInterval &lt; 0.0) {</span>
+<span class="fc" id="L1127">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L1130">        this.timeInterval = timeInterval;</span>
+
+<span class="fc" id="L1132">        rebuildExpectedKinematics();</span>
+<span class="fc" id="L1133">    }</span>
+
+    /**
+     * Gets time interval between body kinematics (IMU acceleration + gyroscope)
+     * samples.
+     *
+     * @return time interval between body kinematics samples.
+     */
+    public Time getTimeIntervalAsTime() {
+<span class="fc" id="L1142">        return new Time(timeInterval, TimeUnit.SECOND);</span>
+    }
+
+    /**
+     * Gets time interval between body kinematics (IMU acceleration + gyroscope)
+     * samples.
+     *
+     * @param result instance where time interval will be stored.
+     */
+    public void getTimeIntervalAsTime(final Time result) {
+<span class="fc" id="L1152">        result.setValue(timeInterval);</span>
+<span class="fc" id="L1153">        result.setUnit(TimeUnit.SECOND);</span>
+<span class="fc" id="L1154">    }</span>
+
+    /**
+     * Sets time interval between body kinematics (IMU acceleration + gyroscope)
+     * samples.
+     *
+     * @param timeInterval time interval between body kinematics samples.
+     * @throws LockedException if estimator is currently running.
+     */
+    public void setTimeInterval(final Time timeInterval) throws LockedException {
+<span class="fc" id="L1164">        setTimeInterval(convertTime(timeInterval));</span>
+<span class="fc" id="L1165">    }</span>
+
+    /**
+     * Gets current body position expressed in ECEF coordinates.
+     *
+     * @return current body position expressed in ECEF coordinates.
+     */
+    public ECEFPosition getEcefPosition() {
+<span class="fc" id="L1173">        return frame.getECEFPosition();</span>
+    }
+
+    /**
+     * Gets current body position expressed in ECEF coordinates.
+     *
+     * @param result instance where current body position will be stored.
+     */
+    public void getEcefPosition(final ECEFPosition result) {
+<span class="fc" id="L1182">        frame.getECEFPosition(result);</span>
+<span class="fc" id="L1183">    }</span>
+
+    /**
+     * Sets current body position expressed in ECEF coordinates.
+     *
+     * @param position current body position to be set.
+     * @throws LockedException if estimator is currently running.
+     */
+    public void setEcefPosition(final ECEFPosition position) throws LockedException {
+<span class="fc bfc" id="L1192" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1193">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L1196">        frame.setPosition(position);</span>
+<span class="fc" id="L1197">        rebuildExpectedKinematics();</span>
+<span class="fc" id="L1198">    }</span>
+
+    /**
+     * Sets current body position expressed in ECEF coordinates.
+     *
+     * @param x x position resolved around ECEF axes and expressed in meters (m).
+     * @param y y position resolved around ECEF axes and expressed in meters (m).
+     * @param z z position resolved around ECEF axes and expressed in meters (m).
+     * @throws LockedException if estimator is currently running.
+     */
+    public void setEcefPosition(final double x, final double y, final double z) throws LockedException {
+<span class="fc bfc" id="L1209" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1210">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L1213">        frame.setCoordinates(x, y, z);</span>
+<span class="fc" id="L1214">        rebuildExpectedKinematics();</span>
+<span class="fc" id="L1215">    }</span>
+
+    /**
+     * Sets current body position expressed in ECEF coordinates.
+     *
+     * @param x x position resolved around ECEF axes.
+     * @param y y position resolved around ECEF axes.
+     * @param z z position resolved around ECEF axes.
+     * @throws LockedException if estimator is currently running.
+     */
+    public void setEcefPosition(final Distance x, final Distance y, final Distance z) throws LockedException {
+<span class="fc bfc" id="L1226" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1227">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L1230">        frame.setPositionCoordinates(x, y, z);</span>
+<span class="fc" id="L1231">        rebuildExpectedKinematics();</span>
+<span class="fc" id="L1232">    }</span>
+
+    /**
+     * Sets current body position expressed in ECEF coordinates.
+     *
+     * @param position position resolved around ECEF axes and expressed in meters (m).
+     * @throws LockedException if estimator is currently running.
+     */
+    public void setEcefPosition(final Point3D position) throws LockedException {
+<span class="fc bfc" id="L1241" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1242">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L1245">        frame.setPosition(position);</span>
+<span class="fc" id="L1246">        rebuildExpectedKinematics();</span>
+<span class="fc" id="L1247">    }</span>
+
+    /**
+     * Gets ECEF frame containing current body position and orientation expressed
+     * in ECEF coordinates. Frame also contains body velocity, but it is always
+     * assumed to be zero during calibration.
+     *
+     * @return ECEF frame containing current body position and orientation resolved
+     * around ECEF axes.
+     */
+    public ECEFFrame getEcefFrame() {
+<span class="fc" id="L1258">        return new ECEFFrame(frame);</span>
+    }
+
+    /**
+     * Gets ECEF frame containing current body position and orientation expressed
+     * in ECEF coordinates. Frame also contains body velocity, but it is always
+     * assumed to be zero during calibration.
+     *
+     * @param result instance where ECEF frame containing current body position and
+     *               orientation resolved around ECEF axes will be stored.
+     */
+    public void getEcefFrame(final ECEFFrame result) {
+<span class="fc" id="L1270">        frame.copyTo(result);</span>
+<span class="fc" id="L1271">    }</span>
+
+    /**
+     * Gets NED frame containing current body position and orientation expressed
+     * in NED coordinates. Frame also contains body velocity, but it is always
+     * assumed to be zero during calibration.
+     *
+     * @return NED frame containing current body position and orientation resolved
+     * around NED axes.
+     */
+    public NEDFrame getNedFrame() {
+<span class="fc" id="L1282">        return ECEFtoNEDFrameConverter.convertECEFtoNEDAndReturnNew(frame);</span>
+    }
+
+    /**
+     * Gets NED frame containing current body position and orientation expressed
+     * in NED coordinates. Frame also contains body velocity, but it is always
+     * assumed to be zero during calibration.
+     *
+     * @param result instance where NED frame containing current body position and
+     *               orientation resolved around NED axes will be stored.
+     */
+    public void getNedFrame(final NEDFrame result) {
+<span class="fc" id="L1294">        ECEFtoNEDFrameConverter.convertECEFtoNED(frame, result);</span>
+<span class="fc" id="L1295">    }</span>
+
+    /**
+     * Gets current body position expressed in NED coordinates.
+     *
+     * @return current body position expressed in NED coordinates.
+     */
+    public NEDPosition getNedPosition() {
+<span class="fc" id="L1303">        return getNedFrame().getPosition();</span>
+    }
+
+    /**
+     * Gets current body position expressed in NED coordinates.
+     *
+     * @param result instance where current body position will be stored.
+     */
+    public void getNedPosition(final NEDPosition result) {
+<span class="fc" id="L1312">        getNedFrame().getPosition(result);</span>
+<span class="fc" id="L1313">    }</span>
+
+    /**
+     * Sets current body position expressed in NED coordinates.
+     *
+     * @param position current body position to be set.
+     * @throws LockedException if estimator is currently running.
+     */
+    public void setNedPosition(final NEDPosition position) throws LockedException {
+<span class="fc bfc" id="L1322" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1323">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L1326">        final var nedFrame = getNedFrame();</span>
+<span class="fc" id="L1327">        nedFrame.setPosition(position);</span>
+<span class="fc" id="L1328">        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, frame);</span>
+<span class="fc" id="L1329">        rebuildExpectedKinematics();</span>
+<span class="fc" id="L1330">    }</span>
+
+    /**
+     * Sets current body position expressed in NED coordinates.
+     *
+     * @param latitude  latitude NED coordinate expressed in radians (rad).
+     * @param longitude longitude NED coordinate expressed in radians (rad).
+     * @param height    height NED coordinate expressed in meters (m).
+     * @throws LockedException if estimator is currently running.
+     */
+    public void setNedPosition(
+            final double latitude, final double longitude, final double height) throws LockedException {
+<span class="fc bfc" id="L1342" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1343">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L1346">        final var nedFrame = getNedFrame();</span>
+<span class="fc" id="L1347">        nedFrame.setPosition(latitude, longitude, height);</span>
+<span class="fc" id="L1348">        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, frame);</span>
+<span class="fc" id="L1349">        rebuildExpectedKinematics();</span>
+<span class="fc" id="L1350">    }</span>
+
+    /**
+     * Sets current body position expressed in NED coordinates.
+     *
+     * @param latitude  latitude NED coordinate.
+     * @param longitude longitude NED coordinate.
+     * @param height    height NED coordinate expressed in meters (m).
+     * @throws LockedException if estimator is currently running.
+     */
+    public void setNedPosition(
+            final Angle latitude, final Angle longitude, final double height) throws LockedException {
+<span class="fc bfc" id="L1362" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1363">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L1366">        final var nedFrame = getNedFrame();</span>
+<span class="fc" id="L1367">        nedFrame.setPosition(latitude, longitude, height);</span>
+<span class="fc" id="L1368">        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, frame);</span>
+<span class="fc" id="L1369">        rebuildExpectedKinematics();</span>
+<span class="fc" id="L1370">    }</span>
+
+    /**
+     * Sets current body position expressed in NED coordinates.
+     *
+     * @param latitude  latitude NED coordinate.
+     * @param longitude longitude NED coordinate.
+     * @param height    height NED coordinate.
+     * @throws LockedException if estimator is currently running.
+     */
+    public void setNedPosition(
+            final Angle latitude, final Angle longitude, final Distance height) throws LockedException {
+<span class="fc bfc" id="L1382" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1383">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L1386">        final var nedFrame = getNedFrame();</span>
+<span class="fc" id="L1387">        nedFrame.setPosition(latitude, longitude, height);</span>
+<span class="fc" id="L1388">        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, frame);</span>
+<span class="fc" id="L1389">        rebuildExpectedKinematics();</span>
+<span class="fc" id="L1390">    }</span>
+
+    /**
+     * Gets current body orientation as a transformation from body to ECEF coordinates.
+     * Notice that returned orientation refers to ECEF Earth axes, which means that
+     * orientation is not relative to the ground or horizon at current body position.
+     * Typically it is more convenient to use {@link #getNedC()} to obtain orientation
+     * relative to the ground or horizon at current body position. For instance, on
+     * Android devices a NED orientation with Euler angles (roll = 0, pitch = 0,
+     * yaw = 0) means that the device is laying flat on a horizontal surface with the
+     * screen facing down towards the ground.
+     *
+     * @return current body orientation resolved on ECEF axes.
+     */
+    public CoordinateTransformation getEcefC() {
+<span class="fc" id="L1405">        return frame.getCoordinateTransformation();</span>
+    }
+
+    /**
+     * Gets current body orientation as a transformation from body to ECEF coordinates.
+     * Notice that returned orientation refers to ECEF Earth axes, which means that
+     * orientation is not relative to the ground or horizon at current body position.
+     * Typically it is more convenient to use {@link #getNedC()} to obtain orientation
+     * relative to the ground or horizon at current body position. For instance, on
+     * Android devices a NED orientation with Euler angles (roll = 0, pitch = 0,
+     * yaw = 0) means that the device is laying flat on a horizontal surface with the
+     * screen facing down towards the ground.
+     *
+     * @param result instance where current body orientation resolved on ECEF axes
+     *               will be stored.
+     */
+    public void getEcefC(final CoordinateTransformation result) {
+<span class="fc" id="L1422">        frame.getCoordinateTransformation(result);</span>
+<span class="fc" id="L1423">    }</span>
+
+    /**
+     * Sets current body orientation as a transformation from body to ECEF coordinates.
+     * Notice that ECEF orientation refers to ECEF Earth axes, which means that
+     * orientation is not relative to the ground or horizon at current body position.
+     * Typically it is more convenient to use
+     * {@link #setNedC(CoordinateTransformation)} to specify orientation relative to
+     * the ground or horizon at current body position.
+     * For instance, on Android devices a NED orientation with Euler angles (roll = 0,
+     * pitch = 0, yaw = 0) means that the device is laying flat on a horizontal surface
+     * with the screen facing down towards the ground.
+     *
+     * @param ecefC body orientation resolved on ECEF axes to be set.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not from
+     *                                                       body to ECEF coordinates.
+     * @throws LockedException                               if estimator is currently
+     *                                                       running.
+     */
+    public void setEcefC(final CoordinateTransformation ecefC)
+            throws InvalidSourceAndDestinationFrameTypeException, LockedException {
+<span class="fc bfc" id="L1445" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1446">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L1449">        frame.setCoordinateTransformation(ecefC);</span>
+<span class="fc" id="L1450">        rebuildExpectedKinematics();</span>
+<span class="fc" id="L1451">    }</span>
+
+    /**
+     * Gets current body orientation as a transformation from body to NED coordinates.
+     * Notice that returned orientation refers to current local position. This means
+     * that two equal NED orientations will transform into different ECEF orientations
+     * if the body is located at different positions.
+     * As a reference, on Android devices a NED orientation with Euler angles
+     * (roll = 0, pitch = 0, yaw = 0) means that the device is laying flat on a
+     * horizontal surface with the screen facing down towards the ground.
+     *
+     * @return current body orientation resolved on NED axes.
+     */
+    public CoordinateTransformation getNedC() {
+<span class="fc" id="L1465">        return getNedFrame().getCoordinateTransformation();</span>
+    }
+
+    /**
+     * Gets current body orientation as a transformation from body to NED coordinates.
+     * Notice that returned orientation refers to current local position. This means
+     * that two equal NED orientations will transform into different ECEF orientations
+     * if the body is located at different positions.
+     * As a reference, on Android devices a NED orientation with Euler angles
+     * (roll = 0, pitch = 0, yaw = 0) means that the device is laying flat on a
+     * horizontal surface with the screen facing down towards the ground.
+     *
+     * @param result instance where current body orientation resolved on NED axes
+     *               will be stored.
+     */
+    public void getNedC(final CoordinateTransformation result) {
+<span class="fc" id="L1481">        getNedFrame().getCoordinateTransformation(result);</span>
+<span class="fc" id="L1482">    }</span>
+
+    /**
+     * Sets current body orientation as a transformation from body to NED coordinates.
+     * Notice that provided orientation refers to current local position. This means
+     * that two equal NED orientations will transform into different ECEF orientations
+     * if the body is located at different positions.
+     * As a reference, on Android devices a NED orientation with Euler angles
+     * (roll = 0, pitch = 0, yaw = 0) means that the device is laying flat on a
+     * horizontal surface with the screen facing down towards the ground.
+     *
+     * @param nedC orientation resolved on NED axes to be set.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not from
+     *                                                       body to NED coordinates.
+     * @throws LockedException                               if estimator is currently
+     *                                                       running.
+     */
+    public void setNedC(final CoordinateTransformation nedC)
+            throws InvalidSourceAndDestinationFrameTypeException, LockedException {
+<span class="fc bfc" id="L1502" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1503">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L1506">        final var nedFrame = getNedFrame();</span>
+<span class="fc" id="L1507">        nedFrame.setCoordinateTransformation(nedC);</span>
+<span class="fc" id="L1508">        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, frame);</span>
+<span class="fc" id="L1509">        rebuildExpectedKinematics();</span>
+<span class="fc" id="L1510">    }</span>
+
+    /**
+     * Sets position and orientation both expressed on NED coordinates.
+     *
+     * @param nedPosition position expressed on NED coordinates.
+     * @param nedC        body to NED coordinate transformation indicating
+     *                    body orientation.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not from
+     *                                                       body to NED coordinates.
+     * @throws LockedException                               if estimator is currently
+     *                                                       running.
+     * @see #setNedPosition(NEDPosition)
+     * @see #setNedC(CoordinateTransformation)
+     */
+    public void setNedPositionAndNedOrientation(
+            final NEDPosition nedPosition, final CoordinateTransformation nedC)
+            throws InvalidSourceAndDestinationFrameTypeException, LockedException {
+<span class="fc bfc" id="L1529" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1530">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L1533">        final var nedFrame = getNedFrame();</span>
+<span class="fc" id="L1534">        nedFrame.setPosition(nedPosition);</span>
+<span class="fc" id="L1535">        nedFrame.setCoordinateTransformation(nedC);</span>
+<span class="fc" id="L1536">        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, frame);</span>
+<span class="fc" id="L1537">        rebuildExpectedKinematics();</span>
+<span class="fc" id="L1538">    }</span>
+
+    /**
+     * Sets position and orientation both expressed on NED coordinates.
+     *
+     * @param latitude  latitude expressed in radians (rad).
+     * @param longitude longitude expressed in radians (rad).
+     * @param height    height expressed in meters (m).
+     * @param nedC      body to NED coordinate transformation indicating
+     *                  body orientation.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not from
+     *                                                       body to NED coordinates.
+     * @throws LockedException                               if estimator is currently
+     *                                                       running.
+     * @see #setNedPosition(double, double, double)
+     * @see #setNedC(CoordinateTransformation)
+     */
+    public void setNedPositionAndNedOrientation(
+            final double latitude, final double longitude, final double height,
+            final CoordinateTransformation nedC) throws InvalidSourceAndDestinationFrameTypeException, LockedException {
+<span class="fc bfc" id="L1559" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1560">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L1563">        final var nedFrame = getNedFrame();</span>
+<span class="fc" id="L1564">        nedFrame.setPosition(latitude, longitude, height);</span>
+<span class="fc" id="L1565">        nedFrame.setCoordinateTransformation(nedC);</span>
+<span class="fc" id="L1566">        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, frame);</span>
+<span class="fc" id="L1567">        rebuildExpectedKinematics();</span>
+<span class="fc" id="L1568">    }</span>
+
+    /**
+     * Sets position and orientation both expressed on NED coordinates.
+     *
+     * @param latitude  latitude.
+     * @param longitude longitude.
+     * @param height    height expressed in meters (m).
+     * @param nedC      body to NED coordinate transformation indicating
+     *                  body orientation.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not from
+     *                                                       body to NED coordinates.
+     * @throws LockedException                               if estimator is currently
+     *                                                       running.
+     * @see #setNedPosition(Angle, Angle, double)
+     * @see #setNedC(CoordinateTransformation)
+     */
+    public void setNedPositionAndNedOrientation(
+            final Angle latitude, final Angle longitude, final double height,
+            final CoordinateTransformation nedC) throws InvalidSourceAndDestinationFrameTypeException, LockedException {
+<span class="fc bfc" id="L1589" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1590">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L1593">        final var nedFrame = getNedFrame();</span>
+<span class="fc" id="L1594">        nedFrame.setPosition(latitude, longitude, height);</span>
+<span class="fc" id="L1595">        nedFrame.setCoordinateTransformation(nedC);</span>
+<span class="fc" id="L1596">        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, frame);</span>
+<span class="fc" id="L1597">        rebuildExpectedKinematics();</span>
+<span class="fc" id="L1598">    }</span>
+
+    /**
+     * Sets position and orientation both expressed on NED coordinates.
+     *
+     * @param latitude  latitude.
+     * @param longitude longitude.
+     * @param height    height.
+     * @param nedC      body to NED coordinate transformation indicating
+     *                  body orientation.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not from
+     *                                                       body to NED coordinates.
+     * @throws LockedException                               if estimator is currently
+     *                                                       running.
+     * @see #setNedPosition(Angle, Angle, Distance)
+     * @see #setNedC(CoordinateTransformation)
+     */
+    public void setNedPositionAndNedOrientation(
+            final Angle latitude, final Angle longitude, final Distance height,
+            final CoordinateTransformation nedC) throws InvalidSourceAndDestinationFrameTypeException, LockedException {
+<span class="fc bfc" id="L1619" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1620">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L1623">        final var nedFrame = getNedFrame();</span>
+<span class="fc" id="L1624">        nedFrame.setPosition(latitude, longitude, height);</span>
+<span class="fc" id="L1625">        nedFrame.setCoordinateTransformation(nedC);</span>
+<span class="fc" id="L1626">        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, frame);</span>
+<span class="fc" id="L1627">        rebuildExpectedKinematics();</span>
+<span class="fc" id="L1628">    }</span>
+
+    /**
+     * Sets position and orientation both expressed on ECEF coordinates.
+     *
+     * @param ecefPosition position expressed on ECEF coordinates.
+     * @param ecefC        body to ECEF coordinate transformation indicating body
+     *                     orientation.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not from
+     *                                                       body to ECEF coordinates.
+     * @throws LockedException                               if estimator is currently
+     *                                                       running.
+     * @see #setEcefPosition(ECEFPosition)
+     * @see #setEcefC(CoordinateTransformation)
+     */
+    public void setEcefPositionAndEcefOrientation(
+            final ECEFPosition ecefPosition, final CoordinateTransformation ecefC)
+            throws InvalidSourceAndDestinationFrameTypeException, LockedException {
+<span class="fc bfc" id="L1647" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1648">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L1651">        frame.setPosition(ecefPosition);</span>
+<span class="fc" id="L1652">        frame.setCoordinateTransformation(ecefC);</span>
+<span class="fc" id="L1653">        rebuildExpectedKinematics();</span>
+<span class="fc" id="L1654">    }</span>
+
+    /**
+     * Sets position and orientation both expressed on ECEF coordinates.
+     *
+     * @param x     x coordinate of ECEF position expressed in meters (m).
+     * @param y     y coordinate of ECEF position expressed in meters (m).
+     * @param z     z coordinate of ECEF position expressed in meters (m).
+     * @param ecefC body to ECEF coordinate transformation indicating body
+     *              orientation.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not from
+     *                                                       body to ECEF coordinates.
+     * @throws LockedException                               if estimator is currently
+     *                                                       running.
+     * @see #setEcefPosition(double, double, double)
+     * @see #setEcefC(CoordinateTransformation)
+     */
+    public void setEcefPositionAndEcefOrientation(
+            final double x, final double y, final double z,
+            final CoordinateTransformation ecefC)
+            throws InvalidSourceAndDestinationFrameTypeException, LockedException {
+<span class="fc bfc" id="L1676" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1677">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L1680">        frame.setCoordinates(x, y, z);</span>
+<span class="fc" id="L1681">        frame.setCoordinateTransformation(ecefC);</span>
+<span class="fc" id="L1682">        rebuildExpectedKinematics();</span>
+<span class="fc" id="L1683">    }</span>
+
+    /**
+     * Sets position and orientation both expressed on ECEF coordinates.
+     *
+     * @param x     x coordinate of ECEF position.
+     * @param y     y coordinate of ECEF position.
+     * @param z     z coordinate of ECEF position.
+     * @param ecefC body to ECEF coordinate transformation indicating body
+     *              orientation.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not from
+     *                                                       body to ECEF coordinates.
+     * @throws LockedException                               if estimator is currently
+     *                                                       running.
+     * @see #setEcefPosition(Distance, Distance, Distance)
+     * @see #setEcefC(CoordinateTransformation)
+     */
+    public void setEcefPositionAndEcefOrientation(
+            final Distance x, final Distance y, final Distance z,
+            final CoordinateTransformation ecefC)
+            throws InvalidSourceAndDestinationFrameTypeException, LockedException {
+<span class="fc bfc" id="L1705" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1706">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L1709">        frame.setPositionCoordinates(x, y, z);</span>
+<span class="fc" id="L1710">        frame.setCoordinateTransformation(ecefC);</span>
+<span class="fc" id="L1711">        rebuildExpectedKinematics();</span>
+<span class="fc" id="L1712">    }</span>
+
+    /**
+     * Sets position and orientation both expressed on ECEF coordinates.
+     *
+     * @param position position resolved around ECEF axes and expressed in meters (m).
+     * @param ecefC    body to ECEF coordinate transformation indicating body
+     *                 orientation.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not from
+     *                                                       body to ECEF coordinates.
+     * @throws LockedException                               if estimator is currently
+     *                                                       running.
+     * @see #setEcefPosition(Point3D)
+     * @see #setEcefC(CoordinateTransformation)
+     */
+    public void setEcefPositionAndEcefOrientation(
+            final Point3D position, final CoordinateTransformation ecefC)
+            throws InvalidSourceAndDestinationFrameTypeException, LockedException {
+<span class="fc bfc" id="L1731" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1732">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L1735">        frame.setPosition(position);</span>
+<span class="fc" id="L1736">        frame.setCoordinateTransformation(ecefC);</span>
+<span class="fc" id="L1737">        rebuildExpectedKinematics();</span>
+<span class="fc" id="L1738">    }</span>
+
+    /**
+     * Sets position expressed on NED coordinates and orientation respect to ECEF
+     * axes.
+     *
+     * @param position position expressed on NED coordinates.
+     * @param ecefC    body to ECEF coordinate transformation indicating body
+     *                 orientation.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not from
+     *                                                       body to ECEF coordinates.
+     * @throws LockedException                               if estimator is currently
+     *                                                       running.
+     * @see #setNedPosition(NEDPosition)
+     * @see #setEcefC(CoordinateTransformation)
+     */
+    public void setNedPositionAndEcefOrientation(
+            final NEDPosition position,
+            final CoordinateTransformation ecefC)
+            throws InvalidSourceAndDestinationFrameTypeException, LockedException {
+<span class="fc bfc" id="L1759" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1760">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L1763">        final var nedFrame = getNedFrame();</span>
+<span class="fc" id="L1764">        nedFrame.setPosition(position);</span>
+<span class="fc" id="L1765">        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, frame);</span>
+<span class="fc" id="L1766">        frame.setCoordinateTransformation(ecefC);</span>
+<span class="fc" id="L1767">        rebuildExpectedKinematics();</span>
+<span class="fc" id="L1768">    }</span>
+
+    /**
+     * Sets position expressed on NED coordinates and orientation respect to ECEF
+     * axes.
+     *
+     * @param latitude  latitude expressed in radians (rad).
+     * @param longitude longitude expressed in radians (rad).
+     * @param height    height expressed in meters (m).
+     * @param ecefC     body to ECEF coordinate transformation indicating body
+     *                  orientation.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not from
+     *                                                       body to ECEF coordinates.
+     * @throws LockedException                               if estimator is currently
+     *                                                       running.
+     * @see #setNedPosition(double, double, double)
+     * @see #setEcefC(CoordinateTransformation)
+     */
+    public void setNedPositionAndEcefOrientation(
+            final double latitude, final double longitude, final double height,
+            final CoordinateTransformation ecefC)
+            throws InvalidSourceAndDestinationFrameTypeException, LockedException {
+<span class="fc bfc" id="L1791" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1792">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L1795">        final var nedFrame = getNedFrame();</span>
+<span class="fc" id="L1796">        nedFrame.setPosition(latitude, longitude, height);</span>
+<span class="fc" id="L1797">        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, frame);</span>
+<span class="fc" id="L1798">        frame.setCoordinateTransformation(ecefC);</span>
+<span class="fc" id="L1799">        rebuildExpectedKinematics();</span>
+<span class="fc" id="L1800">    }</span>
+
+    /**
+     * Sets position expressed on NED coordinates and orientation respect to ECEF
+     * axes.
+     *
+     * @param latitude  latitude.
+     * @param longitude longitude.
+     * @param height    height expressed in meters (m).
+     * @param ecefC     body to ECEF coordinate transformation indicating body
+     *                  orientation.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not from
+     *                                                       body to ECEF coordinates.
+     * @throws LockedException                               if estimator is currently
+     *                                                       running.
+     * @see #setNedPosition(Angle, Angle, double)
+     * @see #setEcefC(CoordinateTransformation)
+     */
+    public void setNedPositionAndEcefOrientation(
+            final Angle latitude, final Angle longitude, final double height,
+            final CoordinateTransformation ecefC)
+            throws InvalidSourceAndDestinationFrameTypeException, LockedException {
+<span class="fc bfc" id="L1823" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1824">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L1827">        final var nedFrame = getNedFrame();</span>
+<span class="fc" id="L1828">        nedFrame.setPosition(latitude, longitude, height);</span>
+<span class="fc" id="L1829">        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, frame);</span>
+<span class="fc" id="L1830">        frame.setCoordinateTransformation(ecefC);</span>
+<span class="fc" id="L1831">        rebuildExpectedKinematics();</span>
+<span class="fc" id="L1832">    }</span>
+
+    /**
+     * Sets position expressed on NED coordinates and orientation respect to ECEF
+     * axes.
+     *
+     * @param latitude  latitude.
+     * @param longitude longitude.
+     * @param height    height.
+     * @param ecefC     body to ECEF coordinate transformation indicating body
+     *                  orientation.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not from
+     *                                                       body to ECEF coordinates.
+     * @throws LockedException                               if estimator is currently
+     *                                                       running.
+     * @see #setNedPosition(Angle, Angle, Distance)
+     * @see #setEcefC(CoordinateTransformation)
+     */
+    public void setNedPositionAndEcefOrientation(
+            final Angle latitude, final Angle longitude, final Distance height,
+            final CoordinateTransformation ecefC)
+            throws InvalidSourceAndDestinationFrameTypeException, LockedException {
+<span class="fc bfc" id="L1855" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1856">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L1859">        final var nedFrame = getNedFrame();</span>
+<span class="fc" id="L1860">        nedFrame.setPosition(latitude, longitude, height);</span>
+<span class="fc" id="L1861">        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, frame);</span>
+<span class="fc" id="L1862">        frame.setCoordinateTransformation(ecefC);</span>
+<span class="fc" id="L1863">        rebuildExpectedKinematics();</span>
+<span class="fc" id="L1864">    }</span>
+
+    /**
+     * Sets position expressed on ECEF coordinates and orientation respect to
+     * NED axes.
+     * In order to preserve provided orientation, first position is set and
+     * then orientation is applied.
+     *
+     * @param ecefPosition position expressed on ECEF coordinates.
+     * @param nedC         body to NED coordinate transformation indicating body
+     *                     orientation.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not from
+     *                                                       body to NED coordinates.
+     * @throws LockedException                               if estimator is currently
+     *                                                       running.
+     * @see #setEcefPosition(ECEFPosition)
+     * @see #setNedC(CoordinateTransformation)
+     */
+    public void setEcefPositionAndNedOrientation(
+            final ECEFPosition ecefPosition, final CoordinateTransformation nedC)
+            throws InvalidSourceAndDestinationFrameTypeException, LockedException {
+<span class="fc bfc" id="L1886" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1887">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L1890">        frame.setPosition(ecefPosition);</span>
+
+<span class="fc" id="L1892">        final var nedFrame = getNedFrame();</span>
+<span class="fc" id="L1893">        nedFrame.setCoordinateTransformation(nedC);</span>
+<span class="fc" id="L1894">        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, frame);</span>
+<span class="fc" id="L1895">        rebuildExpectedKinematics();</span>
+<span class="fc" id="L1896">    }</span>
+
+    /**
+     * Sets position expressed on ECEF coordinates and orientation respect to
+     * NED axes.
+     * In order to preserve provided orientation, first position is set and
+     * then orientation is applied.
+     *
+     * @param x    x coordinate of ECEF position expressed in meters (m).
+     * @param y    y coordinate of ECEF position expressed in meters (m).
+     * @param z    z coordinate of ECEF position expressed in meters (m).
+     * @param nedC body to NED coordinate transformation indicating body
+     *             orientation.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not from
+     *                                                       body to NED coordinates.
+     * @throws LockedException                               if estimator is currently
+     *                                                       running.
+     * @see #setEcefPosition(double, double, double)
+     * @see #setNedC(CoordinateTransformation)
+     */
+    public void setEcefPositionAndNedOrientation(
+            final double x, final double y, final double z, final CoordinateTransformation nedC)
+            throws InvalidSourceAndDestinationFrameTypeException, LockedException {
+<span class="fc bfc" id="L1920" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1921">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L1924">        frame.setCoordinates(x, y, z);</span>
+
+<span class="fc" id="L1926">        final var nedFrame = getNedFrame();</span>
+<span class="fc" id="L1927">        nedFrame.setCoordinateTransformation(nedC);</span>
+<span class="fc" id="L1928">        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, frame);</span>
+<span class="fc" id="L1929">        rebuildExpectedKinematics();</span>
+<span class="fc" id="L1930">    }</span>
+
+    /**
+     * Sets position expressed on ECEF coordinates and orientation respect to
+     * NED axes.
+     * In order to preserve provided orientation, first position is set and
+     * then orientation is applied.
+     *
+     * @param x    x coordinate of ECEF position.
+     * @param y    y coordinate of ECEF position.
+     * @param z    z coordinate of ECEF position.
+     * @param nedC body to NED coordinate transformation indicating body
+     *             orientation.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not from
+     *                                                       body to NED coordinates.
+     * @throws LockedException                               if estimator is currently
+     *                                                       running.
+     * @see #setEcefPosition(Distance, Distance, Distance)
+     * @see #setNedC(CoordinateTransformation)
+     */
+    public void setEcefPositionAndNedOrientation(
+            final Distance x, final Distance y, final Distance z, final CoordinateTransformation nedC)
+            throws InvalidSourceAndDestinationFrameTypeException, LockedException {
+<span class="fc bfc" id="L1954" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1955">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L1958">        frame.setPositionCoordinates(x, y, z);</span>
+
+<span class="fc" id="L1960">        final var nedFrame = getNedFrame();</span>
+<span class="fc" id="L1961">        nedFrame.setCoordinateTransformation(nedC);</span>
+<span class="fc" id="L1962">        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, frame);</span>
+<span class="fc" id="L1963">        rebuildExpectedKinematics();</span>
+<span class="fc" id="L1964">    }</span>
+
+    /**
+     * Sets position expressed on ECEF coordinates and orientation respect to
+     * NED axes.
+     * In order to preserve provided orientation, first position is set and
+     * then orientation is applied.
+     *
+     * @param position position resolved around ECEF axes and expressed in meters (m).
+     * @param nedC     body to NED coordinate transformation indicating body
+     *                 orientation.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not from
+     *                                                       body to NED coordinates.
+     * @throws LockedException                               if estimator is currently
+     *                                                       running.
+     * @see #setEcefPosition(Point3D)
+     * @see #setNedC(CoordinateTransformation)
+     */
+    public void setEcefPositionAndNedOrientation(
+            final Point3D position, final CoordinateTransformation nedC)
+            throws InvalidSourceAndDestinationFrameTypeException, LockedException {
+<span class="fc bfc" id="L1986" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1987">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L1990">        frame.setPosition(position);</span>
+
+<span class="fc" id="L1992">        final var nedFrame = getNedFrame();</span>
+<span class="fc" id="L1993">        nedFrame.setCoordinateTransformation(nedC);</span>
+<span class="fc" id="L1994">        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, frame);</span>
+<span class="fc" id="L1995">        rebuildExpectedKinematics();</span>
+<span class="fc" id="L1996">    }</span>
+
+    /**
+     * Gets listener to handle events raised by this estimator.
+     *
+     * @return listener to handle events raised by this estimator.
+     */
+    public BodyKinematicsBiasEstimatorListener getListener() {
+<span class="fc" id="L2004">        return listener;</span>
+    }
+
+    /**
+     * Sets listener to handle events raised by this estimator.
+     *
+     * @param listener listener to handle events raised by this estimator.
+     * @throws LockedException if this estimator is running.
+     */
+    public void setListener(final BodyKinematicsBiasEstimatorListener listener) throws LockedException {
+<span class="fc bfc" id="L2014" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L2015">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L2018">        this.listener = listener;</span>
+<span class="fc" id="L2019">    }</span>
+
+    /**
+     * Gets last provided body kinematics values or null if not available.
+     *
+     * @return last provided body kinematics values or null.
+     */
+    public BodyKinematics getLastBodyKinematics() {
+<span class="fc bfc" id="L2027" title="All 2 branches covered.">        return lastBodyKinematics != null ? new BodyKinematics(lastBodyKinematics) : null;</span>
+    }
+
+    /**
+     * Gets last provided body kinematics values.
+     *
+     * @param result instance where last provided body kinematics will be stored.
+     * @return true if result instance was updated, false otherwise.
+     */
+    public boolean getLastBodyKinematics(final BodyKinematics result) {
+<span class="fc bfc" id="L2037" title="All 2 branches covered.">        if (lastBodyKinematics != null) {</span>
+<span class="fc" id="L2038">            lastBodyKinematics.copyTo(result);</span>
+<span class="fc" id="L2039">            return true;</span>
+        } else {
+<span class="fc" id="L2041">            return false;</span>
+        }
+    }
+
+    /**
+     * Gets estimated bias of x coordinate of accelerometer sensed specific force
+     * expressed in meters per squared second (m/s^2).
+     *
+     * @return bias of x coordinate of sensed specific force.
+     */
+    public double getBiasFx() {
+<span class="fc" id="L2052">        return biasFx;</span>
+    }
+
+    /**
+     * Gets estimated bias of x coordinate of accelerometer sensed specific force.
+     *
+     * @return bias of x coordinate of sensed specific force.
+     */
+    public Acceleration getBiasFxAsAcceleration() {
+<span class="fc" id="L2061">        return new Acceleration(biasFx, AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+    }
+
+    /**
+     * Gets estimated bias of x coordinate of accelerometer sensed specific force.
+     *
+     * @param result instance where bias of x coordinate of sensed specific force
+     *               will be stored.
+     */
+    public void getBiasFxAsAcceleration(final Acceleration result) {
+<span class="fc" id="L2071">        result.setValue(biasFx);</span>
+<span class="fc" id="L2072">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L2073">    }</span>
+
+    /**
+     * Gets estimated bias of x coordinate of accelerometer sensed specific force
+     * expressed in meters per squared second (m/s^2).
+     *
+     * @return bias of y coordinate of sensed specific force.
+     */
+    public double getBiasFy() {
+<span class="fc" id="L2082">        return biasFy;</span>
+    }
+
+    /**
+     * Gets estimated bias of y coordinate of accelerometer sensed specific force.
+     *
+     * @return bias of y coordinate of sensed specific force.
+     */
+    public Acceleration getBiasFyAsAcceleration() {
+<span class="fc" id="L2091">        return new Acceleration(biasFy, AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+    }
+
+    /**
+     * Gets estimated bias of y coordinate of accelerometer sensed specific force.
+     *
+     * @param result instance where bias of y coordinate of sensed specific force
+     *               will be stored.
+     */
+    public void getBiasFyAsAcceleration(final Acceleration result) {
+<span class="fc" id="L2101">        result.setValue(biasFy);</span>
+<span class="fc" id="L2102">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L2103">    }</span>
+
+    /**
+     * Gets estimated bias of z coordinate of accelerometer sensed specific force
+     * expressed in meters per squared second (m/s^2).
+     *
+     * @return bias of z coordinate of sensed specific force.
+     */
+    public double getBiasFz() {
+<span class="fc" id="L2112">        return biasFz;</span>
+    }
+
+    /**
+     * Gets estimated bias of z coordinate of accelerometer sensed specific force.
+     *
+     * @return bias of z coordinate of sensed specific force.
+     */
+    public Acceleration getBiasFzAsAcceleration() {
+<span class="fc" id="L2121">        return new Acceleration(biasFz, AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+    }
+
+    /**
+     * Gets estimated bias of z coordinate of accelerometer sensed specific force.
+     *
+     * @param result instance where bias of z coordinate of sensed specific force
+     *               will be stored.
+     */
+    public void getBiasFzAsAcceleration(final Acceleration result) {
+<span class="fc" id="L2131">        result.setValue(biasFz);</span>
+<span class="fc" id="L2132">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L2133">    }</span>
+
+    /**
+     * Gets estimated bias of x coordinate of gyroscope sensed angular rate
+     * expressed in radians per second (rad/s).
+     *
+     * @return bias of x coordinate of sensed angular rate.
+     */
+    public double getBiasAngularRateX() {
+<span class="fc" id="L2142">        return biasAngularRateX;</span>
+    }
+
+    /**
+     * Gets estimated bias of x coordinate of gyroscope sensed angular rate.
+     *
+     * @return bias of x coordinate of sensed angular rate.
+     */
+    public AngularSpeed getBiasAngularRateXAsAngularSpeed() {
+<span class="fc" id="L2151">        return new AngularSpeed(biasAngularRateX, AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+    }
+
+    /**
+     * Gets estimated bias of x coordinate of gyroscope sensed angular rate.
+     *
+     * @param result instance where bias of x coordinate of sensed angular rate
+     *               will be stored.
+     */
+    public void getBiasAngularRateXAsAngularSpeed(final AngularSpeed result) {
+<span class="fc" id="L2161">        result.setValue(biasAngularRateX);</span>
+<span class="fc" id="L2162">        result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+<span class="fc" id="L2163">    }</span>
+
+    /**
+     * Gets estimated bias of y coordinate of gyroscope sensed angular rate
+     * expressed in radians per second (rad/s).
+     *
+     * @return bias of y coordinate of sensed angular rate.
+     */
+    public double getBiasAngularRateY() {
+<span class="fc" id="L2172">        return biasAngularRateY;</span>
+    }
+
+    /**
+     * Gets estimated bias of y coordinate of gyroscope sensed angular rate.
+     *
+     * @return bias of y coordinate of sensed angular rate.
+     */
+    public AngularSpeed getBiasAngularRateYAsAngularSpeed() {
+<span class="fc" id="L2181">        return new AngularSpeed(biasAngularRateY, AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+    }
+
+    /**
+     * Gets estimated bias of y coordinate of gyroscope sensed angular rate.
+     *
+     * @param result instance where bias of y coordinate of sensed angular rate
+     *               will be stored.
+     */
+    public void getBiasAngularRateYAsAngularSpeed(final AngularSpeed result) {
+<span class="fc" id="L2191">        result.setValue(biasAngularRateY);</span>
+<span class="fc" id="L2192">        result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+<span class="fc" id="L2193">    }</span>
+
+    /**
+     * Gets estimated bias of z coordinate of gyroscope sensed angular rate
+     * expressed in radians per second (rad/s).
+     *
+     * @return bias of z coordinate of sensed angular rate.
+     */
+    public double getBiasAngularRateZ() {
+<span class="fc" id="L2202">        return biasAngularRateZ;</span>
+    }
+
+    /**
+     * Gets estimated bias of z coordinate of gyroscope sensed angular rate.
+     *
+     * @return bias of z coordinate of sensed angular rate.
+     */
+    public AngularSpeed getBiasAngularRateZAsAngularSpeed() {
+<span class="fc" id="L2211">        return new AngularSpeed(biasAngularRateZ, AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+    }
+
+    /**
+     * Gets estimated bias of z coordinate of gyroscope sensed angular rate.
+     *
+     * @param result instance where bias of z coordinate of sensed angular rate
+     *               will be stored.
+     */
+    public void getBiasAngularRateZAsAngularSpeed(final AngularSpeed result) {
+<span class="fc" id="L2221">        result.setValue(biasAngularRateZ);</span>
+<span class="fc" id="L2222">        result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+<span class="fc" id="L2223">    }</span>
+
+    /**
+     * Gets estimated bias of accelerometer sensed specific force.
+     *
+     * @return estimated bias of accelerometer sensed specific force.
+     */
+    public AccelerationTriad getBiasF() {
+<span class="fc" id="L2231">        return new AccelerationTriad(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasFx, biasFy, biasFz);</span>
+    }
+
+    /**
+     * Gets estimated bias of accelerometer sensed specific force.
+     *
+     * @param result instance where bias of sensed specific force will
+     *               be stored.
+     */
+    public void getBiasF(final AccelerationTriad result) {
+<span class="fc" id="L2241">        result.setValueCoordinatesAndUnit(biasFx, biasFy, biasFz, AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L2242">    }</span>
+
+    /**
+     * Gets estimated bias of gyroscope sensed angular rate.
+     *
+     * @return estimated bias of gyroscope sensed angular rate.
+     */
+    public AngularSpeedTriad getBiasAngularRate() {
+<span class="fc" id="L2250">        return new AngularSpeedTriad(AngularSpeedUnit.RADIANS_PER_SECOND,</span>
+                biasAngularRateX, biasAngularRateY, biasAngularRateZ);
+    }
+
+    /**
+     * Gets estimated bias of gyroscope sensed angular rate.
+     *
+     * @param result instance where bias of gyroscope sensed angular
+     *               rate will be stored.
+     */
+    public void getBiasAngularRate(final AngularSpeedTriad result) {
+<span class="fc" id="L2261">        result.setValueCoordinatesAndUnit(biasAngularRateX, biasAngularRateY, biasAngularRateZ,</span>
+                AngularSpeedUnit.RADIANS_PER_SECOND);
+<span class="fc" id="L2263">    }</span>
+
+    /**
+     * Gets body kinematics containing estimated bias values for accelerometer
+     * and gyroscope.
+     *
+     * @return body kinematics containing estimated bias values.
+     */
+    public BodyKinematics getBiasesAsBodyKinematics() {
+<span class="fc" id="L2272">        final var result = new BodyKinematics();</span>
+<span class="fc" id="L2273">        getBiasesAsBodyKinematics(result);</span>
+<span class="fc" id="L2274">        return result;</span>
+    }
+
+    /**
+     * Gets body kinematics containing estimated bias values for accelerometer
+     * and gyroscope.
+     *
+     * @param result instance where body kinematics containing estimated bias
+     *               values will be stored.
+     */
+    public void getBiasesAsBodyKinematics(final BodyKinematics result) {
+<span class="fc" id="L2285">        result.setSpecificForceCoordinates(biasFx, biasFy, biasFz);</span>
+<span class="fc" id="L2286">        result.setAngularRateCoordinates(biasAngularRateX, biasAngularRateY, biasAngularRateZ);</span>
+<span class="fc" id="L2287">    }</span>
+
+    /**
+     * Gets estimated variance of x coordinate of accelerometer sensed specific
+     * force expressed in (m^2/s^4).
+     *
+     * @return estimated variance of x coordinate of sensed specific force.
+     */
+    public double getVarianceFx() {
+<span class="fc" id="L2296">        return varianceFx;</span>
+    }
+
+    /**
+     * Gets estimated variance of y coordinate of accelerometer sensed specific
+     * force expressed in (m^2/s^4).
+     *
+     * @return estimated variance of y coordinate of sensed specific force.
+     */
+    public double getVarianceFy() {
+<span class="fc" id="L2306">        return varianceFy;</span>
+    }
+
+    /**
+     * Gets estimated variance of z coordinate of accelerometer sensed specific
+     * force expressed in (m^2/s^4).
+     *
+     * @return estimated variance of z coordinate of sensed specific force.
+     */
+    public double getVarianceFz() {
+<span class="fc" id="L2316">        return varianceFz;</span>
+    }
+
+    /**
+     * Gets estimated variance of x coordinate of gyroscope sensed angular rate
+     * expressed in (rad^2/s^2).
+     *
+     * @return estimated variance of x coordinate of sensed angular rate.
+     */
+    public double getVarianceAngularRateX() {
+<span class="fc" id="L2326">        return varianceAngularRateX;</span>
+    }
+
+    /**
+     * Gets estimated variance of y coordinate of gyroscope sensed angular rate
+     * expressed in (rad^2/s^2).
+     *
+     * @return estimated variance of y coordinate of sensed angular rate.
+     */
+    public double getVarianceAngularRateY() {
+<span class="fc" id="L2336">        return varianceAngularRateY;</span>
+    }
+
+    /**
+     * Gets estimated variance of z coordinate of gyroscope sensed angular rate
+     * expressed in (rad^2/s^2).
+     *
+     * @return estimated variance of z coordinate of sensed angular rate.
+     */
+    public double getVarianceAngularRateZ() {
+<span class="fc" id="L2346">        return varianceAngularRateZ;</span>
+    }
+
+    /**
+     * Gets estimated standard deviation of x coordinate of accelerometer
+     * sensed specific force expressed in (m/s^2).
+     *
+     * @return estimated standard deviation of x coordinate of sensed specific force.
+     */
+    public double getStandardDeviationFx() {
+<span class="fc" id="L2356">        return Math.sqrt(varianceFx);</span>
+    }
+
+    /**
+     * Gets estimated standard deviation of x coordinate of accelerometer
+     * sensed specific force.
+     *
+     * @return estimated standard deviation of x coordinate of sensed specific force.
+     */
+    public Acceleration getStandardDeviationFxAsAcceleration() {
+<span class="fc" id="L2366">        return new Acceleration(getStandardDeviationFx(), AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+    }
+
+    /**
+     * Gets estimated standard deviation of x coordinate of accelerometer
+     * sensed specific force.
+     *
+     * @param result instance where estimated standard deviation of x coordinate
+     *               of sensed specific force will be stored.
+     */
+    public void getStandardDeviationFxAsAcceleration(final Acceleration result) {
+<span class="fc" id="L2377">        result.setValue(getStandardDeviationFx());</span>
+<span class="fc" id="L2378">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L2379">    }</span>
+
+    /**
+     * Gets estimated standard deviation of y coordinate of accelerometer
+     * sensed specific force expressed in (m/s^2).
+     *
+     * @return estimated standard deviation of y coordinate of sensed specific
+     * force.
+     */
+    public double getStandardDeviationFy() {
+<span class="fc" id="L2389">        return Math.sqrt(varianceFy);</span>
+    }
+
+    /**
+     * Gets estimated standard deviation of y coordinate of accelerometer
+     * sensed specific force.
+     *
+     * @return estimated standard deviation of y coordinate of sensed specific
+     * force.
+     */
+    public Acceleration getStandardDeviationFyAsAcceleration() {
+<span class="fc" id="L2400">        return new Acceleration(getStandardDeviationFy(),</span>
+                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+    }
+
+    /**
+     * Gets estimated standard deviation of y coordinate of accelerometer
+     * sensed specific force.
+     *
+     * @param result instance where estimated standard deviation of y coordinate
+     *               of sensed specific force will be stored.
+     */
+    public void getStandardDeviationFyAsAcceleration(final Acceleration result) {
+<span class="fc" id="L2412">        result.setValue(getStandardDeviationFy());</span>
+<span class="fc" id="L2413">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L2414">    }</span>
+
+    /**
+     * Gets estimated standard deviation of z coordinate of accelerometer
+     * sensed specific force expressed in (m/s^2).
+     *
+     * @return estimated standard deviation of z coordinate of sensed specific
+     * force.
+     */
+    public double getStandardDeviationFz() {
+<span class="fc" id="L2424">        return Math.sqrt(varianceFz);</span>
+    }
+
+    /**
+     * Gets estimated standard deviation of z coordinate of accelerometer
+     * sensed specific force.
+     *
+     * @return estimated standard deviation of z coordinate of sensed specific
+     * force.
+     */
+    public Acceleration getStandardDeviationFzAsAcceleration() {
+<span class="fc" id="L2435">        return new Acceleration(getStandardDeviationFz(), AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+    }
+
+    /**
+     * Gets estimated standard deviation of z coordinate of accelerometer
+     * sensed specific force.
+     *
+     * @param result instance where estimated standard deviation of z coordinate
+     *               of sensed specific force will be stored.
+     */
+    public void getStandardDeviationFzAsAcceleration(final Acceleration result) {
+<span class="fc" id="L2446">        result.setValue(getStandardDeviationFz());</span>
+<span class="fc" id="L2447">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L2448">    }</span>
+
+    /**
+     * Gets estimated standard deviation of accelerometer sensed
+     * specific force.
+     *
+     * @return estimated standard deviation of accelerometer
+     */
+    public AccelerationTriad getStandardDeviationF() {
+<span class="fc" id="L2457">        return new AccelerationTriad(AccelerationUnit.METERS_PER_SQUARED_SECOND,</span>
+<span class="fc" id="L2458">                getStandardDeviationFx(),</span>
+<span class="fc" id="L2459">                getStandardDeviationFy(),</span>
+<span class="fc" id="L2460">                getStandardDeviationFz());</span>
+    }
+
+    /**
+     * Gets estimated standard deviation of accelerometer sensed
+     * specific force.
+     *
+     * @param result instance where estimated standard deviation of
+     *               accelerometer will be stored.
+     */
+    public void getStandardDeviationF(final AccelerationTriad result) {
+<span class="fc" id="L2471">        result.setValueCoordinatesAndUnit(getStandardDeviationFx(), getStandardDeviationFy(), getStandardDeviationFz(),</span>
+                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+<span class="fc" id="L2473">    }</span>
+
+    /**
+     * Gets average of estimated standard deviation of accelerometer sensed specific
+     * force for all coordinates expressed in meters per squared second (m/s^2).
+     *
+     * @return average of estimated standard deviation of accelerometer.
+     */
+    public double getAverageAccelerometerStandardDeviation() {
+<span class="fc" id="L2482">        return (getStandardDeviationFx() + getStandardDeviationFy() + getStandardDeviationFz()) / 3.0;</span>
+    }
+
+    /**
+     * Gets average of estimated standard deviation of accelerometer sensed specific
+     * force for all coordinates.
+     *
+     * @return average of estimated standard deviation of accelerometer.
+     */
+    public Acceleration getAverageAccelerometerStandardDeviationAsAcceleration() {
+<span class="fc" id="L2492">        return new Acceleration(getAverageAccelerometerStandardDeviation(), AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+    }
+
+    /**
+     * Gets average of estimated standard deviation of accelerometer sensed specific
+     * force for all coordinates.
+     *
+     * @param result instance where result data will be copied to.
+     */
+    public void getAverageAccelerometerStandardDeviationAsAcceleration(final Acceleration result) {
+<span class="fc" id="L2502">        result.setValue(getAverageAccelerometerStandardDeviation());</span>
+<span class="fc" id="L2503">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L2504">    }</span>
+
+    /**
+     * Gets estimated standard deviation of x coordinate of gyroscope sensed angular
+     * rate expressed in (rad/s).
+     *
+     * @return estimated standard deviation of x coordinate of sensed angular rate.
+     */
+    public double getStandardDeviationAngularRateX() {
+<span class="fc" id="L2513">        return Math.sqrt(varianceAngularRateX);</span>
+    }
+
+    /**
+     * Gets estimated standard deviation of x coordinate of gyroscope sensed angular
+     * rate.
+     *
+     * @return estimated standard deviation of x coordinate of sensed angular rate.
+     */
+    public AngularSpeed getStandardDeviationAngularRateXAsAngularSpeed() {
+<span class="fc" id="L2523">        return new AngularSpeed(getStandardDeviationAngularRateX(), AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+    }
+
+    /**
+     * Gets estimated standard deviation of x coordinate of gyroscope sensed angular
+     * rate.
+     *
+     * @param result instance where estimated standard deviation of x coordinate of
+     *               sensed angular rate will be stored.
+     */
+    public void getStandardDeviationAngularRateXAsAngularSpeed(final AngularSpeed result) {
+<span class="fc" id="L2534">        result.setValue(getStandardDeviationAngularRateX());</span>
+<span class="fc" id="L2535">        result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+<span class="fc" id="L2536">    }</span>
+
+    /**
+     * Gets estimated standard deviation of y coordinate of gyroscope sensed angular
+     * rate expressed in (rad/s).
+     *
+     * @return estimated standard deviation of y coordinate of sensed angular rate.
+     */
+    public double getStandardDeviationAngularRateY() {
+<span class="fc" id="L2545">        return Math.sqrt(varianceAngularRateY);</span>
+    }
+
+    /**
+     * Gets estimated standard deviation of y coordinate of gyroscope sensed angular
+     * rate.
+     *
+     * @return estimated standard deviation of y coordinate of sensed angular rate.
+     */
+    public AngularSpeed getStandardDeviationAngularRateYAsAngularSpeed() {
+<span class="fc" id="L2555">        return new AngularSpeed(getStandardDeviationAngularRateY(), AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+    }
+
+    /**
+     * Gets estimated standard deviation of y coordinate of gyroscope sensed angular
+     * rate.
+     *
+     * @param result instance where estimated standard deviation of y coordinate of
+     *               sensed angular rate will be stored.
+     */
+    public void getStandardDeviationAngularRateYAsAngularSpeed(final AngularSpeed result) {
+<span class="fc" id="L2566">        result.setValue(getStandardDeviationAngularRateY());</span>
+<span class="fc" id="L2567">        result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+<span class="fc" id="L2568">    }</span>
+
+    /**
+     * Gets estimated standard deviation of z coordinate of gyroscope sensed angular
+     * rate expressed in (rad/s).
+     *
+     * @return estimated standard deviation of z coordinate of sensed angular rate.
+     */
+    public double getStandardDeviationAngularRateZ() {
+<span class="fc" id="L2577">        return Math.sqrt(varianceAngularRateZ);</span>
+    }
+
+    /**
+     * Gets estimated standard deviation of z coordinate of gyroscope sensed angular
+     * rate.
+     *
+     * @return estimated standard deviation of z coordinate of sensed angular rate.
+     */
+    public AngularSpeed getStandardDeviationAngularRateZAsAngularSpeed() {
+<span class="fc" id="L2587">        return new AngularSpeed(getStandardDeviationAngularRateZ(), AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+    }
+
+    /**
+     * Gets estimated standard deviation of z coordinate of gyroscope sensed angular
+     * rate.
+     *
+     * @param result instance where estimated standard deviation of z coordinate of
+     *               sensed angular rate will be stored.
+     */
+    public void getStandardDeviationAngularRateZAsAngularSpeed(final AngularSpeed result) {
+<span class="fc" id="L2598">        result.setValue(getStandardDeviationAngularRateZ());</span>
+<span class="fc" id="L2599">        result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+<span class="fc" id="L2600">    }</span>
+
+    /**
+     * Gets estimated standard deviation of sensed angular rate.
+     *
+     * @return estimated standard deviation of sensed angular rate.
+     */
+    public AngularSpeedTriad getStandardDeviationAngularRate() {
+<span class="fc" id="L2608">        return new AngularSpeedTriad(AngularSpeedUnit.RADIANS_PER_SECOND,</span>
+<span class="fc" id="L2609">                getStandardDeviationAngularRateX(),</span>
+<span class="fc" id="L2610">                getStandardDeviationAngularRateY(),</span>
+<span class="fc" id="L2611">                getStandardDeviationAngularRateZ());</span>
+    }
+
+    /**
+     * Gets estimated standard deviation of sensed angular rate.
+     *
+     * @param result instance where estimated standard deviation of
+     *               sensed angular rate.
+     */
+    public void getStandardDeviationAngularRate(final AngularSpeedTriad result) {
+<span class="fc" id="L2621">        result.setValueCoordinatesAndUnit(getStandardDeviationAngularRateX(),</span>
+<span class="fc" id="L2622">                getStandardDeviationAngularRateY(),</span>
+<span class="fc" id="L2623">                getStandardDeviationAngularRateZ(),</span>
+                AngularSpeedUnit.RADIANS_PER_SECOND);
+<span class="fc" id="L2625">    }</span>
+
+    /**
+     * Gets average of estimated standard deviation of gyroscope sensed angular rate
+     * for all coordinates expressed in radians per second (rad/s).
+     *
+     * @return average of estimated standard deviation of gyroscope.
+     */
+    public double getAverageGyroscopeStandardDeviation() {
+<span class="fc" id="L2634">        return (getStandardDeviationAngularRateX() + getStandardDeviationAngularRateY()</span>
+<span class="fc" id="L2635">                + getStandardDeviationAngularRateZ()) / 3.0;</span>
+    }
+
+    /**
+     * Gets average of estimated standard deviation of gyroscope sensed angular rate
+     * for all coordinates.
+     *
+     * @return average of estimated standard deviation of gyroscope.
+     */
+    public AngularSpeed getAverageGyroscopeStandardDeviationAsAngularSpeed() {
+<span class="fc" id="L2645">        return new AngularSpeed(getAverageGyroscopeStandardDeviation(), AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+    }
+
+    /**
+     * Gets average of estimated standard deviation of gyroscope sensed angular rate
+     * for all coordinates.
+     *
+     * @param result instance where result data will be copied to.
+     */
+    public void getAverageGyroscopeStandardDeviationAsAngularSpeed(final AngularSpeed result) {
+<span class="fc" id="L2655">        result.setValue(getAverageGyroscopeStandardDeviation());</span>
+<span class="fc" id="L2656">        result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+<span class="fc" id="L2657">    }</span>
+
+    /**
+     * Gets estimated standard deviations of accelerometer and gyroscope components
+     * as a body kinematics instance.
+     *
+     * @return a body kinematics instance containing standard deviation values.
+     */
+    public BodyKinematics getStandardDeviationsAsBodyKinematics() {
+<span class="fc" id="L2666">        return new BodyKinematics(getStandardDeviationFx(),</span>
+<span class="fc" id="L2667">                getStandardDeviationFy(),</span>
+<span class="fc" id="L2668">                getStandardDeviationFz(),</span>
+<span class="fc" id="L2669">                getStandardDeviationAngularRateX(),</span>
+<span class="fc" id="L2670">                getStandardDeviationAngularRateY(),</span>
+<span class="fc" id="L2671">                getStandardDeviationAngularRateZ());</span>
+    }
+
+    /**
+     * Gets estimated standard deviations of accelerometer and gyroscope components
+     * as a body kinematics instance.
+     *
+     * @param result instance where data will be stored.
+     */
+    public void getStandardDeviationsAsBodyKinematics(final BodyKinematics result) {
+<span class="fc" id="L2681">        result.setSpecificForceCoordinates(getStandardDeviationFx(),</span>
+<span class="fc" id="L2682">                getStandardDeviationFy(), getStandardDeviationFz());</span>
+<span class="fc" id="L2683">        result.setAngularRateCoordinates(getStandardDeviationAngularRateX(),</span>
+<span class="fc" id="L2684">                getStandardDeviationAngularRateY(),</span>
+<span class="fc" id="L2685">                getStandardDeviationAngularRateZ());</span>
+<span class="fc" id="L2686">    }</span>
+
+    /**
+     * Gets accelerometer noise PSD (Power Spectral Density) on x axis expressed
+     * in (m^2 * s^-3).
+     *
+     * @return accelerometer noise PSD on x axis.
+     */
+    public double getPSDFx() {
+<span class="fc" id="L2695">        return varianceFx * timeInterval;</span>
+    }
+
+    /**
+     * Gets accelerometer noise PSD (Power Spectral Density) on y axis expressed
+     * in (m^2 * s^-3).
+     *
+     * @return accelerometer noise PSD on y axis.
+     */
+    public double getPSDFy() {
+<span class="fc" id="L2705">        return varianceFy * timeInterval;</span>
+    }
+
+    /**
+     * Gets accelerometer noise PSD (Power Spectral Density) on z axis expressed
+     * in (m^2 * s^-3).
+     *
+     * @return accelerometer noise PSD on z axis.
+     */
+    public double getPSDFz() {
+<span class="fc" id="L2715">        return varianceFz * timeInterval;</span>
+    }
+
+    /**
+     * Gets gyroscope noise PSD (Power Spectral Density) on x axis expressed
+     * in (rad^2/s).
+     *
+     * @return gyroscope noise PSD on x axis.
+     */
+    public double getPSDAngularRateX() {
+<span class="fc" id="L2725">        return varianceAngularRateX * timeInterval;</span>
+    }
+
+    /**
+     * Gets gyroscope noise PSD (Power Spectral Density) on y axis expressed
+     * in (rad^2/s).
+     *
+     * @return gyroscope noise PSD on y axis.
+     */
+    public double getPSDAngularRateY() {
+<span class="fc" id="L2735">        return varianceAngularRateY * timeInterval;</span>
+    }
+
+    /**
+     * Gets gyroscope noise PSD (Power Spectral Density) on z axis expressed
+     * in (rad^2/s).
+     *
+     * @return gyroscope noise PSD on z axis.
+     */
+    public double getPSDAngularRateZ() {
+<span class="fc" id="L2745">        return varianceAngularRateZ * timeInterval;</span>
+    }
+
+    /**
+     * Gets accelerometer noise root PSD (Power Spectral Density) on x axis
+     * expressed in (m * s^-1.5).
+     *
+     * @return accelerometer noise root PSD on x axis.
+     */
+    public double getRootPSDFx() {
+<span class="fc" id="L2755">        return Math.sqrt(getPSDFx());</span>
+    }
+
+    /**
+     * Gets accelerometer noise root PSD (Power Spectral Density) on y axis
+     * expressed in (m * s^-1.5).
+     *
+     * @return accelerometer noise root PSD on y axis.
+     */
+    public double getRootPSDFy() {
+<span class="fc" id="L2765">        return Math.sqrt(getPSDFy());</span>
+    }
+
+    /**
+     * Gets accelerometer noise root PSD (Power Spectral Density) on z axis
+     * expressed in (m * s^-1.5).
+     *
+     * @return accelerometer noise root PSD on z axis.
+     */
+    public double getRootPSDFz() {
+<span class="fc" id="L2775">        return Math.sqrt(getPSDFz());</span>
+    }
+
+    /**
+     * Gets gyroscope noise root PSD (Power Spectral Density) on x axis
+     * expressed in (rad * s^-0.5).
+     *
+     * @return gyroscope noise root PSD on x axis.
+     */
+    public double getRootPSDAngularRateX() {
+<span class="fc" id="L2785">        return Math.sqrt(getPSDAngularRateX());</span>
+    }
+
+    /**
+     * Gets gyroscope noise root PSD (Power Spectral Density) on y axis
+     * expressed in (rad * s^-0.5).
+     *
+     * @return gyroscope noise root PSD on y axis.
+     */
+    public double getRootPSDAngularRateY() {
+<span class="fc" id="L2795">        return Math.sqrt(getPSDAngularRateY());</span>
+    }
+
+    /**
+     * Gets gyroscope noise root PSD (Power Spectral Density) on z axis
+     * expressed in (rad * s^-0.5).
+     *
+     * @return gyroscope noise root PSD on z axis.
+     */
+    public double getRootPSDAngularRateZ() {
+<span class="fc" id="L2805">        return Math.sqrt(getPSDAngularRateZ());</span>
+    }
+
+    /**
+     * Gets average accelerometer noise PSD (Power Spectral Density) among
+     * x,y,z components expressed as (m^2/s^3).
+     *
+     * @return average accelerometer noise PSD.
+     */
+    public double getAccelerometerNoisePSD() {
+<span class="fc" id="L2815">        return (getPSDFx() + getPSDFy() + getPSDFz()) / 3.0;</span>
+    }
+
+    /**
+     * Gets accelerometer noise root PSD (Power Spectral Density) which is the
+     * norm of root PSD components expressed as (m * s^-1.5).
+     *
+     * @return average accelerometer noise root PSD.
+     */
+    public double getAccelerometerNoiseRootPSD() {
+<span class="fc" id="L2825">        return Math.sqrt(getPSDFx() + getPSDFy() + getPSDFz());</span>
+    }
+
+    /**
+     * Gets average gyroscope noise PSD (Power Spectral Density) among
+     * x,y,z components expressed in (rad^2/s).
+     *
+     * @return average gyroscope noise PSD.
+     */
+    public double getGyroNoisePSD() {
+<span class="fc" id="L2835">        return (getPSDAngularRateX() + getPSDAngularRateY() + getPSDAngularRateZ()) / 3.0;</span>
+    }
+
+    /**
+     * Gets gyroscope noise root PSD (Power Spectral Density) which is the
+     * norm of root PSD components expressed in (rad * s^-0.5).
+     *
+     * @return average gyroscope noise root PSD.
+     */
+    public double getGyroNoiseRootPSD() {
+<span class="fc" id="L2845">        return Math.sqrt(getPSDAngularRateX() + getPSDAngularRateY() + getPSDAngularRateZ());</span>
+    }
+
+    /**
+     * Gets estimated bias of accelerometer sensed specific force
+     * expressed in meters per squared second (m/s^2) as a 3x1 matrix column vector.
+     *
+     * @return estimated bias of accelerometer sensed specific force.
+     */
+    public Matrix getAccelerometerBias() {
+        Matrix result;
+        try {
+<span class="fc" id="L2857">            result = new Matrix(BodyKinematics.COMPONENTS, 1);</span>
+<span class="fc" id="L2858">            getAccelerometerBias(result);</span>
+<span class="nc" id="L2859">        } catch (final WrongSizeException ignore) {</span>
+            // never happens
+<span class="nc" id="L2861">            result = null;</span>
+<span class="fc" id="L2862">        }</span>
+
+<span class="fc" id="L2864">        return result;</span>
+    }
+
+    /**
+     * Gets estimated bias of accelerometer sensed specific force
+     * expressed in meters per squared second (m/s^2) as a 3x1 matrix column vector.
+     *
+     * @param result instance where data will be copied to. Must be 3x1.
+     * @throws IllegalArgumentException if provided result matrix is not 3x1.
+     */
+    public void getAccelerometerBias(final Matrix result) {
+<span class="fc bfc" id="L2875" title="All 4 branches covered.">        if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != 1) {</span>
+<span class="fc" id="L2876">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L2879">        result.setElementAtIndex(0, biasFx);</span>
+<span class="fc" id="L2880">        result.setElementAtIndex(1, biasFy);</span>
+<span class="fc" id="L2881">        result.setElementAtIndex(2, biasFz);</span>
+<span class="fc" id="L2882">    }</span>
+
+    /**
+     * Gets estimated bias of gyroscope sensed angular rates
+     * expressed in radians per second (rad/s) as a 3x1 matrix column vector.
+     *
+     * @return estimated bias of gyroscope sensed angular rates.
+     */
+    public Matrix getGyroBias() {
+        Matrix result;
+        try {
+<span class="fc" id="L2893">            result = new Matrix(BodyKinematics.COMPONENTS, 1);</span>
+<span class="fc" id="L2894">            getGyroBias(result);</span>
+<span class="nc" id="L2895">        } catch (final WrongSizeException ignore) {</span>
+            // never happens
+<span class="nc" id="L2897">            result = null;</span>
+<span class="fc" id="L2898">        }</span>
+
+<span class="fc" id="L2900">        return result;</span>
+    }
+
+    /**
+     * Gets estimated bias of gyroscope sensed angular rates
+     * expressed in radians per second (rad/s) as a 3x1 matrix column vector.
+     *
+     * @param result instance where data will be copied to. Must be 3x1.
+     * @throws IllegalArgumentException if provided result matrix is not 3x1.
+     */
+    public void getGyroBias(final Matrix result) {
+<span class="fc bfc" id="L2911" title="All 4 branches covered.">        if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != 1) {</span>
+<span class="fc" id="L2912">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L2915">        result.setElementAtIndex(0, biasAngularRateX);</span>
+<span class="fc" id="L2916">        result.setElementAtIndex(1, biasAngularRateY);</span>
+<span class="fc" id="L2917">        result.setElementAtIndex(2, biasAngularRateZ);</span>
+<span class="fc" id="L2918">    }</span>
+
+    /**
+     * Gets number of samples that have been processed so far.
+     *
+     * @return number of samples that have been processed so far.
+     */
+    public int getNumberOfProcessedSamples() {
+<span class="fc" id="L2926">        return numberOfProcessedSamples;</span>
+    }
+
+    /**
+     * Gets amount of total elapsed time since first processed measurement expressed
+     * in seconds (s).
+     *
+     * @return amount of total elapsed time.
+     */
+    public double getElapsedTimeSeconds() {
+<span class="fc" id="L2936">        return numberOfProcessedSamples * timeInterval;</span>
+    }
+
+    /**
+     * Gets amount of total elapsed time since first processed measurement.
+     *
+     * @return amount of total elapsed time.
+     */
+    public Time getElapsedTime() {
+<span class="fc" id="L2945">        return new Time(getElapsedTimeSeconds(), TimeUnit.SECOND);</span>
+    }
+
+    /**
+     * Gets amount of total elapsed time since first processed measurement.
+     *
+     * @param result instance where result will be stored.
+     */
+    public void getElapsedTime(final Time result) {
+<span class="fc" id="L2954">        result.setValue(getElapsedTimeSeconds());</span>
+<span class="fc" id="L2955">        result.setUnit(TimeUnit.SECOND);</span>
+<span class="fc" id="L2956">    }</span>
+
+    /**
+     * Indicates whether estimator is currently running or not.
+     *
+     * @return true if estimator is running, false otherwise.
+     */
+    public boolean isRunning() {
+<span class="fc" id="L2964">        return running;</span>
+    }
+
+    /**
+     * Gets theoretically expected body kinematics for provided body position and
+     * orientation, and provided time interval, assuming that body remains at the
+     * same position (zero velocity).
+     * When body remains static, sensed specific force and angular rates will remain
+     * constant due to gravity and Earth rotation.
+     *
+     * @return expected body kinematics.
+     */
+    public BodyKinematics getExpectedKinematics() {
+<span class="fc" id="L2977">        return new BodyKinematics(expectedKinematics);</span>
+    }
+
+    /**
+     * Gets theoretically expected body kinematics for provided body position and
+     * orientation, and provided time interval, assuming that body remains at the
+     * same position (zero velocity).
+     * When body remains static, sensed specific force and angular rates will remain
+     * constant due to gravity and Earth rotation.
+     *
+     * @param result instance where expected body kinematics will be stored.
+     */
+    public void getExpectedKinematics(final BodyKinematics result) {
+<span class="fc" id="L2990">        expectedKinematics.copyTo(result);</span>
+<span class="fc" id="L2991">    }</span>
+
+    /**
+     * Adds a sample of body kinematics (accelerometer + gyroscope readings) obtained
+     * from an IMU.
+     *
+     * @param kinematics kinematics instance to be added and processed.
+     * @throws LockedException if estimator is currently running.
+     */
+    public void addBodyKinematics(final BodyKinematics kinematics) throws LockedException {
+<span class="fc bfc" id="L3001" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L3002">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L3005">        running = true;</span>
+
+<span class="pc bpc" id="L3007" title="1 of 4 branches missed.">        if (lastBodyKinematics == null &amp;&amp; listener != null) {</span>
+<span class="fc" id="L3008">            listener.onStart(this);</span>
+        }
+
+<span class="fc" id="L3011">        final var fx = kinematics.getFx();</span>
+<span class="fc" id="L3012">        final var fy = kinematics.getFy();</span>
+<span class="fc" id="L3013">        final var fz = kinematics.getFz();</span>
+<span class="fc" id="L3014">        final var angularRateX = kinematics.getAngularRateX();</span>
+<span class="fc" id="L3015">        final var angularRateY = kinematics.getAngularRateY();</span>
+<span class="fc" id="L3016">        final var angularRateZ = kinematics.getAngularRateZ();</span>
+
+<span class="fc" id="L3018">        final var expectedFx = expectedKinematics.getFx();</span>
+<span class="fc" id="L3019">        final var expectedFy = expectedKinematics.getFy();</span>
+<span class="fc" id="L3020">        final var expectedFz = expectedKinematics.getFz();</span>
+<span class="fc" id="L3021">        final var expectedAngularRateX = expectedKinematics.getAngularRateX();</span>
+<span class="fc" id="L3022">        final var expectedAngularRateY = expectedKinematics.getAngularRateY();</span>
+<span class="fc" id="L3023">        final var expectedAngularRateZ = expectedKinematics.getAngularRateZ();</span>
+
+<span class="fc" id="L3025">        final var diffFx = fx - expectedFx;</span>
+<span class="fc" id="L3026">        final var diffFy = fy - expectedFy;</span>
+<span class="fc" id="L3027">        final var diffFz = fz - expectedFz;</span>
+<span class="fc" id="L3028">        final var diffAngularRateX = angularRateX - expectedAngularRateX;</span>
+<span class="fc" id="L3029">        final var diffAngularRateY = angularRateY - expectedAngularRateY;</span>
+<span class="fc" id="L3030">        final var diffAngularRateZ = angularRateZ - expectedAngularRateZ;</span>
+
+        // compute biases
+<span class="fc" id="L3033">        final var tmp = (double) numberOfProcessedSamples / (double) numberOfProcessedSamplesPlusOne;</span>
+<span class="fc" id="L3034">        biasFx = biasFx * tmp + diffFx / numberOfProcessedSamplesPlusOne;</span>
+<span class="fc" id="L3035">        biasFy = biasFy * tmp + diffFy / numberOfProcessedSamplesPlusOne;</span>
+<span class="fc" id="L3036">        biasFz = biasFz * tmp + diffFz / numberOfProcessedSamplesPlusOne;</span>
+
+<span class="fc" id="L3038">        biasAngularRateX = biasAngularRateX * tmp + diffAngularRateX / numberOfProcessedSamplesPlusOne;</span>
+<span class="fc" id="L3039">        biasAngularRateY = biasAngularRateY * tmp + diffAngularRateY / numberOfProcessedSamplesPlusOne;</span>
+<span class="fc" id="L3040">        biasAngularRateZ = biasAngularRateZ * tmp + diffAngularRateZ / numberOfProcessedSamplesPlusOne;</span>
+
+        // compute variances
+<span class="fc" id="L3043">        final var diffBiasFx = diffFx - biasFx;</span>
+<span class="fc" id="L3044">        final var diffBiasFy = diffFy - biasFy;</span>
+<span class="fc" id="L3045">        final var diffBiasFz = diffFz - biasFz;</span>
+<span class="fc" id="L3046">        final var diffBiasAngularRateX = diffAngularRateX - biasAngularRateX;</span>
+<span class="fc" id="L3047">        final var diffBiasAngularRateY = diffAngularRateY - biasAngularRateY;</span>
+<span class="fc" id="L3048">        final var diffBiasAngularRateZ = diffAngularRateZ - biasAngularRateZ;</span>
+
+<span class="fc" id="L3050">        final var diffBiasFx2 = diffBiasFx * diffBiasFx;</span>
+<span class="fc" id="L3051">        final var diffBiasFy2 = diffBiasFy * diffBiasFy;</span>
+<span class="fc" id="L3052">        final var diffBiasFz2 = diffBiasFz * diffBiasFz;</span>
+<span class="fc" id="L3053">        final var diffBiasAngularRateX2 = diffBiasAngularRateX * diffBiasAngularRateX;</span>
+<span class="fc" id="L3054">        final var diffBiasAngularRateY2 = diffBiasAngularRateY * diffBiasAngularRateY;</span>
+<span class="fc" id="L3055">        final var diffBiasAngularRateZ2 = diffBiasAngularRateZ * diffBiasAngularRateZ;</span>
+
+<span class="fc" id="L3057">        varianceFx = varianceFx * tmp + diffBiasFx2 / numberOfProcessedSamplesPlusOne;</span>
+<span class="fc" id="L3058">        varianceFy = varianceFy * tmp + diffBiasFy2 / numberOfProcessedSamplesPlusOne;</span>
+<span class="fc" id="L3059">        varianceFz = varianceFz * tmp + diffBiasFz2 / numberOfProcessedSamplesPlusOne;</span>
+
+<span class="fc" id="L3061">        varianceAngularRateX = varianceAngularRateX * tmp + diffBiasAngularRateX2 / numberOfProcessedSamplesPlusOne;</span>
+<span class="fc" id="L3062">        varianceAngularRateY = varianceAngularRateY * tmp + diffBiasAngularRateY2 / numberOfProcessedSamplesPlusOne;</span>
+<span class="fc" id="L3063">        varianceAngularRateZ = varianceAngularRateZ * tmp + diffBiasAngularRateZ2 / numberOfProcessedSamplesPlusOne;</span>
+
+<span class="fc" id="L3065">        lastBodyKinematics = kinematics;</span>
+
+<span class="fc" id="L3067">        numberOfProcessedSamples++;</span>
+<span class="fc" id="L3068">        numberOfProcessedSamplesPlusOne++;</span>
+
+<span class="pc bpc" id="L3070" title="1 of 2 branches missed.">        if (listener != null) {</span>
+<span class="fc" id="L3071">            listener.onBodyKinematicsAdded(this);</span>
+        }
+
+<span class="fc" id="L3074">        running = false;</span>
+<span class="fc" id="L3075">    }</span>
+
+    /**
+     * Resets current estimator.
+     *
+     * @return true if estimator was successfully reset, false if no reset was needed.
+     * @throws LockedException if estimator is currently running.
+     */
+    public boolean reset() throws LockedException {
+<span class="fc bfc" id="L3084" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L3085">            throw new LockedException();</span>
+        }
+
+<span class="pc bpc" id="L3088" title="1 of 2 branches missed.">        if (numberOfProcessedSamples == 0) {</span>
+<span class="nc" id="L3089">            return false;</span>
+        }
+
+<span class="fc" id="L3092">        running = true;</span>
+<span class="fc" id="L3093">        lastBodyKinematics = null;</span>
+<span class="fc" id="L3094">        biasFx = 0.0;</span>
+<span class="fc" id="L3095">        biasFy = 0.0;</span>
+<span class="fc" id="L3096">        biasFz = 0.0;</span>
+<span class="fc" id="L3097">        biasAngularRateX = 0.0;</span>
+<span class="fc" id="L3098">        biasAngularRateY = 0.0;</span>
+<span class="fc" id="L3099">        biasAngularRateZ = 0.0;</span>
+<span class="fc" id="L3100">        varianceFx = 0.0;</span>
+<span class="fc" id="L3101">        varianceFy = 0.0;</span>
+<span class="fc" id="L3102">        varianceFz = 0.0;</span>
+<span class="fc" id="L3103">        varianceAngularRateX = 0.0;</span>
+<span class="fc" id="L3104">        varianceAngularRateY = 0.0;</span>
+<span class="fc" id="L3105">        varianceAngularRateZ = 0.0;</span>
+<span class="fc" id="L3106">        numberOfProcessedSamples = 0;</span>
+<span class="fc" id="L3107">        numberOfProcessedSamplesPlusOne = 1;</span>
+
+<span class="pc bpc" id="L3109" title="1 of 2 branches missed.">        if (listener != null) {</span>
+<span class="fc" id="L3110">            listener.onReset(this);</span>
+        }
+
+<span class="fc" id="L3113">        running = false;</span>
+
+<span class="fc" id="L3115">        return true;</span>
+    }
+
+    /**
+     * Converts provided time instance to seconds.
+     *
+     * @param time instance to be converted.
+     * @return obtained conversion in seconds.
+     */
+    private static double convertTime(final Time time) {
+<span class="fc" id="L3125">        return TimeConverter.convert(time.getValue().doubleValue(), time.getUnit(), TimeUnit.SECOND);</span>
+    }
+
+    /**
+     * Rebuilds expected theoretical kinematics for provided body position
+     * and orientation and provided time interval, assuming that body
+     * remains at the same position (zero velocity).
+     * When body remains static, sensed specific force and angular rates will remain
+     * constant due to gravity and Earth rotation.
+     */
+    private void rebuildExpectedKinematics() {
+<span class="pc bpc" id="L3136" title="1 of 2 branches missed.">        if (frame == null) {</span>
+<span class="nc" id="L3137">            return;</span>
+        }
+<span class="fc bfc" id="L3139" title="All 2 branches covered.">        if (expectedKinematics == null) {</span>
+<span class="fc" id="L3140">            expectedKinematics = new BodyKinematics();</span>
+        }
+
+<span class="fc" id="L3143">        final var ecefC = getEcefC();</span>
+<span class="fc" id="L3144">        final var x = frame.getX();</span>
+<span class="fc" id="L3145">        final var y = frame.getY();</span>
+<span class="fc" id="L3146">        final var z = frame.getZ();</span>
+<span class="fc" id="L3147">        ECEFKinematicsEstimator.estimateKinematics(timeInterval, ecefC, ecefC,</span>
+                0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                x, y, z, expectedKinematics);
+<span class="fc" id="L3150">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

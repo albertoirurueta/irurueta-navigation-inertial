@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TimedBodyKinematics.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-inertial</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.inertial.calibration</a> &gt; <span class="el_source">TimedBodyKinematics.java</span></div><h1>TimedBodyKinematics.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2020 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.inertial.calibration;
+
+import com.irurueta.navigation.inertial.BodyKinematics;
+import com.irurueta.units.Time;
+import com.irurueta.units.TimeConverter;
+import com.irurueta.units.TimeUnit;
+
+import java.io.Serial;
+import java.io.Serializable;
+import java.util.Objects;
+
+/**
+ * Contains a body kinematics measurement (accelerometer + gyroscope) along with the
+ * corresponding timestamp when measure was made.
+ * Notice that timestamp does not need to be absolute.
+ * Usually timestamps are used in sequences of measurements of body kinematics, where
+ * the first measurement can have any timestamp value (e.g. zero), and hence the subsequent
+ * measurements will have timestamps relative to the first one.
+ */
+public class TimedBodyKinematics implements Serializable, Cloneable {
+
+    /**
+     * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
+     * instances.
+     */
+    @Serial
+    private static final long serialVersionUID = 0L;
+
+    /**
+     * Current body kinematics measurement. Contains accelerometer and gyroscope measurements.
+     */
+    private BodyKinematics kinematics;
+
+    /**
+     * Timestamp value expressed in seconds.
+     */
+    private double timestampSeconds;
+
+    /**
+     * Constructor.
+     */
+<span class="fc" id="L57">    public TimedBodyKinematics() {</span>
+<span class="fc" id="L58">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param kinematics current body kinematics measurement.
+     */
+<span class="fc" id="L65">    public TimedBodyKinematics(final BodyKinematics kinematics) {</span>
+<span class="fc" id="L66">        this.kinematics = kinematics;</span>
+<span class="fc" id="L67">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param timestampSeconds timestamp value expressed in seconds.
+     */
+<span class="fc" id="L74">    public TimedBodyKinematics(final double timestampSeconds) {</span>
+<span class="fc" id="L75">        this.timestampSeconds = timestampSeconds;</span>
+<span class="fc" id="L76">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param timestamp timestamp value.
+     */
+<span class="fc" id="L83">    public TimedBodyKinematics(final Time timestamp) {</span>
+<span class="fc" id="L84">        timestampSeconds = convertTime(timestamp);</span>
+<span class="fc" id="L85">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param kinematics       current body kinematics measurement.
+     * @param timestampSeconds timestamp value expressed in seconds.
+     */
+    public TimedBodyKinematics(final BodyKinematics kinematics, final double timestampSeconds) {
+<span class="fc" id="L94">        this(kinematics);</span>
+<span class="fc" id="L95">        this.timestampSeconds = timestampSeconds;</span>
+<span class="fc" id="L96">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param kinematics current body kinematics measurement.
+     * @param timestamp  timestamp value.
+     */
+    public TimedBodyKinematics(final BodyKinematics kinematics, final Time timestamp) {
+<span class="fc" id="L105">        this(timestamp);</span>
+<span class="fc" id="L106">        this.kinematics = kinematics;</span>
+<span class="fc" id="L107">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param input instance to copy data from.
+     */
+<span class="fc" id="L114">    public TimedBodyKinematics(final TimedBodyKinematics input) {</span>
+<span class="fc" id="L115">        copyFrom(input);</span>
+<span class="fc" id="L116">    }</span>
+
+    /**
+     * Gets current body kinematics measurement. Contains accelerometer and gyroscope
+     * measurements.
+     *
+     * @return current body kinematics measurement.
+     */
+    public BodyKinematics getKinematics() {
+<span class="fc" id="L125">        return kinematics;</span>
+    }
+
+    /**
+     * Sets current body kinematics measurement. Contains accelerometer and gyroscope
+     * measurements.
+     *
+     * @param kinematics current body kinematics measurement to be set.
+     */
+    public void setKinematics(final BodyKinematics kinematics) {
+<span class="fc" id="L135">        this.kinematics = kinematics;</span>
+<span class="fc" id="L136">    }</span>
+
+    /**
+     * Gets timestamp value expressed in seconds.
+     *
+     * @return timestamp value expressed in seconds.
+     */
+    public double getTimestampSeconds() {
+<span class="fc" id="L144">        return timestampSeconds;</span>
+    }
+
+    /**
+     * Sets timestamp value expressed in seconds.
+     *
+     * @param timestampSeconds timestamp value expressed in seconds.
+     */
+    public void setTimestampSeconds(final double timestampSeconds) {
+<span class="fc" id="L153">        this.timestampSeconds = timestampSeconds;</span>
+<span class="fc" id="L154">    }</span>
+
+    /**
+     * Gets timestamp value.
+     *
+     * @return a new timestamp instance.
+     */
+    public Time getTimestamp() {
+<span class="fc" id="L162">        return new Time(timestampSeconds, TimeUnit.SECOND);</span>
+    }
+
+    /**
+     * Gets timestamp value.
+     *
+     * @param result instance where result data will be stored.
+     */
+    public void getTimestamp(final Time result) {
+<span class="fc" id="L171">        result.setValue(timestampSeconds);</span>
+<span class="fc" id="L172">        result.setUnit(TimeUnit.SECOND);</span>
+<span class="fc" id="L173">    }</span>
+
+    /**
+     * Sets timestamp.
+     *
+     * @param timestamp timestamp to be set.
+     */
+    public void setTimestamp(final Time timestamp) {
+<span class="fc" id="L181">        timestampSeconds = convertTime(timestamp);</span>
+<span class="fc" id="L182">    }</span>
+
+    /**
+     * Copies data of provided instance into this instance.
+     *
+     * @param input instance to copy data from.
+     */
+    public void copyFrom(final TimedBodyKinematics input) {
+<span class="fc bfc" id="L190" title="All 2 branches covered.">        if (input.kinematics != null) {</span>
+<span class="fc bfc" id="L191" title="All 2 branches covered.">            if (kinematics == null) {</span>
+<span class="fc" id="L192">                kinematics = new BodyKinematics(input.kinematics);</span>
+            } else {
+<span class="fc" id="L194">                kinematics.copyFrom(input.kinematics);</span>
+            }
+        } else {
+<span class="fc" id="L197">            kinematics = null;</span>
+        }
+
+<span class="fc" id="L200">        timestampSeconds = input.timestampSeconds;</span>
+<span class="fc" id="L201">    }</span>
+
+    /**
+     * Copies this instance data into provided instance.
+     *
+     * @param output destination instance where data will be copied to.
+     */
+    public void copyTo(final TimedBodyKinematics output) {
+<span class="fc" id="L209">        output.copyFrom(this);</span>
+<span class="fc" id="L210">    }</span>
+
+    /**
+     * Computes and returns hash code for this instance. Hash codes are almost unique
+     * values that are useful for fast classification and storage of objects in collections.
+     *
+     * @return Hash code.
+     */
+    @Override
+    public int hashCode() {
+<span class="fc" id="L220">        return Objects.hash(kinematics, timestampSeconds);</span>
+    }
+
+    /**
+     * Checks if provided instance has exactly the same contents as this instance.
+     *
+     * @param other instance to be compared.
+     * @return true if both instances are considered to be equal, false otherwise.
+     */
+    public boolean equals(final TimedBodyKinematics other) {
+<span class="fc" id="L230">        return equals(other, 0.0);</span>
+    }
+
+    /**
+     * Checks if provided instance has contents similar to this instance up to provided
+     * threshold value.
+     *
+     * @param other     instance to be compared.
+     * @param threshold maximum allowed difference between kinematics and timestamp values.
+     * @return true if both instances are considered to be equal (up to provided
+     * threshold), false otherwise.
+     */
+    public boolean equals(final TimedBodyKinematics other, final double threshold) {
+<span class="fc bfc" id="L243" title="All 2 branches covered.">        if (other == null) {</span>
+<span class="fc" id="L244">            return false;</span>
+        }
+
+<span class="pc bpc" id="L247" title="4 of 6 branches missed.">        return ((other.kinematics == null &amp;&amp; kinematics == null)</span>
+<span class="fc bfc" id="L248" title="All 2 branches covered.">                || (kinematics != null &amp;&amp; kinematics.equals(other.kinematics, threshold)))</span>
+<span class="pc bpc" id="L249" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(other.timestampSeconds - timestampSeconds) &lt;= threshold;</span>
+    }
+
+    /**
+     * Checks if provided object is a TimedBodyKinematics instance having exactly the same
+     * contents as this instance.
+     *
+     * @param obj object to be compared.
+     * @return true if both objects are considered to be equal, false otherwise.
+     */
+    @Override
+    public boolean equals(final Object obj) {
+<span class="fc bfc" id="L261" title="All 2 branches covered.">        if (this == obj) {</span>
+<span class="fc" id="L262">            return true;</span>
+        }
+<span class="pc bpc" id="L264" title="2 of 4 branches missed.">        if (obj == null || getClass() != obj.getClass()) {</span>
+<span class="nc" id="L265">            return false;</span>
+        }
+<span class="fc" id="L267">        final var other = (TimedBodyKinematics) obj;</span>
+<span class="fc" id="L268">        return equals(other);</span>
+    }
+
+    /**
+     * Makes a copy of this instance.
+     *
+     * @return a copy of this instance.
+     * @throws CloneNotSupportedException if clone fails for some reason.
+     */
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+<span class="fc" id="L279">        final var result = (TimedBodyKinematics) super.clone();</span>
+<span class="fc" id="L280">        copyTo(result);</span>
+<span class="fc" id="L281">        return result;</span>
+    }
+
+    /**
+     * Converts provided time instance to seconds.
+     *
+     * @param time timestamp to be converted.
+     * @return converted value expressed in seconds.
+     */
+    private static double convertTime(final Time time) {
+<span class="fc" id="L291">        return TimeConverter.convert(time.getValue().doubleValue(), time.getUnit(), TimeUnit.SECOND);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

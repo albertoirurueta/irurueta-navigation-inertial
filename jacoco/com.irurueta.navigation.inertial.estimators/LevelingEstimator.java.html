@@ -1,0 +1,823 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LevelingEstimator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-inertial</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.inertial.estimators</a> &gt; <span class="el_source">LevelingEstimator.java</span></div><h1>LevelingEstimator.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2020 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.inertial.estimators;
+
+import com.irurueta.navigation.frames.CoordinateTransformation;
+import com.irurueta.navigation.frames.FrameType;
+import com.irurueta.navigation.inertial.BodyKinematics;
+import com.irurueta.units.Acceleration;
+import com.irurueta.units.AccelerationConverter;
+import com.irurueta.units.AccelerationUnit;
+import com.irurueta.units.Angle;
+import com.irurueta.units.AngleConverter;
+import com.irurueta.units.AngleUnit;
+import com.irurueta.units.AngularSpeed;
+import com.irurueta.units.AngularSpeedConverter;
+import com.irurueta.units.AngularSpeedUnit;
+
+/**
+ * Leveling is the process of attitude initialization of a body.
+ * When the INS is stationary, self-alignment can be used to initialize
+ * the roll and pitch with all but the poorest inertial sensors.
+ * However, accurate self-alignment of the heading requires
+ * aviation-grade gyros or better. Heading is often initialized using
+ * a magnetic compass.
+ * When the INS is initialized in motion, another navigation system
+ * must provide an attitude reference.
+ * This class is based on Paul D. Groves. Principles of GNSS Inertial
+ * and multi-sensor integrated navigation systemd. 2nd ed. p. 196.
+ * &lt;p&gt;
+ * Because this implementation neglects effects of Earth rotation on sensed
+ * specific force, and also neglects the north component of gravity in a local
+ * navigation frame (which is not zero because Earth is not fully spherical),
+ * the expected results should be accurate up to about 1e-3 radians
+ * (about 0.05 degrees).
+ */
+public class LevelingEstimator {
+
+    /**
+     * Private constructor to prevent instantiation.
+     */
+    private LevelingEstimator() {
+    }
+
+    /**
+     * Gets roll angle of body attitude expressed in radians.
+     * This is based on expression (5.101) of Paul D. Groves.
+     * Principles of GNSS Inertial and multi-sensor integrated
+     * navigation systemd. 2nd ed.
+     *
+     * @param fy y-coordinate of measured body specific force
+     *           expressed in meters per squared second (m/s^2).
+     * @param fz z-coordinate of measured body specific force
+     *           expressed in meters per squared second (m/s^2).
+     * @return roll angle expressed in radians.
+     */
+    public static double getRoll(final double fy, final double fz) {
+<span class="fc" id="L70">        return Math.atan2(-fy, -fz);</span>
+    }
+
+    /**
+     * Gets pitch angle of body attitude expressed in radians.
+     * This is based on expression (5.101) of Paul D. Groves.
+     * Principles of GNSS Inertial and multi-sensor integrated
+     * navigation systemd. 2nd ed.
+     *
+     * @param fx x-coordinate of measured body specific force
+     *           expressed in meters per squared second (m/s^2).
+     * @param fy y-coordinate of measured body specific force
+     *           expressed in meters per squared second (m/s^2).
+     * @param fz z-coordinate of measured body specific force
+     *           expressed in meters per squared second (m/s^2).
+     * @return pitch angle expressed in radians.
+     */
+    public static double getPitch(final double fx, final double fy, final double fz) {
+<span class="fc" id="L88">        final var fy2 = fy * fy;</span>
+<span class="fc" id="L89">        final var fz2 = fz * fz;</span>
+
+<span class="fc" id="L91">        return Math.atan(fx / Math.sqrt(fy2 + fz2));</span>
+    }
+
+    /**
+     * Gets yaw angle of body attitude expressed in radians.
+     * This method requires previously computed roll and pitch angles
+     * along with gyroscope measurements.
+     * This method can only be used for high-accuracy gyroscopes,
+     * otherwise, yaw angle must be measured using a magnetometer.
+     *
+     * @param roll         previously computed roll angle expressed in radians.
+     * @param pitch        previously computed pitch angle expressed in radians.
+     * @param angularRateX x-coordinate of body angular rate expressed in
+     *                     radians per second (rad/s).
+     * @param angularRateY y-coordinate of body angular rate expressed in
+     *                     radians per second (rad/s).
+     * @param angularRateZ z-coordinate of body angular rate expressed in
+     *                     radians per second (rad/s).
+     * @return yaw angle expressed in radians.
+     */
+    @SuppressWarnings(&quot;DuplicatedCode&quot;)
+    public static double getYaw(
+            final double roll, final double pitch,
+            final double angularRateX, final double angularRateY, final double angularRateZ) {
+
+<span class="fc" id="L116">        final var sinRoll = Math.sin(roll);</span>
+<span class="fc" id="L117">        final var cosRoll = Math.cos(roll);</span>
+
+<span class="fc" id="L119">        final var sinPitch = Math.sin(pitch);</span>
+<span class="fc" id="L120">        final var cosPitch = Math.cos(pitch);</span>
+
+<span class="fc" id="L122">        final var sinYaw = -angularRateY * cosRoll + angularRateZ * sinRoll;</span>
+<span class="fc" id="L123">        final var cosYaw = angularRateX * cosPitch + (angularRateY * sinRoll + angularRateZ * cosRoll) * sinPitch;</span>
+
+<span class="fc" id="L125">        return Math.atan2(sinYaw, cosYaw);</span>
+    }
+
+    /**
+     * Gets yaw angle of body attitude expressed in radians.
+     * This method can only be used for high-accuracy gyroscopes,
+     * otherwise, yaw angle must be measured using a magnetometer.
+     *
+     * @param fx           x-coordinate of measured body specific force
+     *                     expressed in meters per squared second (m/s^2).
+     * @param fy           y-coordinate of measured body specific force
+     *                     expressed in meters per squared second (m/s^2).
+     * @param fz           z-coordinate of measured body specific force
+     *                     expressed in meters per squared second (m/s^2).
+     * @param angularRateX x-coordinate of body angular rate expressed in
+     *                     radians per second (rad/s).
+     * @param angularRateY y-coordinate of body angular rate expressed in
+     *                     radians per second (rad/s).
+     * @param angularRateZ z-coordinate of body angular rate expressed in
+     *                     radians per second (rad/s).
+     * @return yaw angle expressed in radians.
+     */
+    public static double getYaw(
+            final double fx, final double fy, final double fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ) {
+<span class="fc" id="L150">        final var roll = getRoll(fy, fz);</span>
+<span class="fc" id="L151">        final var pitch = getPitch(fx, fy, fz);</span>
+<span class="fc" id="L152">        return getYaw(roll, pitch, angularRateX, angularRateY, angularRateZ);</span>
+    }
+
+    /**
+     * Gets roll angle of body attitude expressed in radians.
+     * This is based on expression (5.101) of Paul D. Groves.
+     * Principles of GNSS Inertial and multi-sensor integrated
+     * navigation systemd. 2nd ed.
+     *
+     * @param kinematics body kinematics containing measured
+     *                   body specific force.
+     * @return roll angle expressed in radians.
+     */
+    public static double getRoll(final BodyKinematics kinematics) {
+<span class="fc" id="L166">        return getRoll(kinematics.getFy(), kinematics.getFz());</span>
+    }
+
+    /**
+     * Gets pitch angle of body attitude expressed in radians.
+     * This is based on expression (5.101) of Paul D. Groves.
+     * Principles of GNSS Inertial and multi-sensor integrated
+     * navigation systemd. 2nd ed.
+     *
+     * @param kinematics body kinematics containing measured
+     *                   body specific force.
+     * @return pitch angle expressed in radians.
+     */
+    public static double getPitch(final BodyKinematics kinematics) {
+<span class="fc" id="L180">        return getPitch(kinematics.getFx(), kinematics.getFy(), kinematics.getFz());</span>
+    }
+
+    /**
+     * Gets yaw angle of body attitude expressed in radians.
+     * This method can only be used for high-accuracy gyroscopes.
+     * otherwise, yaw angle must be measured using a magnetometer.
+     *
+     * @param kinematics body kinematics containing measured
+     *                   body specific force ang angular rates.
+     * @return yaw angle expressed in radians.
+     */
+    public static double getYaw(final BodyKinematics kinematics) {
+<span class="fc" id="L193">        return getYaw(kinematics.getFx(), kinematics.getFy(), kinematics.getFz(),</span>
+<span class="fc" id="L194">                kinematics.getAngularRateX(), kinematics.getAngularRateY(), kinematics.getAngularRateZ());</span>
+    }
+
+    /**
+     * Gets body attitude expressed in the local navigation frame.
+     *
+     * @param fx           x-coordinate of measured body specific force
+     *                     expressed in meters per squared second (m/s^2).
+     * @param fy           y-coordinate of measured body specific force
+     *                     expressed in meters per squared second (m/s^2).
+     * @param fz           z-coordinate of measured body specific force
+     *                     expressed in meters per squared second (m/s^2).
+     * @param angularRateX x-coordinate of body angular rate expressed in
+     *                     radians per second (rad/s).
+     * @param angularRateY y-coordinate of body angular rate expressed in
+     *                     radians per second (rad/s).
+     * @param angularRateZ z-coordinate of body angular rate expressed in
+     *                     radians per second (rad/s).
+     * @param result       instance where attitude will be stored.
+     */
+    public static void getAttitude(
+            final double fx, final double fy, final double fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ,
+            final CoordinateTransformation result) {
+<span class="fc" id="L218">        result.setSourceType(FrameType.LOCAL_NAVIGATION_FRAME);</span>
+<span class="fc" id="L219">        result.setDestinationType(FrameType.BODY_FRAME);</span>
+
+<span class="fc" id="L221">        final var roll = getRoll(fy, fz);</span>
+<span class="fc" id="L222">        final var pitch = getPitch(fx, fy, fz);</span>
+<span class="fc" id="L223">        final var yaw = getYaw(roll, pitch, angularRateX, angularRateY, angularRateZ);</span>
+<span class="fc" id="L224">        result.setEulerAngles(roll, pitch, yaw);</span>
+<span class="fc" id="L225">    }</span>
+
+    /**
+     * Gets body attitude expressed in the local navigation frame.
+     *
+     * @param kinematics body kinematics containing measured
+     *                   body specific force and angular rate.
+     * @param result     instance where attitude will be stored.
+     */
+    public static void getAttitude(final BodyKinematics kinematics, final CoordinateTransformation result) {
+<span class="fc" id="L235">        getAttitude(kinematics.getFx(), kinematics.getFy(), kinematics.getFz(),</span>
+<span class="fc" id="L236">                kinematics.getAngularRateX(), kinematics.getAngularRateY(), kinematics.getAngularRateZ(), result);</span>
+<span class="fc" id="L237">    }</span>
+
+    /**
+     * Gets body attitude expressed in the local navigation frame.
+     *
+     * @param fx           x-coordinate of measured body specific force
+     *                     expressed in meters per squared second (m/s^2).
+     * @param fy           y-coordinate of measured body specific force
+     *                     expressed in meters per squared second (m/s^2).
+     * @param fz           z-coordinate of measured body specific force
+     *                     expressed in meters per squared second (m/s^2).
+     * @param angularRateX x-coordinate of body angular rate expressed in
+     *                     radians per second (rad/s).
+     * @param angularRateY y-coordinate of body angular rate expressed in
+     *                     radians per second (rad/s).
+     * @param angularRateZ z-coordinate of body angular rate expressed in
+     *                     radians per second (rad/s).
+     * @return a coordinate transformation containing body attitude.
+     */
+    public static CoordinateTransformation getAttitude(
+            final double fx, final double fy, final double fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ) {
+
+<span class="fc" id="L260">        final var roll = getRoll(fy, fz);</span>
+<span class="fc" id="L261">        final var pitch = getPitch(fx, fy, fz);</span>
+<span class="fc" id="L262">        final var yaw = getYaw(roll, pitch, angularRateX, angularRateY, angularRateZ);</span>
+
+<span class="fc" id="L264">        return new CoordinateTransformation(roll, pitch, yaw, FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);</span>
+    }
+
+    /**
+     * Gets body attitude expressed in the local navigation frame.
+     *
+     * @param kinematics body kinematics containing measured body
+     *                   specific force and angular rate.
+     * @return a coordinate transformation containing body attitude.
+     */
+    public static CoordinateTransformation getAttitude(final BodyKinematics kinematics) {
+<span class="fc" id="L275">        return getAttitude(kinematics.getFx(), kinematics.getFy(), kinematics.getFz(),</span>
+<span class="fc" id="L276">                kinematics.getAngularRateX(), kinematics.getAngularRateY(), kinematics.getAngularRateZ());</span>
+    }
+
+    /**
+     * Gets roll angle of body attitude expressed in radians.
+     * This is based on expression (5.101) of Paul D. Groves.
+     * Principles of GNSS Inertial and multi-sensor integrated
+     * navigation systemd. 2nd ed.
+     *
+     * @param fy y-coordinate of measured body specific force.
+     * @param fz z-coordinate of measured body specific force.
+     * @return roll angle expressed in radians.
+     */
+    public static double getRoll(final Acceleration fy, final Acceleration fz) {
+<span class="fc" id="L290">        return getRoll(convertAcceleration(fy), convertAcceleration(fz));</span>
+    }
+
+    /**
+     * Gets pitch angle of body attitude expressed in radians.
+     * This is based on expression (5.101) of Paul D. Groves.
+     * Principles of GNSS Inertial and multi-sensor integrated
+     * navigation systemd. 2nd ed.
+     *
+     * @param fx x-coordinate of measured body specific force.
+     * @param fy y-coordinate of measured body specific force.
+     * @param fz z-coordinate of measured body specific force.
+     * @return pitch angle expressed in radians.
+     */
+    public static double getPitch(final Acceleration fx, final Acceleration fy, final Acceleration fz) {
+<span class="fc" id="L305">        return getPitch(convertAcceleration(fx), convertAcceleration(fy), convertAcceleration(fz));</span>
+    }
+
+    /**
+     * Gets yaw angle of body attitude expressed in radians.
+     * This method requires previously computed roll and pitch angles
+     * along with gyroscope measurements.
+     * This method can only be used for high-accuracy gyroscopes,
+     * otherwise, yaw angle must be measured using a magnetometer.
+     *
+     * @param roll         previously computed roll angle.
+     * @param pitch        previously computed pitch angle.
+     * @param angularRateX x-coordinate of body angular rate.
+     * @param angularRateY y-coordinate of body angular rate.
+     * @param angularRateZ z-coordinate of body angular rate.
+     * @return yaw angle expressed in radians.
+     */
+    public static double getYaw(
+            final Angle roll, final Angle pitch,
+            final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ) {
+<span class="fc" id="L325">        return getYaw(convertAngle(roll), convertAngle(pitch),</span>
+<span class="fc" id="L326">                convertAngularSpeed(angularRateX),</span>
+<span class="fc" id="L327">                convertAngularSpeed(angularRateY),</span>
+<span class="fc" id="L328">                convertAngularSpeed(angularRateZ));</span>
+    }
+
+    /**
+     * Gets yaw angle of body attitude expressed in radians.
+     * This method can only be used for high-accuracy gyroscopes,
+     * otherwise, yaw angle must be measured using a magnetometer.
+     *
+     * @param fx           x-coordinate of measured body specific force.
+     * @param fy           y-coordinate of measured body specific force.
+     * @param fz           z-coordinate of measured body specific force.
+     * @param angularRateX x-coordinate of body angular rate.
+     * @param angularRateY y-coordinate of body angular rate.
+     * @param angularRateZ z-coordinate of body angular rate.
+     * @return yaw angle expressed in radians.
+     */
+    public static double getYaw(
+            final Acceleration fx, final Acceleration fy, final Acceleration fz,
+            final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ) {
+<span class="fc" id="L347">        return getYaw(convertAcceleration(fx), convertAcceleration(fy), convertAcceleration(fz),</span>
+<span class="fc" id="L348">                convertAngularSpeed(angularRateX),</span>
+<span class="fc" id="L349">                convertAngularSpeed(angularRateY),</span>
+<span class="fc" id="L350">                convertAngularSpeed(angularRateZ));</span>
+    }
+
+    /**
+     * Gets body attitude expressed in the local navigation frame.
+     *
+     * @param fx           x-coordinate of measured body specific force.
+     * @param fy           y-coordinate of measured body specific force.
+     * @param fz           z-coordinate of measured body specific force.
+     * @param angularRateX x-coordinate of body angular rate.
+     * @param angularRateY y-coordinate of body angular rate.
+     * @param angularRateZ z-coordinate of body angular rate.
+     * @param result       instance where attitude will be stored.
+     */
+    public static void getAttitude(
+            final Acceleration fx, final Acceleration fy, final Acceleration fz,
+            final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ,
+            final CoordinateTransformation result) {
+<span class="fc" id="L368">        getAttitude(convertAcceleration(fx), convertAcceleration(fy), convertAcceleration(fz),</span>
+<span class="fc" id="L369">                convertAngularSpeed(angularRateX), convertAngularSpeed(angularRateY), convertAngularSpeed(angularRateZ),</span>
+                result);
+<span class="fc" id="L371">    }</span>
+
+    /**
+     * Gets body attitude expressed in the local navigation frame.
+     *
+     * @param fx           x-coordinate of measured body specific force.
+     * @param fy           y-coordinate of measured body specific force.
+     * @param fz           z-coordinate of measured body specific force.
+     * @param angularRateX x-coordinate of body angular rate.
+     * @param angularRateY y-coordinate of body angular rate.
+     * @param angularRateZ z-coordinate of body angular rate.
+     * @return a coordinate transformation containing body attitude.
+     */
+    public static CoordinateTransformation getAttitude(
+            final Acceleration fx, final Acceleration fy, final Acceleration fz,
+            final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ) {
+<span class="fc" id="L387">        return getAttitude(convertAcceleration(fx), convertAcceleration(fy), convertAcceleration(fz),</span>
+<span class="fc" id="L388">                convertAngularSpeed(angularRateX),</span>
+<span class="fc" id="L389">                convertAngularSpeed(angularRateY),</span>
+<span class="fc" id="L390">                convertAngularSpeed(angularRateZ));</span>
+    }
+
+    /**
+     * Gets roll angle of body attitude expressed in radians.
+     * This is based on expression (5.101) of Paul D. Groves.
+     * Principles of GNSS Inertial and multi-sensor integrated
+     * navigation systemd. 2nd ed.
+     *
+     * @param fy     y-coordinate of measured body specific force
+     *               expressed in meters per squared second (m/s^2).
+     * @param fz     z-coordinate of measured body specific force
+     *               expressed in meters per squared second (m/s^2).
+     * @param result instance where roll angle will be stored.
+     */
+    public static void getRollAsAngle(final double fy, final double fz, final Angle result) {
+<span class="fc" id="L406">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L407">        result.setValue(getRoll(fy, fz));</span>
+<span class="fc" id="L408">    }</span>
+
+    /**
+     * Gets roll angle of body attitude expressed in radians.
+     * This is based on expression (5.101) of Paul D. Groves.
+     * Principles of GNSS Inertial and multi-sensor integrated
+     * navigation systemd. 2nd ed.
+     *
+     * @param fy y-coordinate of measured body specific force
+     *           expressed in meters per squared second (m/s^2).
+     * @param fz z-coordinate of measured body specific force
+     *           expressed in meters per squared second (m/s^2).
+     * @return roll angle.
+     */
+    public static Angle getRollAsAngle(final double fy, final double fz) {
+<span class="fc" id="L423">        return new Angle(getRoll(fy, fz), AngleUnit.RADIANS);</span>
+    }
+
+    /**
+     * Gets pitch angle of body attitude expressed in radians.
+     * This is based on expression (5.101) of Paul D. Groves.
+     * Principles of GNSS Inertial and multi-sensor integrated
+     * navigation systemd. 2nd ed.
+     *
+     * @param fx     x-coordinate of measured body specific force
+     *               expressed in meters per squared second (m/s^2).
+     * @param fy     y-coordinate of measured body specific force
+     *               expressed in meters per squared second (m/s^2).
+     * @param fz     z-coordinate of measured body specific force
+     *               expressed in meters per squared second (m/s^2).
+     * @param result instance where pitch angle will be stored.
+     */
+    public static void getPitchAsAngle(
+            final double fx, final double fy, final double fz, final Angle result) {
+<span class="fc" id="L442">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L443">        result.setValue(getPitch(fx, fy, fz));</span>
+<span class="fc" id="L444">    }</span>
+
+    /**
+     * Gets pitch angle of body attitude expressed in radians.
+     * This is based on expression (5.101) of Paul D. Groves.
+     * Principles of GNSS Inertial and multi-sensor integrated
+     * navigation systemd. 2nd ed.
+     *
+     * @param fx x-coordinate of measured body specific force
+     *           expressed in meters per squared second (m/s^2).
+     * @param fy y-coordinate of measured body specific force
+     *           expressed in meters per squared second (m/s^2).
+     * @param fz z-coordinate of measured body specific force
+     *           expressed in meters per squared second (m/s^2).
+     * @return pitch angle.
+     */
+    public static Angle getPitchAsAngle(final double fx, final double fy, final double fz) {
+<span class="fc" id="L461">        return new Angle(getPitch(fx, fy, fz), AngleUnit.RADIANS);</span>
+    }
+
+    /**
+     * Gets yaw angle of body attitude expressed in radians.
+     * This method requires previously computed roll and pitch angles
+     * along with gyroscope measurements.
+     * This method can only be used for high-accuracy gyroscopes,
+     * otherwise, yaw angle must be measured using a magnetometer.
+     *
+     * @param roll         previously computed roll angle expressed in radians.
+     * @param pitch        previously computed pitch angle expressed in radians.
+     * @param angularRateX x-coordinate of body angular rate expressed in
+     *                     radians per second (rad/s).
+     * @param angularRateY y-coordinate of body angular rate expressed in
+     *                     radians per second (rad/s).
+     * @param angularRateZ z-coordinate of body angular rate expressed in
+     *                     radians per second (rad/s).
+     * @param result       instance where yaw angle will be stored.
+     */
+    public static void getYawAsAngle(
+            final double roll, final double pitch,
+            final double angularRateX, final double angularRateY, final double angularRateZ, final Angle result) {
+<span class="fc" id="L484">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L485">        result.setValue(getYaw(roll, pitch, angularRateX, angularRateY, angularRateZ));</span>
+<span class="fc" id="L486">    }</span>
+
+    /**
+     * Gets yaw angle of body attitude expressed in radians.
+     * This method requires previously computed roll and pitch angles
+     * along with gyroscope measurements.
+     * This method can only be used for high-accuracy gyroscopes,
+     * otherwise, yaw angle must be measured using a magnetometer.
+     *
+     * @param roll         previously computed roll angle expressed in radians.
+     * @param pitch        previously computed pitch angle expressed in radians.
+     * @param angularRateX x-coordinate of body angular rate expressed in
+     *                     radians per second (rad/s).
+     * @param angularRateY y-coordinate of body angular rate expressed in
+     *                     radians per second (rad/s).
+     * @param angularRateZ z-coordinate of body angular rate expressed in
+     *                     radians per second (rad/s).
+     * @return yaw angle.
+     */
+    public static Angle getYawAsAngle(
+            final double roll, final double pitch,
+            final double angularRateX, final double angularRateY, final double angularRateZ) {
+<span class="fc" id="L508">        return new Angle(getYaw(roll, pitch, angularRateX, angularRateY, angularRateZ), AngleUnit.RADIANS);</span>
+    }
+
+    /**
+     * Gets yaw angle of body attitude expressed in radians.
+     * This method can only be used for high-accuracy gyroscopes,
+     * otherwise, yaw angle must be measured using a magnetometer.
+     *
+     * @param fx           x-coordinate of measured body specific force
+     *                     expressed in meters per squared second (m/s^2).
+     * @param fy           y-coordinate of measured body specific force
+     *                     expressed in meters per squared second (m/s^2).
+     * @param fz           z-coordinate of measured body specific force
+     *                     expressed in meters per squared second (m/s^2).
+     * @param angularRateX x-coordinate of body angular rate expressed in
+     *                     radians per second (rad/s).
+     * @param angularRateY y-coordinate of body angular rate expressed in
+     *                     radians per second (rad/s).
+     * @param angularRateZ z-coordinate of body angular rate expressed in
+     *                     radians per second (rad/s).
+     * @param result       instance where yaw angle will be stored.
+     */
+    public static void getYawAsAngle(
+            final double fx, final double fy, final double fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ, final Angle result) {
+<span class="fc" id="L533">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L534">        result.setValue(getYaw(fx, fy, fz, angularRateX, angularRateY, angularRateZ));</span>
+<span class="fc" id="L535">    }</span>
+
+    /**
+     * Gets yaw angle of body attitude expressed in radians.
+     * This method can only be used for high-accuracy gyroscopes,
+     * otherwise, yaw angle must be measured using a magnetometer.
+     *
+     * @param fx           x-coordinate of measured body specific force
+     *                     expressed in meters per squared second (m/s^2).
+     * @param fy           y-coordinate of measured body specific force
+     *                     expressed in meters per squared second (m/s^2).
+     * @param fz           z-coordinate of measured body specific force
+     *                     expressed in meters per squared second (m/s^2).
+     * @param angularRateX x-coordinate of body angular rate expressed in
+     *                     radians per second (rad/s).
+     * @param angularRateY y-coordinate of body angular rate expressed in
+     *                     radians per second (rad/s).
+     * @param angularRateZ z-coordinate of body angular rate expressed in
+     *                     radians per second (rad/s).
+     * @return yaw angle.
+     */
+    public static Angle getYawAsAngle(
+            final double fx, final double fy, final double fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ) {
+<span class="fc" id="L559">        return new Angle(getYaw(fx, fy, fz, angularRateX, angularRateY, angularRateZ), AngleUnit.RADIANS);</span>
+    }
+
+    /**
+     * Gets roll angle of body attitude expressed in radians.
+     * This is based on expression (5.101) of Paul D. Groves.
+     * Principles of GNSS Inertial and multi-sensor integrated
+     * navigation systemd. 2nd ed.
+     *
+     * @param kinematics body kinematics containing measured
+     *                   body specific force.
+     * @param result     instance where roll angle will be stored.
+     */
+    public static void getRollAsAngle(final BodyKinematics kinematics, final Angle result) {
+<span class="fc" id="L573">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L574">        result.setValue(getRoll(kinematics));</span>
+<span class="fc" id="L575">    }</span>
+
+    /**
+     * Gets roll angle of body attitude expressed in radians.
+     * This is based on expression (5.101) of Paul D. Groves.
+     * Principles of GNSS Inertial and multi-sensor integrated
+     * navigation systemd. 2nd ed.
+     *
+     * @param kinematics body kinematics containing measured
+     *                   body specific force.
+     * @return roll angle.
+     */
+    public static Angle getRollAsAngle(final BodyKinematics kinematics) {
+<span class="fc" id="L588">        return new Angle(getRoll(kinematics), AngleUnit.RADIANS);</span>
+    }
+
+    /**
+     * Gets pitch angle of body attitude expressed in radians.
+     * This is based on expression (5.101) of Paul D. Groves.
+     * Principles of GNSS Inertial and multi-sensor integrated
+     * navigation systemd. 2nd ed.
+     *
+     * @param kinematics body kinematics containing measured
+     *                   body specific force.
+     * @param result     instance where pitch angle will be stored.
+     */
+    public static void getPitchAsAngle(final BodyKinematics kinematics, final Angle result) {
+<span class="fc" id="L602">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L603">        result.setValue(getPitch(kinematics));</span>
+<span class="fc" id="L604">    }</span>
+
+    /**
+     * Gets pitch angle of body attitude expressed in radians.
+     * This is based on expression (5.101) of Paul D. Groves.
+     * Principles of GNSS Inertial and multi-sensor integrated
+     * navigation systemd. 2nd ed.
+     *
+     * @param kinematics body kinematics containing measured
+     *                   body specific force.
+     * @return pitch angle.
+     */
+    public static Angle getPitchAsAngle(final BodyKinematics kinematics) {
+<span class="fc" id="L617">        return new Angle(getPitch(kinematics), AngleUnit.RADIANS);</span>
+    }
+
+    /**
+     * Gets yaw angle of body attitude expressed in radians.
+     * This method can only be used for high-accuracy gyroscopes.
+     * otherwise, yaw angle must be measured using a magnetometer.
+     *
+     * @param kinematics body kinematics containing measured
+     *                   body specific force ang angular rates.
+     * @param result     instance where yaw angle will be stored.
+     */
+    public static void getYawAsAngle(final BodyKinematics kinematics, final Angle result) {
+<span class="fc" id="L630">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L631">        result.setValue(getYaw(kinematics));</span>
+<span class="fc" id="L632">    }</span>
+
+    /**
+     * Gets yaw angle of body attitude expressed in radians.
+     * This method can only be used for high-accuracy gyroscopes.
+     * otherwise, yaw angle must be measured using a magnetometer.
+     *
+     * @param kinematics body kinematics containing measured
+     *                   body specific force ang angular rates.
+     * @return yaw angle.
+     */
+    public static Angle getYawAsAngle(final BodyKinematics kinematics) {
+<span class="fc" id="L644">        return new Angle(getYaw(kinematics), AngleUnit.RADIANS);</span>
+    }
+
+    /**
+     * Gets roll angle of body attitude expressed in radians.
+     * This is based on expression (5.101) of Paul D. Groves.
+     * Principles of GNSS Inertial and multi-sensor integrated
+     * navigation systemd. 2nd ed.
+     *
+     * @param fy     y-coordinate of measured body specific force.
+     * @param fz     z-coordinate of measured body specific force.
+     * @param result instance where roll angle will be stored.
+     */
+    public static void getRollAsAngle(final Acceleration fy, final Acceleration fz, final Angle result) {
+<span class="fc" id="L658">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L659">        result.setValue(getRoll(fy, fz));</span>
+<span class="fc" id="L660">    }</span>
+
+    /**
+     * Gets roll angle of body attitude expressed in radians.
+     * This is based on expression (5.101) of Paul D. Groves.
+     * Principles of GNSS Inertial and multi-sensor integrated
+     * navigation systemd. 2nd ed.
+     *
+     * @param fy y-coordinate of measured body specific force.
+     * @param fz z-coordinate of measured body specific force.
+     * @return roll angle.
+     */
+    public static Angle getRollAsAngle(final Acceleration fy, final Acceleration fz) {
+<span class="fc" id="L673">        return new Angle(getRoll(fy, fz), AngleUnit.RADIANS);</span>
+    }
+
+    /**
+     * Gets pitch angle of body attitude expressed in radians.
+     * This is based on expression (5.101) of Paul D. Groves.
+     * Principles of GNSS Inertial and multi-sensor integrated
+     * navigation systemd. 2nd ed.
+     *
+     * @param fx     x-coordinate of measured body specific force.
+     * @param fy     y-coordinate of measured body specific force.
+     * @param fz     z-coordinate of measured body specific force.
+     * @param result instance where pitch angle will be stored.
+     */
+    public static void getPitchAsAngle(
+            final Acceleration fx, final Acceleration fy, final Acceleration fz, final Angle result) {
+<span class="fc" id="L689">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L690">        result.setValue(getPitch(fx, fy, fz));</span>
+<span class="fc" id="L691">    }</span>
+
+    /**
+     * Gets pitch angle of body attitude expressed in radians.
+     * This is based on expression (5.101) of Paul D. Groves.
+     * Principles of GNSS Inertial and multi-sensor integrated
+     * navigation systemd. 2nd ed.
+     *
+     * @param fx x-coordinate of measured body specific force.
+     * @param fy y-coordinate of measured body specific force.
+     * @param fz z-coordinate of measured body specific force.
+     * @return pitch angle.
+     */
+    public static Angle getPitchAsAngle(
+            final Acceleration fx, final Acceleration fy, final Acceleration fz) {
+<span class="fc" id="L706">        return new Angle(getPitch(fx, fy, fz), AngleUnit.RADIANS);</span>
+    }
+
+    /**
+     * Gets yaw angle of body attitude expressed in radians.
+     * This method requires previously computed roll and pitch angles
+     * along with gyroscope measurements.
+     * This method can only be used for high-accuracy gyroscopes,
+     * otherwise, yaw angle must be measured using a magnetometer.
+     *
+     * @param roll         previously computed roll angle.
+     * @param pitch        previously computed pitch angle.
+     * @param angularRateX x-coordinate of body angular rate.
+     * @param angularRateY y-coordinate of body angular rate.
+     * @param angularRateZ z-coordinate of body angular rate.
+     * @param result       instance where yaw angle will be stored.
+     */
+    public static void getYawAsAngle(
+            final Angle roll, final Angle pitch, final AngularSpeed angularRateX,
+            final AngularSpeed angularRateY, final AngularSpeed angularRateZ, final Angle result) {
+<span class="fc" id="L726">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L727">        result.setValue(getYaw(roll, pitch, angularRateX, angularRateY, angularRateZ));</span>
+<span class="fc" id="L728">    }</span>
+
+    /**
+     * Gets yaw angle of body attitude expressed in radians.
+     * This method requires previously computed roll and pitch angles
+     * along with gyroscope measurements.
+     * This method can only be used for high-accuracy gyroscopes,
+     * otherwise, yaw angle must be measured using a magnetometer.
+     *
+     * @param roll         previously computed roll angle.
+     * @param pitch        previously computed pitch angle.
+     * @param angularRateX x-coordinate of body angular rate.
+     * @param angularRateY y-coordinate of body angular rate.
+     * @param angularRateZ z-coordinate of body angular rate.
+     * @return yaw angle.
+     */
+    public static Angle getYawAsAngle(
+            final Angle roll, final Angle pitch,
+            final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ) {
+<span class="fc" id="L747">        return new Angle(getYaw(roll, pitch, angularRateX, angularRateY, angularRateZ), AngleUnit.RADIANS);</span>
+    }
+
+    /**
+     * Gets yaw angle of body attitude expressed in radians.
+     * This method can only be used for high-accuracy gyroscopes,
+     * otherwise, yaw angle must be measured using a magnetometer.
+     *
+     * @param fx           x-coordinate of measured body specific force.
+     * @param fy           y-coordinate of measured body specific force.
+     * @param fz           z-coordinate of measured body specific force.
+     * @param angularRateX x-coordinate of body angular rate.
+     * @param angularRateY y-coordinate of body angular rate.
+     * @param angularRateZ z-coordinate of body angular rate.
+     * @param result       instance where yaw angle will be stored.
+     */
+    public static void getYawAsAngle(
+            final Acceleration fx, final Acceleration fy, final Acceleration fz,
+            final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ,
+            final Angle result) {
+<span class="fc" id="L767">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L768">        result.setValue(getYaw(fx, fy, fz, angularRateX, angularRateY, angularRateZ));</span>
+<span class="fc" id="L769">    }</span>
+
+    /**
+     * Gets yaw angle of body attitude expressed in radians.
+     * This method can only be used for high-accuracy gyroscopes,
+     * otherwise, yaw angle must be measured using a magnetometer.
+     *
+     * @param fx           x-coordinate of measured body specific force.
+     * @param fy           y-coordinate of measured body specific force.
+     * @param fz           z-coordinate of measured body specific force.
+     * @param angularRateX x-coordinate of body angular rate.
+     * @param angularRateY y-coordinate of body angular rate.
+     * @param angularRateZ z-coordinate of body angular rate.
+     * @return yaw angle.
+     */
+    public static Angle getYawAsAngle(
+            final Acceleration fx, final Acceleration fy, final Acceleration fz,
+            final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ) {
+<span class="fc" id="L787">        return new Angle(getYaw(fx, fy, fz, angularRateX, angularRateY, angularRateZ), AngleUnit.RADIANS);</span>
+    }
+
+    /**
+     * Converts an instance of acceleration to meters per squared second (m/s^2).
+     *
+     * @param acceleration acceleration instance to be converted.
+     * @return converted acceleration value.
+     */
+    private static double convertAcceleration(final Acceleration acceleration) {
+<span class="fc" id="L797">        return AccelerationConverter.convert(</span>
+<span class="fc" id="L798">                acceleration.getValue().doubleValue(), acceleration.getUnit(),</span>
+                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+    }
+
+    /**
+     * Converts an instance of angular speed to radians per second (rad/s).
+     *
+     * @param angularSpeed angular speed instance to be converted.
+     * @return converted angular speed value.
+     */
+    private static double convertAngularSpeed(final AngularSpeed angularSpeed) {
+<span class="fc" id="L809">        return AngularSpeedConverter.convert(angularSpeed.getValue().doubleValue(), angularSpeed.getUnit(),</span>
+                AngularSpeedUnit.RADIANS_PER_SECOND);
+    }
+
+    /**
+     * Converts an instance of an angle to radians (rad).
+     *
+     * @param angle angle to be converted.
+     * @return converted angle value.
+     */
+    private static double convertAngle(final Angle angle) {
+<span class="fc" id="L820">        return AngleConverter.convert(angle.getValue().doubleValue(), angle.getUnit(), AngleUnit.RADIANS);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

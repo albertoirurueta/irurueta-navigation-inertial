@@ -1,0 +1,444 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AccumulatedMeasurementNoiseEstimator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-inertial</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.inertial.calibration.noise</a> &gt; <span class="el_source">AccumulatedMeasurementNoiseEstimator.java</span></div><h1>AccumulatedMeasurementNoiseEstimator.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2020 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.inertial.calibration.noise;
+
+import com.irurueta.navigation.LockedException;
+import com.irurueta.navigation.inertial.calibration.TimeIntervalEstimator;
+import com.irurueta.units.Measurement;
+import com.irurueta.units.Time;
+import com.irurueta.units.TimeConverter;
+import com.irurueta.units.TimeUnit;
+
+/**
+ * Base class to estimate measurement noise variances and PSD's (Power Spectral Densities)
+ * along with their average values.
+ * Implementations of this estimator may use norms of measurement triads to estimate noise
+ * levels.
+ * To compute PSD's, this estimator assumes that measurement samples are obtained
+ * at a constant provided rate equal to {@link #getTimeInterval()} seconds.
+ * If not available, accelerometer sampling rate average can be estimated using
+ * {@link TimeIntervalEstimator}.
+ *
+ * @param &lt;U&gt; a measurement unit type.
+ * @param &lt;M&gt; a measurement type.
+ * @param &lt;E&gt; an estimator type.
+ * @param &lt;L&gt; a listener type.
+ */
+@SuppressWarnings(&quot;DuplicatedCode&quot;)
+public abstract class AccumulatedMeasurementNoiseEstimator&lt;U extends Enum&lt;?&gt;,
+        M extends Measurement&lt;U&gt;,
+        E extends AccumulatedMeasurementNoiseEstimator&lt;U, M, E, L&gt;,
+        L extends AccumulatedMeasurementNoiseEstimatorListener&lt;U, M, E&gt;&gt; {
+
+    /**
+     * Default time interval between accelerometer samples expressed in seconds
+     * (s).
+     */
+    public static final double DEFAULT_TIME_INTERVAL_SECONDS = 0.02;
+
+    /**
+     * Time interval expressed in seconds (s) between consecutive accelerometer
+     * samples.
+     */
+<span class="fc" id="L56">    private double timeInterval = DEFAULT_TIME_INTERVAL_SECONDS;</span>
+
+    /**
+     * Listener to handle events raised by this estimator.
+     */
+    private L listener;
+
+    /**
+     * Last provided measurement.
+     */
+    private M lastMeasurement;
+
+    /**
+     * Contains estimated average of measurement expressed in its default unit
+     * (m/s^2 for acceleration, rad/s for angular speed or T for magnetic flux density).
+     */
+    private double avg;
+
+    /**
+     * Contains estimated variance of measurement expressed in its default squared unit
+     * (m^2/s^4 for acceleration, rad^2/s^2 for angular speed or T^2 for magnetic
+     * flux density).
+     */
+    private double variance;
+
+    /**
+     * Number of processed body kinematics samples.
+     */
+    private int numberOfProcessedSamples;
+
+    /**
+     * Number of processed timestamp samples plus one.
+     */
+<span class="fc" id="L89">    private int numberOfProcessedSamplesPlusOne = 1;</span>
+
+    /**
+     * Indicates that estimator is running.
+     */
+    private boolean running;
+
+    /**
+     * Constructor.
+     */
+<span class="fc" id="L99">    protected AccumulatedMeasurementNoiseEstimator() {</span>
+<span class="fc" id="L100">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param listener listener to handle events raised by this estimator.
+     */
+<span class="fc" id="L107">    protected AccumulatedMeasurementNoiseEstimator(final L listener) {</span>
+<span class="fc" id="L108">        this.listener = listener;</span>
+<span class="fc" id="L109">    }</span>
+
+    /**
+     * Gets time interval between accelerometer triad samples expressed in
+     * seconds (s).
+     *
+     * @return time interval between accelerometer triad samples.
+     */
+    public double getTimeInterval() {
+<span class="fc" id="L118">        return timeInterval;</span>
+    }
+
+    /**
+     * Sets time interval between accelerometer triad samples expressed in
+     * seconds (s).
+     *
+     * @param timeInterval time interval between accelerometer triad samples.
+     * @throws IllegalArgumentException if provided value is negative.
+     * @throws LockedException          if estimator is currently running.
+     */
+    public void setTimeInterval(final double timeInterval) throws LockedException {
+<span class="fc bfc" id="L130" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L131">            throw new LockedException();</span>
+        }
+
+<span class="fc bfc" id="L134" title="All 2 branches covered.">        if (timeInterval &lt; 0.0) {</span>
+<span class="fc" id="L135">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L138">        this.timeInterval = timeInterval;</span>
+<span class="fc" id="L139">    }</span>
+
+    /**
+     * Gets time interval between accelerometer triad samples.
+     *
+     * @return time interval between accelerometer triad samples.
+     */
+    public Time getTimeIntervalAsTime() {
+<span class="fc" id="L147">        return new Time(timeInterval, TimeUnit.SECOND);</span>
+    }
+
+    /**
+     * Gets time interval between accelerometer triad samples.
+     *
+     * @param result instance where time interval will be stored.
+     */
+    public void getTimeIntervalAsTime(final Time result) {
+<span class="fc" id="L156">        result.setValue(timeInterval);</span>
+<span class="fc" id="L157">        result.setUnit(TimeUnit.SECOND);</span>
+<span class="fc" id="L158">    }</span>
+
+    /**
+     * Sets time interval between accelerometer triad samples.
+     *
+     * @param timeInterval time interval between accelerometer triad samples.
+     * @throws LockedException if estimator is currently running.
+     */
+    public void setTimeInterval(final Time timeInterval) throws LockedException {
+<span class="fc" id="L167">        setTimeInterval(TimeConverter.convert(timeInterval.getValue().doubleValue(),</span>
+<span class="fc" id="L168">                timeInterval.getUnit(), TimeUnit.SECOND));</span>
+<span class="fc" id="L169">    }</span>
+
+    /**
+     * Gets listener to handle events raised by this estimator.
+     *
+     * @return listener to handle events raised by this estimator.
+     */
+    public L getListener() {
+<span class="fc" id="L177">        return listener;</span>
+    }
+
+    /**
+     * Sets listener to handle events raised by this estimator.
+     *
+     * @param listener listener to handle events raised by this estimator.
+     * @throws LockedException if this estimator is running.
+     */
+    public void setListener(final L listener) throws LockedException {
+<span class="fc bfc" id="L187" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L188">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L191">        this.listener = listener;</span>
+<span class="fc" id="L192">    }</span>
+
+    /**
+     * Gets last provided measurement or null if not available.
+     *
+     * @return last provided measurement or null.
+     */
+    public M getLastMeasurement() {
+<span class="fc" id="L200">        return lastMeasurement;</span>
+    }
+
+    /**
+     * Gets last provided measurement.
+     *
+     * @param result instance where last provided measurement will be stored.
+     * @return true if result instance was updated, false otherwise.
+     */
+    public boolean getLastMeasurement(final M result) {
+<span class="fc bfc" id="L210" title="All 2 branches covered.">        if (lastMeasurement != null) {</span>
+<span class="fc" id="L211">            result.setValue(lastMeasurement.getValue());</span>
+<span class="fc" id="L212">            result.setUnit(lastMeasurement.getUnit());</span>
+<span class="fc" id="L213">            return true;</span>
+        } else {
+<span class="fc" id="L215">            return false;</span>
+        }
+    }
+
+    /**
+     * Gets estimated average of measurement expressed in its default unit
+     * (m/s^2 for acceleration, rad/s for angular speed or T for magnetic flux density).
+     *
+     * @return average of measurement in current window.
+     */
+    public double getAvg() {
+<span class="fc" id="L226">        return avg;</span>
+    }
+
+    /**
+     * Gets estimated average of measurement within current window.
+     *
+     * @return average of measurement in current window
+     */
+    public M getAvgAsMeasurement() {
+<span class="fc" id="L235">        return createMeasurement(avg, getDefaultUnit());</span>
+    }
+
+    /**
+     * Gets estimated average of measurement within current window.
+     *
+     * @param result instance where average of measurement will be stored.
+     */
+    public void getAvgAsMeasurement(final M result) {
+<span class="fc" id="L244">        result.setValue(avg);</span>
+<span class="fc" id="L245">        result.setUnit(getDefaultUnit());</span>
+<span class="fc" id="L246">    }</span>
+
+    /**
+     * Gets estimated variance of measurement within current window
+     * expressed in its default squared unit (m^2/s^4 for acceleration,
+     * rad^2/s^2 for angular speed or T^2 for magnetic flux density).
+     *
+     * @return estimated variance of measurement within current window.
+     */
+    public double getVariance() {
+<span class="fc" id="L256">        return variance;</span>
+    }
+
+    /**
+     * Gets estimated standard deviation of measurement within current window
+     * and expressed in its default unit (m/s^2 for acceleration, rad/s for
+     * angular speed or T for magnetic flux density).
+     *
+     * @return estimated standard of measurement.
+     */
+    public double getStandardDeviation() {
+<span class="fc" id="L267">        return Math.sqrt(variance);</span>
+    }
+
+    /**
+     * Gets estimated standard deviation of measurement within current window.
+     *
+     * @return estimated standard deviation of measurement.
+     */
+    public M getStandardDeviationAsMeasurement() {
+<span class="fc" id="L276">        return createMeasurement(getStandardDeviation(), getDefaultUnit());</span>
+    }
+
+    /**
+     * Gets estimated standard deviation of measurement within current window.
+     *
+     * @param result instance where estimated standard deviation of measurement
+     *               will be stored.
+     */
+    public void getStandardDeviationAsMeasurement(final M result) {
+<span class="fc" id="L286">        result.setValue(getStandardDeviation());</span>
+<span class="fc" id="L287">        result.setUnit(getDefaultUnit());</span>
+<span class="fc" id="L288">    }</span>
+
+    /**
+     * Gets measurement noise PSD (Power Spectral Density) expressed
+     * in (m^2 * s^-3) for accelerometer, (rad^2/s) for gyroscope or (T^2 * s) for
+     * magnetometer.
+     *
+     * @return measurement noise PSD.
+     */
+    public double getPsd() {
+<span class="fc" id="L298">        return variance * timeInterval;</span>
+    }
+
+    /**
+     * Gets measurement noise root PSD (Power Spectral Density) expressed in
+     * (m * s^-1.5) for accelerometer, (rad * s^-0.5) for gyroscope or (T * s^0.5) for
+     * magnetometer.
+     *
+     * @return measurement noise root PSD.
+     */
+    public double getRootPsd() {
+<span class="fc" id="L309">        return Math.sqrt(getPsd());</span>
+    }
+
+    /**
+     * Gets number of samples that have been processed so far.
+     *
+     * @return number of samples that have been processed so far.
+     */
+    public int getNumberOfProcessedSamples() {
+<span class="fc" id="L318">        return numberOfProcessedSamples;</span>
+    }
+
+    /**
+     * Indicates whether estimator is currently running or not.
+     *
+     * @return true if estimator is running, false otherwise.
+     */
+    public boolean isRunning() {
+<span class="fc" id="L327">        return running;</span>
+    }
+
+    /**
+     * Adds a measurement value expressed in its default unit (m/s^2 for acceleration, rad/s for
+     * angular speed or T for magnetic flux density).
+     *
+     * @param value value to be added.
+     * @throws LockedException if estimator is currently running.
+     */
+    public void addMeasurement(final double value) throws LockedException {
+
+<span class="fc bfc" id="L339" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L340">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L343">        running = true;</span>
+
+<span class="pc bpc" id="L345" title="1 of 4 branches missed.">        if (lastMeasurement == null &amp;&amp; listener != null) {</span>
+            //noinspection unchecked
+<span class="fc" id="L347">            listener.onStart((E) this);</span>
+        }
+
+        // compute average
+<span class="fc" id="L351">        final var tmp = (double) numberOfProcessedSamples / (double) numberOfProcessedSamplesPlusOne;</span>
+<span class="fc" id="L352">        avg = avg * tmp + value / numberOfProcessedSamplesPlusOne;</span>
+
+        // compute variance
+<span class="fc" id="L355">        final var diff = value - avg;</span>
+<span class="fc" id="L356">        final var diff2 = diff * diff;</span>
+
+<span class="fc" id="L358">        variance = variance * tmp + diff2 / numberOfProcessedSamplesPlusOne;</span>
+
+<span class="fc bfc" id="L360" title="All 2 branches covered.">        if (lastMeasurement == null) {</span>
+<span class="fc" id="L361">            lastMeasurement = createMeasurement(value, getDefaultUnit());</span>
+        } else {
+<span class="fc" id="L363">            lastMeasurement.setValue(value);</span>
+<span class="fc" id="L364">            lastMeasurement.setUnit(getDefaultUnit());</span>
+        }
+
+<span class="fc" id="L367">        numberOfProcessedSamples++;</span>
+<span class="fc" id="L368">        numberOfProcessedSamplesPlusOne++;</span>
+
+<span class="pc bpc" id="L370" title="1 of 2 branches missed.">        if (listener != null) {</span>
+            //noinspection unchecked
+<span class="fc" id="L372">            listener.onMeasurementAdded((E) this);</span>
+        }
+
+<span class="fc" id="L375">        running = false;</span>
+<span class="fc" id="L376">    }</span>
+
+    /**
+     * Adds a measurement value.
+     *
+     * @param measurement measurement to be added.
+     * @throws LockedException if estimator is currently running.
+     */
+    public void addMeasurement(final M measurement) throws LockedException {
+<span class="fc" id="L385">        addMeasurement(convertToDefaultUnit(measurement));</span>
+<span class="fc" id="L386">    }</span>
+
+    /**
+     * Resets current estimator.
+     *
+     * @return true if estimator was successfully reset, false if no reset was needed.
+     * @throws LockedException if estimator is currently running.
+     */
+    public boolean reset() throws LockedException {
+<span class="fc bfc" id="L395" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L396">            throw new LockedException();</span>
+        }
+
+<span class="pc bpc" id="L399" title="1 of 2 branches missed.">        if (numberOfProcessedSamples == 0) {</span>
+<span class="nc" id="L400">            return false;</span>
+        }
+
+<span class="fc" id="L403">        running = true;</span>
+<span class="fc" id="L404">        lastMeasurement = null;</span>
+<span class="fc" id="L405">        avg = 0.0;</span>
+<span class="fc" id="L406">        variance = 0.0;</span>
+<span class="fc" id="L407">        numberOfProcessedSamples = 0;</span>
+<span class="fc" id="L408">        numberOfProcessedSamplesPlusOne = 1;</span>
+
+<span class="pc bpc" id="L410" title="1 of 2 branches missed.">        if (listener != null) {</span>
+            //noinspection unchecked
+<span class="fc" id="L412">            listener.onReset((E) this);</span>
+        }
+
+<span class="fc" id="L415">        running = false;</span>
+
+<span class="fc" id="L417">        return true;</span>
+    }
+
+    /**
+     * Gets default unit for a measurement.
+     *
+     * @return default unit for a measurement.
+     */
+    protected abstract U getDefaultUnit();
+
+    /**
+     * Creates a measurement with provided value and unit.
+     *
+     * @param value value to be set.
+     * @param unit  unit to be set.
+     * @return created measurement.
+     */
+    protected abstract M createMeasurement(final double value, final U unit);
+
+    /**
+     * Converts provided measurement into default unit.
+     *
+     * @param value measurement to be converted.
+     * @return converted value.
+     */
+    protected abstract double convertToDefaultUnit(M value);
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

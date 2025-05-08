@@ -1,0 +1,840 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MSACRobustKnownBiasAndFrameAccelerometerCalibrator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-inertial</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.inertial.calibration.accelerometer</a> &gt; <span class="el_source">MSACRobustKnownBiasAndFrameAccelerometerCalibrator.java</span></div><h1>MSACRobustKnownBiasAndFrameAccelerometerCalibrator.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2020 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.inertial.calibration.accelerometer;
+
+import com.irurueta.algebra.Matrix;
+import com.irurueta.navigation.LockedException;
+import com.irurueta.navigation.NotReadyException;
+import com.irurueta.navigation.inertial.calibration.CalibrationException;
+import com.irurueta.navigation.inertial.calibration.StandardDeviationFrameBodyKinematics;
+import com.irurueta.numerical.robust.MSACRobustEstimator;
+import com.irurueta.numerical.robust.MSACRobustEstimatorListener;
+import com.irurueta.numerical.robust.RobustEstimator;
+import com.irurueta.numerical.robust.RobustEstimatorException;
+import com.irurueta.numerical.robust.RobustEstimatorMethod;
+import com.irurueta.units.Acceleration;
+
+import java.util.List;
+
+/**
+ * Robustly estimates accelerometer cross couplings and scaling factors using
+ * a MSAC algorithm to discard outliers.
+ * This estimator assumes that biases are known.
+ * &lt;p&gt;
+ * To use this calibrator at least 4 measurements at different known frames must
+ * be provided. In other words, accelerometer samples must be obtained at 4
+ * different positions, orientations and velocities (although typically velocities are
+ * always zero).
+ * &lt;p&gt;
+ * Measured specific force is assumed to follow the model shown below:
+ * &lt;pre&gt;
+ *     fmeas = ba + (I + Ma) * ftrue + w
+ * &lt;/pre&gt;
+ * Where:
+ * - fmeas is the measured specific force. This is a 3x1 vector.
+ * - ba is accelerometer bias. Ideally, on a perfect accelerometer, this should be a
+ * 3x1 zero vector.
+ * - I is the 3x3 identity matrix.
+ * - Ma is the 3x3 matrix containing cross-couplings and scaling factors. Ideally, on
+ * a perfect accelerometer, this should be a 3x3 zero matrix.
+ * - ftrue is ground-truth specific force.
+ * - w is measurement noise.
+ */
+public class MSACRobustKnownBiasAndFrameAccelerometerCalibrator extends RobustKnownBiasAndFrameAccelerometerCalibrator {
+
+    /**
+     * Constant defining default threshold to determine whether samples are
+     * inliers or not.
+     */
+    public static final double DEFAULT_THRESHOLD = 1e-2;
+
+    /**
+     * Minimum value that can be set as threshold.
+     * Threshold must be strictly greater than 0.0.
+     */
+    public static final double MIN_THRESHOLD = 0.0;
+
+    /**
+     * Threshold to determine whether samples are inliers or not when
+     * testing possible estimation solutions.
+     */
+<span class="fc" id="L74">    private double threshold = DEFAULT_THRESHOLD;</span>
+
+    /**
+     * Constructor.
+     */
+    public MSACRobustKnownBiasAndFrameAccelerometerCalibrator() {
+<span class="fc" id="L80">        super();</span>
+<span class="fc" id="L81">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param listener listener to be notified of events such as when estimation
+     *                 starts, ends or its progress significantly changes.
+     */
+    public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
+            final RobustKnownBiasAndFrameAccelerometerCalibratorListener listener) {
+<span class="fc" id="L91">        super(listener);</span>
+<span class="fc" id="L92">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements list of body kinematics measurements with standard
+     *                     deviations taken at different frames (positions, orientations
+     *                     and velocities).
+     */
+    public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
+            final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements) {
+<span class="fc" id="L103">        super(measurements);</span>
+<span class="fc" id="L104">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements list of body kinematics measurements with standard
+     *                     deviations taken at different frames (positions, orientations
+     *                     and velocities).
+     * @param listener     listener to handle events raised by this calibrator.
+     */
+    public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
+            final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final RobustKnownBiasAndFrameAccelerometerCalibratorListener listener) {
+<span class="fc" id="L117">        super(measurements, listener);</span>
+<span class="fc" id="L118">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     */
+    public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(final boolean commonAxisUsed) {
+<span class="fc" id="L127">        super(commonAxisUsed);</span>
+<span class="fc" id="L128">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param listener       listener to handle events raised by this calibrator.
+     */
+    public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
+            final boolean commonAxisUsed, final RobustKnownBiasAndFrameAccelerometerCalibratorListener listener) {
+<span class="fc" id="L139">        super(commonAxisUsed, listener);</span>
+<span class="fc" id="L140">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements   list of body kinematics measurements with standard
+     *                       deviations taken at different frames (positions, orientations
+     *                       and velocities).
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     */
+    public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
+            final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements, final boolean commonAxisUsed) {
+<span class="fc" id="L153">        super(measurements, commonAxisUsed);</span>
+<span class="fc" id="L154">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements   list of body kinematics measurements with standard
+     *                       deviations taken at different frames (positions, orientations
+     *                       and velocities).
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param listener       listener to handle events raised by this calibrator.
+     */
+    public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
+            final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements, final boolean commonAxisUsed,
+            final RobustKnownBiasAndFrameAccelerometerCalibratorListener listener) {
+<span class="fc" id="L169">        super(measurements, commonAxisUsed, listener);</span>
+<span class="fc" id="L170">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param biasX known x coordinate of accelerometer bias expressed in meters per
+     *              squared second (m/s^2).
+     * @param biasY known y coordinate of accelerometer bias expressed in meters per
+     *              squared second (m/s^2).
+     * @param biasZ known z coordinate of accelerometer bias expressed in meters per
+     *              squared second (m/s^2).
+     */
+    public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
+            final double biasX, final double biasY, final double biasZ) {
+<span class="fc" id="L184">        super(biasX, biasY, biasZ);</span>
+<span class="fc" id="L185">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param biasX    known x coordinate of accelerometer bias expressed in meters per
+     *                 squared second (m/s^2).
+     * @param biasY    known y coordinate of accelerometer bias expressed in meters per
+     *                 squared second (m/s^2).
+     * @param biasZ    known z coordinate of accelerometer bias expressed in meters per
+     *                 squared second (m/s^2).
+     * @param listener listener to be notified of events such as when estimation
+     *                 starts, ends or its progress significantly changes.
+     */
+    public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
+            final double biasX, final double biasY, final double biasZ,
+            final RobustKnownBiasAndFrameAccelerometerCalibratorListener listener) {
+<span class="fc" id="L202">        super(biasX, biasY, biasZ, listener);</span>
+<span class="fc" id="L203">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements list of body kinematics measurements with standard
+     *                     deviations taken at different frames (positions, orientations
+     *                     and velocities).
+     * @param biasX        known x coordinate of accelerometer bias expressed in meters per
+     *                     squared second (m/s^2).
+     * @param biasY        known y coordinate of accelerometer bias expressed in meters per
+     *                     squared second (m/s^2).
+     * @param biasZ        known z coordinate of accelerometer bias expressed in meters per
+     *                     squared second (m/s^2).
+     */
+    public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
+            final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final double biasX, final double biasY, final double biasZ) {
+<span class="fc" id="L221">        super(measurements, biasX, biasY, biasZ);</span>
+<span class="fc" id="L222">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements list of body kinematics measurements with standard
+     *                     deviations taken at different frames (positions, orientations
+     *                     and velocities).
+     * @param biasX        known x coordinate of accelerometer bias expressed in meters per
+     *                     squared second (m/s^2).
+     * @param biasY        known y coordinate of accelerometer bias expressed in meters per
+     *                     squared second (m/s^2).
+     * @param biasZ        known z coordinate of accelerometer bias expressed in meters per
+     *                     squared second (m/s^2).
+     * @param listener     listener to handle events raised by this calibrator.
+     */
+    public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
+            final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final double biasX, final double biasY, final double biasZ,
+            final RobustKnownBiasAndFrameAccelerometerCalibratorListener listener) {
+<span class="fc" id="L242">        super(measurements, biasX, biasY, biasZ, listener);</span>
+<span class="fc" id="L243">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param biasX          known x coordinate of accelerometer bias expressed in meters per
+     *                       squared second (m/s^2).
+     * @param biasY          known y coordinate of accelerometer bias expressed in meters per
+     *                       squared second (m/s^2).
+     * @param biasZ          known z coordinate of accelerometer bias expressed in meters per
+     *                       squared second (m/s^2).
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     */
+    public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
+            final double biasX, final double biasY, final double biasZ, final boolean commonAxisUsed) {
+<span class="fc" id="L259">        super(biasX, biasY, biasZ, commonAxisUsed);</span>
+<span class="fc" id="L260">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param biasX          known x coordinate of accelerometer bias expressed in meters per
+     *                       squared second (m/s^2).
+     * @param biasY          known y coordinate of accelerometer bias expressed in meters per
+     *                       squared second (m/s^2).
+     * @param biasZ          known z coordinate of accelerometer bias expressed in meters per
+     *                       squared second (m/s^2).
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param listener       listener to handle events raised by this calibrator.
+     */
+    public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
+            final double biasX, final double biasY, final double biasZ, final boolean commonAxisUsed,
+            final RobustKnownBiasAndFrameAccelerometerCalibratorListener listener) {
+<span class="fc" id="L278">        super(biasX, biasY, biasZ, commonAxisUsed, listener);</span>
+<span class="fc" id="L279">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements   list of body kinematics measurements with standard
+     *                       deviations taken at different frames (positions, orientations
+     *                       and velocities).
+     * @param biasX          known x coordinate of accelerometer bias expressed in meters per
+     *                       squared second (m/s^2).
+     * @param biasY          known y coordinate of accelerometer bias expressed in meters per
+     *                       squared second (m/s^2).
+     * @param biasZ          known z coordinate of accelerometer bias expressed in meters per
+     *                       squared second (m/s^2).
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     */
+    public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
+            final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final double biasX, final double biasY, final double biasZ, final boolean commonAxisUsed) {
+<span class="fc" id="L299">        super(measurements, biasX, biasY, biasZ, commonAxisUsed);</span>
+<span class="fc" id="L300">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements   list of body kinematics measurements with standard
+     *                       deviations taken at different frames (positions, orientations
+     *                       and velocities).
+     * @param biasX          known x coordinate of accelerometer bias expressed in meters per
+     *                       squared second (m/s^2).
+     * @param biasY          known y coordinate of accelerometer bias expressed in meters per
+     *                       squared second (m/s^2).
+     * @param biasZ          known z coordinate of accelerometer bias expressed in meters per
+     *                       squared second (m/s^2).
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param listener       listener to handle events raised by this calibrator.
+     */
+    public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
+            final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final double biasX, final double biasY, final double biasZ, final boolean commonAxisUsed,
+            final RobustKnownBiasAndFrameAccelerometerCalibratorListener listener) {
+<span class="fc" id="L322">        super(measurements, biasX, biasY, biasZ, commonAxisUsed, listener);</span>
+<span class="fc" id="L323">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param biasX known x coordinate of accelerometer bias.
+     * @param biasY known y coordinate of accelerometer bias.
+     * @param biasZ known z coordinate of accelerometer bias.
+     */
+    public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ) {
+<span class="fc" id="L334">        super(biasX, biasY, biasZ);</span>
+<span class="fc" id="L335">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param biasX    known x coordinate of accelerometer bias.
+     * @param biasY    known y coordinate of accelerometer bias.
+     * @param biasZ    known z coordinate of accelerometer bias.
+     * @param listener listener to be notified of events such as when estimation
+     *                 starts, ends or its progress significantly changes.
+     */
+    public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
+            final RobustKnownBiasAndFrameAccelerometerCalibratorListener listener) {
+<span class="fc" id="L349">        super(biasX, biasY, biasZ, listener);</span>
+<span class="fc" id="L350">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements list of body kinematics measurements with standard
+     *                     deviations taken at different frames (positions, orientations
+     *                     and velocities).
+     * @param biasX        known x coordinate of accelerometer bias.
+     * @param biasY        known y coordinate of accelerometer bias.
+     * @param biasZ        known z coordinate of accelerometer bias.
+     */
+    public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
+            final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ) {
+<span class="fc" id="L365">        super(measurements, biasX, biasY, biasZ);</span>
+<span class="fc" id="L366">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements list of body kinematics measurements with standard
+     *                     deviations taken at different frames (positions, orientations
+     *                     and velocities).
+     * @param biasX        known x coordinate of accelerometer bias.
+     * @param biasY        known y coordinate of accelerometer bias.
+     * @param biasZ        known z coordinate of accelerometer bias.
+     * @param listener     listener to handle events raised by this calibrator.
+     */
+    public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
+            final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
+            final RobustKnownBiasAndFrameAccelerometerCalibratorListener listener) {
+<span class="fc" id="L383">        super(measurements, biasX, biasY, biasZ, listener);</span>
+<span class="fc" id="L384">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param biasX          known x coordinate of accelerometer bias.
+     * @param biasY          known y coordinate of accelerometer bias.
+     * @param biasZ          known z coordinate of accelerometer bias.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     */
+    public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
+            final boolean commonAxisUsed) {
+<span class="fc" id="L398">        super(biasX, biasY, biasZ, commonAxisUsed);</span>
+<span class="fc" id="L399">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param biasX          known x coordinate of accelerometer bias.
+     * @param biasY          known y coordinate of accelerometer bias.
+     * @param biasZ          known z coordinate of accelerometer bias.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param listener       listener to handle events raised by this calibrator.
+     */
+    public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ, final boolean commonAxisUsed,
+            final RobustKnownBiasAndFrameAccelerometerCalibratorListener listener) {
+<span class="fc" id="L414">        super(biasX, biasY, biasZ, commonAxisUsed, listener);</span>
+<span class="fc" id="L415">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements   list of body kinematics measurements with standard
+     *                       deviations taken at different frames (positions, orientations
+     *                       and velocities).
+     * @param biasX          known x coordinate of accelerometer bias.
+     * @param biasY          known y coordinate of accelerometer bias.
+     * @param biasZ          known z coordinate of accelerometer bias.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     */
+    public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
+            final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
+            final boolean commonAxisUsed) {
+<span class="fc" id="L433">        super(measurements, biasX, biasY, biasZ, commonAxisUsed);</span>
+<span class="fc" id="L434">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements   list of body kinematics measurements with standard
+     *                       deviations taken at different frames (positions, orientations
+     *                       and velocities).
+     * @param biasX          known x coordinate of accelerometer bias.
+     * @param biasY          known y coordinate of accelerometer bias.
+     * @param biasZ          known z coordinate of accelerometer bias.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param listener       listener to handle events raised by this calibrator.
+     */
+    public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
+            final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ, final boolean commonAxisUsed,
+            final RobustKnownBiasAndFrameAccelerometerCalibratorListener listener) {
+<span class="fc" id="L453">        super(measurements, biasX, biasY, biasZ, commonAxisUsed, listener);</span>
+<span class="fc" id="L454">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param bias known accelerometer bias.
+     * @throws IllegalArgumentException if provided array does not have length 3.
+     */
+    public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(final double[] bias) {
+<span class="fc" id="L463">        super(bias);</span>
+<span class="fc" id="L464">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param bias     known accelerometer bias.
+     * @param listener listener to be notified of events such as when estimation
+     *                 starts, ends or its progress significantly changes.
+     * @throws IllegalArgumentException if provided array does not have length 3.
+     */
+    public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
+            final double[] bias, final RobustKnownBiasAndFrameAccelerometerCalibratorListener listener) {
+<span class="fc" id="L476">        super(bias, listener);</span>
+<span class="fc" id="L477">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements list of body kinematics measurements with standard
+     *                     deviations taken at different frames (positions, orientations
+     *                     and velocities).
+     * @param bias         known accelerometer bias.
+     * @throws IllegalArgumentException if provided array does not have length 3.
+     */
+    public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
+            final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements, final double[] bias) {
+<span class="fc" id="L490">        super(measurements, bias);</span>
+<span class="fc" id="L491">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements list of body kinematics measurements with standard
+     *                     deviations taken at different frames (positions, orientations
+     *                     and velocities).
+     * @param bias         known accelerometer bias.
+     * @param listener     listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided array does not have length 3.
+     */
+    public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
+            final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements, final double[] bias,
+            final RobustKnownBiasAndFrameAccelerometerCalibratorListener listener) {
+<span class="fc" id="L506">        super(measurements, bias, listener);</span>
+<span class="fc" id="L507">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param bias           known accelerometer bias.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @throws IllegalArgumentException if provided array does not have length 3.
+     */
+    public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(final double[] bias, final boolean commonAxisUsed) {
+<span class="fc" id="L518">        super(bias, commonAxisUsed);</span>
+<span class="fc" id="L519">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param bias           known accelerometer bias.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param listener       listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided array does not have length 3.
+     */
+    public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
+            final double[] bias, final boolean commonAxisUsed,
+            final RobustKnownBiasAndFrameAccelerometerCalibratorListener listener) {
+<span class="fc" id="L533">        super(bias, commonAxisUsed, listener);</span>
+<span class="fc" id="L534">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements   list of body kinematics measurements with standard
+     *                       deviations taken at different frames (positions, orientations
+     *                       and velocities).
+     * @param bias           known accelerometer bias.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @throws IllegalArgumentException if provided array does not have length 3.
+     */
+    public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
+            final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements, final double[] bias,
+            final boolean commonAxisUsed) {
+<span class="fc" id="L550">        super(measurements, bias, commonAxisUsed);</span>
+<span class="fc" id="L551">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements   list of body kinematics measurements with standard
+     *                       deviations taken at different frames (positions, orientations
+     *                       and velocities).
+     * @param bias           known accelerometer bias.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param listener       listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided array does not have length 3.
+     */
+    public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
+            final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements, final double[] bias,
+            final boolean commonAxisUsed, final RobustKnownBiasAndFrameAccelerometerCalibratorListener listener) {
+<span class="fc" id="L568">        super(measurements, bias, commonAxisUsed, listener);</span>
+<span class="fc" id="L569">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param bias known accelerometer bias.
+     * @throws IllegalArgumentException if provided matrix is not 3x1.
+     */
+    public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(final Matrix bias) {
+<span class="fc" id="L578">        super(bias);</span>
+<span class="fc" id="L579">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param bias     known accelerometer bias.
+     * @param listener listener to be notified of events such as when estimation
+     *                 starts, ends or its progress significantly changes.
+     * @throws IllegalArgumentException if provided matrix is not 3x1.
+     */
+    public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
+            final Matrix bias, final RobustKnownBiasAndFrameAccelerometerCalibratorListener listener) {
+<span class="fc" id="L591">        super(bias, listener);</span>
+<span class="fc" id="L592">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements list of body kinematics measurements with standard
+     *                     deviations taken at different frames (positions, orientations
+     *                     and velocities).
+     * @param bias         known accelerometer bias.
+     * @throws IllegalArgumentException if provided matrix is not 3x1.
+     */
+    public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
+            final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements, final Matrix bias) {
+<span class="fc" id="L605">        super(measurements, bias);</span>
+<span class="fc" id="L606">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements list of body kinematics measurements with standard
+     *                     deviations taken at different frames (positions, orientations
+     *                     and velocities).
+     * @param bias         known accelerometer bias.
+     * @param listener     listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided matrix is not 3x1.
+     */
+    public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
+            final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements, final Matrix bias,
+            final RobustKnownBiasAndFrameAccelerometerCalibratorListener listener) {
+<span class="fc" id="L621">        super(measurements, bias, listener);</span>
+<span class="fc" id="L622">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param bias           known accelerometer bias.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @throws IllegalArgumentException if provided matrix is not 3x1.
+     */
+    public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(final Matrix bias, final boolean commonAxisUsed) {
+<span class="fc" id="L633">        super(bias, commonAxisUsed);</span>
+<span class="fc" id="L634">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param bias           known accelerometer bias.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param listener       listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided matrix is not 3x1.
+     */
+    public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
+            final Matrix bias, final boolean commonAxisUsed,
+            final RobustKnownBiasAndFrameAccelerometerCalibratorListener listener) {
+<span class="fc" id="L648">        super(bias, commonAxisUsed, listener);</span>
+<span class="fc" id="L649">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements   list of body kinematics measurements with standard
+     *                       deviations taken at different frames (positions, orientations
+     *                       and velocities).
+     * @param bias           known accelerometer bias.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @throws IllegalArgumentException if provided matrix is not 3x1.
+     */
+    public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
+            final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements, final Matrix bias,
+            final boolean commonAxisUsed) {
+<span class="fc" id="L665">        super(measurements, bias, commonAxisUsed);</span>
+<span class="fc" id="L666">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements   list of body kinematics measurements with standard
+     *                       deviations taken at different frames (positions, orientations
+     *                       and velocities).
+     * @param bias           known accelerometer bias.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param listener       listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided matrix is not 3x1.
+     */
+    public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
+            final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements, final Matrix bias,
+            final boolean commonAxisUsed, final RobustKnownBiasAndFrameAccelerometerCalibratorListener listener) {
+<span class="fc" id="L683">        super(measurements, bias, commonAxisUsed, listener);</span>
+<span class="fc" id="L684">    }</span>
+
+    /**
+     * Returns threshold to determine whether samples are inliers or not.
+     *
+     * @return threshold to determine whether samples are inliers or not.
+     */
+    public double getThreshold() {
+<span class="fc" id="L692">        return threshold;</span>
+    }
+
+    /**
+     * Sets threshold to determine whether samples are inliers or not.
+     *
+     * @param threshold threshold to be set.
+     * @throws IllegalArgumentException if provided value is equal or less than
+     *                                  zero.
+     * @throws LockedException          if calibrator is currently running.
+     */
+    public void setThreshold(final double threshold) throws LockedException {
+<span class="fc bfc" id="L704" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L705">            throw new LockedException();</span>
+        }
+<span class="fc bfc" id="L707" title="All 2 branches covered.">        if (threshold &lt;= MIN_THRESHOLD) {</span>
+<span class="fc" id="L708">            throw new IllegalArgumentException();</span>
+        }
+<span class="fc" id="L710">        this.threshold = threshold;</span>
+<span class="fc" id="L711">    }</span>
+
+    /**
+     * Estimates accelerometer calibration parameters containing scale factors
+     * and cross-coupling errors.
+     *
+     * @throws LockedException      if calibrator is currently running.
+     * @throws NotReadyException    if calibrator is not ready.
+     * @throws CalibrationException if estimation fails for numerical reasons.
+     */
+    @Override
+    public void calibrate() throws LockedException, NotReadyException, CalibrationException {
+<span class="fc bfc" id="L723" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L724">            throw new LockedException();</span>
+        }
+<span class="pc bpc" id="L726" title="1 of 2 branches missed.">        if (!isReady()) {</span>
+<span class="nc" id="L727">            throw new NotReadyException();</span>
+        }
+
+<span class="fc" id="L730">        final var innerEstimator = new MSACRobustEstimator&lt;&gt;(new MSACRobustEstimatorListener&lt;Matrix&gt;() {</span>
+            @Override
+            public double getThreshold() {
+<span class="fc" id="L733">                return threshold;</span>
+            }
+
+            @Override
+            public int getTotalSamples() {
+<span class="fc" id="L738">                return measurements.size();</span>
+            }
+
+            @Override
+            public int getSubsetSize() {
+<span class="fc" id="L743">                return preliminarySubsetSize;</span>
+            }
+
+            @Override
+            public void estimatePreliminarSolutions(final int[] samplesIndices, final List&lt;Matrix&gt; solutions) {
+<span class="fc" id="L748">                computePreliminarySolutions(samplesIndices, solutions);</span>
+<span class="fc" id="L749">            }</span>
+
+            @Override
+            public double computeResidual(final Matrix currentEstimation, final int i) {
+<span class="fc" id="L753">                return computeError(measurements.get(i), currentEstimation);</span>
+            }
+
+            @Override
+            public boolean isReady() {
+<span class="fc" id="L758">                return MSACRobustKnownBiasAndFrameAccelerometerCalibrator.super.isReady();</span>
+            }
+
+            @Override
+            public void onEstimateStart(final RobustEstimator&lt;Matrix&gt; estimator) {
+                // no action needed
+<span class="fc" id="L764">            }</span>
+
+            @Override
+            public void onEstimateEnd(final RobustEstimator&lt;Matrix&gt; estimator) {
+                // no action needed
+<span class="fc" id="L769">            }</span>
+
+            @Override
+            public void onEstimateNextIteration(final RobustEstimator&lt;Matrix&gt; estimator, final int iteration) {
+<span class="pc bpc" id="L773" title="1 of 2 branches missed.">                if (listener != null) {</span>
+<span class="fc" id="L774">                    listener.onCalibrateNextIteration(</span>
+                            MSACRobustKnownBiasAndFrameAccelerometerCalibrator.this, iteration);
+                }
+<span class="fc" id="L777">            }</span>
+
+            @Override
+            public void onEstimateProgressChange(final RobustEstimator&lt;Matrix&gt; estimator, final float progress) {
+<span class="pc bpc" id="L781" title="1 of 2 branches missed.">                if (listener != null) {</span>
+<span class="fc" id="L782">                    listener.onCalibrateProgressChange(</span>
+                            MSACRobustKnownBiasAndFrameAccelerometerCalibrator.this, progress);
+                }
+<span class="fc" id="L785">            }</span>
+        });
+
+        try {
+<span class="fc" id="L789">            running = true;</span>
+
+<span class="pc bpc" id="L791" title="1 of 2 branches missed.">            if (listener != null) {</span>
+<span class="fc" id="L792">                listener.onCalibrateStart(this);</span>
+            }
+
+<span class="fc" id="L795">            inliersData = null;</span>
+<span class="fc" id="L796">            innerEstimator.setConfidence(confidence);</span>
+<span class="fc" id="L797">            innerEstimator.setMaxIterations(maxIterations);</span>
+<span class="fc" id="L798">            innerEstimator.setProgressDelta(progressDelta);</span>
+<span class="fc" id="L799">            final var preliminaryResult = innerEstimator.estimate();</span>
+<span class="fc" id="L800">            inliersData = innerEstimator.getInliersData();</span>
+
+<span class="fc" id="L802">            attemptRefine(preliminaryResult);</span>
+
+<span class="pc bpc" id="L804" title="1 of 2 branches missed.">            if (listener != null) {</span>
+<span class="fc" id="L805">                listener.onCalibrateEnd(this);</span>
+            }
+
+<span class="nc" id="L808">        } catch (final com.irurueta.numerical.LockedException e) {</span>
+<span class="nc" id="L809">            throw new LockedException(e);</span>
+<span class="nc" id="L810">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
+<span class="nc" id="L811">            throw new NotReadyException(e);</span>
+<span class="nc" id="L812">        } catch (final RobustEstimatorException e) {</span>
+<span class="nc" id="L813">            throw new CalibrationException(e);</span>
+        } finally {
+<span class="fc" id="L815">            running = false;</span>
+        }
+<span class="fc" id="L817">    }</span>
+
+    /**
+     * Returns method being used for robust estimation.
+     *
+     * @return method being used for robust estimation.
+     */
+    @Override
+    public RobustEstimatorMethod getMethod() {
+<span class="fc" id="L826">        return RobustEstimatorMethod.MSAC;</span>
+    }
+
+    /**
+     * Indicates whether this calibrator requires quality scores for each
+     * measurement or not.
+     *
+     * @return true if quality scores are required, false otherwise.
+     */
+    @Override
+    public boolean isQualityScoresRequired() {
+<span class="fc" id="L837">        return false;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

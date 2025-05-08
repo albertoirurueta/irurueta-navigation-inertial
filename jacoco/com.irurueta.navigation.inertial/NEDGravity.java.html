@@ -1,0 +1,436 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NEDGravity.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-inertial</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.inertial</a> &gt; <span class="el_source">NEDGravity.java</span></div><h1>NEDGravity.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2019 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.inertial;
+
+import com.irurueta.algebra.Matrix;
+import com.irurueta.algebra.WrongSizeException;
+import com.irurueta.units.Acceleration;
+import com.irurueta.units.AccelerationConverter;
+import com.irurueta.units.AccelerationUnit;
+
+import java.io.Serial;
+import java.io.Serializable;
+import java.util.Objects;
+
+/**
+ * Contains acceleration due to gravity resolved about NED frame.
+ */
+public class NEDGravity implements Serializable, Cloneable {
+
+    /**
+     * Acceleration due to gravity through east-axis of NED frame expressed in meters per squared second (m/s^2).
+     */
+    public static final double GRAVITY_EAST = 0.0;
+
+    /**
+     * Number of components.
+     */
+    public static final int COMPONENTS = 3;
+
+    /**
+     * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
+     * instances.
+     */
+    @Serial
+    private static final long serialVersionUID = 0L;
+
+    /**
+     * Acceleration due to gravity through north-axis of NED frame and expressed in meters per squared second (m/s^2).
+     */
+    private double gn;
+
+    /**
+     * Acceleration due to gravity through down-axis of NED frame and expressed in meters per squared second (m/s^2).
+     */
+    private double gd;
+
+    /**
+     * Constructor.
+     */
+<span class="fc" id="L63">    public NEDGravity() {</span>
+<span class="fc" id="L64">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param gn acceleration due to gravity through north-axis of NED frame and expressed in meters per
+     *           squared second (m/s^2).
+     * @param gd acceleration due to gravity through down-axis of NED frame and expressed in meters per
+     *           squared second (m/s^2).
+     */
+<span class="fc" id="L74">    public NEDGravity(final double gn, final double gd) {</span>
+<span class="fc" id="L75">        setCoordinates(gn, gd);</span>
+<span class="fc" id="L76">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param gn acceleration due to gravity through north-axis of NED frame.
+     * @param gd acceleration due to gravity through down-axis of NED frame.
+     */
+<span class="fc" id="L84">    public NEDGravity(final Acceleration gn, final Acceleration gd) {</span>
+<span class="fc" id="L85">        setCoordinates(gn, gd);</span>
+<span class="fc" id="L86">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param input instance to copy data from.
+     */
+<span class="fc" id="L93">    public NEDGravity(final NEDGravity input) {</span>
+<span class="fc" id="L94">        copyFrom(input);</span>
+<span class="fc" id="L95">    }</span>
+
+    /**
+     * Gets acceleration due to gravity through north-axis of NED frame expressed in meters per squared second (m/s^2).
+     *
+     * @return acceleration due to gravity through north-axis of NED frame expressed in meters per squared second
+     * (m/s^2).
+     */
+    public double getGn() {
+<span class="fc" id="L104">        return gn;</span>
+    }
+
+    /**
+     * Sets acceleration due to gravity through north-axis of NED frame expressed in meters per squared second (m/s^2).
+     *
+     * @param gn acceleration due to gravity through north-axis of NED frame expressed in meters per squared second
+     *           (m/s^2).
+     */
+    public void setGn(final double gn) {
+<span class="fc" id="L114">        this.gn = gn;</span>
+<span class="fc" id="L115">    }</span>
+
+    /**
+     * Gets acceleration due to gravity through east-axis of NED frame expressed in meters per squared second (m/s^2).
+     *
+     * @return acceleration due to gravity through east-axis of NED frame expressed in meters per squared second
+     * (m/s^2).
+     */
+    public double getGe() {
+<span class="fc" id="L124">        return GRAVITY_EAST;</span>
+    }
+
+    /**
+     * Gets acceleration due to gravity through down-axis of NED frame expressed in meters per squared second (m/s^2).
+     *
+     * @return acceleration due to gravity through down-axis of NED frame expressed in meters per squared second
+     * (m/s^2).
+     */
+    public double getGd() {
+<span class="fc" id="L134">        return gd;</span>
+    }
+
+    /**
+     * Sets acceleration due to gravity through down-axis of NED frame expressed in meters per squared second (m/s^2).
+     *
+     * @param gd acceleration due to gravity through down-axis of NED frame expressed in meters per squared second
+     *           (m/s^2).
+     */
+    public void setGd(final double gd) {
+<span class="fc" id="L144">        this.gd = gd;</span>
+<span class="fc" id="L145">    }</span>
+
+    /**
+     * Sets gravity coordinates resolved about NED frame and expressed in meters per squared second (m/s^2).
+     *
+     * @param gn acceleration due to gravity through north-axis of NED frame.
+     * @param gd acceleration due to gravity through down-axis of NED frame.
+     */
+    public void setCoordinates(final double gn, final double gd) {
+<span class="fc" id="L154">        this.gn = gn;</span>
+<span class="fc" id="L155">        this.gd = gd;</span>
+<span class="fc" id="L156">    }</span>
+
+    /**
+     * Gets acceleration due to gravity through north-axis of NED frame expressed in meters per squared second (m/s^2).
+     *
+     * @param result instance where acceleration due to gravity through NED north-axis will be stored.
+     */
+    public void getGnAsAcceleration(final Acceleration result) {
+<span class="fc" id="L164">        result.setValue(gn);</span>
+<span class="fc" id="L165">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L166">    }</span>
+
+    /**
+     * Gets acceleration due to gravity through north-axis of NED frame expressed in meters per squared second (m/s^2).
+     *
+     * @return acceleration due to gravity through NED north-axis.
+     */
+    public Acceleration getGnAsAcceleration() {
+<span class="fc" id="L174">        return new Acceleration(gn, AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+    }
+
+    /**
+     * Sets acceleration due to gravity through north-axis of NED frame.
+     *
+     * @param gravityN acceleration due to gravity through NED north-axis.
+     */
+    public void setGn(final Acceleration gravityN) {
+<span class="fc" id="L183">        gn = AccelerationConverter.convert(gravityN.getValue().doubleValue(), gravityN.getUnit(),</span>
+                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+<span class="fc" id="L185">    }</span>
+
+    /**
+     * Gets acceleration due to gravity through east-axis of NED frame expressed in meters per squared second (m/s^2).
+     *
+     * @param result instance where acceleration due to gravity through NED east-axis will be stored.
+     */
+    public void getGeAsAcceleration(final Acceleration result) {
+<span class="fc" id="L193">        result.setValue(GRAVITY_EAST);</span>
+<span class="fc" id="L194">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L195">    }</span>
+
+    /**
+     * Gets acceleration due to gravity through east-axis of NED frame expressed in meters per squared second (m/s^2).
+     *
+     * @return acceleration due to gravity through NED east-axis.
+     */
+    public Acceleration getGeAsAcceleration() {
+<span class="fc" id="L203">        return new Acceleration(GRAVITY_EAST, AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+    }
+
+    /**
+     * Gets acceleration due to gravity through down-axis of NED frame expressed in meters per squared second (m/s^2).
+     *
+     * @param result instance where acceleration due to gravity through NED down-axis will be stored.
+     */
+    public void getGdAsAcceleration(final Acceleration result) {
+<span class="fc" id="L212">        result.setValue(gd);</span>
+<span class="fc" id="L213">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L214">    }</span>
+
+    /**
+     * Gets acceleration due to gravity through down-axis of NED frame expressed in meters per squared second (m/s^2).
+     *
+     * @return acceleration due to gravity through NED down-axis.
+     */
+    public Acceleration getGdAsAcceleration() {
+<span class="fc" id="L222">        return new Acceleration(gd, AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+    }
+
+    /**
+     * Sets acceleration due to gravity through down-axis of NED frame.
+     *
+     * @param gravityD acceleration due to gravity through NED down-axis.
+     */
+    public void setGd(final Acceleration gravityD) {
+<span class="fc" id="L231">        gd = AccelerationConverter.convert(gravityD.getValue().doubleValue(), gravityD.getUnit(),</span>
+                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+<span class="fc" id="L233">    }</span>
+
+    /**
+     * Sets gravity coordinates.
+     *
+     * @param gravityN acceleration due to gravity through north-axis of NED frame.
+     * @param gravityD acceleration due to gravity through down-axis of NED frame.
+     */
+    public void setCoordinates(final Acceleration gravityN, final Acceleration gravityD) {
+<span class="fc" id="L242">        setGn(gravityN);</span>
+<span class="fc" id="L243">        setGd(gravityD);</span>
+<span class="fc" id="L244">    }</span>
+
+    /**
+     * Gets gravity norm.
+     *
+     * @return gravity norm.
+     */
+    public double getNorm() {
+<span class="fc" id="L252">        return Math.sqrt(gn * gn + gd * gd);</span>
+    }
+
+    /**
+     * Gets gravity norm as an acceleration.
+     *
+     * @param result instance where result will be stored.
+     */
+    public void getNormAsAcceleration(final Acceleration result) {
+<span class="fc" id="L261">        result.setValue(getNorm());</span>
+<span class="fc" id="L262">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L263">    }</span>
+
+    /**
+     * Gets gravity norm as an acceleration.
+     *
+     * @return an acceleration containing gravity norm.
+     */
+    public Acceleration getNormAsAcceleration() {
+<span class="fc" id="L271">        return new Acceleration(getNorm(), AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+    }
+
+    /**
+     * Copies this instance data into provided instance.
+     *
+     * @param output destination instance where data will be copied to.
+     */
+    public void copyTo(final NEDGravity output) {
+<span class="fc" id="L280">        output.gn = gn;</span>
+<span class="fc" id="L281">        output.gd = gd;</span>
+<span class="fc" id="L282">    }</span>
+
+    /**
+     * Copies data of provided instance into this instance.
+     *
+     * @param input instance to copy data from.
+     */
+    public void copyFrom(final NEDGravity input) {
+<span class="fc" id="L290">        gn = input.gn;</span>
+<span class="fc" id="L291">        gd = input.gd;</span>
+<span class="fc" id="L292">    }</span>
+
+    /**
+     * Gets gravity coordinates as an array.
+     *
+     * @param result array instance where gravity coordinates will be stored in
+     *               n,e,d order.
+     * @throws IllegalArgumentException if provided array does not have length 3.
+     */
+    public void asArray(final double[] result) {
+<span class="fc bfc" id="L302" title="All 2 branches covered.">        if (result.length != COMPONENTS) {</span>
+<span class="fc" id="L303">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L306">        result[0] = gn;</span>
+<span class="fc" id="L307">        result[1] = GRAVITY_EAST;</span>
+<span class="fc" id="L308">        result[2] = gd;</span>
+<span class="fc" id="L309">    }</span>
+
+    /**
+     * Gets gravity coordinates as an array.
+     *
+     * @return array containing gravity coordinates in n,e,d order.
+     */
+    public double[] asArray() {
+<span class="fc" id="L317">        final var result = new double[COMPONENTS];</span>
+<span class="fc" id="L318">        asArray(result);</span>
+<span class="fc" id="L319">        return result;</span>
+    }
+
+    /**
+     * Gets gravity coordinates as a column matrix.
+     * If provided matrix does not have size 3x1, it will be resized.
+     *
+     * @param result matrix instance where gravity coordinates will be stored in
+     *               n,e,d order.
+     */
+    @SuppressWarnings(&quot;DuplicatedCode&quot;)
+    public void asMatrix(final Matrix result) {
+<span class="pc bpc" id="L331" title="3 of 4 branches missed.">        if (result.getColumns() != COMPONENTS || result.getRows() != 1) {</span>
+            try {
+<span class="fc" id="L333">                result.resize(COMPONENTS, 1);</span>
+<span class="nc" id="L334">            } catch (final WrongSizeException ignore) {</span>
+                // never happens
+<span class="fc" id="L336">            }</span>
+        }
+
+<span class="fc" id="L339">        result.setElementAtIndex(0, gn);</span>
+<span class="fc" id="L340">        result.setElementAtIndex(1, GRAVITY_EAST);</span>
+<span class="fc" id="L341">        result.setElementAtIndex(2, gd);</span>
+<span class="fc" id="L342">    }</span>
+
+    /**
+     * Gets gravity coordinates as a column matrix.
+     *
+     * @return a matrix containing gravity coordinates stored in n,e,d order.
+     */
+    public Matrix asMatrix() {
+        Matrix result;
+        try {
+<span class="fc" id="L352">            result = new Matrix(COMPONENTS, 1);</span>
+<span class="fc" id="L353">            asMatrix(result);</span>
+<span class="nc" id="L354">        } catch (final WrongSizeException ignore) {</span>
+            // never happens
+<span class="nc" id="L356">            result = null;</span>
+<span class="fc" id="L357">        }</span>
+<span class="fc" id="L358">        return result;</span>
+    }
+
+    /**
+     * Computes and returns hash code for this instance. Hash codes are almost unique
+     * values that are useful for fast classification and storage of objects in collections.
+     *
+     * @return Hash code.
+     */
+    @Override
+    public int hashCode() {
+<span class="fc" id="L369">        return Objects.hash(gn, gd);</span>
+    }
+
+    /**
+     * Check if provided object is a GravityNED instance having exactly the same contents
+     * as this instance.
+     *
+     * @param obj object to be compared.
+     * @return true if both objects are considered to be equal, false otherwise.
+     */
+    @Override
+    public boolean equals(final Object obj) {
+<span class="pc bpc" id="L381" title="1 of 2 branches missed.">        if (obj == null) {</span>
+<span class="nc" id="L382">            return false;</span>
+        }
+<span class="fc bfc" id="L384" title="All 2 branches covered.">        if (obj == this) {</span>
+<span class="fc" id="L385">            return true;</span>
+        }
+<span class="pc bpc" id="L387" title="1 of 2 branches missed.">        if (!(obj instanceof NEDGravity)) {</span>
+<span class="nc" id="L388">            return false;</span>
+        }
+
+        //noinspection PatternVariableCanBeUsed
+<span class="fc" id="L392">        final var other = (NEDGravity) obj;</span>
+<span class="fc" id="L393">        return equals(other);</span>
+    }
+
+    /**
+     * Checks if provided instance has exactly the same contents as this instance.
+     *
+     * @param other instance to be compared.
+     * @return true if both instances are considered to be equal, false otherwise.
+     */
+    public boolean equals(final NEDGravity other) {
+<span class="fc" id="L403">        return equals(other, 0.0);</span>
+    }
+
+    /**
+     * Checks if provided instance has contents similar to this instance up to provided
+     * threshold value.
+     *
+     * @param other     instance to be compared.
+     * @param threshold maximum allowed difference between gravity coordinates.
+     * @return true if both instances are considered to be equal (up to provided
+     * threshold), false otherwise.
+     */
+    public boolean equals(final NEDGravity other, final double threshold) {
+<span class="fc bfc" id="L416" title="All 2 branches covered.">        if (other == null) {</span>
+<span class="fc" id="L417">            return false;</span>
+        }
+
+<span class="pc bpc" id="L420" title="1 of 4 branches missed.">        return Math.abs(gn - other.gn) &lt;= threshold &amp;&amp; Math.abs(gd - other.gd) &lt;= threshold;</span>
+    }
+
+    /**
+     * Makes a copy of this instance.
+     *
+     * @return a copy of this instance.
+     * @throws CloneNotSupportedException if clone fails for some reason.
+     */
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+<span class="fc" id="L431">        final var result = (NEDGravity) super.clone();</span>
+<span class="fc" id="L432">        copyTo(result);</span>
+<span class="fc" id="L433">        return result;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

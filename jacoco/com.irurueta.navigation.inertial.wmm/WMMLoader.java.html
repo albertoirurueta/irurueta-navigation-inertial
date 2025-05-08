@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>WMMLoader.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-inertial</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.inertial.wmm</a> &gt; <span class="el_source">WMMLoader.java</span></div><h1>WMMLoader.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2020 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.inertial.wmm;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.StreamTokenizer;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+/**
+ * Loads a WWM from a file of coefficients.
+ * The file of coefficients is updated every 5 years and can be obtained
+ * at: &lt;a href=&quot;https://www.ngdc.noaa.gov/geomag/WMM/&quot;&gt;https://www.ngdc.noaa.gov/geomag/WMM/&lt;/a&gt;
+ *
+ * @see WorldMagneticModel
+ */
+public class WMMLoader {
+
+    /**
+     * Maximum allowed value within file of coefficients.
+     */
+    private static final double MAX_VAL = 9999.0;
+
+    /**
+     * Number of coefficients.
+     */
+    private static final int N = WorldMagneticModel.N;
+
+    /**
+     * Constructor.
+     * Prevents instantiation of helper class.
+     */
+    private WMMLoader() {
+    }
+
+    /**
+     * Loads World Magnetic Model from provided resource name.
+     * Resource will be resolved an loaded using current class loader.
+     *
+     * @param resource a resource name.
+     * @return a World Magnetic Model containing all required coefficients.
+     * @throws IOException if an I/O error occurs.
+     */
+    public static WorldMagneticModel loadFromResource(final String resource) throws IOException {
+<span class="fc" id="L62">        try (final var stream = WMMLoader.class.getResourceAsStream(resource)) {</span>
+<span class="fc" id="L63">            return load(stream);</span>
+        }
+    }
+
+    /**
+     * Loads World Magnetic Model from provided URL.
+     * Data will be requested with a &quot;GET&quot; method without additional headers.
+     *
+     * @param url URL to request data from.
+     * @return a World Magnetic Model containing all required coefficients.
+     * @throws IOException if an I/O error occurs.
+     */
+    public static WorldMagneticModel loadFromUrl(final String url) throws IOException {
+<span class="fc" id="L76">        return load(new URL(url));</span>
+    }
+
+    /**
+     * Loads World Magnetic Model from provided file path.
+     *
+     * @param filePath a file path.
+     * @return a World Magnetic Model containing all required coefficients.
+     * @throws IOException if an I/O error occurs.
+     */
+    public static WorldMagneticModel loadFromFile(final String filePath) throws IOException {
+<span class="fc" id="L87">        try (final var stream = new FileInputStream(filePath)) {</span>
+<span class="fc" id="L88">            return load(stream);</span>
+        }
+    }
+
+    /**
+     * Loads World Magnetic Model from provided URL.
+     * Data will be requested with a &quot;GET&quot; method without additional headers.
+     *
+     * @param url URL to request data from.
+     * @return a World Magnetic Model containing all required coefficients.
+     * @throws IOException if an I/O error occurs.
+     */
+    public static WorldMagneticModel load(final URL url) throws IOException {
+<span class="fc" id="L101">        final var connection = (HttpURLConnection) url.openConnection();</span>
+<span class="fc" id="L102">        connection.setRequestMethod(&quot;GET&quot;);</span>
+<span class="fc" id="L103">        try (final var stream = connection.getInputStream()) {</span>
+<span class="fc" id="L104">            return load(stream);</span>
+        }
+    }
+
+    /**
+     * Loads World Magnetic Model from provided file.
+     *
+     * @param file a file.
+     * @return a World Magnetic Model containing all required coefficients.
+     * @throws IOException if an I/O error occurs.
+     */
+    public static WorldMagneticModel load(final File file) throws IOException {
+<span class="fc" id="L116">        try (final var stream = new FileInputStream(file)) {</span>
+<span class="fc" id="L117">            return load(stream);</span>
+        }
+    }
+
+    /**
+     * Loads World Magnetic Model from provided stream of data.
+     *
+     * @param stream a stream of data.
+     * @return a World Magnetic Model containing all required coefficients.
+     * @throws IOException if an I/O error occurs.
+     */
+    public static WorldMagneticModel load(final InputStream stream) throws IOException {
+<span class="fc" id="L129">        try (final var reader = new InputStreamReader(stream)) {</span>
+<span class="fc" id="L130">            final var result = new WorldMagneticModel();</span>
+<span class="fc" id="L131">            final var tokenizer = new StreamTokenizer(reader);</span>
+
+            // Read World Magnetic Model spherical harmonic coefficients
+<span class="fc" id="L134">            result.snorm[0] = 1.0;</span>
+<span class="fc" id="L135">            result.c[0][0] = 0.0;</span>
+<span class="fc" id="L136">            result.cd[0][0] = 0.0;</span>
+
+<span class="fc" id="L138">            tokenizer.nextToken();</span>
+<span class="fc" id="L139">            result.epoch = tokenizer.nval;</span>
+<span class="fc" id="L140">            tokenizer.nextToken();</span>
+<span class="fc" id="L141">            tokenizer.nextToken();</span>
+
+            // loop to get data from file
+            while (true) {
+<span class="fc" id="L145">                tokenizer.nextToken();</span>
+<span class="fc bfc" id="L146" title="All 2 branches covered.">                if (tokenizer.nval &gt;= MAX_VAL) {</span>
+                    // end of file
+<span class="fc" id="L148">                    break;</span>
+                }
+
+<span class="fc" id="L151">                final var n = (int) tokenizer.nval;</span>
+<span class="fc" id="L152">                tokenizer.nextToken();</span>
+<span class="fc" id="L153">                final var m = (int) tokenizer.nval;</span>
+<span class="fc" id="L154">                tokenizer.nextToken();</span>
+<span class="fc" id="L155">                final var gnm = tokenizer.nval;</span>
+<span class="fc" id="L156">                tokenizer.nextToken();</span>
+<span class="fc" id="L157">                final var hnm = tokenizer.nval;</span>
+<span class="fc" id="L158">                tokenizer.nextToken();</span>
+<span class="fc" id="L159">                final var dgnm = tokenizer.nval;</span>
+<span class="fc" id="L160">                tokenizer.nextToken();</span>
+<span class="fc" id="L161">                final var dhnm = tokenizer.nval;</span>
+
+<span class="pc bpc" id="L163" title="1 of 2 branches missed.">                if (m &lt;= n) {</span>
+<span class="fc" id="L164">                    result.c[m][n] = gnm;</span>
+<span class="fc" id="L165">                    result.cd[m][n] = dgnm;</span>
+
+<span class="fc bfc" id="L167" title="All 2 branches covered.">                    if (m != 0) {</span>
+<span class="fc" id="L168">                        result.c[n][m - 1] = hnm;</span>
+<span class="fc" id="L169">                        result.cd[n][m - 1] = dhnm;</span>
+                    }
+                }
+<span class="fc" id="L172">            }</span>
+
+            // convert Schmidt normalized Gauss coefficients to un-normalized
+<span class="fc" id="L175">            result.snorm[0] = 1.0;</span>
+<span class="fc bfc" id="L176" title="All 2 branches covered.">            for (var n = 1; n &lt;= WorldMagneticModel.MAX_ORDER; n++) {</span>
+
+<span class="fc" id="L178">                result.snorm[n] = result.snorm[n - 1] * (2 * n - 1) / n;</span>
+<span class="fc" id="L179">                var j = 2;</span>
+
+<span class="fc bfc" id="L181" title="All 2 branches covered.">                for (int m = 0, D1 = 1, D2 = (n - m + D1) / D1; D2 &gt; 0; D2--, m += D1) {</span>
+<span class="fc" id="L182">                    result.k[m][n] = (double) (((n - 1) * (n - 1)) - (m * m)) / (double) ((2 * n - 1) * (2 * n - 3));</span>
+<span class="fc bfc" id="L183" title="All 2 branches covered.">                    if (m &gt; 0) {</span>
+<span class="fc" id="L184">                        final var flnmj = ((n - m + 1) * j) / (double) (n + m);</span>
+<span class="fc" id="L185">                        result.snorm[n + m * N] = result.snorm[n + (m - 1) * N] * Math.sqrt(flnmj);</span>
+<span class="fc" id="L186">                        j = 1;</span>
+<span class="fc" id="L187">                        result.c[n][m - 1] = result.snorm[n + m * N] * result.c[n][m - 1];</span>
+<span class="fc" id="L188">                        result.cd[n][m - 1] = result.snorm[n + m * N] * result.cd[n][m - 1];</span>
+                    }
+<span class="fc" id="L190">                    result.c[m][n] = result.snorm[n + m * N] * result.c[m][n];</span>
+<span class="fc" id="L191">                    result.cd[m][n] = result.snorm[n + m * N] * result.cd[m][n];</span>
+                }
+
+<span class="fc" id="L194">                result.fn[n] = (n + 1);</span>
+<span class="fc" id="L195">                result.fm[n] = n;</span>
+            }
+
+<span class="fc" id="L198">            result.k[1][1] = 0.0;</span>
+
+<span class="fc" id="L200">            return result;</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

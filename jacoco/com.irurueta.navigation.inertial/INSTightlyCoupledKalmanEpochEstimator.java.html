@@ -1,0 +1,1063 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>INSTightlyCoupledKalmanEpochEstimator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-inertial</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.inertial</a> &gt; <span class="el_source">INSTightlyCoupledKalmanEpochEstimator.java</span></div><h1>INSTightlyCoupledKalmanEpochEstimator.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2019 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.inertial;
+
+import com.irurueta.algebra.AlgebraException;
+import com.irurueta.algebra.Matrix;
+import com.irurueta.algebra.Utils;
+import com.irurueta.navigation.frames.CoordinateTransformation;
+import com.irurueta.navigation.frames.ECEFPosition;
+import com.irurueta.navigation.frames.ECEFVelocity;
+import com.irurueta.navigation.frames.NEDPosition;
+import com.irurueta.navigation.frames.NEDVelocity;
+import com.irurueta.navigation.frames.converters.ECEFtoNEDPositionVelocityConverter;
+import com.irurueta.navigation.geodesic.Constants;
+import com.irurueta.navigation.gnss.GNSSMeasurement;
+import com.irurueta.navigation.inertial.estimators.ECEFGravityEstimator;
+import com.irurueta.units.Angle;
+import com.irurueta.units.AngleConverter;
+import com.irurueta.units.AngleUnit;
+import com.irurueta.units.Time;
+import com.irurueta.units.TimeConverter;
+import com.irurueta.units.TimeUnit;
+
+import java.util.Collection;
+
+/**
+ * Implements one cycle of the tightly coupled INS/GNSS
+ * Kalman filter plus closed-loop correction of all inertial states.
+ * This implementation is based on the equations defined in &quot;Principles of GNSS, Inertial, and Multisensor
+ * Integrated Navigation Systems, Second Edition&quot; and on the companion software available at:
+ * &lt;a href=&quot;https://github.com/ymjdz/MATLAB-Codes/blob/master/TC_KF_Epoch.m&quot;&gt;
+ *     https://github.com/ymjdz/MATLAB-Codes/blob/master/TC_KF_Epoch.m
+ * &lt;/a&gt;
+ */
+public class INSTightlyCoupledKalmanEpochEstimator {
+
+    /**
+     * Speed of light in the vacuum expressed in meters per second (m/s).
+     */
+    public static final double SPEED_OF_LIGHT = Constants.SPEED_OF_LIGHT;
+
+    /**
+     * Earth rotation rate expressed in radians per second (rad/s).
+     */
+    public static final double EARTH_ROTATION_RATE = Constants.EARTH_ROTATION_RATE;
+
+    /**
+     * The equatorial radius of WGS84 ellipsoid (6378137 m) defining Earth's shape.
+     */
+    public static final double EARTH_EQUATORIAL_RADIUS_WGS84 = Constants.EARTH_EQUATORIAL_RADIUS_WGS84;
+
+    /**
+     * Earth eccentricity as defined on the WGS84 ellipsoid.
+     */
+    public static final double EARTH_ECCENTRICITY = Constants.EARTH_ECCENTRICITY;
+
+    /**
+     * Constructor.
+     * Prevents instantiation of helper class.
+     */
+    private INSTightlyCoupledKalmanEpochEstimator() {
+    }
+
+    /**
+     * Estimates the update of Kalman filter state and covariance matrix for a single
+     * epoch.
+     *
+     * @param measurements        satellite measurements data.
+     * @param propagationInterval propagation interval expressed in seconds (s).
+     * @param previousState       previous Kalman filter state.
+     * @param fx                  measured specific force resolved along body frame
+     *                            x-axis and expressed in meters per squared
+     *                            second (m/s^2).
+     * @param fy                  measured specific force resolved along body frame
+     *                            y-axis and expressed in meters per squared
+     *                            second (m/s^2).
+     * @param fz                  measured specific force resolved along body frame
+     *                            z-axis and expressed in meters per squared
+     *                            second (m/s^2).
+     * @param previousLatitude    previous latitude solution expressed in radians (rad).
+     * @param config              Tightly Coupled Kalman filter configuration.
+     * @param result              instance where new state of Kalman filter will be
+     *                            stored.
+     * @throws AlgebraException if there are numerical instabilities.
+     */
+    public static void estimate(
+            final Collection&lt;GNSSMeasurement&gt; measurements, final double propagationInterval,
+            final INSTightlyCoupledKalmanState previousState, final double fx, final double fy, final double fz,
+            final double previousLatitude, final INSTightlyCoupledKalmanConfig config,
+            final INSTightlyCoupledKalmanState result) throws AlgebraException {
+
+        // Skew symmetric matrix of Earth rate
+<span class="fc" id="L106">        final var omegaIe = Utils.skewMatrix(new double[]{0.0, 0.0, EARTH_ROTATION_RATE});</span>
+
+        // SYSTEM PROPAGATION PHASE
+
+        // 1. Determine transition matrix using (14.50) (first-order approx)
+<span class="fc" id="L111">        final var phiMatrix = Matrix.identity(</span>
+                INSTightlyCoupledKalmanState.NUM_PARAMS, INSTightlyCoupledKalmanState.NUM_PARAMS);
+
+<span class="fc" id="L114">        final var tmp1 = omegaIe.multiplyByScalarAndReturnNew(propagationInterval);</span>
+<span class="fc" id="L115">        final var tmp2 = phiMatrix.getSubmatrix(0, 0, 2, 2);</span>
+<span class="fc" id="L116">        tmp2.subtract(tmp1);</span>
+
+<span class="fc" id="L118">        phiMatrix.setSubmatrix(0, 0, 2, 2, tmp2);</span>
+
+<span class="fc" id="L120">        final var estCbeOld = previousState.getBodyToEcefCoordinateTransformationMatrix();</span>
+<span class="fc" id="L121">        tmp1.copyFrom(estCbeOld);</span>
+<span class="fc" id="L122">        tmp1.multiplyByScalar(propagationInterval);</span>
+
+<span class="fc" id="L124">        phiMatrix.setSubmatrix(0, 12, 2, 14, tmp1);</span>
+<span class="fc" id="L125">        phiMatrix.setSubmatrix(3, 9, 5, 11, tmp1);</span>
+
+<span class="fc" id="L127">        final var measFibb = new Matrix(BodyKinematics.COMPONENTS, 1);</span>
+<span class="fc" id="L128">        measFibb.setElementAtIndex(0, fx);</span>
+<span class="fc" id="L129">        measFibb.setElementAtIndex(1, fy);</span>
+<span class="fc" id="L130">        measFibb.setElementAtIndex(2, fz);</span>
+
+<span class="fc" id="L132">        estCbeOld.multiply(measFibb, tmp1);</span>
+
+<span class="fc" id="L134">        Utils.skewMatrix(tmp1, tmp2);</span>
+<span class="fc" id="L135">        tmp2.multiplyByScalar(-propagationInterval);</span>
+
+<span class="fc" id="L137">        phiMatrix.setSubmatrix(3, 0, 5, 2, tmp2);</span>
+
+<span class="fc" id="L139">        phiMatrix.getSubmatrix(3, 3, 5, 5, tmp1);</span>
+<span class="fc" id="L140">        tmp2.copyFrom(omegaIe);</span>
+<span class="fc" id="L141">        tmp2.multiplyByScalar(2.0 * propagationInterval);</span>
+<span class="fc" id="L142">        tmp1.subtract(tmp2);</span>
+<span class="fc" id="L143">        phiMatrix.setSubmatrix(3, 3, 5, 5, tmp1);</span>
+
+<span class="fc" id="L145">        final var sinPrevLat = Math.sin(previousLatitude);</span>
+<span class="fc" id="L146">        final var cosPrevLat = Math.cos(previousLatitude);</span>
+<span class="fc" id="L147">        final var sinPrevLat2 = sinPrevLat * sinPrevLat;</span>
+<span class="fc" id="L148">        final var cosPrevLat2 = cosPrevLat * cosPrevLat;</span>
+
+        // From (2.137)
+<span class="fc" id="L151">        final var geocentricRadius = EARTH_EQUATORIAL_RADIUS_WGS84</span>
+<span class="fc" id="L152">                / Math.sqrt(1.0 - Math.pow(EARTH_ECCENTRICITY * sinPrevLat, 2.0))</span>
+<span class="fc" id="L153">                * Math.sqrt(cosPrevLat2 + Math.pow(1.0 - EARTH_ECCENTRICITY * EARTH_ECCENTRICITY, 2.0) * sinPrevLat2);</span>
+
+<span class="fc" id="L155">        final var prevX = previousState.getX();</span>
+<span class="fc" id="L156">        final var prevY = previousState.getY();</span>
+<span class="fc" id="L157">        final var prevZ = previousState.getZ();</span>
+<span class="fc" id="L158">        final var gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(prevX, prevY, prevZ);</span>
+
+<span class="fc" id="L160">        final var previousPositionNorm = Math.sqrt(prevX * prevX + prevY * prevY + prevZ * prevZ);</span>
+
+<span class="fc" id="L162">        final var estRebeOld = new Matrix(com.irurueta.navigation.frames.ECEFPosition.COMPONENTS, 1);</span>
+<span class="fc" id="L163">        estRebeOld.setElementAtIndex(0, prevX);</span>
+<span class="fc" id="L164">        estRebeOld.setElementAtIndex(1, prevY);</span>
+<span class="fc" id="L165">        estRebeOld.setElementAtIndex(2, prevZ);</span>
+
+<span class="fc" id="L167">        final var g = gravity.asMatrix();</span>
+<span class="fc" id="L168">        g.multiplyByScalar(-2.0 * propagationInterval / geocentricRadius);</span>
+
+<span class="fc" id="L170">        final var estRebeOldTrans = estRebeOld.transposeAndReturnNew();</span>
+<span class="fc" id="L171">        estRebeOldTrans.multiplyByScalar(1.0 / previousPositionNorm);</span>
+
+<span class="fc" id="L173">        g.multiply(estRebeOldTrans, tmp1);</span>
+
+<span class="fc" id="L175">        phiMatrix.setSubmatrix(3, 6, 5, 8, tmp1);</span>
+
+<span class="fc bfc" id="L177" title="All 2 branches covered.">        for (var i = 0; i &lt; ECEFPosition.COMPONENTS; i++) {</span>
+<span class="fc" id="L178">            phiMatrix.setElementAt(6 + i, 3 + i, propagationInterval);</span>
+        }
+
+<span class="fc" id="L181">        phiMatrix.setElementAt(15, 16, propagationInterval);</span>
+
+        // 2. Determine approximate system noise covariance matrix using (14.82)
+<span class="fc" id="L184">        final var qPrimeMatrix = new Matrix(</span>
+                INSTightlyCoupledKalmanState.NUM_PARAMS, INSTightlyCoupledKalmanState.NUM_PARAMS);
+
+<span class="fc" id="L187">        final var gyroNoisePSD = config.getGyroNoisePSD();</span>
+<span class="fc" id="L188">        final var gyroNoiseValue = gyroNoisePSD * propagationInterval;</span>
+<span class="fc bfc" id="L189" title="All 2 branches covered.">        for (var i = 0; i &lt; 3; i++) {</span>
+<span class="fc" id="L190">            qPrimeMatrix.setElementAt(i, i, gyroNoiseValue);</span>
+        }
+
+<span class="fc" id="L193">        final var accelNoisePSD = config.getAccelerometerNoisePSD();</span>
+<span class="fc" id="L194">        final var accelNoiseValue = accelNoisePSD * propagationInterval;</span>
+<span class="fc bfc" id="L195" title="All 2 branches covered.">        for (var i = 3; i &lt; 6; i++) {</span>
+<span class="fc" id="L196">            qPrimeMatrix.setElementAt(i, i, accelNoiseValue);</span>
+        }
+
+<span class="fc" id="L199">        final var accelBiasPSD = config.getAccelerometerBiasPSD();</span>
+<span class="fc" id="L200">        final var accelBiasValue = accelBiasPSD * propagationInterval;</span>
+<span class="fc bfc" id="L201" title="All 2 branches covered.">        for (var i = 9; i &lt; 12; i++) {</span>
+<span class="fc" id="L202">            qPrimeMatrix.setElementAt(i, i, accelBiasValue);</span>
+        }
+
+<span class="fc" id="L205">        final var gyroBiasPSD = config.getGyroBiasPSD();</span>
+<span class="fc" id="L206">        final var gyroBiasValue = gyroBiasPSD * propagationInterval;</span>
+<span class="fc bfc" id="L207" title="All 2 branches covered.">        for (var i = 12; i &lt; 15; i++) {</span>
+<span class="fc" id="L208">            qPrimeMatrix.setElementAt(i, i, gyroBiasValue);</span>
+        }
+
+<span class="fc" id="L211">        final var clockPhasePSD = config.getClockPhasePSD();</span>
+<span class="fc" id="L212">        final var clockPhaseValue = clockPhasePSD * propagationInterval;</span>
+<span class="fc" id="L213">        qPrimeMatrix.setElementAt(15, 15, clockPhaseValue);</span>
+
+<span class="fc" id="L215">        final var clockFreqPSD = config.getClockFrequencyPSD();</span>
+<span class="fc" id="L216">        final var clockFreqValue = clockFreqPSD * propagationInterval;</span>
+<span class="fc" id="L217">        qPrimeMatrix.setElementAt(16, 16, clockFreqValue);</span>
+
+        // 3. Propagate state estimates using (3.14) noting that only the clock
+        // states are non-zero due to closed-loop correction
+<span class="fc" id="L221">        final var prevClockOffset = previousState.getReceiverClockOffset();</span>
+<span class="fc" id="L222">        final var prevClockDrift = previousState.getReceiverClockDrift();</span>
+
+<span class="fc" id="L224">        final var xEstPropagated = new Matrix(INSTightlyCoupledKalmanState.NUM_PARAMS, 1);</span>
+<span class="fc" id="L225">        xEstPropagated.setElementAtIndex(15, prevClockOffset + prevClockDrift * propagationInterval);</span>
+<span class="fc" id="L226">        xEstPropagated.setElementAtIndex(16, prevClockDrift);</span>
+
+        // 4. Propagate state estimation error covariance matrix using (3.46)
+<span class="fc" id="L229">        final var pMatrixOld = previousState.getCovariance();</span>
+
+<span class="fc" id="L231">        qPrimeMatrix.multiplyByScalar(0.5);</span>
+
+<span class="fc" id="L233">        final var tmp3 = pMatrixOld.addAndReturnNew(qPrimeMatrix);</span>
+<span class="fc" id="L234">        final var pMatrixPropagated = phiMatrix.multiplyAndReturnNew(tmp3);</span>
+
+<span class="fc" id="L236">        phiMatrix.transpose();</span>
+<span class="fc" id="L237">        pMatrixPropagated.multiply(phiMatrix);</span>
+
+<span class="fc" id="L239">        pMatrixPropagated.add(qPrimeMatrix);</span>
+
+        // MEASUREMENT UPDATE PHASE
+
+<span class="fc" id="L243">        final var numberOfMeasurements = measurements.size();</span>
+<span class="fc" id="L244">        final var uAseT = new Matrix(numberOfMeasurements, 3);</span>
+<span class="fc" id="L245">        final var predMeas = new Matrix(numberOfMeasurements, 2);</span>
+
+<span class="fc" id="L247">        final var cei = Matrix.identity(CoordinateTransformation.ROWS, CoordinateTransformation.COLS);</span>
+<span class="fc" id="L248">        final var satellitePosition = new Matrix(CoordinateTransformation.ROWS, 1);</span>
+<span class="fc" id="L249">        final var satelliteVelocity = new Matrix(CoordinateTransformation.ROWS, 1);</span>
+<span class="fc" id="L250">        final var deltaR = new Matrix(CoordinateTransformation.ROWS, 1);</span>
+<span class="fc" id="L251">        final var tmp1b = new Matrix(CoordinateTransformation.ROWS, 1);</span>
+<span class="fc" id="L252">        final var tmp2b = new Matrix(CoordinateTransformation.ROWS, 1);</span>
+<span class="fc" id="L253">        final var tmp3b = new Matrix(CoordinateTransformation.ROWS, 1);</span>
+<span class="fc" id="L254">        final var tmp4b = new Matrix(CoordinateTransformation.ROWS, 1);</span>
+<span class="fc" id="L255">        final var tmp5b = new Matrix(CoordinateTransformation.ROWS, 1);</span>
+<span class="fc" id="L256">        final var tmp6b = new Matrix(CoordinateTransformation.ROWS, 1);</span>
+<span class="fc" id="L257">        final var tmp7b = new Matrix(1, CoordinateTransformation.ROWS);</span>
+
+<span class="fc" id="L259">        final var prevVx = previousState.getVx();</span>
+<span class="fc" id="L260">        final var prevVy = previousState.getVy();</span>
+<span class="fc" id="L261">        final var prevVz = previousState.getVz();</span>
+
+<span class="fc" id="L263">        final var estVebeOld = new Matrix(ECEFVelocity.COMPONENTS, 1);</span>
+<span class="fc" id="L264">        estVebeOld.setElementAtIndex(0, prevVx);</span>
+<span class="fc" id="L265">        estVebeOld.setElementAtIndex(1, prevVy);</span>
+<span class="fc" id="L266">        estVebeOld.setElementAtIndex(2, prevVz);</span>
+
+<span class="fc" id="L268">        var j = 0;</span>
+<span class="fc bfc" id="L269" title="All 2 branches covered.">        for (final var measurement : measurements) {</span>
+            // Predict approx range
+<span class="fc" id="L271">            final var measX = measurement.getX();</span>
+<span class="fc" id="L272">            final var measY = measurement.getY();</span>
+<span class="fc" id="L273">            final var measZ = measurement.getZ();</span>
+
+<span class="fc" id="L275">            final var deltaX = measX - prevX;</span>
+<span class="fc" id="L276">            final var deltaY = measY - prevY;</span>
+<span class="fc" id="L277">            final var deltaZ = measZ - prevZ;</span>
+<span class="fc" id="L278">            final var approxRange = Math.sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ);</span>
+
+            // Calculate frame rotation during signal transit time using (8.36)
+<span class="fc" id="L281">            final var ceiValue = EARTH_ROTATION_RATE * approxRange / SPEED_OF_LIGHT;</span>
+<span class="fc" id="L282">            cei.setElementAt(0, 1, ceiValue);</span>
+<span class="fc" id="L283">            cei.setElementAt(1, 0, -ceiValue);</span>
+
+            // Predict pseudo-range using (9.165)
+<span class="fc" id="L286">            satellitePosition.setElementAtIndex(0, measX);</span>
+<span class="fc" id="L287">            satellitePosition.setElementAtIndex(1, measY);</span>
+<span class="fc" id="L288">            satellitePosition.setElementAtIndex(2, measZ);</span>
+
+<span class="fc" id="L290">            cei.multiply(satellitePosition, deltaR);</span>
+<span class="fc bfc" id="L291" title="All 2 branches covered.">            for (var i = 0; i &lt; CoordinateTransformation.ROWS; i++) {</span>
+<span class="fc" id="L292">                deltaR.setElementAtIndex(i, deltaR.getElementAtIndex(i) - estRebeOld.getElementAtIndex(i));</span>
+            }
+<span class="fc" id="L294">            final var range = Utils.normF(deltaR);</span>
+
+<span class="fc" id="L296">            predMeas.setElementAt(j, 0, range + xEstPropagated.getElementAtIndex(15));</span>
+
+            // Predict line of sight
+<span class="fc bfc" id="L299" title="All 2 branches covered.">            for (var i = 0; i &lt; CoordinateTransformation.ROWS; i++) {</span>
+<span class="fc" id="L300">                uAseT.setElementAt(j, i, deltaR.getElementAtIndex(i) / range);</span>
+            }
+
+            // Predict pseudo-range rae using (9.165)
+<span class="fc" id="L304">            satelliteVelocity.setElementAtIndex(0, measurement.getVx());</span>
+<span class="fc" id="L305">            satelliteVelocity.setElementAtIndex(1, measurement.getVy());</span>
+<span class="fc" id="L306">            satelliteVelocity.setElementAtIndex(2, measurement.getVz());</span>
+
+<span class="fc" id="L308">            omegaIe.multiply(satellitePosition, tmp1b);</span>
+<span class="fc" id="L309">            satelliteVelocity.add(tmp1b, tmp2b);</span>
+<span class="fc" id="L310">            cei.multiply(tmp2b, tmp3b);</span>
+
+<span class="fc" id="L312">            omegaIe.multiply(estRebeOld, tmp4b);</span>
+<span class="fc" id="L313">            estVebeOld.add(tmp4b, tmp6b);</span>
+
+<span class="fc" id="L315">            tmp3b.subtract(tmp6b, tmp5b);</span>
+
+<span class="fc" id="L317">            uAseT.getSubmatrix(j, 0, j, 2, tmp7b);</span>
+
+<span class="fc" id="L319">            final var rangeRate = Utils.dotProduct(tmp7b, tmp5b);</span>
+
+<span class="fc" id="L321">            predMeas.setElementAt(j, 1, rangeRate + xEstPropagated.getElementAtIndex(16));</span>
+
+<span class="fc" id="L323">            j++;</span>
+<span class="fc" id="L324">        }</span>
+
+        // 5. Set-up measurement matrix using (14.126)
+<span class="fc" id="L327">        final var h = new Matrix(2 * numberOfMeasurements, INSTightlyCoupledKalmanState.NUM_PARAMS);</span>
+<span class="fc bfc" id="L328" title="All 2 branches covered.">        for (int j1 = 0, j2 = numberOfMeasurements; j1 &lt; numberOfMeasurements; j1++, j2++) {</span>
+<span class="fc bfc" id="L329" title="All 2 branches covered.">            for (int i1 = 0, i2 = 6, i3 = 3; i1 &lt; CoordinateTransformation.ROWS; i1++, i2++, i3++) {</span>
+<span class="fc" id="L330">                final var value = uAseT.getElementAt(j1, i1);</span>
+
+<span class="fc" id="L332">                h.setElementAt(j1, i2, value);</span>
+<span class="fc" id="L333">                h.setElementAt(j2, i3, value);</span>
+            }
+<span class="fc" id="L335">            h.setElementAt(j1, 15, 1.0);</span>
+<span class="fc" id="L336">            h.setElementAt(j2, 16, 1.0);</span>
+        }
+
+        // 6. Set-up measurement noise covariance matrix assuming all measurements are independent
+        // and have equal variance for a given measurement type.
+<span class="fc" id="L341">        final var pseudoRangeSD = config.getPseudoRangeSD();</span>
+<span class="fc" id="L342">        final var pseudoRangeSD2 = pseudoRangeSD * pseudoRangeSD;</span>
+<span class="fc" id="L343">        final var rangeRateSD = config.getRangeRateSD();</span>
+<span class="fc" id="L344">        final var rangeRateSD2 = rangeRateSD * rangeRateSD;</span>
+<span class="fc" id="L345">        final var r = new Matrix(2 * numberOfMeasurements, 2 * numberOfMeasurements);</span>
+<span class="fc bfc" id="L346" title="All 2 branches covered.">        for (int i1 = 0, i2 = numberOfMeasurements; i1 &lt; numberOfMeasurements; i1++, i2++) {</span>
+<span class="fc" id="L347">            r.setElementAt(i1, i1, pseudoRangeSD2);</span>
+<span class="fc" id="L348">            r.setElementAt(i2, i2, rangeRateSD2);</span>
+        }
+
+        // 7. Calculate Kalman gain using (3.21)
+<span class="fc" id="L352">        final var hTransposed = h.transposeAndReturnNew();</span>
+<span class="fc" id="L353">        final var tmp8b = h.multiplyAndReturnNew(pMatrixPropagated.multiplyAndReturnNew(hTransposed));</span>
+<span class="fc" id="L354">        tmp8b.add(r);</span>
+<span class="fc" id="L355">        final var tmp9b = Utils.inverse(tmp8b);</span>
+<span class="fc" id="L356">        final var k = pMatrixPropagated.multiplyAndReturnNew(hTransposed);</span>
+<span class="fc" id="L357">        k.multiply(tmp9b);</span>
+
+        // 8. Formulate measurement innovations using (14.119)
+<span class="fc" id="L360">        final var deltaZ = new Matrix(2 * numberOfMeasurements, 1);</span>
+<span class="fc" id="L361">        var i1 = 0;</span>
+<span class="fc" id="L362">        var i2 = numberOfMeasurements;</span>
+<span class="fc bfc" id="L363" title="All 2 branches covered.">        for (final var measurement : measurements) {</span>
+<span class="fc" id="L364">            deltaZ.setElementAtIndex(i1, measurement.getPseudoRange() - predMeas.getElementAt(i1, 0));</span>
+<span class="fc" id="L365">            deltaZ.setElementAtIndex(i2, measurement.getPseudoRate() - predMeas.getElementAt(i1, 1));</span>
+
+<span class="fc" id="L367">            i1++;</span>
+<span class="fc" id="L368">            i2++;</span>
+<span class="fc" id="L369">        }</span>
+
+        // 9. Update state estimates using (3.24)
+<span class="fc" id="L372">        xEstPropagated.add(k.multiplyAndReturnNew(deltaZ));</span>
+
+        // xEstPropagated now contains updated state
+
+        // 10. Update state estimation error covariance matrix using (3.25)
+<span class="fc" id="L377">        Matrix updatedCovariance = result.getCovariance();</span>
+<span class="pc bpc" id="L378" title="1 of 4 branches missed.">        if (updatedCovariance == null || updatedCovariance.getRows() != INSTightlyCoupledKalmanState.NUM_PARAMS</span>
+<span class="pc bpc" id="L379" title="1 of 2 branches missed.">                || updatedCovariance.getColumns() != INSTightlyCoupledKalmanState.NUM_PARAMS) {</span>
+<span class="fc" id="L380">            updatedCovariance = Matrix.identity(</span>
+                    INSTightlyCoupledKalmanState.NUM_PARAMS, INSTightlyCoupledKalmanState.NUM_PARAMS);
+        } else {
+<span class="fc" id="L383">            Matrix.identity(updatedCovariance);</span>
+        }
+<span class="fc" id="L385">        k.multiply(h);</span>
+<span class="fc" id="L386">        updatedCovariance.subtract(k);</span>
+<span class="fc" id="L387">        updatedCovariance.multiply(pMatrixPropagated);</span>
+
+        // CLOSED-LOOP CORRECTION
+
+        // Correct attitude, velocity, and position using (14.7-9)
+
+<span class="fc" id="L393">        final var estCbeNew = Matrix.identity(CoordinateTransformation.ROWS, CoordinateTransformation.COLS);</span>
+
+<span class="fc" id="L395">        xEstPropagated.getSubmatrix(0, 0, 2, 0, tmp1b);</span>
+<span class="fc" id="L396">        estCbeNew.subtract(Utils.skewMatrix(tmp1b));</span>
+<span class="fc" id="L397">        estCbeNew.multiply(estCbeOld);</span>
+
+
+<span class="fc" id="L400">        result.setBodyToEcefCoordinateTransformationMatrix(estCbeNew);</span>
+<span class="fc" id="L401">        result.setVelocityCoordinates(</span>
+<span class="fc" id="L402">                prevVx - xEstPropagated.getElementAtIndex(3),</span>
+<span class="fc" id="L403">                prevVy - xEstPropagated.getElementAtIndex(4),</span>
+<span class="fc" id="L404">                prevVz - xEstPropagated.getElementAtIndex(5));</span>
+<span class="fc" id="L405">        result.setPositionCoordinates(</span>
+<span class="fc" id="L406">                prevX - xEstPropagated.getElementAtIndex(6),</span>
+<span class="fc" id="L407">                prevY - xEstPropagated.getElementAtIndex(7),</span>
+<span class="fc" id="L408">                prevZ - xEstPropagated.getElementAtIndex(8));</span>
+<span class="fc" id="L409">        result.setCovariance(updatedCovariance);</span>
+
+        // Update IMU bias and GNSS receiver clock estimates
+<span class="fc" id="L412">        final var prevAccelBiasX = previousState.getAccelerationBiasX();</span>
+<span class="fc" id="L413">        final var prevAccelBiasY = previousState.getAccelerationBiasY();</span>
+<span class="fc" id="L414">        final var prevAccelBiasZ = previousState.getAccelerationBiasZ();</span>
+<span class="fc" id="L415">        final var prevGyroBiasX = previousState.getGyroBiasX();</span>
+<span class="fc" id="L416">        final var prevGyroBiasY = previousState.getGyroBiasY();</span>
+<span class="fc" id="L417">        final var prevGyroBiasZ = previousState.getGyroBiasZ();</span>
+
+<span class="fc" id="L419">        result.setAccelerationBiasCoordinates(</span>
+<span class="fc" id="L420">                prevAccelBiasX + xEstPropagated.getElementAtIndex(9),</span>
+<span class="fc" id="L421">                prevAccelBiasY + xEstPropagated.getElementAtIndex(10),</span>
+<span class="fc" id="L422">                prevAccelBiasZ + xEstPropagated.getElementAtIndex(11));</span>
+<span class="fc" id="L423">        result.setGyroBiasCoordinates(</span>
+<span class="fc" id="L424">                prevGyroBiasX + xEstPropagated.getElementAtIndex(12),</span>
+<span class="fc" id="L425">                prevGyroBiasY + xEstPropagated.getElementAtIndex(13),</span>
+<span class="fc" id="L426">                prevGyroBiasZ + xEstPropagated.getElementAtIndex(14));</span>
+
+<span class="fc" id="L428">        result.setReceiverClockOffset(xEstPropagated.getElementAtIndex(15));</span>
+<span class="fc" id="L429">        result.setReceiverClockDrift(xEstPropagated.getElementAtIndex(16));</span>
+<span class="fc" id="L430">    }</span>
+
+    /**
+     * Estimates the update of Kalman filter state and covariance matrix for a single
+     * epoch.
+     *
+     * @param measurements        satellite measurements data.
+     * @param propagationInterval propagation interval expressed in seconds (s).
+     * @param previousState       previous Kalman filter state.
+     * @param fx                  measured specific force resolved along body frame
+     *                            x-axis and expressed in meters per squared
+     *                            second (m/s^2).
+     * @param fy                  measured specific force resolved along body frame
+     *                            y-axis and expressed in meters per squared
+     *                            second (m/s^2).
+     * @param fz                  measured specific force resolved along body frame
+     *                            z-axis and expressed in meters per squared
+     *                            second (m/s^2).
+     * @param previousLatitude    previous latitude solution expressed in radians (rad).
+     * @param config              Tightly Coupled Kalman filter configuration.
+     * @return new state of Kalman filter.
+     * @throws AlgebraException if there are numerical instabilities.
+     */
+    public static INSTightlyCoupledKalmanState estimate(
+            final Collection&lt;GNSSMeasurement&gt; measurements, final double propagationInterval,
+            final INSTightlyCoupledKalmanState previousState, final double fx, final double fy, final double fz,
+            final double previousLatitude, final INSTightlyCoupledKalmanConfig config) throws AlgebraException {
+<span class="fc" id="L457">        final var result = new INSTightlyCoupledKalmanState();</span>
+<span class="fc" id="L458">        estimate(measurements, propagationInterval, previousState, fx, fy, fz, previousLatitude, config, result);</span>
+<span class="fc" id="L459">        return result;</span>
+    }
+
+    /**
+     * Estimates the update of Kalman filter state and covariance matrix for a single
+     * epoch.
+     *
+     * @param measurements        satellite measurements data.
+     * @param propagationInterval propagation interval.
+     * @param previousState       previous Kalman filter state.
+     * @param fx                  measured specific force resolved along body frame
+     *                            x-axis and expressed in meters per squared
+     *                            second (m/s^2).
+     * @param fy                  measured specific force resolved along body frame
+     *                            y-axis and expressed in meters per squared
+     *                            second (m/s^2).
+     * @param fz                  measured specific force resolved along body frame
+     *                            z-axis and expressed in meters per squared
+     *                            second (m/s^2).
+     * @param previousLatitude    previous latitude solution expressed in radians (rad).
+     * @param config              Tightly Coupled Kalman filter configuration.
+     * @param result              instance where new state of Kalman filter will be
+     *                            stored.
+     * @throws AlgebraException if there are numerical instabilities.
+     */
+    public static void estimate(
+            final Collection&lt;GNSSMeasurement&gt; measurements, final Time propagationInterval,
+            final INSTightlyCoupledKalmanState previousState, final double fx, final double fy, final double fz,
+            final double previousLatitude, final INSTightlyCoupledKalmanConfig config,
+            final INSTightlyCoupledKalmanState result) throws AlgebraException {
+<span class="fc" id="L489">        estimate(measurements, convertTime(propagationInterval), previousState, fx, fy, fz, previousLatitude, config,</span>
+                result);
+<span class="fc" id="L491">    }</span>
+
+    /**
+     * Estimates the update of Kalman filter state and covariance matrix for a single
+     * epoch.
+     *
+     * @param measurements        satellite measurements data.
+     * @param propagationInterval propagation interval.
+     * @param previousState       previous Kalman filter state.
+     * @param fx                  measured specific force resolved along body frame
+     *                            x-axis and expressed in meters per squared
+     *                            second (m/s^2).
+     * @param fy                  measured specific force resolved along body frame
+     *                            y-axis and expressed in meters per squared
+     *                            second (m/s^2).
+     * @param fz                  measured specific force resolved along body frame
+     *                            z-axis and expressed in meters per squared
+     *                            second (m/s^2).
+     * @param previousLatitude    previous latitude solution expressed in radians (rad).
+     * @param config              Tightly Coupled Kalman filter configuration.
+     * @return new state of Kalman filter.
+     * @throws AlgebraException if there are numerical instabilities.
+     */
+    public static INSTightlyCoupledKalmanState estimate(
+            final Collection&lt;GNSSMeasurement&gt; measurements, final Time propagationInterval,
+            final INSTightlyCoupledKalmanState previousState, final double fx, final double fy, final double fz,
+            final double previousLatitude, final INSTightlyCoupledKalmanConfig config) throws AlgebraException {
+<span class="fc" id="L518">        return estimate(measurements, convertTime(propagationInterval), previousState, fx, fy, fz, previousLatitude,</span>
+                config);
+    }
+
+    /**
+     * Estimates the update of Kalman filter state and covariance matrix for a single
+     * epoch.
+     *
+     * @param measurements        satellite measurements data.
+     * @param propagationInterval propagation interval expressed in seconds (s).
+     * @param previousState       previous Kalman filter state.
+     * @param fx                  measured specific force resolved along body frame
+     *                            x-axis and expressed in meters per squared
+     *                            second (m/s^2).
+     * @param fy                  measured specific force resolved along body frame
+     *                            y-axis and expressed in meters per squared
+     *                            second (m/s^2).
+     * @param fz                  measured specific force resolved along body frame
+     *                            z-axis and expressed in meters per squared
+     *                            second (m/s^2).
+     * @param config              Tightly Coupled Kalman filter configuration.
+     * @param result              instance where new state of Kalman filter will be
+     *                            stored.
+     * @throws AlgebraException if there are numerical instabilities.
+     */
+    public static void estimate(
+            final Collection&lt;GNSSMeasurement&gt; measurements, final double propagationInterval,
+            final INSTightlyCoupledKalmanState previousState, final double fx, final double fy, final double fz,
+            final INSTightlyCoupledKalmanConfig config, final INSTightlyCoupledKalmanState result) throws AlgebraException {
+
+<span class="fc" id="L548">        final var prevNedPosition = new NEDPosition();</span>
+<span class="fc" id="L549">        final var prevNedVelocity = new NEDVelocity();</span>
+<span class="fc" id="L550">        ECEFtoNEDPositionVelocityConverter.convertECEFtoNED(</span>
+<span class="fc" id="L551">                previousState.getX(), previousState.getY(), previousState.getZ(),</span>
+<span class="fc" id="L552">                previousState.getVx(), previousState.getVy(), previousState.getVz(), prevNedPosition, prevNedVelocity);</span>
+
+<span class="fc" id="L554">        final var previousLatitude = prevNedPosition.getLatitude();</span>
+
+<span class="fc" id="L556">        estimate(measurements, propagationInterval, previousState, fx, fy, fz, previousLatitude, config, result);</span>
+<span class="fc" id="L557">    }</span>
+
+    /**
+     * Estimates the update of Kalman filter state and covariance matrix for a single
+     * epoch.
+     *
+     * @param measurements        satellite measurements data.
+     * @param propagationInterval propagation interval expressed in seconds (s).
+     * @param previousState       previous Kalman filter state.
+     * @param fx                  measured specific force resolved along body frame
+     *                            x-axis and expressed in meters per squared
+     *                            second (m/s^2).
+     * @param fy                  measured specific force resolved along body frame
+     *                            y-axis and expressed in meters per squared
+     *                            second (m/s^2).
+     * @param fz                  measured specific force resolved along body frame
+     *                            z-axis and expressed in meters per squared
+     *                            second (m/s^2).
+     * @param config              Tightly Coupled Kalman filter configuration.
+     * @return new state of Kalman filter.
+     * @throws AlgebraException if there are numerical instabilities.
+     */
+    public static INSTightlyCoupledKalmanState estimate(
+            final Collection&lt;GNSSMeasurement&gt; measurements, final double propagationInterval,
+            final INSTightlyCoupledKalmanState previousState, final double fx, final double fy, final double fz,
+            final INSTightlyCoupledKalmanConfig config) throws AlgebraException {
+<span class="fc" id="L583">        final var result = new INSTightlyCoupledKalmanState();</span>
+<span class="fc" id="L584">        estimate(measurements, propagationInterval, previousState, fx, fy, fz, config, result);</span>
+<span class="fc" id="L585">        return result;</span>
+    }
+
+    /**
+     * Estimates the update of Kalman filter state and covariance matrix for a single
+     * epoch.
+     *
+     * @param measurements        satellite measurements data.
+     * @param propagationInterval propagation interval.
+     * @param previousState       previous Kalman filter state.
+     * @param fx                  measured specific force resolved along body frame
+     *                            x-axis and expressed in meters per squared
+     *                            second (m/s^2).
+     * @param fy                  measured specific force resolved along body frame
+     *                            y-axis and expressed in meters per squared
+     *                            second (m/s^2).
+     * @param fz                  measured specific force resolved along body frame
+     *                            z-axis and expressed in meters per squared
+     *                            second (m/s^2).
+     * @param config              Tightly Coupled Kalman filter configuration.
+     * @param result              instance where new state of Kalman filter will be
+     *                            stored.
+     * @throws AlgebraException if there are numerical instabilities.
+     */
+    public static void estimate(
+            final Collection&lt;GNSSMeasurement&gt; measurements, final Time propagationInterval,
+            final INSTightlyCoupledKalmanState previousState, final double fx, final double fy, final double fz,
+            final INSTightlyCoupledKalmanConfig config, final INSTightlyCoupledKalmanState result)
+            throws AlgebraException {
+<span class="fc" id="L614">        estimate(measurements, convertTime(propagationInterval), previousState, fx, fy, fz, config, result);</span>
+<span class="fc" id="L615">    }</span>
+
+    /**
+     * Estimates the update of Kalman filter state and covariance matrix for a single
+     * epoch.
+     *
+     * @param measurements        satellite measurements data.
+     * @param propagationInterval propagation interval.
+     * @param previousState       previous Kalman filter state.
+     * @param fx                  measured specific force resolved along body frame
+     *                            x-axis and expressed in meters per squared
+     *                            second (m/s^2).
+     * @param fy                  measured specific force resolved along body frame
+     *                            y-axis and expressed in meters per squared
+     *                            second (m/s^2).
+     * @param fz                  measured specific force resolved along body frame
+     *                            second (m/s^2).
+     * @param config              Tightly Coupled Kalman filter configuration.
+     * @return new state of Kalman filter.
+     * @throws AlgebraException if there are numerical instabilities.
+     */
+    public static INSTightlyCoupledKalmanState estimate(
+            final Collection&lt;GNSSMeasurement&gt; measurements, final Time propagationInterval,
+            final INSTightlyCoupledKalmanState previousState, final double fx, final double fy, final double fz,
+            final INSTightlyCoupledKalmanConfig config) throws AlgebraException {
+<span class="fc" id="L640">        return estimate(measurements, convertTime(propagationInterval), previousState, fx, fy, fz, config);</span>
+    }
+
+    /**
+     * Estimates the update of Kalman filter state and covariance matrix for a single
+     * epoch.
+     *
+     * @param measurements        satellite measurements data.
+     * @param propagationInterval propagation interval expressed in seconds (s).
+     * @param previousState       previous Kalman filter state.
+     * @param bodyKinematics      body kinematics containing measured specific force
+     *                            resolved along body frame axes.
+     * @param previousLatitude    previous latitude solution expressed in radians (rad).
+     * @param config              Tightly Coupled Kalman filter configuration.
+     * @param result              instance where new state of Kalman filter will be
+     *                            stored.
+     * @throws AlgebraException if there are numerical instabilities.
+     */
+    public static void estimate(
+            final Collection&lt;GNSSMeasurement&gt; measurements, final double propagationInterval,
+            final INSTightlyCoupledKalmanState previousState, final BodyKinematics bodyKinematics,
+            final double previousLatitude, final INSTightlyCoupledKalmanConfig config,
+            final INSTightlyCoupledKalmanState result) throws AlgebraException {
+
+<span class="fc" id="L664">        final var fx = bodyKinematics.getFx();</span>
+<span class="fc" id="L665">        final var fy = bodyKinematics.getFy();</span>
+<span class="fc" id="L666">        final var fz = bodyKinematics.getFz();</span>
+
+<span class="fc" id="L668">        estimate(measurements, propagationInterval, previousState, fx, fy, fz, previousLatitude, config, result);</span>
+<span class="fc" id="L669">    }</span>
+
+    /**
+     * Estimates the update of Kalman filter state and covariance matrix for a single
+     * epoch.
+     *
+     * @param measurements        satellite measurements data.
+     * @param propagationInterval propagation interval expressed in seconds (s).
+     * @param previousState       previous Kalman filter state.
+     * @param bodyKinematics      body kinematics containing measured specific force
+     *                            resolved along body frame axes.
+     * @param previousLatitude    previous latitude solution expressed in radians (rad).
+     * @param config              Tightly Coupled Kalman filter configuration.
+     * @return new state of Kalman filter.
+     * @throws AlgebraException if there are numerical instabilities.
+     */
+    public static INSTightlyCoupledKalmanState estimate(
+            final Collection&lt;GNSSMeasurement&gt; measurements, final double propagationInterval,
+            final INSTightlyCoupledKalmanState previousState, final BodyKinematics bodyKinematics,
+            final double previousLatitude, final INSTightlyCoupledKalmanConfig config) throws AlgebraException {
+<span class="fc" id="L689">        final var result = new INSTightlyCoupledKalmanState();</span>
+<span class="fc" id="L690">        estimate(measurements, propagationInterval, previousState, bodyKinematics, previousLatitude, config, result);</span>
+<span class="fc" id="L691">        return result;</span>
+    }
+
+    /**
+     * Estimates the update of Kalman filter state and covariance matrix for a single
+     * epoch.
+     *
+     * @param measurements        satellite measurements data.
+     * @param propagationInterval propagation interval.
+     * @param previousState       previous Kalman filter state.
+     * @param bodyKinematics      body kinematics containing measured specific force
+     *                            resolved along body frame axes.
+     * @param previousLatitude    previous latitude solution expressed in radians (rad).
+     * @param config              Tightly Coupled Kalman filter configuration.
+     * @param result              instance where new state of Kalman filter will be
+     *                            stored.
+     * @throws AlgebraException if there are numerical instabilities.
+     */
+    public static void estimate(
+            final Collection&lt;GNSSMeasurement&gt; measurements, final Time propagationInterval,
+            final INSTightlyCoupledKalmanState previousState, final BodyKinematics bodyKinematics,
+            final double previousLatitude, final INSTightlyCoupledKalmanConfig config,
+            final INSTightlyCoupledKalmanState result) throws AlgebraException {
+<span class="fc" id="L714">        estimate(measurements, convertTime(propagationInterval), previousState, bodyKinematics, previousLatitude,</span>
+                config, result);
+<span class="fc" id="L716">    }</span>
+
+    /**
+     * Estimates the update of Kalman filter state and covariance matrix for a single
+     * epoch.
+     *
+     * @param measurements        satellite measurements data.
+     * @param propagationInterval propagation interval.
+     * @param previousState       previous Kalman filter state.
+     * @param bodyKinematics      body kinematics containing measured specific force
+     *                            resolved along body frame axes.
+     * @param previousLatitude    previous latitude solution expressed in radians (rad).
+     * @param config              Tightly Coupled Kalman filter configuration.
+     * @return new state of Kalman filter.
+     * @throws AlgebraException if there are numerical instabilities.
+     */
+    public static INSTightlyCoupledKalmanState estimate(
+            final Collection&lt;GNSSMeasurement&gt; measurements, final Time propagationInterval,
+            final INSTightlyCoupledKalmanState previousState, final BodyKinematics bodyKinematics,
+            final double previousLatitude, final INSTightlyCoupledKalmanConfig config) throws AlgebraException {
+<span class="fc" id="L736">        return estimate(measurements, convertTime(propagationInterval), previousState, bodyKinematics, previousLatitude,</span>
+                config);
+    }
+
+    /**
+     * Estimates the update of Kalman filter state and covariance matrix for a single
+     * epoch.
+     *
+     * @param measurements        satellite measurements data.
+     * @param propagationInterval propagation interval expressed in seconds (s).
+     * @param previousState       previous Kalman filter state.
+     * @param bodyKinematics      body kinematics containing measured specific force
+     *                            resolved along body frame axes.
+     * @param config              Tightly Coupled Kalman filter configuration.
+     * @param result              instance where new state of Kalman filter will be
+     *                            stored.
+     * @throws AlgebraException if there are numerical instabilities.
+     */
+    public static void estimate(
+            final Collection&lt;GNSSMeasurement&gt; measurements, final double propagationInterval,
+            final INSTightlyCoupledKalmanState previousState, final BodyKinematics bodyKinematics,
+            final INSTightlyCoupledKalmanConfig config, final INSTightlyCoupledKalmanState result)
+            throws AlgebraException {
+
+<span class="fc" id="L760">        final var fx = bodyKinematics.getFx();</span>
+<span class="fc" id="L761">        final var fy = bodyKinematics.getFy();</span>
+<span class="fc" id="L762">        final var fz = bodyKinematics.getFz();</span>
+
+<span class="fc" id="L764">        estimate(measurements, propagationInterval, previousState, fx, fy, fz, config, result);</span>
+<span class="fc" id="L765">    }</span>
+
+    /**
+     * Estimates the update of Kalman filter state and covariance matrix for a single
+     * epoch.
+     *
+     * @param measurements        satellite measurements data.
+     * @param propagationInterval propagation interval expressed in seconds (s).
+     * @param previousState       previous Kalman filter state.
+     * @param bodyKinematics      body kinematics containing measured specific force
+     *                            resolved along body frame axes.
+     * @param config              Tightly Coupled Kalman filter configuration.
+     * @return new state of Kalman filter.
+     * @throws AlgebraException if there are numerical instabilities.
+     */
+    public static INSTightlyCoupledKalmanState estimate(
+            final Collection&lt;GNSSMeasurement&gt; measurements, final double propagationInterval,
+            final INSTightlyCoupledKalmanState previousState, final BodyKinematics bodyKinematics,
+            final INSTightlyCoupledKalmanConfig config) throws AlgebraException {
+<span class="fc" id="L784">        final var result = new INSTightlyCoupledKalmanState();</span>
+<span class="fc" id="L785">        estimate(measurements, propagationInterval, previousState, bodyKinematics, config, result);</span>
+<span class="fc" id="L786">        return result;</span>
+    }
+
+    /**
+     * Estimates the update of Kalman filter state and covariance matrix for a single
+     * epoch.
+     *
+     * @param measurements        satellite measurements data.
+     * @param propagationInterval propagation interval.
+     * @param previousState       previous Kalman filter state.
+     * @param bodyKinematics      body kinematics containing measured specific force
+     *                            resolved along body frame axes.
+     * @param config              Tightly Coupled Kalman filter configuration.
+     * @param result              instance where new state of Kalman filter will be
+     *                            stored.
+     * @throws AlgebraException if there are numerical instabilities.
+     */
+    public static void estimate(
+            final Collection&lt;GNSSMeasurement&gt; measurements, final Time propagationInterval,
+            final INSTightlyCoupledKalmanState previousState, final BodyKinematics bodyKinematics,
+            final INSTightlyCoupledKalmanConfig config, final INSTightlyCoupledKalmanState result)
+            throws AlgebraException {
+<span class="fc" id="L808">        estimate(measurements, convertTime(propagationInterval), previousState, bodyKinematics, config, result);</span>
+<span class="fc" id="L809">    }</span>
+
+    /**
+     * Estimates the update of Kalman filter state and covariance matrix for a single
+     * epoch.
+     *
+     * @param measurements        satellite measurements data.
+     * @param propagationInterval propagation interval expressed in seconds (s).
+     * @param previousState       previous Kalman filter state.
+     * @param bodyKinematics      body kinematics containing measured specific force
+     *                            resolved along body frame axes.
+     * @param config              Tightly Coupled Kalman filter configuration.
+     * @return new state of Kalman filter.
+     * @throws AlgebraException if there are numerical instabilities.
+     */
+    public static INSTightlyCoupledKalmanState estimate(
+            final Collection&lt;GNSSMeasurement&gt; measurements, final Time propagationInterval,
+            final INSTightlyCoupledKalmanState previousState, final BodyKinematics bodyKinematics,
+            final INSTightlyCoupledKalmanConfig config) throws AlgebraException {
+<span class="fc" id="L828">        return estimate(measurements, convertTime(propagationInterval), previousState, bodyKinematics, config);</span>
+    }
+
+    /**
+     * Estimates the update of Kalman filter state and covariance matrix for a single
+     * epoch.
+     *
+     * @param measurements        satellite measurements data.
+     * @param propagationInterval propagation interval expressed in seconds (s).
+     * @param previousState       previous Kalman filter state.
+     * @param fx                  measured specific force resolved along body frame
+     *                            x-axis and expressed in meters per squared
+     *                            second (m/s^2).
+     * @param fy                  measured specific force resolved along body frame
+     *                            y-axis and expressed in meters per squared
+     *                            second (m/s^2).
+     * @param fz                  measured specific force resolved along body frame
+     *                            z-axis and expressed in meters per squared
+     *                            second (m/s^2).
+     * @param previousLatitude    previous latitude solution.
+     * @param config              Tightly Coupled Kalman filter configuration.
+     * @param result              instance where new state of Kalman filter will be
+     *                            stored.
+     * @throws AlgebraException if there are numerical instabilities.
+     */
+    public static void estimate(
+            final Collection&lt;GNSSMeasurement&gt; measurements, final double propagationInterval,
+            final INSTightlyCoupledKalmanState previousState, final double fx, final double fy, final double fz,
+            final Angle previousLatitude, final INSTightlyCoupledKalmanConfig config,
+            final INSTightlyCoupledKalmanState result) throws AlgebraException {
+<span class="fc" id="L858">        estimate(measurements, propagationInterval, previousState, fx, fy, fz, convertAngle(previousLatitude), config,</span>
+                result);
+<span class="fc" id="L860">    }</span>
+
+    /**
+     * Estimates the update of Kalman filter state and covariance matrix for a single
+     * epoch.
+     *
+     * @param measurements        satellite measurements data.
+     * @param propagationInterval propagation interval expressed in seconds (s).
+     * @param previousState       previous Kalman filter state.
+     * @param fx                  measured specific force resolved along body frame
+     *                            x-axis and expressed in meters per squared
+     *                            second (m/s^2).
+     * @param fy                  measured specific force resolved along body frame
+     *                            y-axis and expressed in meters per squared
+     *                            second (m/s^2).
+     * @param fz                  measured specific force resolved along body frame
+     *                            z-axis and expressed in meters per squared
+     *                            second (m/s^2).
+     * @param previousLatitude    previous latitude solution.
+     * @param config              Tightly Coupled Kalman filter configuration.
+     * @return new state of Kalman filter.
+     * @throws AlgebraException if there are numerical instabilities.
+     */
+    public static INSTightlyCoupledKalmanState estimate(
+            final Collection&lt;GNSSMeasurement&gt; measurements, final double propagationInterval,
+            final INSTightlyCoupledKalmanState previousState, final double fx, final double fy, final double fz,
+            final Angle previousLatitude, final INSTightlyCoupledKalmanConfig config) throws AlgebraException {
+<span class="fc" id="L887">        return estimate(measurements, propagationInterval, previousState, fx, fy, fz, convertAngle(previousLatitude),</span>
+                config);
+    }
+
+    /**
+     * Estimates the update of Kalman filter state and covariance matrix for a single
+     * epoch.
+     *
+     * @param measurements        satellite measurements data.
+     * @param propagationInterval propagation interval expressed in seconds (s).
+     * @param previousState       previous Kalman filter state.
+     * @param fx                  measured specific force resolved along body frame
+     *                            x-axis and expressed in meters per squared
+     *                            second (m/s^2).
+     * @param fy                  measured specific force resolved along body frame
+     *                            y-axis and expressed in meters per squared
+     *                            second (m/s^2).
+     * @param fz                  measured specific force resolved along body frame
+     *                            z-axis and expressed in meters per squared
+     *                            second (m/s^2).
+     * @param previousLatitude    previous latitude solution.
+     * @param config              Tightly Coupled Kalman filter configuration.
+     * @param result              instance where new state of Kalman filter will be
+     *                            stored.
+     * @throws AlgebraException if there are numerical instabilities.
+     */
+    public static void estimate(
+            final Collection&lt;GNSSMeasurement&gt; measurements, final Time propagationInterval,
+            final INSTightlyCoupledKalmanState previousState, final double fx, final double fy, final double fz,
+            final Angle previousLatitude, final INSTightlyCoupledKalmanConfig config,
+            final INSTightlyCoupledKalmanState result) throws AlgebraException {
+<span class="fc" id="L918">        estimate(measurements, propagationInterval, previousState, fx, fy, fz, convertAngle(previousLatitude), config,</span>
+                result);
+<span class="fc" id="L920">    }</span>
+
+    /**
+     * Estimates the update of Kalman filter state and covariance matrix for a single
+     * epoch.
+     *
+     * @param measurements        satellite measurements data.
+     * @param propagationInterval propagation interval expressed in seconds (s).
+     * @param previousState       previous Kalman filter state.
+     * @param fx                  measured specific force resolved along body frame
+     *                            x-axis and expressed in meters per squared
+     *                            second (m/s^2).
+     * @param fy                  measured specific force resolved along body frame
+     *                            y-axis and expressed in meters per squared
+     *                            second (m/s^2).
+     * @param fz                  measured specific force resolved along body frame
+     *                            z-axis and expressed in meters per squared
+     *                            second (m/s^2).
+     * @param previousLatitude    previous latitude solution.
+     * @param config              Tightly Coupled Kalman filter configuration.
+     * @return new state of Kalman filter.
+     * @throws AlgebraException if there are numerical instabilities.
+     */
+    public static INSTightlyCoupledKalmanState estimate(
+            final Collection&lt;GNSSMeasurement&gt; measurements, final Time propagationInterval,
+            final INSTightlyCoupledKalmanState previousState, final double fx, final double fy, final double fz,
+            final Angle previousLatitude, final INSTightlyCoupledKalmanConfig config) throws AlgebraException {
+<span class="fc" id="L947">        return estimate(measurements, propagationInterval, previousState, fx, fy, fz, convertAngle(previousLatitude),</span>
+                config);
+    }
+
+    /**
+     * Estimates the update of Kalman filter state and covariance matrix for a single
+     * epoch.
+     *
+     * @param measurements        satellite measurements data.
+     * @param propagationInterval propagation interval expressed in seconds (s).
+     * @param previousState       previous Kalman filter state.
+     * @param bodyKinematics      body kinematics containing measured specific force
+     *                            resolved along body frame axes.
+     * @param previousLatitude    previous latitude solution.
+     * @param config              Tightly Coupled Kalman filter configuration.
+     * @param result              instance where new state of Kalman filter will be
+     *                            stored.
+     * @throws AlgebraException if there are numerical instabilities.
+     */
+    public static void estimate(
+            final Collection&lt;GNSSMeasurement&gt; measurements, final double propagationInterval,
+            final INSTightlyCoupledKalmanState previousState, final BodyKinematics bodyKinematics,
+            final Angle previousLatitude, final INSTightlyCoupledKalmanConfig config,
+            final INSTightlyCoupledKalmanState result) throws AlgebraException {
+<span class="fc" id="L971">        estimate(measurements, propagationInterval, previousState, bodyKinematics, convertAngle(previousLatitude),</span>
+                config, result);
+<span class="fc" id="L973">    }</span>
+
+    /**
+     * Estimates the update of Kalman filter state and covariance matrix for a single
+     * epoch.
+     *
+     * @param measurements        satellite measurements data.
+     * @param propagationInterval propagation interval expressed in seconds (s).
+     * @param previousState       previous Kalman filter state.
+     * @param bodyKinematics      body kinematics containing measured specific force
+     *                            resolved along body frame axes.
+     * @param previousLatitude    previous latitude solution.
+     * @param config              Tightly Coupled Kalman filter configuration.
+     * @return new state of Kalman filter.
+     * @throws AlgebraException if there are numerical instabilities.
+     */
+    public static INSTightlyCoupledKalmanState estimate(
+            final Collection&lt;GNSSMeasurement&gt; measurements, final double propagationInterval,
+            final INSTightlyCoupledKalmanState previousState, final BodyKinematics bodyKinematics,
+            final Angle previousLatitude, final INSTightlyCoupledKalmanConfig config) throws AlgebraException {
+<span class="fc" id="L993">        return estimate(measurements, propagationInterval, previousState, bodyKinematics,</span>
+<span class="fc" id="L994">                convertAngle(previousLatitude), config);</span>
+    }
+
+    /**
+     * Estimates the update of Kalman filter state and covariance matrix for a single
+     * epoch.
+     *
+     * @param measurements        satellite measurements data.
+     * @param propagationInterval propagation interval.
+     * @param previousState       previous Kalman filter state.
+     * @param bodyKinematics      body kinematics containing measured specific force
+     *                            resolved along body frame axes.
+     * @param previousLatitude    previous latitude solution.
+     * @param config              Tightly Coupled Kalman filter configuration.
+     * @param result              instance where new state of Kalman filter will be
+     *                            stored.
+     * @throws AlgebraException if there are numerical instabilities.
+     */
+    public static void estimate(
+            final Collection&lt;GNSSMeasurement&gt; measurements, final Time propagationInterval,
+            final INSTightlyCoupledKalmanState previousState, final BodyKinematics bodyKinematics,
+            final Angle previousLatitude, final INSTightlyCoupledKalmanConfig config,
+            final INSTightlyCoupledKalmanState result) throws AlgebraException {
+<span class="fc" id="L1017">        estimate(measurements, propagationInterval, previousState, bodyKinematics, convertAngle(previousLatitude),</span>
+                config, result);
+<span class="fc" id="L1019">    }</span>
+
+    /**
+     * Estimates the update of Kalman filter state and covariance matrix for a single
+     * epoch.
+     *
+     * @param measurements        satellite measurements data.
+     * @param propagationInterval propagation interval.
+     * @param previousState       previous Kalman filter state.
+     * @param bodyKinematics      body kinematics containing measured specific force
+     *                            resolved along body frame axes.
+     * @param previousLatitude    previous latitude solution.
+     * @param config              Tightly Coupled Kalman filter configuration.
+     * @return new state of Kalman filter.
+     * @throws AlgebraException if there are numerical instabilities.
+     */
+    public static INSTightlyCoupledKalmanState estimate(
+            final Collection&lt;GNSSMeasurement&gt; measurements, final Time propagationInterval,
+            final INSTightlyCoupledKalmanState previousState, final BodyKinematics bodyKinematics,
+            final Angle previousLatitude, final INSTightlyCoupledKalmanConfig config) throws AlgebraException {
+<span class="fc" id="L1039">        return estimate(measurements, propagationInterval, previousState, bodyKinematics,</span>
+<span class="fc" id="L1040">                convertAngle(previousLatitude), config);</span>
+    }
+
+    /**
+     * Converts time instance into a value expressed in seconds.
+     *
+     * @param time time instance to be converted.
+     * @return time value expressed in seconds.
+     */
+    private static double convertTime(final Time time) {
+<span class="fc" id="L1050">        return TimeConverter.convert(time.getValue().doubleValue(), time.getUnit(), TimeUnit.SECOND);</span>
+    }
+
+    /**
+     * Converts angle instance into a value expressed in radians.
+     *
+     * @param angle angle instance to be converted.
+     * @return angle value expressed in radians.
+     */
+    private static double convertAngle(final Angle angle) {
+<span class="fc" id="L1060">        return AngleConverter.convert(angle.getValue().doubleValue(), angle.getUnit(), AngleUnit.RADIANS);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

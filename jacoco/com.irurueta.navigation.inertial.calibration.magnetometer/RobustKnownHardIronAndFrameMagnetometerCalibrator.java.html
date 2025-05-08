@@ -1,0 +1,2532 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RobustKnownHardIronAndFrameMagnetometerCalibrator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-inertial</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.inertial.calibration.magnetometer</a> &gt; <span class="el_source">RobustKnownHardIronAndFrameMagnetometerCalibrator.java</span></div><h1>RobustKnownHardIronAndFrameMagnetometerCalibrator.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2020 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.inertial.calibration.magnetometer;
+
+import com.irurueta.algebra.Matrix;
+import com.irurueta.algebra.WrongSizeException;
+import com.irurueta.navigation.LockedException;
+import com.irurueta.navigation.NotReadyException;
+import com.irurueta.navigation.frames.CoordinateTransformation;
+import com.irurueta.navigation.frames.FrameType;
+import com.irurueta.navigation.frames.converters.ECEFtoNEDFrameConverter;
+import com.irurueta.navigation.inertial.BodyKinematics;
+import com.irurueta.navigation.inertial.BodyMagneticFluxDensity;
+import com.irurueta.navigation.inertial.calibration.CalibrationException;
+import com.irurueta.navigation.inertial.calibration.MagneticFluxDensityTriad;
+import com.irurueta.navigation.inertial.calibration.StandardDeviationFrameBodyMagneticFluxDensity;
+import com.irurueta.navigation.inertial.estimators.BodyMagneticFluxDensityEstimator;
+import com.irurueta.navigation.inertial.wmm.WMMEarthMagneticFluxDensityEstimator;
+import com.irurueta.navigation.inertial.wmm.WorldMagneticModel;
+import com.irurueta.numerical.robust.InliersData;
+import com.irurueta.numerical.robust.RobustEstimatorMethod;
+import com.irurueta.units.MagneticFluxDensity;
+import com.irurueta.units.MagneticFluxDensityConverter;
+import com.irurueta.units.MagneticFluxDensityUnit;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * This is an abstract class to robustly estimate magnetometer
+ * soft-iron cross couplings and scaling factors.
+ * &lt;p&gt;
+ * To use this calibrator at least 3 measurements at different known
+ * frames must be provided. In other words, magnetometer samples must
+ * be obtained at 3 different positions or orientations.
+ * Notice that frame velocities are ignored by this calibrator.
+ * &lt;p&gt;
+ * Measured magnetic flux density is assumed to follow the model shown below:
+ * &lt;pre&gt;
+ *     mBmeas = bm + (I + Mm) * mBtrue + w
+ * &lt;/pre&gt;
+ * Where:
+ * - mBmeas is the measured magnetic flux density. This is a 3x1 vector.
+ * - bm is magnetometer hard-iron bias. Ideally, on a perfect magnetometer,
+ * this should be a 3x1 zero vector.
+ * - I is the 3x3 identity matrix.
+ * - Mm is the 3x3 soft-iron matrix containing cross-couplings and scaling
+ * factors. Ideally, on a perfect magnetometer, this should be a 3x3 zero
+ * matrix.
+ * - mBtrue is ground-truth magnetic flux density. This is a 3x1 vector.
+ * - w is measurement noise. This is a 3x1 vector.
+ */
+public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implements MagnetometerNonLinearCalibrator,
+        KnownHardIronMagnetometerCalibrator, OrderedStandardDeviationFrameBodyMagneticFluxDensityMagnetometerCalibrator,
+        QualityScoredMagnetometerCalibrator {
+
+    /**
+     * Indicates whether by default a common z-axis is assumed for the accelerometer,
+     * gyroscope and magnetometer.
+     */
+    public static final boolean DEFAULT_USE_COMMON_Z_AXIS = false;
+
+    /**
+     * Required minimum number of measurements.
+     */
+    public static final int MINIMUM_MEASUREMENTS = 3;
+
+    /**
+     * Indicates that by default a linear calibrator is used for preliminary solution estimation.
+     * The result obtained on each preliminary solution might be later refined.
+     */
+    public static final boolean DEFAULT_USE_LINEAR_CALIBRATOR = true;
+
+    /**
+     * Indicates that by default preliminary solutions are refined.
+     */
+    public static final boolean DEFAULT_REFINE_PRELIMINARY_SOLUTIONS = false;
+
+    /**
+     * Default robust estimator method when none is provided.
+     */
+<span class="fc" id="L96">    public static final RobustEstimatorMethod DEFAULT_ROBUST_METHOD = RobustEstimatorMethod.LMEDS;</span>
+
+    /**
+     * Indicates that result is refined by default using a non-linear calibrator
+     * (which uses a Levenberg-Marquardt fitter).
+     */
+    public static final boolean DEFAULT_REFINE_RESULT = true;
+
+    /**
+     * Indicates that covariance is kept by default after refining result.
+     */
+    public static final boolean DEFAULT_KEEP_COVARIANCE = true;
+
+    /**
+     * Default amount of progress variation before notifying a change in estimation progress.
+     * By default this is set to 5%.
+     */
+    public static final float DEFAULT_PROGRESS_DELTA = 0.05f;
+
+    /**
+     * Minimum allowed value for progress delta.
+     */
+    public static final float MIN_PROGRESS_DELTA = 0.0f;
+
+    /**
+     * Maximum allowed value for progress delta.
+     */
+    public static final float MAX_PROGRESS_DELTA = 1.0f;
+
+    /**
+     * Constant defining default confidence of the estimated result, which is
+     * 99%. This means that with a probability of 99% estimation will be
+     * accurate because chosen sub-samples will be inliers.
+     */
+    public static final double DEFAULT_CONFIDENCE = 0.99;
+
+    /**
+     * Default maximum allowed number of iterations.
+     */
+    public static final int DEFAULT_MAX_ITERATIONS = 5000;
+
+    /**
+     * Minimum allowed confidence value.
+     */
+    public static final double MIN_CONFIDENCE = 0.0;
+
+    /**
+     * Maximum allowed confidence value.
+     */
+    public static final double MAX_CONFIDENCE = 1.0;
+
+    /**
+     * Minimum allowed number of iterations.
+     */
+    public static final int MIN_ITERATIONS = 1;
+
+    /**
+     * Contains a list of body magnetic flux density measurements taken
+     * at different frames (positions and orientations) and containing the
+     * standard deviation of magnetometer measurements.
+     * If a single device magnetometer needs to be calibrated, typically all
+     * measurements are taken at the same position, with zero velocity and
+     * multiple orientations.
+     * However, if we just want to calibrate a given magnetometer model (e.g.
+     * obtain an average and less precise calibration for the magnetometer of
+     * a given phone model), we could take measurements collected throughout
+     * the planet at multiple positions while the phone remains static (e.g.
+     * while charging), hence each measurement position will change, velocity
+     * will remain zero and orientation will be typically constant at
+     * horizontal orientation while the phone remains on a
+     * flat surface.
+     */
+    protected List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements;
+
+    /**
+     * Listener to be notified of events such as when calibration starts, ends or its
+     * progress significantly changes.
+     */
+    protected RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener;
+
+    /**
+     * Indicates whether estimator is running.
+     */
+    protected boolean running;
+
+    /**
+     * Amount of progress variation before notifying a progress change during calibration.
+     */
+<span class="fc" id="L184">    protected float progressDelta = DEFAULT_PROGRESS_DELTA;</span>
+
+    /**
+     * Amount of confidence expressed as a value between 0.0 and 1.0 (which is equivalent
+     * to 100%). The amount of confidence indicates the probability that the estimated
+     * result is correct. Usually this value will be close to 1.0, but not exactly 1.0.
+     */
+<span class="fc" id="L191">    protected double confidence = DEFAULT_CONFIDENCE;</span>
+
+    /**
+     * Maximum allowed number of iterations. When the maximum number of iterations is
+     * exceeded, result will not be available, however an approximate result will be
+     * available for retrieval.
+     */
+<span class="fc" id="L198">    protected int maxIterations = DEFAULT_MAX_ITERATIONS;</span>
+
+    /**
+     * Data related to inlier found after calibration.
+     */
+    protected InliersData inliersData;
+
+    /**
+     * Indicates whether result must be refined using a non linear calibrator over
+     * found inliers.
+     * If true, inliers will be computed and kept in any implementation regardless of the
+     * settings.
+     */
+<span class="fc" id="L211">    protected boolean refineResult = DEFAULT_REFINE_RESULT;</span>
+
+    /**
+     * Size of subsets to be checked during robust estimation.
+     */
+<span class="fc" id="L216">    protected int preliminarySubsetSize = MINIMUM_MEASUREMENTS;</span>
+
+    /**
+     * This flag indicates whether z-axis is assumed to be common for accelerometer,
+     * gyroscope and magnetometer.
+     * When enabled, this eliminates 3 variables from soft-iron (Mm) matrix.
+     */
+<span class="fc" id="L223">    private boolean commonAxisUsed = DEFAULT_USE_COMMON_Z_AXIS;</span>
+
+    /**
+     * X-coordinate of known hard-iron bias.
+     * This is expressed in Teslas (T).
+     */
+    private double hardIronX;
+
+    /**
+     * Y-coordinate of known hard-iron bias.
+     * This is expressed in Teslas (T).
+     */
+    private double hardIronY;
+
+    /**
+     * Z-coordinate of known hard-iron bias.
+     * This is expressed in Teslas (T).
+     */
+    private double hardIronZ;
+
+    /**
+     * Initial x scaling factor.
+     */
+    private double initialSx;
+
+    /**
+     * Initial y scaling factor.
+     */
+    private double initialSy;
+
+    /**
+     * Initial z scaling factor.
+     */
+    private double initialSz;
+
+    /**
+     * Initial x-y cross coupling error.
+     */
+    private double initialMxy;
+
+    /**
+     * Initial x-z cross coupling error.
+     */
+    private double initialMxz;
+
+    /**
+     * Initial y-x cross coupling error.
+     */
+    private double initialMyx;
+
+    /**
+     * Initial y-z cross coupling error.
+     */
+    private double initialMyz;
+
+    /**
+     * Initial z-x cross coupling error.
+     */
+    private double initialMzx;
+
+    /**
+     * Initial z-y cross coupling error.
+     */
+    private double initialMzy;
+
+    /**
+     * Indicates whether a linear calibrator is used or not for preliminary
+     * solutions.
+     */
+<span class="fc" id="L292">    private boolean useLinearCalibrator = DEFAULT_USE_LINEAR_CALIBRATOR;</span>
+
+    /**
+     * Indicates whether preliminary solutions must be refined after an initial linear solution
+     * is found.
+     */
+<span class="fc" id="L298">    private boolean refinePreliminarySolutions = DEFAULT_REFINE_PRELIMINARY_SOLUTIONS;</span>
+
+    /**
+     * Estimated magnetometer soft-iron matrix containing scale factors
+     * and cross coupling errors.
+     * This is the product of matrix Tm containing cross coupling errors and Km
+     * containing scaling factors.
+     * So tat:
+     * &lt;pre&gt;
+     *     Mm = [sx    mxy  mxz] = Tm*Km
+     *          [myx   sy   myz]
+     *          [mzx   mzy  sz ]
+     * &lt;/pre&gt;
+     * Where:
+     * &lt;pre&gt;
+     *     Km = [sx 0   0 ]
+     *          [0  sy  0 ]
+     *          [0  0   sz]
+     * &lt;/pre&gt;
+     * and
+     * &lt;pre&gt;
+     *     Tm = [1          -alphaXy    alphaXz ]
+     *          [alphaYx    1           -alphaYz]
+     *          [-alphaZx   alphaZy     1       ]
+     * &lt;/pre&gt;
+     * Hence:
+     * &lt;pre&gt;
+     *     Mm = [sx    mxy  mxz] = Tm*Km =  [sx             -sy * alphaXy   sz * alphaXz ]
+     *          [myx   sy   myz]            [sx * alphaYx   sy              -sz * alphaYz]
+     *          [mzx   mzy  sz ]            [-sx * alphaZx  sy * alphaZy    sz           ]
+     * &lt;/pre&gt;
+     * This instance allows any 3x3 matrix however, typically alphaYx, alphaZx and alphaZy
+     * are considered to be zero if the accelerometer z-axis is assumed to be the same
+     * as the body z-axis. When this is assumed, myx = mzx = mzy = 0 and the Mm matrix
+     * becomes upper diagonal:
+     * &lt;pre&gt;
+     *     Mm = [sx    mxy  mxz]
+     *          [0     sy   myz]
+     *          [0     0    sz ]
+     * &lt;/pre&gt;
+     * Values of this matrix are unit-less.
+     */
+    private Matrix estimatedMm;
+
+    /**
+     * Indicates whether covariance must be kept after refining result.
+     * This setting is only taken into account if result is refined.
+     */
+<span class="fc" id="L346">    private boolean keepCovariance = DEFAULT_KEEP_COVARIANCE;</span>
+
+    /**
+     * Estimated covariance matrix for estimated parameters.
+     */
+    private Matrix estimatedCovariance;
+
+    /**
+     * Estimated chi square value.
+     */
+    private double estimatedChiSq;
+
+    /**
+     * Estimated mean square error respect to provided measurements.
+     */
+    private double estimatedMse;
+
+    /**
+     * Contains Earth's magnetic model.
+     */
+    private WorldMagneticModel magneticModel;
+
+    /**
+     * A linear least squares calibrator.
+     */
+<span class="fc" id="L371">    private final KnownHardIronAndFrameMagnetometerLinearLeastSquaresCalibrator linearCalibrator =</span>
+            new KnownHardIronAndFrameMagnetometerLinearLeastSquaresCalibrator();
+
+    /**
+     * A non-linear least squares calibrator.
+     */
+<span class="fc" id="L377">    private final KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator nonLinearCalibrator =</span>
+            new KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator();
+
+    /**
+     * World Magnetic Model estimator.
+     */
+    private WMMEarthMagneticFluxDensityEstimator wmmEstimator;
+
+    /**
+     * Constructor.
+     */
+<span class="fc" id="L388">    protected RobustKnownHardIronAndFrameMagnetometerCalibrator() {</span>
+<span class="fc" id="L389">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param listener listener to be notified of events such as when estimation
+     *                 starts, ends or its progress significantly changes.
+     */
+    protected RobustKnownHardIronAndFrameMagnetometerCalibrator(
+<span class="fc" id="L398">            final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener) {</span>
+<span class="fc" id="L399">        this.listener = listener;</span>
+<span class="fc" id="L400">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements list of body magnetic flux density measurements with standard
+     *                     deviations taken at different frames (positions and
+     *                     orientations).
+     */
+    protected RobustKnownHardIronAndFrameMagnetometerCalibrator(
+<span class="fc" id="L410">            final List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements) {</span>
+<span class="fc" id="L411">        this.measurements = measurements;</span>
+<span class="fc" id="L412">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements list of body magnetic flux density measurements with standard
+     *                     deviations taken at different frames (positions and
+     *                     orientations).
+     * @param listener     listener to handle events raised by this calibrator.
+     */
+    protected RobustKnownHardIronAndFrameMagnetometerCalibrator(
+            final List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements,
+            final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener) {
+<span class="fc" id="L425">        this(measurements);</span>
+<span class="fc" id="L426">        this.listener = listener;</span>
+<span class="fc" id="L427">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     */
+<span class="fc" id="L435">    protected RobustKnownHardIronAndFrameMagnetometerCalibrator(final boolean commonAxisUsed) {</span>
+<span class="fc" id="L436">        this.commonAxisUsed = commonAxisUsed;</span>
+<span class="fc" id="L437">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     * @param listener       listener to handle events raised by this calibrator.
+     */
+    protected RobustKnownHardIronAndFrameMagnetometerCalibrator(
+            final boolean commonAxisUsed, final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener) {
+<span class="fc" id="L448">        this(commonAxisUsed);</span>
+<span class="fc" id="L449">        this.listener = listener;</span>
+<span class="fc" id="L450">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements   list of body magnetic flux density measurements with standard
+     *                       deviations taken at different frames (positions and
+     *                       orientations).
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     */
+    protected RobustKnownHardIronAndFrameMagnetometerCalibrator(
+            final List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements, final boolean commonAxisUsed) {
+<span class="fc" id="L463">        this(measurements);</span>
+<span class="fc" id="L464">        this.commonAxisUsed = commonAxisUsed;</span>
+<span class="fc" id="L465">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements   list of body magnetic flux density measurements with standard
+     *                       deviations taken at different frames (positions and
+     *                       orientations).
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     * @param listener       listener to handle events raised by this calibrator.
+     */
+    protected RobustKnownHardIronAndFrameMagnetometerCalibrator(
+            final List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements, final boolean commonAxisUsed,
+            final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener) {
+<span class="fc" id="L480">        this(measurements, commonAxisUsed);</span>
+<span class="fc" id="L481">        this.listener = listener;</span>
+<span class="fc" id="L482">    }</span>
+
+    /**
+     * Gets x-coordinate of known magnetometer hard-iron bias.
+     * This is expressed in Teslas (T).
+     *
+     * @return x-coordinate of known magnetometer hard-iron bias.
+     */
+    @Override
+    public double getHardIronX() {
+<span class="fc" id="L492">        return hardIronX;</span>
+    }
+
+    /**
+     * Sets x-coordinate of known magnetometer hard-iron bias.
+     * This is expressed in Teslas (T).
+     *
+     * @param hardIronX x coordinate of magnetometer hard-iron.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setHardIronX(final double hardIronX) throws LockedException {
+<span class="fc bfc" id="L504" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L505">            throw new LockedException();</span>
+        }
+<span class="fc" id="L507">        this.hardIronX = hardIronX;</span>
+<span class="fc" id="L508">    }</span>
+
+    /**
+     * Gets y-coordinate of known magnetometer hard-iron bias.
+     * This is expressed in Teslas (T).
+     *
+     * @return y-coordinate of known magnetometer hard-iron bias.
+     */
+    @Override
+    public double getHardIronY() {
+<span class="fc" id="L518">        return hardIronY;</span>
+    }
+
+    /**
+     * Sets y-coordinate of known magnetometer hard-iron bias.
+     * This is expressed in Teslas (T).
+     *
+     * @param hardIronY y coordinate of magnetometer hard-iron.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setHardIronY(final double hardIronY) throws LockedException {
+<span class="fc bfc" id="L530" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L531">            throw new LockedException();</span>
+        }
+<span class="fc" id="L533">        this.hardIronY = hardIronY;</span>
+<span class="fc" id="L534">    }</span>
+
+    /**
+     * Gets z-coordinate of known magnetometer hard-iron bias.
+     * This is expressed in Teslas (T).
+     *
+     * @return z-coordinate of known magnetometer hard-iron bias.
+     */
+    @Override
+    public double getHardIronZ() {
+<span class="fc" id="L544">        return hardIronZ;</span>
+    }
+
+    /**
+     * Sets z-coordinate of known magnetometer hard-iron bias.
+     * This is expressed in Teslas (T).
+     *
+     * @param hardIronZ z coordinate of magnetometer hard-iron.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setHardIronZ(final double hardIronZ) throws LockedException {
+<span class="fc bfc" id="L556" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L557">            throw new LockedException();</span>
+        }
+<span class="fc" id="L559">        this.hardIronZ = hardIronZ;</span>
+<span class="fc" id="L560">    }</span>
+
+    /**
+     * Gets known x coordinate of magnetometer hard-iron.
+     *
+     * @return x coordinate of magnetometer hard-iron.
+     */
+    @Override
+    public MagneticFluxDensity getHardIronXAsMagneticFluxDensity() {
+<span class="fc" id="L569">        return new MagneticFluxDensity(hardIronX, MagneticFluxDensityUnit.TESLA);</span>
+    }
+
+    /**
+     * Gets known x coordinate of magnetometer hard-iron.
+     *
+     * @param result instance where result will be stored.
+     */
+    @Override
+    public void getHardIronXAsMagneticFluxDensity(final MagneticFluxDensity result) {
+<span class="fc" id="L579">        result.setValue(hardIronX);</span>
+<span class="fc" id="L580">        result.setUnit(MagneticFluxDensityUnit.TESLA);</span>
+<span class="fc" id="L581">    }</span>
+
+    /**
+     * Sets known x-coordinate of magnetometer hard-iron.
+     *
+     * @param hardIronX known x-coordinate of magnetometer hard-iron.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setHardIronX(final MagneticFluxDensity hardIronX) throws LockedException {
+<span class="fc bfc" id="L591" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L592">            throw new LockedException();</span>
+        }
+<span class="fc" id="L594">        this.hardIronX = convertMagneticFluxDensity(hardIronX);</span>
+<span class="fc" id="L595">    }</span>
+
+    /**
+     * Gets known y coordinate of magnetometer hard-iron.
+     *
+     * @return y coordinate of magnetometer hard-iron.
+     */
+    @Override
+    public MagneticFluxDensity getHardIronYAsMagneticFluxDensity() {
+<span class="fc" id="L604">        return new MagneticFluxDensity(hardIronY, MagneticFluxDensityUnit.TESLA);</span>
+    }
+
+    /**
+     * Gets known y coordinate of magnetometer hard-iron.
+     *
+     * @param result instance where result will be stored.
+     */
+    @Override
+    public void getHardIronYAsMagneticFluxDensity(final MagneticFluxDensity result) {
+<span class="fc" id="L614">        result.setValue(hardIronY);</span>
+<span class="fc" id="L615">        result.setUnit(MagneticFluxDensityUnit.TESLA);</span>
+<span class="fc" id="L616">    }</span>
+
+    /**
+     * Sets known y-coordinate of magnetometer hard-iron.
+     *
+     * @param hardIronY known y-coordinate of magnetometer hard-iron.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setHardIronY(final MagneticFluxDensity hardIronY) throws LockedException {
+<span class="fc bfc" id="L626" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L627">            throw new LockedException();</span>
+        }
+<span class="fc" id="L629">        this.hardIronY = convertMagneticFluxDensity(hardIronY);</span>
+<span class="fc" id="L630">    }</span>
+
+    /**
+     * Gets known z coordinate of magnetometer hard-iron.
+     *
+     * @return z coordinate of magnetometer hard-iron.
+     */
+    @Override
+    public MagneticFluxDensity getHardIronZAsMagneticFluxDensity() {
+<span class="fc" id="L639">        return new MagneticFluxDensity(hardIronZ, MagneticFluxDensityUnit.TESLA);</span>
+    }
+
+    /**
+     * Gets known z coordinate of magnetometer hard-iron.
+     *
+     * @param result instance where result will be stored.
+     */
+    @Override
+    public void getHardIronZAsMagneticFluxDensity(final MagneticFluxDensity result) {
+<span class="fc" id="L649">        result.setValue(hardIronZ);</span>
+<span class="fc" id="L650">        result.setUnit(MagneticFluxDensityUnit.TESLA);</span>
+<span class="fc" id="L651">    }</span>
+
+    /**
+     * Sets known z-coordinate of magnetometer hard-iron.
+     *
+     * @param hardIronZ known z-coordinate of magnetometer hard-iron.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setHardIronZ(final MagneticFluxDensity hardIronZ) throws LockedException {
+<span class="fc bfc" id="L661" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L662">            throw new LockedException();</span>
+        }
+<span class="fc" id="L664">        this.hardIronZ = convertMagneticFluxDensity(hardIronZ);</span>
+<span class="fc" id="L665">    }</span>
+
+    /**
+     * Sets known hard-iron bias coordinates of magnetometer expressed
+     * in Teslas (T).
+     *
+     * @param hardIronX x-coordinate of magnetometer hard-iron.
+     * @param hardIronY y-coordinate of magnetometer hard-iron.
+     * @param hardIronZ z-coordinate of magnetometer hard-iron.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setHardIronCoordinates(
+            final double hardIronX, final double hardIronY, final double hardIronZ) throws LockedException {
+<span class="fc bfc" id="L679" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L680">            throw new LockedException();</span>
+        }
+<span class="fc" id="L682">        this.hardIronX = hardIronX;</span>
+<span class="fc" id="L683">        this.hardIronY = hardIronY;</span>
+<span class="fc" id="L684">        this.hardIronZ = hardIronZ;</span>
+<span class="fc" id="L685">    }</span>
+
+    /**
+     * Sets known hard-iron coordinates.
+     *
+     * @param hardIronX x-coordinate of magnetometer hard-iron.
+     * @param hardIronY y-coordinate of magnetometer hard-iron.
+     * @param hardIronZ z-coordinate of magnetometer hard-iron.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setHardIronCoordinates(
+            final MagneticFluxDensity hardIronX, final MagneticFluxDensity hardIronY,
+            final MagneticFluxDensity hardIronZ) throws LockedException {
+<span class="fc bfc" id="L699" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L700">            throw new LockedException();</span>
+        }
+<span class="fc" id="L702">        this.hardIronX = convertMagneticFluxDensity(hardIronX);</span>
+<span class="fc" id="L703">        this.hardIronY = convertMagneticFluxDensity(hardIronY);</span>
+<span class="fc" id="L704">        this.hardIronZ = convertMagneticFluxDensity(hardIronZ);</span>
+<span class="fc" id="L705">    }</span>
+
+    /**
+     * Gets known hard-iron.
+     *
+     * @return known hard-iron.
+     */
+    @Override
+    public MagneticFluxDensityTriad getHardIronAsTriad() {
+<span class="fc" id="L714">        return new MagneticFluxDensityTriad(MagneticFluxDensityUnit.TESLA, hardIronX, hardIronY, hardIronZ);</span>
+    }
+
+    /**
+     * Gets known hard-iron.
+     *
+     * @param result instance where result will be stored.
+     */
+    @Override
+    public void getHardIronAsTriad(final MagneticFluxDensityTriad result) {
+<span class="fc" id="L724">        result.setValueCoordinatesAndUnit(hardIronX, hardIronY, hardIronZ, MagneticFluxDensityUnit.TESLA);</span>
+<span class="fc" id="L725">    }</span>
+
+    /**
+     * Sets known hard-iron.
+     *
+     * @param hardIron hard-iron to be set.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setHardIron(final MagneticFluxDensityTriad hardIron) throws LockedException {
+<span class="fc bfc" id="L735" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L736">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L739">        hardIronX = convertMagneticFluxDensity(hardIron.getValueX(), hardIron.getUnit());</span>
+<span class="fc" id="L740">        hardIronY = convertMagneticFluxDensity(hardIron.getValueY(), hardIron.getUnit());</span>
+<span class="fc" id="L741">        hardIronZ = convertMagneticFluxDensity(hardIron.getValueZ(), hardIron.getUnit());</span>
+<span class="fc" id="L742">    }</span>
+
+    /**
+     * Gets initial x scaling factor.
+     *
+     * @return initial x scaling factor.
+     */
+    @Override
+    public double getInitialSx() {
+<span class="fc" id="L751">        return initialSx;</span>
+    }
+
+    /**
+     * Sets initial x scaling factor.
+     *
+     * @param initialSx initial x scaling factor.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setInitialSx(final double initialSx) throws LockedException {
+<span class="fc bfc" id="L762" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L763">            throw new LockedException();</span>
+        }
+<span class="fc" id="L765">        this.initialSx = initialSx;</span>
+<span class="fc" id="L766">    }</span>
+
+    /**
+     * Gets initial y scaling factor.
+     *
+     * @return initial y scaling factor.
+     */
+    @Override
+    public double getInitialSy() {
+<span class="fc" id="L775">        return initialSy;</span>
+    }
+
+    /**
+     * Sets initial y scaling factor.
+     *
+     * @param initialSy initial y scaling factor.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setInitialSy(final double initialSy) throws LockedException {
+<span class="pc bpc" id="L786" title="1 of 2 branches missed.">        if (running) {</span>
+<span class="nc" id="L787">            throw new LockedException();</span>
+        }
+<span class="fc" id="L789">        this.initialSy = initialSy;</span>
+<span class="fc" id="L790">    }</span>
+
+    /**
+     * Gets initial z scaling factor.
+     *
+     * @return initial z scaling factor.
+     */
+    @Override
+    public double getInitialSz() {
+<span class="fc" id="L799">        return initialSz;</span>
+    }
+
+    /**
+     * Sets initial z scaling factor.
+     *
+     * @param initialSz initial z scaling factor.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setInitialSz(final double initialSz) throws LockedException {
+<span class="fc bfc" id="L810" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L811">            throw new LockedException();</span>
+        }
+<span class="fc" id="L813">        this.initialSz = initialSz;</span>
+<span class="fc" id="L814">    }</span>
+
+    /**
+     * Gets initial x-y cross coupling error.
+     *
+     * @return initial x-y cross coupling error.
+     */
+    @Override
+    public double getInitialMxy() {
+<span class="fc" id="L823">        return initialMxy;</span>
+    }
+
+    /**
+     * Sets initial x-y cross coupling error.
+     *
+     * @param initialMxy initial x-y cross coupling error.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setInitialMxy(final double initialMxy) throws LockedException {
+<span class="fc bfc" id="L834" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L835">            throw new LockedException();</span>
+        }
+<span class="fc" id="L837">        this.initialMxy = initialMxy;</span>
+<span class="fc" id="L838">    }</span>
+
+    /**
+     * Gets initial x-z cross coupling error.
+     *
+     * @return initial x-z cross coupling error.
+     */
+    @Override
+    public double getInitialMxz() {
+<span class="fc" id="L847">        return initialMxz;</span>
+    }
+
+    /**
+     * Sets initial x-z cross coupling error.
+     *
+     * @param initialMxz initial x-z cross coupling error.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setInitialMxz(final double initialMxz) throws LockedException {
+<span class="fc bfc" id="L858" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L859">            throw new LockedException();</span>
+        }
+<span class="fc" id="L861">        this.initialMxz = initialMxz;</span>
+<span class="fc" id="L862">    }</span>
+
+    /**
+     * Gets initial y-x cross coupling error.
+     *
+     * @return initial y-x cross coupling error.
+     */
+    @Override
+    public double getInitialMyx() {
+<span class="fc" id="L871">        return initialMyx;</span>
+    }
+
+    /**
+     * Sets initial y-x cross coupling error.
+     *
+     * @param initialMyx initial y-x cross coupling error.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setInitialMyx(final double initialMyx) throws LockedException {
+<span class="fc bfc" id="L882" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L883">            throw new LockedException();</span>
+        }
+<span class="fc" id="L885">        this.initialMyx = initialMyx;</span>
+<span class="fc" id="L886">    }</span>
+
+    /**
+     * Gets initial y-z cross coupling error.
+     *
+     * @return initial y-z cross coupling error.
+     */
+    @Override
+    public double getInitialMyz() {
+<span class="fc" id="L895">        return initialMyz;</span>
+    }
+
+    /**
+     * Sets initial y-z cross coupling error.
+     *
+     * @param initialMyz initial y-z cross coupling error.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setInitialMyz(final double initialMyz) throws LockedException {
+<span class="fc bfc" id="L906" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L907">            throw new LockedException();</span>
+        }
+<span class="fc" id="L909">        this.initialMyz = initialMyz;</span>
+<span class="fc" id="L910">    }</span>
+
+    /**
+     * Gets initial z-x cross coupling error.
+     *
+     * @return initial z-x cross coupling error.
+     */
+    @Override
+    public double getInitialMzx() {
+<span class="fc" id="L919">        return initialMzx;</span>
+    }
+
+    /**
+     * Sets initial z-x cross coupling error.
+     *
+     * @param initialMzx initial z-x cross coupling error.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setInitialMzx(final double initialMzx) throws LockedException {
+<span class="fc bfc" id="L930" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L931">            throw new LockedException();</span>
+        }
+<span class="fc" id="L933">        this.initialMzx = initialMzx;</span>
+<span class="fc" id="L934">    }</span>
+
+    /**
+     * Gets initial z-y cross coupling error.
+     *
+     * @return initial z-y cross coupling error.
+     */
+    @Override
+    public double getInitialMzy() {
+<span class="fc" id="L943">        return initialMzy;</span>
+    }
+
+    /**
+     * Sets initial z-y cross coupling error.
+     *
+     * @param initialMzy initial z-y cross coupling error.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setInitialMzy(final double initialMzy) throws LockedException {
+<span class="fc bfc" id="L954" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L955">            throw new LockedException();</span>
+        }
+<span class="fc" id="L957">        this.initialMzy = initialMzy;</span>
+<span class="fc" id="L958">    }</span>
+
+    /**
+     * Sets initial scaling factors.
+     *
+     * @param initialSx initial x scaling factor.
+     * @param initialSy initial y scaling factor.
+     * @param initialSz initial z scaling factor.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setInitialScalingFactors(
+            final double initialSx, final double initialSy, final double initialSz) throws LockedException {
+<span class="fc bfc" id="L971" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L972">            throw new LockedException();</span>
+        }
+<span class="fc" id="L974">        this.initialSx = initialSx;</span>
+<span class="fc" id="L975">        this.initialSy = initialSy;</span>
+<span class="fc" id="L976">        this.initialSz = initialSz;</span>
+<span class="fc" id="L977">    }</span>
+
+    /**
+     * Sets initial cross coupling errors.
+     *
+     * @param initialMxy initial x-y cross coupling error.
+     * @param initialMxz initial x-z cross coupling error.
+     * @param initialMyx initial y-x cross coupling error.
+     * @param initialMyz initial y-z cross coupling error.
+     * @param initialMzx initial z-x cross coupling error.
+     * @param initialMzy initial z-y cross coupling error.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setInitialCrossCouplingErrors(
+            final double initialMxy, final double initialMxz, final double initialMyx,
+            final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
+<span class="fc bfc" id="L994" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L995">            throw new LockedException();</span>
+        }
+<span class="fc" id="L997">        this.initialMxy = initialMxy;</span>
+<span class="fc" id="L998">        this.initialMxz = initialMxz;</span>
+<span class="fc" id="L999">        this.initialMyx = initialMyx;</span>
+<span class="fc" id="L1000">        this.initialMyz = initialMyz;</span>
+<span class="fc" id="L1001">        this.initialMzx = initialMzx;</span>
+<span class="fc" id="L1002">        this.initialMzy = initialMzy;</span>
+<span class="fc" id="L1003">    }</span>
+
+    /**
+     * Sets initial scaling factors and cross coupling errors.
+     *
+     * @param initialSx  initial x scaling factor.
+     * @param initialSy  initial y scaling factor.
+     * @param initialSz  initial z scaling factor.
+     * @param initialMxy initial x-y cross coupling error.
+     * @param initialMxz initial x-z cross coupling error.
+     * @param initialMyx initial y-x cross coupling error.
+     * @param initialMyz initial y-z cross coupling error.
+     * @param initialMzx initial z-x cross coupling error.
+     * @param initialMzy initial z-y cross coupling error.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setInitialScalingFactorsAndCrossCouplingErrors(
+            final double initialSx, final double initialSy, final double initialSz,
+            final double initialMxy, final double initialMxz, final double initialMyx,
+            final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
+<span class="fc bfc" id="L1024" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1025">            throw new LockedException();</span>
+        }
+<span class="fc" id="L1027">        setInitialScalingFactors(initialSx, initialSy, initialSz);</span>
+<span class="fc" id="L1028">        setInitialCrossCouplingErrors(initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);</span>
+<span class="fc" id="L1029">    }</span>
+
+    /**
+     * Gets known hard-iron bias as an array.
+     * Array values are expressed in Teslas (T).
+     *
+     * @return array containing coordinates of initial bias.
+     */
+    @Override
+    public double[] getHardIron() {
+<span class="fc" id="L1039">        final var result = new double[BodyMagneticFluxDensity.COMPONENTS];</span>
+<span class="fc" id="L1040">        getHardIron(result);</span>
+<span class="fc" id="L1041">        return result;</span>
+    }
+
+    /**
+     * Gets known hard-iron bias as an array.
+     * Array values are expressed in Teslas (T).
+     *
+     * @param result instance where result data will be copied to.
+     * @throws IllegalArgumentException if provided array does not have
+     *                                  length 3.
+     */
+    @Override
+    public void getHardIron(final double[] result) {
+<span class="fc bfc" id="L1054" title="All 2 branches covered.">        if (result.length != BodyMagneticFluxDensity.COMPONENTS) {</span>
+<span class="fc" id="L1055">            throw new IllegalArgumentException();</span>
+        }
+<span class="fc" id="L1057">        result[0] = hardIronX;</span>
+<span class="fc" id="L1058">        result[1] = hardIronY;</span>
+<span class="fc" id="L1059">        result[2] = hardIronZ;</span>
+<span class="fc" id="L1060">    }</span>
+
+    /**
+     * Sets known hard-iron bias as an array.
+     * Array values are expressed in Teslas (T).
+     *
+     * @param hardIron known hard-iron bias.
+     * @throws LockedException          if calibrator is currently running.
+     * @throws IllegalArgumentException if provided array does not have
+     *                                  length 3.
+     */
+    @Override
+    public void setHardIron(final double[] hardIron) throws LockedException {
+<span class="fc bfc" id="L1073" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1074">            throw new LockedException();</span>
+        }
+
+<span class="fc bfc" id="L1077" title="All 2 branches covered.">        if (hardIron.length != BodyMagneticFluxDensity.COMPONENTS) {</span>
+<span class="fc" id="L1078">            throw new IllegalArgumentException();</span>
+        }
+<span class="fc" id="L1080">        hardIronX = hardIron[0];</span>
+<span class="fc" id="L1081">        hardIronY = hardIron[1];</span>
+<span class="fc" id="L1082">        hardIronZ = hardIron[2];</span>
+<span class="fc" id="L1083">    }</span>
+
+    /**
+     * Gets known hard-iron bias as a column matrix.
+     *
+     * @return hard-iron bias as a column matrix.
+     */
+    @Override
+    public Matrix getHardIronMatrix() {
+        Matrix result;
+        try {
+<span class="fc" id="L1094">            result = new Matrix(BodyMagneticFluxDensity.COMPONENTS, 1);</span>
+<span class="fc" id="L1095">            getHardIronMatrix(result);</span>
+<span class="nc" id="L1096">        } catch (final WrongSizeException ignore) {</span>
+            // never happens
+<span class="nc" id="L1098">            result = null;</span>
+<span class="fc" id="L1099">        }</span>
+<span class="fc" id="L1100">        return result;</span>
+    }
+
+    /**
+     * Gets known hard-iron bias as a column matrix.
+     *
+     * @param result instance where result data will be copied to.
+     * @throws IllegalArgumentException if provided matrix is not 3x1.
+     */
+    @Override
+    public void getHardIronMatrix(final Matrix result) {
+<span class="fc bfc" id="L1111" title="All 4 branches covered.">        if (result.getRows() != BodyMagneticFluxDensity.COMPONENTS || result.getColumns() != 1) {</span>
+<span class="fc" id="L1112">            throw new IllegalArgumentException();</span>
+        }
+<span class="fc" id="L1114">        result.setElementAtIndex(0, hardIronX);</span>
+<span class="fc" id="L1115">        result.setElementAtIndex(1, hardIronY);</span>
+<span class="fc" id="L1116">        result.setElementAtIndex(2, hardIronZ);</span>
+<span class="fc" id="L1117">    }</span>
+
+    /**
+     * Sets known hard-iron bias.
+     *
+     * @param hardIron magnetometer hard-iron bias to be set.
+     * @throws LockedException          if calibrator is currently running.
+     * @throws IllegalArgumentException if provided matrix is not 3x1.
+     */
+    @Override
+    public void setHardIron(final Matrix hardIron) throws LockedException {
+<span class="fc bfc" id="L1128" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1129">            throw new LockedException();</span>
+        }
+<span class="pc bpc" id="L1131" title="1 of 4 branches missed.">        if (hardIron.getRows() != BodyMagneticFluxDensity.COMPONENTS || hardIron.getColumns() != 1) {</span>
+<span class="fc" id="L1132">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L1135">        hardIronX = hardIron.getElementAtIndex(0);</span>
+<span class="fc" id="L1136">        hardIronY = hardIron.getElementAtIndex(1);</span>
+<span class="fc" id="L1137">        hardIronZ = hardIron.getElementAtIndex(2);</span>
+<span class="fc" id="L1138">    }</span>
+
+    /**
+     * Gets initial scale factors and cross coupling errors matrix.
+     *
+     * @return initial scale factors and cross coupling errors matrix.
+     */
+    @Override
+    public Matrix getInitialMm() {
+        Matrix result;
+        try {
+<span class="fc" id="L1149">            result = new Matrix(BodyMagneticFluxDensity.COMPONENTS, BodyMagneticFluxDensity.COMPONENTS);</span>
+<span class="fc" id="L1150">            getInitialMm(result);</span>
+<span class="nc" id="L1151">        } catch (final WrongSizeException ignore) {</span>
+            // never happens
+<span class="nc" id="L1153">            result = null;</span>
+<span class="fc" id="L1154">        }</span>
+<span class="fc" id="L1155">        return result;</span>
+    }
+
+    /**
+     * Gets initial scale factors and cross coupling errors matrix.
+     *
+     * @param result instance where data will be stored.
+     * @throws IllegalArgumentException if provided matrix is not 3x3.
+     */
+    @Override
+    public void getInitialMm(final Matrix result) {
+<span class="pc bpc" id="L1166" title="2 of 4 branches missed.">        if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != BodyKinematics.COMPONENTS) {</span>
+<span class="nc" id="L1167">            throw new IllegalArgumentException();</span>
+        }
+<span class="fc" id="L1169">        result.setElementAtIndex(0, initialSx);</span>
+<span class="fc" id="L1170">        result.setElementAtIndex(1, initialMyx);</span>
+<span class="fc" id="L1171">        result.setElementAtIndex(2, initialMzx);</span>
+
+<span class="fc" id="L1173">        result.setElementAtIndex(3, initialMxy);</span>
+<span class="fc" id="L1174">        result.setElementAtIndex(4, initialSy);</span>
+<span class="fc" id="L1175">        result.setElementAtIndex(5, initialMzy);</span>
+
+<span class="fc" id="L1177">        result.setElementAtIndex(6, initialMxz);</span>
+<span class="fc" id="L1178">        result.setElementAtIndex(7, initialMyz);</span>
+<span class="fc" id="L1179">        result.setElementAtIndex(8, initialSz);</span>
+<span class="fc" id="L1180">    }</span>
+
+    /**
+     * Sets initial scale factors and cross coupling errors matrix.
+     *
+     * @param initialMm initial scale factors and cross coupling errors matrix.
+     * @throws IllegalArgumentException if provided matrix is not 3x3.
+     * @throws LockedException          if calibrator is currently running.
+     */
+    @Override
+    public void setInitialMm(final Matrix initialMm) throws LockedException {
+<span class="fc bfc" id="L1191" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1192">            throw new LockedException();</span>
+        }
+<span class="pc bpc" id="L1194" title="2 of 4 branches missed.">        if (initialMm.getRows() != BodyKinematics.COMPONENTS || initialMm.getColumns() != BodyKinematics.COMPONENTS) {</span>
+<span class="nc" id="L1195">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L1198">        initialSx = initialMm.getElementAtIndex(0);</span>
+<span class="fc" id="L1199">        initialMyx = initialMm.getElementAtIndex(1);</span>
+<span class="fc" id="L1200">        initialMzx = initialMm.getElementAtIndex(2);</span>
+
+<span class="fc" id="L1202">        initialMxy = initialMm.getElementAtIndex(3);</span>
+<span class="fc" id="L1203">        initialSy = initialMm.getElementAtIndex(4);</span>
+<span class="fc" id="L1204">        initialMzy = initialMm.getElementAtIndex(5);</span>
+
+<span class="fc" id="L1206">        initialMxz = initialMm.getElementAtIndex(6);</span>
+<span class="fc" id="L1207">        initialMyz = initialMm.getElementAtIndex(7);</span>
+<span class="fc" id="L1208">        initialSz = initialMm.getElementAtIndex(8);</span>
+<span class="fc" id="L1209">    }</span>
+
+    /**
+     * Gets a list of body magnetic flux density measurements taken at different
+     * frames (positions, orientations and velocities).
+     * If a single device IMU needs to be calibrated, typically all measurements are
+     * taken at the same position, with zero velocity and multiple orientations.
+     * However, if we just want to calibrate a given IMU model (e.g. obtain
+     * an average and less precise calibration for the IMU of a given phone model),
+     * we could take measurements collected throughout the planet at multiple positions
+     * while the phone remains static (e.g. while charging), hence each measurement
+     * position will change, velocity will remain zero and orientation will be
+     * typically constant at horizontal orientation while the phone remains on a
+     * flat surface.
+     *
+     * @return a collection of body magnetic flux density measurements taken at different
+     * frames (positions, orientations and velocities).
+     */
+    @Override
+    public List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; getMeasurements() {
+<span class="fc" id="L1229">        return measurements;</span>
+    }
+
+    /**
+     * Sets a list of body magnetic flux density measurements taken at different
+     * frames (positions, orientations and velocities).
+     * If a single device IMU needs to be calibrated, typically all measurements are
+     * taken at the same position, with zero velocity and multiple orientations.
+     * However, if we just want to calibrate the a given IMU model (e.g. obtain
+     * an average and less precise calibration for the IMU of a given phone model),
+     * we could take measurements collected throughout the planet at multiple positions
+     * while the phone remains static (e.g. while charging), hence each measurement
+     * position will change, velocity will remain zero and orientation will be
+     * typically constant at horizontal orientation while the phone remains on a
+     * flat surface.
+     *
+     * @param measurements collection of body magnetic flux density measurements
+     *                     taken at different frames (positions, orientations
+     *                     and velocities).
+     * @throws LockedException if estimator is currently running.
+     */
+    @Override
+    public void setMeasurements(
+            final List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements) throws LockedException {
+<span class="fc bfc" id="L1253" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1254">            throw new LockedException();</span>
+        }
+<span class="fc" id="L1256">        this.measurements = measurements;</span>
+<span class="fc" id="L1257">    }</span>
+
+    /**
+     * Indicates the type of measurement used by this calibrator.
+     *
+     * @return type of measurement used by this calibrator.
+     */
+    @Override
+    public MagnetometerCalibratorMeasurementType getMeasurementType() {
+<span class="fc" id="L1266">        return MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_FRAME_BODY_MAGNETIC_FLUX_DENSITY;</span>
+    }
+
+    /**
+     * Indicates whether this calibrator requires ordered measurements in a
+     * list or not.
+     *
+     * @return true if measurements must be ordered, false otherwise.
+     */
+    @Override
+    public boolean isOrderedMeasurementsRequired() {
+<span class="fc" id="L1277">        return true;</span>
+    }
+
+    /**
+     * Indicates whether z-axis is assumed to be common for accelerometer,
+     * gyroscope and magnetometer.
+     * When enabled, this eliminates 3 variables from Mm (soft-iron) matrix.
+     *
+     * @return true if z-axis is assumed to be common for accelerometer,
+     * gyroscope and magnetometer, false otherwise.
+     */
+    @Override
+    public boolean isCommonAxisUsed() {
+<span class="fc" id="L1290">        return commonAxisUsed;</span>
+    }
+
+    /**
+     * Specifies whether z-axis is assumed to be common for accelerometer and
+     * gyroscope.
+     * When enabled, this eliminates 3 variables from Mm matrix.
+     *
+     * @param commonAxisUsed true if z-axis is assumed to be common for
+     *                       accelerometer, gyroscope and magnetometer, false
+     *                       otherwise.
+     * @throws LockedException if estimator is currently running.
+     */
+    @Override
+    public void setCommonAxisUsed(final boolean commonAxisUsed) throws LockedException {
+<span class="fc bfc" id="L1305" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1306">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L1309">        this.commonAxisUsed = commonAxisUsed;</span>
+<span class="fc" id="L1310">    }</span>
+
+    /**
+     * Gets listener to handle events raised by this calibrator.
+     *
+     * @return listener to handle events raised by this calibrator.
+     */
+    public RobustKnownHardIronAndFrameMagnetometerCalibratorListener getListener() {
+<span class="fc" id="L1318">        return listener;</span>
+    }
+
+    /**
+     * Sets listener to handle events raised by this calibrator.
+     *
+     * @param listener listener to handle events raised by this calibrator.
+     * @throws LockedException if calibrator is currently running.
+     */
+    public void setListener(
+            final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener) throws LockedException {
+<span class="fc bfc" id="L1329" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1330">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L1333">        this.listener = listener;</span>
+<span class="fc" id="L1334">    }</span>
+
+    /**
+     * Gets minimum number of required measurements.
+     *
+     * @return minimum number of required measurements.
+     */
+    @Override
+    public int getMinimumRequiredMeasurements() {
+<span class="fc" id="L1343">        return MINIMUM_MEASUREMENTS;</span>
+    }
+
+    /**
+     * Indicates whether calibrator is ready to start the estimator.
+     *
+     * @return true if calibrator is ready, false otherwise.
+     */
+    @Override
+    public boolean isReady() {
+<span class="fc bfc" id="L1353" title="All 4 branches covered.">        return measurements != null &amp;&amp; measurements.size() &gt;= MINIMUM_MEASUREMENTS;</span>
+    }
+
+    /**
+     * Indicates whether calibrator is currently running or no.
+     *
+     * @return true if calibrator is running, false otherwise.
+     */
+    @Override
+    public boolean isRunning() {
+<span class="fc" id="L1363">        return running;</span>
+    }
+
+    /**
+     * Gets Earth's magnetic model.
+     *
+     * @return Earth's magnetic model or null if not provided.
+     */
+    public WorldMagneticModel getMagneticModel() {
+<span class="fc" id="L1372">        return magneticModel;</span>
+    }
+
+    /**
+     * Sets Earth's magnetic model.
+     *
+     * @param magneticModel Earth's magnetic model to be set.
+     * @throws LockedException if calibrator is currently running.
+     */
+    public void setMagneticModel(final WorldMagneticModel magneticModel) throws LockedException {
+<span class="fc bfc" id="L1382" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1383">            throw new LockedException();</span>
+        }
+<span class="fc" id="L1385">        this.magneticModel = magneticModel;</span>
+<span class="fc" id="L1386">    }</span>
+
+    /**
+     * Indicates whether a linear calibrator is used or not for preliminary
+     * solutions.
+     *
+     * @return indicates whether a linear calibrator is used or not for
+     * preliminary solutions.
+     */
+    public boolean isLinearCalibratorUsed() {
+<span class="fc" id="L1396">        return useLinearCalibrator;</span>
+    }
+
+    /**
+     * Specifies whether a linear calibrator is used or not for preliminary
+     * solutions.
+     *
+     * @param linearCalibratorUsed indicates whether a linear calibrator is used
+     *                             or not for preliminary solutions.
+     * @throws LockedException if calibrator is currently running.
+     */
+    public void setLinearCalibratorUsed(final boolean linearCalibratorUsed) throws LockedException {
+<span class="fc bfc" id="L1408" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1409">            throw new LockedException();</span>
+        }
+<span class="fc" id="L1411">        useLinearCalibrator = linearCalibratorUsed;</span>
+<span class="fc" id="L1412">    }</span>
+
+    /**
+     * Indicates whether preliminary solutions must be refined after an initial linear solution is found.
+     * If no initial solution is found using a linear solver, a non linear solver will be
+     * used regardless of this value using an average solution as the initial value to be
+     * refined.
+     *
+     * @return true if preliminary solutions must be refined after an initial linear solution, false
+     * otherwise.
+     */
+    public boolean isPreliminarySolutionRefined() {
+<span class="fc" id="L1424">        return refinePreliminarySolutions;</span>
+    }
+
+    /**
+     * Specifies whether preliminary solutions must be refined after an initial linear solution is found.
+     * If no initial solution is found using a linear solver, a non linear solver will be
+     * used regardless of this value using an average solution as the initial value to be
+     * refined.
+     *
+     * @param preliminarySolutionRefined true if preliminary solutions must be refined after an
+     *                                   initial linear solution, false otherwise.
+     * @throws LockedException if calibrator is currently running.
+     */
+    public void setPreliminarySolutionRefined(final boolean preliminarySolutionRefined) throws LockedException {
+<span class="fc bfc" id="L1438" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1439">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L1442">        refinePreliminarySolutions = preliminarySolutionRefined;</span>
+<span class="fc" id="L1443">    }</span>
+
+    /**
+     * Returns amount of progress variation before notifying a progress change during
+     * calibration.
+     *
+     * @return amount of progress variation before notifying a progress change during
+     * calibration.
+     */
+    public float getProgressDelta() {
+<span class="fc" id="L1453">        return progressDelta;</span>
+    }
+
+    /**
+     * Sets amount of progress variation before notifying a progress change during
+     * calibration.
+     *
+     * @param progressDelta amount of progress variation before notifying a progress
+     *                      change during calibration.
+     * @throws IllegalArgumentException if progress delta is less than zero or greater than 1.
+     * @throws LockedException          if calibrator is currently running.
+     */
+    public void setProgressDelta(final float progressDelta) throws LockedException {
+<span class="fc bfc" id="L1466" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1467">            throw new LockedException();</span>
+        }
+<span class="fc bfc" id="L1469" title="All 4 branches covered.">        if (progressDelta &lt; MIN_PROGRESS_DELTA || progressDelta &gt; MAX_PROGRESS_DELTA) {</span>
+<span class="fc" id="L1470">            throw new IllegalArgumentException();</span>
+        }
+<span class="fc" id="L1472">        this.progressDelta = progressDelta;</span>
+<span class="fc" id="L1473">    }</span>
+
+    /**
+     * Returns amount of confidence expressed as a value between 0.0 and 1.0
+     * (which is equivalent to 100%). The amount of confidence indicates the probability
+     * that the estimated result is correct. Usually this value will be close to 1.0, but
+     * not exactly 1.0.
+     *
+     * @return amount of confidence as a value between 0.0 and 1.0.
+     */
+    public double getConfidence() {
+<span class="fc" id="L1484">        return confidence;</span>
+    }
+
+    /**
+     * Sets amount of confidence expressed as a value between 0.0 and 1.0 (which is
+     * equivalent to 100%). The amount of confidence indicates the probability that
+     * the estimated result is correct. Usually this value will be close to 1.0, but
+     * not exactly 1.0.
+     *
+     * @param confidence confidence to be set as a value between 0.0 and 1.0.
+     * @throws IllegalArgumentException if provided value is not between 0.0 and 1.0.
+     * @throws LockedException          if calibrator is currently running.
+     */
+    public void setConfidence(final double confidence) throws LockedException {
+<span class="fc bfc" id="L1498" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1499">            throw new LockedException();</span>
+        }
+<span class="fc bfc" id="L1501" title="All 4 branches covered.">        if (confidence &lt; MIN_CONFIDENCE || confidence &gt; MAX_CONFIDENCE) {</span>
+<span class="fc" id="L1502">            throw new IllegalArgumentException();</span>
+        }
+<span class="fc" id="L1504">        this.confidence = confidence;</span>
+<span class="fc" id="L1505">    }</span>
+
+    /**
+     * Returns maximum allowed number of iterations. If maximum allowed number of
+     * iterations is achieved without converging to a result when calling calibrate(),
+     * a RobustEstimatorException will be raised.
+     *
+     * @return maximum allowed number of iterations.
+     */
+    public int getMaxIterations() {
+<span class="fc" id="L1515">        return maxIterations;</span>
+    }
+
+    /**
+     * Sets maximum allowed number of iterations. When the maximum number of iterations
+     * is exceeded, result will not be available, however an approximate result will be
+     * available for retrieval.
+     *
+     * @param maxIterations maximum allowed number of iterations to be set.
+     * @throws IllegalArgumentException if provided value is less than 1.
+     * @throws LockedException          if calibrator is currently running.
+     */
+    public void setMaxIterations(final int maxIterations) throws LockedException {
+<span class="fc bfc" id="L1528" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1529">            throw new LockedException();</span>
+        }
+<span class="fc bfc" id="L1531" title="All 2 branches covered.">        if (maxIterations &lt; MIN_ITERATIONS) {</span>
+<span class="fc" id="L1532">            throw new IllegalArgumentException();</span>
+        }
+<span class="fc" id="L1534">        this.maxIterations = maxIterations;</span>
+<span class="fc" id="L1535">    }</span>
+
+    /**
+     * Gets data related to inliers found after estimation.
+     *
+     * @return data related to inliers found after estimation.
+     */
+    public InliersData getInliersData() {
+<span class="fc" id="L1543">        return inliersData;</span>
+    }
+
+    /**
+     * Indicates whether result must be refined using a non-linear solver over found inliers.
+     *
+     * @return true to refine result, false to simply use result found by robust estimator
+     * without further refining.
+     */
+    public boolean isResultRefined() {
+<span class="fc" id="L1553">        return refineResult;</span>
+    }
+
+    /**
+     * Specifies whether result must be refined using a non-linear solver over found inliers.
+     *
+     * @param refineResult true to refine result, false to simply use result found by robust
+     *                     estimator without further refining.
+     * @throws LockedException if calibrator is currently running.
+     */
+    public void setResultRefined(final boolean refineResult) throws LockedException {
+<span class="fc bfc" id="L1564" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1565">            throw new LockedException();</span>
+        }
+<span class="fc" id="L1567">        this.refineResult = refineResult;</span>
+<span class="fc" id="L1568">    }</span>
+
+    /**
+     * Indicates whether covariance must be kept after refining result.
+     * This setting is only taken into account if result is refined.
+     *
+     * @return true if covariance must be kept after refining result, false otherwise.
+     */
+    public boolean isCovarianceKept() {
+<span class="fc" id="L1577">        return keepCovariance;</span>
+    }
+
+    /**
+     * Specifies whether covariance must be kept after refining result.
+     * This setting is only taken into account if result is refined.
+     *
+     * @param keepCovariance true if covariance must be kept after refining result,
+     *                       false otherwise.
+     * @throws LockedException if calibrator is currently running.
+     */
+    public void setCovarianceKept(final boolean keepCovariance) throws LockedException {
+<span class="fc bfc" id="L1589" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1590">            throw new LockedException();</span>
+        }
+<span class="fc" id="L1592">        this.keepCovariance = keepCovariance;</span>
+<span class="fc" id="L1593">    }</span>
+
+    /**
+     * Returns quality scores corresponding to each measurement.
+     * The larger the score value the better the quality of the sample.
+     * This implementation always returns null.
+     * Subclasses using quality scores must implement proper behavior.
+     *
+     * @return quality scores corresponding to each sample.
+     */
+    @Override
+    public double[] getQualityScores() {
+<span class="fc" id="L1605">        return null;</span>
+    }
+
+    /**
+     * Sets quality scores corresponding to each measurement.
+     * The larger the score value the better the quality of the sample.
+     * This implementation makes no action.
+     * Subclasses using quality scores must implement proper behaviour.
+     *
+     * @param qualityScores quality scores corresponding to each pair of
+     *                      matched points.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than minimum required samples.
+     * @throws LockedException          if calibrator is currently running.
+     */
+    @Override
+    public void setQualityScores(final double[] qualityScores) throws LockedException {
+<span class="fc" id="L1622">    }</span>
+
+    /**
+     * Gets estimated magnetometer soft-iron matrix containing scale factors
+     * and cross coupling errors.
+     * This is the product of matrix Tm containing cross coupling errors and Km
+     * containing scaling factors.
+     * So tat:
+     * &lt;pre&gt;
+     *     Mm = [sx    mxy  mxz] = Tm*Km
+     *          [myx   sy   myz]
+     *          [mzx   mzy  sz ]
+     * &lt;/pre&gt;
+     * Where:
+     * &lt;pre&gt;
+     *     Km = [sx 0   0 ]
+     *          [0  sy  0 ]
+     *          [0  0   sz]
+     * &lt;/pre&gt;
+     * and
+     * &lt;pre&gt;
+     *     Tm = [1          -alphaXy    alphaXz ]
+     *          [alphaYx    1           -alphaYz]
+     *          [-alphaZx   alphaZy     1       ]
+     * &lt;/pre&gt;
+     * Hence:
+     * &lt;pre&gt;
+     *     Mm = [sx    mxy  mxz] = Tm*Km =  [sx             -sy * alphaXy   sz * alphaXz ]
+     *          [myx   sy   myz]            [sx * alphaYx   sy              -sz * alphaYz]
+     *          [mzx   mzy  sz ]            [-sx * alphaZx  sy * alphaZy    sz           ]
+     * &lt;/pre&gt;
+     * This instance allows any 3x3 matrix however, typically alphaYx, alphaZx and alphaZy
+     * are considered to be zero if the accelerometer z-axis is assumed to be the same
+     * as the body z-axis. When this is assumed, myx = mzx = mzy = 0 and the Mm matrix
+     * becomes upper diagonal:
+     * &lt;pre&gt;
+     *     Mm = [sx    mxy  mxz]
+     *          [0     sy   myz]
+     *          [0     0    sz ]
+     * &lt;/pre&gt;
+     * Values of this matrix are unit-less.
+     *
+     * @return estimated magnetometer soft-iron scale factors and cross coupling errors,
+     * or null if not available.
+     */
+    @Override
+    public Matrix getEstimatedMm() {
+<span class="fc" id="L1669">        return estimatedMm;</span>
+    }
+
+    /**
+     * Gets estimated x-axis scale factor.
+     *
+     * @return estimated x-axis scale factor or null if not available.
+     */
+    @Override
+    public Double getEstimatedSx() {
+<span class="fc bfc" id="L1679" title="All 2 branches covered.">        return estimatedMm != null ? estimatedMm.getElementAt(0, 0) : null;</span>
+    }
+
+    /**
+     * Gets estimated y-axis scale factor.
+     *
+     * @return estimated y-axis scale factor or null if not available.
+     */
+    @Override
+    public Double getEstimatedSy() {
+<span class="fc bfc" id="L1689" title="All 2 branches covered.">        return estimatedMm != null ? estimatedMm.getElementAt(1, 1) : null;</span>
+    }
+
+    /**
+     * Gets estimated z-axis scale factor.
+     *
+     * @return estimated z-axis scale factor or null if not available.
+     */
+    @Override
+    public Double getEstimatedSz() {
+<span class="fc bfc" id="L1699" title="All 2 branches covered.">        return estimatedMm != null ? estimatedMm.getElementAt(2, 2) : null;</span>
+    }
+
+    /**
+     * Gets estimated x-y cross-coupling error.
+     *
+     * @return estimated x-y cross-coupling error or null if not available.
+     */
+    @Override
+    public Double getEstimatedMxy() {
+<span class="fc bfc" id="L1709" title="All 2 branches covered.">        return estimatedMm != null ? estimatedMm.getElementAt(0, 1) : null;</span>
+    }
+
+    /**
+     * Gets estimated x-z cross-coupling error.
+     *
+     * @return estimated x-z cross-coupling error or null if not available.
+     */
+    @Override
+    public Double getEstimatedMxz() {
+<span class="fc bfc" id="L1719" title="All 2 branches covered.">        return estimatedMm != null ? estimatedMm.getElementAt(0, 2) : null;</span>
+    }
+
+    /**
+     * Gets estimated y-x cross-coupling error.
+     *
+     * @return estimated y-x cross-coupling error or null if not available.
+     */
+    @Override
+    public Double getEstimatedMyx() {
+<span class="fc bfc" id="L1729" title="All 2 branches covered.">        return estimatedMm != null ? estimatedMm.getElementAt(1, 0) : null;</span>
+    }
+
+    /**
+     * Gets estimated y-z cross-coupling error.
+     *
+     * @return estimated y-z cross-coupling error or null if not available.
+     */
+    @Override
+    public Double getEstimatedMyz() {
+<span class="fc bfc" id="L1739" title="All 2 branches covered.">        return estimatedMm != null ? estimatedMm.getElementAt(1, 2) : null;</span>
+    }
+
+    /**
+     * Gets estimated z-x cross-coupling error.
+     *
+     * @return estimated z-x cross-coupling error or null if not available.
+     */
+    @Override
+    public Double getEstimatedMzx() {
+<span class="fc bfc" id="L1749" title="All 2 branches covered.">        return estimatedMm != null ? estimatedMm.getElementAt(2, 0) : null;</span>
+    }
+
+    /**
+     * Gets estimated z-y cross-coupling error.
+     *
+     * @return estimated z-y cross-coupling error or null if not available.
+     */
+    @Override
+    public Double getEstimatedMzy() {
+<span class="fc bfc" id="L1759" title="All 2 branches covered.">        return estimatedMm != null ? estimatedMm.getElementAt(2, 1) : null;</span>
+    }
+
+    /**
+     * Gets estimated chi square value.
+     *
+     * @return estimated chi square value.
+     */
+    @Override
+    public double getEstimatedChiSq() {
+<span class="fc" id="L1769">        return estimatedChiSq;</span>
+    }
+
+    /**
+     * Gets estimated mean square error respect to provided measurements.
+     *
+     * @return estimated mean square error respect to provided measurements.
+     */
+    @Override
+    public double getEstimatedMse() {
+<span class="fc" id="L1779">        return estimatedMse;</span>
+    }
+
+    /**
+     * Gets estimated covariance matrix for estimated calibration parameters.
+     * Diagonal elements of the matrix contains variance for the following
+     * parameters (following indicated order): sx, sy, sz, mxy, mxz, myx,
+     * myz, mzx, mzy.
+     *
+     * @return estimated covariance matrix for estimated position.
+     */
+    @Override
+    public Matrix getEstimatedCovariance() {
+<span class="fc" id="L1792">        return estimatedCovariance;</span>
+    }
+
+    /**
+     * Gets size of subsets to be checked during robust estimation.
+     * This has to be at least {@link #MINIMUM_MEASUREMENTS}.
+     *
+     * @return size of subsets to be checked during robust estimation.
+     */
+    public int getPreliminarySubsetSize() {
+<span class="fc" id="L1802">        return preliminarySubsetSize;</span>
+    }
+
+    /**
+     * Sets size of subsets to be checked during robust estimation.
+     * This has to be at least {@link #MINIMUM_MEASUREMENTS}.
+     *
+     * @param preliminarySubsetSize size of subsets to be checked during robust estimation.
+     * @throws LockedException          if calibrator is currently running.
+     * @throws IllegalArgumentException if provided value is less than {@link #MINIMUM_MEASUREMENTS}.
+     */
+    public void setPreliminarySubsetSize(final int preliminarySubsetSize) throws LockedException {
+<span class="pc bpc" id="L1814" title="1 of 2 branches missed.">        if (running) {</span>
+<span class="nc" id="L1815">            throw new LockedException();</span>
+        }
+<span class="fc bfc" id="L1817" title="All 2 branches covered.">        if (preliminarySubsetSize &lt; MINIMUM_MEASUREMENTS) {</span>
+<span class="fc" id="L1818">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L1821">        this.preliminarySubsetSize = preliminarySubsetSize;</span>
+<span class="fc" id="L1822">    }</span>
+
+    /**
+     * Returns method being used for robust estimation.
+     *
+     * @return method being used for robust estimation.
+     */
+    public abstract RobustEstimatorMethod getMethod();
+
+
+    /**
+     * Creates a robust known frame magnetometer calibrator.
+     *
+     * @param method robust estimator method.
+     * @return a robust known frame magnetometer calibrator.
+     */
+    public static RobustKnownHardIronAndFrameMagnetometerCalibrator create(final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L1839" title="All 5 branches covered.">        return switch (method) {</span>
+<span class="fc" id="L1840">            case RANSAC -&gt; new RANSACRobustKnownHardIronAndFrameMagnetometerCalibrator();</span>
+<span class="fc" id="L1841">            case LMEDS -&gt; new LMedSRobustKnownHardIronAndFrameMagnetometerCalibrator();</span>
+<span class="fc" id="L1842">            case MSAC -&gt; new MSACRobustKnownHardIronAndFrameMagnetometerCalibrator();</span>
+<span class="fc" id="L1843">            case PROSAC -&gt; new PROSACRobustKnownHardIronAndFrameMagnetometerCalibrator();</span>
+<span class="fc" id="L1844">            default -&gt; new PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator();</span>
+        };
+    }
+
+    /**
+     * Creates a robust known frame magnetometer calibrator.
+     *
+     * @param listener listener to be notified of events such as when estimation
+     *                 starts, ends or its progress significantly changes.
+     * @param method   robust estimator method.
+     * @return a robust known frame magnetometer calibrator.
+     */
+    public static RobustKnownHardIronAndFrameMagnetometerCalibrator create(
+            final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L1859" title="All 5 branches covered.">        return switch (method) {</span>
+<span class="fc" id="L1860">            case RANSAC -&gt; new RANSACRobustKnownHardIronAndFrameMagnetometerCalibrator(listener);</span>
+<span class="fc" id="L1861">            case LMEDS -&gt; new LMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(listener);</span>
+<span class="fc" id="L1862">            case MSAC -&gt; new MSACRobustKnownHardIronAndFrameMagnetometerCalibrator(listener);</span>
+<span class="fc" id="L1863">            case PROSAC -&gt; new PROSACRobustKnownHardIronAndFrameMagnetometerCalibrator(listener);</span>
+<span class="fc" id="L1864">            default -&gt; new PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(listener);</span>
+        };
+    }
+
+    /**
+     * Creates a robust known frame magnetometer calibrator.
+     *
+     * @param measurements list of body magnetic flux density measurements with standard
+     *                     deviations taken at different frames (positions and
+     *                     orientations).
+     * @param method       robust estimator method.
+     * @return a robust known frame magnetometer calibrator.
+     */
+    public static RobustKnownHardIronAndFrameMagnetometerCalibrator create(
+            final List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L1880" title="All 5 branches covered.">        return switch (method) {</span>
+<span class="fc" id="L1881">            case RANSAC -&gt; new RANSACRobustKnownHardIronAndFrameMagnetometerCalibrator(measurements);</span>
+<span class="fc" id="L1882">            case LMEDS -&gt; new LMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(measurements);</span>
+<span class="fc" id="L1883">            case MSAC -&gt; new MSACRobustKnownHardIronAndFrameMagnetometerCalibrator(measurements);</span>
+<span class="fc" id="L1884">            case PROSAC -&gt; new PROSACRobustKnownHardIronAndFrameMagnetometerCalibrator(measurements);</span>
+<span class="fc" id="L1885">            default -&gt; new PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(measurements);</span>
+        };
+    }
+
+    /**
+     * Creates a robust known frame magnetometer calibrator.
+     *
+     * @param measurements list of body magnetic flux density measurements with standard
+     *                     deviations taken at different frames (positions and
+     *                     orientations).
+     * @param listener     listener to handle events raised by this calibrator.
+     * @param method       robust estimator method.
+     * @return a robust known frame magnetometer calibrator.
+     */
+    public static RobustKnownHardIronAndFrameMagnetometerCalibrator create(
+            final List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements,
+            final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L1903" title="All 5 branches covered.">        return switch (method) {</span>
+<span class="fc" id="L1904">            case RANSAC -&gt; new RANSACRobustKnownHardIronAndFrameMagnetometerCalibrator(measurements, listener);</span>
+<span class="fc" id="L1905">            case LMEDS -&gt; new LMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(measurements, listener);</span>
+<span class="fc" id="L1906">            case MSAC -&gt; new MSACRobustKnownHardIronAndFrameMagnetometerCalibrator(measurements, listener);</span>
+<span class="fc" id="L1907">            case PROSAC -&gt; new PROSACRobustKnownHardIronAndFrameMagnetometerCalibrator(measurements, listener);</span>
+<span class="fc" id="L1908">            default -&gt; new PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(measurements, listener);</span>
+        };
+    }
+
+    /**
+     * Creates a robust known frame magnetometer calibrator.
+     *
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     * @param method         robust estimator method.
+     * @return a robust known frame magnetometer calibrator.
+     */
+    public static RobustKnownHardIronAndFrameMagnetometerCalibrator create(
+            final boolean commonAxisUsed, final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L1922" title="All 5 branches covered.">        return switch (method) {</span>
+<span class="fc" id="L1923">            case RANSAC -&gt; new RANSACRobustKnownHardIronAndFrameMagnetometerCalibrator(commonAxisUsed);</span>
+<span class="fc" id="L1924">            case LMEDS -&gt; new LMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(commonAxisUsed);</span>
+<span class="fc" id="L1925">            case MSAC -&gt; new MSACRobustKnownHardIronAndFrameMagnetometerCalibrator(commonAxisUsed);</span>
+<span class="fc" id="L1926">            case PROSAC -&gt; new PROSACRobustKnownHardIronAndFrameMagnetometerCalibrator(commonAxisUsed);</span>
+<span class="fc" id="L1927">            default -&gt; new PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(commonAxisUsed);</span>
+        };
+    }
+
+    /**
+     * Creates a robust known frame magnetometer calibrator.
+     *
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     * @param listener       listener to handle events raised by this calibrator.
+     * @param method         robust estimator method.
+     * @return a robust known frame magnetometer calibrator.
+     */
+    public static RobustKnownHardIronAndFrameMagnetometerCalibrator create(
+            final boolean commonAxisUsed, final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L1943" title="All 5 branches covered.">        return switch (method) {</span>
+<span class="fc" id="L1944">            case RANSAC -&gt; new RANSACRobustKnownHardIronAndFrameMagnetometerCalibrator(commonAxisUsed, listener);</span>
+<span class="fc" id="L1945">            case LMEDS -&gt; new LMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(commonAxisUsed, listener);</span>
+<span class="fc" id="L1946">            case MSAC -&gt; new MSACRobustKnownHardIronAndFrameMagnetometerCalibrator(commonAxisUsed, listener);</span>
+<span class="fc" id="L1947">            case PROSAC -&gt; new PROSACRobustKnownHardIronAndFrameMagnetometerCalibrator(commonAxisUsed, listener);</span>
+<span class="fc" id="L1948">            default -&gt; new PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(commonAxisUsed, listener);</span>
+        };
+    }
+
+    /**
+     * Creates a robust known frame magnetometer calibrator.
+     *
+     * @param measurements   list of body magnetic flux density measurements with standard
+     *                       deviations taken at different frames (positions and
+     *                       orientations).
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     * @param method         robust estimator method.
+     * @return a robust known frame magnetometer calibrator.
+     */
+    public static RobustKnownHardIronAndFrameMagnetometerCalibrator create(
+            final List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements, final boolean commonAxisUsed,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L1966" title="All 5 branches covered.">        return switch (method) {</span>
+<span class="fc" id="L1967">            case RANSAC -&gt; new RANSACRobustKnownHardIronAndFrameMagnetometerCalibrator(measurements, commonAxisUsed);</span>
+<span class="fc" id="L1968">            case LMEDS -&gt; new LMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(measurements, commonAxisUsed);</span>
+<span class="fc" id="L1969">            case MSAC -&gt; new MSACRobustKnownHardIronAndFrameMagnetometerCalibrator(measurements, commonAxisUsed);</span>
+<span class="fc" id="L1970">            case PROSAC -&gt; new PROSACRobustKnownHardIronAndFrameMagnetometerCalibrator(measurements, commonAxisUsed);</span>
+<span class="fc" id="L1971">            default -&gt; new PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(measurements, commonAxisUsed);</span>
+        };
+    }
+
+    /**
+     * Creates a robust known frame magnetometer calibrator.
+     *
+     * @param measurements   list of body magnetic flux density measurements with standard
+     *                       deviations taken at different frames (positions and
+     *                       orientations).
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     * @param listener       listener to handle events raised by this calibrator.
+     * @param method         robust estimator method.
+     * @return a robust known frame magnetometer calibrator.
+     */
+    public static RobustKnownHardIronAndFrameMagnetometerCalibrator create(
+            final List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements, final boolean commonAxisUsed,
+            final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L1991" title="All 5 branches covered.">        return switch (method) {</span>
+<span class="fc" id="L1992">            case RANSAC -&gt; new RANSACRobustKnownHardIronAndFrameMagnetometerCalibrator(</span>
+                    measurements, commonAxisUsed, listener);
+<span class="fc" id="L1994">            case LMEDS -&gt; new LMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(</span>
+                    measurements, commonAxisUsed, listener);
+<span class="fc" id="L1996">            case MSAC -&gt; new MSACRobustKnownHardIronAndFrameMagnetometerCalibrator(</span>
+                    measurements, commonAxisUsed, listener);
+<span class="fc" id="L1998">            case PROSAC -&gt; new PROSACRobustKnownHardIronAndFrameMagnetometerCalibrator(</span>
+                    measurements, commonAxisUsed, listener);
+<span class="fc" id="L2000">            default -&gt; new PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(</span>
+                    measurements, commonAxisUsed, listener);
+        };
+    }
+
+    /**
+     * Creates a robust known frame magnetometer calibrator.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param method        robust estimator method.
+     * @return a robust known frame magnetometer calibrator.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 4 samples.
+     */
+    public static RobustKnownHardIronAndFrameMagnetometerCalibrator create(
+            final double[] qualityScores, final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L2018" title="All 5 branches covered.">        return switch (method) {</span>
+<span class="fc" id="L2019">            case RANSAC -&gt; new RANSACRobustKnownHardIronAndFrameMagnetometerCalibrator();</span>
+<span class="fc" id="L2020">            case LMEDS -&gt; new LMedSRobustKnownHardIronAndFrameMagnetometerCalibrator();</span>
+<span class="fc" id="L2021">            case MSAC -&gt; new MSACRobustKnownHardIronAndFrameMagnetometerCalibrator();</span>
+<span class="fc" id="L2022">            case PROSAC -&gt; new PROSACRobustKnownHardIronAndFrameMagnetometerCalibrator(qualityScores);</span>
+<span class="fc" id="L2023">            default -&gt; new PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(qualityScores);</span>
+        };
+    }
+
+    /**
+     * Creates a robust known frame magnetometer calibrator.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param listener      listener to be notified of events such as when estimation
+     *                      starts, ends or its progress significantly changes.
+     * @param method        robust estimator method.
+     * @return a robust known frame magnetometer calibrator.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 4 samples.
+     */
+    public static RobustKnownHardIronAndFrameMagnetometerCalibrator create(
+            final double[] qualityScores, final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L2043" title="All 5 branches covered.">        return switch (method) {</span>
+<span class="fc" id="L2044">            case RANSAC -&gt; new RANSACRobustKnownHardIronAndFrameMagnetometerCalibrator(listener);</span>
+<span class="fc" id="L2045">            case LMEDS -&gt; new LMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(listener);</span>
+<span class="fc" id="L2046">            case MSAC -&gt; new MSACRobustKnownHardIronAndFrameMagnetometerCalibrator(listener);</span>
+<span class="fc" id="L2047">            case PROSAC -&gt; new PROSACRobustKnownHardIronAndFrameMagnetometerCalibrator(qualityScores, listener);</span>
+<span class="fc" id="L2048">            default -&gt; new PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(qualityScores, listener);</span>
+        };
+    }
+
+    /**
+     * Creates a robust known frame magnetometer calibrator.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param measurements  list of body magnetic flux density measurements with standard
+     *                      deviations taken at different frames (positions and
+     *                      orientations).
+     * @param method        robust estimator method.
+     * @return a robust known frame magnetometer calibrator.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 4 samples.
+     */
+    public static RobustKnownHardIronAndFrameMagnetometerCalibrator create(
+            final double[] qualityScores, final List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L2069" title="All 5 branches covered.">        return switch (method) {</span>
+<span class="fc" id="L2070">            case RANSAC -&gt; new RANSACRobustKnownHardIronAndFrameMagnetometerCalibrator(measurements);</span>
+<span class="fc" id="L2071">            case LMEDS -&gt; new LMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(measurements);</span>
+<span class="fc" id="L2072">            case MSAC -&gt; new MSACRobustKnownHardIronAndFrameMagnetometerCalibrator(measurements);</span>
+<span class="fc" id="L2073">            case PROSAC -&gt; new PROSACRobustKnownHardIronAndFrameMagnetometerCalibrator(qualityScores, measurements);</span>
+<span class="fc" id="L2074">            default -&gt; new PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(qualityScores, measurements);</span>
+        };
+    }
+
+    /**
+     * Creates a robust known frame magnetometer calibrator.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param measurements  list of body magnetic flux density measurements with standard
+     *                      deviations taken at different frames (positions and
+     *                      orientations).
+     * @param listener      listener to handle events raised by this calibrator.
+     * @param method        robust estimator method.
+     * @return a robust known frame magnetometer calibrator.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 4 samples.
+     */
+    public static RobustKnownHardIronAndFrameMagnetometerCalibrator create(
+            final double[] qualityScores, final List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements,
+            final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L2097" title="All 5 branches covered.">        return switch (method) {</span>
+<span class="fc" id="L2098">            case RANSAC -&gt; new RANSACRobustKnownHardIronAndFrameMagnetometerCalibrator(measurements, listener);</span>
+<span class="fc" id="L2099">            case LMEDS -&gt; new LMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(measurements, listener);</span>
+<span class="fc" id="L2100">            case MSAC -&gt; new MSACRobustKnownHardIronAndFrameMagnetometerCalibrator(measurements, listener);</span>
+<span class="fc" id="L2101">            case PROSAC -&gt; new PROSACRobustKnownHardIronAndFrameMagnetometerCalibrator(qualityScores, measurements,</span>
+                    listener);
+<span class="fc" id="L2103">            default -&gt; new PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(qualityScores, measurements,</span>
+                    listener);
+        };
+    }
+
+    /**
+     * Creates a robust known frame magnetometer calibrator.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     * @param method         robust estimator method.
+     * @return a robust known frame magnetometer calibrator.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 4 samples.
+     */
+    public static RobustKnownHardIronAndFrameMagnetometerCalibrator create(
+            final double[] qualityScores, final boolean commonAxisUsed, final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L2123" title="All 5 branches covered.">        return switch (method) {</span>
+<span class="fc" id="L2124">            case RANSAC -&gt; new RANSACRobustKnownHardIronAndFrameMagnetometerCalibrator(commonAxisUsed);</span>
+<span class="fc" id="L2125">            case LMEDS -&gt; new LMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(commonAxisUsed);</span>
+<span class="fc" id="L2126">            case MSAC -&gt; new MSACRobustKnownHardIronAndFrameMagnetometerCalibrator(commonAxisUsed);</span>
+<span class="fc" id="L2127">            case PROSAC -&gt; new PROSACRobustKnownHardIronAndFrameMagnetometerCalibrator(qualityScores, commonAxisUsed);</span>
+<span class="fc" id="L2128">            default -&gt; new PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(qualityScores, commonAxisUsed);</span>
+        };
+    }
+
+    /**
+     * Creates a robust known frame magnetometer calibrator.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     * @param listener       listener to handle events raised by this calibrator.
+     * @param method         robust estimator method.
+     * @return a robust known frame magnetometer calibrator.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 4 samples.
+     */
+    public static RobustKnownHardIronAndFrameMagnetometerCalibrator create(
+            final double[] qualityScores, final boolean commonAxisUsed,
+            final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L2150" title="All 5 branches covered.">        return switch (method) {</span>
+<span class="fc" id="L2151">            case RANSAC -&gt; new RANSACRobustKnownHardIronAndFrameMagnetometerCalibrator(commonAxisUsed, listener);</span>
+<span class="fc" id="L2152">            case LMEDS -&gt; new LMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(commonAxisUsed, listener);</span>
+<span class="fc" id="L2153">            case MSAC -&gt; new MSACRobustKnownHardIronAndFrameMagnetometerCalibrator(commonAxisUsed, listener);</span>
+<span class="fc" id="L2154">            case PROSAC -&gt; new PROSACRobustKnownHardIronAndFrameMagnetometerCalibrator(qualityScores, commonAxisUsed,</span>
+                    listener);
+<span class="fc" id="L2156">            default -&gt; new PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(qualityScores, commonAxisUsed,</span>
+                    listener);
+        };
+    }
+
+    /**
+     * Creates a robust known frame magnetometer calibrator.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param measurements   list of body magnetic flux density measurements with standard
+     *                       deviations taken at different frames (positions and
+     *                       orientations).
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     * @param method         robust estimator method.
+     * @return a robust known frame magnetometer calibrator.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 4 samples.
+     */
+    public static RobustKnownHardIronAndFrameMagnetometerCalibrator create(
+            final double[] qualityScores, final List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements,
+            final boolean commonAxisUsed, final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L2180" title="All 5 branches covered.">        return switch (method) {</span>
+<span class="fc" id="L2181">            case RANSAC -&gt; new RANSACRobustKnownHardIronAndFrameMagnetometerCalibrator(measurements, commonAxisUsed);</span>
+<span class="fc" id="L2182">            case LMEDS -&gt; new LMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(measurements, commonAxisUsed);</span>
+<span class="fc" id="L2183">            case MSAC -&gt; new MSACRobustKnownHardIronAndFrameMagnetometerCalibrator(measurements, commonAxisUsed);</span>
+<span class="fc" id="L2184">            case PROSAC -&gt; new PROSACRobustKnownHardIronAndFrameMagnetometerCalibrator(qualityScores, measurements,</span>
+                    commonAxisUsed);
+<span class="fc" id="L2186">            default -&gt; new PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(qualityScores, measurements,</span>
+                    commonAxisUsed);
+        };
+    }
+
+    /**
+     * Creates a robust known frame magnetometer calibrator.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param measurements   list of body magnetic flux density measurements with standard
+     *                       deviations taken at different frames (positions and
+     *                       orientations).
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     * @param listener       listener to handle events raised by this calibrator.
+     * @param method         robust estimator method.
+     * @return a robust known frame magnetometer calibrator.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 4 samples.
+     */
+    public static RobustKnownHardIronAndFrameMagnetometerCalibrator create(
+            final double[] qualityScores, final List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements,
+            final boolean commonAxisUsed, final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L2212" title="All 5 branches covered.">        return switch (method) {</span>
+<span class="fc" id="L2213">            case RANSAC -&gt; new RANSACRobustKnownHardIronAndFrameMagnetometerCalibrator(</span>
+                    measurements, commonAxisUsed, listener);
+<span class="fc" id="L2215">            case LMEDS -&gt; new LMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(</span>
+                    measurements, commonAxisUsed, listener);
+<span class="fc" id="L2217">            case MSAC -&gt; new MSACRobustKnownHardIronAndFrameMagnetometerCalibrator(</span>
+                    measurements, commonAxisUsed, listener);
+<span class="fc" id="L2219">            case PROSAC -&gt; new PROSACRobustKnownHardIronAndFrameMagnetometerCalibrator(</span>
+                    qualityScores, measurements, commonAxisUsed, listener);
+<span class="fc" id="L2221">            default -&gt; new PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(</span>
+                    qualityScores, measurements, commonAxisUsed, listener);
+        };
+    }
+
+    /**
+     * Creates a robust known frame magnetometer calibrator using default robust method.
+     *
+     * @return a robust known frame magnetometer calibrator.
+     */
+    public static RobustKnownHardIronAndFrameMagnetometerCalibrator create() {
+<span class="fc" id="L2232">        return create(DEFAULT_ROBUST_METHOD);</span>
+    }
+
+    /**
+     * Creates a robust known frame magnetometer calibrator using default robust method.
+     *
+     * @param listener listener to be notified of events such as when estimation
+     *                 starts, ends or its progress significantly changes.
+     * @return a robust known frame magnetometer calibrator.
+     */
+    public static RobustKnownHardIronAndFrameMagnetometerCalibrator create(
+            final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener) {
+<span class="fc" id="L2244">        return create(listener, DEFAULT_ROBUST_METHOD);</span>
+    }
+
+    /**
+     * Creates a robust known frame magnetometer calibrator using default robust method.
+     *
+     * @param measurements list of body magnetic flux density measurements with standard
+     *                     deviations taken at different frames (positions and
+     *                     orientations).
+     * @return a robust known frame magnetometer calibrator.
+     */
+    public static RobustKnownHardIronAndFrameMagnetometerCalibrator create(
+            final List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements) {
+<span class="fc" id="L2257">        return create(measurements, DEFAULT_ROBUST_METHOD);</span>
+    }
+
+    /**
+     * Creates a robust known frame magnetometer calibrator using default robust method.
+     *
+     * @param measurements list of body magnetic flux density measurements with standard
+     *                     deviations taken at different frames (positions and
+     *                     orientations).
+     * @param listener     listener to handle events raised by this calibrator.
+     * @return a robust known frame magnetometer calibrator.
+     */
+    public static RobustKnownHardIronAndFrameMagnetometerCalibrator create(
+            final List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements,
+            final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener) {
+<span class="fc" id="L2272">        return create(measurements, listener, DEFAULT_ROBUST_METHOD);</span>
+    }
+
+    /**
+     * Creates a robust known frame magnetometer calibrator using default robust method.
+     *
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     * @return a robust known frame magnetometer calibrator.
+     */
+    public static RobustKnownHardIronAndFrameMagnetometerCalibrator create(final boolean commonAxisUsed) {
+<span class="fc" id="L2283">        return create(commonAxisUsed, DEFAULT_ROBUST_METHOD);</span>
+    }
+
+    /**
+     * Creates a robust known frame magnetometer calibrator using default robust method.
+     *
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     * @param listener       listener to handle events raised by this calibrator.
+     * @return a robust known frame magnetometer calibrator.
+     */
+    public static RobustKnownHardIronAndFrameMagnetometerCalibrator create(
+            final boolean commonAxisUsed, final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener) {
+<span class="fc" id="L2296">        return create(commonAxisUsed, listener, DEFAULT_ROBUST_METHOD);</span>
+    }
+
+    /**
+     * Creates a robust known frame magnetometer calibrator using default robust method.
+     *
+     * @param measurements   list of body magnetic flux density measurements with standard
+     *                       deviations taken at different frames (positions and
+     *                       orientations).
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     * @return a robust known frame magnetometer calibrator.
+     */
+    public static RobustKnownHardIronAndFrameMagnetometerCalibrator create(
+            final List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements, final boolean commonAxisUsed) {
+<span class="fc" id="L2311">        return create(measurements, commonAxisUsed, DEFAULT_ROBUST_METHOD);</span>
+    }
+
+    /**
+     * Creates a robust known frame magnetometer calibrator using default robust method.
+     *
+     * @param measurements   list of body magnetic flux density measurements with standard
+     *                       deviations taken at different frames (positions and
+     *                       orientations).
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     * @param listener       listener to handle events raised by this calibrator.
+     * @return a robust known frame magnetometer calibrator.
+     */
+    public static RobustKnownHardIronAndFrameMagnetometerCalibrator create(
+            final List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements, final boolean commonAxisUsed,
+            final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener) {
+<span class="fc" id="L2328">        return create(measurements, commonAxisUsed, listener, DEFAULT_ROBUST_METHOD);</span>
+    }
+
+    /**
+     * Setups World Magnetic Model estimator.
+     *
+     * @throws IOException if model cannot be loaded.
+     */
+    protected void setupWmmEstimator() throws IOException {
+<span class="pc bpc" id="L2337" title="1 of 2 branches missed.">        if (magneticModel != null) {</span>
+<span class="nc" id="L2338">            wmmEstimator = new WMMEarthMagneticFluxDensityEstimator(magneticModel);</span>
+        } else {
+<span class="fc" id="L2340">            wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();</span>
+        }
+<span class="fc" id="L2342">    }</span>
+
+    /**
+     * Computes error of a preliminary result respect a given measurement.
+     *
+     * @param measurement       a measurement.
+     * @param preliminaryResult a preliminary result.
+     * @return computed error.
+     */
+    protected double computeError(
+            final StandardDeviationFrameBodyMagneticFluxDensity measurement, final Matrix preliminaryResult) {
+        // The magnetometer model is:
+        // mBmeas = ba + (I + Mm) * mBtrue
+
+        // Hence:
+        // [mBmeasx] = [bx] + ( [1  0   0] + [sx    mxy mxz]) [mBtruex]
+        // [mBmeasy] = [by]     [0  1   0]   [myx   sy  myz]  [mBtruey]
+        // [mBmeasz] = [bz]     [0  0   1]   [mzx   mzy sz ]  [mBtruez]
+
+<span class="fc" id="L2361">        final var measuredMagneticFluxDensity = measurement.getMagneticFluxDensity();</span>
+<span class="fc" id="L2362">        final var ecefFrame = measurement.getFrame();</span>
+
+<span class="fc" id="L2364">        final var nedFrame = ECEFtoNEDFrameConverter.convertECEFtoNEDAndReturnNew(ecefFrame);</span>
+<span class="fc" id="L2365">        final var year = measurement.getYear();</span>
+
+<span class="fc" id="L2367">        final var latitude = nedFrame.getLatitude();</span>
+<span class="fc" id="L2368">        final var longitude = nedFrame.getLongitude();</span>
+<span class="fc" id="L2369">        final var height = nedFrame.getHeight();</span>
+
+<span class="fc" id="L2371">        final var earthB = wmmEstimator.estimate(latitude, longitude, height, year);</span>
+
+<span class="fc" id="L2373">        final var cbn = new CoordinateTransformation(FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);</span>
+<span class="fc" id="L2374">        final var cnb = new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);</span>
+
+<span class="fc" id="L2376">        nedFrame.getCoordinateTransformation(cbn);</span>
+<span class="fc" id="L2377">        cbn.inverse(cnb);</span>
+
+<span class="fc" id="L2379">        final var expectedMagneticFluxDensity = BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);</span>
+
+<span class="fc" id="L2381">        final var bMeasX1 = measuredMagneticFluxDensity.getBx();</span>
+<span class="fc" id="L2382">        final var bMeasY1 = measuredMagneticFluxDensity.getBy();</span>
+<span class="fc" id="L2383">        final var bMeasZ1 = measuredMagneticFluxDensity.getBz();</span>
+
+<span class="fc" id="L2385">        final var bTrueX = expectedMagneticFluxDensity.getBx();</span>
+<span class="fc" id="L2386">        final var bTrueY = expectedMagneticFluxDensity.getBy();</span>
+<span class="fc" id="L2387">        final var bTrueZ = expectedMagneticFluxDensity.getBz();</span>
+
+        try {
+<span class="fc" id="L2390">            final var m = Matrix.identity(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);</span>
+<span class="fc" id="L2391">            m.add(preliminaryResult);</span>
+
+<span class="fc" id="L2393">            final var btrue = new Matrix(BodyKinematics.COMPONENTS, 1);</span>
+<span class="fc" id="L2394">            btrue.setElementAtIndex(0, bTrueX);</span>
+<span class="fc" id="L2395">            btrue.setElementAtIndex(1, bTrueY);</span>
+<span class="fc" id="L2396">            btrue.setElementAtIndex(2, bTrueZ);</span>
+
+<span class="fc" id="L2398">            m.multiply(btrue);</span>
+
+<span class="fc" id="L2400">            final var bMeasX2 = hardIronX + m.getElementAtIndex(0);</span>
+<span class="fc" id="L2401">            final var bMeasY2 = hardIronY + m.getElementAtIndex(1);</span>
+<span class="fc" id="L2402">            final var bMeasZ2 = hardIronZ + m.getElementAtIndex(2);</span>
+
+<span class="fc" id="L2404">            final var diffX = bMeasX2 - bMeasX1;</span>
+<span class="fc" id="L2405">            final var diffY = bMeasY2 - bMeasY1;</span>
+<span class="fc" id="L2406">            final var diffZ = bMeasZ2 - bMeasZ1;</span>
+
+<span class="fc" id="L2408">            return Math.sqrt(diffX * diffX + diffY * diffY + diffZ * diffZ);</span>
+
+<span class="nc" id="L2410">        } catch (final WrongSizeException e) {</span>
+<span class="nc" id="L2411">            return Double.MAX_VALUE;</span>
+        }
+    }
+
+    /**
+     * Computes a preliminary solution for a subset of samples picked by a robust estimator.
+     *
+     * @param samplesIndices indices of samples picked by the robust estimator.
+     * @param solutions      list where estimated preliminary solution will be stored.
+     */
+    protected void computePreliminarySolutions(final int[] samplesIndices, final List&lt;Matrix&gt; solutions) {
+
+<span class="fc" id="L2423">        final var meas = new ArrayList&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt;();</span>
+
+<span class="fc bfc" id="L2425" title="All 2 branches covered.">        for (final var samplesIndex : samplesIndices) {</span>
+<span class="fc" id="L2426">            meas.add(this.measurements.get(samplesIndex));</span>
+        }
+
+        try {
+<span class="fc" id="L2430">            final var result = getInitialMm();</span>
+
+<span class="fc bfc" id="L2432" title="All 2 branches covered.">            if (useLinearCalibrator) {</span>
+<span class="fc" id="L2433">                linearCalibrator.setHardIronCoordinates(hardIronX, hardIronY, hardIronZ);</span>
+<span class="fc" id="L2434">                linearCalibrator.setCommonAxisUsed(commonAxisUsed);</span>
+<span class="fc" id="L2435">                linearCalibrator.setMeasurements(meas);</span>
+<span class="fc" id="L2436">                linearCalibrator.calibrate();</span>
+
+<span class="fc" id="L2438">                result.copyFrom(linearCalibrator.getEstimatedMm());</span>
+            }
+
+<span class="fc bfc" id="L2441" title="All 2 branches covered.">            if (refinePreliminarySolutions) {</span>
+<span class="fc" id="L2442">                nonLinearCalibrator.setHardIronCoordinates(hardIronX, hardIronY, hardIronZ);</span>
+<span class="fc" id="L2443">                nonLinearCalibrator.setInitialMm(result);</span>
+<span class="fc" id="L2444">                nonLinearCalibrator.setCommonAxisUsed(commonAxisUsed);</span>
+<span class="fc" id="L2445">                nonLinearCalibrator.setMeasurements(meas);</span>
+<span class="fc" id="L2446">                nonLinearCalibrator.calibrate();</span>
+
+<span class="fc" id="L2448">                result.copyFrom(nonLinearCalibrator.getEstimatedMm());</span>
+            }
+
+<span class="fc" id="L2451">            solutions.add(result);</span>
+<span class="nc" id="L2452">        } catch (final LockedException | CalibrationException | NotReadyException e) {</span>
+<span class="nc" id="L2453">            solutions.clear();</span>
+<span class="fc" id="L2454">        }</span>
+<span class="fc" id="L2455">    }</span>
+
+    /**
+     * Attempts to refine calibration parameters if refinement is requested.
+     * This method returns a refined solution or provided input if refinement is not
+     * requested or has failed.
+     * If refinement is enabled and it is requested to keep covariance, this method
+     * will also keep covariance of refined position.
+     *
+     * @param preliminaryResult a preliminary result.
+     */
+    protected void attemptRefine(final Matrix preliminaryResult) {
+<span class="pc bpc" id="L2467" title="1 of 4 branches missed.">        if (refineResult &amp;&amp; inliersData != null) {</span>
+<span class="fc" id="L2468">            final var inliers = inliersData.getInliers();</span>
+<span class="fc" id="L2469">            final var nSamples = measurements.size();</span>
+
+<span class="fc" id="L2471">            final var inlierMeasurements = new ArrayList&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt;();</span>
+<span class="fc bfc" id="L2472" title="All 2 branches covered.">            for (var i = 0; i &lt; nSamples; i++) {</span>
+<span class="fc bfc" id="L2473" title="All 2 branches covered.">                if (inliers.get(i)) {</span>
+                    // sample is inlier
+<span class="fc" id="L2475">                    inlierMeasurements.add(measurements.get(i));</span>
+                }
+            }
+
+            try {
+<span class="fc" id="L2480">                nonLinearCalibrator.setHardIronCoordinates(hardIronX, hardIronY, hardIronZ);</span>
+<span class="fc" id="L2481">                nonLinearCalibrator.setInitialMm(preliminaryResult);</span>
+<span class="fc" id="L2482">                nonLinearCalibrator.setCommonAxisUsed(commonAxisUsed);</span>
+<span class="fc" id="L2483">                nonLinearCalibrator.setMeasurements(inlierMeasurements);</span>
+<span class="fc" id="L2484">                nonLinearCalibrator.calibrate();</span>
+
+<span class="fc" id="L2486">                estimatedMm = nonLinearCalibrator.getEstimatedMm();</span>
+
+<span class="pc bpc" id="L2488" title="1 of 2 branches missed.">                if (keepCovariance) {</span>
+<span class="fc" id="L2489">                    estimatedCovariance = nonLinearCalibrator.getEstimatedCovariance();</span>
+                } else {
+<span class="nc" id="L2491">                    estimatedCovariance = null;</span>
+                }
+
+<span class="fc" id="L2494">                estimatedMse = nonLinearCalibrator.getEstimatedMse();</span>
+<span class="fc" id="L2495">                estimatedChiSq = nonLinearCalibrator.getEstimatedChiSq();</span>
+
+<span class="nc" id="L2497">            } catch (final LockedException | CalibrationException | NotReadyException e) {</span>
+<span class="nc" id="L2498">                estimatedCovariance = null;</span>
+<span class="nc" id="L2499">                estimatedMm = preliminaryResult;</span>
+<span class="nc" id="L2500">                estimatedMse = 0.0;</span>
+<span class="nc" id="L2501">                estimatedChiSq = 0.0;</span>
+<span class="fc" id="L2502">            }</span>
+<span class="fc" id="L2503">        } else {</span>
+<span class="fc" id="L2504">            estimatedCovariance = null;</span>
+<span class="fc" id="L2505">            estimatedMm = preliminaryResult;</span>
+<span class="fc" id="L2506">            estimatedMse = 0.0;</span>
+<span class="fc" id="L2507">            estimatedChiSq = 0.0;</span>
+        }
+<span class="fc" id="L2509">    }</span>
+
+    /**
+     * Converts magnetic flux density value and unit to Teslas.
+     *
+     * @param value magnetic flux density value.
+     * @param unit  unit of magnetic flux density value.
+     * @return converted value.
+     */
+    private static double convertMagneticFluxDensity(final double value, final MagneticFluxDensityUnit unit) {
+<span class="fc" id="L2519">        return MagneticFluxDensityConverter.convert(value, unit, MagneticFluxDensityUnit.TESLA);</span>
+    }
+
+    /**
+     * Converts magnetic flux density instance to Teslas.
+     *
+     * @param magneticFluxDensity magnetic flux density instance to be converted.
+     * @return converted value.
+     */
+    private static double convertMagneticFluxDensity(final MagneticFluxDensity magneticFluxDensity) {
+<span class="fc" id="L2529">        return convertMagneticFluxDensity(magneticFluxDensity.getValue().doubleValue(), magneticFluxDensity.getUnit());</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

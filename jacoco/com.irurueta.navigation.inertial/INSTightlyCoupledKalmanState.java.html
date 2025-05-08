@@ -1,0 +1,2235 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>INSTightlyCoupledKalmanState.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-inertial</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.inertial</a> &gt; <span class="el_source">INSTightlyCoupledKalmanState.java</span></div><h1>INSTightlyCoupledKalmanState.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2019 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.inertial;
+
+import com.irurueta.algebra.Matrix;
+import com.irurueta.geometry.InhomogeneousPoint3D;
+import com.irurueta.geometry.InvalidRotationMatrixException;
+import com.irurueta.geometry.Point3D;
+import com.irurueta.navigation.frames.CoordinateTransformation;
+import com.irurueta.navigation.frames.ECEFFrame;
+import com.irurueta.navigation.frames.ECEFPosition;
+import com.irurueta.navigation.frames.ECEFVelocity;
+import com.irurueta.navigation.frames.FrameType;
+import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeException;
+import com.irurueta.navigation.gnss.ECEFPositionAndVelocity;
+import com.irurueta.navigation.gnss.GNSSEstimation;
+import com.irurueta.units.*;
+
+import java.io.Serial;
+import java.io.Serializable;
+import java.util.Objects;
+
+/**
+ * Kalman filter state for tightly coupled INS/GNSS extended Kalman filter.
+ */
+public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
+
+    /**
+     * Number of parameters of the Kalman filter.
+     */
+    public static final int NUM_PARAMS = 17;
+
+    /**
+     * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
+     * instances.
+     */
+    @Serial
+    private static final long serialVersionUID = 0L;
+
+    /**
+     * Estimated body to ECEF coordinate transformation matrix.
+     */
+    private Matrix bodyToEcefCoordinateTransformationMatrix;
+
+    /**
+     * Estimated ECEF user velocity resolved around x axis and expressed in meters per second (m/s).
+     */
+    private double vx;
+
+    /**
+     * Estimated ECEF user velocity resolved around y axis and expressed in meters per second (m/s).
+     */
+    private double vy;
+
+    /**
+     * Estimated ECEF user velocity resolved around z axis and expressed in meters per second (m/s).
+     */
+    private double vz;
+
+    /**
+     * X coordinate of estimated ECEF user position expressed in meters (m).
+     */
+    private double x;
+
+    /**
+     * Y coordinate of estimated ECEF user position expressed in meters (m).
+     */
+    private double y;
+
+    /**
+     * Z coordinate of estimated ECEF user position expressed in meters (m).
+     */
+    private double z;
+
+    /**
+     * Estimated accelerometer bias resolved around x axis and expressed in
+     * meters per squared second (m/s^2).
+     */
+    private double accelerationBiasX;
+
+    /**
+     * Estimated accelerometer bias resolved around y axis and expressed in
+     * meters per squared second (m/s^2).
+     */
+    private double accelerationBiasY;
+
+    /**
+     * Estimated accelerometer bias resolved around z axis and expressed in
+     * meters per squared second (m/s^2).
+     */
+    private double accelerationBiasZ;
+
+    /**
+     * Estimated gyroscope bias resolved around x axis and expressed in
+     * radians per second (rad/s).
+     */
+    private double gyroBiasX;
+
+    /**
+     * Estimated gyroscope bias resolved around y axis and expressed in
+     * radians per second (rad/s).
+     */
+    private double gyroBiasY;
+
+    /**
+     * Estimated gyroscope bias resolved around z axis and expressed in
+     * radians per second (rad/s).
+     */
+    private double gyroBiasZ;
+
+    /**
+     * Estimated receiver clock offset expressed in meters (m).
+     */
+    private double receiverClockOffset;
+
+    /**
+     * Estimated receiver clock drift expressed in meters per second (m/s).
+     */
+    private double receiverClockDrift;
+
+    /**
+     * Estimated Kalman filter error covariance matrix.
+     * Notice that covariance is expressed in terms of ECEF coordinates.
+     * If accuracy of position, attitude or velocity needs to be expressed in terms
+     * of NED coordinates, their respective sub-matrices of this covariance matrix
+     * must be rotated, taking into account the Jacobian of the matrix transformation
+     * relating both coordinates, the covariance can be expressed following the law
+     * of propagation of uncertainties
+     * &lt;a href=&quot;https://en.wikipedia.org/wiki/Propagation_of_uncertainty&quot;&gt;
+     *     (https://en.wikipedia.org/wiki/Propagation_of_uncertainty)
+     * &lt;/a&gt;
+     * as: cov(f(x)) = J*cov(x)*J'.
+     */
+    private Matrix covariance;
+
+    /**
+     * Constructor.
+     */
+<span class="fc" id="L152">    public INSTightlyCoupledKalmanState() {</span>
+<span class="fc" id="L153">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param bodyToEcefCoordinateTransformationMatrix estimated body to ECEF coordinate transformation matrix.
+     * @param vx                                       estimated ECEF user velocity resolved around x axis and
+     *                                                 expressed in meters per second (m/s).
+     * @param vy                                       estimated ECEF user velocity resolved around y axis and
+     *                                                 expressed in meters per second (m/s).
+     * @param vz                                       estimated ECEF user velocity resolved around z axis and
+     *                                                 expressed in meters per second (m/s).
+     * @param x                                        x coordinate of estimated ECEF user position expressed
+     *                                                 in meters (m).
+     * @param y                                        y coordinate of estimated ECEF user position expressed
+     *                                                 in meters (m).
+     * @param z                                        z coordinate of estimated ECEF user position expressed
+     *                                                 in meters (m).
+     * @param accelerationBiasX                        estimated accelerometer bias resolved around x axis and
+     *                                                 expressed in meters per squared second (m/s^2).
+     * @param accelerationBiasY                        estimated accelerometer bias resolved around y axis and
+     *                                                 expressed in meters per squared second (m/s^2).
+     * @param accelerationBiasZ                        estimated accelerometer bias resolved around z axis and
+     *                                                 expressed in meters per squared second (m/s^2).
+     * @param gyroBiasX                                estimated gyroscope bias resolved around x axis and
+     *                                                 expressed in radians per second (rad/s).
+     * @param gyroBiasY                                estimated gyroscope bias resolved around y axis and
+     *                                                 expressed in radians per second (rad/s).
+     * @param gyroBiasZ                                estimated gyroscope bias resolved around z axis and
+     *                                                 expressed in radians per second (rad/s).
+     * @param receiverClockOffset                      estimated receiver clock offset expressed in meters (m).
+     * @param receiverClockDrift                       estimated receiver clock drift expressed in meters per
+     *                                                 second (m/s).
+     * @param covariance                               estimated Kalman filter error covariance matrix.
+     * @throws IllegalArgumentException if provided body to ECEF coordinate transformation matrix is not 3x3
+     *                                  or if provided covariance matrix is not 17x17.
+     */
+    public INSTightlyCoupledKalmanState(
+            final Matrix bodyToEcefCoordinateTransformationMatrix, final double vx, final double vy, final double vz,
+            final double x, final double y, final double z,
+            final double accelerationBiasX, final double accelerationBiasY, final double accelerationBiasZ,
+            final double gyroBiasX, final double gyroBiasY, final double gyroBiasZ,
+<span class="fc" id="L195">            final double receiverClockOffset, final double receiverClockDrift, final Matrix covariance) {</span>
+<span class="fc" id="L196">        setBodyToEcefCoordinateTransformationMatrix(bodyToEcefCoordinateTransformationMatrix);</span>
+<span class="fc" id="L197">        setVelocityCoordinates(vx, vy, vz);</span>
+<span class="fc" id="L198">        setPositionCoordinates(x, y, z);</span>
+<span class="fc" id="L199">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
+<span class="fc" id="L200">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
+<span class="fc" id="L201">        setReceiverClockOffset(receiverClockOffset);</span>
+<span class="fc" id="L202">        setReceiverClockDrift(receiverClockDrift);</span>
+<span class="fc" id="L203">        setCovariance(covariance);</span>
+<span class="fc" id="L204">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param c                   body to ECEF coordinate transformation.
+     * @param vx                  estimated ECEF user velocity resolved around x axis.
+     * @param vy                  estimated ECEF user velocity resolved around y axis.
+     * @param vz                  estimated ECEF user velocity resolved around z axis.
+     * @param x                   x coordinate of estimated ECEF user position.
+     * @param y                   y coordinate of estimated ECEF user position.
+     * @param z                   z coordinate of estimated ECEF user position.
+     * @param accelerationBiasX   estimated accelerometer bias resolved around x axis and
+     *                            expressed in meters per squared second (m/s^2).
+     * @param accelerationBiasY   estimated accelerometer bias resolved around y axis and
+     *                            expressed in meters per squared second (m/s^2).
+     * @param accelerationBiasZ   estimated accelerometer bias resolved around z axis and
+     *                            expressed in meters per squared second (m/s^2).
+     * @param gyroBiasX           estimated gyroscope bias resolved around x axis and
+     *                            expressed in radians per second (rad/s).
+     * @param gyroBiasY           estimated gyroscope bias resolved around y axis and
+     *                            expressed in radians per second (rad/s).
+     * @param gyroBiasZ           estimated gyroscope bias resolved around z axis and
+     *                            expressed in radians per second (rad/s).
+     * @param receiverClockOffset estimated receiver clock offset expressed in meters (m).
+     * @param receiverClockDrift  estimated receiver clock drift expressed in meters per
+     *                            second (m/s).
+     * @param covariance          estimated Kalman filter error covariance matrix.
+     * @throws IllegalArgumentException if provided covariance matrix is not 17x17.
+     */
+    public INSTightlyCoupledKalmanState(
+            final CoordinateTransformation c, final Speed vx, final Speed vy, final Speed vz,
+            final Distance x, final Distance y, final Distance z,
+            final double accelerationBiasX, final double accelerationBiasY, final double accelerationBiasZ,
+            final double gyroBiasX, final double gyroBiasY, final double gyroBiasZ,
+<span class="fc" id="L239">            final double receiverClockOffset, final double receiverClockDrift, final Matrix covariance) {</span>
+<span class="fc" id="L240">        setC(c);</span>
+<span class="fc" id="L241">        setVelocityCoordinates(vx, vy, vz);</span>
+<span class="fc" id="L242">        setPositionCoordinates(x, y, z);</span>
+<span class="fc" id="L243">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
+<span class="fc" id="L244">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
+<span class="fc" id="L245">        setReceiverClockOffset(receiverClockOffset);</span>
+<span class="fc" id="L246">        setReceiverClockDrift(receiverClockDrift);</span>
+<span class="fc" id="L247">        setCovariance(covariance);</span>
+<span class="fc" id="L248">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param c                   body to ECEF coordinate transformation.
+     * @param vx                  estimated ECEF user velocity resolved around x axis.
+     * @param vy                  estimated ECEF user velocity resolved around y axis.
+     * @param vz                  estimated ECEF user velocity resolved around z axis.
+     * @param position            estimated ECEF user position.
+     * @param accelerationBiasX   estimated accelerometer bias resolved around x axis and
+     *                            expressed in meters per squared second (m/s^2).
+     * @param accelerationBiasY   estimated accelerometer bias resolved around y axis and
+     *                            expressed in meters per squared second (m/s^2).
+     * @param accelerationBiasZ   estimated accelerometer bias resolved around z axis and
+     *                            expressed in meters per squared second (m/s^2).
+     * @param gyroBiasX           estimated gyroscope bias resolved around x axis and
+     *                            expressed in radians per second (rad/s).
+     * @param gyroBiasY           estimated gyroscope bias resolved around y axis and
+     *                            expressed in radians per second (rad/s).
+     * @param gyroBiasZ           estimated gyroscope bias resolved around z axis and
+     *                            expressed in radians per second (rad/s).
+     * @param receiverClockOffset estimated receiver clock offset expressed in meters (m).
+     * @param receiverClockDrift  estimated receiver clock drift expressed in meters per
+     *                            second (m/s).
+     * @param covariance          estimated Kalman filter error covariance matrix.
+     * @throws IllegalArgumentException if provided covariance matrix is not 17x17.
+     */
+    public INSTightlyCoupledKalmanState(
+            final CoordinateTransformation c, final Speed vx, final Speed vy, final Speed vz, final Point3D position,
+            final double accelerationBiasX, final double accelerationBiasY, final double accelerationBiasZ,
+            final double gyroBiasX, final double gyroBiasY, final double gyroBiasZ, final double receiverClockOffset,
+<span class="fc" id="L280">            final double receiverClockDrift, final Matrix covariance) {</span>
+<span class="fc" id="L281">        setC(c);</span>
+<span class="fc" id="L282">        setVelocityCoordinates(vx, vy, vz);</span>
+<span class="fc" id="L283">        setPosition(position);</span>
+<span class="fc" id="L284">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
+<span class="fc" id="L285">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
+<span class="fc" id="L286">        setReceiverClockOffset(receiverClockOffset);</span>
+<span class="fc" id="L287">        setReceiverClockDrift(receiverClockDrift);</span>
+<span class="fc" id="L288">        setCovariance(covariance);</span>
+<span class="fc" id="L289">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param c                   body to ECEF coordinate transformation.
+     * @param velocity            estimated ECEF user velocity.
+     * @param position            estimated ECEF user position.
+     * @param accelerationBiasX   estimated accelerometer bias resolved around x axis and
+     *                            expressed in meters per squared second (m/s^2).
+     * @param accelerationBiasY   estimated accelerometer bias resolved around y axis and
+     *                            expressed in meters per squared second (m/s^2).
+     * @param accelerationBiasZ   estimated accelerometer bias resolved around z axis and
+     *                            expressed in meters per squared second (m/s^2).
+     * @param gyroBiasX           estimated gyroscope bias resolved around x axis and
+     *                            expressed in radians per second (rad/s).
+     * @param gyroBiasY           estimated gyroscope bias resolved around y axis and
+     *                            expressed in radians per second (rad/s).
+     * @param gyroBiasZ           estimated gyroscope bias resolved around z axis and
+     *                            expressed in radians per second (rad/s).
+     * @param receiverClockOffset estimated receiver clock offset expressed in meters (m).
+     * @param receiverClockDrift  estimated receiver clock drift expressed in meters per
+     *                            second (m/s).
+     * @param covariance          estimated Kalman filter error covariance matrix.
+     * @throws IllegalArgumentException if provided covariance matrix is not 17x17.
+     */
+    public INSTightlyCoupledKalmanState(
+            final CoordinateTransformation c, final ECEFVelocity velocity, final ECEFPosition position,
+            final double accelerationBiasX, final double accelerationBiasY, final double accelerationBiasZ,
+            final double gyroBiasX, final double gyroBiasY, final double gyroBiasZ, final double receiverClockOffset,
+<span class="fc" id="L319">            final double receiverClockDrift, final Matrix covariance) {</span>
+<span class="fc" id="L320">        setC(c);</span>
+<span class="fc" id="L321">        setEcefVelocity(velocity);</span>
+<span class="fc" id="L322">        setEcefPosition(position);</span>
+<span class="fc" id="L323">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
+<span class="fc" id="L324">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
+<span class="fc" id="L325">        setReceiverClockOffset(receiverClockOffset);</span>
+<span class="fc" id="L326">        setReceiverClockDrift(receiverClockDrift);</span>
+<span class="fc" id="L327">        setCovariance(covariance);</span>
+<span class="fc" id="L328">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param c                   body to ECEF coordinate transformation.
+     * @param positionAndVelocity estimated ECEF user velocity and position.
+     * @param accelerationBiasX   estimated accelerometer bias resolved around x axis and
+     *                            expressed in meters per squared second (m/s^2).
+     * @param accelerationBiasY   estimated accelerometer bias resolved around y axis and
+     *                            expressed in meters per squared second (m/s^2).
+     * @param accelerationBiasZ   estimated accelerometer bias resolved around z axis and
+     *                            expressed in meters per squared second (m/s^2).
+     * @param gyroBiasX           estimated gyroscope bias resolved around x axis and
+     *                            expressed in radians per second (rad/s).
+     * @param gyroBiasY           estimated gyroscope bias resolved around y axis and
+     *                            expressed in radians per second (rad/s).
+     * @param gyroBiasZ           estimated gyroscope bias resolved around z axis and
+     *                            expressed in radians per second (rad/s).
+     * @param receiverClockOffset estimated receiver clock offset expressed in meters (m).
+     * @param receiverClockDrift  estimated receiver clock drift expressed in meters per
+     *                            second (m/s).
+     * @param covariance          estimated Kalman filter error covariance matrix.
+     * @throws IllegalArgumentException if provided covariance matrix is not 17x17.
+     */
+    public INSTightlyCoupledKalmanState(
+            final CoordinateTransformation c, final ECEFPositionAndVelocity positionAndVelocity,
+            final double accelerationBiasX, final double accelerationBiasY, final double accelerationBiasZ,
+            final double gyroBiasX, final double gyroBiasY, final double gyroBiasZ, final double receiverClockOffset,
+<span class="fc" id="L357">            final double receiverClockDrift, final Matrix covariance) {</span>
+<span class="fc" id="L358">        setC(c);</span>
+<span class="fc" id="L359">        setPositionAndVelocity(positionAndVelocity);</span>
+<span class="fc" id="L360">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
+<span class="fc" id="L361">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
+<span class="fc" id="L362">        setReceiverClockOffset(receiverClockOffset);</span>
+<span class="fc" id="L363">        setReceiverClockDrift(receiverClockDrift);</span>
+<span class="fc" id="L364">        setCovariance(covariance);</span>
+<span class="fc" id="L365">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param frame               estimated user ECEF frame.
+     * @param accelerationBiasX   estimated accelerometer bias resolved around x axis and
+     *                            expressed in meters per squared second (m/s^2).
+     * @param accelerationBiasY   estimated accelerometer bias resolved around y axis and
+     *                            expressed in meters per squared second (m/s^2).
+     * @param accelerationBiasZ   estimated accelerometer bias resolved around z axis and
+     *                            expressed in meters per squared second (m/s^2).
+     * @param gyroBiasX           estimated gyroscope bias resolved around x axis and
+     *                            expressed in radians per second (rad/s).
+     * @param gyroBiasY           estimated gyroscope bias resolved around y axis and
+     *                            expressed in radians per second (rad/s).
+     * @param gyroBiasZ           estimated gyroscope bias resolved around z axis and
+     *                            expressed in radians per second (rad/s).
+     * @param receiverClockOffset estimated receiver clock offset expressed in meters (m).
+     * @param receiverClockDrift  estimated receiver clock drift expressed in meters per
+     *                            second (m/s).
+     * @param covariance          estimated Kalman filter error covariance .
+     * @throws IllegalArgumentException if provided covariance matrix is not 17x17.
+     */
+    public INSTightlyCoupledKalmanState(
+            final ECEFFrame frame,
+            final double accelerationBiasX, final double accelerationBiasY, final double accelerationBiasZ,
+            final double gyroBiasX, final double gyroBiasY, final double gyroBiasZ, final double receiverClockOffset,
+<span class="fc" id="L393">            final double receiverClockDrift, final Matrix covariance) {</span>
+<span class="fc" id="L394">        setFrame(frame);</span>
+<span class="fc" id="L395">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
+<span class="fc" id="L396">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
+<span class="fc" id="L397">        setReceiverClockOffset(receiverClockOffset);</span>
+<span class="fc" id="L398">        setReceiverClockDrift(receiverClockDrift);</span>
+<span class="fc" id="L399">        setCovariance(covariance);</span>
+<span class="fc" id="L400">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param c                   body to ECEF coordinate transformation.
+     * @param vx                  estimated ECEF user velocity resolved around x axis.
+     * @param vy                  estimated ECEF user velocity resolved around y axis.
+     * @param vz                  estimated ECEF user velocity resolved around z axis.
+     * @param x                   x coordinate of estimated ECEF user position.
+     * @param y                   y coordinate of estimated ECEF user position.
+     * @param z                   z coordinate of estimated ECEF user position.
+     * @param accelerationBiasX   estimated accelerometer bias resolved around x axis.
+     * @param accelerationBiasY   estimated accelerometer bias resolved around y axis.
+     * @param accelerationBiasZ   estimated accelerometer bias resolved around z axis.
+     * @param gyroBiasX           estimated gyroscope bias resolved around x axis.
+     * @param gyroBiasY           estimated gyroscope bias resolved around y axis.
+     * @param gyroBiasZ           estimated gyroscope bias resolved around z axis.
+     * @param receiverClockOffset estimated receiver clock offset.
+     * @param receiverClockDrift  estimated receiver clock drift.
+     * @param covariance          estimated Kalman filter error covariance matrix.
+     * @throws IllegalArgumentException if provided covariance matrix is not 17x17.
+     */
+    public INSTightlyCoupledKalmanState(
+            final CoordinateTransformation c, final Speed vx, final Speed vy, final Speed vz,
+            final Distance x, final Distance y, final Distance z, final Acceleration accelerationBiasX,
+            final Acceleration accelerationBiasY, final Acceleration accelerationBiasZ,
+            final AngularSpeed gyroBiasX, final AngularSpeed gyroBiasY, final AngularSpeed gyroBiasZ,
+<span class="fc" id="L428">            final Distance receiverClockOffset, final Speed receiverClockDrift, final Matrix covariance) {</span>
+<span class="fc" id="L429">        setC(c);</span>
+<span class="fc" id="L430">        setVelocityCoordinates(vx, vy, vz);</span>
+<span class="fc" id="L431">        setPositionCoordinates(x, y, z);</span>
+<span class="fc" id="L432">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
+<span class="fc" id="L433">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
+<span class="fc" id="L434">        setReceiverClockOffset(receiverClockOffset);</span>
+<span class="fc" id="L435">        setReceiverClockDrift(receiverClockDrift);</span>
+<span class="fc" id="L436">        setCovariance(covariance);</span>
+<span class="fc" id="L437">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param c                   body to ECEF coordinate transformation.
+     * @param vx                  estimated ECEF user velocity resolved around x axis.
+     * @param vy                  estimated ECEF user velocity resolved around y axis.
+     * @param vz                  estimated ECEF user velocity resolved around z axis.
+     * @param position            estimated ECEF user position expressed in meters (m).
+     * @param accelerationBiasX   estimated accelerometer bias resolved around x axis.
+     * @param accelerationBiasY   estimated accelerometer bias resolved around y axis.
+     * @param accelerationBiasZ   estimated accelerometer bias resolved around z axis.
+     * @param gyroBiasX           estimated gyroscope bias resolved around x axis.
+     * @param gyroBiasY           estimated gyroscope bias resolved around y axis.
+     * @param gyroBiasZ           estimated gyroscope bias resolved around z axis.
+     * @param receiverClockOffset estimated receiver clock offset.
+     * @param receiverClockDrift  estimated receiver clock drift.
+     * @param covariance          estimated Kalman filter error covariance matrix.
+     * @throws IllegalArgumentException if provided covariance matrix is not 17x17.
+     */
+    public INSTightlyCoupledKalmanState(
+            final CoordinateTransformation c, final Speed vx, final Speed vy, final Speed vz, final Point3D position,
+            final Acceleration accelerationBiasX, final Acceleration accelerationBiasY,
+            final Acceleration accelerationBiasZ, final AngularSpeed gyroBiasX, final AngularSpeed gyroBiasY,
+            final AngularSpeed gyroBiasZ, final Distance receiverClockOffset, final Speed receiverClockDrift,
+<span class="fc" id="L463">            final Matrix covariance) {</span>
+<span class="fc" id="L464">        setC(c);</span>
+<span class="fc" id="L465">        setVelocityCoordinates(vx, vy, vz);</span>
+<span class="fc" id="L466">        setPosition(position);</span>
+<span class="fc" id="L467">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
+<span class="fc" id="L468">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
+<span class="fc" id="L469">        setReceiverClockOffset(receiverClockOffset);</span>
+<span class="fc" id="L470">        setReceiverClockDrift(receiverClockDrift);</span>
+<span class="fc" id="L471">        setCovariance(covariance);</span>
+<span class="fc" id="L472">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param c                   body to ECEF coordinate transformation.
+     * @param velocity            estimated ECEF user velocity.
+     * @param position            estimated ECEF user position.
+     * @param accelerationBiasX   estimated accelerometer bias resolved around x axis.
+     * @param accelerationBiasY   estimated accelerometer bias resolved around y axis.
+     * @param accelerationBiasZ   estimated accelerometer bias resolved around z axis.
+     * @param gyroBiasX           estimated gyroscope bias resolved around x axis.
+     * @param gyroBiasY           estimated gyroscope bias resolved around y axis.
+     * @param gyroBiasZ           estimated gyroscope bias resolved around z axis.
+     * @param receiverClockOffset estimated receiver clock offset.
+     * @param receiverClockDrift  estimated receiver clock drift.
+     * @param covariance          estimated Kalman filter error covariance matrix.
+     * @throws IllegalArgumentException if provided covariance matrix is not 17x17.
+     */
+    public INSTightlyCoupledKalmanState(
+            final CoordinateTransformation c, final ECEFVelocity velocity, final ECEFPosition position,
+            final Acceleration accelerationBiasX, final Acceleration accelerationBiasY,
+            final Acceleration accelerationBiasZ, final AngularSpeed gyroBiasX, final AngularSpeed gyroBiasY,
+            final AngularSpeed gyroBiasZ, final Distance receiverClockOffset, final Speed receiverClockDrift,
+<span class="fc" id="L496">            final Matrix covariance) {</span>
+<span class="fc" id="L497">        setC(c);</span>
+<span class="fc" id="L498">        setEcefVelocity(velocity);</span>
+<span class="fc" id="L499">        setEcefPosition(position);</span>
+<span class="fc" id="L500">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
+<span class="fc" id="L501">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
+<span class="fc" id="L502">        setReceiverClockOffset(receiverClockOffset);</span>
+<span class="fc" id="L503">        setReceiverClockDrift(receiverClockDrift);</span>
+<span class="fc" id="L504">        setCovariance(covariance);</span>
+<span class="fc" id="L505">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param c                   body to ECEF coordinate transformation.
+     * @param positionAndVelocity estimated ECEF user position and velocity.
+     * @param accelerationBiasX   estimated accelerometer bias resolved around x axis.
+     * @param accelerationBiasY   estimated accelerometer bias resolved around y axis.
+     * @param accelerationBiasZ   estimated accelerometer bias resolved around z axis.
+     * @param gyroBiasX           estimated gyroscope bias resolved around x axis.
+     * @param gyroBiasY           estimated gyroscope bias resolved around y axis.
+     * @param gyroBiasZ           estimated gyroscope bias resolved around z axis.
+     * @param receiverClockOffset estimated receiver clock offset.
+     * @param receiverClockDrift  estimated receiver clock drift.
+     * @param covariance          estimated Kalman filter error covariance matrix.
+     * @throws IllegalArgumentException if provided covariance matrix is not 17x17.
+     */
+    public INSTightlyCoupledKalmanState(
+            final CoordinateTransformation c, final ECEFPositionAndVelocity positionAndVelocity,
+            final Acceleration accelerationBiasX, final Acceleration accelerationBiasY,
+            final Acceleration accelerationBiasZ, final AngularSpeed gyroBiasX, final AngularSpeed gyroBiasY,
+            final AngularSpeed gyroBiasZ, final Distance receiverClockOffset, final Speed receiverClockDrift,
+<span class="fc" id="L528">            final Matrix covariance) {</span>
+<span class="fc" id="L529">        setC(c);</span>
+<span class="fc" id="L530">        setPositionAndVelocity(positionAndVelocity);</span>
+<span class="fc" id="L531">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
+<span class="fc" id="L532">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
+<span class="fc" id="L533">        setReceiverClockOffset(receiverClockOffset);</span>
+<span class="fc" id="L534">        setReceiverClockDrift(receiverClockDrift);</span>
+<span class="fc" id="L535">        setCovariance(covariance);</span>
+<span class="fc" id="L536">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param frame               estimated user ECEF frame.
+     * @param accelerationBiasX   estimated accelerometer bias resolved around x axis.
+     * @param accelerationBiasY   estimated accelerometer bias resolved around y axis.
+     * @param accelerationBiasZ   estimated accelerometer bias resolved around z axis.
+     * @param gyroBiasX           estimated gyroscope bias resolved around x axis.
+     * @param gyroBiasY           estimated gyroscope bias resolved around y axis.
+     * @param gyroBiasZ           estimated gyroscope bias resolved around z axis.
+     * @param receiverClockOffset estimated receiver clock offset.
+     * @param receiverClockDrift  estimated receiver clock drift.
+     * @param covariance          estimated Kalman filter error covariance matrix.
+     * @throws IllegalArgumentException if provided covariance matrix is not 17x17.
+     */
+    public INSTightlyCoupledKalmanState(
+            final ECEFFrame frame, final Acceleration accelerationBiasX, final Acceleration accelerationBiasY,
+            final Acceleration accelerationBiasZ, final AngularSpeed gyroBiasX, final AngularSpeed gyroBiasY,
+            final AngularSpeed gyroBiasZ, final Distance receiverClockOffset, final Speed receiverClockDrift,
+<span class="fc" id="L557">            final Matrix covariance) {</span>
+<span class="fc" id="L558">        setFrame(frame);</span>
+<span class="fc" id="L559">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
+<span class="fc" id="L560">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
+<span class="fc" id="L561">        setReceiverClockOffset(receiverClockOffset);</span>
+<span class="fc" id="L562">        setReceiverClockDrift(receiverClockDrift);</span>
+<span class="fc" id="L563">        setCovariance(covariance);</span>
+<span class="fc" id="L564">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param bodyToEcefCoordinateTransformationMatrix estimated body to ECEF coordinate transformation matrix.
+     * @param vx                                       estimated ECEF user velocity resolved around x axis.
+     * @param vy                                       estimated ECEF user velocity resolved around y axis.
+     * @param vz                                       estimated ECEF user velocity resolved around z axis.
+     * @param x                                        x coordinate of estimated ECEF user position.
+     * @param y                                        y coordinate of estimated ECEF user position.
+     * @param z                                        z coordinate of estimated ECEF user position.
+     * @param accelerationBiasX                        estimated accelerometer bias resolved around x axis and
+     *                                                 expressed in meters per squared second (m/s^2).
+     * @param accelerationBiasY                        estimated accelerometer bias resolved around y axis and
+     *                                                 expressed in meters per squared second (m/s^2).
+     * @param accelerationBiasZ                        estimated accelerometer bias resolved around z axis and
+     *                                                 expressed in meters per squared second (m/s^2).
+     * @param gyroBiasX                                estimated gyroscope bias resolved around x axis and
+     *                                                 expressed in radians per second (rad/s).
+     * @param gyroBiasY                                estimated gyroscope bias resolved around y axis and
+     *                                                 expressed in radians per second (rad/s).
+     * @param gyroBiasZ                                estimated gyroscope bias resolved around z axis and
+     *                                                 expressed in radians per second (rad/s).
+     * @param receiverClockOffset                      estimated receiver clock offset expressed in meters (m).
+     * @param receiverClockDrift                       estimated receiver clock drift expressed in meters per
+     *                                                 second (m/s).
+     * @param covariance                               estimated Kalman filter error covariance matrix.
+     * @throws IllegalArgumentException if provided body to ECEF coordinate transformation matrix is not 3x3
+     *                                  or if provided covariance matrix is not 17x17.
+     */
+    public INSTightlyCoupledKalmanState(
+            final Matrix bodyToEcefCoordinateTransformationMatrix, final Speed vx, final Speed vy, final Speed vz,
+            final Distance x, final Distance y, final Distance z,
+            final double accelerationBiasX, final double accelerationBiasY, final double accelerationBiasZ,
+            final double gyroBiasX, final double gyroBiasY, final double gyroBiasZ, final double receiverClockOffset,
+<span class="fc" id="L600">            final double receiverClockDrift, final Matrix covariance) {</span>
+<span class="fc" id="L601">        setBodyToEcefCoordinateTransformationMatrix(bodyToEcefCoordinateTransformationMatrix);</span>
+<span class="fc" id="L602">        setVelocityCoordinates(vx, vy, vz);</span>
+<span class="fc" id="L603">        setPositionCoordinates(x, y, z);</span>
+<span class="fc" id="L604">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
+<span class="fc" id="L605">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
+<span class="fc" id="L606">        setReceiverClockOffset(receiverClockOffset);</span>
+<span class="fc" id="L607">        setReceiverClockDrift(receiverClockDrift);</span>
+<span class="fc" id="L608">        setCovariance(covariance);</span>
+<span class="fc" id="L609">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param bodyToEcefCoordinateTransformationMatrix estimated body to ECEF coordinate transformation matrix.
+     * @param vx                                       estimated ECEF user velocity resolved around x axis.
+     * @param vy                                       estimated ECEF user velocity resolved around y axis.
+     * @param vz                                       estimated ECEF user velocity resolved around z axis.
+     * @param position                                 estimated ECEF user position.
+     * @param accelerationBiasX                        estimated accelerometer bias resolved around x axis and
+     *                                                 expressed in meters per squared second (m/s^2).
+     * @param accelerationBiasY                        estimated accelerometer bias resolved around y axis and
+     *                                                 expressed in meters per squared second (m/s^2).
+     * @param accelerationBiasZ                        estimated accelerometer bias resolved around z axis and
+     *                                                 expressed in meters per squared second (m/s^2).
+     * @param gyroBiasX                                estimated gyroscope bias resolved around x axis and
+     *                                                 expressed in radians per second (rad/s).
+     * @param gyroBiasY                                estimated gyroscope bias resolved around y axis and
+     *                                                 expressed in radians per second (rad/s).
+     * @param gyroBiasZ                                estimated gyroscope bias resolved around z axis and
+     *                                                 expressed in radians per second (rad/s).
+     * @param receiverClockOffset                      estimated receiver clock offset expressed in meters (m).
+     * @param receiverClockDrift                       estimated receiver clock drift expressed in meters per
+     *                                                 second (m/s).
+     * @param covariance                               estimated Kalman filter error covariance matrix.
+     * @throws IllegalArgumentException if provided body to ECEF coordinate transformation matrix is not 3x3
+     *                                  or if provided covariance matrix is not 17x17.
+     */
+    public INSTightlyCoupledKalmanState(
+            final Matrix bodyToEcefCoordinateTransformationMatrix, final Speed vx, final Speed vy, final Speed vz,
+            final Point3D position,
+            final double accelerationBiasX, final double accelerationBiasY, final double accelerationBiasZ,
+            final double gyroBiasX, final double gyroBiasY, final double gyroBiasZ,
+<span class="fc" id="L643">            final double receiverClockOffset, final double receiverClockDrift, final Matrix covariance) {</span>
+<span class="fc" id="L644">        setBodyToEcefCoordinateTransformationMatrix(bodyToEcefCoordinateTransformationMatrix);</span>
+<span class="fc" id="L645">        setVelocityCoordinates(vx, vy, vz);</span>
+<span class="fc" id="L646">        setPosition(position);</span>
+<span class="fc" id="L647">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
+<span class="fc" id="L648">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
+<span class="fc" id="L649">        setReceiverClockOffset(receiverClockOffset);</span>
+<span class="fc" id="L650">        setReceiverClockDrift(receiverClockDrift);</span>
+<span class="fc" id="L651">        setCovariance(covariance);</span>
+<span class="fc" id="L652">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param bodyToEcefCoordinateTransformationMatrix estimated body to ECEF coordinate transformation matrix.
+     * @param velocity                                 estimated ECEF user velocity.
+     * @param position                                 estimated ECEF user position.
+     * @param accelerationBiasX                        estimated accelerometer bias resolved around x axis and
+     *                                                 expressed in meters per squared second (m/s^2).
+     * @param accelerationBiasY                        estimated accelerometer bias resolved around y axis and
+     *                                                 expressed in meters per squared second (m/s^2).
+     * @param accelerationBiasZ                        estimated accelerometer bias resolved around z axis and
+     *                                                 expressed in meters per squared second (m/s^2).
+     * @param gyroBiasX                                estimated gyroscope bias resolved around x axis and
+     *                                                 expressed in radians per second (rad/s).
+     * @param gyroBiasY                                estimated gyroscope bias resolved around y axis and
+     *                                                 expressed in radians per second (rad/s).
+     * @param gyroBiasZ                                estimated gyroscope bias resolved around z axis and
+     *                                                 expressed in radians per second (rad/s).
+     * @param receiverClockOffset                      estimated receiver clock offset expressed in meters (m).
+     * @param receiverClockDrift                       estimated receiver clock drift expressed in meters per
+     *                                                 second (m/s).
+     * @param covariance                               estimated Kalman filter error covariance matrix.
+     * @throws IllegalArgumentException if provided body to ECEF coordinate transformation matrix is not 3x3
+     *                                  or if provided covariance matrix is not 17x17.
+     */
+    public INSTightlyCoupledKalmanState(
+            final Matrix bodyToEcefCoordinateTransformationMatrix, final ECEFVelocity velocity,
+            final ECEFPosition position,
+            final double accelerationBiasX, final double accelerationBiasY, final double accelerationBiasZ,
+            final double gyroBiasX, final double gyroBiasY, final double gyroBiasZ, final double receiverClockOffset,
+<span class="fc" id="L684">            final double receiverClockDrift, final Matrix covariance) {</span>
+<span class="fc" id="L685">        setBodyToEcefCoordinateTransformationMatrix(bodyToEcefCoordinateTransformationMatrix);</span>
+<span class="fc" id="L686">        setEcefVelocity(velocity);</span>
+<span class="fc" id="L687">        setEcefPosition(position);</span>
+<span class="fc" id="L688">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
+<span class="fc" id="L689">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
+<span class="fc" id="L690">        setReceiverClockOffset(receiverClockOffset);</span>
+<span class="fc" id="L691">        setReceiverClockDrift(receiverClockDrift);</span>
+<span class="fc" id="L692">        setCovariance(covariance);</span>
+<span class="fc" id="L693">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param bodyToEcefCoordinateTransformationMatrix estimated body to ECEF coordinate transformation matrix.
+     * @param positionAndVelocity                      estimated ECEF user position and velocity.
+     * @param accelerationBiasX                        estimated accelerometer bias resolved around x axis and
+     *                                                 expressed in meters per squared second (m/s^2).
+     * @param accelerationBiasY                        estimated accelerometer bias resolved around y axis and
+     *                                                 expressed in meters per squared second (m/s^2).
+     * @param accelerationBiasZ                        estimated accelerometer bias resolved around z axis and
+     *                                                 expressed in meters per squared second (m/s^2).
+     * @param gyroBiasX                                estimated gyroscope bias resolved around x axis and
+     *                                                 expressed in radians per second (rad/s).
+     * @param gyroBiasY                                estimated gyroscope bias resolved around y axis and
+     *                                                 expressed in radians per second (rad/s).
+     * @param gyroBiasZ                                estimated gyroscope bias resolved around z axis and
+     *                                                 expressed in radians per second (rad/s).
+     * @param receiverClockOffset                      estimated receiver clock offset expressed in meters (m).
+     * @param receiverClockDrift                       estimated receiver clock drift expressed in meters per
+     *                                                 second (m/s).
+     * @param covariance                               estimated Kalman filter error covariance matrix.
+     * @throws IllegalArgumentException if provided body to ECEF coordinate transformation matrix is not 3x3
+     *                                  or if provided covariance matrix is not 17x17.
+     */
+    public INSTightlyCoupledKalmanState(
+            final Matrix bodyToEcefCoordinateTransformationMatrix, final ECEFPositionAndVelocity positionAndVelocity,
+            final double accelerationBiasX, final double accelerationBiasY, final double accelerationBiasZ,
+            final double gyroBiasX, final double gyroBiasY, final double gyroBiasZ, final double receiverClockOffset,
+<span class="fc" id="L723">            final double receiverClockDrift, final Matrix covariance) {</span>
+<span class="fc" id="L724">        setBodyToEcefCoordinateTransformationMatrix(bodyToEcefCoordinateTransformationMatrix);</span>
+<span class="fc" id="L725">        setPositionAndVelocity(positionAndVelocity);</span>
+<span class="fc" id="L726">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
+<span class="fc" id="L727">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
+<span class="fc" id="L728">        setReceiverClockOffset(receiverClockOffset);</span>
+<span class="fc" id="L729">        setReceiverClockDrift(receiverClockDrift);</span>
+<span class="fc" id="L730">        setCovariance(covariance);</span>
+<span class="fc" id="L731">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param bodyToEcefCoordinateTransformationMatrix estimated body to ECEF coordinate transformation matrix.
+     * @param vx                                       estimated ECEF user velocity resolved around x axis.
+     * @param vy                                       estimated ECEF user velocity resolved around y axis.
+     * @param vz                                       estimated ECEF user velocity resolved around z axis.
+     * @param x                                        x coordinate of estimated ECEF user position.
+     * @param y                                        y coordinate of estimated ECEF user position.
+     * @param z                                        z coordinate of estimated ECEF user position.
+     * @param accelerationBiasX                        estimated accelerometer bias resolved around x axis.
+     * @param accelerationBiasY                        estimated accelerometer bias resolved around y axis.
+     * @param accelerationBiasZ                        estimated accelerometer bias resolved around z axis.
+     * @param gyroBiasX                                estimated gyroscope bias resolved around x axis.
+     * @param gyroBiasY                                estimated gyroscope bias resolved around y axis.
+     * @param gyroBiasZ                                estimated gyroscope bias resolved around z axis.
+     * @param receiverClockOffset                      estimated receiver clock offset.
+     * @param receiverClockDrift                       estimated receiver clock drift.
+     * @param covariance                               estimated Kalman filter error covariance matrix.
+     * @throws IllegalArgumentException if provided body to ECEF coordinate transformation matrix is not 3x3
+     *                                  or if provided covariance matrix is not 17x17.
+     */
+    public INSTightlyCoupledKalmanState(
+            final Matrix bodyToEcefCoordinateTransformationMatrix, final Speed vx, final Speed vy, final Speed vz,
+            final Distance x, final Distance y, final Distance z, final Acceleration accelerationBiasX,
+            final Acceleration accelerationBiasY, final Acceleration accelerationBiasZ,
+            final AngularSpeed gyroBiasX, final AngularSpeed gyroBiasY, final AngularSpeed gyroBiasZ,
+<span class="fc" id="L760">            final Distance receiverClockOffset, final Speed receiverClockDrift, final Matrix covariance) {</span>
+<span class="fc" id="L761">        setBodyToEcefCoordinateTransformationMatrix(bodyToEcefCoordinateTransformationMatrix);</span>
+<span class="fc" id="L762">        setVelocityCoordinates(vx, vy, vz);</span>
+<span class="fc" id="L763">        setPositionCoordinates(x, y, z);</span>
+<span class="fc" id="L764">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
+<span class="fc" id="L765">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
+<span class="fc" id="L766">        setReceiverClockOffset(receiverClockOffset);</span>
+<span class="fc" id="L767">        setReceiverClockDrift(receiverClockDrift);</span>
+<span class="fc" id="L768">        setCovariance(covariance);</span>
+<span class="fc" id="L769">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param bodyToEcefCoordinateTransformationMatrix estimated body to ECEF coordinate transformation matrix.
+     * @param vx                                       estimated ECEF user velocity resolved around x axis.
+     * @param vy                                       estimated ECEF user velocity resolved around y axis.
+     * @param vz                                       estimated ECEF user velocity resolved around z axis.
+     * @param position                                 estimated ECEF user position expressed in meters (m).
+     * @param accelerationBiasX                        estimated accelerometer bias resolved around x axis.
+     * @param accelerationBiasY                        estimated accelerometer bias resolved around y axis.
+     * @param accelerationBiasZ                        estimated accelerometer bias resolved around z axis.
+     * @param gyroBiasX                                estimated gyroscope bias resolved around x axis.
+     * @param gyroBiasY                                estimated gyroscope bias resolved around y axis.
+     * @param gyroBiasZ                                estimated gyroscope bias resolved around z axis.
+     * @param receiverClockOffset                      estimated receiver clock offset.
+     * @param receiverClockDrift                       estimated receiver clock drift.
+     * @param covariance                               estimated Kalman filter error covariance matrix.
+     * @throws IllegalArgumentException if provided body to ECEF coordinate transformation matrix is not 3x3
+     *                                  or if provided covariance matrix is not 17x17.
+     */
+    public INSTightlyCoupledKalmanState(
+            final Matrix bodyToEcefCoordinateTransformationMatrix, final Speed vx, final Speed vy, final Speed vz,
+            final Point3D position, final Acceleration accelerationBiasX, final Acceleration accelerationBiasY,
+            final Acceleration accelerationBiasZ, final AngularSpeed gyroBiasX, final AngularSpeed gyroBiasY,
+            final AngularSpeed gyroBiasZ, final Distance receiverClockOffset, final Speed receiverClockDrift,
+<span class="fc" id="L796">            final Matrix covariance) {</span>
+<span class="fc" id="L797">        setBodyToEcefCoordinateTransformationMatrix(bodyToEcefCoordinateTransformationMatrix);</span>
+<span class="fc" id="L798">        setVelocityCoordinates(vx, vy, vz);</span>
+<span class="fc" id="L799">        setPosition(position);</span>
+<span class="fc" id="L800">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
+<span class="fc" id="L801">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
+<span class="fc" id="L802">        setReceiverClockOffset(receiverClockOffset);</span>
+<span class="fc" id="L803">        setReceiverClockDrift(receiverClockDrift);</span>
+<span class="fc" id="L804">        setCovariance(covariance);</span>
+<span class="fc" id="L805">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param bodyToEcefCoordinateTransformationMatrix estimated body to ECEF coordinate transformation matrix.
+     * @param velocity                                 estimated ECEF user velocity.
+     * @param position                                 estimated ECEF user position.
+     * @param accelerationBiasX                        estimated accelerometer bias resolved around x axis.
+     * @param accelerationBiasY                        estimated accelerometer bias resolved around y axis.
+     * @param accelerationBiasZ                        estimated accelerometer bias resolved around z axis.
+     * @param gyroBiasX                                estimated gyroscope bias resolved around x axis.
+     * @param gyroBiasY                                estimated gyroscope bias resolved around y axis.
+     * @param gyroBiasZ                                estimated gyroscope bias resolved around z axis.
+     * @param receiverClockOffset                      estimated receiver clock offset.
+     * @param receiverClockDrift                       estimated receiver clock drift.
+     * @param covariance                               estimated Kalman filter error covariance matrix.
+     * @throws IllegalArgumentException if provided body to ECEF coordinate transformation matrix is not 3x3
+     *                                  or if provided covariance matrix is not 17x17.
+     */
+    public INSTightlyCoupledKalmanState(
+            final Matrix bodyToEcefCoordinateTransformationMatrix, final ECEFVelocity velocity,
+            final ECEFPosition position, final Acceleration accelerationBiasX, final Acceleration accelerationBiasY,
+            final Acceleration accelerationBiasZ, final AngularSpeed gyroBiasX, final AngularSpeed gyroBiasY,
+            final AngularSpeed gyroBiasZ, final Distance receiverClockOffset, final Speed receiverClockDrift,
+<span class="fc" id="L830">            final Matrix covariance) {</span>
+<span class="fc" id="L831">        setBodyToEcefCoordinateTransformationMatrix(bodyToEcefCoordinateTransformationMatrix);</span>
+<span class="fc" id="L832">        setEcefVelocity(velocity);</span>
+<span class="fc" id="L833">        setEcefPosition(position);</span>
+<span class="fc" id="L834">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
+<span class="fc" id="L835">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
+<span class="fc" id="L836">        setReceiverClockOffset(receiverClockOffset);</span>
+<span class="fc" id="L837">        setReceiverClockDrift(receiverClockDrift);</span>
+<span class="fc" id="L838">        setCovariance(covariance);</span>
+<span class="fc" id="L839">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param bodyToEcefCoordinateTransformationMatrix estimated body to ECEF coordinate transformation matrix.
+     * @param positionAndVelocity                      estimated ECEF user position and velocity.
+     * @param accelerationBiasX                        estimated accelerometer bias resolved around x axis.
+     * @param accelerationBiasY                        estimated accelerometer bias resolved around y axis.
+     * @param accelerationBiasZ                        estimated accelerometer bias resolved around z axis.
+     * @param gyroBiasX                                estimated gyroscope bias resolved around x axis.
+     * @param gyroBiasY                                estimated gyroscope bias resolved around y axis.
+     * @param gyroBiasZ                                estimated gyroscope bias resolved around z axis.
+     * @param receiverClockOffset                      estimated receiver clock offset.
+     * @param receiverClockDrift                       estimated receiver clock drift.
+     * @param covariance                               estimated Kalman filter error covariance matrix.
+     * @throws IllegalArgumentException if provided body to ECEF coordinate transformation matrix is not 3x3
+     *                                  or if provided covariance matrix is not 17x17.
+     */
+    public INSTightlyCoupledKalmanState(
+            final Matrix bodyToEcefCoordinateTransformationMatrix, final ECEFPositionAndVelocity positionAndVelocity,
+            final Acceleration accelerationBiasX, final Acceleration accelerationBiasY,
+            final Acceleration accelerationBiasZ, final AngularSpeed gyroBiasX, final AngularSpeed gyroBiasY,
+            final AngularSpeed gyroBiasZ, final Distance receiverClockOffset, final Speed receiverClockDrift,
+<span class="fc" id="L863">            final Matrix covariance) {</span>
+<span class="fc" id="L864">        setBodyToEcefCoordinateTransformationMatrix(bodyToEcefCoordinateTransformationMatrix);</span>
+<span class="fc" id="L865">        setPositionAndVelocity(positionAndVelocity);</span>
+<span class="fc" id="L866">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
+<span class="fc" id="L867">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
+<span class="fc" id="L868">        setReceiverClockOffset(receiverClockOffset);</span>
+<span class="fc" id="L869">        setReceiverClockDrift(receiverClockDrift);</span>
+<span class="fc" id="L870">        setCovariance(covariance);</span>
+<span class="fc" id="L871">    }</span>
+
+    /**
+     * Copy constructor.
+     *
+     * @param input input instance to copy data from.
+     */
+<span class="fc" id="L878">    public INSTightlyCoupledKalmanState(final INSTightlyCoupledKalmanState input) {</span>
+<span class="fc" id="L879">        copyFrom(input);</span>
+<span class="fc" id="L880">    }</span>
+
+    /**
+     * Gets estimated body to ECEF coordinate transformation matrix.
+     *
+     * @return estimated body to ECEF coordinate transformation matrix.
+     */
+    public Matrix getBodyToEcefCoordinateTransformationMatrix() {
+<span class="fc" id="L888">        return bodyToEcefCoordinateTransformationMatrix;</span>
+    }
+
+    /**
+     * Sets estimated body to ECEF coordinate transformation matrix.
+     *
+     * @param bodyToEcefCoordinateTransformationMatrix estimated body to ECEF coordinate
+     *                                                 transformation matrix.
+     * @throws IllegalArgumentException if provided matrix is not 3x3.
+     */
+    public void setBodyToEcefCoordinateTransformationMatrix(final Matrix bodyToEcefCoordinateTransformationMatrix) {
+<span class="fc bfc" id="L899" title="All 2 branches covered.">        if (bodyToEcefCoordinateTransformationMatrix.getRows() != CoordinateTransformation.ROWS</span>
+<span class="fc bfc" id="L900" title="All 2 branches covered.">                || bodyToEcefCoordinateTransformationMatrix.getColumns() != CoordinateTransformation.COLS) {</span>
+<span class="fc" id="L901">            throw new IllegalArgumentException();</span>
+        }
+<span class="fc" id="L903">        this.bodyToEcefCoordinateTransformationMatrix = bodyToEcefCoordinateTransformationMatrix;</span>
+<span class="fc" id="L904">    }</span>
+
+    /**
+     * Gets estimated ECEF user velocity resolved around x axis and expressed in meters per second (m/s).
+     *
+     * @return estimated ECEF user velocity resolved around x axis and expressed in meters per second (m/s).
+     */
+    public double getVx() {
+<span class="fc" id="L912">        return vx;</span>
+    }
+
+    /**
+     * Sets estimated ECEF user velocity resolved around x axis and expressed in meters per second (m/s).
+     *
+     * @param vx estimated ECEF user velocity resolved around x axis and expressed in meters per second (m/s).
+     */
+    public void setVx(final double vx) {
+<span class="fc" id="L921">        this.vx = vx;</span>
+<span class="fc" id="L922">    }</span>
+
+    /**
+     * Gets estimated ECEF user velocity resolved around y axis and expressed in meters per second (m/s).
+     *
+     * @return estimated ECEF user velocity resolved around y axis and expressed in meters per second (m/s).
+     */
+    public double getVy() {
+<span class="fc" id="L930">        return vy;</span>
+    }
+
+    /**
+     * Sets estimated ECEF user velocity resolved around y axis and expressed in meters per second (m/s).
+     *
+     * @param vy estimated ECEF user velocity resolved around y axis and expressed in meters per second (m/s).
+     */
+    public void setVy(final double vy) {
+<span class="fc" id="L939">        this.vy = vy;</span>
+<span class="fc" id="L940">    }</span>
+
+    /**
+     * Gets estimated ECEF user velocity resolved around z axis and expressed in meters per second (m/s).
+     *
+     * @return estimated ECEF user velocity resolved around z axis and expressed in meters per second (m/s).
+     */
+    public double getVz() {
+<span class="fc" id="L948">        return vz;</span>
+    }
+
+    /**
+     * Sets estimated ECEF user velocity resolved around z axis and expressed in meters per second (m/s).
+     *
+     * @param vz estimated ECEF user velocity resolved around z axis and expressed in meters per second (m/s).
+     */
+    public void setVz(final double vz) {
+<span class="fc" id="L957">        this.vz = vz;</span>
+<span class="fc" id="L958">    }</span>
+
+    /**
+     * Sets estimated ECEF user velocity coordinates.
+     *
+     * @param vx estimated ECEF user velocity resolved around x axis and expressed in meters per second (m/s).
+     * @param vy estimated ECEF user velocity resolved around y axis and expressed in meters per second (m/s).
+     * @param vz estimated ECEF user velocity resolved around z axis and expressed in meters per second (m/s).
+     */
+    public void setVelocityCoordinates(final double vx, final double vy, final double vz) {
+<span class="fc" id="L968">        this.vx = vx;</span>
+<span class="fc" id="L969">        this.vy = vy;</span>
+<span class="fc" id="L970">        this.vz = vz;</span>
+<span class="fc" id="L971">    }</span>
+
+    /**
+     * Gets x coordinate of estimated ECEF user position expressed in meters (m).
+     *
+     * @return x coordinate of estimated ECEF user position expressed in meters (m).
+     */
+    public double getX() {
+<span class="fc" id="L979">        return x;</span>
+    }
+
+    /**
+     * Sets x coordinate of estimated ECEF user position expressed in meters (m).
+     *
+     * @param x x coordinate of estimated ECEF user position expressed in meters (m).
+     */
+    public void setX(final double x) {
+<span class="fc" id="L988">        this.x = x;</span>
+<span class="fc" id="L989">    }</span>
+
+    /**
+     * Gets y coordinate of estimated ECEF user position expressed in meters (m).
+     *
+     * @return y coordinate of estimated ECEF user position expressed in meters (m).
+     */
+    public double getY() {
+<span class="fc" id="L997">        return y;</span>
+    }
+
+    /**
+     * Sets y coordinate of estimated ECEF user position expressed in meters (m).
+     *
+     * @param y y coordinate of estimated ECEF user position expressed in meters (m).
+     */
+    public void setY(final double y) {
+<span class="fc" id="L1006">        this.y = y;</span>
+<span class="fc" id="L1007">    }</span>
+
+    /**
+     * Gets z coordinate of estimated ECEF user position expressed in meters (m).
+     *
+     * @return z coordinate of estimated ECEF user position expressed in meters (m).
+     */
+    public double getZ() {
+<span class="fc" id="L1015">        return z;</span>
+    }
+
+    /**
+     * Sets z coordinate of estimated ECEF user position expressed in meters (m).
+     *
+     * @param z z coordinate of estimated ECEF user position expressed in meters (m).
+     */
+    public void setZ(final double z) {
+<span class="fc" id="L1024">        this.z = z;</span>
+<span class="fc" id="L1025">    }</span>
+
+    /**
+     * Sets estimated ECEF user position coordinates.
+     *
+     * @param x x coordinate of estimated ECEF user position expressed in meters (m).
+     * @param y y coordinate of estimated ECEF user position expressed in meters (m).
+     * @param z z coordinate of estimated ECEF user position expressed in meters (m).
+     */
+    public void setPositionCoordinates(final double x, final double y, final double z) {
+<span class="fc" id="L1035">        this.x = x;</span>
+<span class="fc" id="L1036">        this.y = y;</span>
+<span class="fc" id="L1037">        this.z = z;</span>
+<span class="fc" id="L1038">    }</span>
+
+    /**
+     * Gets estimated accelerometer bias resolved around x axis and expressed in
+     * meters per squared second (m/s^2).
+     *
+     * @return estimated accelerometer bias resolved around x axis and expressed in
+     * meters per squared second (m/s^2).
+     */
+    public double getAccelerationBiasX() {
+<span class="fc" id="L1048">        return accelerationBiasX;</span>
+    }
+
+    /**
+     * Sets estimated accelerometer bias resolved around x axis and expressed in
+     * meters per squared second (m/s^2).
+     *
+     * @param accelerationBiasX estimated accelerometer bias resolved around x axis and
+     *                          expressed in meters per squared second (m/s^2).
+     */
+    public void setAccelerationBiasX(final double accelerationBiasX) {
+<span class="fc" id="L1059">        this.accelerationBiasX = accelerationBiasX;</span>
+<span class="fc" id="L1060">    }</span>
+
+    /**
+     * Gets estimated accelerometer bias resolved around y axis and expressed in
+     * meters per squared second (m/s^2).
+     *
+     * @return estimated accelerometer bias resolved around y axis and expressed in
+     * meters per squared second (m/s^2).
+     */
+    public double getAccelerationBiasY() {
+<span class="fc" id="L1070">        return accelerationBiasY;</span>
+    }
+
+    /**
+     * Sets estimated accelerometer bias resolved around y axis and expressed in
+     * meters per squared second (m/s^2).
+     *
+     * @param accelerationBiasY estimated accelerometer bias resolved around y axis
+     *                          and expressed in meters per squared second (m/s^2).
+     */
+    public void setAccelerationBiasY(final double accelerationBiasY) {
+<span class="fc" id="L1081">        this.accelerationBiasY = accelerationBiasY;</span>
+<span class="fc" id="L1082">    }</span>
+
+    /**
+     * Gets estimated accelerometer bias resolved around z axis and expressed in
+     * meters per squared second (m/s^2).
+     *
+     * @return estimated accelerometer bias resolved around z axis and
+     * expressed in meters per squared second (m/s^2).
+     */
+    public double getAccelerationBiasZ() {
+<span class="fc" id="L1092">        return accelerationBiasZ;</span>
+    }
+
+    /**
+     * Sets estimated accelerometer bias resolved around z axis and expressed in
+     * meters per squared second (m/s^2).
+     *
+     * @param accelerationBiasZ estimated accelerometer bias resolved around z axis
+     *                          and expressed in meters per squared second (m/s^2).
+     */
+    public void setAccelerationBiasZ(final double accelerationBiasZ) {
+<span class="fc" id="L1103">        this.accelerationBiasZ = accelerationBiasZ;</span>
+<span class="fc" id="L1104">    }</span>
+
+    /**
+     * Sets estimated accelerometer bias expressed in meters per squared second (m/s^2).
+     *
+     * @param accelerationBiasX estimated accelerometer bias resolved around x axis and
+     *                          expressed in meters per squared second (m/s^2).
+     * @param accelerationBiasY estimated accelerometer bias resolved around y axis and
+     *                          expressed in meters per squared second (m/s^2).
+     * @param accelerationBiasZ estimated accelerometer bias resolved around z axis and
+     *                          expressed in meters per squared second (m/s^2).
+     */
+    public void setAccelerationBiasCoordinates(
+            final double accelerationBiasX, final double accelerationBiasY, final double accelerationBiasZ) {
+<span class="fc" id="L1118">        this.accelerationBiasX = accelerationBiasX;</span>
+<span class="fc" id="L1119">        this.accelerationBiasY = accelerationBiasY;</span>
+<span class="fc" id="L1120">        this.accelerationBiasZ = accelerationBiasZ;</span>
+<span class="fc" id="L1121">    }</span>
+
+    /**
+     * Gets estimated gyroscope bias resolved around x axis and expressed in
+     * radians per second (rad/s).
+     *
+     * @return estimated gyroscope bias resolved around x axis and expressed in
+     * radians per second (rad/s).
+     */
+    public double getGyroBiasX() {
+<span class="fc" id="L1131">        return gyroBiasX;</span>
+    }
+
+    /**
+     * Sets estimated gyroscope bias resolved around x axis and expressed in
+     * radians per second (rad/s).
+     *
+     * @param gyroBiasX estimated gyroscope bias resolved around x axis and
+     *                  expressed in radians per second (rad/s).
+     */
+    public void setGyroBiasX(final double gyroBiasX) {
+<span class="fc" id="L1142">        this.gyroBiasX = gyroBiasX;</span>
+<span class="fc" id="L1143">    }</span>
+
+    /**
+     * Gets estimated gyroscope bias resolved around y axis and expressed in
+     * radians per second (rad/s).
+     *
+     * @return estimated gyroscope bias resolved around y axis and expressed
+     * in radians per second (rad/s).
+     */
+    public double getGyroBiasY() {
+<span class="fc" id="L1153">        return gyroBiasY;</span>
+    }
+
+    /**
+     * Sets estimated gyroscope bias resolved around y axis and expressed in
+     * radians per second (rad/s).
+     *
+     * @param gyroBiasY estimated gyroscope bias resolved around y axis and
+     *                  expressed in radians per second (rad/s).
+     */
+    public void setGyroBiasY(final double gyroBiasY) {
+<span class="fc" id="L1164">        this.gyroBiasY = gyroBiasY;</span>
+<span class="fc" id="L1165">    }</span>
+
+    /**
+     * Gets estimated gyroscope bias resolved around z axis and expressed in
+     * radians per second (rad/s).
+     *
+     * @return estimated gyroscope bias resolved around z axis and expressed
+     * in radians per second (rad/s).
+     */
+    public double getGyroBiasZ() {
+<span class="fc" id="L1175">        return gyroBiasZ;</span>
+    }
+
+    /**
+     * Sets estimated gyroscope bias resolved around z axis and expressed in
+     * radians per second (rad/s).
+     *
+     * @param gyroBiasZ estimated gyroscope bias resolved around z axis and
+     *                  expressed in radians per second (rad/s).
+     */
+    public void setGyroBiasZ(final double gyroBiasZ) {
+<span class="fc" id="L1186">        this.gyroBiasZ = gyroBiasZ;</span>
+<span class="fc" id="L1187">    }</span>
+
+    /**
+     * Sets estimated gyroscope bias coordinates expressed in radians
+     * per second (rad/s).
+     *
+     * @param gyroBiasX estimated gyroscope bias resolved around x axis and
+     *                  expressed in radians per second (rad/s).
+     * @param gyroBiasY estimated gyroscope bias resolved around y axis and
+     *                  expressed in radians per second (rad/s).
+     * @param gyroBiasZ estimated gyroscope bias resolved around z axis and
+     *                  expressed in radians per second (rad/s).
+     */
+    public void setGyroBiasCoordinates(final double gyroBiasX, final double gyroBiasY, final double gyroBiasZ) {
+<span class="fc" id="L1201">        this.gyroBiasX = gyroBiasX;</span>
+<span class="fc" id="L1202">        this.gyroBiasY = gyroBiasY;</span>
+<span class="fc" id="L1203">        this.gyroBiasZ = gyroBiasZ;</span>
+<span class="fc" id="L1204">    }</span>
+
+    /**
+     * Gets estimated receiver clock offset expressed in meters (m).
+     *
+     * @return estimated receiver clock offset expressed in meters (m).
+     */
+    public double getReceiverClockOffset() {
+<span class="fc" id="L1212">        return receiverClockOffset;</span>
+    }
+
+    /**
+     * Sets estimated receiver clock offset expressed in meters (m).
+     *
+     * @param receiverClockOffset estimated receiver clock offset expressed
+     *                            in meters (m).
+     */
+    public void setReceiverClockOffset(final double receiverClockOffset) {
+<span class="fc" id="L1222">        this.receiverClockOffset = receiverClockOffset;</span>
+<span class="fc" id="L1223">    }</span>
+
+    /**
+     * Gets estimated receiver clock drift expressed in meters per second (m/s).
+     *
+     * @return estimated receiver clock drift expressed in meters per second (m/s).
+     */
+    public double getReceiverClockDrift() {
+<span class="fc" id="L1231">        return receiverClockDrift;</span>
+    }
+
+    /**
+     * Sets estimated receiver clock drift expressed in meters per second (m/s).
+     *
+     * @param receiverClockDrift estimated receiver clock drift expressed in
+     *                           meters per second (m/s).
+     */
+    public void setReceiverClockDrift(final double receiverClockDrift) {
+<span class="fc" id="L1241">        this.receiverClockDrift = receiverClockDrift;</span>
+<span class="fc" id="L1242">    }</span>
+
+    /**
+     * Gets Kalman filter error covariance matrix.
+     * Notice that covariance is expressed in terms of ECEF coordinates.
+     * If accuracy of position, attitude or velocity needs to be expressed in terms
+     * of NED coordinates, their respective sub-matrices of this covariance matrix
+     * must be rotated, taking into account the Jacobian of the matrix transformation
+     * relating both coordinates, the covariance can be expressed following the law
+     * of propagation of uncertainties
+     * &lt;a href=&quot;https://en.wikipedia.org/wiki/Propagation_of_uncertainty&quot;&gt;
+     *     (https://en.wikipedia.org/wiki/Propagation_of_uncertainty)
+     * &lt;/a&gt;
+     * as: cov(f(x)) = J*cov(x)*J'.
+     *
+     * @param result instance where result data will be copied to.
+     * @return true if result data has been copied, false otherwise.
+     */
+    public boolean getCovariance(final Matrix result) {
+<span class="fc bfc" id="L1261" title="All 2 branches covered.">        if (covariance != null) {</span>
+<span class="fc" id="L1262">            covariance.copyTo(result);</span>
+<span class="fc" id="L1263">            return true;</span>
+        } else {
+<span class="fc" id="L1265">            return false;</span>
+        }
+    }
+
+    /**
+     * Gets Kalman filter error covariance matrix.
+     * Notice that covariance is expressed in terms of ECEF coordinates.
+     * If accuracy of position, attitude or velocity needs to be expressed in terms
+     * of NED coordinates, their respective sub-matrices of this covariance matrix
+     * must be rotated, taking into account the Jacobian of the matrix transformation
+     * relating both coordinates, the covariance can be expressed following the law
+     * of propagation of uncertainties
+     * &lt;a href=&quot;https://en.wikipedia.org/wiki/Propagation_of_uncertainty&quot;&gt;
+     *     (https://en.wikipedia.org/wiki/Propagation_of_uncertainty)
+     * &lt;/a&gt;
+     * as: cov(f(x)) = J*cov(x)*J'.
+     *
+     * @return Kalman filter error covariance matrix.
+     */
+    public Matrix getCovariance() {
+<span class="fc" id="L1285">        return covariance;</span>
+    }
+
+    /**
+     * Sets Kalman filter error covariance matrix.
+     *
+     * @param covariance Kalman filter error covariance matrix to be set.
+     * @throws IllegalArgumentException if provided covariance matrix is not 17x17.
+     */
+    public void setCovariance(final Matrix covariance) {
+<span class="pc bpc" id="L1295" title="1 of 4 branches missed.">        if (covariance.getRows() != NUM_PARAMS || covariance.getColumns() != NUM_PARAMS) {</span>
+<span class="fc" id="L1296">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L1299">        this.covariance = covariance;</span>
+<span class="fc" id="L1300">    }</span>
+
+    /**
+     * Gets body to ECEF coordinate transformation.
+     *
+     * @return body to ECEF coordinate transformation.
+     * @throws InvalidRotationMatrixException if current body to ECEF transformation matrix is
+     *                                        not valid (is not a 3x3 orthonormal matrix).
+     */
+    public CoordinateTransformation getC() throws InvalidRotationMatrixException {
+<span class="fc bfc" id="L1310" title="All 2 branches covered.">        return bodyToEcefCoordinateTransformationMatrix != null</span>
+<span class="fc" id="L1311">                ? new CoordinateTransformation(bodyToEcefCoordinateTransformationMatrix, FrameType.BODY_FRAME,</span>
+<span class="fc" id="L1312">                FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME) : null;</span>
+    }
+
+    /**
+     * Gets body to ECEF coordinate transformation.
+     *
+     * @param threshold threshold to determine whether current body to ECEF transformation
+     *                  matrix is valid or not (to check that matrix is 3x3 orthonormal).
+     * @return body to ECEF coordinate transformation.
+     * @throws InvalidRotationMatrixException if current body to ECEF transformation matrix
+     *                                        is considered not valid (is not a 3x3 orthonormal matrix) with provided threshold.
+     */
+    public CoordinateTransformation getC(final double threshold) throws InvalidRotationMatrixException {
+<span class="pc bpc" id="L1325" title="1 of 2 branches missed.">        return bodyToEcefCoordinateTransformationMatrix != null</span>
+<span class="nc" id="L1326">                ? new CoordinateTransformation(bodyToEcefCoordinateTransformationMatrix, FrameType.BODY_FRAME,</span>
+<span class="fc" id="L1327">                FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME, threshold) : null;</span>
+    }
+
+    /**
+     * Gets body to ECEF coordinate transformation.
+     *
+     * @param result instance where body to ECEF coordinate transformation will be stored.
+     * @return true if result instance was updated, false otherwise.
+     * @throws InvalidRotationMatrixException if current body to ECEF transformation matrix
+     *                                        is not valid (is not a 3x3 orthonormal matrix).
+     */
+    public boolean getC(final CoordinateTransformation result) throws InvalidRotationMatrixException {
+<span class="fc bfc" id="L1339" title="All 2 branches covered.">        if (bodyToEcefCoordinateTransformationMatrix != null) {</span>
+<span class="fc" id="L1340">            result.setSourceType(FrameType.BODY_FRAME);</span>
+<span class="fc" id="L1341">            result.setDestinationType(FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);</span>
+<span class="fc" id="L1342">            result.setMatrix(bodyToEcefCoordinateTransformationMatrix);</span>
+<span class="fc" id="L1343">            return true;</span>
+        } else {
+<span class="fc" id="L1345">            return false;</span>
+        }
+    }
+
+    /**
+     * Gets body to ECEF coordinate transformation.
+     *
+     * @param result    instance where body to ECEF coordinate transformation will be stored.
+     * @param threshold threshold to determine whether current body to ECEF transformation
+     *                  matrix is valid or not (to check that matrix is 3x3 orthonormal).
+     * @return true if result instance was updated, false otherwise.
+     * @throws InvalidRotationMatrixException if current body to ECEF transformation matrix
+     *                                        is not valid (is not a 3x3 orthonormal matrix) with provided threshold.
+     */
+    public boolean getC(final CoordinateTransformation result, final double threshold)
+            throws InvalidRotationMatrixException {
+<span class="fc bfc" id="L1361" title="All 2 branches covered.">        if (bodyToEcefCoordinateTransformationMatrix != null) {</span>
+<span class="fc" id="L1362">            result.setSourceType(FrameType.BODY_FRAME);</span>
+<span class="fc" id="L1363">            result.setDestinationType(FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);</span>
+<span class="fc" id="L1364">            result.setMatrix(bodyToEcefCoordinateTransformationMatrix, threshold);</span>
+<span class="fc" id="L1365">            return true;</span>
+        } else {
+<span class="fc" id="L1367">            return false;</span>
+        }
+    }
+
+    /**
+     * Sets body to ECEF coordinate transformation.
+     *
+     * @param c body to ECEF coordinate transformation to be set.
+     * @throws IllegalArgumentException if provided coordinate transformation is
+     *                                  not null and is not a body to ECEF transformation.
+     */
+    public void setC(final CoordinateTransformation c) {
+<span class="fc bfc" id="L1379" title="All 2 branches covered.">        if (c == null) {</span>
+<span class="fc" id="L1380">            bodyToEcefCoordinateTransformationMatrix = null;</span>
+
+        } else {
+
+<span class="fc bfc" id="L1384" title="All 2 branches covered.">            if (c.getSourceType() != FrameType.BODY_FRAME</span>
+<span class="pc bpc" id="L1385" title="1 of 2 branches missed.">                    || c.getDestinationType() != FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME) {</span>
+<span class="fc" id="L1386">                throw new IllegalArgumentException();</span>
+            }
+
+<span class="fc bfc" id="L1389" title="All 2 branches covered.">            if (bodyToEcefCoordinateTransformationMatrix != null) {</span>
+<span class="fc" id="L1390">                c.getMatrix(bodyToEcefCoordinateTransformationMatrix);</span>
+            } else {
+<span class="fc" id="L1392">                bodyToEcefCoordinateTransformationMatrix = c.getMatrix();</span>
+            }
+        }
+<span class="fc" id="L1395">    }</span>
+
+    /**
+     * Gets estimated ECEF user velocity resolved around x axis.
+     *
+     * @param result instance where estimated ECEF user velocity resolved around x axis will be stored.
+     */
+    public void getSpeedX(final Speed result) {
+<span class="fc" id="L1403">        result.setValue(vx);</span>
+<span class="fc" id="L1404">        result.setUnit(SpeedUnit.METERS_PER_SECOND);</span>
+<span class="fc" id="L1405">    }</span>
+
+    /**
+     * Gets estimated ECEF user velocity resolved around x axis.
+     *
+     * @return estimated ECEF user velocity resolved around x axis.
+     */
+    public Speed getSpeedX() {
+<span class="fc" id="L1413">        return new Speed(vx, SpeedUnit.METERS_PER_SECOND);</span>
+    }
+
+    /**
+     * Sets estimated ECEF user velocity resolved around x axis.
+     *
+     * @param vx estimated ECEF user velocity resolved around x axis.
+     */
+    public void setSpeedX(final Speed vx) {
+<span class="fc" id="L1422">        this.vx = SpeedConverter.convert(vx.getValue().doubleValue(), vx.getUnit(), SpeedUnit.METERS_PER_SECOND);</span>
+<span class="fc" id="L1423">    }</span>
+
+    /**
+     * Gets estimated ECEF user velocity resolved around y axis.
+     *
+     * @param result instance where estimated ECEF user velocity resolved around y axis will be stored.
+     */
+    public void getSpeedY(final Speed result) {
+<span class="fc" id="L1431">        result.setValue(vy);</span>
+<span class="fc" id="L1432">        result.setUnit(SpeedUnit.METERS_PER_SECOND);</span>
+<span class="fc" id="L1433">    }</span>
+
+    /**
+     * Gets estimated ECEF user velocity resolved around y axis.
+     *
+     * @return estimated ECEF velocity resolved around y axis.
+     */
+    public Speed getSpeedY() {
+<span class="fc" id="L1441">        return new Speed(vy, SpeedUnit.METERS_PER_SECOND);</span>
+    }
+
+    /**
+     * Sets estimated ECEF user velocity resolved around y axis.
+     *
+     * @param vy estimated ECEF user velocity resolved around y axis.
+     */
+    public void setSpeedY(final Speed vy) {
+<span class="fc" id="L1450">        this.vy = SpeedConverter.convert(vy.getValue().doubleValue(), vy.getUnit(), SpeedUnit.METERS_PER_SECOND);</span>
+<span class="fc" id="L1451">    }</span>
+
+    /**
+     * Gets estimated ECEF user velocity resolved around z axis.
+     *
+     * @param result instance where estimated ECEF user velocity resolved around z axis will be stored.
+     */
+    public void getSpeedZ(final Speed result) {
+<span class="fc" id="L1459">        result.setValue(vz);</span>
+<span class="fc" id="L1460">        result.setUnit(SpeedUnit.METERS_PER_SECOND);</span>
+<span class="fc" id="L1461">    }</span>
+
+    /**
+     * Gets estimated ECEF user velocity resolved around z axis.
+     *
+     * @return estimated ECEF velocity resolved around z axis.
+     */
+    public Speed getSpeedZ() {
+<span class="fc" id="L1469">        return new Speed(vz, SpeedUnit.METERS_PER_SECOND);</span>
+    }
+
+    /**
+     * Sets estimated ECEF user velocity resolved around z axis.
+     *
+     * @param vz estimated ECEF velocity resolved around z axis.
+     */
+    public void setSpeedZ(final Speed vz) {
+<span class="fc" id="L1478">        this.vz = SpeedConverter.convert(vz.getValue().doubleValue(), vz.getUnit(), SpeedUnit.METERS_PER_SECOND);</span>
+<span class="fc" id="L1479">    }</span>
+
+    /**
+     * Sets estimated ECEF user velocity.
+     *
+     * @param vx estimated ECEF velocity resolved around x axis.
+     * @param vy estimated ECEF velocity resolved around y axis.
+     * @param vz estimated ECEF velocity resolved around z axis.
+     */
+    public void setVelocityCoordinates(final Speed vx, final Speed vy, final Speed vz) {
+<span class="fc" id="L1489">        setSpeedX(vx);</span>
+<span class="fc" id="L1490">        setSpeedY(vy);</span>
+<span class="fc" id="L1491">        setSpeedZ(vz);</span>
+<span class="fc" id="L1492">    }</span>
+
+    /**
+     * Gets estimated ECEF user velocity.
+     *
+     * @param result instance where estimated ECEF user velocity will be stored.
+     */
+    public void getEcefVelocity(final com.irurueta.navigation.frames.ECEFVelocity result) {
+<span class="fc" id="L1500">        result.setCoordinates(vx, vy, vz);</span>
+<span class="fc" id="L1501">    }</span>
+
+    /**
+     * Gets estimated ECEF user velocity.
+     *
+     * @return estimated ECEF user velocity.
+     */
+    public ECEFVelocity getEcefVelocity() {
+<span class="fc" id="L1509">        return new ECEFVelocity(vx, vy, vz);</span>
+    }
+
+    /**
+     * Sets estimated ECEF user velocity.
+     *
+     * @param ecefVelocity estimated ECEF user velocity.
+     */
+    public void setEcefVelocity(final ECEFVelocity ecefVelocity) {
+<span class="fc" id="L1518">        vx = ecefVelocity.getVx();</span>
+<span class="fc" id="L1519">        vy = ecefVelocity.getVy();</span>
+<span class="fc" id="L1520">        vz = ecefVelocity.getVz();</span>
+<span class="fc" id="L1521">    }</span>
+
+    /**
+     * Gets x coordinate of estimated ECEF user position.
+     *
+     * @param result instance where x coordinate of estimated ECEF user position
+     *               will be stored.
+     */
+    public void getDistanceX(final Distance result) {
+<span class="fc" id="L1530">        result.setValue(x);</span>
+<span class="fc" id="L1531">        result.setUnit(DistanceUnit.METER);</span>
+<span class="fc" id="L1532">    }</span>
+
+    /**
+     * Gets x coordinate of estimated ECEF user position.
+     *
+     * @return x coordinate of estimated ECEF user position.
+     */
+    public Distance getDistanceX() {
+<span class="fc" id="L1540">        return new Distance(x, DistanceUnit.METER);</span>
+    }
+
+    /**
+     * Sets x coordinate of estimated ECEF user position.
+     *
+     * @param x x coordinate of estimated ECEF user position.
+     */
+    public void setDistanceX(final Distance x) {
+<span class="fc" id="L1549">        this.x = DistanceConverter.convert(x.getValue().doubleValue(), x.getUnit(), DistanceUnit.METER);</span>
+<span class="fc" id="L1550">    }</span>
+
+    /**
+     * Gets y coordinate of estimated ECEF user position.
+     *
+     * @param result instance where y coordinate of estimated ECEF user position
+     *               will be stored.
+     */
+    public void getDistanceY(final Distance result) {
+<span class="fc" id="L1559">        result.setValue(y);</span>
+<span class="fc" id="L1560">        result.setUnit(DistanceUnit.METER);</span>
+<span class="fc" id="L1561">    }</span>
+
+    /**
+     * Gets y coordinate of estimated ECEF user position.
+     *
+     * @return y coordinate of estimated ECEF user position.
+     */
+    public Distance getDistanceY() {
+<span class="fc" id="L1569">        return new Distance(y, DistanceUnit.METER);</span>
+    }
+
+    /**
+     * Sets y coordinate of estimated ECEF user position.
+     *
+     * @param y y coordinate of estimated ECEF user position.
+     */
+    public void setDistanceY(final Distance y) {
+<span class="fc" id="L1578">        this.y = DistanceConverter.convert(y.getValue().doubleValue(), y.getUnit(), DistanceUnit.METER);</span>
+<span class="fc" id="L1579">    }</span>
+
+    /**
+     * Gets z coordinate of estimated ECEF user position.
+     *
+     * @param result instance where z coordinate of estimated ECEF user position
+     *               will be stored.
+     */
+    public void getDistanceZ(final Distance result) {
+<span class="fc" id="L1588">        result.setValue(z);</span>
+<span class="fc" id="L1589">        result.setUnit(DistanceUnit.METER);</span>
+<span class="fc" id="L1590">    }</span>
+
+    /**
+     * Gets z coordinate of estimated ECEF user position.
+     *
+     * @return z coordinate of estimated ECEF user position.
+     */
+    public Distance getDistanceZ() {
+<span class="fc" id="L1598">        return new Distance(z, DistanceUnit.METER);</span>
+    }
+
+    /**
+     * Sets z coordinate of estimated ECEF user position.
+     *
+     * @param z z coordinate of estimated ECEF user position.
+     */
+    public void setDistanceZ(final Distance z) {
+<span class="fc" id="L1607">        this.z = DistanceConverter.convert(z.getValue().doubleValue(), z.getUnit(), DistanceUnit.METER);</span>
+<span class="fc" id="L1608">    }</span>
+
+    /**
+     * Sets coordinates of estimated ECEF user position.
+     *
+     * @param x x coordinate of estimated ECEF user position.
+     * @param y y coordinate of estimated ECEF user position.
+     * @param z z coordinate of estimated ECEF user position.
+     */
+    public void setPositionCoordinates(final Distance x, final Distance y, final Distance z) {
+<span class="fc" id="L1618">        setDistanceX(x);</span>
+<span class="fc" id="L1619">        setDistanceY(y);</span>
+<span class="fc" id="L1620">        setDistanceZ(z);</span>
+<span class="fc" id="L1621">    }</span>
+
+    /**
+     * Gets estimated ECEF user position expressed in meters (m).
+     *
+     * @param result instance where estimated ECEF user position expressed
+     *               in meters (m) will be stored.
+     */
+    public void getPosition(final Point3D result) {
+<span class="fc" id="L1630">        result.setInhomogeneousCoordinates(x, y, z);</span>
+<span class="fc" id="L1631">    }</span>
+
+    /**
+     * Gets estimated ECEF user position expressed in meters (m).
+     *
+     * @return estimated ECEF user position expressed in meters (m).
+     */
+    public Point3D getPosition() {
+<span class="fc" id="L1639">        return new InhomogeneousPoint3D(x, y, z);</span>
+    }
+
+    /**
+     * Sets estimated ECEF user position expressed in meters (m).
+     *
+     * @param position estimated ECEF user position expressed in
+     *                 meters (m).
+     */
+    public void setPosition(final Point3D position) {
+<span class="fc" id="L1649">        x = position.getInhomX();</span>
+<span class="fc" id="L1650">        y = position.getInhomY();</span>
+<span class="fc" id="L1651">        z = position.getInhomZ();</span>
+<span class="fc" id="L1652">    }</span>
+
+    /**
+     * Gets estimated ECEF user position.
+     *
+     * @param result instance where estimated ECEF user position
+     *               will be stored.
+     */
+    public void getEcefPosition(final ECEFPosition result) {
+<span class="fc" id="L1661">        result.setCoordinates(x, y, z);</span>
+<span class="fc" id="L1662">    }</span>
+
+    /**
+     * Gets estimated ECEF user position.
+     *
+     * @return estimated ECEF user position.
+     */
+    public ECEFPosition getEcefPosition() {
+<span class="fc" id="L1670">        return new ECEFPosition(x, y, z);</span>
+    }
+
+    /**
+     * Sets estimated ECEF user position.
+     *
+     * @param ecefPosition estimated ECEF user position.
+     */
+    public void setEcefPosition(final ECEFPosition ecefPosition) {
+<span class="fc" id="L1679">        x = ecefPosition.getX();</span>
+<span class="fc" id="L1680">        y = ecefPosition.getY();</span>
+<span class="fc" id="L1681">        z = ecefPosition.getZ();</span>
+<span class="fc" id="L1682">    }</span>
+
+    /**
+     * Gets estimated ECEF user position and velocity.
+     *
+     * @param result instance where estimated ECEF user position and velocity
+     *               will be stored.
+     */
+    public void getPositionAndVelocity(final ECEFPositionAndVelocity result) {
+<span class="fc" id="L1691">        result.setPositionCoordinates(x, y, z);</span>
+<span class="fc" id="L1692">        result.setVelocityCoordinates(vx, vy, vz);</span>
+<span class="fc" id="L1693">    }</span>
+
+    /**
+     * Gets estimated ECEF user position and velocity.
+     *
+     * @return estimated ECEF user position and velocity.
+     */
+    public ECEFPositionAndVelocity getPositionAndVelocity() {
+<span class="fc" id="L1701">        return new ECEFPositionAndVelocity(x, y, z, vx, vy, vz);</span>
+    }
+
+    /**
+     * Sets estimated ECEF user position and velocity.
+     *
+     * @param positionAndVelocity estimated ECEF user position and velocity.
+     */
+    public void setPositionAndVelocity(final ECEFPositionAndVelocity positionAndVelocity) {
+<span class="fc" id="L1710">        x = positionAndVelocity.getX();</span>
+<span class="fc" id="L1711">        y = positionAndVelocity.getY();</span>
+<span class="fc" id="L1712">        z = positionAndVelocity.getZ();</span>
+<span class="fc" id="L1713">        vx = positionAndVelocity.getVx();</span>
+<span class="fc" id="L1714">        vy = positionAndVelocity.getVy();</span>
+<span class="fc" id="L1715">        vz = positionAndVelocity.getVz();</span>
+<span class="fc" id="L1716">    }</span>
+
+    /**
+     * Gets body to ECEF frame containing coordinate transformation, position and
+     * velocity.
+     *
+     * @param result instance where body to ECEF frame will be stored.
+     * @return true if result was updated, false otherwise.
+     */
+    public boolean getFrame(final ECEFFrame result) {
+<span class="fc bfc" id="L1726" title="All 2 branches covered.">        if (bodyToEcefCoordinateTransformationMatrix != null) {</span>
+            try {
+<span class="fc" id="L1728">                result.setCoordinateTransformation(getC());</span>
+<span class="fc" id="L1729">            } catch (final InvalidSourceAndDestinationFrameTypeException | InvalidRotationMatrixException e) {</span>
+<span class="fc" id="L1730">                return false;</span>
+<span class="fc" id="L1731">            }</span>
+<span class="fc" id="L1732">            result.setCoordinates(x, y, z);</span>
+<span class="fc" id="L1733">            result.setVelocityCoordinates(vx, vy, vz);</span>
+<span class="fc" id="L1734">            return true;</span>
+        } else {
+<span class="fc" id="L1736">            return false;</span>
+        }
+    }
+
+    /**
+     * Gets body to ECEF frame containing coordinate transformation, position and
+     * velocity.
+     *
+     * @return body to ECEF frame.
+     */
+    public ECEFFrame getFrame() {
+<span class="fc bfc" id="L1747" title="All 2 branches covered.">        if (bodyToEcefCoordinateTransformationMatrix != null) {</span>
+            try {
+<span class="fc" id="L1749">                return new ECEFFrame(x, y, z, vx, vy, vz, getC());</span>
+<span class="fc" id="L1750">            } catch (final InvalidSourceAndDestinationFrameTypeException | InvalidRotationMatrixException e) {</span>
+<span class="fc" id="L1751">                return null;</span>
+            }
+        } else {
+<span class="fc" id="L1754">            return null;</span>
+        }
+    }
+
+    /**
+     * Sets body to ECEF frame containing coordinate transformation, position and
+     * velocity.
+     *
+     * @param frame body to ECEF frame to be set.
+     */
+    public void setFrame(final ECEFFrame frame) {
+<span class="fc" id="L1765">        x = frame.getX();</span>
+<span class="fc" id="L1766">        y = frame.getY();</span>
+<span class="fc" id="L1767">        z = frame.getZ();</span>
+
+<span class="fc" id="L1769">        vx = frame.getVx();</span>
+<span class="fc" id="L1770">        vy = frame.getVy();</span>
+<span class="fc" id="L1771">        vz = frame.getVz();</span>
+
+<span class="fc bfc" id="L1773" title="All 2 branches covered.">        if (bodyToEcefCoordinateTransformationMatrix != null) {</span>
+<span class="fc" id="L1774">            frame.getCoordinateTransformationMatrix(bodyToEcefCoordinateTransformationMatrix);</span>
+        } else {
+<span class="fc" id="L1776">            bodyToEcefCoordinateTransformationMatrix = frame.getCoordinateTransformationMatrix();</span>
+        }
+<span class="fc" id="L1778">    }</span>
+
+    /**
+     * Gets estimated accelerometer bias resolved around x axis.
+     *
+     * @param result instance where estimated accelerometer bias resolved around
+     *               x axis will be stored.
+     */
+    public void getAccelerationBiasXAsAcceleration(final Acceleration result) {
+<span class="fc" id="L1787">        result.setValue(accelerationBiasX);</span>
+<span class="fc" id="L1788">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L1789">    }</span>
+
+    /**
+     * Gets estimated accelerometer bias resolved around x axis.
+     *
+     * @return estimated accelerometer bias resolved around x axis.
+     */
+    public Acceleration getAccelerationBiasXAsAcceleration() {
+<span class="fc" id="L1797">        return new Acceleration(accelerationBiasX, AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+    }
+
+    /**
+     * Sets estimated accelerometer bias resolved around x axis.
+     *
+     * @param accelerationBiasX estimated accelerometer bias resolved
+     *                          around x axis.
+     */
+    public void setAccelerationBiasX(final Acceleration accelerationBiasX) {
+<span class="fc" id="L1807">        this.accelerationBiasX = AccelerationConverter.convert(accelerationBiasX.getValue().doubleValue(),</span>
+<span class="fc" id="L1808">                accelerationBiasX.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L1809">    }</span>
+
+    /**
+     * Gets estimated accelerometer bias resolved around y axis.
+     *
+     * @param result instance where estimated accelerometer bias resolved around
+     *               y axis will be stored.
+     */
+    public void getAccelerationBiasYAsAcceleration(final Acceleration result) {
+<span class="fc" id="L1818">        result.setValue(accelerationBiasY);</span>
+<span class="fc" id="L1819">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L1820">    }</span>
+
+    /**
+     * Gets estimated accelerometer bias resolved around y axis.
+     *
+     * @return estimated accelerometer bias resolved around y axis.
+     */
+    public Acceleration getAccelerationBiasYAsAcceleration() {
+<span class="fc" id="L1828">        return new Acceleration(accelerationBiasY, AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+    }
+
+    /**
+     * Sets estimated accelerometer bias resolved around y axis.
+     *
+     * @param accelerationBiasY estimated accelerometer bias resolved
+     *                          around y axis.
+     */
+    public void setAccelerationBiasY(final Acceleration accelerationBiasY) {
+<span class="fc" id="L1838">        this.accelerationBiasY = AccelerationConverter.convert(accelerationBiasY.getValue().doubleValue(),</span>
+<span class="fc" id="L1839">                accelerationBiasY.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L1840">    }</span>
+
+    /**
+     * Gets estimated accelerometer bias resolved around z axis.
+     *
+     * @param result instance where estimated accelerometer bias resolved around
+     *               z axis will be stored.
+     */
+    public void getAccelerationBiasZAsAcceleration(final Acceleration result) {
+<span class="fc" id="L1849">        result.setValue(accelerationBiasZ);</span>
+<span class="fc" id="L1850">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L1851">    }</span>
+
+    /**
+     * Gets estimated accelerometer bias resolved around z axis.
+     *
+     * @return estimated accelerometer bias resolved around z axis.
+     */
+    public Acceleration getAccelerationBiasZAsAcceleration() {
+<span class="fc" id="L1859">        return new Acceleration(accelerationBiasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+    }
+
+    /**
+     * Sets estimated accelerometer bias resolved around z axis.
+     *
+     * @param accelerationBiasZ estimated accelerometer bias resolved
+     *                          around z axis.
+     */
+    public void setAccelerationBiasZ(final Acceleration accelerationBiasZ) {
+<span class="fc" id="L1869">        this.accelerationBiasZ = AccelerationConverter.convert(accelerationBiasZ.getValue().doubleValue(),</span>
+<span class="fc" id="L1870">                accelerationBiasZ.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L1871">    }</span>
+
+    /**
+     * Sets estimated accelerometer bias coordinates.
+     *
+     * @param accelerationBiasX estimated accelerometer bias resolved around x axis.
+     * @param accelerationBiasY estimated accelerometer bias resolved around y axis.
+     * @param accelerationBiasZ estimated accelerometer bias resolved around z axis.
+     */
+    public void setAccelerationBiasCoordinates(
+            final Acceleration accelerationBiasX, final Acceleration accelerationBiasY,
+            final Acceleration accelerationBiasZ) {
+<span class="fc" id="L1883">        setAccelerationBiasX(accelerationBiasX);</span>
+<span class="fc" id="L1884">        setAccelerationBiasY(accelerationBiasY);</span>
+<span class="fc" id="L1885">        setAccelerationBiasZ(accelerationBiasZ);</span>
+<span class="fc" id="L1886">    }</span>
+
+    /**
+     * Gets estimated gyroscope bias resolved around x axis.
+     *
+     * @param result instance where estimated gyroscope bias resolved around x axis will
+     *               be stored.
+     */
+    public void getAngularSpeedGyroBiasX(final AngularSpeed result) {
+<span class="fc" id="L1895">        result.setValue(gyroBiasX);</span>
+<span class="fc" id="L1896">        result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+<span class="fc" id="L1897">    }</span>
+
+    /**
+     * Gets estimated gyroscope bias resolved around x axis.
+     *
+     * @return estimated gyroscope bias resolved around x axis.
+     */
+    public AngularSpeed getAngularSpeedGyroBiasX() {
+<span class="fc" id="L1905">        return new AngularSpeed(gyroBiasX, AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+    }
+
+    /**
+     * Sets estimated gyroscope bias resolved around x axis.
+     *
+     * @param gyroBiasX estimated gyroscope bias resolved around x axis.
+     */
+    public void setGyroBiasX(final AngularSpeed gyroBiasX) {
+<span class="fc" id="L1914">        this.gyroBiasX = AngularSpeedConverter.convert(gyroBiasX.getValue().doubleValue(), gyroBiasX.getUnit(),</span>
+                AngularSpeedUnit.RADIANS_PER_SECOND);
+<span class="fc" id="L1916">    }</span>
+
+    /**
+     * Gets estimated gyroscope bias resolved around y axis.
+     *
+     * @param result instance where estimated gyroscope bias resolved around y axis will
+     *               be stored.
+     */
+    public void getAngularSpeedGyroBiasY(final AngularSpeed result) {
+<span class="fc" id="L1925">        result.setValue(gyroBiasY);</span>
+<span class="fc" id="L1926">        result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+<span class="fc" id="L1927">    }</span>
+
+    /**
+     * Gets estimated gyroscope bias resolved around y axis.
+     *
+     * @return estimated gyroscope bias resolved around y axis.
+     */
+    public AngularSpeed getAngularSpeedGyroBiasY() {
+<span class="fc" id="L1935">        return new AngularSpeed(gyroBiasY, AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+    }
+
+    /**
+     * Sets estimated gyroscope bias resolved around y axis.
+     *
+     * @param gyroBiasY estimated gyroscope bias resolved around y axis.
+     */
+    public void setGyroBiasY(final AngularSpeed gyroBiasY) {
+<span class="fc" id="L1944">        this.gyroBiasY = AngularSpeedConverter.convert(gyroBiasY.getValue().doubleValue(), gyroBiasY.getUnit(),</span>
+                AngularSpeedUnit.RADIANS_PER_SECOND);
+<span class="fc" id="L1946">    }</span>
+
+    /**
+     * Gets estimated gyroscope bias resolved around z axis.
+     *
+     * @param result instance where estimated gyroscope bias resolved around z axis will
+     *               be stored.
+     */
+    public void getAngularSpeedGyroBiasZ(final AngularSpeed result) {
+<span class="fc" id="L1955">        result.setValue(gyroBiasZ);</span>
+<span class="fc" id="L1956">        result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+<span class="fc" id="L1957">    }</span>
+
+    /**
+     * Gets estimated gyroscope bias resolved around z axis.
+     *
+     * @return estimated gyroscope bias resolved around z axis.
+     */
+    public AngularSpeed getAngularSpeedGyroBiasZ() {
+<span class="fc" id="L1965">        return new AngularSpeed(gyroBiasZ, AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+    }
+
+    /**
+     * Sets estimated gyroscope bias resolved around z axis.
+     *
+     * @param gyroBiasZ estimated gyroscope bias resolved around z axis.
+     */
+    public void setGyroBiasZ(final AngularSpeed gyroBiasZ) {
+<span class="fc" id="L1974">        this.gyroBiasZ = AngularSpeedConverter.convert(gyroBiasZ.getValue().doubleValue(), gyroBiasZ.getUnit(),</span>
+                AngularSpeedUnit.RADIANS_PER_SECOND);
+<span class="fc" id="L1976">    }</span>
+
+    /**
+     * Sets estimated gyroscope bias coordinates.
+     *
+     * @param gyroBiasX estimated gyroscope bias resolved around x axis.
+     * @param gyroBiasY estimated gyroscope bias resolved around y axis.
+     * @param gyroBiasZ estimated gyroscope bias resolved around z axis.
+     */
+    public void setGyroBiasCoordinates(
+            final AngularSpeed gyroBiasX, final AngularSpeed gyroBiasY, final AngularSpeed gyroBiasZ) {
+<span class="fc" id="L1987">        setGyroBiasX(gyroBiasX);</span>
+<span class="fc" id="L1988">        setGyroBiasY(gyroBiasY);</span>
+<span class="fc" id="L1989">        setGyroBiasZ(gyroBiasZ);</span>
+<span class="fc" id="L1990">    }</span>
+
+    /**
+     * Gets estimated receiver clock offset.
+     *
+     * @param result instance where estimated receiver clock offset will be stored.
+     */
+    public void getReceiverClockOffsetAsDistance(final Distance result) {
+<span class="fc" id="L1998">        result.setValue(receiverClockOffset);</span>
+<span class="fc" id="L1999">        result.setUnit(DistanceUnit.METER);</span>
+<span class="fc" id="L2000">    }</span>
+
+    /**
+     * Gets estimated receiver clock offset.
+     *
+     * @return estimated receiver clock offset.
+     */
+    public Distance getReceiverClockOffsetAsDistance() {
+<span class="fc" id="L2008">        return new Distance(receiverClockOffset, DistanceUnit.METER);</span>
+    }
+
+    /**
+     * Sets estimated receiver clock offset.
+     *
+     * @param receiverClockOffset estimated receiver clock offset.
+     */
+    public void setReceiverClockOffset(final Distance receiverClockOffset) {
+<span class="fc" id="L2017">        this.receiverClockOffset = DistanceConverter.convert(receiverClockOffset.getValue().doubleValue(),</span>
+<span class="fc" id="L2018">                receiverClockOffset.getUnit(), DistanceUnit.METER);</span>
+<span class="fc" id="L2019">    }</span>
+
+    /**
+     * Gets estimated receiver clock drift.
+     *
+     * @param result instance where estimated receiver clock drift will be stored.
+     */
+    public void getReceiverClockDriftAsSpeed(final Speed result) {
+<span class="fc" id="L2027">        result.setValue(receiverClockDrift);</span>
+<span class="fc" id="L2028">        result.setUnit(SpeedUnit.METERS_PER_SECOND);</span>
+<span class="fc" id="L2029">    }</span>
+
+    /**
+     * Gets estimated receiver clock drift.
+     *
+     * @return estimated receiver clock drift.
+     */
+    public Speed getReceiverClockDriftAsSpeed() {
+<span class="fc" id="L2037">        return new Speed(receiverClockDrift, SpeedUnit.METERS_PER_SECOND);</span>
+    }
+
+    /**
+     * Sets estimated receiver clock drift.
+     *
+     * @param receiverClockDrift estimated receiver clock drift.
+     */
+    public void setReceiverClockDrift(final Speed receiverClockDrift) {
+<span class="fc" id="L2046">        this.receiverClockDrift = SpeedConverter.convert(receiverClockDrift.getValue().doubleValue(),</span>
+<span class="fc" id="L2047">                receiverClockDrift.getUnit(), SpeedUnit.METERS_PER_SECOND);</span>
+<span class="fc" id="L2048">    }</span>
+
+    /**
+     * Gets GNSS estimation from data contained into this instance.
+     *
+     * @param result instance where GNSS estimation data will be stored.
+     */
+    public void getGNSSEstimation(final GNSSEstimation result) {
+<span class="fc" id="L2056">        result.setPositionCoordinates(x, y, z);</span>
+<span class="fc" id="L2057">        result.setVelocityCoordinates(vx, vy, vz);</span>
+<span class="fc" id="L2058">        result.setClockOffset(receiverClockOffset);</span>
+<span class="fc" id="L2059">        result.setClockDrift(receiverClockDrift);</span>
+<span class="fc" id="L2060">    }</span>
+
+    /**
+     * Gets GNSS estimation from data contained into this instance.
+     *
+     * @return a new GNSS estimation instance.
+     */
+    public GNSSEstimation getGNSSEstimation() {
+<span class="fc" id="L2068">        return new GNSSEstimation(x, y, z, vx, vy, vz, receiverClockOffset, receiverClockDrift);</span>
+    }
+
+    /**
+     * Sets GNSS estimation data into this instance.
+     *
+     * @param gnssEstimation GNSS estimation data to be set.
+     */
+    public void setGNSSEstimation(final GNSSEstimation gnssEstimation) {
+<span class="fc" id="L2077">        x = gnssEstimation.getX();</span>
+<span class="fc" id="L2078">        y = gnssEstimation.getY();</span>
+<span class="fc" id="L2079">        z = gnssEstimation.getZ();</span>
+
+<span class="fc" id="L2081">        vx = gnssEstimation.getVx();</span>
+<span class="fc" id="L2082">        vy = gnssEstimation.getVy();</span>
+<span class="fc" id="L2083">        vz = gnssEstimation.getVz();</span>
+
+<span class="fc" id="L2085">        receiverClockOffset = gnssEstimation.getClockOffset();</span>
+<span class="fc" id="L2086">        receiverClockDrift = gnssEstimation.getClockDrift();</span>
+<span class="fc" id="L2087">    }</span>
+
+    /**
+     * Copies this instance data into provided instance.
+     *
+     * @param output destination instance where data will be copied to.
+     */
+    public void copyTo(final INSTightlyCoupledKalmanState output) {
+<span class="fc" id="L2095">        output.copyFrom(this);</span>
+<span class="fc" id="L2096">    }</span>
+
+    /**
+     * Copies data of provided instance into this instance.
+     *
+     * @param input instance to copy data from.
+     */
+    public void copyFrom(final INSTightlyCoupledKalmanState input) {
+        // copy coordinate transformation matrix
+<span class="fc bfc" id="L2105" title="All 2 branches covered.">        if (input.bodyToEcefCoordinateTransformationMatrix == null) {</span>
+<span class="fc" id="L2106">            bodyToEcefCoordinateTransformationMatrix = null;</span>
+        } else {
+<span class="fc bfc" id="L2108" title="All 2 branches covered.">            if (bodyToEcefCoordinateTransformationMatrix == null) {</span>
+<span class="fc" id="L2109">                bodyToEcefCoordinateTransformationMatrix = new Matrix(input.bodyToEcefCoordinateTransformationMatrix);</span>
+            } else {
+<span class="fc" id="L2111">                bodyToEcefCoordinateTransformationMatrix.copyFrom(input.bodyToEcefCoordinateTransformationMatrix);</span>
+            }
+        }
+
+<span class="fc" id="L2115">        vx = input.vx;</span>
+<span class="fc" id="L2116">        vy = input.vy;</span>
+<span class="fc" id="L2117">        vz = input.vz;</span>
+
+<span class="fc" id="L2119">        x = input.x;</span>
+<span class="fc" id="L2120">        y = input.y;</span>
+<span class="fc" id="L2121">        z = input.z;</span>
+
+<span class="fc" id="L2123">        accelerationBiasX = input.accelerationBiasX;</span>
+<span class="fc" id="L2124">        accelerationBiasY = input.accelerationBiasY;</span>
+<span class="fc" id="L2125">        accelerationBiasZ = input.accelerationBiasZ;</span>
+
+<span class="fc" id="L2127">        gyroBiasX = input.gyroBiasX;</span>
+<span class="fc" id="L2128">        gyroBiasY = input.gyroBiasY;</span>
+<span class="fc" id="L2129">        gyroBiasZ = input.gyroBiasZ;</span>
+
+<span class="fc" id="L2131">        receiverClockOffset = input.receiverClockOffset;</span>
+<span class="fc" id="L2132">        receiverClockDrift = input.receiverClockDrift;</span>
+
+        // copy covariance
+<span class="fc bfc" id="L2135" title="All 2 branches covered.">        if (input.covariance == null) {</span>
+<span class="fc" id="L2136">            covariance = null;</span>
+        } else {
+<span class="fc bfc" id="L2138" title="All 2 branches covered.">            if (covariance == null) {</span>
+<span class="fc" id="L2139">                covariance = new Matrix(input.covariance);</span>
+            } else {
+<span class="fc" id="L2141">                covariance.copyFrom(input.covariance);</span>
+            }
+        }
+<span class="fc" id="L2144">    }</span>
+
+    /**
+     * Computes and returns hash code for this instance. Hash codes are almost unique
+     * values that are useful for fast classification and storage of objects in collections.
+     *
+     * @return Hash code.
+     */
+    @Override
+    public int hashCode() {
+<span class="fc" id="L2154">        return Objects.hash(bodyToEcefCoordinateTransformationMatrix, vx, vy, vz, x, y, z,</span>
+<span class="fc" id="L2155">                accelerationBiasX, accelerationBiasY, accelerationBiasZ, gyroBiasX, gyroBiasY, gyroBiasZ,</span>
+<span class="fc" id="L2156">                receiverClockOffset, receiverClockDrift, covariance);</span>
+    }
+
+    /**
+     * Checks if provided object is a INSTightlyCoupledKalmanState having exactly the same
+     * contents as this instance.
+     *
+     * @param obj Object to be compared.
+     * @return true if both objects are considered to be equal, false otherwise.
+     */
+    @Override
+    public boolean equals(final Object obj) {
+<span class="fc bfc" id="L2168" title="All 2 branches covered.">        if (this == obj) {</span>
+<span class="fc" id="L2169">            return true;</span>
+        }
+<span class="pc bpc" id="L2171" title="2 of 4 branches missed.">        if (obj == null || getClass() != obj.getClass()) {</span>
+<span class="nc" id="L2172">            return false;</span>
+        }
+<span class="fc" id="L2174">        final var other = (INSTightlyCoupledKalmanState) obj;</span>
+<span class="fc" id="L2175">        return equals(other);</span>
+    }
+
+    /**
+     * Checks if provided instance has exactly the same contents as this instance.
+     *
+     * @param other instance to be compared.
+     * @return true if both instances are considered to be equal, false otherwise.
+     */
+    public boolean equals(final INSTightlyCoupledKalmanState other) {
+<span class="fc" id="L2185">        return equals(other, 0.0);</span>
+    }
+
+    /**
+     * Checks if provided instance has contents similar to this instance up to provided
+     * threshold value.
+     *
+     * @param other     instance to be compared.
+     * @param threshold maximum difference allowed for values.
+     * @return true if both instances are considered to be equal (up to provided threshold),
+     * false otherwise.
+     */
+    public boolean equals(final INSTightlyCoupledKalmanState other, final double threshold) {
+<span class="fc bfc" id="L2198" title="All 2 branches covered.">        if (other == null) {</span>
+<span class="fc" id="L2199">            return false;</span>
+        }
+
+<span class="fc bfc" id="L2202" title="All 2 branches covered.">        return Math.abs(vx - other.vx) &lt;= threshold</span>
+<span class="pc bpc" id="L2203" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(vy - other.vy) &lt;= threshold</span>
+<span class="pc bpc" id="L2204" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(vz - other.vz) &lt;= threshold</span>
+<span class="pc bpc" id="L2205" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(x - other.x) &lt;= threshold</span>
+<span class="pc bpc" id="L2206" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(y - other.y) &lt;= threshold</span>
+<span class="pc bpc" id="L2207" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(z - other.z) &lt;= threshold</span>
+<span class="pc bpc" id="L2208" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(accelerationBiasX - other.accelerationBiasX) &lt;= threshold</span>
+<span class="pc bpc" id="L2209" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(accelerationBiasY - other.accelerationBiasY) &lt;= threshold</span>
+<span class="pc bpc" id="L2210" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(accelerationBiasZ - other.accelerationBiasZ) &lt;= threshold</span>
+<span class="pc bpc" id="L2211" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(gyroBiasX - other.gyroBiasX) &lt;= threshold</span>
+<span class="pc bpc" id="L2212" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(gyroBiasY - other.gyroBiasY) &lt;= threshold</span>
+<span class="pc bpc" id="L2213" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(gyroBiasZ - other.gyroBiasZ) &lt;= threshold</span>
+<span class="pc bpc" id="L2214" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(receiverClockOffset - other.receiverClockOffset) &lt;= threshold</span>
+<span class="pc bpc" id="L2215" title="2 of 4 branches missed.">                &amp;&amp; Math.abs(receiverClockDrift - other.receiverClockDrift) &lt;= threshold</span>
+                &amp;&amp; other.bodyToEcefCoordinateTransformationMatrix != null &amp;&amp;
+<span class="pc bpc" id="L2217" title="2 of 4 branches missed.">                other.bodyToEcefCoordinateTransformationMatrix.equals(bodyToEcefCoordinateTransformationMatrix,</span>
+                        threshold)
+<span class="pc bpc" id="L2219" title="1 of 2 branches missed.">                &amp;&amp; other.covariance != null &amp;&amp; other.covariance.equals(covariance, threshold);</span>
+    }
+
+    /**
+     * Makes a copy of this instance.
+     *
+     * @return a copy of this instance.
+     * @throws CloneNotSupportedException if clone fails for some reason.
+     */
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+<span class="fc" id="L2230">        final var result = (INSTightlyCoupledKalmanState) super.clone();</span>
+<span class="fc" id="L2231">        copyTo(result);</span>
+<span class="fc" id="L2232">        return result;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

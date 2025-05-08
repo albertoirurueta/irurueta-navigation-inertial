@@ -1,0 +1,495 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BodyKinematicsGenerator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-inertial</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.inertial.calibration</a> &gt; <span class="el_source">BodyKinematicsGenerator.java</span></div><h1>BodyKinematicsGenerator.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2020 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.inertial.calibration;
+
+import com.irurueta.algebra.Matrix;
+import com.irurueta.algebra.WrongSizeException;
+import com.irurueta.navigation.inertial.BodyKinematics;
+import com.irurueta.units.Time;
+import com.irurueta.units.TimeConverter;
+import com.irurueta.units.TimeUnit;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Random;
+
+/**
+ * Generates body kinematic instances from true body kinematic values taking into
+ * account provided IMU errors for a calibrated IMU.
+ * This implementation is based on the equations defined in &quot;Principles of GNSS, Inertial, and Multisensor
+ * Integrated Navigation Systems, Second Edition&quot; and on the companion software available at:
+ * &lt;a href=&quot;https://github.com/ymjdz/MATLAB-Codes/blob/master/IMU_model.m&quot;&gt;
+ *     https://github.com/ymjdz/MATLAB-Codes/blob/master/IMU_model.m
+ * &lt;/a&gt;
+ */
+@SuppressWarnings(&quot;DuplicatedCode&quot;)
+public class BodyKinematicsGenerator {
+
+    /**
+     * Prevents instantiation of utility class.
+     */
+    private BodyKinematicsGenerator() {
+    }
+
+    /**
+     * Generates uncalibrated body kinematics instances containing a certain level
+     * of noise for provided ground-truth body kinematics and IMU errors.
+     * This method ignores IMU quantization levels.
+     *
+     * @param timeInterval   time interval between epochs.
+     * @param trueKinematics collection of ground-truth kinematics.
+     * @param errors         IMU errors containing calibration data.
+     * @param random         a random number generator to generate noise.
+     * @return a new collection containing generated uncalibrated kinematics
+     * for each provided ground-truth one.
+     */
+    public static Collection&lt;BodyKinematics&gt; generate(
+            final Time timeInterval, final Collection&lt;BodyKinematics&gt; trueKinematics, final IMUErrors errors,
+            final Random random) {
+<span class="fc" id="L62">        return generate(convertTime(timeInterval), trueKinematics, errors, random);</span>
+    }
+
+    /**
+     * Generates uncalibrated body kinematics instances containing a certain level
+     * of noise for provided ground-truth body kinematics and IMU errors.
+     * This method ignores IMU quantization levels.
+     *
+     * @param timeInterval   time interval between epochs.
+     * @param trueKinematics collection of ground-truth kinematics.
+     * @param errors         IMU errors containing calibration data.
+     * @param random         a random number generator to generate noise.
+     * @param result         collection where generated uncalibrated kinematics
+     *                       for each provided ground-truth one will be stored.
+     */
+    public static void generate(
+            final Time timeInterval, final Collection&lt;BodyKinematics&gt; trueKinematics, final IMUErrors errors,
+            final Random random, final Collection&lt;BodyKinematics&gt; result) {
+<span class="fc" id="L80">        generate(convertTime(timeInterval), trueKinematics, errors, random, result);</span>
+<span class="fc" id="L81">    }</span>
+
+    /**
+     * Generates uncalibrated body kinematics instances containing a certain level
+     * of noise for provided ground-truth body kinematics and IMU errors.
+     * This method ignores IMU quantization levels.
+     *
+     * @param timeInterval   time interval between epochs expressed in seconds (s).
+     * @param trueKinematics collection of ground-truth kinematics.
+     * @param errors         IMU errors containing calibration data.
+     * @param random         a random number generator to generate noise.
+     * @return a new collection containing generated uncalibrated kinematics
+     * for each provided ground-truth one.
+     */
+    public static Collection&lt;BodyKinematics&gt; generate(
+            final double timeInterval, final Collection&lt;BodyKinematics&gt; trueKinematics, final IMUErrors errors,
+            final Random random) {
+<span class="fc" id="L98">        final var result = new ArrayList&lt;BodyKinematics&gt;();</span>
+<span class="fc" id="L99">        generate(timeInterval, trueKinematics, errors, random, result);</span>
+<span class="fc" id="L100">        return result;</span>
+    }
+
+    /**
+     * Generates uncalibrated body kinematics instances containing a certain level
+     * of noise for provided ground-truth body kinematics and IMU errors.
+     * This method ignores IMU quantization levels.
+     *
+     * @param timeInterval   time interval between epochs expressed in seconds (s).
+     * @param trueKinematics collection of ground-truth kinematics.
+     * @param errors         IMU errors containing calibration data.
+     * @param random         a random number generator to generate noise.
+     * @param result         collection where generated uncalibrated kinematics
+     *                       for each provided ground-truth one will be stored.
+     */
+    public static void generate(
+            final double timeInterval, final Collection&lt;BodyKinematics&gt; trueKinematics,
+            final IMUErrors errors, final Random random, final Collection&lt;BodyKinematics&gt; result) {
+        try {
+<span class="fc" id="L119">            final var trueFibb = new Matrix(BodyKinematics.COMPONENTS, 1);</span>
+<span class="fc" id="L120">            final var ma = errors.getAccelerometerScaleFactorAndCrossCouplingErrors();</span>
+<span class="fc" id="L121">            final var ba = errors.getAccelerometerBiasesAsMatrix();</span>
+<span class="fc" id="L122">            final var trueOmegaIbb = new Matrix(BodyKinematics.COMPONENTS, 1);</span>
+<span class="fc" id="L123">            final var mg = errors.getGyroScaleFactorAndCrossCouplingErrors();</span>
+<span class="fc" id="L124">            final var bg = errors.getGyroBiasesAsMatrix();</span>
+<span class="fc" id="L125">            final var gg = errors.getGyroGDependentBiases();</span>
+<span class="fc" id="L126">            final var identity = Matrix.identity(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);</span>
+<span class="fc" id="L127">            final var tmp33 = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);</span>
+<span class="fc" id="L128">            final var tmp31a = new Matrix(BodyKinematics.COMPONENTS, 1);</span>
+<span class="fc" id="L129">            final var tmp31b = new Matrix(BodyKinematics.COMPONENTS, 1);</span>
+
+<span class="fc bfc" id="L131" title="All 2 branches covered.">            for (final var k : trueKinematics) {</span>
+<span class="fc" id="L132">                final var r = new BodyKinematics();</span>
+
+<span class="fc" id="L134">                internalGenerate(timeInterval, k, errors, random, null, r, null,</span>
+                        trueFibb, ma, ba, trueOmegaIbb, mg, bg, gg, identity, tmp33, tmp31a, tmp31b);
+
+<span class="fc" id="L137">                result.add(r);</span>
+<span class="fc" id="L138">            }</span>
+
+<span class="nc" id="L140">        } catch (final WrongSizeException ignore) {</span>
+            // never happens
+<span class="fc" id="L142">        }</span>
+
+<span class="fc" id="L144">    }</span>
+
+    /**
+     * Generates an uncalibrated body kinematics instance containing a certain level
+     * of noise for provided ground-truth body kinematics and IMU errors.
+     *
+     * @param timeInterval   time interval between epochs expressed in seconds (s).
+     * @param trueKinematics ground-truth kinematics.
+     * @param errors         IMU errors containing calibration data.
+     * @param random         a random number generator to generate noise.
+     * @return uncalibrated body kinematics.
+     */
+    public static BodyKinematics generate(
+            final Time timeInterval, final BodyKinematics trueKinematics, final IMUErrors errors, final Random random) {
+<span class="fc" id="L158">        return generate(convertTime(timeInterval), trueKinematics, errors, random);</span>
+    }
+
+    /**
+     * Generates an uncalibrated body kinematics instance containing a certain level
+     * of noise for provided ground-truth body kinematics and IMU errors.
+     *
+     * @param timeInterval   time interval between epochs.
+     * @param trueKinematics ground-truth kinematics.
+     * @param errors         IMU errors containing calibration data.
+     * @param random         a random number generator to generate noise.
+     * @param result         instance where uncalibrated body kinematics will be stored.
+     */
+    public static void generate(
+            final Time timeInterval, final BodyKinematics trueKinematics, final IMUErrors errors, final Random random,
+            final BodyKinematics result) {
+<span class="fc" id="L174">        generate(convertTime(timeInterval), trueKinematics, errors, random, result);</span>
+<span class="fc" id="L175">    }</span>
+
+    /**
+     * Generates an uncalibrated body kinematics instance containing a certain level
+     * of noise for provided ground-truth body kinematics and IMU errors.
+     *
+     * @param timeInterval   time interval between epochs expressed in seconds (s).
+     * @param trueKinematics ground-truth kinematics.
+     * @param errors         IMU errors containing calibration data.
+     * @param random         a random number generator to generate noise.
+     * @return uncalibrated body kinematics.
+     */
+    public static BodyKinematics generate(
+            final double timeInterval, final BodyKinematics trueKinematics, final IMUErrors errors,
+            final Random random) {
+<span class="fc" id="L190">        final var result = new BodyKinematics();</span>
+<span class="fc" id="L191">        generate(timeInterval, trueKinematics, errors, random, result);</span>
+<span class="fc" id="L192">        return result;</span>
+    }
+
+    /**
+     * Generates an uncalibrated body kinematics instance containing a certain level
+     * of noise for provided ground-truth body kinematics and IMU errors.
+     *
+     * @param timeInterval   time interval between epochs expressed in seconds (s).
+     * @param trueKinematics ground-truth kinematics.
+     * @param errors         IMU errors containing calibration data.
+     * @param random         a random number generator to generate noise.
+     * @param result         instance where uncalibrated body kinematics will be stored.
+     */
+    public static void generate(
+            final double timeInterval, final BodyKinematics trueKinematics, final IMUErrors errors, final Random random,
+            final BodyKinematics result) {
+<span class="fc" id="L208">        generate(timeInterval, trueKinematics, errors, random, null, result,</span>
+                null);
+<span class="fc" id="L210">    }</span>
+
+    /**
+     * Generates an uncalibrated body kinematics instance containing a certain level
+     * of noise for provided ground-truth body kinematics and IMU errors.
+     *
+     * @param timeInterval             time interval between epochs.
+     * @param trueKinematics           ground-truth kinematics.
+     * @param errors                   IMU errors containing calibration data.
+     * @param random                   a random number generator to generate noise.
+     * @param oldQuantizationResiduals previous quantization residuals from previous
+     *                                 executions. Optional. If provided, must have
+     *                                 length 6, if not provided quantization levels
+     *                                 are ignored.
+     * @param quantizationResiduals    generated quantization residuals. Optional.
+     *                                 If provided, must have length 6.
+     * @return generated uncalibrated body kinematics.
+     * @throws IllegalArgumentException if either oldQuantizationResiduals or
+     *                                  quantizationResiduals are not length 6.
+     */
+    public static BodyKinematics generate(
+            final Time timeInterval, final BodyKinematics trueKinematics, final IMUErrors errors, final Random random,
+            final double[] oldQuantizationResiduals, final double[] quantizationResiduals) {
+<span class="fc" id="L233">        return generate(convertTime(timeInterval), trueKinematics, errors, random, oldQuantizationResiduals,</span>
+                quantizationResiduals);
+    }
+
+    /**
+     * Generates an uncalibrated body kinematics instance containing a certain level
+     * of noise for provided ground-truth body kinematics and IMU errors.
+     *
+     * @param timeInterval             time interval between epochs.
+     * @param trueKinematics           ground-truth kinematics.
+     * @param errors                   IMU errors containing calibration data.
+     * @param random                   a random number generator to generate noise.
+     * @param oldQuantizationResiduals previous quantization residuals from previous
+     *                                 executions. Optional. If provided, must have
+     *                                 length 6, if not provided quantization levels
+     *                                 are ignored.
+     * @param result                   instance where uncalibrated body kinematics will be stored.
+     * @param quantizationResiduals    generated quantization residuals. Optional.
+     *                                 If provided, must have length 6.
+     * @throws IllegalArgumentException if either oldQuantizationResiduals or
+     *                                  quantizationResiduals are not length 6.
+     */
+    public static void generate(
+            final Time timeInterval, final BodyKinematics trueKinematics, final IMUErrors errors, final Random random,
+            final double[] oldQuantizationResiduals, final BodyKinematics result,
+            final double[] quantizationResiduals) {
+<span class="fc" id="L259">        generate(convertTime(timeInterval), trueKinematics, errors, random, oldQuantizationResiduals, result,</span>
+                quantizationResiduals);
+<span class="fc" id="L261">    }</span>
+
+    /**
+     * Generates an uncalibrated body kinematics instance containing a certain level
+     * of noise for provided ground-truth body kinematics and IMU errors.
+     *
+     * @param timeInterval             time interval between epochs expressed in seconds (s).
+     * @param trueKinematics           ground-truth kinematics.
+     * @param errors                   IMU errors containing calibration data.
+     * @param random                   a random number generator to generate noise.
+     * @param oldQuantizationResiduals previous quantization residuals from previous
+     *                                 executions. Optional. If provided, must have
+     *                                 length 6, if not provided quantization levels
+     *                                 are ignored.
+     * @param quantizationResiduals    generated quantization residuals. Optional.
+     *                                 If provided, must have length 6.
+     * @return generated uncalibrated body kinematics.
+     * @throws IllegalArgumentException if either oldQuantizationResiduals or
+     *                                  quantizationResiduals are not length 6.
+     */
+    public static BodyKinematics generate(
+            final double timeInterval, final BodyKinematics trueKinematics, final IMUErrors errors, final Random random,
+            final double[] oldQuantizationResiduals, final double[] quantizationResiduals) {
+<span class="fc" id="L284">        final var result = new BodyKinematics();</span>
+<span class="fc" id="L285">        generate(timeInterval, trueKinematics, errors, random, oldQuantizationResiduals, result, quantizationResiduals);</span>
+<span class="fc" id="L286">        return result;</span>
+    }
+
+    /**
+     * Generates an uncalibrated body kinematics instance containing a certain level
+     * of noise for provided ground-truth body kinematics and IMU errors.
+     *
+     * @param timeInterval             time interval between epochs expressed in seconds (s).
+     * @param trueKinematics           ground-truth kinematics.
+     * @param errors                   IMU errors containing calibration data.
+     * @param random                   a random number generator to generate noise.
+     * @param oldQuantizationResiduals previous quantization residuals from previous
+     *                                 executions. Optional. If provided, must have
+     *                                 length 6, if not provided quantization levels
+     *                                 are ignored.
+     * @param result                   instance where uncalibrated body kinematics will be stored.
+     * @param quantizationResiduals    generated quantization residuals. Optional.
+     *                                 If provided, must have length 6.
+     * @throws IllegalArgumentException if either oldQuantizationResiduals or
+     *                                  quantizationResiduals are not length 6.
+     */
+    public static void generate(
+            final double timeInterval, final BodyKinematics trueKinematics, final IMUErrors errors, final Random random,
+            final double[] oldQuantizationResiduals, final BodyKinematics result,
+            final double[] quantizationResiduals) {
+        try {
+<span class="fc" id="L312">            final var trueFibb = new Matrix(BodyKinematics.COMPONENTS, 1);</span>
+<span class="fc" id="L313">            final var ma = errors.getAccelerometerScaleFactorAndCrossCouplingErrors();</span>
+<span class="fc" id="L314">            final var ba = errors.getAccelerometerBiasesAsMatrix();</span>
+<span class="fc" id="L315">            final var trueOmegaIbb = new Matrix(BodyKinematics.COMPONENTS, 1);</span>
+<span class="fc" id="L316">            final var mg = errors.getGyroScaleFactorAndCrossCouplingErrors();</span>
+<span class="fc" id="L317">            final var bg = errors.getGyroBiasesAsMatrix();</span>
+<span class="fc" id="L318">            final var gg = errors.getGyroGDependentBiases();</span>
+<span class="fc" id="L319">            final var identity = Matrix.identity(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);</span>
+<span class="fc" id="L320">            final var tmp33 = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);</span>
+<span class="fc" id="L321">            final var tmp31a = new Matrix(BodyKinematics.COMPONENTS, 1);</span>
+<span class="fc" id="L322">            final var tmp31b = new Matrix(BodyKinematics.COMPONENTS, 1);</span>
+<span class="fc" id="L323">            internalGenerate(timeInterval, trueKinematics, errors, random, oldQuantizationResiduals, result,</span>
+                    quantizationResiduals, trueFibb, ma, ba, trueOmegaIbb, mg, bg, gg, identity, tmp33, tmp31a, tmp31b);
+<span class="nc" id="L325">        } catch (final WrongSizeException ignore) {</span>
+            // never happens
+<span class="fc" id="L327">        }</span>
+<span class="fc" id="L328">    }</span>
+
+    /**
+     * Internally generates an uncalibrated body kinematics instance containing a certain
+     * level of noise for provided ground-truth body kinematics and IMU errors.
+     *
+     * @param timeInterval             time interval between epochs expressed in seconds (s).
+     * @param trueKinematics           ground-truth kinematics.
+     * @param errors                   IMU errors containing calibration data.
+     * @param random                   a random number generator to generate noise.
+     * @param oldQuantizationResiduals previous quantization residuals from previous
+     *                                 executions. Optional. If provided, must have
+     *                                 length 6, if not provided quantization levels
+     *                                 are ignored.
+     * @param result                   instance where uncalibrated body kinematics will be stored.
+     * @param quantizationResiduals    generated quantization residuals. Optional.
+     *                                 If provided, must have length 6.
+     * @param trueFibb                 3x1 matrix to be reused for specific force storage.
+     * @param ma                       3x3 matrix to be reused for accelerometer scaling and
+     *                                 cross coupling errors.
+     * @param ba                       3x1 matrix to be reused for accelerometer biases.
+     * @param trueOmegaibb             3x1 matrix to be reused for angular rates storage.
+     * @param mg                       3x3 matrix to be reused for gyro scaling and cross
+     *                                 coupling errors.
+     * @param bg                       3x1 matrix to be reused for gyro biases.
+     * @param gg                       3x3 matrix to be reused for gyro dependant cross
+     *                                 coupling errors.
+     * @param identity                 3x3 identity matrix to be reused.
+     * @param tmp33                    3x3 matrix to be reused.
+     * @param tmp31a                   3x1 matrix to be reused.
+     * @param tmp31b                   3x1 matrix to be reused.
+     * @throws WrongSizeException       if any of provided matrices has invalid size.
+     * @throws IllegalArgumentException if either oldQuantizationResiduals or
+     *                                  quantizationResiduals are not length 6.
+     */
+    private static void internalGenerate(
+            final double timeInterval, final BodyKinematics trueKinematics, final IMUErrors errors, final Random random,
+            final double[] oldQuantizationResiduals, final BodyKinematics result, final double[] quantizationResiduals,
+            final Matrix trueFibb, final Matrix ma, final Matrix ba, final Matrix trueOmegaibb, final Matrix mg,
+            final Matrix bg, final Matrix gg, final Matrix identity, final Matrix tmp33, final Matrix tmp31a,
+            final Matrix tmp31b) throws WrongSizeException {
+
+<span class="fc" id="L370">        final var comp2 = 2 * BodyKinematics.COMPONENTS;</span>
+<span class="fc bfc" id="L371" title="All 4 branches covered.">        if (oldQuantizationResiduals != null &amp;&amp; oldQuantizationResiduals.length != comp2) {</span>
+<span class="fc" id="L372">            throw new IllegalArgumentException();</span>
+        }
+<span class="fc bfc" id="L374" title="All 4 branches covered.">        if (quantizationResiduals != null &amp;&amp; quantizationResiduals.length != comp2) {</span>
+<span class="fc" id="L375">            throw new IllegalArgumentException();</span>
+        }
+
+        final double accelNoiseX;
+        final double accelNoiseY;
+        final double accelNoiseZ;
+        final double gyroNoiseX;
+        final double gyroNoiseY;
+        final double gyroNoiseZ;
+<span class="fc bfc" id="L384" title="All 2 branches covered.">        if (timeInterval &gt; 0.0) {</span>
+<span class="fc" id="L385">            final var sqrtTimeInterval = Math.sqrt(timeInterval);</span>
+
+<span class="fc" id="L387">            final var accelNoiseRootPSD = errors.getAccelerometerNoiseRootPSD();</span>
+<span class="fc" id="L388">            final var accelStd = accelNoiseRootPSD / sqrtTimeInterval;</span>
+
+<span class="fc" id="L390">            accelNoiseX = random.nextGaussian() * accelStd;</span>
+<span class="fc" id="L391">            accelNoiseY = random.nextGaussian() * accelStd;</span>
+<span class="fc" id="L392">            accelNoiseZ = random.nextGaussian() * accelStd;</span>
+
+<span class="fc" id="L394">            final var gyroNoiseRootPSD = errors.getGyroNoiseRootPSD();</span>
+<span class="fc" id="L395">            final var gyroStd = gyroNoiseRootPSD / sqrtTimeInterval;</span>
+
+<span class="fc" id="L397">            gyroNoiseX = random.nextGaussian() * gyroStd;</span>
+<span class="fc" id="L398">            gyroNoiseY = random.nextGaussian() * gyroStd;</span>
+<span class="fc" id="L399">            gyroNoiseZ = random.nextGaussian() * gyroStd;</span>
+<span class="fc" id="L400">        } else {</span>
+<span class="fc" id="L401">            accelNoiseX = 0.0;</span>
+<span class="fc" id="L402">            accelNoiseY = 0.0;</span>
+<span class="fc" id="L403">            accelNoiseZ = 0.0;</span>
+
+<span class="fc" id="L405">            gyroNoiseX = 0.0;</span>
+<span class="fc" id="L406">            gyroNoiseY = 0.0;</span>
+<span class="fc" id="L407">            gyroNoiseZ = 0.0;</span>
+        }
+
+        // Calculate accelerometer and gyro outputs using (4.16) and (4.17)
+<span class="fc" id="L411">        trueKinematics.asSpecificForceMatrix(trueFibb);</span>
+<span class="fc" id="L412">        trueKinematics.asAngularRateMatrix(trueOmegaibb);</span>
+
+<span class="fc" id="L414">        identity.add(ma, tmp33);</span>
+<span class="fc" id="L415">        tmp33.multiply(trueFibb, tmp31a);</span>
+<span class="fc" id="L416">        tmp31a.add(ba);</span>
+
+<span class="fc" id="L418">        final var uqFibbX = tmp31a.getElementAtIndex(0) + accelNoiseX;</span>
+<span class="fc" id="L419">        final var uqFibbY = tmp31a.getElementAtIndex(1) + accelNoiseY;</span>
+<span class="fc" id="L420">        final var uqFibbZ = tmp31a.getElementAtIndex(2) + accelNoiseZ;</span>
+
+<span class="fc" id="L422">        identity.add(mg, tmp33);</span>
+<span class="fc" id="L423">        tmp33.multiply(trueOmegaibb, tmp31a);</span>
+<span class="fc" id="L424">        tmp31a.add(bg);</span>
+
+<span class="fc" id="L426">        gg.multiply(trueFibb, tmp31b);</span>
+<span class="fc" id="L427">        tmp31a.add(tmp31b);</span>
+
+<span class="fc" id="L429">        final var uqOmegaIbbX = tmp31a.getElementAtIndex(0) + gyroNoiseX;</span>
+<span class="fc" id="L430">        final var uqOmegaIbbY = tmp31a.getElementAtIndex(1) + gyroNoiseY;</span>
+<span class="fc" id="L431">        final var uqOmegaIbbZ = tmp31a.getElementAtIndex(2) + gyroNoiseZ;</span>
+
+        // Quantize accelerometer outputs
+<span class="fc bfc" id="L434" title="All 4 branches covered.">        if (errors.getAccelerometerQuantizationLevel() &gt; 0.0 &amp;&amp; oldQuantizationResiduals != null) {</span>
+<span class="fc" id="L435">            final var accelQuantLevel = errors.getAccelerometerQuantizationLevel();</span>
+<span class="fc" id="L436">            final var fx = accelQuantLevel * Math.round((uqFibbX + oldQuantizationResiduals[0]) / accelQuantLevel);</span>
+<span class="fc" id="L437">            final var fy = accelQuantLevel * Math.round((uqFibbY + oldQuantizationResiduals[1]) / accelQuantLevel);</span>
+<span class="fc" id="L438">            final var fz = accelQuantLevel * Math.round((uqFibbZ + oldQuantizationResiduals[2]) / accelQuantLevel);</span>
+
+<span class="fc" id="L440">            result.setSpecificForceCoordinates(fx, fy, fz);</span>
+
+<span class="pc bpc" id="L442" title="1 of 2 branches missed.">            if (quantizationResiduals != null) {</span>
+<span class="fc" id="L443">                quantizationResiduals[0] = uqFibbX + oldQuantizationResiduals[0] - fx;</span>
+<span class="fc" id="L444">                quantizationResiduals[1] = uqFibbY + oldQuantizationResiduals[1] - fy;</span>
+<span class="fc" id="L445">                quantizationResiduals[2] = uqFibbZ + oldQuantizationResiduals[2] - fz;</span>
+            }
+<span class="fc" id="L447">        } else {</span>
+<span class="fc" id="L448">            result.setSpecificForceCoordinates(uqFibbX, uqFibbY, uqFibbZ);</span>
+
+<span class="fc bfc" id="L450" title="All 2 branches covered.">            if (quantizationResiduals != null) {</span>
+<span class="fc" id="L451">                quantizationResiduals[0] = 0.0;</span>
+<span class="fc" id="L452">                quantizationResiduals[1] = 0.0;</span>
+<span class="fc" id="L453">                quantizationResiduals[2] = 0.0;</span>
+            }
+        }
+
+        // Quantize gyro outputs
+<span class="fc bfc" id="L458" title="All 4 branches covered.">        if (errors.getGyroQuantizationLevel() &gt; 0.0 &amp;&amp; oldQuantizationResiduals != null) {</span>
+<span class="fc" id="L459">            final var gyroQuantLevel = errors.getGyroQuantizationLevel();</span>
+<span class="fc" id="L460">            final var omegaX = gyroQuantLevel * Math.round((uqOmegaIbbX + oldQuantizationResiduals[3])</span>
+                    / gyroQuantLevel);
+<span class="fc" id="L462">            final var omegaY = gyroQuantLevel * Math.round((uqOmegaIbbY + oldQuantizationResiduals[4])</span>
+                    / gyroQuantLevel);
+<span class="fc" id="L464">            final var omegaZ = gyroQuantLevel * Math.round((uqOmegaIbbZ + oldQuantizationResiduals[5])</span>
+                    / gyroQuantLevel);
+
+<span class="fc" id="L467">            result.setAngularRateCoordinates(omegaX, omegaY, omegaZ);</span>
+
+<span class="pc bpc" id="L469" title="1 of 2 branches missed.">            if (quantizationResiduals != null) {</span>
+<span class="fc" id="L470">                quantizationResiduals[3] = uqOmegaIbbX + oldQuantizationResiduals[3] - omegaX;</span>
+<span class="fc" id="L471">                quantizationResiduals[4] = uqOmegaIbbY + oldQuantizationResiduals[4] - omegaY;</span>
+<span class="fc" id="L472">                quantizationResiduals[5] = uqOmegaIbbZ + oldQuantizationResiduals[5] - omegaZ;</span>
+            }
+<span class="fc" id="L474">        } else {</span>
+<span class="fc" id="L475">            result.setAngularRateCoordinates(uqOmegaIbbX, uqOmegaIbbY, uqOmegaIbbZ);</span>
+
+<span class="fc bfc" id="L477" title="All 2 branches covered.">            if (quantizationResiduals != null) {</span>
+<span class="fc" id="L478">                quantizationResiduals[3] = 0.0;</span>
+<span class="fc" id="L479">                quantizationResiduals[4] = 0.0;</span>
+<span class="fc" id="L480">                quantizationResiduals[5] = 0.0;</span>
+            }
+        }
+<span class="fc" id="L483">    }</span>
+
+    /**
+     * Converts provided time instance to seconds.
+     *
+     * @param time time instance to be converted.
+     * @return converted value.
+     */
+    private static double convertTime(final Time time) {
+<span class="fc" id="L492">        return TimeConverter.convert(time.getValue().doubleValue(), time.getUnit(), TimeUnit.SECOND);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

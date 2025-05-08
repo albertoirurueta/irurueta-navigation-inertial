@@ -1,0 +1,525 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BodyMagneticFluxDensity.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-inertial</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.inertial</a> &gt; <span class="el_source">BodyMagneticFluxDensity.java</span></div><h1>BodyMagneticFluxDensity.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2020 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.inertial;
+
+import com.irurueta.algebra.Matrix;
+import com.irurueta.algebra.WrongSizeException;
+import com.irurueta.navigation.inertial.calibration.MagneticFluxDensityTriad;
+import com.irurueta.units.MagneticFluxDensity;
+import com.irurueta.units.MagneticFluxDensityConverter;
+import com.irurueta.units.MagneticFluxDensityUnit;
+
+import java.io.Serial;
+import java.io.Serializable;
+import java.util.Objects;
+
+/**
+ * Contains magnetic flux density resolved around body coordinates.
+ * Body frame axes are typically defined so that x is the forward axis, pointing in the usual direction
+ * of travel, z is the down axis, pointing in the usual direction of gravity, and y is the right axis,
+ * completing the orthogonal set.
+ */
+public class BodyMagneticFluxDensity implements Serializable, Cloneable {
+
+    /**
+     * Number of components.
+     */
+    public static final int COMPONENTS = 3;
+
+    /**
+     * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
+     * instances.
+     */
+    @Serial
+    private static final long serialVersionUID = 0L;
+
+    /**
+     * X component of magnetic flux density expressed in Teslas (T).
+     */
+    private double bx;
+
+    /**
+     * Y component of magnetic flux density expressed in Teslas (T).
+     */
+    private double by;
+
+    /**
+     * Z component of magnetic flux density expressed in Teslas (T).
+     */
+    private double bz;
+
+    /**
+     * Constructor.
+     */
+<span class="fc" id="L67">    public BodyMagneticFluxDensity() {</span>
+<span class="fc" id="L68">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param bx x component of magnetic flux density expressed in Teslas (T).
+     * @param by y component of magnetic flux density expressed in Teslas (T).
+     * @param bz z component of magnetic flux density expressed in Teslas (T).
+     */
+<span class="fc" id="L77">    public BodyMagneticFluxDensity(final double bx, final double by, final double bz) {</span>
+<span class="fc" id="L78">        setCoordinates(bx, by, bz);</span>
+<span class="fc" id="L79">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param bx x component of magnetic flux density.
+     * @param by y component of magnetic flux density.
+     * @param bz z component of magnetic flux density.
+     */
+    public BodyMagneticFluxDensity(
+<span class="fc" id="L89">            final MagneticFluxDensity bx, final MagneticFluxDensity by, final MagneticFluxDensity bz) {</span>
+<span class="fc" id="L90">        setCoordinates(bx, by, bz);</span>
+<span class="fc" id="L91">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param triad triad containing magnetic flux density values.
+     */
+<span class="fc" id="L98">    public BodyMagneticFluxDensity(final MagneticFluxDensityTriad triad) {</span>
+<span class="fc" id="L99">        setCoordinates(triad);</span>
+<span class="fc" id="L100">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param input instance to copy data from.
+     */
+<span class="fc" id="L107">    public BodyMagneticFluxDensity(final BodyMagneticFluxDensity input) {</span>
+<span class="fc" id="L108">        copyFrom(input);</span>
+<span class="fc" id="L109">    }</span>
+
+    /**
+     * Gets x component of magnetic flux density expressed in Teslas (T).
+     *
+     * @return x component of magnetic flux density.
+     */
+    public double getBx() {
+<span class="fc" id="L117">        return bx;</span>
+    }
+
+    /**
+     * Sets x component of magnetic flux density expressed in Teslas (T).
+     *
+     * @param bx x component of magnetic flux density.
+     */
+    public void setBx(final double bx) {
+<span class="fc" id="L126">        this.bx = bx;</span>
+<span class="fc" id="L127">    }</span>
+
+    /**
+     * Gets x component of magnetic flux density.
+     *
+     * @return x component of magnetic flux density.
+     */
+    public MagneticFluxDensity getBxAsMagneticFluxDensity() {
+<span class="fc" id="L135">        return new MagneticFluxDensity(bx, MagneticFluxDensityUnit.TESLA);</span>
+    }
+
+    /**
+     * Gets x component of magnetic flux density.
+     *
+     * @param result instance where result will be stored.
+     */
+    public void getBxAsMagneticFluxDensity(final MagneticFluxDensity result) {
+<span class="fc" id="L144">        result.setValue(bx);</span>
+<span class="fc" id="L145">        result.setUnit(MagneticFluxDensityUnit.TESLA);</span>
+<span class="fc" id="L146">    }</span>
+
+    /**
+     * Sets x component of magnetic flux density.
+     *
+     * @param bx x component of magnetic flux density.
+     */
+    public void setBx(final MagneticFluxDensity bx) {
+<span class="fc" id="L154">        this.bx = convertMagneticFluxDensity(bx);</span>
+<span class="fc" id="L155">    }</span>
+
+    /**
+     * Gets y component of magnetic flux density expressed in Teslas (T).
+     *
+     * @return y component of magnetic flux density.
+     */
+    public double getBy() {
+<span class="fc" id="L163">        return by;</span>
+    }
+
+    /**
+     * Sets y component of magnetic flux density expressed in Teslas (T).
+     *
+     * @param by y component of magnetic flux density.
+     */
+    public void setBy(final double by) {
+<span class="fc" id="L172">        this.by = by;</span>
+<span class="fc" id="L173">    }</span>
+
+    /**
+     * Gets y component of magnetic flux density.
+     *
+     * @return y component of magnetic flux density.
+     */
+    public MagneticFluxDensity getByAsMagneticFluxDensity() {
+<span class="fc" id="L181">        return new MagneticFluxDensity(by, MagneticFluxDensityUnit.TESLA);</span>
+    }
+
+    /**
+     * Gets y component of magnetic flux density.
+     *
+     * @param result instance where result will be stored.
+     */
+    public void getByAsMagneticFluxDensity(final MagneticFluxDensity result) {
+<span class="fc" id="L190">        result.setValue(by);</span>
+<span class="fc" id="L191">        result.setUnit(MagneticFluxDensityUnit.TESLA);</span>
+<span class="fc" id="L192">    }</span>
+
+    /**
+     * Sets y component of magnetic flux density.
+     *
+     * @param by y component of magnetic flux density.
+     */
+    public void setBy(final MagneticFluxDensity by) {
+<span class="fc" id="L200">        this.by = convertMagneticFluxDensity(by);</span>
+<span class="fc" id="L201">    }</span>
+
+    /**
+     * Gets z component of magnetic flux density expressed in Teslas (T).
+     *
+     * @return z component of magnetic flux density.
+     */
+    public double getBz() {
+<span class="fc" id="L209">        return bz;</span>
+    }
+
+    /**
+     * Sets z component of magnetic flux density expressed in Teslas (T).
+     *
+     * @param bz z component of magnetic flux density.
+     */
+    public void setBz(final double bz) {
+<span class="fc" id="L218">        this.bz = bz;</span>
+<span class="fc" id="L219">    }</span>
+
+    /**
+     * Gets z component of magnetic flux density.
+     *
+     * @return z component of magnetic flux density.
+     */
+    public MagneticFluxDensity getBzAsMagneticFluxDensity() {
+<span class="fc" id="L227">        return new MagneticFluxDensity(bz, MagneticFluxDensityUnit.TESLA);</span>
+    }
+
+    /**
+     * Gets z component of magnetic flux density.
+     *
+     * @param result instance where result will be stored.
+     */
+    public void getBzAsMagneticFluxDensity(final MagneticFluxDensity result) {
+<span class="fc" id="L236">        result.setValue(bz);</span>
+<span class="fc" id="L237">        result.setUnit(MagneticFluxDensityUnit.TESLA);</span>
+<span class="fc" id="L238">    }</span>
+
+    /**
+     * Sets z component of magnetic flux density.
+     *
+     * @param bz z component of magnetic flux density.
+     */
+    public void setBz(final MagneticFluxDensity bz) {
+<span class="fc" id="L246">        this.bz = convertMagneticFluxDensity(bz);</span>
+<span class="fc" id="L247">    }</span>
+
+    /**
+     * Sets body coordinates of magnetic flux density expressed in Teslas (T).
+     *
+     * @param bx x component of magnetic flux density.
+     * @param by y component of magnetic flux density.
+     * @param bz z component of magnetic flux density.
+     */
+    public void setCoordinates(final double bx, final double by, final double bz) {
+<span class="fc" id="L257">        this.bx = bx;</span>
+<span class="fc" id="L258">        this.by = by;</span>
+<span class="fc" id="L259">        this.bz = bz;</span>
+<span class="fc" id="L260">    }</span>
+
+    /**
+     * Sets body coordinates of magnetic flux density.
+     *
+     * @param bx x component of magnetic flux density.
+     * @param by y component of magnetic flux density.
+     * @param bz z component of magnetic flux density.
+     */
+    public void setCoordinates(
+            final MagneticFluxDensity bx, final MagneticFluxDensity by, final MagneticFluxDensity bz) {
+<span class="fc" id="L271">        setCoordinates(convertMagneticFluxDensity(bx), convertMagneticFluxDensity(by), convertMagneticFluxDensity(bz));</span>
+<span class="fc" id="L272">    }</span>
+
+    /**
+     * Gets body coordinates of magnetic flux density as a triad.
+     *
+     * @return body coordinates of magnetic flux density as a triad.
+     */
+    public MagneticFluxDensityTriad getCoordinatesAsTriad() {
+<span class="fc" id="L280">        return new MagneticFluxDensityTriad(MagneticFluxDensityUnit.TESLA, bx, by, bz);</span>
+    }
+
+    /**
+     * Gets body coordinates of magnetic flux density as a triad.
+     *
+     * @param result instance where result will be stored.
+     */
+    public void getCoordinatesAsTriad(final MagneticFluxDensityTriad result) {
+<span class="fc" id="L289">        result.setValueCoordinatesAndUnit(bx, by, bz, MagneticFluxDensityUnit.TESLA);</span>
+<span class="fc" id="L290">    }</span>
+
+    /**
+     * Sets body coordinates of magnetic flux density.
+     *
+     * @param triad triad containing body magnetic flux density values.
+     */
+    public void setCoordinates(final MagneticFluxDensityTriad triad) {
+<span class="fc" id="L298">        final var tmpBx = convertMagneticFluxDensity(triad.getValueX(), triad.getUnit());</span>
+<span class="fc" id="L299">        final var tmpBy = convertMagneticFluxDensity(triad.getValueY(), triad.getUnit());</span>
+<span class="fc" id="L300">        final var tmpBz = convertMagneticFluxDensity(triad.getValueZ(), triad.getUnit());</span>
+<span class="fc" id="L301">        setCoordinates(tmpBx, tmpBy, tmpBz);</span>
+<span class="fc" id="L302">    }</span>
+
+    /**
+     * Gets magnetic flux density magnitude (e.g. norm) expressed in
+     * Teslas (T).
+     *
+     * @return magnetic flux density magnitude.
+     */
+    public double getNorm() {
+<span class="fc" id="L311">        return Math.sqrt(bx * bx + by * by + bz * bz);</span>
+    }
+
+    /**
+     * Gets magnetic flux density magnitude (e.g. norm).
+     *
+     * @return magnetic flux density magnitude.
+     */
+    public MagneticFluxDensity getNormAsMagneticFluxDensity() {
+<span class="fc" id="L320">        return new MagneticFluxDensity(getNorm(), MagneticFluxDensityUnit.TESLA);</span>
+    }
+
+    /**
+     * Gets magnetic flux density magnitude (e.g. norm).
+     *
+     * @param result instance where result will be stored.
+     */
+    public void getNormAsMagneticFluxDensity(final MagneticFluxDensity result) {
+<span class="fc" id="L329">        result.setValue(getNorm());</span>
+<span class="fc" id="L330">        result.setUnit(MagneticFluxDensityUnit.TESLA);</span>
+<span class="fc" id="L331">    }</span>
+
+    /**
+     * Copies this instance data into provided instance.
+     *
+     * @param output destination instance where data will be copied to.
+     */
+    public void copyTo(final BodyMagneticFluxDensity output) {
+<span class="fc" id="L339">        output.bx = bx;</span>
+<span class="fc" id="L340">        output.by = by;</span>
+<span class="fc" id="L341">        output.bz = bz;</span>
+<span class="fc" id="L342">    }</span>
+
+    /**
+     * Copies data of provided instance into this instance.
+     *
+     * @param input instance to copy data from.
+     */
+    public void copyFrom(final BodyMagneticFluxDensity input) {
+<span class="fc" id="L350">        bx = input.bx;</span>
+<span class="fc" id="L351">        by = input.by;</span>
+<span class="fc" id="L352">        bz = input.bz;</span>
+<span class="fc" id="L353">    }</span>
+
+    /**
+     * Gets magnetic flux density as an array.
+     *
+     * @param result array instance where magnetic flux density coordinates
+     *               will be stored in x,y,z order.
+     * @throws IllegalArgumentException if provided array does not have length 3.
+     */
+    public void asArray(final double[] result) {
+<span class="fc bfc" id="L363" title="All 2 branches covered.">        if (result.length != COMPONENTS) {</span>
+<span class="fc" id="L364">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L367">        result[0] = bx;</span>
+<span class="fc" id="L368">        result[1] = by;</span>
+<span class="fc" id="L369">        result[2] = bz;</span>
+<span class="fc" id="L370">    }</span>
+
+    /**
+     * Gets magnetic flux density as an array.
+     *
+     * @return array containing magnetic flux density coordinates in x,y,z
+     * order.
+     */
+    public double[] asArray() {
+<span class="fc" id="L379">        final var result = new double[COMPONENTS];</span>
+<span class="fc" id="L380">        asArray(result);</span>
+<span class="fc" id="L381">        return result;</span>
+    }
+
+    /**
+     * Gets magnetic flux density as a column matrix.
+     * If provided matrix does not have size 3x1, it will be resized.
+     *
+     * @param result matrix instance where magnetic flux density coordinates
+     *               will be stored in x,y,z order.
+     */
+    @SuppressWarnings(&quot;DuplicatedCode&quot;)
+    public void asMatrix(final Matrix result) {
+<span class="pc bpc" id="L393" title="3 of 4 branches missed.">        if (result.getColumns() != COMPONENTS || result.getRows() != 1) {</span>
+            try {
+<span class="fc" id="L395">                result.resize(COMPONENTS, 1);</span>
+<span class="nc" id="L396">            } catch (final WrongSizeException ignore) {</span>
+                // never happens
+<span class="fc" id="L398">            }</span>
+        }
+
+<span class="fc" id="L401">        result.setElementAtIndex(0, bx);</span>
+<span class="fc" id="L402">        result.setElementAtIndex(1, by);</span>
+<span class="fc" id="L403">        result.setElementAtIndex(2, bz);</span>
+<span class="fc" id="L404">    }</span>
+
+    /**
+     * Gets magnetic flux density as a column matrix.
+     *
+     * @return a matrix containing magnetic flux density coordinates stored
+     * in x,y,z order.
+     */
+    public Matrix asMatrix() {
+        Matrix result;
+        try {
+<span class="fc" id="L415">            result = new Matrix(COMPONENTS, 1);</span>
+<span class="fc" id="L416">            asMatrix(result);</span>
+<span class="nc" id="L417">        } catch (final WrongSizeException ignore) {</span>
+            // never happens
+<span class="nc" id="L419">            result = null;</span>
+<span class="fc" id="L420">        }</span>
+<span class="fc" id="L421">        return result;</span>
+    }
+
+    /**
+     * Computes and returns hash code for this instance. Hash codes are almost unique
+     * values that are useful for fast classification and storage of objects in collections.
+     *
+     * @return Hash code.
+     */
+    @Override
+    public int hashCode() {
+<span class="fc" id="L432">        return Objects.hash(bx, by, bz);</span>
+    }
+
+    /**
+     * Check if provided object is a BodyMagneticFluxDensity instance having
+     * exactly the same contents as this instance.
+     *
+     * @param obj object to be compared.
+     * @return true if both objects are considered to be equal, false
+     * otherwise.
+     */
+    @Override
+    public boolean equals(final Object obj) {
+<span class="pc bpc" id="L445" title="1 of 2 branches missed.">        if (obj == null) {</span>
+<span class="nc" id="L446">            return false;</span>
+        }
+<span class="fc bfc" id="L448" title="All 2 branches covered.">        if (obj == this) {</span>
+<span class="fc" id="L449">            return true;</span>
+        }
+<span class="pc bpc" id="L451" title="1 of 2 branches missed.">        if (!(obj instanceof BodyMagneticFluxDensity)) {</span>
+<span class="nc" id="L452">            return false;</span>
+        }
+
+        //noinspection PatternVariableCanBeUsed
+<span class="fc" id="L456">        final var other = (BodyMagneticFluxDensity) obj;</span>
+<span class="fc" id="L457">        return equals(other);</span>
+    }
+
+    /**
+     * Checks if provided instance has exactly the same contents as this
+     * instance.
+     *
+     * @param other instance to be compared.
+     * @return true if both instances are considered to be equal, false
+     * otherwise.
+     */
+    public boolean equals(final BodyMagneticFluxDensity other) {
+<span class="fc" id="L469">        return equals(other, 0.0);</span>
+    }
+
+    /**
+     * Checks if provided instance has contents similar to this instance up
+     * to provided threshold value.
+     *
+     * @param other     instance to be compared.
+     * @param threshold maximum allowed difference between gravity coordinates.
+     * @return true if both instances are considered to be equal (up to provided
+     * threshold), false otherwise.
+     */
+    public boolean equals(final BodyMagneticFluxDensity other, final double threshold) {
+<span class="fc bfc" id="L482" title="All 2 branches covered.">        if (other == null) {</span>
+<span class="fc" id="L483">            return false;</span>
+        }
+
+<span class="pc bpc" id="L486" title="1 of 4 branches missed.">        return Math.abs(bx - other.bx) &lt;= threshold &amp;&amp; Math.abs(by - other.by) &lt;= threshold</span>
+<span class="pc bpc" id="L487" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(bz - other.bz) &lt;= threshold;</span>
+    }
+
+    /**
+     * Makes a copy of this instance.
+     *
+     * @return a copy of this instance.
+     * @throws CloneNotSupportedException if clone fails for same reason.
+     */
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+<span class="fc" id="L498">        final var result = (BodyMagneticFluxDensity) super.clone();</span>
+<span class="fc" id="L499">        copyTo(result);</span>
+<span class="fc" id="L500">        return result;</span>
+    }
+
+    /**
+     * Converts magnetic flux density to Teslas.
+     *
+     * @param b magnetic flux density to be converted.
+     * @return converted value.
+     */
+    private double convertMagneticFluxDensity(final MagneticFluxDensity b) {
+<span class="fc" id="L510">        return MagneticFluxDensityConverter.convert(b.getValue().doubleValue(), b.getUnit(),</span>
+                MagneticFluxDensityUnit.TESLA);
+    }
+
+    /**
+     * Converts magnetic flux density to Teslas.
+     *
+     * @param value value to be converted.
+     * @param unit  unit of value to be converted
+     * @return converted value.
+     */
+    private double convertMagneticFluxDensity(final double value, final MagneticFluxDensityUnit unit) {
+<span class="fc" id="L522">        return MagneticFluxDensityConverter.convert(value, unit, MagneticFluxDensityUnit.TESLA);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

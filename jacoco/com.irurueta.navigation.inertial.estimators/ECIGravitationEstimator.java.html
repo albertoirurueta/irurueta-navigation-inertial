@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ECIGravitationEstimator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-inertial</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.inertial.estimators</a> &gt; <span class="el_source">ECIGravitationEstimator.java</span></div><h1>ECIGravitationEstimator.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2019 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.inertial.estimators;
+
+import com.irurueta.geometry.Point3D;
+import com.irurueta.navigation.frames.ECIFrame;
+import com.irurueta.navigation.geodesic.Constants;
+import com.irurueta.navigation.inertial.ECIGravitation;
+import com.irurueta.units.Distance;
+import com.irurueta.units.DistanceConverter;
+import com.irurueta.units.DistanceUnit;
+
+/**
+ * Calculates gravitational acceleration resolved about ECI-frame axes.
+ * This implementation is based on the equations defined in &quot;Principles of GNSS, Inertial, and Multisensor
+ * Integrated Navigation Systems, Second Edition&quot; and on the companion software available at:
+ * &lt;a href=&quot;https://github.com/ymjdz/MATLAB-Codes/blob/master/Gravitation_ECI.m&quot;&gt;
+ *     https://github.com/ymjdz/MATLAB-Codes/blob/master/Gravitation_ECI.m
+ * &lt;/a&gt;
+ */
+<span class="fc" id="L34">public class ECIGravitationEstimator {</span>
+
+    /**
+     * The equatorial radius of WGS84 ellipsoid (6378137 m) defining Earth's shape.
+     */
+    public static final double EARTH_EQUATORIAL_RADIUS_WGS84 = Constants.EARTH_EQUATORIAL_RADIUS_WGS84;
+
+    /**
+     * WGS84 Earth gravitational constant expressed in m^3 * s^-2
+     */
+    public static final double EARTH_GRAVITATIONAL_CONSTANT = Constants.EARTH_GRAVITATIONAL_CONSTANT;
+
+    /**
+     * WGS84 Earth's second gravitational constant.
+     */
+    public static final double EARTH_SECOND_GRAVITATIONAL_CONSTANT = Constants.EARTH_SECOND_GRAVITATIONAL_CONSTANT;
+
+    /**
+     * Estimates gravitational acceleration resolved about ECI-frame axes.
+     *
+     * @param x      cartesian x coordinate of body position expressed in meters (m) with respect ECI frame, resolved
+     *               along ECI-frame axes.
+     * @param y      cartesian y coordinate of body position expressed in meters (m) with respect ECI frame, resolved
+     *               along ECI-frame axes.
+     * @param z      cartesian z coordinate of body position expressed in meters (m) with respect ECI frame, resolved
+     *               along ECI-frame axes.
+     * @param result instance where estimated acceleration due to gravity will be stored.
+     */
+    public void estimate(final double x, final double y, final double z, final ECIGravitation result) {
+<span class="fc" id="L63">        estimateGravitation(x, y, z, result);</span>
+<span class="fc" id="L64">    }</span>
+
+    /**
+     * Estimates gravitational acceleration resolved about ECI-frame axes.
+     *
+     * @param x cartesian x coordinate of body position expressed in meters (m) with respect ECI frame, resolved along
+     *          ECI-frame axes.
+     * @param y cartesian y coordinate of body position expressed in meters (m) with respect ECI frame, resolved along
+     *          ECI-frame axes.
+     * @param z cartesian z coordinate of body position expressed in meters (m) with respect ECI frame, resolved along
+     *          ECI-frame axes.
+     * @return a new gravitation instance containing estimated acceleration due to gravity.
+     */
+    public ECIGravitation estimateAndReturnNew(final double x, final double y, final double z) {
+<span class="fc" id="L78">        return estimateGravitationAndReturnNew(x, y, z);</span>
+    }
+
+    /**
+     * Estimates gravitational acceleration resolved about ECI-frame axes for a position on a given ECI frame.
+     *
+     * @param frame  an ECI frame containing a given position.
+     * @param result instance where estimated acceleration due to gravity will be stored.
+     */
+    public void estimate(final ECIFrame frame, final ECIGravitation result) {
+<span class="fc" id="L88">        estimateGravitation(frame, result);</span>
+<span class="fc" id="L89">    }</span>
+
+    /**
+     * Estimates gravitational acceleration resolved about ECI-frame axes for a position on a given ECI frame.
+     *
+     * @param frame an ECI frame containing a given position.
+     * @return a new gravitation instance containing estimated acceleration due to gravity.
+     */
+    public ECIGravitation estimateAndReturnNew(final ECIFrame frame) {
+<span class="fc" id="L98">        return estimateGravitationAndReturnNew(frame);</span>
+    }
+
+    /**
+     * Estimates gravitational acceleration resolved about ECI-frame axes for a given position expressed in
+     * ECI coordinates.
+     *
+     * @param position cartesian body position expressed in meters (m) with respect ECI frame, resolved along
+     *                 ECI-frame axes.
+     * @param result   instance where estimated acceleration due to gravity will be stored.
+     */
+    public void estimate(final Point3D position, final ECIGravitation result) {
+<span class="fc" id="L110">        estimateGravitation(position, result);</span>
+<span class="fc" id="L111">    }</span>
+
+    /**
+     * Estimates gravitation acceleration resolved about ECI-frame axes for a given position expressed in
+     * ECI coordinates.
+     *
+     * @param position cartesian body position expressed in meters (m) with respect ECI frame, resolved along
+     *                 ECI-frame axes.
+     * @return a new gravitation instance containing estimated acceleration due to gravity.
+     */
+    public ECIGravitation estimateAndReturnNew(final Point3D position) {
+<span class="fc" id="L122">        return estimateGravitationAndReturnNew(position);</span>
+    }
+
+    /**
+     * Estimates gravitation acceleration resolved about ECI-frame axes for a given position expressed in
+     * ECI coordinates.
+     *
+     * @param x      cartesian x coordinate of body position with respect ECI frame, resolved along
+     *               ECI-frame axes.
+     * @param y      cartesian y coordinate of body position with respect ECI frame, resolved along
+     *               ECI-frame axes.
+     * @param z      cartesian z coordinate of body position with respect ECI frame, resolved along
+     *               ECI-frame axes.
+     * @param result instance where estimated acceleration due to gravity will be stored.
+     */
+    public void estimate(final Distance x, final Distance y, final Distance z, final ECIGravitation result) {
+<span class="fc" id="L138">        estimateGravitation(x, y, z, result);</span>
+<span class="fc" id="L139">    }</span>
+
+    /**
+     * Estimates gravitation acceleration resolved about ECI-frame axes for a given position
+     * expressed in ECI coordinates.
+     *
+     * @param x cartesian x coordinate of body position with respect ECI frame, resolved along
+     *          ECI-frame axes.
+     * @param y cartesian y coordinate of body position with respect ECI frame, resolved along
+     *          ECI-frame axes.
+     * @param z cartesian z coordinate of body position with respect ECI frame, resolved along
+     *          ECI-frame axes.
+     * @return a new gravitation instance containing estimated acceleration due to gravity.
+     */
+    public ECIGravitation estimateAndReturnNew(final Distance x, final Distance y, final Distance z) {
+<span class="fc" id="L154">        return estimateGravitationAndReturnNew(x, y, z);</span>
+    }
+
+    /**
+     * Estimates gravitational acceleration resolved about ECI-frame axes.
+     *
+     * @param x      cartesian x coordinate of body position expressed in meters (m) with respect ECI frame, resolved
+     *               along ECI-frame axes.
+     * @param y      cartesian y coordinate of body position expressed in meters (m) with respect ECI frame, resolved
+     *               along ECI-frame axes.
+     * @param z      cartesian z coordinate of body position expressed in meters (m) with respect ECI frame, resolved
+     *               along ECI-frame axes.
+     * @param result instance where estimated acceleration due to gravity will be stored.
+     */
+    public static void estimateGravitation(
+            final double x, final double y, final double z, final ECIGravitation result) {
+
+        // Calculate distance from center of the Earth
+<span class="fc" id="L172">        final var magR = Math.sqrt(x * x + y * y + z * z);</span>
+
+        // If the input position is 0,0,0, produce a dummy output
+<span class="fc bfc" id="L175" title="All 2 branches covered.">        if (magR == 0.0) {</span>
+<span class="fc" id="L176">            result.setCoordinates(0.0, 0.0, 0.0);</span>
+        } else {
+<span class="fc" id="L178">            final var zScale = 5.0 * Math.pow(z / magR, 2.0);</span>
+<span class="fc" id="L179">            final var tmp1 = -EARTH_GRAVITATIONAL_CONSTANT / Math.pow(magR, 3.0);</span>
+<span class="fc" id="L180">            final var tmp2 = 1.5 * EARTH_SECOND_GRAVITATIONAL_CONSTANT * Math.pow(EARTH_EQUATORIAL_RADIUS_WGS84 / magR,</span>
+                    2.0);
+<span class="fc" id="L182">            final var gx = tmp1 * (1.0 + tmp2 * (1.0 - zScale)) * x;</span>
+<span class="fc" id="L183">            final var gy = tmp1 * (1.0 + tmp2 * (1.0 - zScale)) * y;</span>
+<span class="fc" id="L184">            final var gz = tmp1 * (1.0 + tmp2 * (3.0 - zScale)) * z;</span>
+
+<span class="fc" id="L186">            result.setCoordinates(gx, gy, gz);</span>
+        }
+<span class="fc" id="L188">    }</span>
+
+    /**
+     * Estimates gravitational acceleration resolved about ECI-frame axes.
+     *
+     * @param x cartesian x coordinate of body position expressed in meters (m) with respect ECI frame, resolved along
+     *          ECI-frame axes.
+     * @param y cartesian y coordinate of body position expressed in meters (m) with respect ECI frame, resolved along
+     *          ECI-frame axes.
+     * @param z cartesian z coordinate of body position expressed in meters (m) with respect ECI frame, resolved along
+     *          ECI-frame axes.
+     * @return a new gravitation instance containing estimated acceleration due to gravity.
+     */
+    public static ECIGravitation estimateGravitationAndReturnNew(final double x, final double y, final double z) {
+<span class="fc" id="L202">        final var result = new ECIGravitation();</span>
+<span class="fc" id="L203">        estimateGravitation(x, y, z, result);</span>
+<span class="fc" id="L204">        return result;</span>
+    }
+
+    /**
+     * Estimates gravitational acceleration resolved about ECI-frame axes for a position on a given ECI frame.
+     *
+     * @param frame  an ECI frame containing a given position.
+     * @param result instance where estimated acceleration due to gravity will be stored.
+     */
+    public static void estimateGravitation(final ECIFrame frame, final ECIGravitation result) {
+<span class="fc" id="L214">        estimateGravitation(frame.getX(), frame.getY(), frame.getZ(), result);</span>
+<span class="fc" id="L215">    }</span>
+
+    /**
+     * Estimates gravitational acceleration resolved about ECI-frame axes for a position on a given ECI frame.
+     *
+     * @param frame an ECI frame containing a given position.
+     * @return a new gravitation instance containing estimated acceleration due to gravity.
+     */
+    public static ECIGravitation estimateGravitationAndReturnNew(final ECIFrame frame) {
+<span class="fc" id="L224">        return estimateGravitationAndReturnNew(frame.getX(), frame.getY(), frame.getZ());</span>
+    }
+
+    /**
+     * Estimates gravitational acceleration resolved about ECI-frame axes for a given position expressed in
+     * ECI coordinates.
+     *
+     * @param position cartesian body position expressed in meters (m) with respect ECI frame, resolved along
+     *                 ECI-frame axes.
+     * @param result   instance where estimated acceleration due to gravity will be stored.
+     */
+    public static void estimateGravitation(final Point3D position, final ECIGravitation result) {
+<span class="fc" id="L236">        estimateGravitation(position.getInhomX(), position.getInhomY(), position.getInhomZ(), result);</span>
+<span class="fc" id="L237">    }</span>
+
+    /**
+     * Estimates gravitation acceleration resolved about ECI-frame axes for a given position expressed in
+     * ECI coordinates.
+     *
+     * @param position cartesian body position expressed in meters (m) with respect ECI frame, resolved along
+     *                 ECI-frame axes.
+     * @return a new gravitation instance containing estimated acceleration due to gravity.
+     */
+    public static ECIGravitation estimateGravitationAndReturnNew(final Point3D position) {
+<span class="fc" id="L248">        return estimateGravitationAndReturnNew(position.getInhomX(), position.getInhomY(), position.getInhomZ());</span>
+    }
+
+    /**
+     * Estimates gravitation acceleration resolved about ECI-frame axes for a given position
+     * expressed in ECI coordinates.
+     *
+     * @param x      cartesian x coordinate of body position with respect ECI frame, resolved along
+     *               ECI-frame axes.
+     * @param y      cartesian y coordinate of body position with respect ECI frame, resolved along
+     *               ECI-frame axes.
+     * @param z      cartesian z coordinate of body position with respect ECI frame, resolved along
+     *               ECI-frame axes.
+     * @param result instance where estimated acceleration due to gravity will be stored.
+     */
+    public static void estimateGravitation(
+            final Distance x, final Distance y, final Distance z, final ECIGravitation result) {
+<span class="fc" id="L265">        estimateGravitation(convertToMeters(x), convertToMeters(y), convertToMeters(z), result);</span>
+<span class="fc" id="L266">    }</span>
+
+    /**
+     * Estimates gravitation acceleration resolved about ECI-frame axes for a given position
+     * expressed in ECI coordinates.
+     *
+     * @param x cartesian x coordinate of body position with respect ECI frame, resolved along
+     *          ECI-frame axes.
+     * @param y cartesian y coordinate of body position with respect ECI frame, resolved along
+     *          ECI-frame axes.
+     * @param z cartesian z coordinate of body position with respect ECI frame, resolved along
+     *          ECI-frame axes.
+     * @return a new gravitation instance containing estimated acceleration due to gravity.
+     */
+    public static ECIGravitation estimateGravitationAndReturnNew(final Distance x, final Distance y, final Distance z) {
+<span class="fc" id="L281">        final var result = new ECIGravitation();</span>
+<span class="fc" id="L282">        estimateGravitation(x, y, z, result);</span>
+<span class="fc" id="L283">        return result;</span>
+    }
+
+    /**
+     * Converts distance to meters.
+     *
+     * @param distance distance to be converted.
+     * @return converted distance expressed in meters.
+     */
+    private static double convertToMeters(final Distance distance) {
+<span class="fc" id="L293">        return DistanceConverter.convert(distance.getValue().doubleValue(), distance.getUnit(), DistanceUnit.METER);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

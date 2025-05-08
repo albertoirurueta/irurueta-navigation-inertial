@@ -1,0 +1,1704 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>WindowedBodyKinematicsNoiseEstimator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-inertial</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.inertial.calibration.noise</a> &gt; <span class="el_source">WindowedBodyKinematicsNoiseEstimator.java</span></div><h1>WindowedBodyKinematicsNoiseEstimator.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2020 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.inertial.calibration.noise;
+
+import com.irurueta.navigation.LockedException;
+import com.irurueta.navigation.inertial.BodyKinematics;
+import com.irurueta.navigation.inertial.calibration.AccelerationTriad;
+import com.irurueta.navigation.inertial.calibration.AccelerometerNoiseRootPsdSource;
+import com.irurueta.navigation.inertial.calibration.AngularSpeedTriad;
+import com.irurueta.navigation.inertial.calibration.GyroscopeNoiseRootPsdSource;
+import com.irurueta.navigation.inertial.calibration.TimeIntervalEstimator;
+import com.irurueta.units.Acceleration;
+import com.irurueta.units.AccelerationUnit;
+import com.irurueta.units.AngularSpeed;
+import com.irurueta.units.AngularSpeedUnit;
+import com.irurueta.units.Time;
+import com.irurueta.units.TimeConverter;
+import com.irurueta.units.TimeUnit;
+
+import java.util.LinkedList;
+
+/**
+ * Estimates accelerometer and angular speed noise variances and PSD's
+ * (Power Spectral Densities) along with their average values for a windowed
+ * amount of samples.
+ * This estimator must be used when the body where the accelerometer and
+ * gyroscope are attached remains static on the same position with zero
+ * velocity and constant (or zero) angular speed while capturing data.
+ * To compute PSD's, this estimator assumes that measurement samples are obtained
+ * at a constant provided rate equal to {@link #getTimeInterval()} seconds.
+ * If not available, sampling rate average can be estimated using
+ * {@link TimeIntervalEstimator}.
+ * This estimator does NOT require the knowledge of current location and body
+ * orientation.
+ * Because body location and orientation is not known, estimated average values
+ * cannot be used to determine biases. Only norm of noise estimations
+ * (variance or standard deviation) can be safely used.
+ */
+@SuppressWarnings(&quot;DuplicatedCode&quot;)
+public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseRootPsdSource,
+        GyroscopeNoiseRootPsdSource {
+    /**
+     * Number of samples to keep within the window by default.
+     * For an accelerometer generating 100 samples/second, this is equivalent to
+     * 1 second.
+     * For an accelerometer generating 50 samples/second, this is equivalent to
+     * 2 seconds.
+     */
+    public static final int DEFAULT_WINDOW_SIZE = WindowedTriadNoiseEstimator.DEFAULT_WINDOW_SIZE;
+
+    /**
+     * Minimum allowed window size.
+     */
+    public static final int MIN_WINDOW_SIZE = WindowedTriadNoiseEstimator.MIN_WINDOW_SIZE;
+
+    /**
+     * Default time interval between accelerometer samples expressed in seconds
+     * (s).
+     */
+    public static final double DEFAULT_TIME_INTERVAL_SECONDS =
+            WindowedTriadNoiseEstimator.DEFAULT_TIME_INTERVAL_SECONDS;
+
+    /**
+     * Length of number of samples to keep within the window being processed.
+     * Window size must always be larger than allowed minimum value.
+     */
+<span class="fc" id="L80">    private int windowSize = DEFAULT_WINDOW_SIZE;</span>
+
+    /**
+     * Time interval expressed in seconds (s) between consecutive accelerometer
+     * samples.
+     */
+<span class="fc" id="L86">    private double timeInterval = DEFAULT_TIME_INTERVAL_SECONDS;</span>
+
+    /**
+     * Keeps the list of body kinematics samples that remain within the window.
+     */
+<span class="fc" id="L91">    private final LinkedList&lt;BodyKinematics&gt; windowedSamples = new LinkedList&lt;&gt;();</span>
+
+    /**
+     * Listener to handle events raised by this estimator.
+     */
+    private WindowedBodyKinematicsNoiseEstimatorListener listener;
+
+    /**
+     * Estimated average of x coordinate of specific force expressed in
+     * meters per squared second (m/s^2).
+     */
+    private double avgSpecificForceX;
+
+    /**
+     * Estimated average of y coordinate of specific force expressed in
+     * meters per squared second (m/s^2).
+     */
+    private double avgSpecificForceY;
+
+    /**
+     * Estimated average of z coordinate of specific force expressed in
+     * meters per squared second (m/s^2).
+     */
+    private double avgSpecificForceZ;
+
+    /**
+     * Estimated average of x coordinate of angular rate expressed in
+     * radians per second (rad/s).
+     */
+    private double avgAngularRateX;
+
+    /**
+     * Estimated average of y coordinate of angular rate expressed in
+     * radians per second (rad/s).
+     */
+    private double avgAngularRateY;
+
+    /**
+     * Estimated average of z coordinate of angular rate expressed in
+     * radians per second (rad/s).
+     */
+    private double avgAngularRateZ;
+
+    /**
+     * Estimated variance of x coordinate of specific force expressed
+     * in (m^2/s^4).
+     */
+    private double varianceSpecificForceX;
+
+    /**
+     * Estimated variance of y coordinate of specific force expressed
+     * in (m^2/s^4).
+     */
+    private double varianceSpecificForceY;
+
+    /**
+     * Estimated variance of z coordinate of specific force expressed
+     * in (m^2/s^4).
+     */
+    private double varianceSpecificForceZ;
+
+    /**
+     * Estimated variance of x coordinate of angular rate expressed
+     * in (rad^2/s^2).
+     */
+    private double varianceAngularRateX;
+
+    /**
+     * Estimated variance of y coordinate of angular rate expressed
+     * in (rad^2/s^2).
+     */
+    private double varianceAngularRateY;
+
+    /**
+     * Estimated variance of z coordinate of angular rate expressed
+     * in (rad^2/s^2).
+     */
+    private double varianceAngularRateZ;
+
+    /**
+     * Number of processed acceleration triad samples.
+     */
+    private int numberOfProcessedSamples;
+
+    /**
+     * Indicates whether estimator is running or not.
+     */
+    private boolean running;
+
+    /**
+     * Constructor.
+     */
+<span class="fc" id="L183">    public WindowedBodyKinematicsNoiseEstimator() {</span>
+<span class="fc" id="L184">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param listener listener to handle events raised by this estimator.
+     */
+<span class="fc" id="L191">    public WindowedBodyKinematicsNoiseEstimator(final WindowedBodyKinematicsNoiseEstimatorListener listener) {</span>
+<span class="fc" id="L192">        this.listener = listener;</span>
+<span class="fc" id="L193">    }</span>
+
+    /**
+     * Gets length of number of samples to keep within the window being processed.
+     * Window size must always be larger than allowed minimum value.
+     *
+     * @return length of number of samples to keep within the window.
+     */
+    public int getWindowSize() {
+<span class="fc" id="L202">        return windowSize;</span>
+    }
+
+    /**
+     * Sets length of number of samples to keep within the window being processed.
+     * Window size must always be larger than allowed minimum value.
+     * When window size is modified, instance state is reset.
+     *
+     * @param windowSize length of number of samples to keep within the window.
+     * @throws IllegalArgumentException if provided value is not valid.
+     * @throws LockedException          if estimator is currently running.
+     */
+    public void setWindowSize(final int windowSize) throws LockedException {
+<span class="fc bfc" id="L215" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L216">            throw new LockedException();</span>
+        }
+
+        // check that window is larger than minimum allowed value
+<span class="fc bfc" id="L220" title="All 2 branches covered.">        if (windowSize &lt; MIN_WINDOW_SIZE) {</span>
+<span class="fc" id="L221">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L224">        this.windowSize = windowSize;</span>
+<span class="fc" id="L225">        reset();</span>
+<span class="fc" id="L226">    }</span>
+
+    /**
+     * Gets time interval between body kinematics samples expressed in
+     * seconds (s).
+     *
+     * @return time interval between accelerometer triad samples.
+     */
+    public double getTimeInterval() {
+<span class="fc" id="L235">        return timeInterval;</span>
+    }
+
+    /**
+     * Sets time interval between body kinematics samples expressed in
+     * seconds (s).
+     *
+     * @param timeInterval time interval between accelerometer triad samples.
+     * @throws IllegalArgumentException if provided value is negative.
+     * @throws LockedException          if estimator is currently running.
+     */
+    public void setTimeInterval(final double timeInterval) throws LockedException {
+<span class="fc bfc" id="L247" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L248">            throw new LockedException();</span>
+        }
+
+<span class="fc bfc" id="L251" title="All 2 branches covered.">        if (timeInterval &lt; 0.0) {</span>
+<span class="fc" id="L252">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L255">        this.timeInterval = timeInterval;</span>
+<span class="fc" id="L256">    }</span>
+
+    /**
+     * Gets time interval between body kinematics samples.
+     *
+     * @return time interval between accelerometer triad samples.
+     */
+    public Time getTimeIntervalAsTime() {
+<span class="fc" id="L264">        return new Time(timeInterval, TimeUnit.SECOND);</span>
+    }
+
+    /**
+     * Gets time interval between body kinematics samples.
+     *
+     * @param result instance where time interval will be stored.
+     */
+    public void getTimeIntervalAsTime(final Time result) {
+<span class="fc" id="L273">        result.setValue(timeInterval);</span>
+<span class="fc" id="L274">        result.setUnit(TimeUnit.SECOND);</span>
+<span class="fc" id="L275">    }</span>
+
+    /**
+     * Sets time interval between body kinematics samples.
+     *
+     * @param timeInterval time interval between accelerometer triad samples.
+     * @throws LockedException if estimator is currently running.
+     */
+    public void setTimeInterval(final Time timeInterval) throws LockedException {
+<span class="fc" id="L284">        setTimeInterval(TimeConverter.convert(timeInterval.getValue().doubleValue(), timeInterval.getUnit(),</span>
+                TimeUnit.SECOND));
+<span class="fc" id="L286">    }</span>
+
+    /**
+     * Gets listener to handle events raised by this estimator.
+     *
+     * @return listener to handle events raised by this estimator.
+     */
+    public WindowedBodyKinematicsNoiseEstimatorListener getListener() {
+<span class="fc" id="L294">        return listener;</span>
+    }
+
+    /**
+     * Sets listener to handle events raised by this estimator.
+     *
+     * @param listener listener to handle events raised by this estimator.
+     * @throws LockedException if this estimator is running.
+     */
+    public void setListener(final WindowedBodyKinematicsNoiseEstimatorListener listener) throws LockedException {
+<span class="fc bfc" id="L304" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L305">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L308">        this.listener = listener;</span>
+<span class="fc" id="L309">    }</span>
+
+    /**
+     * Gets first provided body kinematics within the window.
+     *
+     * @return first provided body kinematics within the window or null if not
+     * available.
+     */
+    public BodyKinematics getFirstWindowedBodyKinematics() {
+<span class="fc bfc" id="L318" title="All 2 branches covered.">        return windowedSamples.isEmpty() ? null : windowedSamples.getFirst();</span>
+    }
+
+    /**
+     * Gets first provided body kinematics within the window.
+     *
+     * @param result instance where first provided body kinematics will be stored.
+     * @return true if result instance was updated, false otherwise.
+     */
+    public boolean getFirstWindowedBodyKinematics(final BodyKinematics result) {
+<span class="fc bfc" id="L328" title="All 2 branches covered.">        if (windowedSamples.isEmpty()) {</span>
+<span class="fc" id="L329">            return false;</span>
+        } else {
+<span class="fc" id="L331">            result.copyFrom(windowedSamples.getFirst());</span>
+<span class="fc" id="L332">            return true;</span>
+        }
+    }
+
+    /**
+     * Gets last provided body kinematics within the window.
+     *
+     * @return last provided body kinematics within the window or null if not
+     * available.
+     */
+    public BodyKinematics getLastWindowedBodyKinematics() {
+<span class="fc bfc" id="L343" title="All 2 branches covered.">        return windowedSamples.isEmpty() ? null : windowedSamples.getLast();</span>
+    }
+
+    /**
+     * Gets last provided body kinematics within the window.
+     *
+     * @param result instance where last provided body kinematics will be stored.
+     * @return true if result instance was updated, false otherwise.
+     */
+    public boolean getLastWindowedBodyKinematics(final BodyKinematics result) {
+<span class="fc bfc" id="L353" title="All 2 branches covered.">        if (windowedSamples.isEmpty()) {</span>
+<span class="fc" id="L354">            return false;</span>
+        } else {
+<span class="fc" id="L356">            result.copyFrom(windowedSamples.getLast());</span>
+<span class="fc" id="L357">            return true;</span>
+        }
+    }
+
+    /**
+     * Gets estimated average of x coordinate of accelerometer sensed specific force
+     * expressed in meters per squared second (m/s^2).
+     * This value will depend of body location and orientation, hence it should never
+     * be used as a calibration bias.
+     *
+     * @return average of x coordinate of sensed specific force.
+     */
+    public double getAvgSpecificForceX() {
+<span class="fc" id="L370">        return avgSpecificForceX;</span>
+    }
+
+    /**
+     * Gets estimated average of x coordinate of accelerometer sensed specific force.
+     * This value will depend of body location and orientation, hence it should never
+     * be used as a calibration bias.
+     *
+     * @return average of x coordinate of sensed specific force.
+     */
+    public Acceleration getAvgSpecificForceXAsMeasurement() {
+<span class="fc" id="L381">        return new Acceleration(avgSpecificForceX, AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+    }
+
+    /**
+     * Gets estimated average of x coordinate of accelerometer sensed specific force.
+     * This value will depend of body location and orientation, hence it should never
+     * be used as a calibration bias.
+     *
+     * @param result instance where average of x coordinate of sensed specific force
+     *               will be stored.
+     */
+    public void getAvgSpecificForceXAsMeasurement(final Acceleration result) {
+<span class="fc" id="L393">        result.setValue(avgSpecificForceX);</span>
+<span class="fc" id="L394">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L395">    }</span>
+
+    /**
+     * Gets estimated average of y coordinate of accelerometer sensed specific force
+     * expressed in meters per squared second (m/s^2).
+     * This value will depend of body location and orientation, hence it should never
+     * be used as a calibration bias.
+     *
+     * @return average of y coordinate of sensed specific force.
+     */
+    public double getAvgSpecificForceY() {
+<span class="fc" id="L406">        return avgSpecificForceY;</span>
+    }
+
+    /**
+     * Gets estimated average of y coordinate of accelerometer sensed specific force.
+     * This value will depend of body location and orientation, hence it should never
+     * be used as a calibration bias.
+     *
+     * @return average of y coordinate of sensed specific force.
+     */
+    public Acceleration getAvgSpecificForceYAsMeasurement() {
+<span class="fc" id="L417">        return new Acceleration(avgSpecificForceY, AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+    }
+
+    /**
+     * Gets estimated average of y coordinate of accelerometer sensed specific force.
+     * This value will depend of body location and orientation, hence it should never
+     * be used as a calibration bias.
+     *
+     * @param result instance where average of y coordinate of sensed specific force
+     *               will be stored.
+     */
+    public void getAvgSpecificForceYAsMeasurement(final Acceleration result) {
+<span class="fc" id="L429">        result.setValue(avgSpecificForceY);</span>
+<span class="fc" id="L430">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L431">    }</span>
+
+    /**
+     * Gets estimated average of z coordinate of accelerometer sensed specific force
+     * expressed in meters per squared second (m/s^2).
+     * This value will depend of body location and orientation, hence it should never
+     * be used as a calibration bias.
+     *
+     * @return average of z coordinate of sensed specific force.
+     */
+    public double getAvgSpecificForceZ() {
+<span class="fc" id="L442">        return avgSpecificForceZ;</span>
+    }
+
+    /**
+     * Gets estimated average of z coordinate of accelerometer sensed specific force.
+     * This value will depend of body location and orientation, hence it should never
+     * be used as a calibration bias.
+     *
+     * @return average of z coordinate of sensed specific force.
+     */
+    public Acceleration getAvgSpecificForceZAsMeasurement() {
+<span class="fc" id="L453">        return new Acceleration(avgSpecificForceZ, AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+    }
+
+    /**
+     * Gets estimated average of z coordinate of accelerometer sensed specific force.
+     * This value will depend of body location and orientation, hence it should never
+     * be used as a calibration bias.
+     *
+     * @param result instance where average of z coordinate of sensed specific force
+     *               will be stored.
+     */
+    public void getAvgSpecificForceZAsMeasurement(final Acceleration result) {
+<span class="fc" id="L465">        result.setValue(avgSpecificForceZ);</span>
+<span class="fc" id="L466">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L467">    }</span>
+
+    /**
+     * Gets estimated average of accelerometer sensed specific force as a measurement
+     * triad.
+     *
+     * @return average accelerometer triad.
+     */
+    public AccelerationTriad getAvgSpecificForceAsTriad() {
+<span class="fc" id="L476">        return new AccelerationTriad(AccelerationUnit.METERS_PER_SQUARED_SECOND,</span>
+                avgSpecificForceX, avgSpecificForceY, avgSpecificForceZ);
+    }
+
+    /**
+     * Gets estimated average of accelerometer sensed specific force as a measurement
+     * triad.
+     *
+     * @param result instance where average accelerometer triad will be stored.
+     */
+    public void getAvgSpecificForceAsTriad(final AccelerationTriad result) {
+<span class="fc" id="L487">        result.setValueCoordinatesAndUnit(avgSpecificForceX, avgSpecificForceY, avgSpecificForceZ,</span>
+                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+<span class="fc" id="L489">    }</span>
+
+    /**
+     * Gets norm of estimated average acceleration expressed in meters per squared
+     * second (m/s^2). This value is independent of body orientation.
+     *
+     * @return norm of estimated average acceleration.
+     */
+    public double getAvgSpecificForceNorm() {
+<span class="fc" id="L498">        return Math.sqrt(avgSpecificForceX * avgSpecificForceX + avgSpecificForceY * avgSpecificForceY</span>
+                + avgSpecificForceZ * avgSpecificForceZ);
+    }
+
+    /**
+     * Gets norm of estimated average acceleration within current window.
+     *
+     * @return norm of estimated average acceleration.
+     */
+    public Acceleration getAvgSpecificForceNormAsMeasurement() {
+<span class="fc" id="L508">        return new Acceleration(getAvgSpecificForceNorm(), AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+    }
+
+    /**
+     * Gets norm of estimated average acceleration.
+     *
+     * @param result instance where norm of estimated average acceleration will be stored.
+     */
+    public void getAvgSpecificForceNormAsMeasurement(final Acceleration result) {
+<span class="fc" id="L517">        result.setValue(getAvgSpecificForceNorm());</span>
+<span class="fc" id="L518">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L519">    }</span>
+
+    /**
+     * Gets estimated average of x coordinate of gyroscope sensed angular rate
+     * expressed in radians per second (rad/s).
+     * This value will depend of body location and orientation, hence it should
+     * never be used as a calibration bias.
+     *
+     * @return average of x coordinate of sensed angular rate.
+     */
+    public double getAvgAngularRateX() {
+<span class="fc" id="L530">        return avgAngularRateX;</span>
+    }
+
+    /**
+     * Gets estimated average of x coordinate of gyroscope sensed angular rate.
+     * This value will depend of body location and orientation, hence it should never
+     * be used as a calibration bias.
+     *
+     * @return average of x coordinate of sensed angular rate.
+     */
+    public AngularSpeed getAvgAngularRateXAsMeasurement() {
+<span class="fc" id="L541">        return new AngularSpeed(avgAngularRateX, AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+    }
+
+    /**
+     * Gets estimated average of x coordinate of gyroscope sensed angular rate.
+     * This value will depend of body location and orientation, hence it should never
+     * be used as a calibration bias.
+     *
+     * @param result instance where average of x coordinate of sensed angular rate
+     *               will be stored.
+     */
+    public void getAvgAngularRateXAsMeasurement(final AngularSpeed result) {
+<span class="fc" id="L553">        result.setValue(avgAngularRateX);</span>
+<span class="fc" id="L554">        result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+<span class="fc" id="L555">    }</span>
+
+    /**
+     * Gets estimated average of y coordinate of gyroscope sensed angular rate
+     * expressed in radians per second (rad/s).
+     * This value will depend of body location and orientation, hence it should never
+     * be used as a calibration bias.
+     *
+     * @return average of y coordinate of sensed angular rate.
+     */
+    public double getAvgAngularRateY() {
+<span class="fc" id="L566">        return avgAngularRateY;</span>
+    }
+
+    /**
+     * Gets estimated average of y coordinate of gyroscope sensed angular rate.
+     * This value will depend of body location and orientation, hence it should never
+     * be used as a calibration bias.
+     *
+     * @return average of y coordinate of sensed angular rate.
+     */
+    public AngularSpeed getAvgAngularRateYAsMeasurement() {
+<span class="fc" id="L577">        return new AngularSpeed(avgAngularRateY, AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+    }
+
+    /**
+     * Gets estimated average of y coordinate of gyroscope sensed angular rate.
+     * This value will depend of body location and orientation, hence it should never
+     * be used as a calibration bias.
+     *
+     * @param result instance where average of y coordinate of sensed angular rate
+     *               will be stored.
+     */
+    public void getAvgAngularRateYAsMeasurement(final AngularSpeed result) {
+<span class="fc" id="L589">        result.setValue(avgAngularRateY);</span>
+<span class="fc" id="L590">        result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+<span class="fc" id="L591">    }</span>
+
+    /**
+     * Gets estimated average of z coordinate of gyroscope sensed angular rate
+     * expressed in radians per second (rad/s).
+     * This value will depend of body location and orientation, hence it should never
+     * be used as a calibration bias.
+     *
+     * @return average of z coordinate of sensed angular rate.
+     */
+    public double getAvgAngularRateZ() {
+<span class="fc" id="L602">        return avgAngularRateZ;</span>
+    }
+
+    /**
+     * Gets estimated average of z coordinate of gyroscope sensed angular rate.
+     * This value will depend of body location and orientation, hence it should never
+     * be used as a calibration bias.
+     *
+     * @return average of z coordinate of sensed angular rate.
+     */
+    public AngularSpeed getAvgAngularRateZAsMeasurement() {
+<span class="fc" id="L613">        return new AngularSpeed(avgAngularRateZ, AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+    }
+
+    /**
+     * Gets estimated average of z coordinate of gyroscope sensed angular rate.
+     * This value will depend of body location and orientation, hence it should never
+     * be used as a calibration bias.
+     *
+     * @param result instance where average of z coordinate of sensed angular rate
+     *               will be stored.
+     */
+    public void getAvgAngularRateZAsMeasurement(final AngularSpeed result) {
+<span class="fc" id="L625">        result.setValue(avgAngularRateZ);</span>
+<span class="fc" id="L626">        result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+<span class="fc" id="L627">    }</span>
+
+    /**
+     * Gets estimated average of gyroscope sensed angular speed as a measurement
+     * triad.
+     *
+     * @return average angular speed triad.
+     */
+    public AngularSpeedTriad getAvgAngularRateTriad() {
+<span class="fc" id="L636">        return new AngularSpeedTriad(AngularSpeedUnit.RADIANS_PER_SECOND,</span>
+                avgAngularRateX, avgAngularRateY, avgAngularRateZ);
+    }
+
+    /**
+     * Gets estimated average of gyroscope sensed angular speed as a measurement
+     * triad.
+     *
+     * @param result instance where average angular speed triad will be stored.
+     */
+    public void getAvgAngularRateTriad(final AngularSpeedTriad result) {
+<span class="fc" id="L647">        result.setValueCoordinatesAndUnit(avgAngularRateX, avgAngularRateY, avgAngularRateZ,</span>
+                AngularSpeedUnit.RADIANS_PER_SECOND);
+<span class="fc" id="L649">    }</span>
+
+    /**
+     * Gets norm of estimated average angular speed expressed in radians per
+     * second (rad/s). This value is independent of body orientation.
+     *
+     * @return norm of estimated average angular speed.
+     */
+    public double getAvgAngularRateNorm() {
+<span class="fc" id="L658">        return Math.sqrt(avgAngularRateX * avgAngularRateX</span>
+                + avgAngularRateY * avgAngularRateY
+                + avgAngularRateZ * avgAngularRateZ);
+    }
+
+    /**
+     * Gets norm of estimated average angular speed.
+     * This value is independent of body orientation.
+     *
+     * @return norm of estimated average angular speed.
+     */
+    public AngularSpeed getAvgAngularRateNormAsMeasurement() {
+<span class="fc" id="L670">        return new AngularSpeed(getAvgAngularRateNorm(), AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+    }
+
+    /**
+     * Gets norm of estimated average angular speed.
+     * This value is independent of body orientation.
+     *
+     * @param result instance where norm of estimated average angular speed will be stored.
+     */
+    public void getAvgAngularRateNormAsMeasurement(final AngularSpeed result) {
+<span class="fc" id="L680">        result.setValue(getAvgAngularRateNorm());</span>
+<span class="fc" id="L681">        result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+<span class="fc" id="L682">    }</span>
+
+    /**
+     * Gets estimated average of body kinematics.
+     *
+     * @return estimated average of body kinematics.
+     */
+    public BodyKinematics getAvgBodyKinematics() {
+<span class="fc" id="L690">        final var result = new BodyKinematics();</span>
+<span class="fc" id="L691">        getAvgBodyKinematics(result);</span>
+<span class="fc" id="L692">        return result;</span>
+    }
+
+    /**
+     * Gets estimated average of body kinematics.
+     *
+     * @param result instance where estimated average of body kinematics will be stored.
+     */
+    public void getAvgBodyKinematics(final BodyKinematics result) {
+<span class="fc" id="L701">        result.setSpecificForceCoordinates(getAvgSpecificForceX(), getAvgSpecificForceY(), getAvgSpecificForceZ());</span>
+<span class="fc" id="L702">        result.setAngularRateCoordinates(getAvgAngularRateX(), getAvgAngularRateY(), getAvgAngularRateZ());</span>
+<span class="fc" id="L703">    }</span>
+
+    /**
+     * Gets estimated variance of x coordinate of accelerometer sensed specific force
+     * expressed in (m^2/s^4).
+     *
+     * @return estimated variance of x coordinate of sensed specific force.
+     */
+    public double getVarianceSpecificForceX() {
+<span class="fc" id="L712">        return varianceSpecificForceX;</span>
+    }
+
+    /**
+     * Gets estimated variance of y coordinate of accelerometer sensed specific
+     * force expressed in (m^2/s^4).
+     *
+     * @return estimated variance of y coordinate of sensed specific force.
+     */
+    public double getVarianceSpecificForceY() {
+<span class="fc" id="L722">        return varianceSpecificForceY;</span>
+    }
+
+    /**
+     * Gets estimated variance of z coordinate of accelerometer sensed specific
+     * force expressed in (m^2/s^4).
+     *
+     * @return estimated variance of z coordinate of sensed specific force.
+     */
+    public double getVarianceSpecificForceZ() {
+<span class="fc" id="L732">        return varianceSpecificForceZ;</span>
+    }
+
+    /**
+     * Gets estimated variance of x coordinate of gyroscope sensed angular rate
+     * expressed in (rad^2/s^2).
+     *
+     * @return estimated variance of x coordinate of sensed angular rate.
+     */
+    public double getVarianceAngularRateX() {
+<span class="fc" id="L742">        return varianceAngularRateX;</span>
+    }
+
+    /**
+     * Gets estimated variance of y coordinate of gyroscope sensed angular rate
+     * expressed in (rad^2/s^2).
+     *
+     * @return estimated variance of y coordinate of sensed angular rate.
+     */
+    public double getVarianceAngularRateY() {
+<span class="fc" id="L752">        return varianceAngularRateY;</span>
+    }
+
+    /**
+     * Gets estimated variance of z coordinate of gyroscope sensed angular rate
+     * expressed in (rad^2/s^2).
+     *
+     * @return estimated variance of z coordinate of sensed angular rate.
+     */
+    public double getVarianceAngularRateZ() {
+<span class="fc" id="L762">        return varianceAngularRateZ;</span>
+    }
+
+    /**
+     * Gets estimated standard deviation of x coordinate of accelerometer
+     * sensed specific force expressed in meters per squared second (m/s^2).
+     *
+     * @return estimated standard deviation of x coordinate of sensed specific
+     * force.
+     */
+    public double getStandardDeviationSpecificForceX() {
+<span class="fc" id="L773">        return Math.sqrt(varianceSpecificForceX);</span>
+    }
+
+    /**
+     * Gets estimated standard deviation of x coordinate of accelerometer
+     * sensed specific force.
+     *
+     * @return estimated standard deviation of x coordinate of sensed specific
+     * force.
+     */
+    public Acceleration getStandardDeviationSpecificForceXAsMeasurement() {
+<span class="fc" id="L784">        return new Acceleration(getStandardDeviationSpecificForceX(), AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+    }
+
+    /**
+     * Gets estimated standard deviation of x coordinate of accelerometer
+     * sensed specific force.
+     *
+     * @param result instance where estimated standard deviation of x
+     *               coordinate of sensed specific force will be stored.
+     */
+    public void getStandardDeviationSpecificForceXAsMeasurement(final Acceleration result) {
+<span class="fc" id="L795">        result.setValue(getStandardDeviationSpecificForceX());</span>
+<span class="fc" id="L796">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L797">    }</span>
+
+    /**
+     * Gets estimated standard deviation of y coordinate of accelerometer
+     * sensed specific force expressed in meters per squared second (m/s^2).
+     *
+     * @return estimated standard deviation of y coordinate of sensed specific
+     * force.
+     */
+    public double getStandardDeviationSpecificForceY() {
+<span class="fc" id="L807">        return Math.sqrt(varianceSpecificForceY);</span>
+    }
+
+    /**
+     * Gets estimated standard deviation of y coordinate of accelerometer
+     * sensed specific force.
+     *
+     * @return estimated standard deviation of y coordinate of sensed specific
+     * force.
+     */
+    public Acceleration getStandardDeviationSpecificForceYAsMeasurement() {
+<span class="fc" id="L818">        return new Acceleration(getStandardDeviationSpecificForceY(), AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+    }
+
+    /**
+     * Gets estimated standard deviation of y coordinate of accelerometer
+     * sensed specific force.
+     *
+     * @param result instance where estimated standard deviation of y
+     *               coordinate of sensed specific force will be stored.
+     */
+    public void getStandardDeviationSpecificForceYAsMeasurement(final Acceleration result) {
+<span class="fc" id="L829">        result.setValue(getStandardDeviationSpecificForceY());</span>
+<span class="fc" id="L830">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L831">    }</span>
+
+    /**
+     * Gets estimated standard deviation of z coordinate of accelerometer
+     * sensed specific force expressed in meters per squared second (m/s^2).
+     *
+     * @return estimated standard deviation of z coordinate of sensed specific
+     * force.
+     */
+    public double getStandardDeviationSpecificForceZ() {
+<span class="fc" id="L841">        return Math.sqrt(varianceSpecificForceZ);</span>
+    }
+
+    /**
+     * Gets estimated standard deviation of z coordinate of accelerometer
+     * sensed specific force.
+     *
+     * @return estimated standard deviation of z coordinate of sensed specific
+     * force.
+     */
+    public Acceleration getStandardDeviationSpecificForceZAsMeasurement() {
+<span class="fc" id="L852">        return new Acceleration(getStandardDeviationSpecificForceZ(), AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+    }
+
+    /**
+     * Gets estimated standard deviation of z coordinate of accelerometer
+     * sensed specific force.
+     *
+     * @param result instance where estimated standard deviation of z
+     *               coordinate of sensed specific force will be stored.
+     */
+    public void getStandardDeviationSpecificForceZAsMeasurement(final Acceleration result) {
+<span class="fc" id="L863">        result.setValue(getStandardDeviationSpecificForceZ());</span>
+<span class="fc" id="L864">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L865">    }</span>
+
+    /**
+     * Gets estimated standard deviation triad of accelerometer measurements.
+     *
+     * @return estimated standard deviation triad of accelerometer measurements.
+     */
+    public AccelerationTriad getStandardDeviationSpecificForceTriad() {
+<span class="fc" id="L873">        return new AccelerationTriad(AccelerationUnit.METERS_PER_SQUARED_SECOND,</span>
+<span class="fc" id="L874">                getStandardDeviationSpecificForceX(),</span>
+<span class="fc" id="L875">                getStandardDeviationSpecificForceY(),</span>
+<span class="fc" id="L876">                getStandardDeviationSpecificForceZ());</span>
+    }
+
+    /**
+     * Gets estimated standard deviation triad of accelerometer measurements.
+     *
+     * @param result instance where estimated standard deviation triad of
+     *               accelerometer measurements will be stored.
+     */
+    public void getStandardDeviationSpecificForceTriad(final AccelerationTriad result) {
+<span class="fc" id="L886">        result.setValueCoordinatesAndUnit(getStandardDeviationSpecificForceX(),</span>
+<span class="fc" id="L887">                getStandardDeviationSpecificForceY(),</span>
+<span class="fc" id="L888">                getStandardDeviationSpecificForceZ(),</span>
+                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+<span class="fc" id="L890">    }</span>
+
+    /**
+     * Gets norm of estimated standard deviation of accelerometer measurements
+     * expressed in meters per squared second (m/s^2).
+     *
+     * @return norm of estimated standard deviation of accelerometer
+     * measurements.
+     */
+    public double getStandardDeviationSpecificForceNorm() {
+<span class="fc" id="L900">        final var fx = getStandardDeviationSpecificForceX();</span>
+<span class="fc" id="L901">        final var fy = getStandardDeviationSpecificForceY();</span>
+<span class="fc" id="L902">        final var fz = getStandardDeviationSpecificForceZ();</span>
+<span class="fc" id="L903">        return Math.sqrt(fx * fx + fy * fy + fz * fz);</span>
+    }
+
+    /**
+     * Gets norm of estimated standard deviation of accelerometer measurements.
+     *
+     * @return norm of estimated standard deviation of measurements.
+     */
+    public Acceleration getStandardDeviationSpecificForceNormAsMeasurement() {
+<span class="fc" id="L912">        return new Acceleration(getStandardDeviationSpecificForceNorm(), AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+    }
+
+    /**
+     * Gets norm of estimated standard deviation of accelerometer measurements.
+     *
+     * @param result instance where norm of estimated standard deviation will be
+     *               stored.
+     */
+    public void getStandardDeviationSpecificForceNormAsMeasurement(final Acceleration result) {
+<span class="fc" id="L922">        result.setValue(getStandardDeviationSpecificForceNorm());</span>
+<span class="fc" id="L923">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L924">    }</span>
+
+    /**
+     * Gets average of estimated standard deviation coordinates of accelerometer
+     * measurements expressed in meters per squared second (m/s^2).
+     *
+     * @return average of estimated standard deviation coordinates.
+     */
+    public double getAverageStandardDeviationSpecificForce() {
+<span class="fc" id="L933">        final var fx = getStandardDeviationSpecificForceX();</span>
+<span class="fc" id="L934">        final var fy = getStandardDeviationSpecificForceY();</span>
+<span class="fc" id="L935">        final var fz = getStandardDeviationSpecificForceZ();</span>
+<span class="fc" id="L936">        return (fx + fy + fz) / 3.0;</span>
+    }
+
+    /**
+     * Gets average of estimated standard deviation coordinates of accelerometer
+     * measurements.
+     *
+     * @return average of estimated standard deviation coordinates.
+     */
+    public Acceleration getAverageStandardDeviationSpecificForceAsMeasurement() {
+<span class="fc" id="L946">        return new Acceleration(getAverageStandardDeviationSpecificForce(), AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+    }
+
+    /**
+     * Gets average of estimated standard deviation coordinates of accelerometer
+     * measurements.
+     *
+     * @param result instance where average of estimated standard deviation coordinates
+     *               will be stored.
+     */
+    public void getAverageStandardDeviationSpecificForceAsMeasurement(final Acceleration result) {
+<span class="fc" id="L957">        result.setValue(getAverageStandardDeviationSpecificForce());</span>
+<span class="fc" id="L958">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L959">    }</span>
+
+    /**
+     * Gets estimated standard deviation of x coordinate of gyroscope
+     * expressed in radians per second (rad/s).
+     *
+     * @return estimated standard deviation of x coordinate of gyroscope.
+     */
+    public double getStandardDeviationAngularRateX() {
+<span class="fc" id="L968">        return Math.sqrt(varianceAngularRateX);</span>
+    }
+
+    /**
+     * Gets estimated standard deviation of x coordinate of gyroscope.
+     *
+     * @return estimated standard deviation of x coordinate of gyroscope.
+     */
+    public AngularSpeed getStandardDeviationAngularRateXAsMeasurement() {
+<span class="fc" id="L977">        return new AngularSpeed(getStandardDeviationAngularRateX(), AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+    }
+
+    /**
+     * Gets estimated standard deviation of x coordinate of gyroscope.
+     *
+     * @param result estimated standard deviation of x coordinate of gyroscope.
+     */
+    public void getStandardDeviationAngularRateXAsMeasurement(final AngularSpeed result) {
+<span class="fc" id="L986">        result.setValue(getStandardDeviationAngularRateX());</span>
+<span class="fc" id="L987">        result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+<span class="fc" id="L988">    }</span>
+
+    /**
+     * Gets estimated standard deviation of y coordinate of gyroscope
+     * expressed in radians per second (rad/s).
+     *
+     * @return estimated standard deviation of y coordinate of gyroscope.
+     */
+    public double getStandardDeviationAngularRateY() {
+<span class="fc" id="L997">        return Math.sqrt(varianceAngularRateY);</span>
+    }
+
+    /**
+     * Gets estimated standard deviation of y coordinate of gyroscope.
+     *
+     * @return estimated standard deviation of y coordinate of gyroscope.
+     */
+    public AngularSpeed getStandardDeviationAngularRateYAsMeasurement() {
+<span class="fc" id="L1006">        return new AngularSpeed(getStandardDeviationAngularRateY(), AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+    }
+
+    /**
+     * Gets estimated standard deviation of y coordinate of gyroscope.
+     *
+     * @param result estimated standard deviation of y coordinate of gyroscope.
+     */
+    public void getStandardDeviationAngularRateYAsMeasurement(final AngularSpeed result) {
+<span class="fc" id="L1015">        result.setValue(getStandardDeviationAngularRateY());</span>
+<span class="fc" id="L1016">        result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+<span class="fc" id="L1017">    }</span>
+
+    /**
+     * Gets estimated standard deviation of z coordinate of gyroscope
+     * expressed in radians per second (rad/s).
+     *
+     * @return estimated standard deviation of z coordinate of gyroscope.
+     */
+    public double getStandardDeviationAngularRateZ() {
+<span class="fc" id="L1026">        return Math.sqrt(varianceAngularRateZ);</span>
+    }
+
+    /**
+     * Gets estimated standard deviation of z coordinate of gyroscope.
+     *
+     * @return estimated standard deviation of z coordinate of gyroscope.
+     */
+    public AngularSpeed getStandardDeviationAngularRateZAsMeasurement() {
+<span class="fc" id="L1035">        return new AngularSpeed(getStandardDeviationAngularRateZ(), AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+    }
+
+    /**
+     * Gets estimated standard deviation of z coordinate of gyroscope.
+     *
+     * @param result estimated standard deviation of z coordinate of gyroscope.
+     */
+    public void getStandardDeviationAngularRateZAsMeasurement(final AngularSpeed result) {
+<span class="fc" id="L1044">        result.setValue(getStandardDeviationAngularRateZ());</span>
+<span class="fc" id="L1045">        result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+<span class="fc" id="L1046">    }</span>
+
+    /**
+     * Gets estimated standard deviation triad of angular speed measurements.
+     *
+     * @return estimated standard deviation triad of angular speed measurements.
+     */
+    public AngularSpeedTriad getStandardDeviationAngularSpeedTriad() {
+<span class="fc" id="L1054">        return new AngularSpeedTriad(AngularSpeedUnit.RADIANS_PER_SECOND,</span>
+<span class="fc" id="L1055">                getStandardDeviationAngularRateX(),</span>
+<span class="fc" id="L1056">                getStandardDeviationAngularRateY(),</span>
+<span class="fc" id="L1057">                getStandardDeviationAngularRateZ());</span>
+    }
+
+    /**
+     * Gets estimated standard deviation triad of angular speed measurements.
+     *
+     * @param result instance where estimated standard deviation triad of
+     *               gyroscope measurements will be stored.
+     */
+    public void getStandardDeviationAngularSpeedTriad(final AngularSpeedTriad result) {
+<span class="fc" id="L1067">        result.setValueCoordinatesAndUnit(getStandardDeviationAngularRateX(),</span>
+<span class="fc" id="L1068">                getStandardDeviationAngularRateY(),</span>
+<span class="fc" id="L1069">                getStandardDeviationAngularRateZ(),</span>
+                AngularSpeedUnit.RADIANS_PER_SECOND);
+<span class="fc" id="L1071">    }</span>
+
+    /**
+     * Gets norm of estimated standard deviation of gyroscope measurements
+     * expressed in radians per second (rad/s).
+     *
+     * @return norm of estimated standard deviation of gyroscope
+     * measurements.
+     */
+    public double getStandardDeviationAngularSpeedNorm() {
+<span class="fc" id="L1081">        final var wx = getStandardDeviationAngularRateX();</span>
+<span class="fc" id="L1082">        final var wy = getStandardDeviationAngularRateY();</span>
+<span class="fc" id="L1083">        final var wz = getStandardDeviationAngularRateZ();</span>
+<span class="fc" id="L1084">        return Math.sqrt(wx * wx + wy * wy + wz * wz);</span>
+    }
+
+    /**
+     * Gets norm of estimated standard deviation of gyroscope measurements.
+     *
+     * @return norm of estimated standard deviation of measurements.
+     */
+    public AngularSpeed getStandardDeviationAngularSpeedNormAsMeasurement() {
+<span class="fc" id="L1093">        return new AngularSpeed(getStandardDeviationAngularSpeedNorm(), AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+    }
+
+    /**
+     * Gets norm of estimated standard deviation of gyroscope measurements.
+     *
+     * @param result instance where norm of estimated standard deviation will be
+     *               stored.
+     */
+    public void getStandardDeviationAngularSpeedNormAsMeasurement(final AngularSpeed result) {
+<span class="fc" id="L1103">        result.setValue(getStandardDeviationAngularSpeedNorm());</span>
+<span class="fc" id="L1104">        result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+<span class="fc" id="L1105">    }</span>
+
+    /**
+     * Gets average of estimated standard deviation coordinates of gyroscope
+     * measurements expressed in radians per second (rad/s).
+     *
+     * @return average of estimated standard deviation coordinates.
+     */
+    public double getAverageStandardDeviationAngularSpeed() {
+<span class="fc" id="L1114">        final var wx = getStandardDeviationAngularRateX();</span>
+<span class="fc" id="L1115">        final var wy = getStandardDeviationAngularRateY();</span>
+<span class="fc" id="L1116">        final var wz = getStandardDeviationAngularRateZ();</span>
+<span class="fc" id="L1117">        return (wx + wy + wz) / 3.0;</span>
+    }
+
+    /**
+     * Gets average of estimated standard deviation coordinates of gyroscope
+     * measurements.
+     *
+     * @return average of estimated standard deviation coordinates.
+     */
+    public AngularSpeed getAverageStandardDeviationAngularSpeedAsMeasurement() {
+<span class="fc" id="L1127">        return new AngularSpeed(getAverageStandardDeviationAngularSpeed(), AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+    }
+
+    /**
+     * Gets average of estimated standard deviation coordinates of gyroscope
+     * measurements.
+     *
+     * @param result instance where average of estimated standard deviation coordinates
+     *               will be stored.
+     */
+    public void getAverageStandardDeviationAngularSpeedAsMeasurement(final AngularSpeed result) {
+<span class="fc" id="L1138">        result.setValue(getAverageStandardDeviationAngularSpeed());</span>
+<span class="fc" id="L1139">        result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+<span class="fc" id="L1140">    }</span>
+
+    /**
+     * Gets estimated standard deviations of accelerometer and gyroscope components
+     * as a body kinematics instance.
+     *
+     * @return a body kinematics instance containing standard deviation values.
+     */
+    public BodyKinematics getStandardDeviationAsBodyKinematics() {
+<span class="fc" id="L1149">        return new BodyKinematics(getStandardDeviationSpecificForceX(),</span>
+<span class="fc" id="L1150">                getStandardDeviationSpecificForceY(),</span>
+<span class="fc" id="L1151">                getStandardDeviationSpecificForceZ(),</span>
+<span class="fc" id="L1152">                getStandardDeviationAngularRateX(),</span>
+<span class="fc" id="L1153">                getStandardDeviationAngularRateY(),</span>
+<span class="fc" id="L1154">                getStandardDeviationAngularRateZ());</span>
+    }
+
+    /**
+     * Gets estimated standard deviations of accelerometer and gyroscope components
+     * as a body kinematics instance.
+     *
+     * @param result instance where data will be stored.
+     */
+    public void getStandardDeviationAsBodyKinematics(final BodyKinematics result) {
+<span class="fc" id="L1164">        result.setSpecificForceCoordinates(getStandardDeviationSpecificForceX(),</span>
+<span class="fc" id="L1165">                getStandardDeviationSpecificForceY(),</span>
+<span class="fc" id="L1166">                getStandardDeviationSpecificForceZ());</span>
+<span class="fc" id="L1167">        result.setAngularRateCoordinates(getStandardDeviationAngularRateX(),</span>
+<span class="fc" id="L1168">                getStandardDeviationAngularRateY(),</span>
+<span class="fc" id="L1169">                getStandardDeviationAngularRateZ());</span>
+<span class="fc" id="L1170">    }</span>
+
+    /**
+     * Gets accelerometer noise PSD (Power Spectral Density) on x axis expressed
+     * in (m^2 * s^-3).
+     *
+     * @return accelerometer noise PSD on x axis.
+     */
+    public double getSpecificForcePsdX() {
+<span class="fc" id="L1179">        return varianceSpecificForceX * timeInterval;</span>
+    }
+
+    /**
+     * Gets accelerometer noise PSD (Power Spectral Density) on y axis expressed
+     * in (m^2 * s^-3).
+     *
+     * @return accelerometer noise PSD on y axis.
+     */
+    public double getSpecificForcePsdY() {
+<span class="fc" id="L1189">        return varianceSpecificForceY * timeInterval;</span>
+    }
+
+    /**
+     * Gets accelerometer noise PSD (Power Spectral Density) on z axis expressed
+     * in (m^2 * s^-3).
+     *
+     * @return accelerometer noise PSD on z axis.
+     */
+    public double getSpecificForcePsdZ() {
+<span class="fc" id="L1199">        return varianceSpecificForceZ * timeInterval;</span>
+    }
+
+    /**
+     * Gets gyroscope noise PSD (Power Spectral Density) on x axis expressed
+     * in (rad^2/s).
+     *
+     * @return gyroscope noise PSD on x axis.
+     */
+    public double getAngularRatePsdX() {
+<span class="fc" id="L1209">        return varianceAngularRateX * timeInterval;</span>
+    }
+
+    /**
+     * Gets gyroscope noise PSD (Power Spectral Density) on y axis expressed
+     * in (rad^2/s).
+     *
+     * @return gyroscope noise PSD on y axis.
+     */
+    public double getAngularRatePsdY() {
+<span class="fc" id="L1219">        return varianceAngularRateY * timeInterval;</span>
+    }
+
+    /**
+     * Gets gyroscope noise PSD (Power Spectral Density) on z axis expressed
+     * in (rad^2/s).
+     *
+     * @return gyroscope noise PSD on z axis.
+     */
+    public double getAngularRatePsdZ() {
+<span class="fc" id="L1229">        return varianceAngularRateZ * timeInterval;</span>
+    }
+
+    /**
+     * Gets accelerometer noise root PSD (Power Spectral Density) on x axis
+     * expressed in (m * s^-1.5).
+     *
+     * @return accelerometer noise root PSD on x axis.
+     */
+    public double getSpecificForceRootPsdX() {
+<span class="fc" id="L1239">        return Math.sqrt(getSpecificForcePsdX());</span>
+    }
+
+    /**
+     * Gets accelerometer noise root PSD (Power Spectral Density) on y axis
+     * expressed in (m * s^-1.5).
+     *
+     * @return accelerometer noise root PSD on y axis.
+     */
+    public double getSpecificForceRootPsdY() {
+<span class="fc" id="L1249">        return Math.sqrt(getSpecificForcePsdY());</span>
+    }
+
+    /**
+     * Gets accelerometer noise root PSD (Power Spectral Density) on z axis
+     * expressed in (m * s^-1.5).
+     *
+     * @return accelerometer noise root PSD on z axis.
+     */
+    public double getSpecificForceRootPsdZ() {
+<span class="fc" id="L1259">        return Math.sqrt(getSpecificForcePsdZ());</span>
+    }
+
+    /**
+     * Gets gyroscope noise root PSD (Power Spectral Density) on x axis
+     * expressed in (rad * s^-0.5).
+     *
+     * @return gyroscope noise root PSD on x axis.
+     */
+    public double getAngularRateRootPsdX() {
+<span class="fc" id="L1269">        return Math.sqrt(getAngularRatePsdX());</span>
+    }
+
+    /**
+     * Gets gyroscope noise root PSD (Power Spectral Density) on y axis
+     * expressed in (rad * s^-0.5).
+     *
+     * @return gyroscope noise root PSD on y axis.
+     */
+    public double getAngularRateRootPsdY() {
+<span class="fc" id="L1279">        return Math.sqrt(getAngularRatePsdY());</span>
+    }
+
+    /**
+     * Gets gyroscope noise root PSD (Power Spectral Density) on z axis
+     * expressed in (rad * s^-0.5).
+     *
+     * @return gyroscope noise root PSD on z axis.
+     */
+    public double getAngularRateRootPsdZ() {
+<span class="fc" id="L1289">        return Math.sqrt(getAngularRatePsdZ());</span>
+    }
+
+    /**
+     * Gets average accelerometer noise PSD (Power Spectral Density) among
+     * x,y,z components expressed as (m^2/s^-3).
+     *
+     * @return average accelerometer noise PSD.
+     */
+    public double getAvgSpecificForceNoisePsd() {
+<span class="fc" id="L1299">        return (getSpecificForcePsdX() + getSpecificForcePsdY() + getSpecificForcePsdZ()) / 3.0;</span>
+    }
+
+    /**
+     * Gets norm of noise root PSD (Power Spectral Density) among x,y,z
+     * components expressed as (m * s^-1.5).
+     *
+     * @return norm of noise root PSD.
+     */
+    public double getSpecificForceNoiseRootPsdNorm() {
+<span class="fc" id="L1309">        return Math.sqrt(getSpecificForcePsdX() + getSpecificForcePsdY() + getSpecificForcePsdZ());</span>
+    }
+
+    /**
+     * Gets average gyroscope noise PSD (Power Spectral Density) among
+     * x,y,z components expressed in (rad^2/s).
+     *
+     * @return average gyroscope noise PSD.
+     */
+    public double getAvgAngularRateNoisePsd() {
+<span class="fc" id="L1319">        return (getAngularRatePsdX() + getAngularRatePsdY() + getAngularRatePsdZ()) / 3.0;</span>
+    }
+
+    /**
+     * Gets norm of noise root PSD (Power Spectral Density) among x,y,z
+     * components expressed as (rad * s^-0.5).
+     *
+     * @return norm of noise root PSD.
+     */
+    public double getAngularRateNoiseRootPsdNorm() {
+<span class="fc" id="L1329">        return Math.sqrt(getAngularRatePsdX() + getAngularRatePsdY() + getAngularRatePsdZ());</span>
+    }
+
+    /**
+     * Gets number of samples that have been processed so far.
+     *
+     * @return number of samples that have been processed so far.
+     */
+    public int getNumberOfProcessedSamples() {
+<span class="fc" id="L1338">        return numberOfProcessedSamples;</span>
+    }
+
+    /**
+     * Gets number of currently windowed samples.
+     *
+     * @return number of samples within the window.
+     */
+    public int getNumberOfSamplesInWindow() {
+<span class="fc" id="L1347">        return windowedSamples.size();</span>
+    }
+
+    /**
+     * Indicates whether estimator is currently running or not.
+     *
+     * @return true if estimator is running, false otherwise.
+     */
+    public boolean isRunning() {
+<span class="fc" id="L1356">        return running;</span>
+    }
+
+    /**
+     * Indicates whether window of samples is filled or not.
+     *
+     * @return true if window is filled, false otherwise.
+     */
+    public boolean isWindowFilled() {
+<span class="fc bfc" id="L1365" title="All 2 branches covered.">        return getNumberOfSamplesInWindow() == windowSize;</span>
+    }
+
+    /**
+     * Adds a body kinematics measurement and processes current window.
+     *
+     * @param specificForceX x coordinate of specific force expressed in meters per squared second (m/s^2).
+     * @param specificForceY y coordinate of specific force expressed in meters per squared second (m/s^2).
+     * @param specificForceZ z coordinate of specific force expressed in meters per squared second (m/s^2).
+     * @param angularRateX   x coordinate of angular rate expressed in radians per second (rad/s).
+     * @param angularRateY   y coordinate of angular rate expressed in radians per second (rad/s).
+     * @param angularRateZ   z coordinate of angular rate expressed in radians per second (rad/s).
+     * @return true if provided kinematics instance has been processed, false if it has
+     * been ignored.
+     * @throws LockedException if estimator is currently running.
+     */
+    public boolean addBodyKinematicsAndProcess(
+            final double specificForceX, final double specificForceY, final double specificForceZ,
+            final double angularRateX, final double angularRateY, final double angularRateZ) throws LockedException {
+<span class="fc" id="L1384">        return addBodyKinematicsAndProcess(new BodyKinematics(specificForceX, specificForceY, specificForceZ,</span>
+                angularRateX, angularRateY, angularRateZ));
+    }
+
+    /**
+     * Adds a body kinematics measurement and processes current window.
+     *
+     * @param specificForceX x coordinate of specific force.
+     * @param specificForceY y coordinate of specific force.
+     * @param specificForceZ z coordinate of specific force.
+     * @param angularRateX   x coordinate of angular rate.
+     * @param angularRateY   y coordinate of angular rate.
+     * @param angularRateZ   z coordinate of angular rate.
+     * @return true if provided kinematics instance has been processed, false if it has
+     * been ignored.
+     * @throws LockedException if estimator is currently running.
+     */
+    public boolean addBodyKinematicsAndProcess(
+            final Acceleration specificForceX, final Acceleration specificForceY, final Acceleration specificForceZ,
+            final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ)
+            throws LockedException {
+<span class="fc" id="L1405">        return addBodyKinematicsAndProcess(new BodyKinematics(specificForceX, specificForceY, specificForceZ,</span>
+                angularRateX, angularRateY, angularRateZ));
+    }
+
+    /**
+     * Adds a body kinematics measurement and processes current window.
+     *
+     * @param specificForce specific force triad.
+     * @param angularSpeed  angular speed triad.
+     * @return true if provided kinematics instance has been processed, false if it has
+     * been ignored.
+     * @throws LockedException if estimator is currently running.
+     */
+    public boolean addBodyKinematicsAndProcess(
+            final AccelerationTriad specificForce, final AngularSpeedTriad angularSpeed) throws LockedException {
+<span class="fc" id="L1420">        return addBodyKinematicsAndProcess(new BodyKinematics(specificForce, angularSpeed));</span>
+    }
+
+    /**
+     * Adds a body kinematics measurement and processes current window.
+     *
+     * @param kinematics body kinematics to be added and processed.
+     * @return true if provided kinematics instance has been processed, false if it has
+     * been ignored.
+     * @throws LockedException if estimator is currently running.
+     */
+    public boolean addBodyKinematicsAndProcess(final BodyKinematics kinematics) throws LockedException {
+<span class="fc" id="L1432">        return internalAdd(kinematics, true);</span>
+    }
+
+    /**
+     * Adds a body kinematics measurement.
+     *
+     * @param specificForceX x coordinate of specific force expressed in meters per squared second (m/s^2).
+     * @param specificForceY y coordinate of specific force expressed in meters per squared second (m/s^2).
+     * @param specificForceZ z coordinate of specific force expressed in meters per squared second (m/s^2).
+     * @param angularRateX   x coordinate of angular rate expressed in radians per second (rad/s).
+     * @param angularRateY   y coordinate of angular rate expressed in radians per second (rad/s).
+     * @param angularRateZ   z coordinate of angular rate expressed in radians per second (rad/s).
+     * @throws LockedException if estimator is currently running.
+     */
+    public void addBodyKinematics(
+            final double specificForceX, final double specificForceY, final double specificForceZ,
+            final double angularRateX, final double angularRateY, final double angularRateZ) throws LockedException {
+<span class="fc" id="L1449">        addBodyKinematics(new BodyKinematics(specificForceX, specificForceY, specificForceZ,</span>
+                angularRateX, angularRateY, angularRateZ));
+<span class="fc" id="L1451">    }</span>
+
+    /**
+     * Adds a body kinematics measurement.
+     *
+     * @param specificForceX x coordinate of specific force.
+     * @param specificForceY y coordinate of specific force.
+     * @param specificForceZ z coordinate of specific force.
+     * @param angularRateX   x coordinate of angular rate.
+     * @param angularRateY   y coordinate of angular rate.
+     * @param angularRateZ   z coordinate of angular rate.
+     * @throws LockedException if estimator is currently running.
+     */
+    public void addBodyKinematics(
+            final Acceleration specificForceX, final Acceleration specificForceY, final Acceleration specificForceZ,
+            final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ)
+            throws LockedException {
+<span class="fc" id="L1468">        addBodyKinematics(new BodyKinematics(specificForceX, specificForceY, specificForceZ,</span>
+                angularRateX, angularRateY, angularRateZ));
+<span class="fc" id="L1470">    }</span>
+
+    /**
+     * Adds a body kinematics measurement.
+     *
+     * @param specificForce specific force triad.
+     * @param angularSpeed  angular speed triad.
+     * @throws LockedException if estimator is currently running.
+     */
+    public void addBodyKinematics(
+            final AccelerationTriad specificForce, final AngularSpeedTriad angularSpeed) throws LockedException {
+<span class="fc" id="L1481">        addBodyKinematics(new BodyKinematics(specificForce, angularSpeed));</span>
+<span class="fc" id="L1482">    }</span>
+
+    /**
+     * Adds a body kinematics measurement.
+     *
+     * @param kinematics body kinematics to be added.
+     * @throws LockedException if estimator is currently running.
+     */
+    public void addBodyKinematics(final BodyKinematics kinematics) throws LockedException {
+<span class="fc" id="L1491">        internalAdd(kinematics, false);</span>
+<span class="fc" id="L1492">    }</span>
+
+    /**
+     * Resets current estimator.
+     *
+     * @return true if estimator was successfully reset, false if no reset was needed.
+     * @throws LockedException if estimator is currently running.
+     */
+    public boolean reset() throws LockedException {
+<span class="fc bfc" id="L1501" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1502">            throw new LockedException();</span>
+        }
+
+<span class="fc bfc" id="L1505" title="All 2 branches covered.">        if (numberOfProcessedSamples == 0) {</span>
+<span class="fc" id="L1506">            return false;</span>
+        }
+
+<span class="fc" id="L1509">        windowedSamples.clear();</span>
+<span class="fc" id="L1510">        avgSpecificForceX = 0.0;</span>
+<span class="fc" id="L1511">        avgSpecificForceY = 0.0;</span>
+<span class="fc" id="L1512">        avgSpecificForceZ = 0.0;</span>
+<span class="fc" id="L1513">        avgAngularRateX = 0.0;</span>
+<span class="fc" id="L1514">        avgAngularRateY = 0.0;</span>
+<span class="fc" id="L1515">        avgAngularRateZ = 0.0;</span>
+<span class="fc" id="L1516">        varianceSpecificForceX = 0.0;</span>
+<span class="fc" id="L1517">        varianceSpecificForceY = 0.0;</span>
+<span class="fc" id="L1518">        varianceSpecificForceZ = 0.0;</span>
+<span class="fc" id="L1519">        varianceAngularRateX = 0.0;</span>
+<span class="fc" id="L1520">        varianceAngularRateY = 0.0;</span>
+<span class="fc" id="L1521">        varianceAngularRateZ = 0.0;</span>
+<span class="fc" id="L1522">        numberOfProcessedSamples = 0;</span>
+
+<span class="pc bpc" id="L1524" title="1 of 2 branches missed.">        if (listener != null) {</span>
+<span class="fc" id="L1525">            listener.onReset(this);</span>
+        }
+
+<span class="fc" id="L1528">        return true;</span>
+    }
+
+    /**
+     * Internally adds a body kinematics measurement and processes current window if indicated.
+     *
+     * @param kinematics body kinematics to be added.
+     * @param process    true if window of samples must also be processed, false otherwise.
+     * @return true if result values were updated, false if not enough samples are available yet
+     * and no average or variance values have been computed yet.
+     * @throws LockedException if estimator is currently running.
+     */
+    private boolean internalAdd(final BodyKinematics kinematics, boolean process) throws LockedException {
+<span class="fc bfc" id="L1541" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1542">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L1545">        running = true;</span>
+
+<span class="pc bpc" id="L1547" title="1 of 4 branches missed.">        if (windowedSamples.isEmpty() &amp;&amp; listener != null) {</span>
+<span class="fc" id="L1548">            listener.onStart(this);</span>
+        }
+
+<span class="fc" id="L1551">        final var wasFilled = isWindowFilled();</span>
+<span class="fc bfc" id="L1552" title="All 2 branches covered.">        if (wasFilled) {</span>
+            // remove first sample
+<span class="fc" id="L1554">            windowedSamples.removeFirst();</span>
+        }
+
+<span class="fc" id="L1557">        windowedSamples.addLast(new BodyKinematics(kinematics));</span>
+
+        // process window
+<span class="fc bfc" id="L1560" title="All 4 branches covered.">        final var result = process &amp;&amp; processWindow();</span>
+
+<span class="fc" id="L1562">        running = false;</span>
+
+<span class="pc bpc" id="L1564" title="1 of 2 branches missed.">        if (listener != null) {</span>
+<span class="fc" id="L1565">            listener.onBodyKinematicsAdded(this);</span>
+
+<span class="fc bfc" id="L1567" title="All 4 branches covered.">            if (!wasFilled &amp;&amp; isWindowFilled()) {</span>
+<span class="fc" id="L1568">                listener.onWindowFilled(this);</span>
+            }
+        }
+
+<span class="fc" id="L1572">        return result;</span>
+    }
+
+    /**
+     * Processes current windowed samples.
+     *
+     * @return true if sample was processed, false it there are not enough samples to
+     * process current window.
+     */
+    private boolean processWindow() {
+<span class="fc" id="L1582">        numberOfProcessedSamples++;</span>
+
+<span class="fc" id="L1584">        final var n = windowedSamples.size();</span>
+<span class="fc bfc" id="L1585" title="All 2 branches covered.">        if (n &lt;= 1) {</span>
+<span class="fc" id="L1586">            return false;</span>
+        }
+
+        // compute averages
+<span class="fc" id="L1590">        var avgFx = 0.0;</span>
+<span class="fc" id="L1591">        var avgFy = 0.0;</span>
+<span class="fc" id="L1592">        var avgFz = 0.0;</span>
+<span class="fc" id="L1593">        var avgWx = 0.0;</span>
+<span class="fc" id="L1594">        var avgWy = 0.0;</span>
+<span class="fc" id="L1595">        var avgWz = 0.0;</span>
+<span class="fc bfc" id="L1596" title="All 2 branches covered.">        for (final var kinematics : windowedSamples) {</span>
+<span class="fc" id="L1597">            final var fx = kinematics.getFx();</span>
+<span class="fc" id="L1598">            final var fy = kinematics.getFy();</span>
+<span class="fc" id="L1599">            final var fz = kinematics.getFz();</span>
+<span class="fc" id="L1600">            final var wx = kinematics.getAngularRateX();</span>
+<span class="fc" id="L1601">            final var wy = kinematics.getAngularRateY();</span>
+<span class="fc" id="L1602">            final var wz = kinematics.getAngularRateZ();</span>
+
+<span class="fc" id="L1604">            avgFx += fx;</span>
+<span class="fc" id="L1605">            avgFy += fy;</span>
+<span class="fc" id="L1606">            avgFz += fz;</span>
+<span class="fc" id="L1607">            avgWx += wx;</span>
+<span class="fc" id="L1608">            avgWy += wy;</span>
+<span class="fc" id="L1609">            avgWz += wz;</span>
+<span class="fc" id="L1610">        }</span>
+
+<span class="fc" id="L1612">        avgFx /= n;</span>
+<span class="fc" id="L1613">        avgFy /= n;</span>
+<span class="fc" id="L1614">        avgFz /= n;</span>
+<span class="fc" id="L1615">        avgWx /= n;</span>
+<span class="fc" id="L1616">        avgWy /= n;</span>
+<span class="fc" id="L1617">        avgWz /= n;</span>
+
+        // compute variances
+<span class="fc" id="L1620">        var varFx = 0.0;</span>
+<span class="fc" id="L1621">        var varFy = 0.0;</span>
+<span class="fc" id="L1622">        var varFz = 0.0;</span>
+<span class="fc" id="L1623">        var varWx = 0.0;</span>
+<span class="fc" id="L1624">        var varWy = 0.0;</span>
+<span class="fc" id="L1625">        var varWz = 0.0;</span>
+<span class="fc bfc" id="L1626" title="All 2 branches covered.">        for (final var kinematics : windowedSamples) {</span>
+<span class="fc" id="L1627">            final var fx = kinematics.getFx();</span>
+<span class="fc" id="L1628">            final var fy = kinematics.getFy();</span>
+<span class="fc" id="L1629">            final var fz = kinematics.getFz();</span>
+<span class="fc" id="L1630">            final var wx = kinematics.getAngularRateX();</span>
+<span class="fc" id="L1631">            final var wy = kinematics.getAngularRateY();</span>
+<span class="fc" id="L1632">            final var wz = kinematics.getAngularRateZ();</span>
+
+<span class="fc" id="L1634">            final var diffFx = fx - avgFx;</span>
+<span class="fc" id="L1635">            final var diffFy = fy - avgFy;</span>
+<span class="fc" id="L1636">            final var diffFz = fz - avgFz;</span>
+<span class="fc" id="L1637">            final var diffWx = wx - avgWx;</span>
+<span class="fc" id="L1638">            final var diffWy = wy - avgWy;</span>
+<span class="fc" id="L1639">            final var diffWz = wz - avgWz;</span>
+
+<span class="fc" id="L1641">            final var diffFx2 = diffFx * diffFx;</span>
+<span class="fc" id="L1642">            final var diffFy2 = diffFy * diffFy;</span>
+<span class="fc" id="L1643">            final var diffFz2 = diffFz * diffFz;</span>
+<span class="fc" id="L1644">            final var diffWx2 = diffWx * diffWx;</span>
+<span class="fc" id="L1645">            final var diffWy2 = diffWy * diffWy;</span>
+<span class="fc" id="L1646">            final var diffWz2 = diffWz * diffWz;</span>
+
+<span class="fc" id="L1648">            varFx += diffFx2;</span>
+<span class="fc" id="L1649">            varFy += diffFy2;</span>
+<span class="fc" id="L1650">            varFz += diffFz2;</span>
+<span class="fc" id="L1651">            varWx += diffWx2;</span>
+<span class="fc" id="L1652">            varWy += diffWy2;</span>
+<span class="fc" id="L1653">            varWz += diffWz2;</span>
+<span class="fc" id="L1654">        }</span>
+
+<span class="fc" id="L1656">        final var nMinusOne = n - 1;</span>
+
+<span class="fc" id="L1658">        varFx /= nMinusOne;</span>
+<span class="fc" id="L1659">        varFy /= nMinusOne;</span>
+<span class="fc" id="L1660">        varFz /= nMinusOne;</span>
+<span class="fc" id="L1661">        varWx /= nMinusOne;</span>
+<span class="fc" id="L1662">        varWy /= nMinusOne;</span>
+<span class="fc" id="L1663">        varWz /= nMinusOne;</span>
+
+<span class="fc" id="L1665">        avgSpecificForceX = avgFx;</span>
+<span class="fc" id="L1666">        avgSpecificForceY = avgFy;</span>
+<span class="fc" id="L1667">        avgSpecificForceZ = avgFz;</span>
+<span class="fc" id="L1668">        avgAngularRateX = avgWx;</span>
+<span class="fc" id="L1669">        avgAngularRateY = avgWy;</span>
+<span class="fc" id="L1670">        avgAngularRateZ = avgWz;</span>
+
+<span class="fc" id="L1672">        varianceSpecificForceX = varFx;</span>
+<span class="fc" id="L1673">        varianceSpecificForceY = varFy;</span>
+<span class="fc" id="L1674">        varianceSpecificForceZ = varFz;</span>
+<span class="fc" id="L1675">        varianceAngularRateX = varWx;</span>
+<span class="fc" id="L1676">        varianceAngularRateY = varWy;</span>
+<span class="fc" id="L1677">        varianceAngularRateZ = varWz;</span>
+
+<span class="fc" id="L1679">        return true;</span>
+    }
+
+    /**
+     * Gets accelerometer base noise level root PSD (Power Spectral Density)
+     * expressed in (m * s^-1.5).
+     *
+     * @return accelerometer base noise level root PSD.
+     */
+    @Override
+    public double getAccelerometerBaseNoiseLevelRootPsd() {
+<span class="fc" id="L1690">        return getSpecificForceNoiseRootPsdNorm();</span>
+    }
+
+    /**
+     * Gets gyroscope base noise level root PSD (Power Spectral Density)
+     * expressed in (rad * s^-0.5)
+     *
+     * @return gyroscope base noise level root PSD.
+     */
+    @Override
+    public double getGyroscopeBaseNoiseLevelRootPsd() {
+<span class="fc" id="L1701">        return getAngularRateNoiseRootPsdNorm();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

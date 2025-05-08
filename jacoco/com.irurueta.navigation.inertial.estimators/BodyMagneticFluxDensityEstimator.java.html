@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BodyMagneticFluxDensityEstimator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-inertial</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.inertial.estimators</a> &gt; <span class="el_source">BodyMagneticFluxDensityEstimator.java</span></div><h1>BodyMagneticFluxDensityEstimator.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2020 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.inertial.estimators;
+
+import com.irurueta.algebra.WrongSizeException;
+import com.irurueta.navigation.frames.CoordinateTransformation;
+import com.irurueta.navigation.frames.FrameType;
+import com.irurueta.navigation.inertial.BodyMagneticFluxDensity;
+import com.irurueta.navigation.inertial.wmm.NEDMagneticFluxDensity;
+import com.irurueta.units.Angle;
+import com.irurueta.units.AngleConverter;
+import com.irurueta.units.AngleUnit;
+
+/**
+ * Estimates magnetic flux density resolved around body coordinates for
+ * a given Earth magnetic flux density an a given body attitude.
+ */
+public class BodyMagneticFluxDensityEstimator {
+
+    /**
+     * Private constructor to prevent instantiation.
+     */
+    private BodyMagneticFluxDensityEstimator() {
+    }
+
+    /**
+     * Computes expected measured body magnetic flux density for a given Earth
+     * magnetic flux density and a certain body attitude (a.k.a. orientation).
+     *
+     * @param magnitude   magnitude (a.k.a. intensity) of Earth magnetic flux
+     *                    density expressed in Teslas (T).
+     * @param declination declination angle expressed in radians (rad).
+     * @param dip         dip (a.k.a. inclination) angle expressed in radians
+     *                    (rad).
+     * @param roll        body roll angle expressed in radians (rad).
+     * @param pitch       body pitch angle expressed in radians (rad).
+     * @param yaw         body yaw angle expressed in radians (rad).
+     * @param result      instance where resulting magnetic flux density
+     *                    measured in body coordinates will be stored.
+     */
+    @SuppressWarnings(&quot;DuplicatedCode&quot;)
+    public static void estimate(
+            final double magnitude, final double declination, final double dip,
+            final double roll, final double pitch, final double yaw, final BodyMagneticFluxDensity result) {
+
+<span class="fc" id="L59">        final var magneticHeading = yaw - declination;</span>
+
+<span class="fc" id="L61">        final var cosHeading = Math.cos(magneticHeading);</span>
+<span class="fc" id="L62">        final var sinHeading = Math.sin(magneticHeading);</span>
+
+<span class="fc" id="L64">        final var cosDip = Math.cos(dip);</span>
+<span class="fc" id="L65">        final var sinDip = Math.sin(dip);</span>
+
+        // notice that bn and be are not really pointing towards north and
+        // east, instead they are affected by the amount of declination.
+<span class="fc" id="L69">        final var bn = cosHeading * cosDip * magnitude;</span>
+<span class="fc" id="L70">        final var be = sinHeading * cosDip * magnitude;</span>
+<span class="fc" id="L71">        final var bd = sinDip * magnitude;</span>
+
+<span class="fc" id="L73">        final var sinRoll = Math.sin(roll);</span>
+<span class="fc" id="L74">        final var cosRoll = Math.cos(roll);</span>
+<span class="fc" id="L75">        final var sinPitch = Math.sin(pitch);</span>
+<span class="fc" id="L76">        final var cosPitch = Math.cos(pitch);</span>
+
+<span class="fc" id="L78">        final var bx = cosPitch * bn - sinPitch * bd;</span>
+<span class="fc" id="L79">        final var by = sinRoll * sinPitch * bn - cosRoll * be + sinRoll * cosPitch * bd;</span>
+<span class="fc" id="L80">        final var bz = cosRoll * sinPitch * bn + sinRoll * be + cosRoll * cosPitch * bd;</span>
+
+<span class="fc" id="L82">        result.setCoordinates(bx, by, bz);</span>
+<span class="fc" id="L83">    }</span>
+
+    /**
+     * Computes expected measured body magnetic flux density for a given Earth
+     * magnetic flux density and a certain body attitude (a.k.a. orientation).
+     *
+     * @param magnitude   magnitude (a.k.a. intensity) of Earth magnetic flux
+     *                    density expressed in Teslas (T).
+     * @param declination declination angle expressed in radians (rad).
+     * @param dip         dip (a.k.a. inclination) angle expressed in radians
+     *                    (rad).
+     * @param c           coordinate transformation from NED to body
+     *                    coordinates.
+     * @param result      instance where resulting magnetic flux density
+     *                    measured in body coordinates will be stored.
+     */
+    public static void estimate(
+            final double magnitude, final double declination, final double dip, final CoordinateTransformation c,
+            final BodyMagneticFluxDensity result) {
+<span class="fc" id="L102">        final var roll = c.getRollEulerAngle();</span>
+<span class="fc" id="L103">        final var pitch = c.getPitchEulerAngle();</span>
+<span class="fc" id="L104">        final var yaw = c.getYawEulerAngle();</span>
+
+<span class="fc" id="L106">        estimate(magnitude, declination, dip, roll, pitch, yaw, result);</span>
+<span class="fc" id="L107">    }</span>
+
+    /**
+     * Computes expected measured body magnetic flux density for a given Earth
+     * magnetic flux density and a certain body attitude (a.k.a. orientation).
+     *
+     * @param earthB Earth magnetic flux density.
+     * @param roll   body roll angle expressed in radians (rad).
+     * @param pitch  body pitch angle expressed in radians (rad).
+     * @param yaw    body yaw angle expressed in radians (rad).
+     * @param result instance where resulting magnetic flux density
+     *               measured in body coordinates will be stored.
+     */
+    public static void estimate(
+            final NEDMagneticFluxDensity earthB, final double roll, final double pitch, final double yaw,
+            final BodyMagneticFluxDensity result) {
+
+<span class="fc" id="L124">        final var c = new CoordinateTransformation(roll, pitch, yaw, FrameType.LOCAL_NAVIGATION_FRAME,</span>
+                FrameType.BODY_FRAME);
+<span class="fc" id="L126">        estimate(earthB, c, result);</span>
+<span class="fc" id="L127">    }</span>
+
+    /**
+     * Computes expected measured body magnetic flux density for a given Earth
+     * magnetic flux density and a certain body attitude (a.k.a. orientation).
+     *
+     * @param earthB Earth magnetic flux density.
+     * @param c      coordinate transformation from NED to body coordinates.
+     * @param result instance where resulting magnetic flux density measured
+     *               in body coordinates will be stored.
+     */
+    public static void estimate(
+            final NEDMagneticFluxDensity earthB, final CoordinateTransformation c,
+            final BodyMagneticFluxDensity result) {
+
+        try {
+<span class="fc" id="L143">            final var bm = earthB.asMatrix();</span>
+<span class="fc" id="L144">            final var cbn = c.getMatrix();</span>
+<span class="fc" id="L145">            cbn.multiply(bm);</span>
+
+            // cbn now contains magnetic flux density in body coordinates
+<span class="fc" id="L148">            final var bx = cbn.getElementAtIndex(0);</span>
+<span class="fc" id="L149">            final var by = cbn.getElementAtIndex(1);</span>
+<span class="fc" id="L150">            final var bz = cbn.getElementAtIndex(2);</span>
+
+<span class="fc" id="L152">            result.setCoordinates(bx, by, bz);</span>
+<span class="nc" id="L153">        } catch (final WrongSizeException ignore) {</span>
+            // never happens
+<span class="fc" id="L155">        }</span>
+<span class="fc" id="L156">    }</span>
+
+    /**
+     * Computes expected measured body magnetic flux density for a given Earth
+     * magnetic flux density and a certain body attitude (a.k.a. orientation).
+     *
+     * @param magnitude   magnitude (a.k.a. intensity) of Earth magnetic flux
+     *                    density expressed in Teslas (T).
+     * @param declination declination angle.
+     * @param dip         dip (a.k.a. inclination) angle.
+     * @param roll        body roll angle expressed.
+     * @param pitch       body pitch angle.
+     * @param yaw         body yaw angle.
+     * @param result      instance where resulting magnetic flux density
+     *                    measured in body coordinates will be stored.
+     */
+    public static void estimate(
+            final double magnitude, final Angle declination, final Angle dip,
+            final Angle roll, final Angle pitch, final Angle yaw, final BodyMagneticFluxDensity result) {
+<span class="fc" id="L175">        estimate(magnitude, convertAngle(declination), convertAngle(dip),</span>
+<span class="fc" id="L176">                convertAngle(roll), convertAngle(pitch), convertAngle(yaw), result);</span>
+<span class="fc" id="L177">    }</span>
+
+    /**
+     * Computes expected measured body magnetic flux density for a given Earth
+     * magnetic flux density and a certain body attitude (a.k.a. orientation).
+     *
+     * @param magnitude   magnitude (a.k.a. intensity) of Earth magnetic flux
+     *                    density expressed in Teslas (T).
+     * @param declination declination angle.
+     * @param dip         dip (a.k.a. inclination) angle.
+     * @param c           coordinate transformation from NED to body
+     *                    coordinates.
+     * @param result      instance where resulting magnetic flux density
+     *                    measured in body coordinates will be stored.
+     */
+    public static void estimate(
+            final double magnitude, final Angle declination, final Angle dip,
+            final CoordinateTransformation c, final BodyMagneticFluxDensity result) {
+<span class="fc" id="L195">        estimate(magnitude, convertAngle(declination), convertAngle(dip), c, result);</span>
+<span class="fc" id="L196">    }</span>
+
+    /**
+     * Computes expected measured body magnetic flux density for a given Earth
+     * magnetic flux density and a certain body attitude (a.k.a. orientation).
+     *
+     * @param earthB Earth magnetic flux density.
+     * @param roll   body roll angle.
+     * @param pitch  body pitch angle.
+     * @param yaw    body yaw angle.
+     * @param result instance where resulting magnetic flux density
+     *               measured in body coordinates will be stored.
+     */
+    public static void estimate(
+            final NEDMagneticFluxDensity earthB,
+            final Angle roll, final Angle pitch, final Angle yaw, final BodyMagneticFluxDensity result) {
+<span class="fc" id="L212">        estimate(earthB, convertAngle(roll), convertAngle(pitch), convertAngle(yaw), result);</span>
+<span class="fc" id="L213">    }</span>
+
+    /**
+     * Computes expected measured body magnetic flux density for a given Earth
+     * magnetic flux density and a certain body attitude (a.k.a. orientation).
+     *
+     * @param magnitude   magnitude (a.k.a. intensity) of Earth magnetic flux
+     *                    density expressed in Teslas (T).
+     * @param declination declination angle expressed in radians (rad).
+     * @param dip         dip (a.k.a. inclination) angle expressed in radians
+     *                    (rad).
+     * @param roll        body roll angle expressed in radians (rad).
+     * @param pitch       body pitch angle expressed in radians (rad).
+     * @param yaw         body yaw angle expressed in radians (rad).
+     * @return measured magnetic flux density resolved in body coordinates.
+     */
+    public static BodyMagneticFluxDensity estimate(
+            final double magnitude, final double declination, final double dip,
+            final double roll, final double pitch, final double yaw) {
+<span class="fc" id="L232">        final var result = new BodyMagneticFluxDensity();</span>
+<span class="fc" id="L233">        estimate(magnitude, declination, dip, roll, pitch, yaw, result);</span>
+<span class="fc" id="L234">        return result;</span>
+    }
+
+    /**
+     * Computes expected measured body magnetic flux density for a given Earth
+     * magnetic flux density and a certain body attitude (a.k.a. orientation).
+     *
+     * @param magnitude   magnitude (a.k.a. intensity) of Earth magnetic flux
+     *                    density expressed in Teslas (T).
+     * @param declination declination angle expressed in radians (rad).
+     * @param dip         dip (a.k.a. inclination) angle expressed in radians
+     *                    (rad).
+     * @param c           coordinate transformation from NED to body
+     *                    coordinates.
+     * @return measured magnetic flux density resolved in body coordinates.
+     */
+    public static BodyMagneticFluxDensity estimate(
+            final double magnitude, final double declination, final double dip, final CoordinateTransformation c) {
+<span class="fc" id="L252">        final var result = new BodyMagneticFluxDensity();</span>
+<span class="fc" id="L253">        estimate(magnitude, declination, dip, c, result);</span>
+<span class="fc" id="L254">        return result;</span>
+    }
+
+    /**
+     * Computes expected measured body magnetic flux density for a given Earth
+     * magnetic flux density and a certain body attitude (a.k.a. orientation).
+     *
+     * @param earthB Earth magnetic flux density.
+     * @param roll   body roll angle expressed in radians (rad).
+     * @param pitch  body pitch angle expressed in radians (rad).
+     * @param yaw    body yaw angle expressed in radians (rad).
+     * @return measured magnetic flux density resolved in body coordinates.
+     */
+    public static BodyMagneticFluxDensity estimate(
+            final NEDMagneticFluxDensity earthB, final double roll, final double pitch, final double yaw) {
+<span class="fc" id="L269">        final var result = new BodyMagneticFluxDensity();</span>
+<span class="fc" id="L270">        estimate(earthB, roll, pitch, yaw, result);</span>
+<span class="fc" id="L271">        return result;</span>
+    }
+
+    /**
+     * Computes expected measured body magnetic flux density for a given Earth
+     * magnetic flux density and a certain body attitude (a.k.a. orientation).
+     *
+     * @param earthB Earth magnetic flux density.
+     * @param c      coordinate transformation from NED to body coordinates.
+     * @return measured magnetic flux density resolved in body coordinates.
+     */
+    public static BodyMagneticFluxDensity estimate(
+            final NEDMagneticFluxDensity earthB, final CoordinateTransformation c) {
+<span class="fc" id="L284">        final var result = new BodyMagneticFluxDensity();</span>
+<span class="fc" id="L285">        estimate(earthB, c, result);</span>
+<span class="fc" id="L286">        return result;</span>
+    }
+
+    /**
+     * Computes expected measured body magnetic flux density for a given Earth
+     * magnetic flux density and a certain body attitude (a.k.a. orientation).
+     *
+     * @param magnitude   magnitude (a.k.a. intensity) of Earth magnetic flux
+     *                    density expressed in Teslas (T).
+     * @param declination declination angle.
+     * @param dip         dip (a.k.a. inclination) angle.
+     * @param roll        body roll angle expressed.
+     * @param pitch       body pitch angle.
+     * @param yaw         body yaw angle.
+     * @return measured magnetic flux density resolved in body coordinates.
+     */
+    public static BodyMagneticFluxDensity estimate(
+            final double magnitude, final Angle declination, final Angle dip,
+            final Angle roll, final Angle pitch, final Angle yaw) {
+<span class="fc" id="L305">        final var result = new BodyMagneticFluxDensity();</span>
+<span class="fc" id="L306">        estimate(magnitude, declination, dip, roll, pitch, yaw, result);</span>
+<span class="fc" id="L307">        return result;</span>
+    }
+
+    /**
+     * Computes expected measured body magnetic flux density for a given Earth
+     * magnetic flux density and a certain body attitude (a.k.a. orientation).
+     *
+     * @param magnitude   magnitude (a.k.a. intensity) of Earth magnetic flux
+     *                    density expressed in Teslas (T).
+     * @param declination declination angle.
+     * @param dip         dip (a.k.a. inclination) angle.
+     * @param c           coordinate transformation from NED to body
+     *                    coordinates.
+     * @return measured magnetic flux density resolved in body coordinates.
+     */
+    public static BodyMagneticFluxDensity estimate(
+            final double magnitude, final Angle declination, final Angle dip, final CoordinateTransformation c) {
+<span class="fc" id="L324">        final var result = new BodyMagneticFluxDensity();</span>
+<span class="fc" id="L325">        estimate(magnitude, declination, dip, c, result);</span>
+<span class="fc" id="L326">        return result;</span>
+    }
+
+    /**
+     * Computes expected measured body magnetic flux density for a given Earth
+     * magnetic flux density and a certain body attitude (a.k.a. orientation).
+     *
+     * @param earthB Earth magnetic flux density.
+     * @param roll   body roll angle.
+     * @param pitch  body pitch angle.
+     * @param yaw    body yaw angle.
+     * @return measured magnetic flux density resolved in body coordinates.
+     */
+    public static BodyMagneticFluxDensity estimate(
+            final NEDMagneticFluxDensity earthB, final Angle roll, final Angle pitch, final Angle yaw) {
+<span class="fc" id="L341">        final var result = new BodyMagneticFluxDensity();</span>
+<span class="fc" id="L342">        estimate(earthB, roll, pitch, yaw, result);</span>
+<span class="fc" id="L343">        return result;</span>
+    }
+
+    /**
+     * Converts a given angle instance into radians.
+     *
+     * @param angle angle to be converted.
+     * @return converted value expressed in radians.
+     */
+    private static double convertAngle(final Angle angle) {
+<span class="fc" id="L353">        return AngleConverter.convert(angle.getValue().doubleValue(), angle.getUnit(), AngleUnit.RADIANS);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

@@ -1,0 +1,559 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>INSTightlyCoupledKalmanConfig.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-inertial</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.inertial</a> &gt; <span class="el_source">INSTightlyCoupledKalmanConfig.java</span></div><h1>INSTightlyCoupledKalmanConfig.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2019 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.inertial;
+
+import com.irurueta.units.Distance;
+import com.irurueta.units.DistanceConverter;
+import com.irurueta.units.DistanceUnit;
+import com.irurueta.units.Speed;
+import com.irurueta.units.SpeedConverter;
+import com.irurueta.units.SpeedUnit;
+
+import java.io.Serial;
+import java.io.Serializable;
+import java.util.Objects;
+
+/**
+ * Contains configuration parameters (usually obtained through calibration)
+ * for INS/GNSS Loosely Coupled Kalman filter.
+ */
+public class INSTightlyCoupledKalmanConfig implements Serializable, Cloneable {
+
+    /**
+     * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
+     * instances.
+     */
+    @Serial
+    private static final long serialVersionUID = 0L;
+
+    /**
+     * Gyro noise PSD (Power Spectral Density) expressed in squared radians per
+     * second (rad^2/s).
+     */
+    private double gyroNoisePSD;
+
+    /**
+     * Accelerometer noise PSD (Power Spectral Density) expressed in (m^2 * s^-3)
+     */
+    private double accelerometerNoisePSD;
+
+    /**
+     * Accelerometer bias random walk PSD (Power Spectral Density) expressed
+     * in (m^2 * s^-5).
+     */
+    private double accelerometerBiasPSD;
+
+    /**
+     * Gyro bias random walk PSD (Power Spectral Density) expressed in (rad^2 * s^-3).
+     */
+    private double gyroBiasPSD;
+
+    /**
+     * Receiver clock frequency-drift PSD (Power Spectral Density) expressed
+     * in (m^2/s^3).
+     */
+    private double clockFrequencyPSD;
+
+    /**
+     * Receiver clock phase-drift PSD (Power Spectral Density) expressed in
+     * squared meters per second (m^2/s).
+     */
+    private double clockPhasePSD;
+
+    /**
+     * Pseudo-range measurement noise SD (Standard Deviation) expressed in
+     * meters (m).
+     */
+    private double pseudoRangeSD;
+
+    /**
+     * Pseudo-range rate measurement noise SD (Standard Deviation) expressed
+     * in meters per second (m/s).
+     */
+    private double rangeRateSD;
+
+    /**
+     * Constructor.
+     */
+<span class="fc" id="L91">    public INSTightlyCoupledKalmanConfig() {</span>
+<span class="fc" id="L92">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param gyroNoisePSD          gyro noise PSD (Power Spectral Density) expressed
+     *                              in squared radians per second (rad^2/s).
+     * @param accelerometerNoisePSD accelerometer noise PSD (Power Spectral Density)
+     *                              expressed in (m^2 * s^-3).
+     * @param accelerometerBiasPSD  accelerometer bias random walk PSD (Power Spectral
+     *                              Density) expressed in (m^2 * s^-5).
+     * @param gyroBiasPSD           gyro bias random walk PSD (Power Spectral Density)
+     *                              expressed in (rad^2 * s^-3).
+     * @param clockFrequencyPSD     receiver clock frequency-drift PSD (Power Spectral
+     *                              Density) expressed in (m^2/s^3).
+     * @param clockPhasePSD         receiver clock phase-drift PSD (Power Spectral
+     *                              Density) expressed in squared meters per second
+     *                              (m^2/s).
+     * @param pseudoRangeSD         pseudo-range measurement noise SD (Standard
+     *                              Deviation) expressed in meters (m).
+     * @param rangeRateSD           pseudo-range rate measurement noise SD (Standard
+     *                              Deviation) expressed in meters per second (m/s).
+     */
+    public INSTightlyCoupledKalmanConfig(
+            final double gyroNoisePSD, final double accelerometerNoisePSD, final double accelerometerBiasPSD,
+            final double gyroBiasPSD, final double clockFrequencyPSD, final double clockPhasePSD,
+<span class="fc" id="L118">            final double pseudoRangeSD, final double rangeRateSD) {</span>
+<span class="fc" id="L119">        setValues(gyroNoisePSD, accelerometerNoisePSD, accelerometerBiasPSD, gyroBiasPSD, clockFrequencyPSD,</span>
+                clockPhasePSD, pseudoRangeSD, rangeRateSD);
+<span class="fc" id="L121">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param gyroNoisePSD          gyro noise PSD (Power Spectral Density) expressed
+     *                              in squared radians per second (rad^2/s).
+     * @param accelerometerNoisePSD accelerometer noise PSD (Power Spectral Density)
+     *                              expressed in (m^2 * s^-3).
+     * @param accelerometerBiasPSD  accelerometer bias random walk PSD (Power Spectral
+     *                              Density) expressed in (m^2 * s^-5).
+     * @param gyroBiasPSD           gyro bias random walk PSD (Power Spectral Density)
+     *                              expressed in (rad^2 * s^-3).
+     * @param clockFrequencyPSD     receiver clock frequency-drift PSD (Power Spectral
+     *                              Density) expressed in (m^2/s^3).
+     * @param clockPhasePSD         receiver clock phase-drift PSD (Power Spectral
+     *                              Density) expressed in squared meters per second
+     *                              (m^2/s).
+     * @param pseudoRangeSD         pseudo-range measurement noise SD (Standard
+     *                              Deviation) expressed in meters (m).
+     * @param rangeRateSD           pseudo-range rate measurement noise SD (Standard
+     *                              Deviation) expressed in meters per second (m/s).
+     */
+    public INSTightlyCoupledKalmanConfig(
+            final double gyroNoisePSD, final double accelerometerNoisePSD, final double accelerometerBiasPSD,
+            final double gyroBiasPSD, final double clockFrequencyPSD, final double clockPhasePSD,
+<span class="fc" id="L147">            final Distance pseudoRangeSD, final Speed rangeRateSD) {</span>
+<span class="fc" id="L148">        setValues(gyroNoisePSD, accelerometerNoisePSD, accelerometerBiasPSD, gyroBiasPSD, clockFrequencyPSD,</span>
+                clockPhasePSD, pseudoRangeSD, rangeRateSD);
+<span class="fc" id="L150">    }</span>
+
+    /**
+     * Copy constructor.
+     *
+     * @param input input instance to copy data from.
+     */
+<span class="fc" id="L157">    public INSTightlyCoupledKalmanConfig(final INSTightlyCoupledKalmanConfig input) {</span>
+<span class="fc" id="L158">        copyFrom(input);</span>
+<span class="fc" id="L159">    }</span>
+
+    /**
+     * Gets gyro noise PSD (Power Spectral Density) expressed in squared radians per
+     * second (rad^2/s).
+     *
+     * @return gyro noise PSD.
+     */
+    public double getGyroNoisePSD() {
+<span class="fc" id="L168">        return gyroNoisePSD;</span>
+    }
+
+    /**
+     * Sets gyro noise PSD (Power Spectral Density) expressed in squared radians per
+     * second (rad^2/s).
+     *
+     * @param gyroNoisePSD gyro noise PSD.
+     */
+    public void setGyroNoisePSD(final double gyroNoisePSD) {
+<span class="fc" id="L178">        this.gyroNoisePSD = gyroNoisePSD;</span>
+<span class="fc" id="L179">    }</span>
+
+    /**
+     * Gets accelerometer noise PSD (Power Spectral Density) expressed in (m^2 * s^-3).
+     *
+     * @return accelerometer noise PSD.
+     */
+    public double getAccelerometerNoisePSD() {
+<span class="fc" id="L187">        return accelerometerNoisePSD;</span>
+    }
+
+    /**
+     * Sets accelerometer noise PSD (Power Spectral Density) expressed
+     * in (m^2 * se^-3).
+     *
+     * @param accelerometerNoisePSD accelerometer noise PSD.
+     */
+    public void setAccelerometerNoisePSD(final double accelerometerNoisePSD) {
+<span class="fc" id="L197">        this.accelerometerNoisePSD = accelerometerNoisePSD;</span>
+<span class="fc" id="L198">    }</span>
+
+    /**
+     * Gets accelerometer bias random walk PSD (Power Spectral Density) expressed
+     * in (m^2 * s^-5).
+     *
+     * @return accelerometer bias random walk PSD.
+     */
+    public double getAccelerometerBiasPSD() {
+<span class="fc" id="L207">        return accelerometerBiasPSD;</span>
+    }
+
+    /**
+     * Sets accelerometer bias random walk PSD (Power Spectral Density) expressed
+     * in (m^2 * s^-5).
+     *
+     * @param accelerometerBiasPSD accelerometer bias random walk PSD.
+     */
+    public void setAccelerometerBiasPSD(final double accelerometerBiasPSD) {
+<span class="fc" id="L217">        this.accelerometerBiasPSD = accelerometerBiasPSD;</span>
+<span class="fc" id="L218">    }</span>
+
+    /**
+     * Gets gyro bias random walk PSD (Power Spectral Density) expressed in
+     * (rad^2 * s^-3).
+     *
+     * @return gyro bias random walk PSD.
+     */
+    public double getGyroBiasPSD() {
+<span class="fc" id="L227">        return gyroBiasPSD;</span>
+    }
+
+    /**
+     * Sets gyro bias random walk PSD (Power Spectral Density) expressed in
+     * (rad^2 * s^-3).
+     *
+     * @param gyroBiasPSD gyro bias random walk PSD.
+     */
+    public void setGyroBiasPSD(final double gyroBiasPSD) {
+<span class="fc" id="L237">        this.gyroBiasPSD = gyroBiasPSD;</span>
+<span class="fc" id="L238">    }</span>
+
+    /**
+     * Gets receiver clock frequency-drift PSD (Power Spectral Density) expressed
+     * in (m^2/s^3).
+     *
+     * @return receiver clock frequency-drift PSD.
+     */
+    public double getClockFrequencyPSD() {
+<span class="fc" id="L247">        return clockFrequencyPSD;</span>
+    }
+
+    /**
+     * Sets receiver clock frequency-drift PSD (Power Spectral Density) expressed
+     * in (m^2/s^3).
+     *
+     * @param clockFrequencyPSD clock frequency-drift PSD.
+     */
+    public void setClockFrequencyPSD(final double clockFrequencyPSD) {
+<span class="fc" id="L257">        this.clockFrequencyPSD = clockFrequencyPSD;</span>
+<span class="fc" id="L258">    }</span>
+
+    /**
+     * Gets receiver clock phase-drift PSD (Power Spectral Density) expressed in
+     * squared meters per second (m^2/s).
+     *
+     * @return receiver clock phase-drift PSD.
+     */
+    public double getClockPhasePSD() {
+<span class="fc" id="L267">        return clockPhasePSD;</span>
+    }
+
+    /**
+     * Sets receiver clock phase-drift PSD (Power Spectral Density) expressed in
+     * squared meters per second (m^2/s).
+     *
+     * @param clockPhasePSD receiver clock phase-drift PSD.
+     */
+    public void setClockPhasePSD(final double clockPhasePSD) {
+<span class="fc" id="L277">        this.clockPhasePSD = clockPhasePSD;</span>
+<span class="fc" id="L278">    }</span>
+
+    /**
+     * Gets pseudo-range measurement noise SD (Standard Deviation) expressed in
+     * meters (m).
+     *
+     * @return pseudo-range measurement noise SD.
+     */
+    public double getPseudoRangeSD() {
+<span class="fc" id="L287">        return pseudoRangeSD;</span>
+    }
+
+    /**
+     * Sets pseudo-range measurement noise SD (Standard Deviation) expressed in
+     * meters (m).
+     *
+     * @param pseudoRangeSD pseudo-range measurement noise SD.
+     */
+    public void setPseudoRangeSD(final double pseudoRangeSD) {
+<span class="fc" id="L297">        this.pseudoRangeSD = pseudoRangeSD;</span>
+<span class="fc" id="L298">    }</span>
+
+    /**
+     * Gets pseudo-range rate measurement noise SD (Standard Deviation) expressed
+     * in meters per second (m/s).
+     *
+     * @return pseudo-range rate measurement noise SD.
+     */
+    public double getRangeRateSD() {
+<span class="fc" id="L307">        return rangeRateSD;</span>
+    }
+
+    /**
+     * Sets pseudo-range rate measurement noise SD (Standard Deviation) expressed
+     * in meters per second (m/s).
+     *
+     * @param rangeRateSD pseudo-range rate measurement noise SD.
+     */
+    public void setRangeRateSD(final double rangeRateSD) {
+<span class="fc" id="L317">        this.rangeRateSD = rangeRateSD;</span>
+<span class="fc" id="L318">    }</span>
+
+    /**
+     * Sets configuration parameters.
+     *
+     * @param gyroNoisePSD          gyro noise PSD (Power Spectral Density) expressed
+     *                              in squared radians per second (rad^2/s).
+     * @param accelerometerNoisePSD accelerometer noise PSD (Power Spectral Density)
+     *                              expressed in (m^2 * s^-3).
+     * @param accelerometerBiasPSD  accelerometer bias random walk PSD (Power Spectral
+     *                              Density) expressed in (m^2 * s^-5).
+     * @param gyroBiasPSD           gyro bias random walk PSD (Power Spectral Density)
+     *                              expressed in (rad^2 * s^-3).
+     * @param clockFrequencyPSD     receiver clock frequency-drift PSD (Power Spectral
+     *                              Density) expressed in (m^2/s^3).
+     * @param clockPhasePSD         receiver clock phase-drift PSD (Power Spectral
+     *                              Density) expressed in squared meters per second
+     *                              (m^2/s).
+     * @param pseudoRangeSD         pseudo-range measurement noise SD (Standard
+     *                              Deviation) expressed in meters (m).
+     * @param rangeRateSD           pseudo-range rate measurement noise SD (Standard
+     *                              Deviation) expressed in meters per second (m/s).
+     */
+    public void setValues(
+            final double gyroNoisePSD, final double accelerometerNoisePSD, final double accelerometerBiasPSD,
+            final double gyroBiasPSD, final double clockFrequencyPSD, final double clockPhasePSD,
+            final double pseudoRangeSD, final double rangeRateSD) {
+<span class="fc" id="L345">        this.gyroNoisePSD = gyroNoisePSD;</span>
+<span class="fc" id="L346">        this.accelerometerNoisePSD = accelerometerNoisePSD;</span>
+<span class="fc" id="L347">        this.accelerometerBiasPSD = accelerometerBiasPSD;</span>
+<span class="fc" id="L348">        this.gyroBiasPSD = gyroBiasPSD;</span>
+<span class="fc" id="L349">        this.clockFrequencyPSD = clockFrequencyPSD;</span>
+<span class="fc" id="L350">        this.clockPhasePSD = clockPhasePSD;</span>
+<span class="fc" id="L351">        this.pseudoRangeSD = pseudoRangeSD;</span>
+<span class="fc" id="L352">        this.rangeRateSD = rangeRateSD;</span>
+<span class="fc" id="L353">    }</span>
+
+    /**
+     * Gets pseudo-range measurement noise SD (Standard Deviation).
+     *
+     * @param result instance where pseudo-range measurement noise SD will be stored.
+     */
+    public void getPseudoRangeSDDistance(final Distance result) {
+<span class="fc" id="L361">        result.setValue(pseudoRangeSD);</span>
+<span class="fc" id="L362">        result.setUnit(DistanceUnit.METER);</span>
+<span class="fc" id="L363">    }</span>
+
+    /**
+     * Gets pseudo-range measurement noise SD (Standard Deviation).
+     *
+     * @return pseudo-range measurement noise SD.
+     */
+    public Distance getPseudoRangeSDDistance() {
+<span class="fc" id="L371">        return new Distance(pseudoRangeSD, DistanceUnit.METER);</span>
+    }
+
+    /**
+     * Sets pseudo-range measurement noise SD (Standard Deviation).
+     *
+     * @param pseudoRangeSD pseudo-range measurement noise SD.
+     */
+    public void setPseudoRangeSD(final Distance pseudoRangeSD) {
+<span class="fc" id="L380">        this.pseudoRangeSD = DistanceConverter.convert(pseudoRangeSD.getValue().doubleValue(), pseudoRangeSD.getUnit(),</span>
+                DistanceUnit.METER);
+<span class="fc" id="L382">    }</span>
+
+    /**
+     * Gets pseudo-range rate measurement noise SD (Standard Deviation).
+     *
+     * @param result instance where pseudo-range rate measurement noise SD will be
+     *               stored.
+     */
+    public void getRangeRateSDSpeed(final Speed result) {
+<span class="fc" id="L391">        result.setValue(rangeRateSD);</span>
+<span class="fc" id="L392">        result.setUnit(SpeedUnit.METERS_PER_SECOND);</span>
+<span class="fc" id="L393">    }</span>
+
+    /**
+     * Gets pseudo-range rate measurement noise SD (Standard Deviation).
+     *
+     * @return pseudo-range rate measurement noise SD.
+     */
+    public Speed getRangeRateSDSpeed() {
+<span class="fc" id="L401">        return new Speed(rangeRateSD, SpeedUnit.METERS_PER_SECOND);</span>
+    }
+
+    /**
+     * Sets pseudo-range rate measurement noise SD (Standard Deviation).
+     *
+     * @param rangeRateSD pseudo-range rate measurement noise SD.
+     */
+    public void setRangeRateSD(final Speed rangeRateSD) {
+<span class="fc" id="L410">        this.rangeRateSD = SpeedConverter.convert(rangeRateSD.getValue().doubleValue(), rangeRateSD.getUnit(),</span>
+                SpeedUnit.METERS_PER_SECOND);
+<span class="fc" id="L412">    }</span>
+
+    /**
+     * Sets configuration parameters.
+     *
+     * @param gyroNoisePSD          gyro noise PSD (Power Spectral Density) expressed
+     *                              in squared radians per second (rad^2/s).
+     * @param accelerometerNoisePSD accelerometer noise PSD (Power Spectral Density)
+     *                              expressed in (m^2 * s^-3).
+     * @param accelerometerBiasPSD  accelerometer bias random walk PSD (Power Spectral
+     *                              Density) expressed in (m^2 * s^-5).
+     * @param gyroBiasPSD           gyro bias random walk PSD (Power Spectral Density)
+     *                              expressed in (rad^2 * s^-3).
+     * @param clockFrequencyPSD     receiver clock frequency-drift PSD (Power Spectral
+     *                              Density) expressed in (m^2/s^3).
+     * @param clockPhasePSD         receiver clock phase-drift PSD (Power Spectral
+     *                              Density) expressed in squared meters per second
+     *                              (m^2/s).
+     * @param pseudoRangeSD         pseudo-range measurement noise SD (Standard
+     *                              Deviation) expressed in meters (m).
+     * @param rangeRateSD           pseudo-range rate measurement noise SD (Standard
+     *                              Deviation) expressed in meters per second (m/s).
+     */
+    public void setValues(
+            final double gyroNoisePSD, final double accelerometerNoisePSD, final double accelerometerBiasPSD,
+            final double gyroBiasPSD, final double clockFrequencyPSD, final double clockPhasePSD,
+            final Distance pseudoRangeSD, final Speed rangeRateSD) {
+<span class="fc" id="L439">        this.gyroNoisePSD = gyroNoisePSD;</span>
+<span class="fc" id="L440">        this.accelerometerNoisePSD = accelerometerNoisePSD;</span>
+<span class="fc" id="L441">        this.accelerometerBiasPSD = accelerometerBiasPSD;</span>
+<span class="fc" id="L442">        this.gyroBiasPSD = gyroBiasPSD;</span>
+<span class="fc" id="L443">        this.clockFrequencyPSD = clockFrequencyPSD;</span>
+<span class="fc" id="L444">        this.clockPhasePSD = clockPhasePSD;</span>
+<span class="fc" id="L445">        setPseudoRangeSD(pseudoRangeSD);</span>
+<span class="fc" id="L446">        setRangeRateSD(rangeRateSD);</span>
+<span class="fc" id="L447">    }</span>
+
+    /**
+     * Copies this instance data into provided instance.
+     *
+     * @param output destination instance where data will be copied to.
+     */
+    public void copyTo(final INSTightlyCoupledKalmanConfig output) {
+<span class="fc" id="L455">        output.gyroNoisePSD = gyroNoisePSD;</span>
+<span class="fc" id="L456">        output.accelerometerNoisePSD = accelerometerNoisePSD;</span>
+<span class="fc" id="L457">        output.accelerometerBiasPSD = accelerometerBiasPSD;</span>
+<span class="fc" id="L458">        output.gyroBiasPSD = gyroBiasPSD;</span>
+<span class="fc" id="L459">        output.clockFrequencyPSD = clockFrequencyPSD;</span>
+<span class="fc" id="L460">        output.clockPhasePSD = clockPhasePSD;</span>
+<span class="fc" id="L461">        output.pseudoRangeSD = pseudoRangeSD;</span>
+<span class="fc" id="L462">        output.rangeRateSD = rangeRateSD;</span>
+<span class="fc" id="L463">    }</span>
+
+    /**
+     * Copies data of provided instance into this instance.
+     *
+     * @param input instance to copy data from.
+     */
+    public void copyFrom(final INSTightlyCoupledKalmanConfig input) {
+<span class="fc" id="L471">        gyroNoisePSD = input.gyroNoisePSD;</span>
+<span class="fc" id="L472">        accelerometerNoisePSD = input.accelerometerNoisePSD;</span>
+<span class="fc" id="L473">        accelerometerBiasPSD = input.accelerometerBiasPSD;</span>
+<span class="fc" id="L474">        gyroBiasPSD = input.gyroBiasPSD;</span>
+<span class="fc" id="L475">        clockFrequencyPSD = input.clockFrequencyPSD;</span>
+<span class="fc" id="L476">        clockPhasePSD = input.clockPhasePSD;</span>
+<span class="fc" id="L477">        pseudoRangeSD = input.pseudoRangeSD;</span>
+<span class="fc" id="L478">        rangeRateSD = input.rangeRateSD;</span>
+<span class="fc" id="L479">    }</span>
+
+    /**
+     * Computes and returns hash code for this instance. Hash codes are almost unique
+     * values that are useful for fast classification and storage of objects in collections.
+     *
+     * @return Hash code.
+     */
+    @Override
+    public int hashCode() {
+<span class="fc" id="L489">        return Objects.hash(gyroNoisePSD, accelerometerNoisePSD, accelerometerBiasPSD, gyroBiasPSD, clockFrequencyPSD,</span>
+<span class="fc" id="L490">                clockPhasePSD, pseudoRangeSD, rangeRateSD);</span>
+    }
+
+    /**
+     * Checks if provided object is a INSTightlyCoupledKalmanConfig having exactly
+     * the same contents as this instance.
+     *
+     * @param obj Object to be compared.
+     * @return true if both objects are considered to be equal, false otherwise.
+     */
+    @Override
+    public boolean equals(final Object obj) {
+<span class="fc bfc" id="L502" title="All 2 branches covered.">        if (this == obj) {</span>
+<span class="fc" id="L503">            return true;</span>
+        }
+<span class="pc bpc" id="L505" title="2 of 4 branches missed.">        if (obj == null || getClass() != obj.getClass()) {</span>
+<span class="nc" id="L506">            return false;</span>
+        }
+<span class="fc" id="L508">        final var other = (INSTightlyCoupledKalmanConfig) obj;</span>
+<span class="fc" id="L509">        return equals(other);</span>
+    }
+
+    /**
+     * Checks if provided instance has exactly the same contents as this instance.
+     *
+     * @param other instance to be compared.
+     * @return true if both instances are considered to be equal, false otherwise.
+     */
+    public boolean equals(final INSTightlyCoupledKalmanConfig other) {
+<span class="fc" id="L519">        return equals(other, 0.0);</span>
+    }
+
+    /**
+     * Checks if provided instance has contents similar to this instance up to provided
+     * threshold value.
+     *
+     * @param other     instance to be compared.
+     * @param threshold maximum difference allowed for values.
+     * @return true if both instances are considered to be equal (up to provided threshold),
+     * false otherwise.
+     */
+    public boolean equals(final INSTightlyCoupledKalmanConfig other, final double threshold) {
+<span class="fc bfc" id="L532" title="All 2 branches covered.">        if (other == null) {</span>
+<span class="fc" id="L533">            return false;</span>
+        }
+
+<span class="fc bfc" id="L536" title="All 2 branches covered.">        return Math.abs(gyroNoisePSD - other.gyroNoisePSD) &lt;= threshold</span>
+<span class="pc bpc" id="L537" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(accelerometerNoisePSD - other.accelerometerNoisePSD) &lt;= threshold</span>
+<span class="pc bpc" id="L538" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(accelerometerBiasPSD - other.accelerometerBiasPSD) &lt;= threshold</span>
+<span class="pc bpc" id="L539" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(gyroBiasPSD - other.gyroBiasPSD) &lt;= threshold</span>
+<span class="pc bpc" id="L540" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(clockFrequencyPSD - other.clockFrequencyPSD) &lt;= threshold</span>
+<span class="pc bpc" id="L541" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(clockPhasePSD - other.clockPhasePSD) &lt;= threshold</span>
+<span class="pc bpc" id="L542" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(pseudoRangeSD - other.pseudoRangeSD) &lt;= threshold</span>
+<span class="pc bpc" id="L543" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(rangeRateSD - other.rangeRateSD) &lt;= threshold;</span>
+    }
+
+    /**
+     * Makes a copy of this instance.
+     *
+     * @return a copy of this instance.
+     * @throws CloneNotSupportedException if clone fails for some reason.
+     */
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+<span class="fc" id="L554">        final var result = (INSTightlyCoupledKalmanConfig) super.clone();</span>
+<span class="fc" id="L555">        copyTo(result);</span>
+<span class="fc" id="L556">        return result;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

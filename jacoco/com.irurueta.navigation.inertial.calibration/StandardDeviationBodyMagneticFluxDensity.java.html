@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StandardDeviationBodyMagneticFluxDensity.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-inertial</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.inertial.calibration</a> &gt; <span class="el_source">StandardDeviationBodyMagneticFluxDensity.java</span></div><h1>StandardDeviationBodyMagneticFluxDensity.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2020 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.inertial.calibration;
+
+import com.irurueta.navigation.inertial.BodyMagneticFluxDensity;
+
+import java.io.Serial;
+import java.io.Serializable;
+import java.util.Objects;
+
+/**
+ * Contains a body magnetic flux density along with its
+ * corresponding standard deviation.
+ */
+public class StandardDeviationBodyMagneticFluxDensity implements Serializable, Cloneable {
+
+    /**
+     * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
+     * instances.
+     */
+    @Serial
+    private static final long serialVersionUID = 0L;
+
+    /**
+     * Current body magnetic flux density. Contains magnetometer measurements.
+     */
+    private BodyMagneticFluxDensity magneticFluxDensity;
+
+    /**
+     * Standard deviation of measured magnetic flux density expressed in Teslas
+     * (T).
+     */
+    private double magneticFluxDensityStandardDeviation;
+
+    /**
+     * Constructor.
+     */
+<span class="fc" id="L51">    public StandardDeviationBodyMagneticFluxDensity() {</span>
+<span class="fc" id="L52">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param magneticFluxDensity current body magnetic flux density.
+     */
+<span class="fc" id="L59">    public StandardDeviationBodyMagneticFluxDensity(final BodyMagneticFluxDensity magneticFluxDensity) {</span>
+<span class="fc" id="L60">        this.magneticFluxDensity = magneticFluxDensity;</span>
+<span class="fc" id="L61">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param magneticFluxDensityStandardDeviation standard deviation of measured
+     *                                             magnetic flux density.
+     * @throws IllegalArgumentException if provided standard deviation is
+     *                                  negative.
+     */
+<span class="fc" id="L71">    public StandardDeviationBodyMagneticFluxDensity(final double magneticFluxDensityStandardDeviation) {</span>
+<span class="fc" id="L72">        setMagneticFluxDensityStandardDeviation(magneticFluxDensityStandardDeviation);</span>
+<span class="fc" id="L73">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param magneticFluxDensity                  current body magnetic flux
+     *                                             density.
+     * @param magneticFluxDensityStandardDeviation standard deviation of measured
+     *                                             magnetic flux density.
+     * @throws IllegalArgumentException if provided standard deviation is
+     *                                  negative.
+     */
+    public StandardDeviationBodyMagneticFluxDensity(
+            final BodyMagneticFluxDensity magneticFluxDensity, final double magneticFluxDensityStandardDeviation) {
+<span class="fc" id="L87">        this(magneticFluxDensityStandardDeviation);</span>
+<span class="fc" id="L88">        this.magneticFluxDensity = magneticFluxDensity;</span>
+<span class="fc" id="L89">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param input instance to copy data from.
+     */
+<span class="fc" id="L96">    public StandardDeviationBodyMagneticFluxDensity(final StandardDeviationBodyMagneticFluxDensity input) {</span>
+<span class="fc" id="L97">        copyFrom(input);</span>
+<span class="fc" id="L98">    }</span>
+
+    /**
+     * Gets current body magnetic flux density. Contains magnetometer
+     * measurements.
+     *
+     * @return current body magnetic flux density.
+     */
+    public BodyMagneticFluxDensity getMagneticFluxDensity() {
+<span class="fc" id="L107">        return magneticFluxDensity;</span>
+    }
+
+    /**
+     * Sets current body magnetic flux density. Contains magnetometer
+     * measurements.
+     *
+     * @param magneticFluxDensity current body magnetic flux density.
+     */
+    public void setMagneticFluxDensity(final BodyMagneticFluxDensity magneticFluxDensity) {
+<span class="fc" id="L117">        this.magneticFluxDensity = magneticFluxDensity;</span>
+<span class="fc" id="L118">    }</span>
+
+    /**
+     * Gets standard deviation of measured magnetic flux density expressed in
+     * Teslas (T).
+     *
+     * @return standard deviation of measured magnetic flux density.
+     */
+    public double getMagneticFluxDensityStandardDeviation() {
+<span class="fc" id="L127">        return magneticFluxDensityStandardDeviation;</span>
+    }
+
+    /**
+     * Sets standard deviation of measured magnetic flux density expressed in
+     * Teslas (T).
+     *
+     * @param magneticFluxDensityStandardDeviation standard deviation of
+     *                                             measured magnetic flux
+     *                                             density.
+     * @throws IllegalArgumentException if provided value is negative.
+     */
+    public void setMagneticFluxDensityStandardDeviation(final double magneticFluxDensityStandardDeviation) {
+<span class="fc bfc" id="L140" title="All 2 branches covered.">        if (magneticFluxDensityStandardDeviation &lt; 0.0) {</span>
+<span class="fc" id="L141">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L144">        this.magneticFluxDensityStandardDeviation = magneticFluxDensityStandardDeviation;</span>
+<span class="fc" id="L145">    }</span>
+
+    /**
+     * Copies data of provided instance into this instance.
+     *
+     * @param input instance to copy data from.
+     */
+    public void copyFrom(final StandardDeviationBodyMagneticFluxDensity input) {
+<span class="fc bfc" id="L153" title="All 2 branches covered.">        if (input.magneticFluxDensity != null) {</span>
+<span class="fc bfc" id="L154" title="All 2 branches covered.">            if (magneticFluxDensity == null) {</span>
+<span class="fc" id="L155">                magneticFluxDensity = new BodyMagneticFluxDensity(input.magneticFluxDensity);</span>
+            } else {
+<span class="fc" id="L157">                magneticFluxDensity.copyFrom(input.magneticFluxDensity);</span>
+            }
+        } else {
+<span class="fc" id="L160">            magneticFluxDensity = null;</span>
+        }
+
+<span class="fc" id="L163">        magneticFluxDensityStandardDeviation = input.magneticFluxDensityStandardDeviation;</span>
+<span class="fc" id="L164">    }</span>
+
+    /**
+     * Copies this instance data into provided instance.
+     *
+     * @param output destination instance where data will be copied to.
+     */
+    public void copyTo(final StandardDeviationBodyMagneticFluxDensity output) {
+<span class="fc" id="L172">        output.copyFrom(this);</span>
+<span class="fc" id="L173">    }</span>
+
+    /**
+     * Computes and returns hash code for this instance. Hash codes are almost
+     * unique values that are useful for fast classification and storage of
+     * objects in collections.
+     *
+     * @return Hash code.
+     */
+    @Override
+    public int hashCode() {
+<span class="fc" id="L184">        return Objects.hash(magneticFluxDensity, magneticFluxDensityStandardDeviation);</span>
+    }
+
+    /**
+     * Checks if provided instance has exactly the same contents as this instance.
+     *
+     * @param other instance to be compared.
+     * @return true if both instances are considered to be equal, false otherwise.
+     */
+    public boolean equals(final StandardDeviationBodyMagneticFluxDensity other) {
+<span class="fc" id="L194">        return equals(other, 0.0);</span>
+    }
+
+    /**
+     * Checks if provided instance has contents similar to this instance up to
+     * provided threshold value.
+     *
+     * @param other     instance to be compared.
+     * @param threshold maximum allowed difference between magnetic flux density
+     *                  and standard deviation value.
+     * @return true if both instances are considered to be equal (up to provided
+     * threshold, false otherwise).
+     */
+    public boolean equals(final StandardDeviationBodyMagneticFluxDensity other, final double threshold) {
+<span class="fc bfc" id="L208" title="All 2 branches covered.">        if (other == null) {</span>
+<span class="fc" id="L209">            return false;</span>
+        }
+
+<span class="pc bpc" id="L212" title="2 of 6 branches missed.">        return ((other.magneticFluxDensity == null &amp;&amp; magneticFluxDensity == null)</span>
+                || (magneticFluxDensity != null
+<span class="fc bfc" id="L214" title="All 2 branches covered.">                &amp;&amp; magneticFluxDensity.equals(other.magneticFluxDensity, threshold)))</span>
+<span class="pc bpc" id="L215" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(magneticFluxDensityStandardDeviation</span>
+                - other.magneticFluxDensityStandardDeviation) &lt;= threshold;
+    }
+
+    /**
+     * Checks if provided object is a StandardDeviationBodyMagneticFluxDensity
+     * instance having exactly the same contents as this instance.
+     *
+     * @param obj object to be compared.
+     * @return true if both objects are considered to be equal, false otherwise.
+     */
+    public boolean equals(final Object obj) {
+<span class="fc bfc" id="L227" title="All 2 branches covered.">        if (this == obj) {</span>
+<span class="fc" id="L228">            return true;</span>
+        }
+<span class="pc bpc" id="L230" title="2 of 4 branches missed.">        if (obj == null || getClass() != obj.getClass()) {</span>
+<span class="nc" id="L231">            return false;</span>
+        }
+<span class="fc" id="L233">        final var other = (StandardDeviationBodyMagneticFluxDensity) obj;</span>
+<span class="fc" id="L234">        return equals(other);</span>
+    }
+
+    /**
+     * Makes a copy of this instance.
+     *
+     * @return a copy of this instance.
+     * @throws CloneNotSupportedException if clone fails for some reason.
+     */
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+<span class="fc" id="L245">        final var result = (StandardDeviationBodyMagneticFluxDensity) super.clone();</span>
+<span class="fc" id="L246">        copyTo(result);</span>
+<span class="fc" id="L247">        return super.clone();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

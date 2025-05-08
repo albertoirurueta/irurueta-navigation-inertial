@@ -1,0 +1,2817 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>WMMEarthMagneticFluxDensityEstimator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-inertial</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.inertial.wmm</a> &gt; <span class="el_source">WMMEarthMagneticFluxDensityEstimator.java</span></div><h1>WMMEarthMagneticFluxDensityEstimator.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2020 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.inertial.wmm;
+
+import com.irurueta.navigation.frames.NEDPosition;
+import com.irurueta.navigation.geodesic.Constants;
+import com.irurueta.units.Angle;
+import com.irurueta.units.AngleConverter;
+import com.irurueta.units.AngleUnit;
+import com.irurueta.units.Distance;
+import com.irurueta.units.DistanceConverter;
+import com.irurueta.units.DistanceUnit;
+
+import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
+/**
+ * Estimates Earth magnetic flux density resolved around NED frame at
+ * a given Earth location.
+ */
+public class WMMEarthMagneticFluxDensityEstimator {
+
+    /**
+     * Guaranteed accuracy of estimated angles by the WMM during
+     * the valid timespan of a model.
+     * Accuracy is expressed in degrees and refers to estimated
+     * declination and dip angles.
+     */
+    public static final double ANGLE_ACCURACY_DEGREES = 5e-3;
+
+    /**
+     * Guaranteed accuracy of estimated angles by the WMM during
+     * the valid timespan of a model.
+     * Accuracy is expressed in radians and refers to estimated
+     * declination and dip angles.
+     */
+<span class="fc" id="L52">    public static final double ANGLE_ACCURACY_RADIANS = Math.toRadians(ANGLE_ACCURACY_DEGREES);</span>
+
+    /**
+     * Guaranteed accuracy of estimated magnetic flux density
+     * values by the WMM during the valid timespan of a model.
+     * This value refers to intensity norm, vertical intensity,
+     * horizontal intensity, north intensity and east intensity.
+     */
+    public static final double INTENSITY_ACCURACY = 5e-2;
+
+    /**
+     * Number of coefficients.
+     */
+    private static final int N = WorldMagneticModel.N;
+
+    /**
+     * Coefficients file.
+     */
+    private static final String COEFFICIENTS_FILE = &quot;wmm.cof&quot;;
+
+    /**
+     * Mean radius of IAU-66 ellipsoid expressed in Km.
+     */
+    private static final double RE_KM = 6371.2;
+
+    /**
+     * Converts to nanos.
+     */
+    private static final double FROM_NANO = 1e-9;
+
+    /**
+     * Time value used in the previous calculation.
+     * This is used to save on calculation time if some
+     * inputs don't change.
+     * Old time is expressed in decimal years.
+     */
+    private Double oldTime;
+
+    /**
+     * Geodetic height (a.k.a. altitude) value used in the previous
+     * calculation.
+     * This is used to save on calculation time if some
+     * inputs don't change.
+     * Old height is expressed in Kilometers (Km).
+     */
+    private Double oldHeight;
+
+    /**
+     * Old geodetic latitude value used in previous
+     * calculation.
+     * This is used to save on calculation time if some
+     * inputs don't change.
+     * Old latitude is expressed in degrees (deg).
+     */
+    private Double oldLatitude;
+
+    /**
+     * Old geodetic longitude value used in previous
+     * calculation.
+     * This is used to save on calculation time if some
+     * inputs don't change.
+     * Old longitude is expressed in degrees (deg).
+     */
+    private Double oldLongitude;
+
+    /**
+     * Geomagnetic declination in degrees.
+     * East is positive, West is negative.
+     * (The negative of variation).
+     */
+    private double dec;
+
+    /**
+     * Geomagnetic inclination in degrees.
+     * Down is positive, up is negative.
+     */
+    private double dip;
+
+    /**
+     * Geomagnetic total intensity expressed in nano Teslas (nT)
+     */
+    private double ti;
+
+    /**
+     * A World Magnetic Model containing all required coefficients.
+     */
+    private final WorldMagneticModel model;
+
+    /**
+     * The time-adjusted geomagnetic gauss coefficients (nt).
+     */
+<span class="fc" id="L143">    private final double[][] tc = new double[N][N];</span>
+
+    /**
+     * The theta derivative of p(n,m) (un-normalized).
+     */
+<span class="fc" id="L148">    private final double[][] dp = new double[N][N];</span>
+
+    /**
+     * The sine of (m*spherical coord. longitude).
+     */
+<span class="fc" id="L153">    private final double[] sp = new double[N];</span>
+
+    /**
+     * The cosine of (m*spherical coord. longitude).
+     */
+<span class="fc" id="L158">    private final double[] cp = new double[N];</span>
+
+    /**
+     * The associated Legendre polynomials for m=1 (un-normalized).
+     */
+<span class="fc" id="L163">    private final double[] pp = new double[N];</span>
+
+    /**
+     * The north-south field intensity expressed in nano Teslas (nT).
+     */
+    private double bx;
+
+    /**
+     * The east-west field intensity expressed in nano Teslas (nT).
+     */
+    private double by;
+
+    /**
+     * The vertical field intensity positive downward expressed
+     * in nano Teslas (nT)
+     */
+    private double bz;
+
+    /**
+     * The horizontal field intensity expressed in nano Teslas (nT)
+     */
+    private double bh;
+
+    /**
+     * Semi-major axis of WGS-84 ellipsoid, in Km, squared.
+     */
+    private final double a2;
+
+    /**
+     * Semi-minor axis of WGS-84 ellipsoid, in Km, squared.
+     */
+    private final double b2;
+
+    /**
+     * The difference between the squared semi-axes.
+     * c2 = a2 - b2
+     */
+    private final double c2;
+
+    /**
+     * {@link #a2} squared.
+     */
+    private final double a4;
+
+    /**
+     * The difference between a4 and b4
+     * c4 = a4 - b4
+     */
+    private final double c4;
+
+    // Below: internal values being reused. These values are only
+    // recalculated if the height (altitude) changes.
+
+    /**
+     * This is the magnetic field strength at the magnetic pole.
+     */
+    private double r;
+
+    /**
+     * This is the cosine of the magnetic inclination at the magnetic pole.
+     */
+    private double ca;
+
+    /**
+     * This is the sine of the magnetic inclination at the magnetic pole.
+     */
+    private double sa;
+
+    /**
+     * This is the cosine of the magnetic declination at the magnetic pole.
+     */
+    private double ct;
+
+    /**
+     * This is the sine of the magnetic declination at the magnetic pole.
+     */
+    private double st;
+
+    /**
+     * Constructor.
+     *
+     * @throws IOException if an I/O error occurs while loading
+     *                     model coefficients.
+     */
+    public WMMEarthMagneticFluxDensityEstimator() throws IOException {
+<span class="fc" id="L248">        this(WMMLoader.loadFromResource(COEFFICIENTS_FILE));</span>
+<span class="fc" id="L249">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param model a World Magnetic Model.
+     * @throws NullPointerException if provided model is null.
+     */
+<span class="fc" id="L257">    public WMMEarthMagneticFluxDensityEstimator(final WorldMagneticModel model) {</span>
+<span class="fc bfc" id="L258" title="All 2 branches covered.">        if (model == null) {</span>
+<span class="fc" id="L259">            throw new NullPointerException();</span>
+        }
+<span class="fc" id="L261">        this.model = model;</span>
+<span class="fc" id="L262">        sp[0] = 0.0;</span>
+<span class="fc" id="L263">        cp[0] = 1.0;</span>
+<span class="fc" id="L264">        pp[0] = 1.0;</span>
+
+        // semi-major axis of WGS-84 ellipsoid, in Km (6378.137 Km).
+<span class="fc" id="L267">        final var a = DistanceConverter.convert(Constants.EARTH_EQUATORIAL_RADIUS_WGS84, DistanceUnit.METER,</span>
+                DistanceUnit.KILOMETER);
+
+        // semi-minor axis of WGS-84 ellipsoid, in Km (6356.7523142 Km).
+<span class="fc" id="L271">        final var b = DistanceConverter.convert(Constants.EARTH_POLAR_RADIUS_WGS84, DistanceUnit.METER,</span>
+                DistanceUnit.KILOMETER);
+<span class="fc" id="L273">        a2 = a * a;</span>
+<span class="fc" id="L274">        b2 = b * b;</span>
+<span class="fc" id="L275">        c2 = a2 - b2;</span>
+<span class="fc" id="L276">        a4 = a2 * a2;</span>
+
+<span class="fc" id="L278">        final var b4 = b2 * b2;</span>
+<span class="fc" id="L279">        c4 = a4 - b4;</span>
+<span class="fc" id="L280">    }</span>
+
+    /**
+     * Gets World Magnetic Model containing all required coefficients.
+     *
+     * @return World Magnetic Model.
+     */
+    public WorldMagneticModel getModel() {
+<span class="fc" id="L288">        return model;</span>
+    }
+
+    /**
+     * Returns the declination from the Department of Defense geomagnetic
+     * model and data, in radians.
+     * The magnetic heading + declination is the true heading of a device
+     * in terms of geographical north pole.
+     * This method uses default altitude (0.0 - mean sea level) and time
+     * (half way through the valid 5 year period of the model).
+     *
+     * @param latitude  latitude expressed in radians.
+     * @param longitude longitude expressed in radians.
+     * @return magnetic field declination expressed in radians.
+     */
+    public double getDeclination(final double latitude, final double longitude) {
+<span class="fc" id="L304">        final var defaultTime = model.epoch + WorldMagneticModel.LIFESPAN / 2.0;</span>
+<span class="fc" id="L305">        calcGeoMag(Math.toDegrees(latitude), Math.toDegrees(longitude), 0.0, defaultTime);</span>
+<span class="fc" id="L306">        return Math.toRadians(dec);</span>
+    }
+
+    /**
+     * Returns the declination from the Department of Defense geomagnetic
+     * model and data, in radians.
+     * The magnetic heading + declination is the true heading of a device
+     * in terms of geographical north pole.
+     * This method uses default altitude (0.0 - mean sea level) and time
+     * (half way through the valid 5 year period of the model).
+     *
+     * @param latitude  latitude angle.
+     * @param longitude longitude angle.
+     * @return magnetic field declination expressed in radians.
+     */
+    public double getDeclination(final Angle latitude, final Angle longitude) {
+<span class="fc" id="L322">        return getDeclination(convertAngle(latitude), convertAngle(longitude));</span>
+    }
+
+    /**
+     * Returns the declination from the Department of Defense geomagnetic
+     * model and data, in radians.
+     * The magnetic heading + declination is the true heading of a device
+     * in terms of geographical north pole.
+     * This method uses default altitude (0.0 - mean sea level) and time
+     * (half way through the valid 5 year period of the model).
+     *
+     * @param latitude  latitude expressed in radians.
+     * @param longitude longitude expressed in radians.
+     * @param result    instance where magnetic field declination will be
+     *                  stored.
+     */
+    public void getDeclinationAsAngle(final double latitude, final double longitude, final Angle result) {
+<span class="fc" id="L339">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L340">        result.setValue(getDeclination(latitude, longitude));</span>
+<span class="fc" id="L341">    }</span>
+
+    /**
+     * Returns the declination from the Department of Defense geomagnetic
+     * model and data, in radians.
+     * The magnetic heading + declination is the true heading of a device
+     * in terms of geographical north pole.
+     * This method uses default altitude (0.0 - mean sea level) and time
+     * (half way through the valid 5 year period of the model).
+     *
+     * @param latitude  latitude angle.
+     * @param longitude longitude angle.
+     * @return magnetic field declination.
+     */
+    public Angle getDeclinationAsAngle(final double latitude, final double longitude) {
+<span class="fc" id="L356">        return new Angle(getDeclination(latitude, longitude), AngleUnit.RADIANS);</span>
+    }
+
+    /**
+     * Returns the declination from the Department of Defense geomagnetic
+     * model and data, in radians.
+     * The magnetic heading + declination is the true heading of a device
+     * in terms of geographical north pole.
+     * This method uses default altitude (0.0 - mean sea level) and time
+     * (half way through the valid 5 year period of the model).
+     *
+     * @param latitude  latitude angle.
+     * @param longitude longitude angle.
+     * @param result    instance where magnetic field declination will be
+     *                  stored.
+     */
+    public void getDeclinationAsAngle(final Angle latitude, final Angle longitude, final Angle result) {
+<span class="fc" id="L373">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L374">        result.setValue(getDeclination(latitude, longitude));</span>
+<span class="fc" id="L375">    }</span>
+
+    /**
+     * Returns the declination from the Department of Defense geomagnetic
+     * model and data, in radians.
+     * The magnetic heading + declination is the true heading of a device
+     * in terms of geographical north pole.
+     * This method uses default altitude (0.0 - mean sea level) and time
+     * (half way through the valid 5 year period of the model).
+     *
+     * @param latitude  latitude angle.
+     * @param longitude longitude angle.
+     * @return magnetic field declination.
+     */
+    public Angle getDeclinationAsAngle(final Angle latitude, final Angle longitude) {
+<span class="fc" id="L390">        return new Angle(getDeclination(latitude, longitude), AngleUnit.RADIANS);</span>
+    }
+
+    /**
+     * Returns the declination from the Department of Defense geomagnetic
+     * model and data, in radians.
+     * The magnetic heading declination is the true heading of a device
+     * in terms of geographical north pole.
+     *
+     * @param latitude  latitude expressed in radians.
+     * @param longitude longitude expressed in radians.
+     * @param height    height expressed in meters.
+     * @param year      year expressed in decimal years.
+     * @return magnetic field declination expressed in radians.
+     */
+    public double getDeclination(
+            final double latitude, final double longitude, final double height, final double year) {
+<span class="fc" id="L407">        final var heightKm = DistanceConverter.convert(height, DistanceUnit.METER, DistanceUnit.KILOMETER);</span>
+<span class="fc" id="L408">        calcGeoMag(Math.toDegrees(latitude), Math.toDegrees(longitude), heightKm, year);</span>
+<span class="fc" id="L409">        return Math.toRadians(dec);</span>
+    }
+
+    /**
+     * Returns the declination from the Department of Defense geomagnetic
+     * model and data, in radians.
+     * &lt;p&gt;
+     * The magnetic heading + declination is the true heading of a device
+     * in terms of geographical north pole.
+     *
+     * @param latitude  latitude expressed in radians.
+     * @param longitude longitude expressed in radians.
+     * @param height    height expressed in meters.
+     * @param calendar  a calendar containing a specific instant.
+     * @return magnetic field declination expressed in radians.
+     */
+    public double getDeclination(
+            final double latitude, final double longitude, final double height, final GregorianCalendar calendar) {
+<span class="fc" id="L427">        return getDeclination(latitude, longitude, height, convertTime(calendar));</span>
+    }
+
+    /**
+     * Returns the declination from the Department of Defense geomagnetic
+     * model and data, in radians.
+     * &lt;p&gt;
+     * The magnetic heading + declination is the true heading of a device
+     * in terms of geographical north pole.
+     *
+     * @param latitude  latitude expressed in radians.
+     * @param longitude longitude expressed in radians.
+     * @param height    height expressed in meters.
+     * @param time      a specific time instant.
+     * @return magnetic field declination expressed in radians.
+     */
+    public double getDeclination(
+            final double latitude, final double longitude, final double height, final Date time) {
+<span class="fc" id="L445">        final var calendar = new GregorianCalendar();</span>
+<span class="fc" id="L446">        calendar.setTime(time);</span>
+<span class="fc" id="L447">        return getDeclination(latitude, longitude, height, calendar);</span>
+    }
+
+    /**
+     * Returns the declination from the Department of Defense geomagnetic
+     * model and data, in radians.
+     * The magnetic heading + declination is the true heading of a device
+     * in terms of geographical north pole.
+     *
+     * @param latitude  latitude angle.
+     * @param longitude longitude angle.
+     * @param height    height.
+     * @param year      year expressed in decimal years.
+     * @return magnetic field declination expressed in radians.
+     */
+    public double getDeclination(
+            final Angle latitude, final Angle longitude, final Distance height, final double year) {
+<span class="fc" id="L464">        return getDeclination(convertAngle(latitude), convertAngle(longitude), convertDistance(height), year);</span>
+    }
+
+    /**
+     * Returns the declination from the Department of Defense geomagnetic
+     * model and data, in radians.
+     * &lt;p&gt;
+     * The magnetic heading + declination is the true heading of a device
+     * in terms of geographical north pole.
+     *
+     * @param latitude  latitude angle.
+     * @param longitude longitude angle.
+     * @param height    height.
+     * @param calendar  a calendar containing a specific instant.
+     * @return magnetic field declination expressed in radians.
+     */
+    public double getDeclination(
+            final Angle latitude, final Angle longitude, final Distance height, final GregorianCalendar calendar) {
+<span class="fc" id="L482">        return getDeclination(convertAngle(latitude), convertAngle(longitude), convertDistance(height), calendar);</span>
+    }
+
+    /**
+     * Returns the declination from the Department of Defense geomagnetic
+     * model and data, in radians.
+     * &lt;p&gt;
+     * The magnetic heading + declination is the true heading of a device
+     * in terms of geographical north pole.
+     *
+     * @param latitude  latitude angle.
+     * @param longitude longitude angle.
+     * @param height    height.
+     * @param time      a specific time instant.
+     * @return magnetic field declination expressed in radians.
+     */
+    public double getDeclination(
+            final Angle latitude, final Angle longitude, final Distance height, final Date time) {
+<span class="fc" id="L500">        return getDeclination(convertAngle(latitude), convertAngle(longitude), convertDistance(height), time);</span>
+    }
+
+    /**
+     * Returns the declination from the Department of Defense geomagnetic
+     * model and data, in radians.
+     * The magnetic heading + declination is the true heading of a device
+     * in terms of geographical north pole.
+     *
+     * @param position a position expressed in geodetic coordinates.
+     * @param year     year expressed in decimal years.
+     * @return magnetic field declination expressed in radians.
+     */
+    public double getDeclination(final NEDPosition position, final double year) {
+<span class="fc" id="L514">        return getDeclination(position.getLatitude(), position.getLongitude(), position.getHeight(), year);</span>
+    }
+
+    /**
+     * Returns the declination from the Department of Defense geomagnetic
+     * model and data, in radians.
+     * The magnetic heading + declination is the true heading of a device
+     * in terms of geographical north pole.
+     *
+     * @param position a position expressed in geodetic coordinates.
+     * @param calendar a calendar containing a specific instant.
+     * @return magnetic field declination expressed in radians.
+     */
+    public double getDeclination(final NEDPosition position, final GregorianCalendar calendar) {
+<span class="fc" id="L528">        return getDeclination(position.getLatitude(), position.getLongitude(), position.getHeight(), calendar);</span>
+    }
+
+    /**
+     * Returns the declination from the Department of Defense geomagnetic
+     * model and data, in radians.
+     * The magnetic heading + declination is the true heading of a device
+     * in terms of geographical north pole.
+     *
+     * @param position a position expressed in geodetic coordinates.
+     * @param time     a specific time instant.
+     * @return magnetic field declination expressed in radians.
+     */
+    public double getDeclination(final NEDPosition position, final Date time) {
+<span class="fc" id="L542">        return getDeclination(position.getLatitude(), position.getLongitude(), position.getHeight(), time);</span>
+    }
+
+    /**
+     * Returns the declination from the Department of Defense geomagnetic
+     * model and data, in radians.
+     * The magnetic heading + declination is the true heading of a device
+     * in terms of geographical north pole.
+     *
+     * @param latitude  latitude expressed in radians.
+     * @param longitude longitude expressed in radians.
+     * @param height    height expressed in meters.
+     * @param year      year expressed in decimal years.
+     * @param result    instance where magnetic field declination will be
+     *                  stored.
+     */
+    public void getDeclinationAsAngle(final double latitude, final double longitude, final double height,
+                                      final double year, final Angle result) {
+<span class="fc" id="L560">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L561">        result.setValue(getDeclination(latitude, longitude, height, year));</span>
+<span class="fc" id="L562">    }</span>
+
+    /**
+     * Returns the declination from the Department of Defense geomagnetic
+     * model and data, in radians.
+     * The magnetic heading + declination is the true heading of a device
+     * in terms of geographical north pole.
+     *
+     * @param latitude  latitude expressed in radians.
+     * @param longitude longitude expressed in radians.
+     * @param height    height expressed in meters.
+     * @param year      year expressed in decimal years.
+     * @return magnetic field declination.
+     */
+    public Angle getDeclinationAsAngle(
+            final double latitude, final double longitude, final double height, final double year) {
+<span class="fc" id="L578">        return new Angle(getDeclination(latitude, longitude, height, year), AngleUnit.RADIANS);</span>
+    }
+
+    /**
+     * Returns the declination from the Department of Defense geomagnetic
+     * model and data, in radians.
+     * &lt;p&gt;
+     * The magnetic heading + declination is the true heading of a device
+     * in terms of geographical north pole.
+     *
+     * @param latitude  latitude expressed in radians.
+     * @param longitude longitude expressed in radians.
+     * @param height    height expressed in meters.
+     * @param calendar  a calendar containing a specific instant.
+     * @param result    instance where magnetic field declination will be
+     *                  stored.
+     */
+    public void getDeclinationAsAngle(
+            final double latitude, final double longitude, final double height, final GregorianCalendar calendar,
+            final Angle result) {
+<span class="fc" id="L598">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L599">        result.setValue(getDeclination(latitude, longitude, height, calendar));</span>
+<span class="fc" id="L600">    }</span>
+
+    /**
+     * Returns the declination from the Department of Defense geomagnetic
+     * model and data, in radians.
+     * &lt;p&gt;
+     * The magnetic heading + declination is the true heading of a device
+     * in terms of geographical north pole.
+     *
+     * @param latitude  latitude expressed in radians.
+     * @param longitude longitude expressed in radians.
+     * @param height    height expressed in meters.
+     * @param calendar  a calendar containing a specific instant.
+     * @return magnetic field declination.
+     */
+    public Angle getDeclinationAsAngle(
+            final double latitude, final double longitude, final double height, final GregorianCalendar calendar) {
+<span class="fc" id="L617">        return new Angle(getDeclination(latitude, longitude, height, calendar), AngleUnit.RADIANS);</span>
+    }
+
+    /**
+     * Returns the declination from the Department of Defense geomagnetic
+     * model and data, in radians.
+     * &lt;p&gt;
+     * The magnetic heading + declination is the true heading of a device
+     * in terms of geographical north pole.
+     *
+     * @param latitude  latitude expressed in radians.
+     * @param longitude longitude expressed in radians.
+     * @param height    height expressed in meters.
+     * @param time      a specific time instant.
+     * @param result    instance where magnetic field declination will be
+     *                  stored.
+     */
+    public void getDeclinationAsAngle(
+            final double latitude, final double longitude, final double height, final Date time, final Angle result) {
+<span class="fc" id="L636">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L637">        result.setValue(getDeclination(latitude, longitude, height, time));</span>
+<span class="fc" id="L638">    }</span>
+
+    /**
+     * Returns the declination from the Department of Defense geomagnetic
+     * model and data, in radians.
+     * &lt;p&gt;
+     * The magnetic heading + declination is the true heading of a device
+     * in terms of geographical north pole.
+     *
+     * @param latitude  latitude expressed in radians.
+     * @param longitude longitude expressed in radians.
+     * @param height    height expressed in meters.
+     * @param time      a specific time instant.
+     * @return magnetic field declination.
+     */
+    public Angle getDeclinationAsAngle(
+            final double latitude, final double longitude, final double height, final Date time) {
+<span class="fc" id="L655">        return new Angle(getDeclination(latitude, longitude, height, time), AngleUnit.RADIANS);</span>
+    }
+
+    /**
+     * Returns the declination from the Department of Defense geomagnetic
+     * model and data, in radians.
+     * The magnetic heading + declination is the true heading of a device
+     * in terms of geographical north pole.
+     *
+     * @param latitude  latitude angle.
+     * @param longitude longitude angle.
+     * @param height    height.
+     * @param year      year expressed in decimal years.
+     * @param result    instance where magnetic field declination will be
+     *                  stored.
+     */
+    public void getDeclinationAsAngle(
+            final Angle latitude, final Angle longitude, final Distance height, final double year, final Angle result) {
+<span class="fc" id="L673">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L674">        result.setValue(getDeclination(latitude, longitude, height, year));</span>
+<span class="fc" id="L675">    }</span>
+
+    /**
+     * Returns the declination from the Department of Defense geomagnetic
+     * model and data, in radians.
+     * The magnetic heading + declination is the true heading of a device
+     * in terms of geographical north pole.
+     *
+     * @param latitude  latitude angle.
+     * @param longitude longitude angle.
+     * @param height    height.
+     * @param year      year expressed in decimal years.
+     * @return magnetic field declination.
+     */
+    public Angle getDeclinationAsAngle(
+            final Angle latitude, final Angle longitude, final Distance height, final double year) {
+<span class="fc" id="L691">        return new Angle(getDeclination(latitude, longitude, height, year), AngleUnit.RADIANS);</span>
+    }
+
+    /**
+     * Returns the declination from the Department of Defense geomagnetic
+     * model and data, in radians.
+     * &lt;p&gt;
+     * The magnetic heading + declination is the true heading of a device
+     * in terms of geographical north pole.
+     *
+     * @param latitude  latitude angle.
+     * @param longitude longitude angle.
+     * @param height    height.
+     * @param calendar  a calendar containing a specific instant.
+     * @param result    instance where magnetic field declination will be
+     *                  stored.
+     */
+    public void getDeclinationAsAngle(
+            final Angle latitude, final Angle longitude, final Distance height, final GregorianCalendar calendar,
+            final Angle result) {
+<span class="fc" id="L711">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L712">        result.setValue(getDeclination(latitude, longitude, height, calendar));</span>
+<span class="fc" id="L713">    }</span>
+
+    /**
+     * Returns the declination from the Department of Defense geomagnetic
+     * model and data, in radians.
+     * &lt;p&gt;
+     * The magnetic heading + declination is the true heading of a device
+     * in terms of geographical north pole.
+     *
+     * @param latitude  latitude angle.
+     * @param longitude longitude angle.
+     * @param height    height.
+     * @param calendar  a calendar containing a specific instant.
+     * @return magnetic field declination.
+     */
+    public Angle getDeclinationAsAngle(
+            final Angle latitude, final Angle longitude, final Distance height, final GregorianCalendar calendar) {
+<span class="fc" id="L730">        return new Angle(getDeclination(latitude, longitude, height, calendar), AngleUnit.RADIANS);</span>
+    }
+
+    /**
+     * Returns the declination from the Department of Defense geomagnetic
+     * model and data, in radians.
+     * &lt;p&gt;
+     * The magnetic heading + declination is the true heading of a device
+     * in terms of geographical north pole.
+     *
+     * @param latitude  latitude angle.
+     * @param longitude longitude angle.
+     * @param height    height.
+     * @param time      a specific time instant.
+     * @param result    instance where magnetic field declination will be
+     *                  stored.
+     */
+    public void getDeclinationAsAngle(
+            final Angle latitude, final Angle longitude, final Distance height, final Date time, final Angle result) {
+<span class="fc" id="L749">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L750">        result.setValue(getDeclination(latitude, longitude, height, time));</span>
+<span class="fc" id="L751">    }</span>
+
+    /**
+     * Returns the declination from the Department of Defense geomagnetic
+     * model and data, in radians.
+     * &lt;p&gt;
+     * The magnetic heading + declination is the true heading of a device
+     * in terms of geographical north pole.
+     *
+     * @param latitude  latitude angle.
+     * @param longitude longitude angle.
+     * @param height    height.
+     * @param time      a specific time instant.
+     * @return magnetic field declination.
+     */
+    public Angle getDeclinationAsAngle(
+            final Angle latitude, final Angle longitude, final Distance height, final Date time) {
+<span class="fc" id="L768">        return new Angle(getDeclination(latitude, longitude, height, time), AngleUnit.RADIANS);</span>
+    }
+
+    /**
+     * Returns the declination from the Department of Defense geomagnetic
+     * model and data, in radians.
+     * The magnetic heading + declination is the true heading of a device
+     * in terms of geographical north pole.
+     *
+     * @param position a position expressed in geodetic coordinates.
+     * @param year     year expressed in decimal years.
+     * @param result   instance where magnetic field declination will be
+     *                 stored.
+     */
+    public void getDeclinationAsAngle(final NEDPosition position, final double year, final Angle result) {
+<span class="fc" id="L783">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L784">        result.setValue(getDeclination(position, year));</span>
+<span class="fc" id="L785">    }</span>
+
+    /**
+     * Returns the declination from the Department of Defense geomagnetic
+     * model and data, in radians.
+     * The magnetic heading + declination is the true heading of a device
+     * in terms of geographical north pole.
+     *
+     * @param position a position expressed in geodetic coordinates.
+     * @param year     year expressed in decimal years.
+     * @return magnetic field declination.
+     */
+    public Angle getDeclinationAsAngle(final NEDPosition position, final double year) {
+<span class="fc" id="L798">        return new Angle(getDeclination(position, year), AngleUnit.RADIANS);</span>
+    }
+
+    /**
+     * Returns the declination from the Department of Defense geomagnetic
+     * model and data, in radians.
+     * The magnetic heading + declination is the true heading of a device
+     * in terms of geographical north pole.
+     *
+     * @param position a position expressed in geodetic coordinates.
+     * @param calendar a calendar containing a specific instant.
+     * @param result   instance where magnetic field declination will be
+     *                 stored.
+     */
+    public void getDeclinationAsAngle(
+            final NEDPosition position, final GregorianCalendar calendar, final Angle result) {
+<span class="fc" id="L814">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L815">        result.setValue(getDeclination(position, calendar));</span>
+<span class="fc" id="L816">    }</span>
+
+    /**
+     * Returns the declination from the Department of Defense geomagnetic
+     * model and data, in radians.
+     * The magnetic heading + declination is the true heading of a device
+     * in terms of geographical north pole.
+     *
+     * @param position a position expressed in geodetic coordinates.
+     * @param calendar a calendar containing a specific instant.
+     * @return magnetic field declination.
+     */
+    public Angle getDeclinationAsAngle(
+            final NEDPosition position, final GregorianCalendar calendar) {
+<span class="fc" id="L830">        return new Angle(getDeclination(position, calendar), AngleUnit.RADIANS);</span>
+    }
+
+    /**
+     * Returns the declination from the Department of Defense geomagnetic
+     * model and data, in radians.
+     * The magnetic heading + declination is the true heading of a device
+     * in terms of geographical north pole.
+     *
+     * @param position a position expressed in geodetic coordinates.
+     * @param time     a specific time instant.
+     * @param result   instance where magnetic field declination will be
+     *                 stored.
+     */
+    public void getDeclinationAsAngle(final NEDPosition position, final Date time, final Angle result) {
+<span class="fc" id="L845">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L846">        result.setValue(getDeclination(position, time));</span>
+<span class="fc" id="L847">    }</span>
+
+    /**
+     * Returns the declination from the Department of Defense geomagnetic
+     * model and data, in radians.
+     * The magnetic heading + declination is the true heading of a device
+     * in terms of geographical north pole.
+     *
+     * @param position a position expressed in geodetic coordinates.
+     * @param time     a specific time instant.
+     * @return magnetic field declination.
+     */
+    public Angle getDeclinationAsAngle(final NEDPosition position, final Date time) {
+<span class="fc" id="L860">        return new Angle(getDeclination(position, time), AngleUnit.RADIANS);</span>
+    }
+
+    /**
+     * Returns the magnetic field dip angle from the Department of
+     * Defense geomagnetic model and data, in radians.
+     * This method uses default altitude (0.0 - mean sea level) and time
+     * (half way through the valid 5 year period of the model).
+     *
+     * @param latitude  latitude expressed in radians.
+     * @param longitude longitude expressed in radians.
+     * @return the magnetic field dip angle expressed in radians.
+     */
+    public double getDip(final double latitude, final double longitude) {
+<span class="fc" id="L874">        final var defaultTime = model.epoch + WorldMagneticModel.LIFESPAN / 2.0;</span>
+<span class="fc" id="L875">        calcGeoMag(Math.toDegrees(latitude), Math.toDegrees(longitude), 0.0, defaultTime);</span>
+<span class="fc" id="L876">        return Math.toRadians(dip);</span>
+    }
+
+    /**
+     * Returns the magnetic field dip angle from the Department of
+     * Defense geomagnetic model and data, in radians.
+     * This method uses default altitude (0.0 - mean sea level) and time
+     * (half way through the valid 5 year period of the model).
+     *
+     * @param latitude  latitude angle.
+     * @param longitude longitude angle.
+     * @return the magnetic field dip angle expressed in radians.
+     */
+    public double getDip(final Angle latitude, final Angle longitude) {
+<span class="fc" id="L890">        return getDip(convertAngle(latitude), convertAngle(longitude));</span>
+    }
+
+    /**
+     * Returns the magnetic field dip angle from the Department of
+     * Defense geomagnetic model and data, in radians.
+     * This method uses default altitude (0.0 - mean sea level) and time
+     * (half way through the valid 5 year period of the model).
+     *
+     * @param latitude  latitude expressed in radians.
+     * @param longitude longitude expressed in radians.
+     * @param result    instance where magnetic field dip angle will be
+     *                  stored.
+     */
+    public void getDipAsAngle(final double latitude, final double longitude, final Angle result) {
+<span class="fc" id="L905">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L906">        result.setValue(getDip(latitude, longitude));</span>
+<span class="fc" id="L907">    }</span>
+
+    /**
+     * Returns the magnetic field dip angle from the Department of
+     * Defense geomagnetic model and data, in radians.
+     * This method uses default altitude (0.0 - mean sea level) and time
+     * (half way through the valid 5 year period of the model).
+     *
+     * @param latitude  latitude angle.
+     * @param longitude longitude angle.
+     * @return the magnetic field dip angle.
+     */
+    public Angle getDipAsAngle(final double latitude, final double longitude) {
+<span class="fc" id="L920">        return new Angle(getDip(latitude, longitude), AngleUnit.RADIANS);</span>
+    }
+
+    /**
+     * Returns the magnetic field dip angle from the Department of
+     * Defense geomagnetic model and data, in radians.
+     * This method uses default altitude (0.0 - mean sea level) and time
+     * (half way through the valid 5 year period of the model).
+     *
+     * @param latitude  latitude angle.
+     * @param longitude longitude angle.
+     * @param result    instance where magnetic field dip angle will be
+     *                  stored.
+     */
+    public void getDipAsAngle(final Angle latitude, final Angle longitude, final Angle result) {
+<span class="fc" id="L935">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L936">        result.setValue(getDip(latitude, longitude));</span>
+<span class="fc" id="L937">    }</span>
+
+    /**
+     * Returns the magnetic field dip angle from the Department of
+     * Defense geomagnetic model and data, in radians.
+     * This method uses default altitude (0.0 - mean sea level) and time
+     * (half way through the valid 5 year period of the model).
+     *
+     * @param latitude  latitude angle.
+     * @param longitude longitude angle.
+     * @return the magnetic field dip angle.
+     */
+    public Angle getDipAsAngle(final Angle latitude, final Angle longitude) {
+<span class="fc" id="L950">        return new Angle(getDip(latitude, longitude), AngleUnit.RADIANS);</span>
+    }
+
+    /**
+     * Returns the magnetic field dip angle from the Department of
+     * Defense geomagnetic model and data, in radians.
+     *
+     * @param latitude  latitude expressed in radians.
+     * @param longitude longitude expressed in radians.
+     * @param height    height expressed in meters.
+     * @param year      year expressed in decimal years.
+     * @return the magnetic field dip angle expressed in radians.
+     */
+    public double getDip(final double latitude, final double longitude, final double height, final double year) {
+<span class="fc" id="L964">        final var heightKm = DistanceConverter.convert(height, DistanceUnit.METER, DistanceUnit.KILOMETER);</span>
+<span class="fc" id="L965">        calcGeoMag(Math.toDegrees(latitude), Math.toDegrees(longitude), heightKm, year);</span>
+<span class="fc" id="L966">        return Math.toRadians(dip);</span>
+    }
+
+    /**
+     * Returns the magnetic field dip angle from the Department of
+     * Defense geomagnetic model and data, in radians.
+     *
+     * @param latitude  latitude expressed in radians.
+     * @param longitude longitude expressed in radians.
+     * @param height    height expressed in meters.
+     * @param calendar  a calendar containing a specific instant.
+     * @return the magnetic field dip angle expressed in radians.
+     */
+    public double getDip(
+            final double latitude, final double longitude, final double height, final GregorianCalendar calendar) {
+<span class="fc" id="L981">        return getDip(latitude, longitude, height, convertTime(calendar));</span>
+    }
+
+    /**
+     * Returns the magnetic field dip angle from the Department of
+     * Defense geomagnetic model and data, in radians.
+     *
+     * @param latitude  latitude expressed in radians.
+     * @param longitude longitude expressed in radians.
+     * @param height    height expressed in meters.
+     * @param time      a specific time instant.
+     * @return the magnetic field dip angle expressed in radians.
+     */
+    public double getDip(final double latitude, final double longitude, final double height, final Date time) {
+<span class="fc" id="L995">        final var calendar = new GregorianCalendar();</span>
+<span class="fc" id="L996">        calendar.setTime(time);</span>
+<span class="fc" id="L997">        return getDip(latitude, longitude, height, calendar);</span>
+    }
+
+    /**
+     * Returns the magnetic field dip angle from the Department of
+     * Defense geomagnetic model and data, in radians.
+     *
+     * @param latitude  latitude angle.
+     * @param longitude longitude angle.
+     * @param height    height.
+     * @param year      year expressed in decimal years.
+     * @return the magnetic field dip angle expressed in radians.
+     */
+    public double getDip(final Angle latitude, final Angle longitude, final Distance height, final double year) {
+<span class="fc" id="L1011">        return getDip(convertAngle(latitude), convertAngle(longitude), convertDistance(height), year);</span>
+    }
+
+    /**
+     * Returns the magnetic field dip angle from the Department of
+     * Defense geomagnetic model and data, in radians.
+     *
+     * @param latitude  latitude angle.
+     * @param longitude longitude angle.
+     * @param height    height.
+     * @param calendar  a calendar containing a specific instant.
+     * @return the magnetic field dip angle expressed in radians.
+     */
+    public double getDip(final Angle latitude, final Angle longitude, final Distance height,
+                         final GregorianCalendar calendar) {
+<span class="fc" id="L1026">        return getDip(convertAngle(latitude), convertAngle(longitude), convertDistance(height), calendar);</span>
+    }
+
+    /**
+     * Returns the magnetic field dip angle from the Department of
+     * Defense geomagnetic model and data, in radians.
+     *
+     * @param latitude  latitude angle.
+     * @param longitude longitude angle.
+     * @param height    height.
+     * @param time      a specific time instant.
+     * @return the magnetic field dip angle expressed in radians.
+     */
+    public double getDip(final Angle latitude, final Angle longitude, final Distance height, final Date time) {
+<span class="fc" id="L1040">        return getDip(convertAngle(latitude), convertAngle(longitude), convertDistance(height), time);</span>
+    }
+
+    /**
+     * Returns the magnetic field dip angle from the Department of
+     * Defense geomagnetic model and data, in radians.
+     *
+     * @param position a position expressed in geodetic coordinates.
+     * @param year     year expressed in decimal years.
+     * @return the magnetic field dip angle expressed in radians.
+     */
+    public double getDip(final NEDPosition position, final double year) {
+<span class="fc" id="L1052">        return getDip(position.getLatitude(), position.getLongitude(), position.getHeight(), year);</span>
+    }
+
+    /**
+     * Returns the magnetic field dip angle from the Department of
+     * Defense geomagnetic model and data, in radians.
+     *
+     * @param position a position expressed in geodetic coordinates.
+     * @param calendar a calendar containing a specific instant.
+     * @return the magnetic field dip angle expressed in radians.
+     */
+    public double getDip(final NEDPosition position, final GregorianCalendar calendar) {
+<span class="fc" id="L1064">        return getDip(position.getLatitude(), position.getLongitude(), position.getHeight(), calendar);</span>
+    }
+
+    /**
+     * Returns the magnetic field dip angle from the Department of
+     * Defense geomagnetic model and data, in radians.
+     *
+     * @param position a position expressed in geodetic coordinates.
+     * @param time     a specific time instant.
+     * @return the magnetic field dip angle expressed in radians.
+     */
+    public double getDip(final NEDPosition position, final Date time) {
+<span class="fc" id="L1076">        return getDip(position.getLatitude(), position.getLongitude(), position.getHeight(), time);</span>
+    }
+
+    /**
+     * Returns the magnetic field dip angle from the Department of
+     * Defense geomagnetic model and data, in radians.
+     *
+     * @param latitude  latitude expressed in radians.
+     * @param longitude longitude expressed in radians.
+     * @param height    height expressed in meters.
+     * @param year      year expressed in decimal years.
+     * @param result    instance where magnetic field dip angle will be
+     *                  stored.
+     */
+    public void getDipAsAngle(
+            final double latitude, final double longitude, final double height, final double year, final Angle result) {
+<span class="fc" id="L1092">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L1093">        result.setValue(getDip(latitude, longitude, height, year));</span>
+<span class="fc" id="L1094">    }</span>
+
+    /**
+     * Returns the magnetic field dip angle from the Department of
+     * Defense geomagnetic model and data, in radians.
+     *
+     * @param latitude  latitude expressed in radians.
+     * @param longitude longitude expressed in radians.
+     * @param height    height expressed in meters.
+     * @param year      year expressed in decimal years.
+     * @return the magnetic field dip angle.
+     */
+    public Angle getDipAsAngle(final double latitude, final double longitude, final double height, final double year) {
+<span class="fc" id="L1107">        return new Angle(getDip(latitude, longitude, height, year), AngleUnit.RADIANS);</span>
+    }
+
+    /**
+     * Returns the magnetic field dip angle from the Department of
+     * Defense geomagnetic model and data, in radians.
+     *
+     * @param latitude  latitude expressed in radians.
+     * @param longitude longitude expressed in radians.
+     * @param height    height expressed in meters.
+     * @param calendar  a calendar containing a specific instant.
+     * @param result    instance where magnetic field dip angle will be
+     *                  stored.
+     */
+    public void getDipAsAngle(
+            final double latitude, final double longitude, final double height, final GregorianCalendar calendar,
+            final Angle result) {
+<span class="fc" id="L1124">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L1125">        result.setValue(getDip(latitude, longitude, height, calendar));</span>
+<span class="fc" id="L1126">    }</span>
+
+    /**
+     * Returns the magnetic field dip angle from the Department of
+     * Defense geomagnetic model and data, in radians.
+     *
+     * @param latitude  latitude expressed in radians.
+     * @param longitude longitude expressed in radians.
+     * @param height    height expressed in meters.
+     * @param calendar  a calendar containing a specific instant.
+     * @return the magnetic field dip angle.
+     */
+    public Angle getDipAsAngle(
+            final double latitude, final double longitude, final double height, final GregorianCalendar calendar) {
+<span class="fc" id="L1140">        return new Angle(getDip(latitude, longitude, height, calendar), AngleUnit.RADIANS);</span>
+    }
+
+    /**
+     * Returns the magnetic field dip angle from the Department of
+     * Defense geomagnetic model and data, in radians.
+     *
+     * @param latitude  latitude expressed in radians.
+     * @param longitude longitude expressed in radians.
+     * @param height    height expressed in meters.
+     * @param time      a specific time instant.
+     * @param result    instance where magnetic field dip angle will be
+     *                  stored.
+     */
+    public void getDipAsAngle(
+            final double latitude, final double longitude, final double height, final Date time, final Angle result) {
+<span class="fc" id="L1156">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L1157">        result.setValue(getDip(latitude, longitude, height, time));</span>
+<span class="fc" id="L1158">    }</span>
+
+    /**
+     * Returns the magnetic field dip angle from the Department of
+     * Defense geomagnetic model and data, in radians.
+     *
+     * @param latitude  latitude expressed in radians.
+     * @param longitude longitude expressed in radians.
+     * @param height    height expressed in meters.
+     * @param time      a specific time instant.
+     * @return the magnetic field dip angle.
+     */
+    public Angle getDipAsAngle(
+            final double latitude, final double longitude, final double height, final Date time) {
+<span class="fc" id="L1172">        return new Angle(getDip(latitude, longitude, height, time), AngleUnit.RADIANS);</span>
+    }
+
+    /**
+     * Returns the magnetic field dip angle from the Department of
+     * Defense geomagnetic model and data, in radians.
+     *
+     * @param latitude  latitude angle.
+     * @param longitude longitude angle.
+     * @param height    height.
+     * @param year      year expressed in decimal years.
+     * @param result    instance where magnetic field dip angle will be
+     *                  stored.
+     */
+    public void getDipAsAngle(
+            final Angle latitude, final Angle longitude, final Distance height, final double year, final Angle result) {
+<span class="fc" id="L1188">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L1189">        result.setValue(getDip(latitude, longitude, height, year));</span>
+<span class="fc" id="L1190">    }</span>
+
+    /**
+     * Returns the magnetic field dip angle from the Department of
+     * Defense geomagnetic model and data, in radians.
+     *
+     * @param latitude  latitude angle.
+     * @param longitude longitude angle.
+     * @param height    height.
+     * @param year      year expressed in decimal years.
+     * @return the magnetic field dip angle.
+     */
+    public Angle getDipAsAngle(final Angle latitude, final Angle longitude, final Distance height, final double year) {
+<span class="fc" id="L1203">        return new Angle(getDip(latitude, longitude, height, year), AngleUnit.RADIANS);</span>
+    }
+
+    /**
+     * Returns the magnetic field dip angle from the Department of
+     * Defense geomagnetic model and data, in radians.
+     *
+     * @param latitude  latitude angle.
+     * @param longitude longitude angle.
+     * @param height    height.
+     * @param calendar  a calendar containing a specific instant.
+     * @param result    instance where magnetic field dip angle will be
+     *                  stored.
+     */
+    public void getDipAsAngle(final Angle latitude, final Angle longitude, final Distance height,
+                              final GregorianCalendar calendar, final Angle result) {
+<span class="fc" id="L1219">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L1220">        result.setValue(getDip(latitude, longitude, height, calendar));</span>
+<span class="fc" id="L1221">    }</span>
+
+    /**
+     * Returns the magnetic field dip angle from the Department of
+     * Defense geomagnetic model and data, in radians.
+     *
+     * @param latitude  latitude angle.
+     * @param longitude longitude angle.
+     * @param height    height.
+     * @param calendar  a calendar containing a specific instant.
+     * @return the magnetic field dip angle.
+     */
+    public Angle getDipAsAngle(
+            final Angle latitude, final Angle longitude, final Distance height, final GregorianCalendar calendar) {
+<span class="fc" id="L1235">        return new Angle(getDip(latitude, longitude, height, calendar), AngleUnit.RADIANS);</span>
+    }
+
+    /**
+     * Returns the magnetic field dip angle from the Department of
+     * Defense geomagnetic model and data, in radians.
+     *
+     * @param latitude  latitude angle.
+     * @param longitude longitude angle.
+     * @param height    height.
+     * @param time      a specific time instant.
+     * @param result    instance where magnetic field dip angle will be
+     *                  stored.
+     */
+    public void getDipAsAngle(
+            final Angle latitude, final Angle longitude, final Distance height, final Date time, final Angle result) {
+<span class="fc" id="L1251">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L1252">        result.setValue(getDip(latitude, longitude, height, time));</span>
+<span class="fc" id="L1253">    }</span>
+
+    /**
+     * Returns the magnetic field dip angle from the Department of
+     * Defense geomagnetic model and data, in radians.
+     *
+     * @param latitude  latitude angle.
+     * @param longitude longitude angle.
+     * @param height    height.
+     * @param time      a specific time instant.
+     * @return the magnetic field dip angle.
+     */
+    public Angle getDipAsAngle(
+            final Angle latitude, final Angle longitude, final Distance height, final Date time) {
+<span class="fc" id="L1267">        return new Angle(getDip(latitude, longitude, height, time), AngleUnit.RADIANS);</span>
+    }
+
+    /**
+     * Returns the magnetic field dip angle from the Department of
+     * Defense geomagnetic model and data, in radians.
+     *
+     * @param position a position expressed in geodetic coordinates.
+     * @param year     year expressed in decimal years.
+     * @param result   instance where magnetic field dip angle will be
+     *                 stored.
+     */
+    public void getDipAsAngle(final NEDPosition position, final double year, final Angle result) {
+<span class="fc" id="L1280">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L1281">        result.setValue(getDip(position, year));</span>
+<span class="fc" id="L1282">    }</span>
+
+    /**
+     * Returns the magnetic field dip angle from the Department of
+     * Defense geomagnetic model and data, in radians.
+     *
+     * @param position a position expressed in geodetic coordinates.
+     * @param year     year expressed in decimal years.
+     * @return the magnetic field dip angle.
+     */
+    public Angle getDipAsAngle(
+            final NEDPosition position, final double year) {
+<span class="fc" id="L1294">        return new Angle(getDip(position, year), AngleUnit.RADIANS);</span>
+    }
+
+    /**
+     * Returns the magnetic field dip angle from the Department of
+     * Defense geomagnetic model and data, in radians.
+     *
+     * @param position a position expressed in geodetic coordinates.
+     * @param calendar a calendar containing a specific instant.
+     * @param result   instance where magnetic field dip angle will be
+     *                 stored.
+     */
+    public void getDipAsAngle(final NEDPosition position, final GregorianCalendar calendar, final Angle result) {
+<span class="fc" id="L1307">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L1308">        result.setValue(getDip(position, calendar));</span>
+<span class="fc" id="L1309">    }</span>
+
+    /**
+     * Returns the magnetic field dip angle from the Department of
+     * Defense geomagnetic model and data, in radians.
+     *
+     * @param position a position expressed in geodetic coordinates.
+     * @param calendar a calendar containing a specific instant.
+     * @return the magnetic field dip angle.
+     */
+    public Angle getDipAsAngle(final NEDPosition position, final GregorianCalendar calendar) {
+<span class="fc" id="L1320">        return new Angle(getDip(position, calendar), AngleUnit.RADIANS);</span>
+    }
+
+    /**
+     * Returns the magnetic field dip angle from the Department of
+     * Defense geomagnetic model and data, in radians.
+     *
+     * @param position a position expressed in geodetic coordinates.
+     * @param time     a specific time instant.
+     * @param result   instance where magnetic field dip angle will be
+     *                 stored.
+     */
+    public void getDipAsAngle(final NEDPosition position, final Date time, final Angle result) {
+<span class="fc" id="L1333">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L1334">        result.setValue(getDip(position, time));</span>
+<span class="fc" id="L1335">    }</span>
+
+    /**
+     * Returns the magnetic field dip angle from the Department of
+     * Defense geomagnetic model and data, in radians.
+     *
+     * @param position a position expressed in geodetic coordinates.
+     * @param time     a specific time instant.
+     * @return the magnetic field dip angle.
+     */
+    public Angle getDipAsAngle(final NEDPosition position, final Date time) {
+<span class="fc" id="L1346">        return new Angle(getDip(position, time), AngleUnit.RADIANS);</span>
+    }
+
+    /**
+     * Returns the magnetic field intensity from the Department of
+     * Defense geomagnetic model and data expressed in Teslas.
+     * This method uses default altitude (0.0 - mean sea level) and time
+     * (half way through the valid 5 year period of the model).
+     *
+     * @param latitude  latitude expressed in radians.
+     * @param longitude longitude expressed in radians.
+     * @return magnetic field strength expressed in Teslas (T).
+     */
+    public double getIntensity(final double latitude, final double longitude) {
+<span class="fc" id="L1360">        final var defaultTime = model.epoch + WorldMagneticModel.LIFESPAN / 2.0;</span>
+<span class="fc" id="L1361">        calcGeoMag(Math.toDegrees(latitude), Math.toDegrees(longitude), 0.0, defaultTime);</span>
+<span class="fc" id="L1362">        return ti * FROM_NANO;</span>
+    }
+
+    /**
+     * Returns the magnetic field intensity from the Department of
+     * Defense geomagnetic model and data expressed in Teslas.
+     * This method uses default altitude (0.0 - mean sea level) and time
+     * (half way through the valid 5 year period of the model).
+     *
+     * @param latitude  latitude angle.
+     * @param longitude longitude angle.
+     * @return magnetic field strength expressed in Teslas (T).
+     */
+    public double getIntensity(final Angle latitude, final Angle longitude) {
+<span class="fc" id="L1376">        return getIntensity(convertAngle(latitude), convertAngle(longitude));</span>
+    }
+
+    /**
+     * Returns the magnetic field intensity from the Department of
+     * Defense geomagnetic model and data expressed in Teslas.
+     *
+     * @param latitude  latitude expressed in radians.
+     * @param longitude longitude expressed in radians.
+     * @param height    height expressed in meters.
+     * @param year      year expressed in decimal years.
+     * @return magnetic field strength expressed in Teslas (T).
+     */
+    public double getIntensity(final double latitude, final double longitude, final double height, final double year) {
+<span class="fc" id="L1390">        final var heightKm = DistanceConverter.convert(height, DistanceUnit.METER, DistanceUnit.KILOMETER);</span>
+<span class="fc" id="L1391">        calcGeoMag(Math.toDegrees(latitude), Math.toDegrees(longitude), heightKm, year);</span>
+<span class="fc" id="L1392">        return ti * FROM_NANO;</span>
+    }
+
+    /**
+     * Returns the magnetic field intensity from the Department of
+     * Defense geomagnetic model and data expressed in Teslas.
+     *
+     * @param latitude  latitude expressed in radians.
+     * @param longitude longitude expressed in radians.
+     * @param height    height expressed in meters.
+     * @param calendar  a calendar containing a specific instant.
+     * @return magnetic field strength expressed in Teslas (T).
+     */
+    public double getIntensity(
+            final double latitude, final double longitude, final double height, final GregorianCalendar calendar) {
+<span class="fc" id="L1407">        return getIntensity(latitude, longitude, height, convertTime(calendar));</span>
+    }
+
+    /**
+     * Returns the magnetic field intensity from the Department of
+     * Defense geomagnetic model and data expressed in Teslas.
+     *
+     * @param latitude  latitude expressed in radians.
+     * @param longitude longitude expressed in radians.
+     * @param height    height expressed in meters.
+     * @param time      a specific time instant.
+     * @return magnetic field strength expressed in Teslas (T).
+     */
+    public double getIntensity(
+            final double latitude, final double longitude, final double height, final Date time) {
+<span class="fc" id="L1422">        final var calendar = new GregorianCalendar();</span>
+<span class="fc" id="L1423">        calendar.setTime(time);</span>
+<span class="fc" id="L1424">        return getIntensity(latitude, longitude, height, calendar);</span>
+    }
+
+    /**
+     * Returns the magnetic field intensity from the Department of
+     * Defense geomagnetic model and data expressed in Teslas.
+     *
+     * @param latitude  latitude angle.
+     * @param longitude longitude angle.
+     * @param height    height.
+     * @param year      year expressed in decimal years.
+     * @return magnetic field strength expressed in Teslas (T).
+     */
+    public double getIntensity(
+            final Angle latitude, final Angle longitude, final Distance height, final double year) {
+<span class="fc" id="L1439">        return getIntensity(convertAngle(latitude), convertAngle(longitude), convertDistance(height), year);</span>
+    }
+
+    /**
+     * Returns the magnetic field intensity from the Department of
+     * Defense geomagnetic model and data expressed in Teslas.
+     *
+     * @param latitude  latitude angle.
+     * @param longitude longitude angle.
+     * @param height    height.
+     * @param calendar  a calendar containing a specific instant.
+     * @return magnetic field strength expressed in Teslas (T).
+     */
+    public double getIntensity(
+            final Angle latitude, final Angle longitude, final Distance height, final GregorianCalendar calendar) {
+<span class="fc" id="L1454">        return getIntensity(convertAngle(latitude), convertAngle(longitude), convertDistance(height), calendar);</span>
+    }
+
+    /**
+     * Returns the magnetic field intensity from the Department of
+     * Defense geomagnetic model and data expressed in Teslas.
+     *
+     * @param latitude  latitude angle.
+     * @param longitude longitude angle.
+     * @param height    height.
+     * @param time      a specific time instant.
+     * @return magnetic field strength expressed in Teslas (T).
+     */
+    public double getIntensity(final Angle latitude, final Angle longitude, final Distance height, final Date time) {
+<span class="fc" id="L1468">        return getIntensity(convertAngle(latitude), convertAngle(longitude), convertDistance(height), time);</span>
+    }
+
+    /**
+     * Returns the magnetic field intensity from the Department of
+     * Defense geomagnetic model and data expressed in Teslas.
+     *
+     * @param position a position expressed in geodetic coordinates.
+     * @param year     year expressed in decimal years.
+     * @return magnetic field strength expressed in Teslas (T).
+     */
+    public double getIntensity(final NEDPosition position, final double year) {
+<span class="fc" id="L1480">        return getIntensity(position.getLatitude(), position.getLongitude(), position.getHeight(), year);</span>
+    }
+
+    /**
+     * Returns the magnetic field intensity from the Department of
+     * Defense geomagnetic model and data expressed in Teslas.
+     *
+     * @param position a position expressed in geodetic coordinates.
+     * @param calendar a calendar containing a specific instant.
+     * @return magnetic field strength expressed in Teslas (T).
+     */
+    public double getIntensity(final NEDPosition position, final GregorianCalendar calendar) {
+<span class="fc" id="L1492">        return getIntensity(position.getLatitude(), position.getLongitude(), position.getHeight(), calendar);</span>
+    }
+
+    /**
+     * Returns the magnetic field intensity from the Department of
+     * Defense geomagnetic model and data expressed in Teslas.
+     *
+     * @param position a position expressed in geodetic coordinates.
+     * @param time     a specific time instant.
+     * @return magnetic field strength expressed in Teslas (T).
+     */
+    public double getIntensity(final NEDPosition position, final Date time) {
+<span class="fc" id="L1504">        return getIntensity(position.getLatitude(), position.getLongitude(), position.getHeight(), time);</span>
+    }
+
+    /**
+     * Returns the horizontal magnetic field intensity from the
+     * Department of Defense geomagnetic model and data expressed
+     * in Teslas.
+     * This method uses default altitude (0.0 - mean sea level) and time
+     * (half way through the valid 5 year period of the model).
+     *
+     * @param latitude  latitude expressed in radians.
+     * @param longitude longitude expressed in radians.
+     * @return the horizontal magnetic field strength expressed in
+     * Teslas (T).
+     */
+    public double getHorizontalIntensity(final double latitude, final double longitude) {
+<span class="fc" id="L1520">        final var defaultTime = model.epoch + WorldMagneticModel.LIFESPAN / 2.0;</span>
+<span class="fc" id="L1521">        calcGeoMag(Math.toDegrees(latitude), Math.toDegrees(longitude), 0.0, defaultTime);</span>
+<span class="fc" id="L1522">        return bh * FROM_NANO;</span>
+    }
+
+    /**
+     * Returns the horizontal magnetic field intensity from the
+     * Department of Defense geomagnetic model and data expressed
+     * in Teslas.
+     * This method uses default altitude (0.0 - mean sea level) and time
+     * (half way through the valid 5 year period of the model).
+     *
+     * @param latitude  latitude angle.
+     * @param longitude longitude angle.
+     * @return the horizontal magnetic field strength expressed in
+     * Teslas (T).
+     */
+    public double getHorizontalIntensity(final Angle latitude, final Angle longitude) {
+<span class="fc" id="L1538">        return getHorizontalIntensity(convertAngle(latitude), convertAngle(longitude));</span>
+    }
+
+    /**
+     * Returns the horizontal magnetic field intensity from the
+     * Department of Defense geomagnetic model and data expressed
+     * in Teslas.
+     *
+     * @param latitude  latitude expressed in radians.
+     * @param longitude longitude expressed in radians.
+     * @param height    height expressed in meters.
+     * @param year      year expressed in decimal years.
+     * @return the horizontal magnetic field strength expressed in
+     * Teslas (T).
+     */
+    public double getHorizontalIntensity(
+            final double latitude, final double longitude, final double height, final double year) {
+<span class="fc" id="L1555">        final var heightKm = DistanceConverter.convert(height, DistanceUnit.METER, DistanceUnit.KILOMETER);</span>
+<span class="fc" id="L1556">        calcGeoMag(Math.toDegrees(latitude), Math.toDegrees(longitude), heightKm, year);</span>
+<span class="fc" id="L1557">        return bh * FROM_NANO;</span>
+    }
+
+    /**
+     * Returns the horizontal magnetic field intensity from the
+     * Department of Defense geomagnetic model and data expressed
+     * in Teslas.
+     *
+     * @param latitude  latitude expressed in radians.
+     * @param longitude longitude expressed in radians.
+     * @param height    height expressed in meters.
+     * @param calendar  a calendar containing a specific instant.
+     * @return the horizontal magnetic field strength expressed in
+     * Teslas (T).
+     */
+    public double getHorizontalIntensity(
+            final double latitude, final double longitude,
+            final double height, final GregorianCalendar calendar) {
+<span class="fc" id="L1575">        return getHorizontalIntensity(latitude, longitude, height, convertTime(calendar));</span>
+    }
+
+    /**
+     * Returns the horizontal magnetic field intensity from the
+     * Department of Defense geomagnetic model and data expressed
+     * in Teslas.
+     *
+     * @param latitude  latitude expressed in radians.
+     * @param longitude longitude expressed in radians.
+     * @param height    height expressed in meters.
+     * @param time      a specific time instant.
+     * @return the horizontal magnetic field strength expressed in
+     * Teslas (T).
+     */
+    public double getHorizontalIntensity(
+            final double latitude, final double longitude, final double height, final Date time) {
+<span class="fc" id="L1592">        final var calendar = new GregorianCalendar();</span>
+<span class="fc" id="L1593">        calendar.setTime(time);</span>
+<span class="fc" id="L1594">        return getHorizontalIntensity(latitude, longitude, height, calendar);</span>
+    }
+
+    /**
+     * Returns the horizontal magnetic field intensity from the
+     * Department of Defense geomagnetic model and data expressed
+     * in Teslas.
+     *
+     * @param latitude  latitude angle.
+     * @param longitude longitude angle.
+     * @param height    height.
+     * @param year      year expressed in decimal years.
+     * @return the horizontal magnetic field strength expressed in
+     * Teslas (T).
+     */
+    public double getHorizontalIntensity(
+            final Angle latitude, final Angle longitude, final Distance height, final double year) {
+<span class="fc" id="L1611">        return getHorizontalIntensity(convertAngle(latitude), convertAngle(longitude), convertDistance(height), year);</span>
+    }
+
+    /**
+     * Returns the horizontal magnetic field intensity from the
+     * Department of Defense geomagnetic model and data expressed
+     * in Teslas.
+     *
+     * @param latitude  latitude angle.
+     * @param longitude longitude angle.
+     * @param height    height.
+     * @param calendar  a calendar containing a specific instant.
+     * @return the horizontal magnetic field strength expressed in
+     * Teslas (T).
+     */
+    public double getHorizontalIntensity(
+            final Angle latitude, final Angle longitude, final Distance height, final GregorianCalendar calendar) {
+<span class="fc" id="L1628">        return getHorizontalIntensity(convertAngle(latitude), convertAngle(longitude), convertDistance(height),</span>
+                calendar);
+    }
+
+    /**
+     * Returns the horizontal magnetic field intensity from the
+     * Department of Defense geomagnetic model and data expressed
+     * in Teslas.
+     *
+     * @param latitude  latitude angle.
+     * @param longitude longitude angle.
+     * @param height    height.
+     * @param time      a specific time instant.
+     * @return the horizontal magnetic field strength expressed in
+     * Teslas (T).
+     */
+    public double getHorizontalIntensity(
+            final Angle latitude, final Angle longitude, final Distance height, final Date time) {
+<span class="fc" id="L1646">        return getHorizontalIntensity(convertAngle(latitude), convertAngle(longitude), convertDistance(height),</span>
+                time);
+    }
+
+    /**
+     * Returns the horizontal magnetic field intensity from the
+     * Department of Defense geomagnetic model and data expressed
+     * in Teslas.
+     *
+     * @param position a position expressed in geodetic coordinates.
+     * @param year     year expressed in decimal years.
+     * @return the horizontal magnetic field strength expressed in
+     * Teslas (T).
+     */
+    public double getHorizontalIntensity(final NEDPosition position, final double year) {
+<span class="fc" id="L1661">        return getHorizontalIntensity(position.getLatitude(), position.getLongitude(), position.getHeight(), year);</span>
+    }
+
+    /**
+     * Returns the horizontal magnetic field intensity from the
+     * Department of Defense geomagnetic model and data expressed
+     * in Teslas.
+     *
+     * @param position a position expressed in geodetic coordinates.
+     * @param calendar a calendar containing a specific instant.
+     * @return the horizontal magnetic field strength expressed in
+     * Teslas (T).
+     */
+    public double getHorizontalIntensity(final NEDPosition position, final GregorianCalendar calendar) {
+<span class="fc" id="L1675">        return getHorizontalIntensity(position.getLatitude(), position.getLongitude(), position.getHeight(), calendar);</span>
+    }
+
+    /**
+     * Returns the horizontal magnetic field intensity from the
+     * Department of Defense geomagnetic model and data expressed
+     * in Teslas.
+     *
+     * @param position a position expressed in geodetic coordinates.
+     * @param time     a specific time instant.
+     * @return the horizontal magnetic field strength expressed in
+     * Teslas (T).
+     */
+    public double getHorizontalIntensity(final NEDPosition position, final Date time) {
+<span class="fc" id="L1689">        return getHorizontalIntensity(position.getLatitude(), position.getLongitude(), position.getHeight(), time);</span>
+    }
+
+    /**
+     * Returns the vertical magnetic field intensity from the
+     * Department of Defense geomagnetic model and data expressed
+     * in Teslas.
+     * This method uses default altitude (0.0 - mean sea level) and time
+     * (half way through the valid 5 year period of the model).
+     *
+     * @param latitude  latitude expressed in radians.
+     * @param longitude longitude expressed in radians.
+     * @return the vertical magnetic field strength expressed in
+     * Teslas (T).
+     */
+    public double getVerticalIntensity(final double latitude, final double longitude) {
+<span class="fc" id="L1705">        final var defaultTime = model.epoch + WorldMagneticModel.LIFESPAN / 2.0;</span>
+<span class="fc" id="L1706">        calcGeoMag(Math.toDegrees(latitude), Math.toDegrees(longitude), 0.0, defaultTime);</span>
+<span class="fc" id="L1707">        return bz * FROM_NANO;</span>
+    }
+
+    /**
+     * Returns the vertical magnetic field intensity from the
+     * Department of Defense geomagnetic model and data expressed
+     * in Teslas.
+     * This method uses default altitude (0.0 - mean sea level) and time
+     * (half way through the valid 5 year period of the model).
+     *
+     * @param latitude  latitude angle.
+     * @param longitude longitude angle.
+     * @return the vertical magnetic field strength expressed in
+     * Teslas (T).
+     */
+    public double getVerticalIntensity(final Angle latitude, final Angle longitude) {
+<span class="fc" id="L1723">        return getVerticalIntensity(convertAngle(latitude), convertAngle(longitude));</span>
+    }
+
+    /**
+     * Returns the vertical magnetic field intensity from the
+     * Department of Defense geomagnetic model and data expressed
+     * in Teslas.
+     *
+     * @param latitude  latitude expressed in radians.
+     * @param longitude longitude expressed in radians.
+     * @param height    height expressed in meters.
+     * @param year      year expressed in decimal years.
+     * @return the vertical magnetic field strength expressed in
+     * Teslas (T).
+     */
+    public double getVerticalIntensity(final double latitude, final double longitude, final double height,
+                                       final double year) {
+<span class="fc" id="L1740">        final var heightKm = DistanceConverter.convert(height, DistanceUnit.METER, DistanceUnit.KILOMETER);</span>
+<span class="fc" id="L1741">        calcGeoMag(Math.toDegrees(latitude), Math.toDegrees(longitude), heightKm, year);</span>
+<span class="fc" id="L1742">        return bz * FROM_NANO;</span>
+    }
+
+    /**
+     * Returns the vertical magnetic field intensity from the
+     * Department of Defense geomagnetic model and data expressed
+     * in Teslas.
+     *
+     * @param latitude  latitude expressed in radians.
+     * @param longitude longitude expressed in radians.
+     * @param height    height expressed in meters.
+     * @param calendar  a calendar containing a specific instant.
+     * @return the vertical magnetic field strength expressed in
+     * Teslas (T).
+     */
+    public double getVerticalIntensity(
+            final double latitude, final double longitude, final double height, final GregorianCalendar calendar) {
+<span class="fc" id="L1759">        return getVerticalIntensity(latitude, longitude, height, convertTime(calendar));</span>
+    }
+
+    /**
+     * Returns the vertical magnetic field intensity from the
+     * Department of Defense geomagnetic model and data expressed
+     * in Teslas.
+     *
+     * @param latitude  latitude expressed in radians.
+     * @param longitude longitude expressed in radians.
+     * @param height    height expressed in meters.
+     * @param time      a specific time instant.
+     * @return the vertical magnetic field strength expressed in
+     * Teslas (T).
+     */
+    public double getVerticalIntensity(
+            final double latitude, final double longitude, final double height, final Date time) {
+<span class="fc" id="L1776">        final var calendar = new GregorianCalendar();</span>
+<span class="fc" id="L1777">        calendar.setTime(time);</span>
+<span class="fc" id="L1778">        return getVerticalIntensity(latitude, longitude, height, calendar);</span>
+    }
+
+    /**
+     * Returns the vertical magnetic field intensity from the
+     * Department of Defense geomagnetic model and data expressed
+     * in Teslas.
+     *
+     * @param latitude  latitude angle.
+     * @param longitude longitude angle.
+     * @param height    height.
+     * @param year      year expressed in decimal years.
+     * @return the vertical magnetic field strength expressed in
+     * Teslas (T).
+     */
+    public double getVerticalIntensity(final Angle latitude, final Angle longitude,
+            final Distance height, final double year) {
+<span class="fc" id="L1795">        return getVerticalIntensity(convertAngle(latitude), convertAngle(longitude), convertDistance(height), year);</span>
+    }
+
+    /**
+     * Returns the vertical magnetic field intensity from the
+     * Department of Defense geomagnetic model and data expressed
+     * in Teslas.
+     *
+     * @param latitude  latitude angle.
+     * @param longitude longitude angle.
+     * @param height    height.
+     * @param calendar  a calendar containing a specific instant.
+     * @return the vertical magnetic field strength expressed in
+     * Teslas (T).
+     */
+    public double getVerticalIntensity(
+            final Angle latitude, final Angle longitude, final Distance height, final GregorianCalendar calendar) {
+<span class="fc" id="L1812">        return getVerticalIntensity(convertAngle(latitude), convertAngle(longitude), convertDistance(height), calendar);</span>
+    }
+
+    /**
+     * Returns the vertical magnetic field intensity from the
+     * Department of Defense geomagnetic model and data expressed
+     * in Teslas.
+     *
+     * @param latitude  latitude angle.
+     * @param longitude longitude angle.
+     * @param height    height.
+     * @param time      a specific time instant.
+     * @return the vertical magnetic field strength expressed in
+     * Teslas (T).
+     */
+    public double getVerticalIntensity(
+            final Angle latitude, final Angle longitude, final Distance height, final Date time) {
+<span class="fc" id="L1829">        return getVerticalIntensity(convertAngle(latitude), convertAngle(longitude), convertDistance(height), time);</span>
+    }
+
+    /**
+     * Returns the vertical magnetic field intensity from the
+     * Department of Defense geomagnetic model and data expressed
+     * in Teslas.
+     *
+     * @param position a position expressed in geodetic coordinates.
+     * @param year     year expressed in decimal years.
+     * @return the vertical magnetic field strength expressed in
+     * Teslas (T).
+     */
+    public double getVerticalIntensity(final NEDPosition position, final double year) {
+<span class="fc" id="L1843">        return getVerticalIntensity(position.getLatitude(), position.getLongitude(), position.getHeight(), year);</span>
+    }
+
+    /**
+     * Returns the vertical magnetic field intensity from the
+     * Department of Defense geomagnetic model and data expressed
+     * in Teslas.
+     *
+     * @param position a position expressed in geodetic coordinates.
+     * @param calendar a calendar containing a specific instant.
+     * @return the vertical magnetic field strength expressed in
+     * Teslas (T).
+     */
+    public double getVerticalIntensity(final NEDPosition position, final GregorianCalendar calendar) {
+<span class="fc" id="L1857">        return getVerticalIntensity(position.getLatitude(), position.getLongitude(), position.getHeight(), calendar);</span>
+    }
+
+    /**
+     * Returns the vertical magnetic field intensity from the
+     * Department of Defense geomagnetic model and data expressed
+     * in Teslas.
+     *
+     * @param position a position expressed in geodetic coordinates.
+     * @param time     a specific time instant.
+     * @return the vertical magnetic field strength expressed in
+     * Teslas (T).
+     */
+    public double getVerticalIntensity(final NEDPosition position, final Date time) {
+<span class="fc" id="L1871">        return getVerticalIntensity(position.getLatitude(), position.getLongitude(), position.getHeight(), time);</span>
+    }
+
+    /**
+     * Returns the northerly magnetic field intensity from the
+     * Department of Defense geomagnetic model and data expressed
+     * in Teslas.
+     * This method uses default altitude (0.0 - mean sea level) and time
+     * (half way through the valid 5 year period of the model).
+     *
+     * @param latitude  latitude expressed in radians.
+     * @param longitude longitude expressed in radians.
+     * @return the northerly component of the magnetic field strength
+     * expressed in Teslas (T).
+     */
+    public double getNorthIntensity(final double latitude, final double longitude) {
+<span class="fc" id="L1887">        final var defaultTime = model.epoch + WorldMagneticModel.LIFESPAN / 2.0;</span>
+<span class="fc" id="L1888">        calcGeoMag(Math.toDegrees(latitude), Math.toDegrees(longitude), 0.0, defaultTime);</span>
+<span class="fc" id="L1889">        return bx * FROM_NANO;</span>
+    }
+
+    /**
+     * Returns the northerly magnetic field intensity from the
+     * Department of Defense geomagnetic model and data expressed
+     * in Teslas.
+     * This method uses default altitude (0.0 - mean sea level) and time
+     * (half way through the valid 5 year period of the model).
+     *
+     * @param latitude  latitude angle.
+     * @param longitude longitude angle.
+     * @return the northerly component of the magnetic field strength
+     * expressed in Teslas (T).
+     */
+    public double getNorthIntensity(final Angle latitude, final Angle longitude) {
+<span class="fc" id="L1905">        return getNorthIntensity(convertAngle(latitude), convertAngle(longitude));</span>
+    }
+
+    /**
+     * Returns the northerly magnetic field intensity from the
+     * Department of Defense geomagnetic model and data expressed
+     * in Teslas.
+     *
+     * @param latitude  latitude expressed in radians.
+     * @param longitude longitude expressed in radians.
+     * @param height    height expressed in meters.
+     * @param year      year expressed in decimal years.
+     * @return the northerly component of the magnetic field strength
+     * expressed in Teslas (T).
+     */
+    public double getNorthIntensity(
+            final double latitude, final double longitude, final double height, final double year) {
+<span class="fc" id="L1922">        final var heightKm = DistanceConverter.convert(height, DistanceUnit.METER, DistanceUnit.KILOMETER);</span>
+<span class="fc" id="L1923">        calcGeoMag(Math.toDegrees(latitude), Math.toDegrees(longitude), heightKm, year);</span>
+<span class="fc" id="L1924">        return bx * FROM_NANO;</span>
+    }
+
+    /**
+     * Returns the northerly magnetic field intensity from the
+     * Department of Defense geomagnetic model and data expressed
+     * in Teslas.
+     *
+     * @param latitude  latitude expressed in radians.
+     * @param longitude longitude expressed in radians.
+     * @param height    height expressed in meters.
+     * @param calendar  a calendar containing a specific instant.
+     * @return the northerly component of the magnetic field strength
+     * expressed in Teslas (T).
+     */
+    public double getNorthIntensity(
+            final double latitude, final double longitude, final double height, final GregorianCalendar calendar) {
+<span class="fc" id="L1941">        return getNorthIntensity(latitude, longitude, height, convertTime(calendar));</span>
+    }
+
+    /**
+     * Returns the northerly magnetic field intensity from the
+     * Department of Defense geomagnetic model and data expressed
+     * in Teslas.
+     *
+     * @param latitude  latitude expressed in radians.
+     * @param longitude longitude expressed in radians.
+     * @param height    height expressed in meters.
+     * @param time      a specific time instant.
+     * @return the northerly component of the magnetic field strength
+     * expressed in Teslas (T).
+     */
+    public double getNorthIntensity(
+            final double latitude, final double longitude, final double height, final Date time) {
+<span class="fc" id="L1958">        final var calendar = new GregorianCalendar();</span>
+<span class="fc" id="L1959">        calendar.setTime(time);</span>
+<span class="fc" id="L1960">        return getNorthIntensity(latitude, longitude, height, calendar);</span>
+    }
+
+    /**
+     * Returns the northerly magnetic field intensity from the
+     * Department of Defense geomagnetic model and data expressed
+     * in Teslas.
+     *
+     * @param latitude  latitude angle.
+     * @param longitude longitude angle.
+     * @param height    height.
+     * @param year      year expressed in decimal years.
+     * @return the northerly component of the magnetic field strength
+     * expressed in Teslas (T).
+     */
+    public double getNorthIntensity(
+            final Angle latitude, final Angle longitude, final Distance height, final double year) {
+<span class="fc" id="L1977">        return getNorthIntensity(convertAngle(latitude), convertAngle(longitude), convertDistance(height), year);</span>
+    }
+
+    /**
+     * Returns the northerly magnetic field intensity from the
+     * Department of Defense geomagnetic model and data expressed
+     * in Teslas.
+     *
+     * @param latitude  latitude angle.
+     * @param longitude longitude angle.
+     * @param height    height.
+     * @param calendar  a calendar containing a specific instant.
+     * @return the northerly component of the magnetic field strength
+     * expressed in Teslas (T).
+     */
+    public double getNorthIntensity(
+            final Angle latitude, final Angle longitude, final Distance height, final GregorianCalendar calendar) {
+<span class="fc" id="L1994">        return getNorthIntensity(convertAngle(latitude), convertAngle(longitude), convertDistance(height), calendar);</span>
+    }
+
+    /**
+     * Returns the northerly magnetic field intensity from the
+     * Department of Defense geomagnetic model and data expressed
+     * in Teslas.
+     *
+     * @param latitude  latitude angle.
+     * @param longitude longitude angle.
+     * @param height    height.
+     * @param time      a specific time instant.
+     * @return the northerly component of the magnetic field strength
+     * expressed in Teslas (T).
+     */
+    public double getNorthIntensity(
+            final Angle latitude, final Angle longitude, final Distance height, final Date time) {
+<span class="fc" id="L2011">        return getNorthIntensity(convertAngle(latitude), convertAngle(longitude), convertDistance(height), time);</span>
+    }
+
+    /**
+     * Returns the northerly magnetic field intensity from the
+     * Department of Defense geomagnetic model and data expressed
+     * in Teslas.
+     *
+     * @param position a position expressed in geodetic coordinates.
+     * @param year     year expressed in decimal years.
+     * @return the northerly component of the magnetic field strength
+     * expressed in Teslas (T).
+     */
+    public double getNorthIntensity(final NEDPosition position, final double year) {
+<span class="fc" id="L2025">        return getNorthIntensity(position.getLatitude(), position.getLongitude(), position.getHeight(), year);</span>
+    }
+
+    /**
+     * Returns the northerly magnetic field intensity from the
+     * Department of Defense geomagnetic model and data expressed
+     * in Teslas.
+     *
+     * @param position a position expressed in geodetic coordinates.
+     * @param calendar a calendar containing a specific instant.
+     * @return the northerly component of the magnetic field strength
+     * expressed in Teslas (T).
+     */
+    public double getNorthIntensity(final NEDPosition position, final GregorianCalendar calendar) {
+<span class="fc" id="L2039">        return getNorthIntensity(position.getLatitude(), position.getLongitude(), position.getHeight(), calendar);</span>
+    }
+
+    /**
+     * Returns the northerly magnetic field intensity from the
+     * Department of Defense geomagnetic model and data expressed
+     * in Teslas.
+     *
+     * @param position a position expressed in geodetic coordinates.
+     * @param time     a specific time instant.
+     * @return the northerly component of the magnetic field strength
+     * expressed in Teslas (T).
+     */
+    public double getNorthIntensity(final NEDPosition position, final Date time) {
+<span class="fc" id="L2053">        return getNorthIntensity(position.getLatitude(), position.getLongitude(), position.getHeight(), time);</span>
+    }
+
+    /**
+     * Returns the easterly magnetic field intensity from the
+     * Department of Defense geomagnetic model and data expressed
+     * in nano Teslas.
+     * This method uses default altitude (0.0 - mean sea level) and time
+     * (half way through the valid 5 year period of the model).
+     *
+     * @param latitude  latitude expressed in radians.
+     * @param longitude longitude expressed in radians.
+     * @return the easterly component of the magnetic field strength
+     * expressed in Teslas (T).
+     */
+    public double getEastIntensity(final double latitude, final double longitude) {
+<span class="fc" id="L2069">        final var defaultTime = model.epoch + WorldMagneticModel.LIFESPAN / 2.0;</span>
+<span class="fc" id="L2070">        calcGeoMag(Math.toDegrees(latitude), Math.toDegrees(longitude), 0.0, defaultTime);</span>
+<span class="fc" id="L2071">        return by * FROM_NANO;</span>
+    }
+
+    /**
+     * Returns the easterly magnetic field intensity from the
+     * Department of Defense geomagnetic model and data expressed
+     * in nano Teslas.
+     * This method uses default altitude (0.0 - mean sea level) and time
+     * (half way through the valid 5 year period of the model).
+     *
+     * @param latitude  latitude angle.
+     * @param longitude longitude angle.
+     * @return the easterly component of the magnetic field strength
+     * expressed in Teslas (T).
+     */
+    public double getEastIntensity(final Angle latitude, final Angle longitude) {
+<span class="fc" id="L2087">        return getEastIntensity(convertAngle(latitude), convertAngle(longitude));</span>
+    }
+
+    /**
+     * Returns the easterly magnetic field intensity from the
+     * Department of Defense geomagnetic model and data expressed
+     * in nano Teslas.
+     *
+     * @param latitude  latitude expressed in radians.
+     * @param longitude longitude expressed in radians.
+     * @param height    height expressed in meters.
+     * @param year      year expressed in decimal years.
+     * @return the easterly component of the magnetic field strength
+     * expressed in Teslas (T).
+     */
+    public double getEastIntensity(
+            final double latitude, final double longitude, final double height, final double year) {
+<span class="fc" id="L2104">        final var heightKm = DistanceConverter.convert(height, DistanceUnit.METER, DistanceUnit.KILOMETER);</span>
+<span class="fc" id="L2105">        calcGeoMag(Math.toDegrees(latitude), Math.toDegrees(longitude), heightKm, year);</span>
+<span class="fc" id="L2106">        return by * FROM_NANO;</span>
+    }
+
+    /**
+     * Returns the easterly magnetic field intensity from the
+     * Department of Defense geomagnetic model and data expressed
+     * in nano Teslas.
+     *
+     * @param latitude  latitude expressed in radians.
+     * @param longitude longitude expressed in radians.
+     * @param height    height expressed in meters.
+     * @param calendar  a calendar containing a specific instant.
+     * @return the easterly component of the magnetic field strength
+     * expressed in Teslas (T).
+     */
+    public double getEastIntensity(
+            final double latitude, final double longitude, final double height, final GregorianCalendar calendar) {
+<span class="fc" id="L2123">        return getEastIntensity(latitude, longitude, height, convertTime(calendar));</span>
+    }
+
+    /**
+     * Returns the easterly magnetic field intensity from the
+     * Department of Defense geomagnetic model and data expressed
+     * in nano Teslas.
+     *
+     * @param latitude  latitude expressed in radians.
+     * @param longitude longitude expressed in radians.
+     * @param height    height expressed in meters.
+     * @param time      a specific time instant.
+     * @return the easterly component of the magnetic field strength
+     * expressed in Teslas (T).
+     */
+    public double getEastIntensity(
+            final double latitude, final double longitude, final double height, final Date time) {
+<span class="fc" id="L2140">        final var calendar = new GregorianCalendar();</span>
+<span class="fc" id="L2141">        calendar.setTime(time);</span>
+<span class="fc" id="L2142">        return getEastIntensity(latitude, longitude, height, calendar);</span>
+    }
+
+    /**
+     * Returns the easterly magnetic field intensity from the
+     * Department of Defense geomagnetic model and data expressed
+     * in nano Teslas.
+     *
+     * @param latitude  latitude angle.
+     * @param longitude longitude angle.
+     * @param height    height.
+     * @param year      year expressed in decimal years.
+     * @return the easterly component of the magnetic field strength
+     * expressed in Teslas (T).
+     */
+    public double getEastIntensity(
+            final Angle latitude, final Angle longitude, final Distance height, final double year) {
+<span class="fc" id="L2159">        return getEastIntensity(convertAngle(latitude), convertAngle(longitude), convertDistance(height), year);</span>
+    }
+
+    /**
+     * Returns the easterly magnetic field intensity from the
+     * Department of Defense geomagnetic model and data expressed
+     * in nano Teslas.
+     *
+     * @param latitude  latitude angle.
+     * @param longitude longitude angle.
+     * @param height    height.
+     * @param calendar  a calendar containing a specific instant.
+     * @return the easterly component of the magnetic field strength
+     * expressed in Teslas (T).
+     */
+    public double getEastIntensity(
+            final Angle latitude, final Angle longitude, final Distance height, final GregorianCalendar calendar) {
+<span class="fc" id="L2176">        return getEastIntensity(convertAngle(latitude), convertAngle(longitude), convertDistance(height), calendar);</span>
+    }
+
+    /**
+     * Returns the easterly magnetic field intensity from the
+     * Department of Defense geomagnetic model and data expressed
+     * in nano Teslas.
+     *
+     * @param latitude  latitude angle.
+     * @param longitude longitude angle.
+     * @param height    height.
+     * @param time      a specific time instant.
+     * @return the easterly component of the magnetic field strength
+     * expressed in Teslas (T).
+     */
+    public double getEastIntensity(
+            final Angle latitude, final Angle longitude, final Distance height, final Date time) {
+<span class="fc" id="L2193">        return getEastIntensity(convertAngle(latitude), convertAngle(longitude), convertDistance(height), time);</span>
+    }
+
+    /**
+     * Returns the easterly magnetic field intensity from the
+     * Department of Defense geomagnetic model and data expressed
+     * in nano Teslas.
+     *
+     * @param position a position expressed in geodetic coordinates.
+     * @param year     year expressed in decimal years.
+     * @return the easterly component of the magnetic field strength
+     * expressed in Teslas (T).
+     */
+    public double getEastIntensity(final NEDPosition position, final double year) {
+<span class="fc" id="L2207">        return getEastIntensity(position.getLatitude(), position.getLongitude(), position.getHeight(), year);</span>
+    }
+
+    /**
+     * Returns the easterly magnetic field intensity from the
+     * Department of Defense geomagnetic model and data expressed
+     * in nano Teslas.
+     *
+     * @param position a position expressed in geodetic coordinates.
+     * @param calendar a calendar containing a specific instant.
+     * @return the easterly component of the magnetic field strength
+     * expressed in Teslas (T).
+     */
+    public double getEastIntensity(final NEDPosition position, final GregorianCalendar calendar) {
+<span class="fc" id="L2221">        return getEastIntensity(position.getLatitude(), position.getLongitude(), position.getHeight(), calendar);</span>
+    }
+
+    /**
+     * Returns the easterly magnetic field intensity from the
+     * Department of Defense geomagnetic model and data expressed
+     * in nano Teslas.
+     *
+     * @param position a position expressed in geodetic coordinates.
+     * @param time     a specific time instant.
+     * @return the easterly component of the magnetic field strength
+     * expressed in Teslas (T).
+     */
+    public double getEastIntensity(final NEDPosition position, final Date time) {
+<span class="fc" id="L2235">        return getEastIntensity(position.getLatitude(), position.getLongitude(), position.getHeight(), time);</span>
+    }
+
+    /**
+     * Estimates Earth magnetic flux density.
+     * This method uses default altitude (0.0 - mean sea level) and time
+     * (half way through the valid 5 year period of the model).
+     *
+     * @param latitude  latitude expressed in radians.
+     * @param longitude longitude expressed in radians.
+     * @param result    instance where magnetic flux will be stored resolved
+     *                  around NED frame.
+     */
+    public void estimate(final double latitude, final double longitude, final NEDMagneticFluxDensity result) {
+<span class="fc" id="L2249">        final var defaultTime = model.epoch + WorldMagneticModel.LIFESPAN / 2.0;</span>
+<span class="fc" id="L2250">        calcGeoMag(Math.toDegrees(latitude), Math.toDegrees(longitude), 0.0, defaultTime);</span>
+<span class="fc" id="L2251">        final var bn = bx * FROM_NANO;</span>
+<span class="fc" id="L2252">        final var be = by * FROM_NANO;</span>
+<span class="fc" id="L2253">        final var bd = bz * FROM_NANO;</span>
+
+<span class="fc" id="L2255">        result.setCoordinates(bn, be, bd);</span>
+<span class="fc" id="L2256">    }</span>
+
+    /**
+     * Estimates Earth magnetic flux density.
+     * This method uses default altitude (0.0 - mean sea level) and time
+     * (half way through the valid 5 year period of the model).
+     *
+     * @param latitude  latitude expressed in radians.
+     * @param longitude longitude expressed in radians.
+     * @return Earth magnetic flux density resolved around NED frame.
+     */
+    public NEDMagneticFluxDensity estimate(final double latitude, final double longitude) {
+<span class="fc" id="L2268">        final var result = new NEDMagneticFluxDensity();</span>
+<span class="fc" id="L2269">        estimate(latitude, longitude, result);</span>
+<span class="fc" id="L2270">        return result;</span>
+    }
+
+    /**
+     * Estimates Earth magnetic flux density.
+     * This method uses default altitude (0.0 - mean sea level) and time
+     * (half way through the valid 5 year period of the model).
+     *
+     * @param latitude  latitude angle.
+     * @param longitude longitude angle.
+     * @param result    instance where magnetic flux will be stored resolved
+     *                  around NED frame.
+     */
+    public void estimate(final Angle latitude, final Angle longitude, final NEDMagneticFluxDensity result) {
+<span class="fc" id="L2284">        estimate(convertAngle(latitude), convertAngle(longitude), result);</span>
+<span class="fc" id="L2285">    }</span>
+
+    /**
+     * Estimates Earth magnetic flux density.
+     * This method uses default altitude (0.0 - mean sea level) and time
+     * (half way through the valid 5 year period of the model).
+     *
+     * @param latitude  latitude angle.
+     * @param longitude longitude angle.
+     * @return Earth magnetic flux density resolved around NED frame.
+     */
+    public NEDMagneticFluxDensity estimate(final Angle latitude, final Angle longitude) {
+<span class="fc" id="L2297">        return estimate(convertAngle(latitude), convertAngle(longitude));</span>
+    }
+
+    /**
+     * Estimates Earth magnetic flux density.
+     *
+     * @param latitude  latitude expressed in radians.
+     * @param longitude longitude expressed in radians.
+     * @param height    height expressed in meters.
+     * @param year      year expressed in decimal years.
+     * @param result    instance where magnetic flux will be stored resolved
+     *                  around NED frame.
+     */
+    public void estimate(final double latitude, final double longitude, final double height, final double year,
+                         final NEDMagneticFluxDensity result) {
+
+<span class="fc" id="L2313">        final var heightKm = DistanceConverter.convert(height, DistanceUnit.METER, DistanceUnit.KILOMETER);</span>
+<span class="fc" id="L2314">        calcGeoMag(Math.toDegrees(latitude), Math.toDegrees(longitude), heightKm, year);</span>
+<span class="fc" id="L2315">        final var bn = bx * FROM_NANO;</span>
+<span class="fc" id="L2316">        final var be = by * FROM_NANO;</span>
+<span class="fc" id="L2317">        final var bd = bz * FROM_NANO;</span>
+
+<span class="fc" id="L2319">        result.setCoordinates(bn, be, bd);</span>
+<span class="fc" id="L2320">    }</span>
+
+    /**
+     * Estimates Earth magnetic flux density.
+     *
+     * @param latitude  latitude expressed in radians.
+     * @param longitude longitude expressed in radians.
+     * @param height    height expressed in meters.
+     * @param year      year expressed in decimal years.
+     * @return Earth magnetic flux density resolved around NED frame.
+     */
+    public NEDMagneticFluxDensity estimate(
+            final double latitude, final double longitude, final double height, final double year) {
+<span class="fc" id="L2333">        final var result = new NEDMagneticFluxDensity();</span>
+<span class="fc" id="L2334">        estimate(latitude, longitude, height, year, result);</span>
+<span class="fc" id="L2335">        return result;</span>
+    }
+
+    /**
+     * Estimates Earth magnetic flux density.
+     *
+     * @param latitude  latitude expressed in radians.
+     * @param longitude longitude expressed in radians.
+     * @param height    height expressed in meters.
+     * @param calendar  a calendar containing a specific instant.
+     * @param result    instance where magnetic flux will be stored resolved
+     *                  around NED frame.
+     */
+    public void estimate(final double latitude, final double longitude, final double height,
+                         final GregorianCalendar calendar, final NEDMagneticFluxDensity result) {
+<span class="fc" id="L2350">        estimate(latitude, longitude, height, convertTime(calendar), result);</span>
+<span class="fc" id="L2351">    }</span>
+
+    /**
+     * Estimates Earth magnetic flux density.
+     *
+     * @param latitude  latitude expressed in radians.
+     * @param longitude longitude expressed in radians.
+     * @param height    height expressed in meters.
+     * @param calendar  a calendar containing a specific instant.
+     * @return Earth magnetic flux density resolved around NED frame.
+     */
+    public NEDMagneticFluxDensity estimate(
+            final double latitude, final double longitude, final double height, final GregorianCalendar calendar) {
+<span class="fc" id="L2364">        final var result = new NEDMagneticFluxDensity();</span>
+<span class="fc" id="L2365">        estimate(latitude, longitude, height, calendar, result);</span>
+<span class="fc" id="L2366">        return result;</span>
+    }
+
+    /**
+     * Estimates Earth magnetic flux density.
+     *
+     * @param latitude  latitude expressed in radians.
+     * @param longitude longitude expressed in radians.
+     * @param height    height expressed in meters.
+     * @param time      a specific time instant.
+     * @param result    instance where magnetic flux will be stored resolved
+     *                  around NED frame.
+     */
+    public void estimate(final double latitude, final double longitude, final double height, final Date time,
+                         final NEDMagneticFluxDensity result) {
+<span class="fc" id="L2381">        final var calendar = new GregorianCalendar();</span>
+<span class="fc" id="L2382">        calendar.setTime(time);</span>
+<span class="fc" id="L2383">        estimate(latitude, longitude, height, calendar, result);</span>
+<span class="fc" id="L2384">    }</span>
+
+    /**
+     * Estimates Earth magnetic flux density.
+     *
+     * @param latitude  latitude expressed in radians.
+     * @param longitude longitude expressed in radians.
+     * @param height    height expressed in meters.
+     * @param time      a specific time instant.
+     * @return Earth magnetic flux density resolved around NED frame.
+     */
+    public NEDMagneticFluxDensity estimate(
+            final double latitude, final double longitude, final double height, final Date time) {
+<span class="fc" id="L2397">        final var result = new NEDMagneticFluxDensity();</span>
+<span class="fc" id="L2398">        estimate(latitude, longitude, height, time, result);</span>
+<span class="fc" id="L2399">        return result;</span>
+    }
+
+    /**
+     * Estimates Earth magnetic flux density.
+     *
+     * @param latitude  latitude angle.
+     * @param longitude longitude angle.
+     * @param height    height.
+     * @param year      year expressed in decimal years.
+     * @param result    instance where magnetic flux will be stored resolved
+     *                  around NED frame.
+     */
+    public void estimate(final Angle latitude, final Angle longitude, final Distance height, final double year,
+                         final NEDMagneticFluxDensity result) {
+<span class="fc" id="L2414">        estimate(convertAngle(latitude), convertAngle(longitude), convertDistance(height), year, result);</span>
+<span class="fc" id="L2415">    }</span>
+
+    /**
+     * Estimates Earth magnetic flux density.
+     *
+     * @param latitude  latitude angle.
+     * @param longitude longitude angle.
+     * @param height    height.
+     * @param year      year expressed in decimal years.
+     * @return Earth magnetic flux density resolved around NED frame.
+     */
+    public NEDMagneticFluxDensity estimate(final Angle latitude, final Angle longitude, final Distance height,
+                                           final double year) {
+<span class="fc" id="L2428">        final var result = new NEDMagneticFluxDensity();</span>
+<span class="fc" id="L2429">        estimate(latitude, longitude, height, year, result);</span>
+<span class="fc" id="L2430">        return result;</span>
+    }
+
+    /**
+     * Estimates Earth magnetic flux density.
+     *
+     * @param latitude  latitude angle.
+     * @param longitude longitude angle.
+     * @param height    height.
+     * @param calendar  a calendar containing a specific instant.
+     * @param result    instance where magnetic flux will be stored resolved
+     *                  around NED frame.
+     */
+    public void estimate(final Angle latitude, final Angle longitude, final Distance height,
+                         final GregorianCalendar calendar, final NEDMagneticFluxDensity result) {
+<span class="fc" id="L2445">        estimate(convertAngle(latitude), convertAngle(longitude), convertDistance(height), calendar, result);</span>
+<span class="fc" id="L2446">    }</span>
+
+    /**
+     * Estimates Earth magnetic flux density.
+     *
+     * @param latitude  latitude angle.
+     * @param longitude longitude angle.
+     * @param height    height.
+     * @param calendar  a calendar containing a specific instant.
+     * @return Earth magnetic flux density resolved around NED frame.
+     */
+    public NEDMagneticFluxDensity estimate(final Angle latitude, final Angle longitude, final Distance height,
+                                           final GregorianCalendar calendar) {
+<span class="fc" id="L2459">        final var result = new NEDMagneticFluxDensity();</span>
+<span class="fc" id="L2460">        estimate(latitude, longitude, height, calendar, result);</span>
+<span class="fc" id="L2461">        return result;</span>
+    }
+
+    /**
+     * Estimates Earth magnetic flux density.
+     *
+     * @param latitude  latitude angle.
+     * @param longitude longitude angle.
+     * @param height    height.
+     * @param time      a specific time instant.
+     * @param result    instance where magnetic flux will be stored resolved
+     *                  around NED frame.
+     */
+    public void estimate(final Angle latitude, final Angle longitude, final Distance height, final Date time,
+                         final NEDMagneticFluxDensity result) {
+<span class="fc" id="L2476">        estimate(convertAngle(latitude), convertAngle(longitude), convertDistance(height), time, result);</span>
+<span class="fc" id="L2477">    }</span>
+
+    /**
+     * Estimates Earth magnetic flux density.
+     *
+     * @param latitude  latitude angle.
+     * @param longitude longitude angle.
+     * @param height    height.
+     * @param time      a specific time instant.
+     * @return Earth magnetic flux density resolved around NED frame.
+     */
+    public NEDMagneticFluxDensity estimate(final Angle latitude, final Angle longitude, final Distance height,
+                                           final Date time) {
+<span class="fc" id="L2490">        final var result = new NEDMagneticFluxDensity();</span>
+<span class="fc" id="L2491">        estimate(latitude, longitude, height, time, result);</span>
+<span class="fc" id="L2492">        return result;</span>
+    }
+
+    /**
+     * Estimates Earth magnetic flux density.
+     *
+     * @param position a position expressed in geodetic coordinates.
+     * @param year     year expressed in decimal years.
+     * @param result   instance where magnetic flux will be stored resolved
+     *                 around NED frame.
+     */
+    public void estimate(final NEDPosition position, final double year, final NEDMagneticFluxDensity result) {
+<span class="fc" id="L2504">        estimate(position.getLatitude(), position.getLongitude(), position.getHeight(), year, result);</span>
+<span class="fc" id="L2505">    }</span>
+
+    /**
+     * Estimates Earth magnetic flux density.
+     *
+     * @param position a position expressed in geodetic coordinates.
+     * @param year     year expressed in decimal years.
+     * @return Earth magnetic flux density resolved around NED frame.
+     */
+    public NEDMagneticFluxDensity estimate(final NEDPosition position, final double year) {
+<span class="fc" id="L2515">        final var result = new NEDMagneticFluxDensity();</span>
+<span class="fc" id="L2516">        estimate(position, year, result);</span>
+<span class="fc" id="L2517">        return result;</span>
+    }
+
+    /**
+     * Estimates Earth magnetic flux density.
+     *
+     * @param position a position expressed in geodetic coordinates.
+     * @param calendar a calendar containing a specific instant.
+     * @param result   instance where magnetic flux will be stored resolved
+     *                 around NED frame.
+     */
+    public void estimate(final NEDPosition position, final GregorianCalendar calendar,
+                         final NEDMagneticFluxDensity result) {
+<span class="fc" id="L2530">        estimate(position.getLatitude(), position.getLongitude(), position.getHeight(), calendar, result);</span>
+<span class="fc" id="L2531">    }</span>
+
+    /**
+     * Estimates Earth magnetic flux density.
+     *
+     * @param position a position expressed in geodetic coordinates.
+     * @param calendar a calendar containing a specific instant.
+     * @return Earth magnetic flux density resolved around NED frame.
+     */
+    public NEDMagneticFluxDensity estimate(final NEDPosition position, final GregorianCalendar calendar) {
+<span class="fc" id="L2541">        final var result = new NEDMagneticFluxDensity();</span>
+<span class="fc" id="L2542">        estimate(position, calendar, result);</span>
+<span class="fc" id="L2543">        return result;</span>
+    }
+
+    /**
+     * Estimates Earth magnetic flux density.
+     *
+     * @param position a position expressed in geodetic coordinates.
+     * @param time     a specific time instant.
+     * @param result   instance where magnetic flux will be stored resolved
+     *                 around NED frame.
+     */
+    public void estimate(final NEDPosition position, final Date time, final NEDMagneticFluxDensity result) {
+<span class="fc" id="L2555">        estimate(position.getLatitude(), position.getLongitude(), position.getHeight(), time, result);</span>
+<span class="fc" id="L2556">    }</span>
+
+    /**
+     * Estimates Earth magnetic flux density.
+     *
+     * @param position a position expressed in geodetic coordinates.
+     * @param time     a specific time instant.
+     * @return Earth magnetic flux density resolved around NED frame.
+     */
+    public NEDMagneticFluxDensity estimate(final NEDPosition position, final Date time) {
+<span class="fc" id="L2566">        final var result = new NEDMagneticFluxDensity();</span>
+<span class="fc" id="L2567">        estimate(position, time, result);</span>
+<span class="fc" id="L2568">        return result;</span>
+    }
+
+    /**
+     * Converts a time instant contained in a gregorian calendar to a
+     * decimal year.
+     *
+     * @param calendar calendar containing a specific instant to be
+     *                 converted.
+     * @return converted value expressed in decimal years.
+     */
+    public static double convertTime(final GregorianCalendar calendar) {
+<span class="fc" id="L2580">        final var year = calendar.get(Calendar.YEAR);</span>
+        final double daysInYear;
+<span class="fc bfc" id="L2582" title="All 2 branches covered.">        if (calendar.isLeapYear(year)) {</span>
+<span class="fc" id="L2583">            daysInYear = 366.0;</span>
+        } else {
+<span class="fc" id="L2585">            daysInYear = 365.0;</span>
+        }
+
+<span class="fc" id="L2588">        return year + Math.max(0, (calendar.get(Calendar.DAY_OF_YEAR) - 1)) / daysInYear;</span>
+    }
+
+    /**
+     * Computes the declination (dec), inclination (dip), total intensity
+     * (TI) and grid variation (GV - polar regions only, referenced to grid
+     * north of polar stereographic projection) of the Earth's magnetic field
+     * in geodetic coordinates from the coefficients of the current official
+     * department of defense (DoD) spherical harmonic World Magnetic Model
+     * (WMM-2010).  The WMM series of models is updated every 5 years on
+     * January 1st of those years which are divisible by 5 (i.e. 1980, 1985,
+     * 1990, etc.) by the Naval Oceanographic Office in cooperation with the
+     * British Geological Survey (BGS). The model is based on geomagnetic
+     * survey measurements from aircraft, satellite and geomagnetic
+     * observatories.
+     * &lt;p&gt;
+     * Accuracy:
+     * In ocean areas at the Earth's surface over the entire 5 year life of
+     * a degree and order 12 spherical harmonic model such as WMM-95, the
+     * estimated RMS errors for the various magnetic components are:
+     * DEC  - 0.5 degrees
+     * DIP  - 0.5 degrees
+     * TI   - 200.0 nano Teslas (nT)
+     * GV   - 0.5 Degrees
+     * &lt;p&gt;
+     * Other magnetic components that can be derived from these four by
+     * simple trigonometric relations will have the following approximate
+     * errors over ocean areas:
+     * X    - 140 nT (North)
+     * Y    - 140 nT (East)
+     * Z    - 200 nT (Vertical) Positive is down
+     * H    - 200 nT (Horizontal)
+     * &lt;p&gt;
+     * Over land the RMS errors are expected to be somewhat higher, although
+     * the RMS errors for DEC, DIP and GV are still estimated to be less than
+     * 0.5 degree, for the entire 5-year life of the model at the Earth's
+     * surface. The other component errors over land are more difficult to
+     * estimate and so are not given.
+     * &lt;p&gt;
+     * The accuracy at any given time of all four geomagnetic parameters
+     * depends on the geomagnetic latitude. The errors are least at the
+     * equator and greatest at the magnetic poles.
+     * &lt;p&gt;
+     * It is very important to note that a degree and order 12 model, such
+     * as WMM-2010 describes only the long wavelength spatial magnetic
+     * fluctuations due to Earth's core. Not included in the WMM series
+     * models are intermediate and short wavelength spatial fluctuations of
+     * the geomagnetic field which originate in the Earth's mantle and crust.
+     * Consequently, isolated angular errors at various positions on the
+     * surface (primarily over land, in continental margins and over oceanic
+     * seamounts, ridges and trenches) of several degrees may be expected.
+     * Also not included in the model are nonsecular temporal fluctuations
+     * of the geomagnetic field of magneto-spheric and ionospheric origin.
+     * During magnetic storms, temporal fluctuations can cause substantial
+     * deviations of the geomagnetic field from model values. In arctic and
+     * antarctic regions, as well as in equatorial regions, deviations from
+     * model values are both frequent and persistent.
+     * &lt;p&gt;
+     * If the required declination accuracy is more stringent than the WMM
+     * series of models provide, then the user is advised to request special
+     * (regional or local) surveys be performed and models prepared by the
+     * USGS, which operates the US geomagnetic observatories.
+     *
+     * @param latitude  the latitude in decimal degrees.
+     * @param longitude the longitude in decimal degrees.
+     * @param height    the height (altitude) in kilometers.
+     * @param year      the date as a decimal year.
+     */
+    private void calcGeoMag(final double latitude, final double longitude, final double height, final double year) {
+
+<span class="fc" id="L2658">        final var dt = year - model.epoch;</span>
+<span class="fc" id="L2659">        final var rlon = Math.toRadians(longitude);</span>
+<span class="fc" id="L2660">        final var rlat = Math.toRadians(latitude);</span>
+<span class="fc" id="L2661">        final var srlon = Math.sin(rlon);</span>
+<span class="fc" id="L2662">        final var srlat = Math.sin(rlat);</span>
+<span class="fc" id="L2663">        final var crlon = Math.cos(rlon);</span>
+<span class="fc" id="L2664">        final var crlat = Math.cos(rlat);</span>
+<span class="fc" id="L2665">        final var srlat2 = srlat * srlat;</span>
+<span class="fc" id="L2666">        final var crlat2 = crlat * crlat;</span>
+<span class="fc" id="L2667">        sp[1] = srlon;</span>
+<span class="fc" id="L2668">        cp[1] = crlon;</span>
+
+        // Convert from geodetic coords to spherical coords.
+<span class="pc bpc" id="L2671" title="1 of 8 branches missed.">        if (oldHeight == null || height != oldHeight || oldLatitude == null || latitude != oldLatitude) {</span>
+<span class="fc" id="L2672">            final var q = Math.sqrt(a2 - c2 * srlat2);</span>
+<span class="fc" id="L2673">            final var q1 = height * q;</span>
+<span class="fc" id="L2674">            final var q2 = ((q1 + a2) / (q1 + b2)) * ((q1 + a2) / (q1 + b2));</span>
+<span class="fc" id="L2675">            ct = srlat / Math.sqrt(q2 * crlat2 + srlat2);</span>
+<span class="fc" id="L2676">            st = Math.sqrt(1.0 - (ct * ct));</span>
+<span class="fc" id="L2677">            final var r2 = ((height * height) + 2.0 * q1 + (a4 - c4 * srlat2) / (q * q));</span>
+<span class="fc" id="L2678">            r = Math.sqrt(r2);</span>
+<span class="fc" id="L2679">            final var mD = Math.sqrt(a2 * crlat2 + b2 * srlat2);</span>
+<span class="fc" id="L2680">            ca = (height + mD) / r;</span>
+<span class="fc" id="L2681">            sa = c2 * crlat * srlat / (r * mD);</span>
+        }
+<span class="fc bfc" id="L2683" title="All 4 branches covered.">        if (oldLongitude == null || longitude != oldLongitude) {</span>
+<span class="fc bfc" id="L2684" title="All 2 branches covered.">            for (var m = 2; m &lt;= WorldMagneticModel.MAX_ORDER; m++) {</span>
+<span class="fc" id="L2685">                sp[m] = sp[1] * cp[m - 1] + cp[1] * sp[m - 1];</span>
+<span class="fc" id="L2686">                cp[m] = cp[1] * cp[m - 1] - sp[1] * sp[m - 1];</span>
+            }
+        }
+
+<span class="fc" id="L2690">        final var aor = RE_KM / r;</span>
+<span class="fc" id="L2691">        var ar = aor * aor;</span>
+<span class="fc" id="L2692">        var br = 0.0;</span>
+<span class="fc" id="L2693">        var bt = 0.0;</span>
+<span class="fc" id="L2694">        var bp = 0.0;</span>
+<span class="fc" id="L2695">        var bpp = 0.0;</span>
+
+<span class="fc bfc" id="L2697" title="All 2 branches covered.">        for (var n = 1; n &lt;= WorldMagneticModel.MAX_ORDER; n++) {</span>
+<span class="fc" id="L2698">            ar = ar * aor;</span>
+<span class="fc bfc" id="L2699" title="All 2 branches covered.">            for (int m = 0, D3 = 1, D4 = (n + m + D3) / D3; D4 &gt; 0; D4--, m += D3) {</span>
+
+                // compute unnormalized associated Legendre polynomials
+                // and derivatives via recursion relations
+<span class="pc bpc" id="L2703" title="1 of 8 branches missed.">                if (oldHeight == null || height != oldHeight || oldLatitude == null || latitude != oldLatitude) {</span>
+<span class="fc bfc" id="L2704" title="All 2 branches covered.">                    if (n == m) {</span>
+<span class="fc" id="L2705">                        model.snorm[n + m * N] = st * model.snorm[n - 1 + (m - 1) * N];</span>
+<span class="fc" id="L2706">                        dp[m][n] = st * dp[m - 1][n - 1] + ct * model.snorm[n - 1 + (m - 1) * N];</span>
+                    }
+<span class="fc bfc" id="L2708" title="All 4 branches covered.">                    if (n == 1 &amp;&amp; m == 0) {</span>
+<span class="fc" id="L2709">                        model.snorm[n] = ct * model.snorm[0];</span>
+<span class="fc" id="L2710">                        dp[m][n] = ct * dp[m][n - 1] - st * model.snorm[0];</span>
+                    }
+<span class="fc bfc" id="L2712" title="All 4 branches covered.">                    if (n &gt; 1 &amp;&amp; n != m) {</span>
+<span class="fc bfc" id="L2713" title="All 2 branches covered.">                        if (m &gt; n - 2) {</span>
+<span class="fc" id="L2714">                            model.snorm[n - 2 + m * N] = 0.0;</span>
+                        }
+<span class="fc bfc" id="L2716" title="All 2 branches covered.">                        if (m &gt; n - 2) {</span>
+<span class="fc" id="L2717">                            dp[m][n - 2] = 0.0;</span>
+                        }
+<span class="fc" id="L2719">                        model.snorm[n + m * N] = ct * model.snorm[n - 1 + m * N]</span>
+                                - model.k[m][n] * model.snorm[n - 2 + m * N];
+<span class="fc" id="L2721">                        dp[m][n] = ct * dp[m][n - 1] - st * model.snorm[n - 1 + m * N]</span>
+                                - model.k[m][n] * dp[m][n - 2];
+                    }
+                }
+
+                // time-adjust the Gauss coefficients
+
+<span class="fc bfc" id="L2728" title="All 4 branches covered.">                if (oldTime == null || year != oldTime) {</span>
+<span class="fc" id="L2729">                    tc[m][n] = model.c[m][n] + dt * model.cd[m][n];</span>
+
+<span class="fc bfc" id="L2731" title="All 2 branches covered.">                    if (m != 0) {</span>
+<span class="fc" id="L2732">                        tc[n][m - 1] = model.c[n][m - 1] + dt * model.cd[n][m - 1];</span>
+                    }
+                }
+
+                // accumulate terms of the spherical harmonic expansions
+                final double temp1;
+                final double temp2;
+<span class="fc" id="L2739">                var par = ar * model.snorm[n + m * N];</span>
+<span class="fc bfc" id="L2740" title="All 2 branches covered.">                if (m == 0) {</span>
+<span class="fc" id="L2741">                    temp1 = tc[m][n] * cp[m];</span>
+<span class="fc" id="L2742">                    temp2 = tc[m][n] * sp[m];</span>
+                } else {
+<span class="fc" id="L2744">                    temp1 = tc[m][n] * cp[m] + tc[n][m - 1] * sp[m];</span>
+<span class="fc" id="L2745">                    temp2 = tc[m][n] * sp[m] - tc[n][m - 1] * cp[m];</span>
+                }
+
+<span class="fc" id="L2748">                bt = bt - ar * temp1 * dp[m][n];</span>
+<span class="fc" id="L2749">                bp += (model.fm[m] * temp2 * par);</span>
+<span class="fc" id="L2750">                br += (model.fn[n] * temp1 * par);</span>
+
+                // Special case: North/south geographic poles
+
+<span class="pc bpc" id="L2754" title="3 of 4 branches missed.">                if (st == 0.0 &amp;&amp; m == 1) {</span>
+<span class="nc bnc" id="L2755" title="All 2 branches missed.">                    if (n == 1) {</span>
+<span class="nc" id="L2756">                        pp[n] = pp[n - 1];</span>
+                    } else {
+<span class="nc" id="L2758">                        pp[n] = ct * pp[n - 1] - model.k[m][n] * pp[n - 2];</span>
+                    }
+<span class="nc" id="L2760">                    final double parp = ar * pp[n];</span>
+<span class="nc" id="L2761">                    bpp += (model.fm[m] * temp2 * parp);</span>
+                }
+
+            }
+        }
+
+<span class="pc bpc" id="L2767" title="1 of 2 branches missed.">        if (st == 0.0) {</span>
+<span class="nc" id="L2768">            bp = bpp;</span>
+        } else {
+<span class="fc" id="L2770">            bp /= st;</span>
+        }
+
+        // Rotate magnetic vector components from spherical to
+        // geodetic coordinates.
+        // by is the east-west field component
+        // bx is the north-south field component
+        // bz is the vertical field component.
+<span class="fc" id="L2778">        bx = -bt * ca - br * sa;</span>
+<span class="fc" id="L2779">        by = bp;</span>
+<span class="fc" id="L2780">        bz = bt * sa - br * ca;</span>
+
+        // Compute declination (DEC), INCLINATION (DIP) and
+        // total intensity (TI)
+
+<span class="fc" id="L2785">        bh = Math.sqrt((bx * bx) + (by * by));</span>
+<span class="fc" id="L2786">        ti = Math.sqrt((bh * bh) + (bz * bz));</span>
+        //	Calculate the declination.
+<span class="fc" id="L2788">        dec = Math.toDegrees(Math.atan2(by, bx));</span>
+<span class="fc" id="L2789">        dip = Math.toDegrees(Math.atan2(bz, bh));</span>
+
+<span class="fc" id="L2791">        oldTime = year;</span>
+<span class="fc" id="L2792">        oldHeight = height;</span>
+<span class="fc" id="L2793">        oldLatitude = latitude;</span>
+<span class="fc" id="L2794">        oldLongitude = longitude;</span>
+<span class="fc" id="L2795">    }</span>
+
+    /**
+     * Converts provided angle instance to radians.
+     *
+     * @param angle angle to be converted.
+     * @return converted value expressed in radians.
+     */
+    private static double convertAngle(final Angle angle) {
+<span class="fc" id="L2804">        return AngleConverter.convert(angle.getValue().doubleValue(), angle.getUnit(), AngleUnit.RADIANS);</span>
+    }
+
+    /**
+     * Converts provided distance to meters.
+     *
+     * @param distance distance to be converted.
+     * @return converted value expressed in meters.
+     */
+    private static double convertDistance(final Distance distance) {
+<span class="fc" id="L2814">        return DistanceConverter.convert(distance.getValue().doubleValue(), distance.getUnit(), DistanceUnit.METER);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
