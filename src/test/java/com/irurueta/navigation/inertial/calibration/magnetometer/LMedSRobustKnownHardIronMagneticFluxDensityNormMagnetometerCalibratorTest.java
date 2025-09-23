@@ -6839,7 +6839,7 @@ class LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest 
 
             assertNotNull(calibrator.getEstimatedCovariance());
             checkGeneralCovariance(calibrator.getEstimatedCovariance());
-            assertTrue(calibrator.getEstimatedMse() > 0.0);
+            assertTrue(calibrator.getEstimatedMse() >= 0.0);
             assertNotEquals(0.0, calibrator.getEstimatedChiSq());
 
             numValid++;

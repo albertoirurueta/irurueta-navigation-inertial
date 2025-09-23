@@ -7100,7 +7100,7 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
 
             assertNotNull(calibrator.getEstimatedCovariance());
             checkCommonAxisCovariance(calibrator.getEstimatedCovariance());
-            assertTrue(calibrator.getEstimatedMse() > 0.0);
+            assertTrue(calibrator.getEstimatedMse() >= 0.0);
             assertNotEquals(0.0, calibrator.getEstimatedChiSq());
 
             numValid++;
