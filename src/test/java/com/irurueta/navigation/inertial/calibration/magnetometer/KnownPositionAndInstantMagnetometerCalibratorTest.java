@@ -192,7 +192,6 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -215,6 +214,10 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -315,7 +318,6 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -338,6 +340,10 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -439,7 +445,6 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -462,6 +467,10 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -562,7 +571,6 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -585,6 +593,10 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -686,7 +698,6 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -709,6 +720,10 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -815,7 +830,6 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -838,6 +852,10 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -949,7 +967,6 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -972,6 +989,10 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -1098,7 +1119,6 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -1121,6 +1141,10 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -1240,7 +1264,6 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -1263,6 +1286,10 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -1366,7 +1393,6 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -1389,6 +1415,10 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -1499,7 +1529,6 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -1522,6 +1551,10 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -1632,7 +1665,6 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -1655,6 +1687,10 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -1765,7 +1801,6 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -1788,6 +1823,10 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -1902,7 +1941,6 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -1925,6 +1963,10 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -2044,7 +2086,6 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -2067,6 +2108,10 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -2186,7 +2231,6 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -2209,6 +2253,10 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -2328,7 +2376,6 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -2351,6 +2398,10 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -2471,7 +2522,6 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -2494,6 +2544,10 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -2618,7 +2672,6 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -2641,6 +2694,10 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -2765,7 +2822,6 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -2788,6 +2844,10 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -2912,7 +2972,6 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -2935,6 +2994,10 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -3072,7 +3135,6 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -3095,6 +3157,10 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -3238,7 +3304,6 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -3261,6 +3326,10 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -3404,7 +3473,6 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -3427,6 +3495,10 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -3570,7 +3642,6 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -3593,6 +3664,10 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -3714,7 +3789,6 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -3737,6 +3811,10 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -3846,7 +3924,6 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -3869,6 +3946,10 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -3979,7 +4060,6 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -4002,6 +4082,10 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -4112,7 +4196,6 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -4135,6 +4218,10 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -4245,7 +4332,6 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -4268,6 +4354,10 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -4382,7 +4472,6 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -4405,6 +4494,10 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -4524,7 +4617,6 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -4547,6 +4639,10 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -4666,7 +4762,6 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -4689,6 +4784,10 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -4808,7 +4907,6 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -4831,6 +4929,10 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -4951,7 +5053,6 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -4974,6 +5075,10 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -5098,7 +5203,6 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -5121,6 +5225,10 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -5245,7 +5353,6 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -5268,6 +5375,10 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -5392,7 +5503,6 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -5415,6 +5525,10 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -5552,7 +5666,6 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -5575,6 +5688,10 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -5718,7 +5835,6 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -5741,6 +5857,10 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -5884,7 +6004,6 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -5907,6 +6026,10 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -6050,7 +6173,6 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -6073,6 +6195,10 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -6966,7 +7092,11 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
             assertNotNull(calibrator.getEstimatedCovariance());
             checkGeneralCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
+            assertTrue(calibrator.getEstimatedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
+            assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedP() >= 0.0);
+            assertTrue(calibrator.getEstimatedQ() > 0.0);
 
             numValid++;
 
@@ -7032,7 +7162,11 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
             assertNotNull(calibrator.getEstimatedCovariance());
             checkGeneralCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
+            assertTrue(calibrator.getEstimatedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
+            assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedP() >= 0.0);
+            assertTrue(calibrator.getEstimatedQ() > 0.0);
 
             numValid++;
 
@@ -7100,8 +7234,12 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
 
             assertNotNull(calibrator.getEstimatedCovariance());
             checkCommonAxisCovariance(calibrator.getEstimatedCovariance());
-            assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
+            assertTrue(calibrator.getEstimatedMse() >= 0.0);
+            assertTrue(calibrator.getEstimatedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
+            assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedP() >= 0.0);
+            assertTrue(calibrator.getEstimatedQ() > 0.0);
 
             numValid++;
 
@@ -7167,7 +7305,11 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
             assertNotNull(calibrator.getEstimatedCovariance());
             checkCommonAxisCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
+            assertTrue(calibrator.getEstimatedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
+            assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedP() >= 0.0);
+            assertTrue(calibrator.getEstimatedQ() > 0.0);
 
             numValid++;
 

@@ -283,6 +283,10 @@ class MSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCalibr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -498,6 +502,10 @@ class MSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCalibr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         final var m1 = new Matrix(1, 1);
@@ -733,6 +741,10 @@ class MSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCalibr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         final var m1 = new Matrix(1, 1);
         assertThrows(IllegalArgumentException.class, () -> new MSACRobustEasyGyroscopeCalibrator(sequences, m1, mg, gg,
@@ -969,6 +981,10 @@ class MSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCalibr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new MSACRobustEasyGyroscopeCalibrator(sequences,
@@ -1202,6 +1218,10 @@ class MSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCalibr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new MSACRobustEasyGyroscopeCalibrator(sequences,
@@ -1453,6 +1473,10 @@ class MSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCalibr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new MSACRobustEasyGyroscopeCalibrator(sequences,
@@ -1712,6 +1736,10 @@ class MSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCalibr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new MSACRobustEasyGyroscopeCalibrator(sequences,
@@ -1971,6 +1999,10 @@ class MSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCalibr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         final var m1 = new Matrix(1, 1);
@@ -2238,6 +2270,10 @@ class MSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCalibr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         final var m1 = new Matrix(1, 1);
@@ -2486,6 +2522,10 @@ class MSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCalibr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         final var m1 = new Matrix(1, 1);
@@ -2722,6 +2762,10 @@ class MSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCalibr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         final var m1 = new Matrix(1, 1);
@@ -2960,6 +3004,10 @@ class MSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCalibr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new MSACRobustEasyGyroscopeCalibrator(sequences,
@@ -3194,6 +3242,10 @@ class MSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCalibr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new MSACRobustEasyGyroscopeCalibrator(sequences,
@@ -3446,6 +3498,10 @@ class MSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCalibr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new MSACRobustEasyGyroscopeCalibrator(sequences,
@@ -3706,6 +3762,10 @@ class MSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCalibr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new MSACRobustEasyGyroscopeCalibrator(sequences,
@@ -3967,6 +4027,10 @@ class MSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCalibr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         final var m1 = new Matrix(1, 1);
@@ -4235,6 +4299,10 @@ class MSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCalibr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         final var m1 = new Matrix(1, 1);
@@ -5827,7 +5895,11 @@ class MSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCalibr
             assertNotNull(calibrator.getEstimatedCovariance());
             checkCommonAxisCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
+            assertTrue(calibrator.getEstimatedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
+            assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedP() >= 0.0);
+            assertTrue(calibrator.getEstimatedQ() > 0.0);
 
             numValid++;
             break;
@@ -6031,7 +6103,11 @@ class MSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCalibr
             assertNotNull(calibrator.getEstimatedCovariance());
             checkGeneralCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
+            assertTrue(calibrator.getEstimatedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
+            assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedP() >= 0.0);
+            assertTrue(calibrator.getEstimatedQ() > 0.0);
 
             numValid++;
             break;
@@ -6245,7 +6321,11 @@ class MSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCalibr
             assertNotNull(calibrator.getEstimatedCovariance());
             checkCommonAxisAndGDependantCrossBiasesCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
+            assertTrue(calibrator.getEstimatedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
+            assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedP() >= 0.0);
+            assertTrue(calibrator.getEstimatedQ() > 0.0);
 
             numValid++;
             break;
@@ -6459,7 +6539,11 @@ class MSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCalibr
             assertNotNull(calibrator.getEstimatedCovariance());
             checkGeneralAndGDependantCrossBiasesCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
+            assertTrue(calibrator.getEstimatedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
+            assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedP() >= 0.0);
+            assertTrue(calibrator.getEstimatedQ() > 0.0);
 
             numValid++;
             break;
@@ -6679,7 +6763,11 @@ class MSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCalibr
             assertNotNull(calibrator.getEstimatedCovariance());
             checkCommonAxisCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
+            assertTrue(calibrator.getEstimatedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
+            assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedP() >= 0.0);
+            assertTrue(calibrator.getEstimatedQ() > 0.0);
 
             numValid++;
             break;
@@ -6895,7 +6983,11 @@ class MSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCalibr
             assertNotNull(calibrator.getEstimatedCovariance());
             checkGeneralCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
+            assertTrue(calibrator.getEstimatedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
+            assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedP() >= 0.0);
+            assertTrue(calibrator.getEstimatedQ() > 0.0);
 
             numValid++;
             break;
@@ -7114,7 +7206,11 @@ class MSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCalibr
             assertNotNull(calibrator.getEstimatedCovariance());
             checkCommonAxisAndGDependantCrossBiasesCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
+            assertTrue(calibrator.getEstimatedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
+            assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedP() >= 0.0);
+            assertTrue(calibrator.getEstimatedQ() > 0.0);
 
             numValid++;
             break;
@@ -7333,7 +7429,11 @@ class MSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCalibr
             assertNotNull(calibrator.getEstimatedCovariance());
             checkGeneralAndGDependantCrossBiasesCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
+            assertTrue(calibrator.getEstimatedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
+            assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedP() >= 0.0);
+            assertTrue(calibrator.getEstimatedQ() > 0.0);
 
             numValid++;
             break;

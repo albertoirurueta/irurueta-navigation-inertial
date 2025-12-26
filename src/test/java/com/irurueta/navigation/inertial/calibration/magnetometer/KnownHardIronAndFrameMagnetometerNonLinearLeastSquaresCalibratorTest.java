@@ -173,6 +173,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -251,6 +255,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -333,6 +341,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -416,6 +428,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -497,6 +513,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -578,6 +598,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -661,6 +685,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -744,6 +772,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -826,6 +858,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -909,6 +945,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -993,6 +1033,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -1077,6 +1121,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -1160,6 +1208,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -1243,6 +1295,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -1327,6 +1383,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -1411,6 +1471,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -1498,6 +1562,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -1585,6 +1653,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -1674,6 +1746,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -1763,6 +1839,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -1850,6 +1930,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -1937,6 +2021,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -2026,6 +2114,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -2115,6 +2207,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -2203,6 +2299,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -2291,6 +2391,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -2381,6 +2485,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -2471,6 +2579,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -2559,6 +2671,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -2647,6 +2763,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -2737,6 +2857,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -2827,6 +2951,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -2920,6 +3048,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -3013,6 +3145,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -3108,6 +3244,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -3203,6 +3343,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -3296,6 +3440,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -3389,6 +3537,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -3484,6 +3636,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -3579,6 +3735,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -3673,6 +3833,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -3767,6 +3931,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -3863,6 +4031,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -3959,6 +4131,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -4053,6 +4229,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -4147,6 +4327,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -4243,6 +4427,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -4339,6 +4527,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -4438,6 +4630,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -4537,6 +4733,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -4638,6 +4838,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -4739,6 +4943,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -4838,6 +5046,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -4937,6 +5149,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -5038,6 +5254,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -5140,6 +5360,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -5240,6 +5464,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -5340,6 +5568,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -5442,6 +5674,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -5544,6 +5780,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -5644,6 +5884,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -5744,6 +5988,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -5846,6 +6094,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -5948,6 +6200,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -6034,6 +6290,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class,
@@ -6125,6 +6385,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class,
@@ -6217,6 +6481,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class,
@@ -6310,6 +6578,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class,
@@ -6402,6 +6674,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class,
@@ -6494,6 +6770,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class,
@@ -6587,6 +6867,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class,
@@ -6680,6 +6964,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class,
@@ -6773,6 +7061,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class,
@@ -6866,6 +7158,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class,
@@ -6960,6 +7256,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class,
@@ -7054,6 +7354,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class,
@@ -7147,6 +7451,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class,
@@ -7240,6 +7548,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class,
@@ -7334,6 +7646,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class,
@@ -7428,6 +7744,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class,
@@ -7520,6 +7840,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         final var m1 = new Matrix(1, 1);
@@ -7616,6 +7940,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         final var m1 = new Matrix(1, 1);
@@ -7713,6 +8041,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         final var m1 = new Matrix(1, 1);
@@ -7810,6 +8142,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         final var m1 = new Matrix(1, 1);
@@ -7908,6 +8244,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         final var m1 = new Matrix(1, 1);
@@ -8004,6 +8344,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         final var m1 = new Matrix(1, 1);
@@ -8103,6 +8447,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         final var m1 = new Matrix(1, 1);
@@ -8202,6 +8550,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         final var m1 = new Matrix(1, 1);
@@ -8301,6 +8653,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         final var m1 = new Matrix(1, 1);
@@ -8398,6 +8754,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         final var m1 = new Matrix(1, 1);
@@ -8498,6 +8858,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         final var m1 = new Matrix(1, 1);
@@ -8598,6 +8962,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         final var m1 = new Matrix(1, 1);
@@ -8697,6 +9065,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         final var m1 = new Matrix(1, 1);
@@ -8796,6 +9168,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         final var m1 = new Matrix(1, 1);
@@ -8896,6 +9272,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         final var m1 = new Matrix(1, 1);
@@ -8996,6 +9376,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         final var m1 = new Matrix(1, 1);
@@ -9105,6 +9489,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         final var m1 = new Matrix(1, 1);
@@ -9219,6 +9607,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         final var m1 = new Matrix(1, 1);
@@ -9336,6 +9728,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         final var m1 = new Matrix(1, 1);
@@ -9453,6 +9849,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         final var m1 = new Matrix(1, 1);
@@ -9572,6 +9972,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         final var m1 = new Matrix(1, 1);
@@ -9690,6 +10094,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         final var m1 = new Matrix(1, 1);
@@ -9809,6 +10217,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         final var m1 = new Matrix(1, 1);
@@ -9928,6 +10340,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         final var m1 = new Matrix(1, 1);
@@ -10047,6 +10463,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         final var m1 = new Matrix(1, 1);
@@ -10164,6 +10584,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         final var m1 = new Matrix(1, 1);
@@ -10284,6 +10708,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         final var m1 = new Matrix(1, 1);
@@ -10404,6 +10832,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         final var m1 = new Matrix(1, 1);
@@ -10523,6 +10955,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         final var m1 = new Matrix(1, 1);
@@ -10642,6 +11078,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         final var m1 = new Matrix(1, 1);
@@ -10762,6 +11202,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         final var m1 = new Matrix(1, 1);
@@ -10882,6 +11326,10 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         final var m1 = new Matrix(1, 1);
@@ -11711,6 +12159,11 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
             assertNotNull(calibrator.getEstimatedCovariance());
             checkGeneralCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
+            assertTrue(calibrator.getEstimatedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
+            assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedP() >= 0.0);
+            assertTrue(calibrator.getEstimatedQ() > 0.0);
 
             numValid++;
             break;
@@ -11767,6 +12220,11 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
             assertNotNull(calibrator.getEstimatedCovariance());
             checkGeneralCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
+            assertTrue(calibrator.getEstimatedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
+            assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedP() >= 0.0);
+            assertTrue(calibrator.getEstimatedQ() > 0.0);
 
             numValid++;
             break;
@@ -11965,6 +12423,11 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
             assertNotNull(calibrator.getEstimatedCovariance());
             checkCommonAxisCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
+            assertTrue(calibrator.getEstimatedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
+            assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedP() >= 0.0);
+            assertTrue(calibrator.getEstimatedQ() > 0.0);
 
             numValid++;
             break;
@@ -12021,6 +12484,11 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
             assertNotNull(calibrator.getEstimatedCovariance());
             checkCommonAxisCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
+            assertTrue(calibrator.getEstimatedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
+            assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedP() >= 0.0);
+            assertTrue(calibrator.getEstimatedQ() > 0.0);
 
             numValid++;
             break;

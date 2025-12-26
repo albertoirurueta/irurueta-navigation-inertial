@@ -252,6 +252,10 @@ class PROMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements RobustKnownBi
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -435,6 +439,10 @@ class PROMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements RobustKnownBi
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         final var m1 = new Matrix(1, 1);
@@ -638,6 +646,10 @@ class PROMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements RobustKnownBi
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         final var m1 = new Matrix(1, 1);
         assertThrows(IllegalArgumentException.class, () -> new PROMedSRobustKnownBiasEasyGyroscopeCalibrator(sequences,
@@ -842,6 +854,10 @@ class PROMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements RobustKnownBi
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROMedSRobustKnownBiasEasyGyroscopeCalibrator(sequences,
@@ -1043,6 +1059,10 @@ class PROMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements RobustKnownBi
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROMedSRobustKnownBiasEasyGyroscopeCalibrator(sequences,
@@ -1262,6 +1282,10 @@ class PROMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements RobustKnownBi
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROMedSRobustKnownBiasEasyGyroscopeCalibrator(sequences,
@@ -1490,6 +1514,10 @@ class PROMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements RobustKnownBi
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROMedSRobustKnownBiasEasyGyroscopeCalibrator(sequences,
@@ -1717,6 +1745,10 @@ class PROMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements RobustKnownBi
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         final var m1 = new Matrix(1, 1);
@@ -1953,6 +1985,10 @@ class PROMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements RobustKnownBi
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         final var m1 = new Matrix(1, 1);
@@ -2169,6 +2205,10 @@ class PROMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements RobustKnownBi
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         final var m1 = new Matrix(1, 1);
@@ -2373,6 +2413,10 @@ class PROMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements RobustKnownBi
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         final var m1 = new Matrix(1, 1);
@@ -2579,6 +2623,10 @@ class PROMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements RobustKnownBi
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROMedSRobustKnownBiasEasyGyroscopeCalibrator(sequences,
@@ -2781,6 +2829,10 @@ class PROMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements RobustKnownBi
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROMedSRobustKnownBiasEasyGyroscopeCalibrator(sequences,
@@ -3001,6 +3053,10 @@ class PROMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements RobustKnownBi
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROMedSRobustKnownBiasEasyGyroscopeCalibrator(sequences,
@@ -3229,6 +3285,10 @@ class PROMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements RobustKnownBi
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROMedSRobustKnownBiasEasyGyroscopeCalibrator(sequences,
@@ -3458,6 +3518,10 @@ class PROMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements RobustKnownBi
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         final var m1 = new Matrix(1, 1);
@@ -3694,6 +3758,10 @@ class PROMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements RobustKnownBi
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         final var m1 = new Matrix(1, 1);
@@ -3890,6 +3958,10 @@ class PROMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements RobustKnownBi
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROMedSRobustKnownBiasEasyGyroscopeCalibrator(
@@ -4078,6 +4150,10 @@ class PROMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements RobustKnownBi
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROMedSRobustKnownBiasEasyGyroscopeCalibrator(
@@ -4285,6 +4361,10 @@ class PROMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements RobustKnownBi
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         assertThrows(IllegalArgumentException.class, () -> new PROMedSRobustKnownBiasEasyGyroscopeCalibrator(
                 new double[1], sequences, bg, mg, gg, this));
@@ -4493,6 +4573,10 @@ class PROMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements RobustKnownBi
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROMedSRobustKnownBiasEasyGyroscopeCalibrator(
@@ -4698,6 +4782,10 @@ class PROMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements RobustKnownBi
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROMedSRobustKnownBiasEasyGyroscopeCalibrator(
@@ -4921,6 +5009,10 @@ class PROMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements RobustKnownBi
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROMedSRobustKnownBiasEasyGyroscopeCalibrator(
@@ -5152,6 +5244,10 @@ class PROMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements RobustKnownBi
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROMedSRobustKnownBiasEasyGyroscopeCalibrator(
@@ -5383,6 +5479,10 @@ class PROMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements RobustKnownBi
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROMedSRobustKnownBiasEasyGyroscopeCalibrator(
@@ -5622,6 +5722,10 @@ class PROMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements RobustKnownBi
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROMedSRobustKnownBiasEasyGyroscopeCalibrator(
@@ -5841,6 +5945,10 @@ class PROMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements RobustKnownBi
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROMedSRobustKnownBiasEasyGyroscopeCalibrator(
@@ -6048,6 +6156,10 @@ class PROMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements RobustKnownBi
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROMedSRobustKnownBiasEasyGyroscopeCalibrator(
@@ -6264,6 +6376,10 @@ class PROMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements RobustKnownBi
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROMedSRobustKnownBiasEasyGyroscopeCalibrator(
@@ -6470,6 +6586,10 @@ class PROMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements RobustKnownBi
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROMedSRobustKnownBiasEasyGyroscopeCalibrator(
@@ -6699,6 +6819,10 @@ class PROMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements RobustKnownBi
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROMedSRobustKnownBiasEasyGyroscopeCalibrator(
@@ -6939,6 +7063,10 @@ class PROMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements RobustKnownBi
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROMedSRobustKnownBiasEasyGyroscopeCalibrator(
@@ -7179,6 +7307,10 @@ class PROMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements RobustKnownBi
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROMedSRobustKnownBiasEasyGyroscopeCalibrator(
@@ -7418,6 +7550,10 @@ class PROMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements RobustKnownBi
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROMedSRobustKnownBiasEasyGyroscopeCalibrator(
@@ -9043,7 +9179,11 @@ class PROMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements RobustKnownBi
             assertNotNull(calibrator.getEstimatedCovariance());
             checkCommonAxisCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
+            assertTrue(calibrator.getEstimatedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
+            assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedP() >= 0.0);
+            assertTrue(calibrator.getEstimatedQ() > 0.0);
 
             numValid++;
             break;
@@ -9256,7 +9396,11 @@ class PROMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements RobustKnownBi
             assertNotNull(calibrator.getEstimatedCovariance());
             checkGeneralCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
+            assertTrue(calibrator.getEstimatedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
+            assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedP() >= 0.0);
+            assertTrue(calibrator.getEstimatedQ() > 0.0);
 
             numValid++;
             break;
@@ -9477,7 +9621,11 @@ class PROMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements RobustKnownBi
             assertNotNull(calibrator.getEstimatedCovariance());
             checkCommonAxisAndGDependantCrossBiasesCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
+            assertTrue(calibrator.getEstimatedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
+            assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedP() >= 0.0);
+            assertTrue(calibrator.getEstimatedQ() > 0.0);
 
             numValid++;
             break;
@@ -9697,7 +9845,11 @@ class PROMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements RobustKnownBi
             assertNotNull(calibrator.getEstimatedCovariance());
             checkGeneralAndGDependantCrossBiasesCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
+            assertTrue(calibrator.getEstimatedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
+            assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedP() >= 0.0);
+            assertTrue(calibrator.getEstimatedQ() > 0.0);
 
             numValid++;
             break;
@@ -9916,7 +10068,11 @@ class PROMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements RobustKnownBi
             assertNotNull(calibrator.getEstimatedCovariance());
             checkCommonAxisCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
+            assertTrue(calibrator.getEstimatedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
+            assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedP() >= 0.0);
+            assertTrue(calibrator.getEstimatedQ() > 0.0);
 
             numValid++;
             break;
@@ -10138,7 +10294,11 @@ class PROMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements RobustKnownBi
             assertNotNull(calibrator.getEstimatedCovariance());
             checkGeneralCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
+            assertTrue(calibrator.getEstimatedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
+            assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedP() >= 0.0);
+            assertTrue(calibrator.getEstimatedQ() > 0.0);
 
             numValid++;
             break;
@@ -10364,7 +10524,11 @@ class PROMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements RobustKnownBi
                 checkCommonAxisAndGDependantCrossBiasesCovariance(calibrator.getEstimatedCovariance());
             }
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
+            assertTrue(calibrator.getEstimatedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
+            assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedP() >= 0.0);
+            assertTrue(calibrator.getEstimatedQ() > 0.0);
 
             numValid++;
             break;
@@ -10589,7 +10753,11 @@ class PROMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements RobustKnownBi
             assertNotNull(calibrator.getEstimatedCovariance());
             checkGeneralAndGDependantCrossBiasesCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
+            assertTrue(calibrator.getEstimatedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
+            assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedP() >= 0.0);
+            assertTrue(calibrator.getEstimatedQ() > 0.0);
 
             numValid++;
             break;

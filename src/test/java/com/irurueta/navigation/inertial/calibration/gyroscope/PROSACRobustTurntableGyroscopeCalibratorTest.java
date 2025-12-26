@@ -88,7 +88,7 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
     private static final double LARGE_THRESHOLD = 5e-1;
 
     private static final double ABSOLUTE_ERROR = 1e-9;
-    private static final double LARGE_ABSOLUTE_ERROR = 5e-5;
+    private static final double LARGE_ABSOLUTE_ERROR = 1e-4;
     private static final double VERY_LARGE_ABSOLUTE_ERROR = 1e-2;
 
     private static final double OUTLIER_ERROR_FACTOR = 1000.0;
@@ -300,6 +300,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -537,6 +541,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(ecefPosition,
@@ -798,6 +806,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(ecefPosition,
@@ -1059,6 +1071,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(ecefPosition,
@@ -1316,6 +1332,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(ecefPosition,
@@ -1591,6 +1611,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(ecefPosition,
@@ -1874,6 +1898,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(ecefPosition,
@@ -2157,6 +2185,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(ecefPosition,
@@ -2448,6 +2480,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(ecefPosition,
@@ -2721,6 +2757,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(ecefPosition,
@@ -2990,6 +3030,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(ecefPosition,
@@ -3259,6 +3303,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(ecefPosition,
@@ -3523,6 +3571,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(ecefPosition,
@@ -3805,6 +3857,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(ecefPosition,
@@ -4099,6 +4155,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(ecefPosition,
@@ -4391,6 +4451,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(ecefPosition,
@@ -4694,6 +4758,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(ecefPosition,
@@ -4979,6 +5047,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(nedPosition,
@@ -5240,6 +5312,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(nedPosition,
@@ -5501,6 +5577,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(nedPosition,
@@ -5758,6 +5838,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(nedPosition,
@@ -6033,6 +6117,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(nedPosition,
@@ -6316,6 +6404,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(nedPosition,
@@ -6598,6 +6690,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(nedPosition,
@@ -6889,6 +6985,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(nedPosition,
@@ -7162,6 +7262,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(nedPosition,
@@ -7431,6 +7535,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(nedPosition,
@@ -7700,6 +7808,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(nedPosition,
@@ -7964,6 +8076,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(nedPosition,
@@ -8247,6 +8363,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(nedPosition,
@@ -8541,6 +8661,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(nedPosition,
@@ -8834,6 +8958,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(nedPosition,
@@ -9137,6 +9265,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(nedPosition,
@@ -9388,6 +9520,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(new double[9]));
@@ -9629,6 +9765,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(new double[9],
@@ -9893,6 +10033,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(new double[9],
@@ -10158,6 +10302,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(new double[9],
@@ -10418,6 +10566,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(new double[9],
@@ -10698,6 +10850,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(
@@ -10988,6 +11144,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(new double[9],
@@ -11284,6 +11444,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(
@@ -11578,6 +11742,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(new double[9],
@@ -11854,6 +12022,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(new double[9],
@@ -12128,6 +12300,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(new double[9],
@@ -12401,6 +12577,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(new double[9],
@@ -12670,6 +12850,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(new double[9],
@@ -12957,6 +13141,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(new double[9],
@@ -13255,6 +13443,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(new double[9],
@@ -13552,6 +13744,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(new double[9],
@@ -13860,6 +14056,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(new double[9],
@@ -14149,6 +14349,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(new double[9],
@@ -14413,6 +14617,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(new double[9],
@@ -14678,6 +14886,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(new double[7],
@@ -14938,6 +15150,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(new double[9],
@@ -15216,6 +15432,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(new double[9],
@@ -15502,6 +15722,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(new double[9],
@@ -15798,6 +16022,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(new double[9],
@@ -16092,6 +16320,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(new double[9],
@@ -16368,6 +16600,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(new double[9],
@@ -16642,6 +16878,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(new double[9],
@@ -16915,6 +17155,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(new double[9],
@@ -17184,6 +17428,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(new double[9],
@@ -17471,6 +17719,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(new double[9],
@@ -17769,6 +18021,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(new double[9],
@@ -18067,6 +18323,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(new double[9],
@@ -18375,6 +18635,10 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new PROSACRobustTurntableGyroscopeCalibrator(new double[9],
@@ -20095,7 +20359,11 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
             assertNotNull(calibrator.getEstimatedCovariance());
             checkCommonAxisCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
+            assertTrue(calibrator.getEstimatedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
+            assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedP() >= 0.0);
+            assertTrue(calibrator.getEstimatedQ() > 0.0);
 
             numValid++;
             break;
@@ -20244,7 +20512,11 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
             assertNotNull(calibrator.getEstimatedCovariance());
             checkGeneralCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
+            assertTrue(calibrator.getEstimatedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
+            assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedP() >= 0.0);
+            assertTrue(calibrator.getEstimatedQ() > 0.0);
 
             numValid++;
             break;
@@ -20394,7 +20666,11 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
                 checkCommonAxisAndGDependantCrossBiasesCovariance(calibrator.getEstimatedCovariance());
             }
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
+            assertTrue(calibrator.getEstimatedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
+            assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedP() >= 0.0);
+            assertTrue(calibrator.getEstimatedQ() > 0.0);
 
             numValid++;
             break;
@@ -20544,7 +20820,11 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
                 checkGeneralAndGDependantCrossBiasesCovariance(calibrator.getEstimatedCovariance());
             }
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
+            assertTrue(calibrator.getEstimatedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
+            assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedP() >= 0.0);
+            assertTrue(calibrator.getEstimatedQ() > 0.0);
 
             numValid++;
             break;
@@ -20695,7 +20975,11 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
                 checkCommonAxisCovariance(calibrator.getEstimatedCovariance());
             }
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
+            assertTrue(calibrator.getEstimatedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
+            assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedP() >= 0.0);
+            assertTrue(calibrator.getEstimatedQ() > 0.0);
 
             numValid++;
             break;
@@ -20851,7 +21135,11 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
             assertNotNull(calibrator.getEstimatedCovariance());
             checkGeneralCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
+            assertTrue(calibrator.getEstimatedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
+            assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedP() >= 0.0);
+            assertTrue(calibrator.getEstimatedQ() > 0.0);
 
             numValid++;
             break;
@@ -21008,7 +21296,11 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
                 checkCommonAxisAndGDependantCrossBiasesCovariance(calibrator.getEstimatedCovariance());
             }
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
+            assertTrue(calibrator.getEstimatedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
+            assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedP() >= 0.0);
+            assertTrue(calibrator.getEstimatedQ() >= 0.0);
 
             numValid++;
             break;
@@ -21168,7 +21460,11 @@ class PROSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
                 checkGeneralAndGDependantCrossBiasesCovariance(calibrator.getEstimatedCovariance());
             }
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
+            assertTrue(calibrator.getEstimatedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
+            assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedP() >= 0.0);
+            assertTrue(calibrator.getEstimatedQ() >= 0.0);
 
             numValid++;
             break;

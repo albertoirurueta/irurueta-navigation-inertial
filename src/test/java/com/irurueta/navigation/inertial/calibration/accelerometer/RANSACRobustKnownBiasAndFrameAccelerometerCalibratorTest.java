@@ -186,6 +186,10 @@ class RANSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                 calibrator.getPreliminarySubsetSize());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // test constructor with listener
         calibrator = new RANSACRobustKnownBiasAndFrameAccelerometerCalibrator(this);
@@ -289,6 +293,10 @@ class RANSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                 calibrator.getPreliminarySubsetSize());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // test constructor with measurements
         final var measurements = Collections.<StandardDeviationFrameBodyKinematics>emptyList();
@@ -393,6 +401,10 @@ class RANSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                 calibrator.getPreliminarySubsetSize());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // test constructor with measurements and listener
         calibrator = new RANSACRobustKnownBiasAndFrameAccelerometerCalibrator(measurements, this);
@@ -496,6 +508,10 @@ class RANSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                 calibrator.getPreliminarySubsetSize());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // test constructor with common axis used
         calibrator = new RANSACRobustKnownBiasAndFrameAccelerometerCalibrator(true);
@@ -599,6 +615,10 @@ class RANSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                 calibrator.getPreliminarySubsetSize());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // test constructor with common axis used and listener
         calibrator = new RANSACRobustKnownBiasAndFrameAccelerometerCalibrator(true, this);
@@ -702,6 +722,10 @@ class RANSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                 calibrator.getPreliminarySubsetSize());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // test constructor with measurements and common axis used
         calibrator = new RANSACRobustKnownBiasAndFrameAccelerometerCalibrator(measurements, true);
@@ -805,6 +829,10 @@ class RANSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                 calibrator.getPreliminarySubsetSize());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // test constructor with measurements and common axis used and listener
         calibrator = new RANSACRobustKnownBiasAndFrameAccelerometerCalibrator(measurements, true,
@@ -909,6 +937,10 @@ class RANSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                 calibrator.getPreliminarySubsetSize());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // test constructor with bias coordinates
         final var ba = generateBa();
@@ -1017,6 +1049,10 @@ class RANSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                 calibrator.getPreliminarySubsetSize());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // test constructor with bias coordinates and listener
         calibrator = new RANSACRobustKnownBiasAndFrameAccelerometerCalibrator(biasX, biasY, biasZ, this);
@@ -1120,6 +1156,10 @@ class RANSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                 calibrator.getPreliminarySubsetSize());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // test constructor with measurements and bias coordinates
         calibrator = new RANSACRobustKnownBiasAndFrameAccelerometerCalibrator(measurements, biasX, biasY, biasZ);
@@ -1223,6 +1263,10 @@ class RANSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                 calibrator.getPreliminarySubsetSize());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // test constructor with measurements, bias coordinates and listener
         calibrator = new RANSACRobustKnownBiasAndFrameAccelerometerCalibrator(measurements, biasX, biasY, biasZ,
@@ -1327,6 +1371,10 @@ class RANSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                 calibrator.getPreliminarySubsetSize());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // test constructor with bias coordinates and common axis used
         calibrator = new RANSACRobustKnownBiasAndFrameAccelerometerCalibrator(biasX, biasY, biasZ, true);
@@ -1430,6 +1478,10 @@ class RANSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                 calibrator.getPreliminarySubsetSize());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // test constructor with bias coordinates, common axis used and listener
         calibrator = new RANSACRobustKnownBiasAndFrameAccelerometerCalibrator(biasX, biasY, biasZ, true,
@@ -1534,6 +1586,10 @@ class RANSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                 calibrator.getPreliminarySubsetSize());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // test constructor with measurements, bias coordinates and common axis used
         calibrator = new RANSACRobustKnownBiasAndFrameAccelerometerCalibrator(measurements, biasX, biasY, biasZ,
@@ -1638,6 +1694,10 @@ class RANSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                 calibrator.getPreliminarySubsetSize());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // test constructor with measurements, bias coordinates and common axis used
         calibrator = new RANSACRobustKnownBiasAndFrameAccelerometerCalibrator(measurements, biasX, biasY, biasZ,
@@ -1742,6 +1802,10 @@ class RANSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                 calibrator.getPreliminarySubsetSize());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // test constructor with bias coordinates as acceleration
         final var bax = new Acceleration(biasX, AccelerationUnit.METERS_PER_SQUARED_SECOND);
@@ -1848,6 +1912,10 @@ class RANSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                 calibrator.getPreliminarySubsetSize());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // test constructor with bias coordinates as acceleration and listener
         calibrator = new RANSACRobustKnownBiasAndFrameAccelerometerCalibrator(bax, bay, baz, this);
@@ -1951,6 +2019,10 @@ class RANSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                 calibrator.getPreliminarySubsetSize());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // test constructor with measurements and bias coordinates as acceleration
         calibrator = new RANSACRobustKnownBiasAndFrameAccelerometerCalibrator(measurements, bax, bay, baz);
@@ -2054,6 +2126,10 @@ class RANSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                 calibrator.getPreliminarySubsetSize());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // test constructor with measurements, bias coordinates as acceleration and listener
         calibrator = new RANSACRobustKnownBiasAndFrameAccelerometerCalibrator(measurements, bax, bay, baz, this);
@@ -2157,6 +2233,10 @@ class RANSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                 calibrator.getPreliminarySubsetSize());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // test constructor with bias coordinates as acceleration and common axis used
         calibrator = new RANSACRobustKnownBiasAndFrameAccelerometerCalibrator(bax, bay, baz, true);
@@ -2260,6 +2340,10 @@ class RANSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                 calibrator.getPreliminarySubsetSize());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // test constructor with bias coordinates as acceleration, common axis used
         // and listener
@@ -2365,6 +2449,10 @@ class RANSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                 calibrator.getPreliminarySubsetSize());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // test constructor with measurements, bias coordinates as acceleration and common axis used
         calibrator = new RANSACRobustKnownBiasAndFrameAccelerometerCalibrator(measurements, bax, bay, baz,
@@ -2469,6 +2557,10 @@ class RANSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                 calibrator.getPreliminarySubsetSize());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // test constructor with measurements, bias coordinates as acceleration and common axis used
         calibrator = new RANSACRobustKnownBiasAndFrameAccelerometerCalibrator(measurements, bax, bay, baz,
@@ -2573,6 +2665,10 @@ class RANSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                 calibrator.getPreliminarySubsetSize());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // test constructor with bias array
         final var biasArray = ba.getBuffer();
@@ -2677,6 +2773,10 @@ class RANSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                 calibrator.getPreliminarySubsetSize());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new RANSACRobustKnownBiasAndFrameAccelerometerCalibrator(
@@ -2784,6 +2884,10 @@ class RANSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                 calibrator.getPreliminarySubsetSize());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class,
@@ -2891,6 +2995,10 @@ class RANSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                 calibrator.getPreliminarySubsetSize());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new RANSACRobustKnownBiasAndFrameAccelerometerCalibrator(
@@ -2998,6 +3106,10 @@ class RANSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                 calibrator.getPreliminarySubsetSize());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new RANSACRobustKnownBiasAndFrameAccelerometerCalibrator(
@@ -3105,6 +3217,10 @@ class RANSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                 calibrator.getPreliminarySubsetSize());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new RANSACRobustKnownBiasAndFrameAccelerometerCalibrator(
@@ -3213,6 +3329,10 @@ class RANSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                 calibrator.getPreliminarySubsetSize());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new RANSACRobustKnownBiasAndFrameAccelerometerCalibrator(
@@ -3321,6 +3441,10 @@ class RANSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                 calibrator.getPreliminarySubsetSize());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new RANSACRobustKnownBiasAndFrameAccelerometerCalibrator(
@@ -3429,6 +3553,10 @@ class RANSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                 calibrator.getPreliminarySubsetSize());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> new RANSACRobustKnownBiasAndFrameAccelerometerCalibrator(
@@ -3536,6 +3664,10 @@ class RANSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                 calibrator.getPreliminarySubsetSize());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         final var m1 = new Matrix(1, 1);
@@ -3647,6 +3779,10 @@ class RANSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                 calibrator.getPreliminarySubsetSize());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         final var m3 = new Matrix(1, 1);
@@ -3758,6 +3894,10 @@ class RANSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                 calibrator.getPreliminarySubsetSize());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         final var m5 = new Matrix(1, 1);
@@ -3869,6 +4009,10 @@ class RANSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                 calibrator.getPreliminarySubsetSize());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         final var m7 = new Matrix(1, 1);
@@ -3980,6 +4124,10 @@ class RANSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                 calibrator.getPreliminarySubsetSize());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         final var m9 = new Matrix(1, 1);
@@ -4091,6 +4239,10 @@ class RANSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                 calibrator.getPreliminarySubsetSize());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         final var m11 = new Matrix(1, 1);
@@ -4202,6 +4354,10 @@ class RANSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                 calibrator.getPreliminarySubsetSize());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         final var m13 = new Matrix(1, 1);
@@ -4314,6 +4470,10 @@ class RANSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                 calibrator.getPreliminarySubsetSize());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // Force IllegalArgumentException
         final var m15 = new Matrix(1, 1);
@@ -5217,7 +5377,11 @@ class RANSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
         assertNotNull(calibrator.getEstimatedCovariance());
         checkGeneralCovariance(calibrator.getEstimatedCovariance());
         assertTrue(calibrator.getEstimatedMse() > 0.0);
-        assertNotEquals(0.0, calibrator.getEstimatedChiSq());
+        assertTrue(calibrator.getEstimatedChiSq() > 0.0);
+        assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
+        assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
+        assertTrue(calibrator.getEstimatedP() >= 0.0);
+        assertTrue(calibrator.getEstimatedQ() > 0.0);
     }
 
     @Test
@@ -5318,7 +5482,11 @@ class RANSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
         assertNotNull(calibrator.getEstimatedCovariance());
         checkCommonAxisCovariance(calibrator.getEstimatedCovariance());
         assertTrue(calibrator.getEstimatedMse() > 0.0);
-        assertNotEquals(0.0, calibrator.getEstimatedChiSq());
+        assertTrue(calibrator.getEstimatedChiSq() > 0.0);
+        assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
+        assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
+        assertTrue(calibrator.getEstimatedP() >= 0.0);
+        assertTrue(calibrator.getEstimatedQ() > 0.0);
     }
 
     @Test
@@ -5425,6 +5593,11 @@ class RANSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
             checkGeneralCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
             assertNotEquals(0.0, calibrator.getEstimatedChiSq());
+            assertTrue(calibrator.getEstimatedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
+            assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedP() >= 0.0);
+            assertTrue(calibrator.getEstimatedQ() > 0.0);
 
             numValid++;
             break;
@@ -5538,7 +5711,11 @@ class RANSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
             assertNotNull(calibrator.getEstimatedCovariance());
             checkCommonAxisCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
+            assertTrue(calibrator.getEstimatedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
+            assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedP() >= 0.0);
+            assertTrue(calibrator.getEstimatedQ() > 0.0);
 
             numValid++;
             break;
@@ -5764,7 +5941,11 @@ class RANSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
             assertNotNull(calibrator.getEstimatedCovariance());
             checkGeneralCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
+            assertTrue(calibrator.getEstimatedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
+            assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedP() >= 0.0);
+            assertTrue(calibrator.getEstimatedQ() > 0.0);
 
             numValid++;
             break;

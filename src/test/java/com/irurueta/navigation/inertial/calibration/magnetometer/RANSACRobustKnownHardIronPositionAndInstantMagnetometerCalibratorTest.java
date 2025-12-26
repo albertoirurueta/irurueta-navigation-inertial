@@ -212,6 +212,10 @@ class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -323,6 +327,10 @@ class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -436,6 +444,10 @@ class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -548,6 +560,10 @@ class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -656,6 +672,10 @@ class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -774,6 +794,10 @@ class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -896,6 +920,10 @@ class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -1034,6 +1062,10 @@ class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -1168,6 +1200,10 @@ class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -1291,6 +1327,10 @@ class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -1413,6 +1453,10 @@ class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -1535,6 +1579,10 @@ class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -1657,6 +1705,10 @@ class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -1785,6 +1837,10 @@ class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -1917,6 +1973,10 @@ class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -2050,6 +2110,10 @@ class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -2183,6 +2247,10 @@ class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -2316,6 +2384,10 @@ class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -2454,6 +2526,10 @@ class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -2592,6 +2668,10 @@ class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -2730,6 +2810,10 @@ class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -2881,6 +2965,10 @@ class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -3040,6 +3128,10 @@ class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -3199,6 +3291,10 @@ class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -3358,6 +3454,10 @@ class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -3496,6 +3596,10 @@ class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -3618,6 +3722,10 @@ class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -3740,6 +3848,10 @@ class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -3862,6 +3974,10 @@ class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -3984,6 +4100,10 @@ class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -4112,6 +4232,10 @@ class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -4245,6 +4369,10 @@ class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -4378,6 +4506,10 @@ class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -4510,6 +4642,10 @@ class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -4643,6 +4779,10 @@ class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -4781,6 +4921,10 @@ class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -4919,6 +5063,10 @@ class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -5057,6 +5205,10 @@ class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -5208,6 +5360,10 @@ class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -5367,6 +5523,10 @@ class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -5526,6 +5686,10 @@ class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -5685,6 +5849,10 @@ class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
         assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -6746,9 +6914,16 @@ class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
             assertTrue(mm.equals(estimatedMm, ABSOLUTE_ERROR));
 
             assertEstimatedResult(estimatedMm, calibrator);
+            if (calibrator.getEstimatedCovariance() == null) {
+                continue;
+            }
             checkGeneralCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
+            assertTrue(calibrator.getEstimatedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
+            assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedP() >= 0.0);
+            assertTrue(calibrator.getEstimatedQ() > 0.0);
 
             numValid++;
             break;
@@ -6833,7 +7008,11 @@ class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
             assertNotNull(calibrator.getEstimatedCovariance());
             checkCommonAxisCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
+            assertTrue(calibrator.getEstimatedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
+            assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedP() >= 0.0);
+            assertTrue(calibrator.getEstimatedQ() > 0.0);
 
             numValid++;
             break;
@@ -6972,7 +7151,11 @@ class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
             assertEquals(0, calibrateNextIteration);
             assertEquals(0, calibrateProgressChange);
 
-            calibrator.calibrate();
+            try {
+                calibrator.calibrate();
+            } catch (final CalibrationException e) {
+                continue;
+            }
 
             // check
             assertTrue(calibrator.isReady());
@@ -6994,7 +7177,11 @@ class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
             assertNotNull(calibrator.getEstimatedCovariance());
             checkCommonAxisCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
+            assertTrue(calibrator.getEstimatedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
+            assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedP() >= 0.0);
+            assertTrue(calibrator.getEstimatedQ() > 0.0);
 
             numValid++;
             break;

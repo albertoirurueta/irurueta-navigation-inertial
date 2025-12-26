@@ -390,9 +390,34 @@ public abstract class RobustEasyGyroscopeCalibrator implements GyroscopeNonLinea
     private double estimatedChiSq;
 
     /**
+     * Estimated degrees of freedom of chi square value. Degrees of freedom is equal to the number of sampled data
+     * minus the number of estimated parameters.
+     */
+    private int estimatedChiSqDegreesOfFreedom;
+
+    /**
+     * Estimated reduced chi square value. This is equal to estimated chi square value divided by its degrees of
+     * freedom. Ideally this value should be close to 1.0.
+     */
+    private double estimatedReducedChiSq;
+
+    /**
      * Estimated mean square error respect to provided measurements.
      */
     private double estimatedMse;
+
+    /**
+     * Estimated probability of finding a smaller chi square value expressed as a value between 0.0 and 1.0. The smaller
+     * the found chi square value is, the better the fit of the estimated parameters to the actual parameter. Thus, the
+     * smaller the chance of finding a smaller chi square value, then the better the estimated fit is.
+     */
+    private double estimatedP;
+
+    /**
+     * Estimated measure of quality of estimated fit as a value between 0.0 and 1.0. The larger the quality value is,
+     * the better the fit that has been estimated.
+     */
+    private double estimatedQ;
 
     /**
      * Indicates whether calibrator is running.
@@ -3370,6 +3395,30 @@ public abstract class RobustEasyGyroscopeCalibrator implements GyroscopeNonLinea
     }
 
     /**
+     * Gets estimated chi square degrees of freedom. Degrees of freedom is equal to the number of sampled data minus the
+     * number of estimated parameters.
+     *
+     * @return estimated degrees of freedom of chi square value
+     */
+    @Override
+    public int getEstimatedChiSqDegreesOfFreedom() {
+        return estimatedChiSqDegreesOfFreedom;
+    }
+
+    /**
+     * Gets estimated reduced chi square value. This is equal to estimated chi square value divided by its degrees of
+     * freedom. Ideally this value should be close to 1.0, indicating that fit is optimal.
+     * A value larger than 1.0 indicates that fit is not good or noise has been underestimated, and a value smaller than
+     * 1.0 indicates that there is overfitting or noise has been overestimated.
+     *
+     * @return estimated reduced chi square value
+     */
+    @Override
+    public double getEstimatedReducedChiSq() {
+        return estimatedReducedChiSq;
+    }
+
+    /**
      * Gets estimated mean square error respect to provided measurements.
      *
      * @return estimated mean square error respect to provided measurements.
@@ -3377,6 +3426,29 @@ public abstract class RobustEasyGyroscopeCalibrator implements GyroscopeNonLinea
     @Override
     public double getEstimatedMse() {
         return estimatedMse;
+    }
+
+    /**
+     * Gets estimated probability of finding a smaller chi square value expressed as a value between 0.0 and 1.0. The
+     * smaller the found chi square value is, the better the fit of the estimated parameters to the actual parameter.
+     * Thus, the smaller the chance of finding a smaller chi square value, then the better the estimated fit is.
+     *
+     * @return estimated probability of finding a smaller chi square value.
+     */
+    @Override
+    public double getEstimatedP() {
+        return estimatedP;
+    }
+
+    /**
+     * Gets estimated measure of quality of estimated fit as a value between 0.0 and 1.0. The larger the quality value
+     * is, the better the fit that has been estimated.
+     *
+     * @return estimated measure of quality of estimated fit.
+     */
+    @Override
+    public double getEstimatedQ() {
+        return estimatedQ;
     }
 
     /**
@@ -5894,6 +5966,10 @@ public abstract class RobustEasyGyroscopeCalibrator implements GyroscopeNonLinea
 
             result.estimatedMse = innerCalibrator.getEstimatedMse();
             result.estimatedChiSq = innerCalibrator.getEstimatedChiSq();
+            result.estimatedChiSqDegreesOfFreedom = innerCalibrator.getEstimatedChiSqDegreesOfFreedom();
+            result.estimatedReducedChiSq = innerCalibrator.getEstimatedReducedChiSq();
+            result.estimatedP = innerCalibrator.getEstimatedP();
+            result.estimatedQ = innerCalibrator.getEstimatedQ();
 
             solutions.add(result);
         } catch (final LockedException | CalibrationException | NotReadyException e) {
@@ -5943,6 +6019,10 @@ public abstract class RobustEasyGyroscopeCalibrator implements GyroscopeNonLinea
                 estimatedCovariance = innerCalibrator.getEstimatedCovariance();
                 estimatedMse = innerCalibrator.getEstimatedMse();
                 estimatedChiSq = innerCalibrator.getEstimatedChiSq();
+                estimatedChiSqDegreesOfFreedom = innerCalibrator.getEstimatedChiSqDegreesOfFreedom();
+                estimatedReducedChiSq = innerCalibrator.getEstimatedReducedChiSq();
+                estimatedP = innerCalibrator.getEstimatedP();
+                estimatedQ = innerCalibrator.getEstimatedQ();
 
             } catch (LockedException | CalibrationException | NotReadyException e) {
                 estimatedCovariance = preliminaryResult.covariance;
@@ -5951,6 +6031,10 @@ public abstract class RobustEasyGyroscopeCalibrator implements GyroscopeNonLinea
                 estimatedGg = preliminaryResult.estimatedGg;
                 estimatedMse = preliminaryResult.estimatedMse;
                 estimatedChiSq = preliminaryResult.estimatedChiSq;
+                estimatedChiSqDegreesOfFreedom = preliminaryResult.estimatedChiSqDegreesOfFreedom;
+                estimatedReducedChiSq = preliminaryResult.estimatedReducedChiSq;
+                estimatedP = preliminaryResult.estimatedP;
+                estimatedQ = preliminaryResult.estimatedQ;
             }
         } else {
             estimatedCovariance = preliminaryResult.covariance;
@@ -5959,6 +6043,10 @@ public abstract class RobustEasyGyroscopeCalibrator implements GyroscopeNonLinea
             estimatedGg = preliminaryResult.estimatedGg;
             estimatedMse = preliminaryResult.estimatedMse;
             estimatedChiSq = preliminaryResult.estimatedChiSq;
+            estimatedChiSqDegreesOfFreedom = preliminaryResult.estimatedChiSqDegreesOfFreedom;
+            estimatedReducedChiSq = preliminaryResult.estimatedReducedChiSq;
+            estimatedP = preliminaryResult.estimatedP;
+            estimatedQ = preliminaryResult.estimatedQ;
         }
     }
 
@@ -6091,5 +6179,30 @@ public abstract class RobustEasyGyroscopeCalibrator implements GyroscopeNonLinea
          * Estimated chi square value.
          */
         private double estimatedChiSq;
+
+        /**
+         * Estimated degrees of freedom of chi square value. Degrees of freedom is equal to the number of sampled data
+         * minus the number of estimated parameters.
+         */
+        private int estimatedChiSqDegreesOfFreedom;
+
+        /**
+         * Estimated reduced chi square value. This is equal to estimated chi square value divided by its degrees of
+         * freedom. Ideally this value should be close to 1.0.
+         */
+        private double estimatedReducedChiSq;
+
+        /**
+         * Estimated probability of finding a smaller chi square value expressed as a value between 0.0 and 1.0. The smaller
+         * the found chi square value is, the better the fit of the estimated parameters to the actual parameter. Thus, the
+         * smaller the chance of finding a smaller chi square value, then the better the estimated fit is.
+         */
+        private double estimatedP;
+
+        /**
+         * Estimated measure of quality of estimated fit as a value between 0.0 and 1.0. The larger the quality value is,
+         * the better the fit that has been estimated.
+         */
+        private double estimatedQ;
     }
 }

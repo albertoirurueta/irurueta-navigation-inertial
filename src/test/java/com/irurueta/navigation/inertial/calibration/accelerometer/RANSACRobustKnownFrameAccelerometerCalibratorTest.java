@@ -220,6 +220,10 @@ class RANSACRobustKnownFrameAccelerometerCalibratorTest implements RobustKnownFr
                 calibrator.getPreliminarySubsetSize());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // test constructor with listener
         calibrator = new RANSACRobustKnownFrameAccelerometerCalibrator(this);
@@ -357,6 +361,10 @@ class RANSACRobustKnownFrameAccelerometerCalibratorTest implements RobustKnownFr
                 calibrator.getPreliminarySubsetSize());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // test constructor with measurements
         final var measurements = Collections.<StandardDeviationFrameBodyKinematics>emptyList();
@@ -495,6 +503,10 @@ class RANSACRobustKnownFrameAccelerometerCalibratorTest implements RobustKnownFr
                 calibrator.getPreliminarySubsetSize());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // test constructor with measurements and listener
         calibrator = new RANSACRobustKnownFrameAccelerometerCalibrator(measurements, this);
@@ -632,6 +644,10 @@ class RANSACRobustKnownFrameAccelerometerCalibratorTest implements RobustKnownFr
                 calibrator.getPreliminarySubsetSize());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // test constructor with common axis used
         calibrator = new RANSACRobustKnownFrameAccelerometerCalibrator(true);
@@ -770,6 +786,10 @@ class RANSACRobustKnownFrameAccelerometerCalibratorTest implements RobustKnownFr
                 calibrator.getPreliminarySubsetSize());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // test constructor with common axis used and listener
         calibrator = new RANSACRobustKnownFrameAccelerometerCalibrator(true, this);
@@ -908,6 +928,10 @@ class RANSACRobustKnownFrameAccelerometerCalibratorTest implements RobustKnownFr
                 calibrator.getPreliminarySubsetSize());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // test constructor with measurements and common axis used
         calibrator = new RANSACRobustKnownFrameAccelerometerCalibrator(measurements, true);
@@ -1046,6 +1070,10 @@ class RANSACRobustKnownFrameAccelerometerCalibratorTest implements RobustKnownFr
                 calibrator.getPreliminarySubsetSize());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
 
         // test constructor with measurements and common axis used
         calibrator = new RANSACRobustKnownFrameAccelerometerCalibrator(measurements, true, this);
@@ -1184,6 +1212,10 @@ class RANSACRobustKnownFrameAccelerometerCalibratorTest implements RobustKnownFr
                 calibrator.getPreliminarySubsetSize());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
     }
 
     @Test
@@ -2081,7 +2113,11 @@ class RANSACRobustKnownFrameAccelerometerCalibratorTest implements RobustKnownFr
 
         assertNotNull(calibrator.getEstimatedCovariance());
         assertTrue(calibrator.getEstimatedMse() > 0.0);
-        assertNotEquals(0.0, calibrator.getEstimatedChiSq());
+        assertTrue(calibrator.getEstimatedChiSq() > 0.0);
+        assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
+        assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
+        assertTrue(calibrator.getEstimatedP() >= 0.0);
+        assertTrue(calibrator.getEstimatedQ() > 0.0);
     }
 
     @Test
@@ -2181,7 +2217,11 @@ class RANSACRobustKnownFrameAccelerometerCalibratorTest implements RobustKnownFr
         assertNotNull(calibrator.getEstimatedCovariance());
         checkCommonAxisCovariance(calibrator.getEstimatedCovariance());
         assertTrue(calibrator.getEstimatedMse() > 0.0);
-        assertNotEquals(0.0, calibrator.getEstimatedChiSq());
+        assertTrue(calibrator.getEstimatedChiSq() > 0.0);
+        assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
+        assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
+        assertTrue(calibrator.getEstimatedP() >= 0.0);
+        assertTrue(calibrator.getEstimatedQ() > 0.0);
     }
 
     @Test
@@ -2291,7 +2331,11 @@ class RANSACRobustKnownFrameAccelerometerCalibratorTest implements RobustKnownFr
             assertNotNull(calibrator.getEstimatedCovariance());
             checkGeneralCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
+            assertTrue(calibrator.getEstimatedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
+            assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedP() >= 0.0);
+            assertTrue(calibrator.getEstimatedQ() > 0.0);
 
             numValid++;
             break;
@@ -2407,7 +2451,11 @@ class RANSACRobustKnownFrameAccelerometerCalibratorTest implements RobustKnownFr
             assertNotNull(calibrator.getEstimatedCovariance());
             checkCommonAxisCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
+            assertTrue(calibrator.getEstimatedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
+            assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedP() >= 0.0);
+            assertTrue(calibrator.getEstimatedQ() > 0.0);
 
             numValid++;
             break;
@@ -2642,7 +2690,11 @@ class RANSACRobustKnownFrameAccelerometerCalibratorTest implements RobustKnownFr
             assertNotNull(calibrator.getEstimatedCovariance());
             checkGeneralCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
+            assertTrue(calibrator.getEstimatedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
+            assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedP() >= 0.0);
+            assertTrue(calibrator.getEstimatedQ() > 0.0);
 
             numValid++;
             break;
