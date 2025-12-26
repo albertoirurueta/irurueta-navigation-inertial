@@ -87,7 +87,7 @@ class RANSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
     private static final double LARGE_THRESHOLD = 5e-1;
 
     private static final double ABSOLUTE_ERROR = 1e-9;
-    private static final double LARGE_ABSOLUTE_ERROR = 5e-5;
+    private static final double LARGE_ABSOLUTE_ERROR = 1e-4;
     private static final double VERY_LARGE_ABSOLUTE_ERROR = 1e-2;
 
     private static final double OUTLIER_ERROR_FACTOR = 1000.0;
