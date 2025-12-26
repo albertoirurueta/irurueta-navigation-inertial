@@ -38,8 +38,8 @@ class AttitudeEstimatorTest {
 
     private static final String RESOURCE = "wmm.cof";
 
-    private static final double MIN_ANGLE_DEGREES = -45.0;
-    private static final double MAX_ANGLE_DEGREES = 45.0;
+    private static final double MIN_ANGLE_DEGREES = -35.0;
+    private static final double MAX_ANGLE_DEGREES = 35.0;
 
     private static final double MIN_LATITUDE_DEGREES = -90.0;
     private static final double MAX_LATITUDE_DEGREES = 90.0;

@@ -197,6 +197,10 @@ class LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest 
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -298,6 +302,10 @@ class LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest 
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -400,6 +408,10 @@ class LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest 
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -502,6 +514,10 @@ class LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest 
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -610,6 +626,10 @@ class LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest 
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -722,6 +742,10 @@ class LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest 
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -850,6 +874,10 @@ class LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest 
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -967,6 +995,10 @@ class LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest 
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -1070,6 +1102,10 @@ class LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest 
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -1173,6 +1209,10 @@ class LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest 
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -1284,6 +1324,10 @@ class LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest 
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -1400,6 +1444,10 @@ class LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest 
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -1516,6 +1564,10 @@ class LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest 
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -1632,6 +1684,10 @@ class LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest 
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -1748,6 +1804,10 @@ class LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest 
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -1867,6 +1927,10 @@ class LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest 
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -1988,6 +2052,10 @@ class LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest 
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -2109,6 +2177,10 @@ class LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest 
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -2242,6 +2314,10 @@ class LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest 
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -2379,6 +2455,10 @@ class LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest 
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -2520,6 +2600,10 @@ class LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest 
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -2661,6 +2745,10 @@ class LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest 
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final var b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -2788,6 +2876,10 @@ class LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest 
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertEquals(groundTruthMagneticFluxDensityNorm, calibrator.getGroundTruthMagneticFluxDensityNorm(), 0.0);
         final var b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
         assertEquals(groundTruthMagneticFluxDensityNorm, b3.getValue().doubleValue(), 0.0);
@@ -2905,6 +2997,10 @@ class LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest 
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertEquals(groundTruthMagneticFluxDensityNorm, calibrator.getGroundTruthMagneticFluxDensityNorm(), 0.0);
         final var b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
         assertEquals(groundTruthMagneticFluxDensityNorm, b3.getValue().doubleValue(), 0.0);
@@ -3023,6 +3119,10 @@ class LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest 
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertEquals(groundTruthMagneticFluxDensityNorm, calibrator.getGroundTruthMagneticFluxDensityNorm(), 0.0);
         final var b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
         assertEquals(groundTruthMagneticFluxDensityNorm, b3.getValue().doubleValue(), 0.0);
@@ -3140,6 +3240,10 @@ class LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest 
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertEquals(groundTruthMagneticFluxDensityNorm, calibrator.getGroundTruthMagneticFluxDensityNorm(), 0.0);
         final var b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
         assertEquals(groundTruthMagneticFluxDensityNorm, b3.getValue().doubleValue(), 0.0);
@@ -3263,6 +3367,10 @@ class LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest 
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertEquals(groundTruthMagneticFluxDensityNorm, calibrator.getGroundTruthMagneticFluxDensityNorm(), 0.0);
         final var b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
         assertEquals(groundTruthMagneticFluxDensityNorm, b3.getValue().doubleValue(), 0.0);
@@ -3389,6 +3497,10 @@ class LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest 
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertEquals(groundTruthMagneticFluxDensityNorm, calibrator.getGroundTruthMagneticFluxDensityNorm(), 0.0);
         final var b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
         assertEquals(groundTruthMagneticFluxDensityNorm, b3.getValue().doubleValue(), 0.0);
@@ -3532,6 +3644,10 @@ class LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest 
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertEquals(groundTruthMagneticFluxDensityNorm, calibrator.getGroundTruthMagneticFluxDensityNorm(), 0.0);
         final var b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
         assertEquals(groundTruthMagneticFluxDensityNorm, b3.getValue().doubleValue(), 0.0);
@@ -3666,6 +3782,10 @@ class LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest 
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         assertEquals(groundTruthMagneticFluxDensityNorm, calibrator.getGroundTruthMagneticFluxDensityNorm(), 0.0);
         final var b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
         assertEquals(groundTruthMagneticFluxDensityNorm, b3.getValue().doubleValue(), 0.0);
@@ -3784,6 +3904,10 @@ class LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest 
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         final var b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
         assertEquals(groundTruthMagneticFluxDensityNorm, b3.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, b3.getUnit());
@@ -3901,6 +4025,10 @@ class LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest 
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         final var b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
         assertEquals(groundTruthMagneticFluxDensityNorm, b3.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, b3.getUnit());
@@ -4025,6 +4153,10 @@ class LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest 
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         final var b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
         assertEquals(groundTruthMagneticFluxDensityNorm, b3.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, b3.getUnit());
@@ -4152,6 +4284,10 @@ class LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest 
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         final var b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
         assertEquals(groundTruthMagneticFluxDensityNorm, b3.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, b3.getUnit());
@@ -4279,6 +4415,10 @@ class LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest 
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         final var b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
         assertEquals(groundTruthMagneticFluxDensityNorm, b3.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, b3.getUnit());
@@ -4406,6 +4546,10 @@ class LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest 
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         final var b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
         assertEquals(groundTruthMagneticFluxDensityNorm, b3.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, b3.getUnit());
@@ -4534,6 +4678,10 @@ class LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest 
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         final var b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
         assertEquals(groundTruthMagneticFluxDensityNorm, b3.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, b3.getUnit());
@@ -4666,6 +4814,10 @@ class LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest 
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         final var b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
         assertEquals(groundTruthMagneticFluxDensityNorm, b3.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, b3.getUnit());
@@ -4798,6 +4950,10 @@ class LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest 
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         final var b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
         assertEquals(groundTruthMagneticFluxDensityNorm, b3.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, b3.getUnit());
@@ -4930,6 +5086,10 @@ class LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest 
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         final var b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
         assertEquals(groundTruthMagneticFluxDensityNorm, b3.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, b3.getUnit());
@@ -5074,6 +5234,10 @@ class LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest 
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         final var b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
         assertEquals(groundTruthMagneticFluxDensityNorm, b3.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, b3.getUnit());
@@ -5226,6 +5390,10 @@ class LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest 
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         final var b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
         assertEquals(groundTruthMagneticFluxDensityNorm, b3.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, b3.getUnit());
@@ -5378,6 +5546,10 @@ class LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest 
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         final var b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
         assertEquals(groundTruthMagneticFluxDensityNorm, b3.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, b3.getUnit());
@@ -5530,6 +5702,10 @@ class LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest 
         assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
         assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
+        assertEquals(0, calibrator.getEstimatedChiSqDegreesOfFreedom());
+        assertEquals(0.0, calibrator.getEstimatedReducedChiSq(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedP(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedQ(), 0.0);
         final var b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
         assertEquals(groundTruthMagneticFluxDensityNorm, b3.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, b3.getUnit());
@@ -6506,7 +6682,11 @@ class LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest 
             assertNotNull(calibrator.getEstimatedCovariance());
             checkGeneralCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
+            assertTrue(calibrator.getEstimatedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
+            assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedP() >= 0.0);
+            assertTrue(calibrator.getEstimatedQ() > 0.0);
 
             numValid++;
             break;
@@ -6588,7 +6768,11 @@ class LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest 
             assertNotNull(calibrator.getEstimatedCovariance());
             checkCommonAxisCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
+            assertTrue(calibrator.getEstimatedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
+            assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedP() >= 0.0);
+            assertTrue(calibrator.getEstimatedQ() > 0.0);
 
             numValid++;
             break;
@@ -6674,7 +6858,11 @@ class LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest 
             assertNotNull(calibrator.getEstimatedCovariance());
             checkGeneralCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
+            assertTrue(calibrator.getEstimatedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
+            assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedP() >= 0.0);
+            assertTrue(calibrator.getEstimatedQ() > 0.0);
 
             numValid++;
             break;
@@ -6757,7 +6945,11 @@ class LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest 
             assertNotNull(calibrator.getEstimatedCovariance());
             checkCommonAxisCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
+            assertTrue(calibrator.getEstimatedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
+            assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedP() >= 0.0);
+            assertTrue(calibrator.getEstimatedQ() > 0.0);
 
             numValid++;
             break;
@@ -6840,7 +7032,11 @@ class LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest 
             assertNotNull(calibrator.getEstimatedCovariance());
             checkGeneralCovariance(calibrator.getEstimatedCovariance());
             assertTrue(calibrator.getEstimatedMse() >= 0.0);
-            assertNotEquals(0.0, calibrator.getEstimatedChiSq());
+            assertTrue(calibrator.getEstimatedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
+            assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedP() >= 0.0);
+            assertTrue(calibrator.getEstimatedQ() > 0.0);
 
             numValid++;
             break;

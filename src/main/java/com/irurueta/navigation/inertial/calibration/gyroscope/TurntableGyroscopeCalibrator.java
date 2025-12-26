@@ -48,6 +48,7 @@ import com.irurueta.numerical.GradientEstimator;
 import com.irurueta.numerical.fitting.FittingException;
 import com.irurueta.numerical.fitting.LevenbergMarquardtMultiDimensionFitter;
 import com.irurueta.numerical.fitting.LevenbergMarquardtMultiDimensionFunctionEvaluator;
+import com.irurueta.statistics.MaxIterationsExceededException;
 import com.irurueta.units.Acceleration;
 import com.irurueta.units.AccelerationConverter;
 import com.irurueta.units.AccelerationUnit;
@@ -429,9 +430,34 @@ public class TurntableGyroscopeCalibrator implements GyroscopeNonLinearCalibrato
     private double estimatedChiSq;
 
     /**
+     * Estimated degrees of freedom of chi square value. Degrees of freedom is equal to the number of sampled data
+     * minus the number of estimated parameters.
+     */
+    private int estimatedChiSqDegreesOfFreedom;
+
+    /**
+     * Estimated reduced chi square value. This is equal to estimated chi square value divided by its degrees of
+     * freedom. Ideally this value should be close to 1.0.
+     */
+    private double estimatedReducedChiSq;
+
+    /**
      * Estimated mean square error respect to provided measurements.
      */
     private double estimatedMse;
+
+    /**
+     * Estimated probability of finding a smaller chi square value expressed as a value between 0.0 and 1.0. The smaller
+     * the found chi square value is, the better the fit of the estimated parameters to the actual parameter. Thus, the
+     * smaller the chance of finding a smaller chi square value, then the better the estimated fit is.
+     */
+    private double estimatedP;
+
+    /**
+     * Estimated measure of quality of estimated fit as a value between 0.0 and 1.0. The larger the quality value is,
+     * the better the fit that has been estimated.
+     */
+    private double estimatedQ;
 
     /**
      * Indicates whether calibrator is running.
@@ -4551,6 +4577,30 @@ public class TurntableGyroscopeCalibrator implements GyroscopeNonLinearCalibrato
     }
 
     /**
+     * Gets estimated chi square degrees of freedom. Degrees of freedom is equal to the number of sampled data minus the
+     * number of estimated parameters.
+     *
+     * @return estimated degrees of freedom of chi square value
+     */
+    @Override
+    public int getEstimatedChiSqDegreesOfFreedom() {
+        return estimatedChiSqDegreesOfFreedom;
+    }
+
+    /**
+     * Gets estimated reduced chi square value. This is equal to estimated chi square value divided by its degrees of
+     * freedom. Ideally this value should be close to 1.0, indicating that fit is optimal.
+     * A value larger than 1.0 indicates that fit is not good or noise has been underestimated, and a value smaller than
+     * 1.0 indicates that there is overfitting or noise has been overestimated.
+     *
+     * @return estimated reduced chi square value
+     */
+    @Override
+    public double getEstimatedReducedChiSq() {
+        return estimatedReducedChiSq;
+    }
+
+    /**
      * Gets estimated mean square error respect to provided measurements.
      *
      * @return estimated mean square error respect to provided measurements.
@@ -4558,6 +4608,29 @@ public class TurntableGyroscopeCalibrator implements GyroscopeNonLinearCalibrato
     @Override
     public double getEstimatedMse() {
         return estimatedMse;
+    }
+
+    /**
+     * Gets estimated probability of finding a smaller chi square value expressed as a value between 0.0 and 1.0. The
+     * smaller the found chi square value is, the better the fit of the estimated parameters to the actual parameter.
+     * Thus, the smaller the chance of finding a smaller chi square value, then the better the estimated fit is.
+     *
+     * @return estimated probability of finding a smaller chi square value.
+     */
+    @Override
+    public double getEstimatedP() {
+        return estimatedP;
+    }
+
+    /**
+     * Gets estimated measure of quality of estimated fit as a value between 0.0 and 1.0. The larger the quality value
+     * is, the better the fit that has been estimated.
+     *
+     * @return estimated measure of quality of estimated fit.
+     */
+    @Override
+    public double getEstimatedQ() {
+        return estimatedQ;
     }
 
     /**
@@ -6330,7 +6403,18 @@ public class TurntableGyroscopeCalibrator implements GyroscopeNonLinearCalibrato
 
         estimatedCovariance = fitter.getCovar();
         estimatedChiSq = fitter.getChisq();
+        estimatedChiSqDegreesOfFreedom = fitter.getChisqDegreesOfFreedom();
+        estimatedReducedChiSq = estimatedChiSq / (double) estimatedChiSqDegreesOfFreedom;
         estimatedMse = fitter.getMse();
+        try {
+            estimatedP = fitter.getP();
+            estimatedQ = fitter.getQ();
+        } catch (final MaxIterationsExceededException | IllegalArgumentException ignore) {
+            // only happens for numerically unstable values or if the number of estimated parameters is larger than the
+            // number of samples
+            estimatedP = 1.0;
+            estimatedQ = 0.0;
+        }
     }
 
     /**
