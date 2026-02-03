@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Alberto Irurueta Carro (alberto@irurueta.com)
+ * Copyright (C) 2026 Alberto Irurueta Carro (alberto@irurueta.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,21 +15,21 @@
  */
 package com.irurueta.navigation.inertial.calibration;
 
-import com.irurueta.units.Acceleration;
-import com.irurueta.units.AccelerationConverter;
-import com.irurueta.units.AccelerationUnit;
+import com.irurueta.units.Distance;
+import com.irurueta.units.DistanceConverter;
+import com.irurueta.units.DistanceUnit;
 
 import java.io.Serial;
 
 /**
- * Contains a triad of acceleration measurements.
+ * Contains a triad of distance (aka position) measurements.
  */
-public class AccelerationTriad extends Triad<AccelerationUnit, Acceleration, AccelerationTriad> implements Cloneable {
+public class DistanceTriad extends Triad<DistanceUnit, Distance, DistanceTriad> implements Cloneable {
 
     /**
-     * Default acceleration unit.
+     * Default distance unit.
      */
-    public static final AccelerationUnit DEFAULT_UNIT = AccelerationUnit.METERS_PER_SQUARED_SECOND;
+    public static final DistanceUnit DEFAULT_UNIT = DistanceUnit.METER;
 
     /**
      * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
@@ -41,16 +41,16 @@ public class AccelerationTriad extends Triad<AccelerationUnit, Acceleration, Acc
     /**
      * Constructor.
      */
-    public AccelerationTriad() {
+    public DistanceTriad() {
         this(DEFAULT_UNIT);
     }
 
     /**
      * Constructor.
      *
-     * @param unit acceleration unit for stored values.
+     * @param unit distance unit for stored values.
      */
-    public AccelerationTriad(final AccelerationUnit unit) {
+    public DistanceTriad(final DistanceUnit unit) {
         super(unit);
     }
 
@@ -61,7 +61,7 @@ public class AccelerationTriad extends Triad<AccelerationUnit, Acceleration, Acc
      * @param valueY y-coordinate of measurement value expressed in default unit.
      * @param valueZ z-coordinate of measurement value expressed in default unit.
      */
-    public AccelerationTriad(final double valueX, final double valueY, final double valueZ) {
+    public DistanceTriad(final double valueX, final double valueY, final double valueZ) {
         this(DEFAULT_UNIT, valueX, valueY, valueZ);
     }
 
@@ -76,8 +76,8 @@ public class AccelerationTriad extends Triad<AccelerationUnit, Acceleration, Acc
      * @param valueZ z-coordinate of measurement value expressed in
      *               provided unit.
      */
-    public AccelerationTriad(
-            final AccelerationUnit unit, final double valueX, final double valueY, final double valueZ) {
+    public DistanceTriad(
+            final DistanceUnit unit, final double valueX, final double valueY, final double valueZ) {
         super(unit, valueX, valueY, valueZ);
     }
 
@@ -88,8 +88,8 @@ public class AccelerationTriad extends Triad<AccelerationUnit, Acceleration, Acc
      * @param measurementY y-coordinate of measurement.
      * @param measurementZ z-coordinate of measurement.
      */
-    public AccelerationTriad(
-            final Acceleration measurementX, final Acceleration measurementY, final Acceleration measurementZ) {
+    public DistanceTriad(
+            final Distance measurementX, final Distance measurementY, final Distance measurementZ) {
         super(DEFAULT_UNIT);
         setMeasurementCoordinates(measurementX, measurementY, measurementZ);
     }
@@ -99,7 +99,7 @@ public class AccelerationTriad extends Triad<AccelerationUnit, Acceleration, Acc
      *
      * @param other instance to copy from.
      */
-    public AccelerationTriad(final AccelerationTriad other) {
+    public DistanceTriad(final DistanceTriad other) {
         super(other);
     }
 
@@ -109,8 +109,8 @@ public class AccelerationTriad extends Triad<AccelerationUnit, Acceleration, Acc
      * @return x coordinate of measurement value.
      */
     @Override
-    public Acceleration getMeasurementX() {
-        return new Acceleration(getValueX(), getUnit());
+    public Distance getMeasurementX() {
+        return new Distance(getValueX(), getUnit());
     }
 
     /**
@@ -120,7 +120,7 @@ public class AccelerationTriad extends Triad<AccelerationUnit, Acceleration, Acc
      *               will be stored.
      */
     @Override
-    public void getMeasurementX(final Acceleration result) {
+    public void getMeasurementX(final Distance result) {
         result.setValue(getValueX());
         result.setUnit(getUnit());
     }
@@ -131,8 +131,8 @@ public class AccelerationTriad extends Triad<AccelerationUnit, Acceleration, Acc
      * @param measurementX x coordinate of measurement value.
      */
     @Override
-    public void setMeasurementX(final Acceleration measurementX) {
-        setValueX(AccelerationConverter.convert(measurementX.getValue(), measurementX.getUnit(),
+    public void setMeasurementX(final Distance measurementX) {
+        setValueX(DistanceConverter.convert(measurementX.getValue(), measurementX.getUnit(),
                 getUnit()).doubleValue());
     }
 
@@ -142,8 +142,8 @@ public class AccelerationTriad extends Triad<AccelerationUnit, Acceleration, Acc
      * @return y coordinate of measurement value.
      */
     @Override
-    public Acceleration getMeasurementY() {
-        return new Acceleration(getValueY(), getUnit());
+    public Distance getMeasurementY() {
+        return new Distance(getValueY(), getUnit());
     }
 
     /**
@@ -153,7 +153,7 @@ public class AccelerationTriad extends Triad<AccelerationUnit, Acceleration, Acc
      *               will be stored.
      */
     @Override
-    public void getMeasurementY(final Acceleration result) {
+    public void getMeasurementY(final Distance result) {
         result.setValue(getValueY());
         result.setUnit(getUnit());
     }
@@ -164,8 +164,8 @@ public class AccelerationTriad extends Triad<AccelerationUnit, Acceleration, Acc
      * @param measurementY y coordinate of measurement value.
      */
     @Override
-    public void setMeasurementY(final Acceleration measurementY) {
-        setValueY(AccelerationConverter.convert(measurementY.getValue(), measurementY.getUnit(),
+    public void setMeasurementY(final Distance measurementY) {
+        setValueY(DistanceConverter.convert(measurementY.getValue(), measurementY.getUnit(),
                 getUnit()).doubleValue());
     }
 
@@ -175,8 +175,8 @@ public class AccelerationTriad extends Triad<AccelerationUnit, Acceleration, Acc
      * @return z coordinate of measurement value.
      */
     @Override
-    public Acceleration getMeasurementZ() {
-        return new Acceleration(getValueZ(), getUnit());
+    public Distance getMeasurementZ() {
+        return new Distance(getValueZ(), getUnit());
     }
 
     /**
@@ -186,7 +186,7 @@ public class AccelerationTriad extends Triad<AccelerationUnit, Acceleration, Acc
      *               will be stored.
      */
     @Override
-    public void getMeasurementZ(final Acceleration result) {
+    public void getMeasurementZ(final Distance result) {
         result.setValue(getValueZ());
         result.setUnit(getUnit());
     }
@@ -197,8 +197,8 @@ public class AccelerationTriad extends Triad<AccelerationUnit, Acceleration, Acc
      * @param measurementZ z coordinate of measurement value.
      */
     @Override
-    public void setMeasurementZ(final Acceleration measurementZ) {
-        setValueZ(AccelerationConverter.convert(measurementZ.getValue(), measurementZ.getUnit(),
+    public void setMeasurementZ(final Distance measurementZ) {
+        setValueZ(DistanceConverter.convert(measurementZ.getValue(), measurementZ.getUnit(),
                 getUnit()).doubleValue());
     }
 
@@ -211,7 +211,7 @@ public class AccelerationTriad extends Triad<AccelerationUnit, Acceleration, Acc
      */
     @Override
     public void setMeasurementCoordinates(
-            final Acceleration measurementX, final Acceleration measurementY, final Acceleration measurementZ) {
+            final Distance measurementX, final Distance measurementY, final Distance measurementZ) {
         setMeasurementX(measurementX);
         setMeasurementY(measurementY);
         setMeasurementZ(measurementZ);
@@ -223,8 +223,8 @@ public class AccelerationTriad extends Triad<AccelerationUnit, Acceleration, Acc
      * @return acceleration containing triad norm.
      */
     @Override
-    public Acceleration getMeasurementNorm() {
-        return new Acceleration(getNorm(), getUnit());
+    public Distance getMeasurementNorm() {
+        return new Distance(getNorm(), getUnit());
     }
 
     /**
@@ -234,8 +234,8 @@ public class AccelerationTriad extends Triad<AccelerationUnit, Acceleration, Acc
      * @return a copy of this instance.
      */
     @Override
-    public AccelerationTriad copy() {
-        final var result = new AccelerationTriad();
+    public DistanceTriad copy() {
+        final var result = new DistanceTriad();
         result.copyFrom(this);
         return result;
     }
@@ -248,7 +248,7 @@ public class AccelerationTriad extends Triad<AccelerationUnit, Acceleration, Acc
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
-        final var result = (AccelerationTriad) super.clone();
+        final var result = (DistanceTriad) super.clone();
         copyTo(result);
         return result;
     }

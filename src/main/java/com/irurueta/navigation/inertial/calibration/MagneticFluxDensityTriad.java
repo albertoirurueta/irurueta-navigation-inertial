@@ -24,7 +24,8 @@ import java.io.Serial;
 /**
  * Contains a triad of magnetic flux density measurements.
  */
-public class MagneticFluxDensityTriad extends Triad<MagneticFluxDensityUnit, MagneticFluxDensity> implements Cloneable {
+public class MagneticFluxDensityTriad extends Triad<MagneticFluxDensityUnit, MagneticFluxDensity, MagneticFluxDensityTriad>
+        implements Cloneable {
 
     /**
      * Default magnetic flux density unit.
@@ -227,6 +228,19 @@ public class MagneticFluxDensityTriad extends Triad<MagneticFluxDensityUnit, Mag
     @Override
     public MagneticFluxDensity getMeasurementNorm() {
         return new MagneticFluxDensity(getNorm(), getUnit());
+    }
+
+    /**
+     * Creates and returns a new instance having exactly the same contents
+     * as this instance.
+     *
+     * @return a copy of this instance.
+     */
+    @Override
+    public MagneticFluxDensityTriad copy() {
+        final var result = new MagneticFluxDensityTriad();
+        result.copyFrom(this);
+        return result;
     }
 
     /**

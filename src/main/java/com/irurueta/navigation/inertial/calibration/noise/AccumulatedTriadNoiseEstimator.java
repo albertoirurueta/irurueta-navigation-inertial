@@ -48,7 +48,7 @@ import com.irurueta.units.TimeUnit;
  * @param <L> a listener type.
  */
 public abstract class AccumulatedTriadNoiseEstimator<U extends Enum<?>,
-        M extends Measurement<U>, T extends Triad<U, M>,
+        M extends Measurement<U>, T extends Triad<U, M, T>,
         E extends AccumulatedTriadNoiseEstimator<U, M, T, E, L>,
         L extends AccumulatedTriadNoiseEstimatorListener<U, M, T, E>> {
 

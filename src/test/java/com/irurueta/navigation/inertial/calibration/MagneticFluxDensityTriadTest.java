@@ -605,6 +605,23 @@ class MagneticFluxDensityTriadTest {
     }
 
     @Test
+    void testCopy() {
+        final var randomizer = new UniformRandomizer();
+        final var valueX = randomizer.nextDouble();
+        final var valueY = randomizer.nextDouble();
+        final var valueZ = randomizer.nextDouble();
+
+        final var triad1 = new MagneticFluxDensityTriad(MagneticFluxDensityUnit.NANOTESLA, valueX, valueY, valueZ);
+        final var triad2 = triad1.copy();
+
+        // check
+        assertEquals(valueX, triad2.getValueX(), 0.0);
+        assertEquals(valueY, triad2.getValueY(), 0.0);
+        assertEquals(valueZ, triad2.getValueZ(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.NANOTESLA, triad2.getUnit());
+    }
+
+    @Test
     void testHashCode() {
         final var randomizer = new UniformRandomizer();
         final var valueX = randomizer.nextDouble();

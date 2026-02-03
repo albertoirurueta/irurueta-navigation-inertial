@@ -27,7 +27,7 @@ import com.irurueta.units.Measurement;
  * @param <D> a detector type.
  */
 public interface TriadStaticIntervalDetectorListener<U extends Enum<?>, M extends Measurement<U>,
-        T extends Triad<U, M>, D extends TriadStaticIntervalDetector<U, M, T, D, ?>> {
+        T extends Triad<U, M, T>, D extends TriadStaticIntervalDetector<U, M, T, D, ?>> {
 
     /**
      * Called when initial static period starts so that base noise level
