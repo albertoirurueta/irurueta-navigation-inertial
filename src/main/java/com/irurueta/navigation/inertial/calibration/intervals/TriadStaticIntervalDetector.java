@@ -37,7 +37,7 @@ import com.irurueta.units.TimeUnit;
  * @param <L> a listener type.
  */
 public abstract class TriadStaticIntervalDetector<U extends Enum<?>, M extends Measurement<U>,
-        T extends Triad<U, M>, D extends TriadStaticIntervalDetector<U, M, T, D, L>,
+        T extends Triad<U, M, T>, D extends TriadStaticIntervalDetector<U, M, T, D, L>,
         L extends TriadStaticIntervalDetectorListener<U, M, T, D>> {
 
     /**

@@ -26,9 +26,10 @@ import java.util.Objects;
  * Contains a triad of measurement data.
  *
  * @param <U> type of unit.
- * @param <T> a type of measurement.
+ * @param <M> a type of measurement.
  */
-public abstract class Triad<U extends Enum<?>, T extends Measurement<U>> implements Serializable {
+public abstract class Triad<U extends Enum<?>, M extends Measurement<U>, T extends Triad<U, M, T>>
+        implements Serializable {
 
     /**
      * Number of components of measurements.
@@ -88,7 +89,7 @@ public abstract class Triad<U extends Enum<?>, T extends Measurement<U>> impleme
      *
      * @param other instance to copy from.
      */
-    protected Triad(final Triad<U, T> other) {
+    protected Triad(final Triad<U, M, T> other) {
         copyFrom(other);
     }
 
@@ -291,7 +292,7 @@ public abstract class Triad<U extends Enum<?>, T extends Measurement<U>> impleme
      *
      * @return x coordinate of measurement value.
      */
-    public abstract T getMeasurementX();
+    public abstract M getMeasurementX();
 
     /**
      * Gets x coordinate of measurement value.
@@ -299,21 +300,21 @@ public abstract class Triad<U extends Enum<?>, T extends Measurement<U>> impleme
      * @param result instance where x coordinate of measurement value
      *               will be stored.
      */
-    public abstract void getMeasurementX(final T result);
+    public abstract void getMeasurementX(final M result);
 
     /**
      * Sets x coordinate of measurement value.
      *
      * @param measurementX x coordinate of measurement value.
      */
-    public abstract void setMeasurementX(final T measurementX);
+    public abstract void setMeasurementX(final M measurementX);
 
     /**
      * Gets y coordinate of measurement value.
      *
      * @return y coordinate of measurement value.
      */
-    public abstract T getMeasurementY();
+    public abstract M getMeasurementY();
 
     /**
      * Gets y coordinate of measurement value.
@@ -321,21 +322,21 @@ public abstract class Triad<U extends Enum<?>, T extends Measurement<U>> impleme
      * @param result instance where y coordinate of measurement value
      *               will be stored.
      */
-    public abstract void getMeasurementY(final T result);
+    public abstract void getMeasurementY(final M result);
 
     /**
      * Sets y coordinate of measurement value.
      *
      * @param measurementY y coordinate of measurement value.
      */
-    public abstract void setMeasurementY(final T measurementY);
+    public abstract void setMeasurementY(final M measurementY);
 
     /**
      * Gets z coordinate of measurement value.
      *
      * @return z coordinate of measurement value.
      */
-    public abstract T getMeasurementZ();
+    public abstract M getMeasurementZ();
 
     /**
      * Gets z coordinate of measurement value.
@@ -343,14 +344,14 @@ public abstract class Triad<U extends Enum<?>, T extends Measurement<U>> impleme
      * @param result instance where z coordinate of measurement value
      *               will be stored.
      */
-    public abstract void getMeasurementZ(final T result);
+    public abstract void getMeasurementZ(final M result);
 
     /**
      * Sets z coordinate of measurement value.
      *
      * @param measurementZ z coordinate of measurement value.
      */
-    public abstract void setMeasurementZ(final T measurementZ);
+    public abstract void setMeasurementZ(final M measurementZ);
 
     /**
      * Sets measurement coordinates.
@@ -360,7 +361,7 @@ public abstract class Triad<U extends Enum<?>, T extends Measurement<U>> impleme
      * @param measurementZ z coordinate of measurement value.
      */
     public abstract void setMeasurementCoordinates(
-            final T measurementX, final T measurementY, final T measurementZ);
+            final M measurementX, final M measurementY, final M measurementZ);
 
     /**
      * Gets squared norm expressed in squared current unit.
@@ -385,14 +386,14 @@ public abstract class Triad<U extends Enum<?>, T extends Measurement<U>> impleme
      *
      * @return norm as a measurement.
      */
-    public abstract T getMeasurementNorm();
+    public abstract M getMeasurementNorm();
 
     /**
      * Gets norm as a measurement.
      *
      * @param result instance where norm value will be stored.
      */
-    public void getMeasurementNorm(final T result) {
+    public void getMeasurementNorm(final M result) {
         result.setValue(getNorm());
         result.setUnit(getUnit());
     }
@@ -402,7 +403,7 @@ public abstract class Triad<U extends Enum<?>, T extends Measurement<U>> impleme
      *
      * @param output destination instance where data will be copied to.
      */
-    public void copyTo(final Triad<U, T> output) {
+    public void copyTo(final Triad<U, M, T> output) {
         output.copyFrom(this);
     }
 
@@ -411,12 +412,20 @@ public abstract class Triad<U extends Enum<?>, T extends Measurement<U>> impleme
      *
      * @param input instance to copy data from.
      */
-    public void copyFrom(final Triad<U, T> input) {
+    public void copyFrom(final Triad<U, M, T> input) {
         valueX = input.valueX;
         valueY = input.valueY;
         valueZ = input.valueZ;
         unit = input.unit;
     }
+
+    /**
+     * Creates and returns a new instance having exactly the same contents
+     * as this instance.
+     *
+     * @return a copy of this instance.
+     */
+    public abstract T copy();
 
     /**
      * Computes and returns hash code for this instance. Hash codes are almost unique
@@ -435,7 +444,7 @@ public abstract class Triad<U extends Enum<?>, T extends Measurement<U>> impleme
      * @param other instance to be compared.
      * @return true if both instances are considered to be equal, false otherwise.
      */
-    public boolean equals(final Triad<U, T> other) {
+    public boolean equals(final Triad<U, M, T> other) {
         return equals(other, 0.0);
     }
 
@@ -448,7 +457,7 @@ public abstract class Triad<U extends Enum<?>, T extends Measurement<U>> impleme
      * @return true if both instances are considered to be equal (up to provided
      * threshold), false otherwise.
      */
-    public boolean equals(final Triad<U, T> other, final double threshold) {
+    public boolean equals(final Triad<U, M, T> other, final double threshold) {
         if (other == null) {
             return false;
         }
@@ -475,7 +484,7 @@ public abstract class Triad<U extends Enum<?>, T extends Measurement<U>> impleme
         }
 
         //noinspection unchecked
-        final var triad = (Triad<U, T>) o;
+        final var triad = (Triad<U, M, T>) o;
         return equals(triad);
     }
 }

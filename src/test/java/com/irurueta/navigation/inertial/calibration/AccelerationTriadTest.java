@@ -605,6 +605,23 @@ class AccelerationTriadTest {
     }
 
     @Test
+    void testCopy() {
+        final var randomizer = new UniformRandomizer();
+        final var valueX = randomizer.nextDouble();
+        final var valueY = randomizer.nextDouble();
+        final var valueZ = randomizer.nextDouble();
+
+        final var triad1 = new AccelerationTriad(AccelerationUnit.FEET_PER_SQUARED_SECOND, valueX, valueY, valueZ);
+        final var triad2 = triad1.copy();
+
+        // check
+        assertEquals(valueX, triad2.getValueX(), 0.0);
+        assertEquals(valueY, triad2.getValueY(), 0.0);
+        assertEquals(valueZ, triad2.getValueZ(), 0.0);
+        assertEquals(AccelerationUnit.FEET_PER_SQUARED_SECOND, triad2.getUnit());
+    }
+
+    @Test
     void testHashCode() {
         final var randomizer = new UniformRandomizer();
         final var valueX = randomizer.nextDouble();

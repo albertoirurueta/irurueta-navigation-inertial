@@ -24,7 +24,7 @@ import java.io.Serial;
 /**
  * Contains a triad of angular speed measurements.
  */
-public class AngularSpeedTriad extends Triad<AngularSpeedUnit, AngularSpeed> implements Cloneable {
+public class AngularSpeedTriad extends Triad<AngularSpeedUnit, AngularSpeed, AngularSpeedTriad> implements Cloneable {
 
     /**
      * Default angular speed unit.
@@ -225,6 +225,19 @@ public class AngularSpeedTriad extends Triad<AngularSpeedUnit, AngularSpeed> imp
     @Override
     public AngularSpeed getMeasurementNorm() {
         return new AngularSpeed(getNorm(), getUnit());
+    }
+
+    /**
+     * Creates and returns a new instance having exactly the same contents
+     * as this instance.
+     *
+     * @return a copy of this instance.
+     */
+    @Override
+    public AngularSpeedTriad copy() {
+        final var result = new AngularSpeedTriad();
+        result.copyFrom(this);
+        return result;
     }
 
     /**
