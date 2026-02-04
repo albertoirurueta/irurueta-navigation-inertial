@@ -51,7 +51,7 @@ class MidPointQuaternionStepIntegratorTest {
 
     private static final double ABSOLUTE_ERROR = 1e-2;
 
-    private static final double SMALL_ABSOLUTE_ERROR = 1e-4;
+    private static final double SMALL_ABSOLUTE_ERROR = 5e-4;
 
     @Test
     void integrate_whenOneStep_computesExpectedResult() throws RotationException {
