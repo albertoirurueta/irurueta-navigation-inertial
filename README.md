@@ -24,7 +24,7 @@ An inertial GNSS/INS navigation library
 
 | | |
 |---|---|
-| Language | Java 17+ (compiled with `maven.compiler.source/target` 17; CI builds with JDK 21) |
+| Language | Java 21+ (compiled with `maven.compiler.source/target` 21; CI builds with JDK 21) |
 | Build tool | Maven |
 | Current development version | `1.10.0-SNAPSHOT` |
 | Latest release | `1.9.0` |

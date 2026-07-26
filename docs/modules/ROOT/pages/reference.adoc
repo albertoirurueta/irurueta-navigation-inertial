@@ -1,0 +1,19 @@
+= Reference
+
+NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
+
+These reports are generated during the build.
+
+== Generated Reports
+
+[cols="1,3",options="header"]
+|===
+|Report
+|Description
+
+|https://albertoirurueta.github.io/irurueta-navigation-inertial[Maven Site Report]
+|Aggregated Maven site published to GitHub Pages: Javadoc API documentation, JaCoCo code coverage, Surefire test results, Checkstyle, SpotBugs, PMD and JXR cross-referenced source.
+
+|https://sonarcloud.io/dashboard?id=albertoirurueta_irurueta-navigation-inertial[SonarCloud Dashboard]
+|Continuous code quality analysis: bugs, code smells, coverage, duplications, maintainability, reliability, security and technical debt ratings.
+|===

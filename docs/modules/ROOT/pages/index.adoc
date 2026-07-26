@@ -1,0 +1,78 @@
+= irurueta-navigation-inertial
+
+NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
+
+`irurueta-navigation-inertial` is a Java library implementing strapdown inertial navigation, IMU calibration,
+and Earth magnetic field modeling for GNSS/INS integrated navigation systems. It provides the numerical building
+blocks that turn raw accelerometer, gyroscope and magnetometer readings into position, velocity and attitude
+estimates, and to fuse those estimates with GNSS measurements.
+
+The library follows the equations and conventions described in _Principles of GNSS, Inertial, and Multisensor
+Integrated Navigation Systems_ (Groves), and is organized around four packages:
+
+[cols="1,3",options="header"]
+|===
+|Package
+|Responsibility
+
+|`com.irurueta.navigation.inertial`
+|Core data containers such as `BodyKinematics` (specific forces and angular rates measured by an IMU) and frame/state representations shared by the other packages.
+
+|`com.irurueta.navigation.inertial.estimators`
+|Utility estimators for gravity, gravitation, kinematics, attitude leveling, position/velocity conversions and radii of curvature across NED, ECEF and ECI reference frames.
+
+|`com.irurueta.navigation.inertial.navigators`
+|Precision inertial navigation equation solvers that integrate IMU measurements over time to propagate position, velocity and attitude in NED, ECEF and ECI frames.
+
+|`com.irurueta.navigation.inertial.calibration`
+|Calibrators, error models and synthetic data generators used to estimate accelerometer, gyroscope and magnetometer biases, scale factors and cross-coupling errors, plus Kalman-filter-based INS and INS/GNSS state estimators.
+
+|`com.irurueta.navigation.inertial.wmm`
+|An implementation of the NOAA World Magnetic Model (WMM), used to estimate Earth's magnetic flux density at a given location and epoch.
+|===
+
+== Core concept: strapdown inertial navigation
+
+Strapdown inertial navigation integrates IMU measurements over time to keep track of a body's attitude, velocity
+and position without external references. The library's navigators (`NEDInertialNavigator`,
+`ECEFInertialNavigator`) implement the following update loop:
+
+[mermaid]
+....
+flowchart TD
+    A[Gyroscope angular rates] --> B[Attitude update:\nintegrate rotation]
+    C[Accelerometer specific forces] --> D[Transform specific forces\nto navigation frame using attitude]
+    B --> D
+    D --> E[Velocity update:\nintegrate specific force minus gravity]
+    E --> F[Position update:\nintegrate velocity]
+    F --> G[Updated position, velocity, attitude]
+    G -->|next epoch| A
+....
+
+When raw IMU integration alone is used, small sensor errors accumulate into drift over time. To bound this drift,
+the library also provides Kalman-filter-based estimators:
+
+* `INSLooselyCoupledKalmanFilteredEstimator` propagates INS state and its uncertainty on its own.
+* `INSGNSSLooselyCoupledKalmanFilteredEstimator` fuses a separately-computed GNSS position/velocity solution into
+  the INS propagation as measurement updates.
+* `INSGNSSTightlyCoupledKalmanFilteredEstimator` feeds raw GNSS measurements directly into the same filter,
+  allowing it to work even with a partial satellite geometry.
+
+== Core concept: sensor calibration
+
+Before an IMU's measurements can be trusted, its systematic errors (biases, scale factors, cross-axis coupling)
+must be estimated and removed. The `calibration` package (and its `accelerometer`, `gyroscope`, `magnetometer`,
+`bias`, `generators`, `intervals` and `noise` sub-packages) implements calibrators that consume measurements
+collected at one or more known frames/orientations and produce an `IMUErrors`-style correction model that can be
+applied to raw sensor readings before they are handed to a navigator.
+
+== Core concept: Earth magnetic field modeling
+
+`WMMEarthMagneticFluxDensityEstimator`, backed by the bundled NOAA WMM coefficient file and `WorldMagneticModel`,
+estimates the Earth's magnetic flux density (in the NED frame) at a given latitude, longitude, height and date.
+This is used both as an independent heading reference and as an input to magnetometer calibration.
+
+== Where to go next
+
+* xref:installation.adoc[] — add this library as a dependency to your project.
+* xref:reference.adoc[] — links to generated reports (Javadoc, coverage, quality) and external dashboards.

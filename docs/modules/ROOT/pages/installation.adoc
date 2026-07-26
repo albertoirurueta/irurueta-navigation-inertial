@@ -1,0 +1,61 @@
+= Installation
+
+NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
+
+`irurueta-navigation-inertial` is published to Maven Central as a standard Java library and can be added as a
+Maven dependency.
+
+== Latest release
+
+[source,xml]
+----
+<dependency>
+    <groupId>com.irurueta</groupId>
+    <artifactId>irurueta-navigation-inertial</artifactId>
+    <version>1.9.0</version>
+    <scope>compile</scope>
+</dependency>
+----
+
+== Latest snapshot
+
+[source,xml]
+----
+<dependency>
+    <groupId>com.irurueta</groupId>
+    <artifactId>irurueta-navigation-inertial</artifactId>
+    <version>1.10.0-SNAPSHOT</version>
+    <scope>compile</scope>
+</dependency>
+----
+
+Snapshot artifacts are published from the `develop` branch to the Sonatype snapshots repository; add it as a
+repository if you need to resolve snapshot versions:
+
+[source,xml]
+----
+<repository>
+    <id>sonatype-snapshots</id>
+    <url>https://central.sonatype.com/repository/maven-snapshots/</url>
+    <releases>
+        <enabled>false</enabled>
+    </releases>
+    <snapshots>
+        <enabled>true</enabled>
+    </snapshots>
+</repository>
+----
+
+== Requirements
+
+* Java 21 or later (the project compiles with `maven.compiler.source`/`target` set to 21).
+* Maven (the project is built and tested with the standard Maven lifecycle: `mvn clean install`).
+
+== Building from source
+
+[source,bash]
+----
+git clone https://github.com/albertoirurueta/irurueta-navigation-inertial.git
+cd irurueta-navigation-inertial
+mvn clean install
+----

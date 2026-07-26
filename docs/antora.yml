@@ -1,0 +1,5 @@
+name: irurueta-navigation-inertial
+version: 1.9.0
+title: irurueta-navigation-inertial
+nav:
+  - modules/ROOT/nav.adoc
