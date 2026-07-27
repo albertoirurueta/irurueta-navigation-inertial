@@ -1,0 +1,32 @@
+<svg viewBox="0 0 560 260" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <!-- Redrawn after Groves, "Principles of GNSS, Inertial, and Multisensor Integrated Navigation Systems", Fig. 5.5 -->
+
+  <!-- Panel (a): single trapezoid -->
+  <g transform="translate(40,20)">
+    <line x1="0" y1="160" x2="200" y2="160" stroke="#333333" stroke-width="1.5"/>
+    <line x1="0" y1="160" x2="0" y2="10" stroke="#333333" stroke-width="1.5"/>
+    <polygon points="0,160 200,160 200,60 0,110" fill="#2980b9" fill-opacity="0.15" stroke="#2980b9" stroke-width="2"/>
+    <line x1="0" y1="110" x2="0" y2="160" stroke="#2980b9" stroke-width="1.5" stroke-dasharray="3 2"/>
+    <line x1="200" y1="60" x2="200" y2="160" stroke="#2980b9" stroke-width="1.5" stroke-dasharray="3 2"/>
+    <text x="-6" y="180" font-size="13" fill="#333333">v(t)</text>
+    <text x="182" y="180" font-size="13" fill="#333333">v(t+tau)</text>
+    <text x="60" y="200" font-size="14" fill="#555555">(a) one interval</text>
+  </g>
+
+  <!-- Panel (b): two sub-trapezoids -->
+  <g transform="translate(320,20)">
+    <line x1="0" y1="160" x2="200" y2="160" stroke="#333333" stroke-width="1.5"/>
+    <line x1="0" y1="160" x2="0" y2="10" stroke="#333333" stroke-width="1.5"/>
+    <polygon points="0,160 100,160 100,85 0,110" fill="#27ae60" fill-opacity="0.15" stroke="#27ae60" stroke-width="2"/>
+    <polygon points="100,160 200,160 200,60 100,85" fill="#e67e22" fill-opacity="0.15" stroke="#e67e22" stroke-width="2"/>
+    <line x1="0" y1="110" x2="0" y2="160" stroke="#27ae60" stroke-width="1.5" stroke-dasharray="3 2"/>
+    <line x1="100" y1="85" x2="100" y2="160" stroke="#333333" stroke-width="1.5" stroke-dasharray="3 2"/>
+    <line x1="200" y1="60" x2="200" y2="160" stroke="#e67e22" stroke-width="1.5" stroke-dasharray="3 2"/>
+    <text x="-6" y="180" font-size="13" fill="#333333">v(t)</text>
+    <text x="86" y="180" font-size="13" fill="#333333">v(t+tau/2)</text>
+    <text x="182" y="180" font-size="13" fill="#333333">v(t+tau)</text>
+    <text x="45" y="200" font-size="14" fill="#555555">(b) two sub-intervals</text>
+  </g>
+
+  <text x="30" y="245" font-size="13" fill="#555555">Position is the area under the velocity curve; using an intermediate sample improves the estimate only when velocity is nonlinear.</text>
+</svg>

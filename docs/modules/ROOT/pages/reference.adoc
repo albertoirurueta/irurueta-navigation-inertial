@@ -17,3 +17,65 @@ These reports are generated during the build.
 |https://sonarcloud.io/dashboard?id=albertoirurueta_irurueta-navigation-inertial[SonarCloud Dashboard]
 |Continuous code quality analysis: bugs, code smells, coverage, duplications, maintainability, reliability, security and technical debt ratings.
 |===
+
+[#bibliography]
+== Bibliography
+
+Every equation, figure, and external reference used across the estimators, navigators, WMM, and
+calibration documentation pages is listed here, with a link to the original source where one is
+available online. Each page links back here; conversely, most entries below link forward to the pages
+that use them.
+
+=== Books
+
+[[book-groves]] *[book-groves]* P. D. Groves, _Principles of GNSS, Inertial, and Multisensor Integrated
+Navigation Systems_, 2nd ed., Artech House, 2013, ISBN 978-1-60807-005-3.
+https://us.artechhouse.com/Principles-of-GNSS-Inertial-and-Multisensor-Integrated-Navigation-Systems-Second-Edition-P2046.aspx[Publisher page].
+This is the primary reference for xref:estimators/index.adoc[estimators], xref:navigators/index.adoc[navigators],
+and most of xref:calibration/index.adoc[calibration]. Figures redrawn in this documentation (as original
+SVG illustrations, not reproductions) are credited individually on the pages that use them.
+
+=== Companion software
+
+[[matlab-companion]] *[matlab-companion]* Companion MATLAB scripts for <<book-groves,[book-groves]>>,
+https://github.com/ymjdz/MATLAB-Codes[github.com/ymjdz/MATLAB-Codes]. Individual estimator classes link
+to the specific script they port (e.g. `Gravity_NED.m`, `Kinematics_ECEF.m`, `Radii_of_curvature.m`).
+Used by xref:estimators/index.adoc[estimators] and xref:navigators/index.adoc[navigators].
+
+=== Earth magnetic field (WMM)
+
+[[wmm-site]] *[wmm-site]* NOAA/NCEI, NGA, and the British Geological Survey (BGS), _World Magnetic Model
+(WMM)_. Primary links: https://www.ngdc.noaa.gov/geomag/WMM/[www.ngdc.noaa.gov/geomag/WMM] (main page),
+https://www.ncei.noaa.gov/products/world-magnetic-model[www.ncei.noaa.gov/products/world-magnetic-model]
+(current release), https://www.ncei.noaa.gov/products/world-magnetic-model/wmm-coefficients[coefficient
+downloads], https://www.ngdc.noaa.gov/geomag/WMM/wmmformat.shtml[`.cof` file format], and the
+https://repository.library.noaa.gov/view/noaa/24390[WMM technical report] describing the
+spherical-harmonic equations. This library bundles the WMM-2025 coefficient set (valid 2025.0-2030.0).
+Used throughout xref:wmm/index.adoc[the WMM package].
+
+[[igrf-site]] *[igrf-site]* NOAA/NCEI, _International Geomagnetic Reference Field (IGRF)_,
+https://www.ngdc.noaa.gov/IAGA/vmod/igrf.html[www.ngdc.noaa.gov/IAGA/vmod/igrf.html]. An alternative
+geomagnetic model referenced (but not implemented) by
+xref:wmm/earth-magnetic-flux-density.adoc[`EarthMagneticFluxDensityEstimator`]'s Javadoc.
+
+=== IMU calibration
+
+[[imu-tk]] *[imu-tk]* D. Tedaldi, A. Pretto, E. Menegatti, "A Robust and Easy to Implement Method for IMU
+Calibration without External Equipments," _IEEE International Conference on Robotics and Automation
+(ICRA)_, 2014. https://albertopretto.altervista.org/papers/tpm_icra2014.pdf[PDF]. Reference
+implementation: https://github.com/Kyle-ak/imu_tk[github.com/Kyle-ak/imu_tk]. This is the basis for
+xref:calibration/gyroscope.adoc[`EasyGyroscopeCalibrator`]/`KnownBiasEasyGyroscopeCalibrator` and the
+static/dynamic interval philosophy used throughout
+xref:calibration/intervals-and-generators.adoc[] and the accelerometer's gravity-norm family
+(xref:calibration/accelerometer.adoc[]).
+
+[[suh2010]] *[suh2010]* Y. S. Suh, "Orientation estimation using a quaternion-based indirect Kalman
+filter with adaptive estimation of external acceleration," _IEEE Transactions on Instrumentation and
+Measurement_, 2010. Used by xref:calibration/gyroscope.adoc[`SuhQuaternionStepIntegrator`].
+
+[[trawny2005]] *[trawny2005]* N. Trawny, S. I. Roumeliotis, "Indirect Kalman Filter for 3D Attitude
+Estimation," University of Minnesota, Dept. of Computer Science & Engineering, Technical Report
+2005-002, 2005. Used by xref:calibration/gyroscope.adoc[`TrawnyQuaternionStepIntegrator`].
+
+[[yuan2015]] *[yuan2015]* S. Yuan, "Quaternion-based Unscented Kalman Filter for Real-time Attitude
+Estimation," 2015. Used by xref:calibration/gyroscope.adoc[`YuanQuaternionStepIntegrator`].

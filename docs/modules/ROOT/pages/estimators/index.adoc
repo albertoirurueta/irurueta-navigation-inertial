@@ -1,0 +1,92 @@
+= Estimators
+
+NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
+
+The `com.irurueta.navigation.inertial.estimators` package contains stateless, mostly static utility classes
+that evaluate individual navigation quantities in closed form: Earth's gravity/gravitation field, the
+meridian and transverse radii of curvature of the WGS84 ellipsoid, curvilinear position and velocity, body
+kinematics (specific force and angular rate), and body attitude (leveling and magnetic heading).
+
+Unlike the xref:navigators/index.adoc[] package, which *integrates* measured kinematics forward in time to
+produce a running position/velocity/attitude solution, the estimators in this package mostly solve
+*closed-form* or *single-step* problems: given a position, what is the local gravity? Given two consecutive
+navigation solutions, what specific force and angular rate would an IMU have measured between them? Given a
+specific-force and magnetic-field measurement, what is the current attitude?
+
+Most of these classes implement the equations of Groves' _Principles of GNSS, Inertial, and Multisensor
+Integrated Navigation Systems_ (2nd edition) and mirror the companion MATLAB scripts referenced in each
+class's Javadoc. See xref:reference.adoc#bibliography[the bibliography] for full source details.
+
+== Classes by topic
+
+[cols="1,3",options="header"]
+|===
+|Topic
+|Classes
+
+|xref:estimators/gravity.adoc[]
+|`NEDGravityEstimator`, `ECEFGravityEstimator`, `ECIGravitationEstimator`
+
+|xref:estimators/kinematics.adoc[]
+|`NEDKinematicsEstimator`, `ECEFKinematicsEstimator`, `ECIKinematicsEstimator`
+
+|xref:estimators/position-velocity.adoc[]
+|`RadiiOfCurvatureEstimator`, `NEDPositionEstimator`, `NEDVelocityEstimator`
+
+|xref:estimators/attitude.adoc[]
+|`LevelingEstimator`, `LevelingEstimator2`, `AttitudeEstimator`, `BodyMagneticFluxDensityEstimator`
+|===
+
+== Reference frames used throughout
+
+All estimators operate on one (or a mix) of the four reference frames used across the library:
+
+[mermaid]
+....
+flowchart LR
+    ECI["ECI\n(Earth-Centered Inertial)\ninertially non-rotating"] -->|rotates at earth rate omega_ie| ECEF["ECEF\n(Earth-Centered Earth-Fixed)\nrotates with the Earth"]
+    ECEF -->|resolved by geodetic latitude/longitude| NED["NED (local navigation frame)\nnorth, east, down at current position"]
+    NED -->|attitude C_b^n| BODY["Body frame\naccelerometer/gyroscope triad axes"]
+....
+
+NOTE: Specific force and angular rate — what an accelerometer/gyroscope actually measures — are always
+resolved about *body-frame* axes (`fx`/`fy`/`fz`, `angularRateX`/`Y`/`Z` in every class on this page),
+never NED, ECEF, or ECI directly; see xref:reference.adoc#book-groves[[book-groves\]] §2.3.5. NED, ECEF,
+and ECI are choices for the *reference/resolving frame* used for position, velocity, and gravity — hence
+the three parallel classes in xref:estimators/gravity.adoc[] and xref:estimators/kinematics.adoc[]. Only
+xref:estimators/position-velocity.adoc[] and xref:estimators/attitude.adoc[] are NED-specific by design
+(curvilinear position and local-horizontal leveling are inherently NED concepts, with no ECEF/ECI
+equivalent), not because IMU measurements themselves must be resolved in NED.
+
+== Body-frame axis convention (do not confuse with the resolving frame above)
+
+Separately from *which navigation frame* (NED/ECEF/ECI) a solution is resolved in, every class on this
+page assumes the raw IMU body-frame axes themselves already follow the convention Groves defines in
+§2.1.4 (xref:reference.adoc#book-groves[[book-groves\]]): stem:[x] = forward (roll axis), stem:[y] =
+right (pitch axis), stem:[z] = down (yaw axis) — often called *FRD* (forward-right-down), chosen so the
+body axes line up with north/east/down when the vehicle is level and heading north.
+
+[WARNING]
+====
+This is a property of the *body* frame's own axis labeling, unrelated to the NED/ECEF/ECI *resolving*
+frame discussed above. Some IMUs instead report specific force and angular rate using an *ENU*-aligned
+body convention (stem:[x] = East, stem:[y] = North, stem:[z] = Up) rather than FRD. Feeding ENU-convention
+readings into this library unconverted will silently produce wrong results — for example,
+xref:estimators/attitude.adoc[`LevelingEstimator`]'s roll/pitch formulas are only valid for the FRD axis
+assignment. Check your IMU's datasheet/driver documentation for which convention it actually reports, and
+if it is ENU, convert every sample first:
+
+[stem]
+++++
+f_{x}^{\text{FRD}} = f_{y}^{\text{ENU}}, \qquad f_{y}^{\text{FRD}} = f_{x}^{\text{ENU}}, \qquad f_{z}^{\text{FRD}} = -f_{z}^{\text{ENU}}
+++++
+
+(swap x and y, negate z — the same relation applies to angular rate). This library has no built-in ENU
+awareness or conversion utility of its own; the conversion above must be applied by the caller before any
+measurement reaches this library.
+====
+
+== Where to go next
+
+* xref:navigators/index.adoc[] — integrates the kinematics produced/consumed here into a running navigation solution.
+* xref:reference.adoc#bibliography[] — bibliography and links to all sources used in this documentation.

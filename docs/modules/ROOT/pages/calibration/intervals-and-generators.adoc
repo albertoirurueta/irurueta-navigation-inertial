@@ -1,0 +1,182 @@
+= Static/Dynamic Interval Detection and Measurement Generation
+
+NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
+
+Classes: `com.irurueta.navigation.inertial.calibration.intervals` (detection, 9 classes),
+`com.irurueta.navigation.inertial.calibration.generators` (measurement building, 13 classes), plus the
+root-level `BodyKinematicsGenerator`, `BodyMagneticFluxDensityGenerator`, `TimeIntervalEstimator`, and
+`TimeIntervalEstimatorListener`.
+
+This is the preprocessing step behind the calibrators in xref:calibration/accelerometer.adoc[] and
+xref:calibration/gyroscope.adoc[] that don't need a turntable or precisely known frames — most directly,
+xref:reference.adoc#imu-tk[[imu-tk\]]'s "Easy" gyroscope calibrator and the accelerometer's
+gravity-norm family. Both need the raw sensor stream split into *static* periods (device held still,
+mean specific force reveals the local gravity direction) and *dynamic* periods (device being moved
+between orientations) — without any external ground truth telling them which is which.
+
+[mermaid]
+....
+flowchart LR
+    A["Raw BodyKinematics stream"] --> B["intervals package:\nTriadStaticIntervalDetector"]
+    B --> C["generators package:\nMeasurementsGenerator"]
+    C --> D["StandardDeviationBodyKinematics\n(one per static interval)"]
+    C --> E["BodyKinematicsSequence\n(one per dynamic interval)"]
+    D --> F["Accelerometer calibrator\n(gravity-norm family)"]
+    E --> G["Gyroscope calibrator\n(Easy family)"]
+....
+
+== TriadStaticIntervalDetector: classifying static vs. dynamic
+
+The core class, `TriadStaticIntervalDetector` (specialized as `AccelerationTriadStaticIntervalDetector`,
+`AngularSpeedTriadStaticIntervalDetector`, `MagneticFluxDensityTriadStaticIntervalDetector`), runs a
+simple state machine per incoming sample:
+
+[mermaid]
+....
+stateDiagram-v2
+    [*] --> IDLE
+    IDLE --> INITIALIZING : first sample
+    INITIALIZING --> INITIALIZATION_COMPLETED : initialStaticSamples reached\n(baseNoiseLevel established)
+    INITIALIZING --> FAILED : sudden excessive movement,\nor noise level too high
+    INITIALIZATION_COMPLETED --> STATIC_INTERVAL
+    STATIC_INTERVAL --> DYNAMIC_INTERVAL : windowed std-norm exceeds threshold
+    DYNAMIC_INTERVAL --> STATIC_INTERVAL : windowed std-norm drops back below threshold
+    FAILED --> [*]
+....
+
+*Initialization.* For the first `initialStaticSamples` samples (default 5,000, assumed static), the
+detector feeds both an *accumulated* noise estimator (a running mean/std over all samples so far) and a
+*windowed* noise estimator (a moving-window mean/std, default window ~101 samples — see
+xref:calibration/noise-and-bias.adoc[]) from the sibling `noise` package. If the windowed-to-accumulated
+standard-deviation ratio ever exceeds `instantaneousNoiseLevelFactor` (default 2.0), initialization fails
+(`SUDDEN_EXCESSIVE_MOVEMENT_DETECTED`) — the device was disturbed before a stable noise baseline could be
+established.
+
+*Threshold.* Once initialization completes, the accumulated standard-deviation norm becomes the
+`baseNoiseLevel`, and the classification threshold is
+
+[stem]
+++++
+\text{threshold} = \text{baseNoiseLevel} \times \text{thresholdFactor} \qquad (\text{thresholdFactor default } 2.0)
+++++
+
+*Steady-state classification.* For every subsequent sample, the detector recomputes the *windowed*
+standard-deviation norm and classifies:
+
+[stem]
+++++
+\text{status} = \begin{cases} \text{STATIC\_INTERVAL} & \lVert\boldsymbol{\sigma}_{\text{window}}\rVert < \text{threshold} \\ \text{DYNAMIC\_INTERVAL} & \text{otherwise} \end{cases}
+++++
+
+While `STATIC_INTERVAL`, samples accumulate into a fresh noise estimator; on transitioning to
+`DYNAMIC_INTERVAL`, the accumulated mean and standard deviation for that completed static period are
+reported to the listener (`onStaticIntervalDetected`) and the accumulator resets for the next one. This
+moving-window-variance-versus-noise-floor test is the same static/dynamic classification idea used by
+xref:reference.adoc#imu-tk[[imu-tk\]].
+
+[source,java]
+----
+AccelerationTriadStaticIntervalDetector detector = new AccelerationTriadStaticIntervalDetector(
+        new AccelerationTriadStaticIntervalDetectorListener() {
+            @Override
+            public void onStaticIntervalDetected(
+                    AccelerationTriadStaticIntervalDetector detector, double instantaneousAvgX,
+                    double instantaneousAvgY, double instantaneousAvgZ, double instantaneousStdX,
+                    double instantaneousStdY, double instantaneousStdZ) {
+                // a static interval just ended - these are its accumulated mean/std values
+            }
+            // ...other TriadStaticIntervalDetectorListener callbacks
+        });
+
+// feed raw accelerometer samples (m/s^2) as they arrive
+detector.process(fx, fy, fz);
+----
+
+== MeasurementsGenerator: building calibration inputs from intervals
+
+`MeasurementsGenerator` wraps a `TriadStaticIntervalDetector` and reacts to its state transitions to
+build the actual measurement objects calibrators consume — discarding static intervals shorter than
+`2 x windowSize` samples and dynamic intervals longer than `30 x windowSize` samples as unreliable:
+
+[cols="1,2,2",options="header"]
+|===
+|Class |Produces |Consumed by
+
+|`AccelerometerMeasurementsGenerator`
+|One `StandardDeviationBodyKinematics` per static interval (mean specific force + noise-derived std dev)
+|xref:calibration/accelerometer.adoc[Gravity-norm / position accelerometer calibrators]
+
+|`GyroscopeMeasurementsGenerator`
+|One `BodyKinematicsSequence` per dynamic interval, bracketed by the mean specific force of the static intervals immediately before and after
+|xref:calibration/gyroscope.adoc[`EasyGyroscopeCalibrator` / `KnownBiasEasyGyroscopeCalibrator`]
+
+|`MagnetometerMeasurementsGenerator`
+|One `StandardDeviationBodyMagneticFluxDensity` per static interval
+|xref:calibration/magnetometer.adoc[Norm/position magnetometer calibrators]
+
+|`AccelerometerAndGyroscopeMeasurementsGenerator`
+|Both of the above, from a single interval-detection pass
+|Calibration pipelines needing both sensors from one recording
+
+|`AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator`
+|All three measurement types, from a single pass
+|Full tri-sensor calibration pipelines
+|===
+
+[source,java]
+----
+List<StandardDeviationBodyKinematics> measurements = new ArrayList<>();
+
+AccelerometerMeasurementsGenerator generator = new AccelerometerMeasurementsGenerator(
+        (gen, measurement) -> measurements.add(measurement));
+
+// feed raw BodyKinematics samples as they arrive from the IMU
+for (BodyKinematics sample : rawKinematicsStream) {
+    generator.process(sample);
+}
+// 'measurements' now holds one StandardDeviationBodyKinematics per detected static
+// interval, ready for calibration/accelerometer.adoc's gravity-norm calibrators
+----
+
+== TimeIntervalEstimator
+
+A small, separate utility: estimates the actual average sampling period (and its variance) of an
+incoming timestamp stream using an online recursive mean/variance update (the same recursive form used
+throughout xref:calibration/noise-and-bias.adoc[the noise estimators]):
+
+[stem]
+++++
+\Delta t = t - t_{\text{last}}, \qquad
+\overline{\Delta t} \leftarrow \overline{\Delta t}\,\frac{n}{n+1} + \frac{\Delta t}{n+1}, \qquad
+\sigma^{2}_{\Delta t} \leftarrow \sigma^{2}_{\Delta t}\,\frac{n}{n+1} + \frac{(\Delta t - \overline{\Delta t})^{2}}{n+1}
+++++
+
+The resulting average time interval feeds the `timeInterval` used throughout the noise/interval/PSD
+computations above.
+
+[source,java]
+----
+TimeIntervalEstimator estimator = new TimeIntervalEstimator();
+
+for (double timestampSeconds : rawTimestamps) {
+    estimator.addTimestamp(timestampSeconds);
+}
+
+double timeInterval = estimator.getAverageTimeInterval(); // seconds, e.g. ~0.02 for a 50 Hz IMU
+double timeIntervalStd = estimator.getTimeIntervalStandardDeviation();
+----
+
+== Root-level generators: synthetic test data (a different purpose)
+
+`BodyKinematicsGenerator` and `BodyMagneticFluxDensityGenerator` are unrelated to interval
+detection — they go the *other* direction, synthesizing noisy, uncalibrated measurements from
+known-true kinematics/field plus a known xref:calibration/data-model.adoc[`IMUErrors`] model, for testing
+calibrators and fixers against ground truth. They follow xref:reference.adoc#book-groves[[book-groves\]]
+and its companion `IMU_model.m` script rather than the Tedaldi et al. method.
+
+== Where to go next
+
+* xref:calibration/noise-and-bias.adoc[] — the noise estimators used inside the interval detector.
+* xref:calibration/gyroscope.adoc[] — the "Easy" calibrator that consumes `BodyKinematicsSequence` output.
+* xref:calibration/accelerometer.adoc[] — the gravity-norm calibrators that consume `StandardDeviationBodyKinematics` output.
+* xref:reference.adoc#bibliography[] — bibliography.

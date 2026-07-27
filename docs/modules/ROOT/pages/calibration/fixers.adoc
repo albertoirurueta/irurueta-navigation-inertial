@@ -1,0 +1,143 @@
+= Fixers: Undoing the Sensor Error Model
+
+NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
+
+Classes: `AccelerationFixer`, `AngularRateFixer`, `MagneticFluxDensityFixer`, `BodyKinematicsFixer`,
+`IMUErrorsCreator`.
+
+Once a calibrator (xref:calibration/accelerometer.adoc[], xref:calibration/gyroscope.adoc[],
+xref:calibration/magnetometer.adoc[]) has estimated bias and the cross-coupling matrix, the *fixers*
+apply the algebraic inverse of xref:calibration/index.adoc[the sensor error model] to turn a raw reading
+back into an estimate of the true signal.
+
+== AccelerationFixer
+
+Inverts stem:[\mathbf{f}_{\text{meas}} = \mathbf{b}_a + (\mathbf{I}_3+\mathbf{M}_a)\,\mathbf{f}_{\text{true}}]:
+
+[stem]
+++++
+\mathbf{f}_{\text{true}} = \left(\mathbf{I}_3+\mathbf{M}_a\right)^{-1}\left(\mathbf{f}_{\text{meas}} - \mathbf{b}_a\right)
+++++
+
+[source,java]
+----
+// bias and cross-coupling matrix estimated by a calibrator (see calibration/accelerometer.adoc)
+double[] bias = {0.02, -0.01, 0.05};      // m/s^2
+Matrix crossCouplingErrors = new Matrix(3, 3); // Ma, here left at zero for brevity
+
+AccelerationFixer fixer = new AccelerationFixer();
+fixer.setBias(bias);
+fixer.setCrossCouplingErrors(crossCouplingErrors);
+
+double[] measuredF = {0.15, -0.18, -9.79};
+double[] trueF = new double[3];
+fixer.fix(measuredF, trueF);
+----
+
+== AngularRateFixer
+
+Inverts stem:[\boldsymbol{\Omega}_{\text{meas}} = \mathbf{b}_g + (\mathbf{I}_3+\mathbf{M}_g)\,\boldsymbol{\Omega}_{\text{true}} + \mathbf{G}_g\,\mathbf{f}_{\text{true}}].
+Because the g-dependent term needs the *true* specific force, this fixer requires an already-fixed
+acceleration as an additional input (typically the output of `AccelerationFixer` for the same sample):
+
+[stem]
+++++
+\boldsymbol{\Omega}_{\text{true}} = \left(\mathbf{I}_3+\mathbf{M}_g\right)^{-1}\left(\boldsymbol{\Omega}_{\text{meas}} - \mathbf{b}_g - \mathbf{G}_g\,\mathbf{f}_{\text{true}}\right)
+++++
+
+[source,java]
+----
+double[] gyroBias = {1e-4, -5e-5, 2e-5}; // rad/s
+Matrix gyroCrossCouplingErrors = new Matrix(3, 3);   // Mg
+Matrix gDependentCrossBias = new Matrix(3, 3);       // Gg
+
+AngularRateFixer fixer = new AngularRateFixer();
+fixer.setBias(gyroBias);
+fixer.setCrossCouplingErrors(gyroCrossCouplingErrors);
+fixer.setGDependantCrossBias(gDependentCrossBias);
+
+double[] measuredAngularRate = {0.001, -0.0005, 0.02};
+double[] trueF = {0.0, 0.0, -9.81}; // fixed specific force from AccelerationFixer, same sample
+double[] trueAngularRate = new double[3];
+fixer.fix(measuredAngularRate, trueF, trueAngularRate);
+----
+
+== MagneticFluxDensityFixer
+
+Inverts stem:[\mathbf{b}_{\text{meas}} = \mathbf{b}_m + (\mathbf{I}_3+\mathbf{M}_m)\,\mathbf{b}_{\text{true}}]
+(hard iron / soft iron), with the same closed form as `AccelerationFixer`:
+
+[stem]
+++++
+\mathbf{b}_{\text{true}} = \left(\mathbf{I}_3+\mathbf{M}_m\right)^{-1}\left(\mathbf{b}_{\text{meas}} - \mathbf{b}_m\right)
+++++
+
+[source,java]
+----
+double[] hardIron = {2.1e-6, -1.4e-6, 3.0e-6}; // T
+Matrix softIron = new Matrix(3, 3); // Mm
+
+MagneticFluxDensityFixer fixer = new MagneticFluxDensityFixer();
+fixer.setBias(hardIron);
+fixer.setCrossCouplingErrors(softIron);
+
+double[] measuredB = {2.3e-5, 1.1e-5, 4.2e-5};
+double[] trueB = new double[3];
+fixer.fix(measuredB, trueB);
+----
+
+== BodyKinematicsFixer
+
+A convenience wrapper combining `AccelerationFixer` and `AngularRateFixer` to fix a whole
+`BodyKinematics` (specific force + angular rate) reading in one call, correctly threading the fixed
+specific force into the angular-rate fixer's g-dependent term.
+
+[source,java]
+----
+BodyKinematicsFixer fixer = new BodyKinematicsFixer();
+fixer.setAccelerationBias(0.02, -0.01, 0.05);
+fixer.setAccelerationCrossCouplingErrors(new Matrix(3, 3));
+fixer.setAngularSpeedBias(new double[]{1e-4, -5e-5, 2e-5});
+fixer.setAngularSpeedCrossCouplingErrors(new Matrix(3, 3));
+fixer.setAngularSpeedGDependantCrossBias(new Matrix(3, 3));
+
+BodyKinematics measured = new BodyKinematics(0.15, -0.18, -9.79, 0.001, -0.0005, 0.02);
+BodyKinematics fixed = new BodyKinematics();
+fixer.fix(measured, fixed);
+----
+
+== IMUErrorsCreator
+
+Assembles a complete xref:calibration/data-model.adoc[`IMUErrors`] from whatever combination of sources
+is available, rather than requiring a single calibrator to produce every parameter:
+
+* Bias + scale-factor/cross-coupling matrix, from any calibrator implementing
+  `AccelerometerCalibrationSource` or `GyroscopeCalibrationSource`
+  (see xref:calibration/noise-and-bias.adoc[]).
+* Noise root-PSD, from any estimator, static-interval detector, or measurement generator implementing
+  `AccelerometerNoiseRootPsdSource` / `GyroscopeNoiseRootPsdSource`
+  (see xref:calibration/noise-and-bias.adoc[] and
+  xref:calibration/intervals-and-generators.adoc[]).
+
+This lets a calibration pipeline mix, for example, bias/cross-coupling from a robust
+xref:calibration/accelerometer.adoc[`KnownGravityNormAccelerometerCalibrator`] with a noise root-PSD from
+a separate xref:calibration/intervals-and-generators.adoc[static-interval detector] into a single
+`IMUErrors` ready for use by `BodyKinematicsGenerator` (synthetic data) or the fixers above.
+
+[source,java]
+----
+// accelCalibrator and gyroCalibrator implement AccelerometerCalibrationSource /
+// GyroscopeCalibrationSource; accelNoiseSource and gyroNoiseSource implement
+// AccelerometerNoiseRootPsdSource / GyroscopeNoiseRootPsdSource - each can come
+// from a different pipeline stage (see calibration/noise-and-bias.adoc).
+IMUErrorsCreator creator = new IMUErrorsCreator(
+        accelCalibrator, gyroCalibrator, accelNoiseSource, gyroNoiseSource);
+
+IMUErrors imuErrors = creator.create();
+----
+
+== Where to go next
+
+* xref:calibration/data-model.adoc[] — the `IMUErrors` container these classes read from / build.
+* xref:calibration/accelerometer.adoc[], xref:calibration/gyroscope.adoc[], xref:calibration/magnetometer.adoc[] — where bias and cross-coupling parameters come from.
+* xref:reference.adoc#bibliography[] — bibliography.

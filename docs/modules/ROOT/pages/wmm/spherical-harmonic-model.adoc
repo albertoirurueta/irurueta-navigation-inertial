@@ -1,0 +1,181 @@
+= The Spherical Harmonic Model
+
+NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
+
+Classes: `WorldMagneticModel`, `WMMLoader`, `WMMEarthMagneticFluxDensityEstimator`.
+
+== Coefficient files
+
+The WMM represents the Earth's main magnetic field (and its slow year-on-year drift) as a degree-and-order-12
+spherical harmonic expansion of the geomagnetic potential. Its 168+134 Gauss coefficients are re-fit
+every 5 years by NCEI/NGA/BGS from satellite, aircraft, and observatory measurements, and published as a
+plain-text `.cof` coefficient file — see
+https://www.ncei.noaa.gov/products/world-magnetic-model/wmm-coefficients[NOAA coefficient downloads]
+and the https://www.ngdc.noaa.gov/geomag/WMM/wmmformat.shtml[file-format description]
+(xref:reference.adoc#wmm-site[[wmm-site\]]). This library bundles a `wmm.cof` resource and loads it
+through `WMMLoader`; a newer release can be substituted by loading a different file, resource, or URL.
+
+[IMPORTANT]
+====
+Each WMM release is only valid for `WorldMagneticModel.LIFESPAN` (5.0) years from its epoch —
+`WMMEarthMagneticFluxDensityEstimator` itself uses `model.epoch + LIFESPAN / 2.0` as the *default* date
+whenever no explicit year is supplied, but it does not check, warn, or refuse to compute past that
+window: it will happily (and silently) extrapolate secular variation arbitrarily far past `epoch + 5`
+years, with growing error. The bundled `wmm.cof` is WMM-2025 (epoch 2025.0, nominally valid through
+2030.0). To use this library beyond a bundled model's 5-year window, download the current coefficient
+file from https://www.ncei.noaa.gov/products/world-magnetic-model/wmm-coefficients[NOAA/NCEI's WMM
+coefficients page] and load it via `WMMLoader.loadFromFile(...)` /
+`WMMLoader.loadFromResource(...)` / `WMMLoader.loadFromUrl(...)` (see below) instead of the no-arg
+`WMMEarthMagneticFluxDensityEstimator()` constructor, which always loads the bundled default.
+====
+
+Each data line in the file has the form:
+
+[source]
+----
+n  m  gnm  hnm  dgnm  dhnm
+----
+
+stem:[n] and stem:[m] are the spherical harmonic degree and order; stem:[g_n^m], stem:[h_n^m] are the
+main-field Gauss coefficients (nT) at the model epoch; stem:[\dot g_n^m], stem:[\dot h_n^m] are their
+secular-variation rates (nT/year). `WorldMagneticModel` stores these (Schmidt semi-normalized, see
+below) together with the epoch year.
+
+== WMMLoader: Schmidt semi-normalization
+
+Raw Gauss coefficients are published in *Schmidt quasi-normalized* form. `WMMLoader` converts them, once,
+into the fully normalized form used internally, via the recursive Schmidt normalization factor:
+
+[stem]
+++++
+S_{n}^{0} = S_{n-1}^{0}\,\frac{2n-1}{n}, \qquad
+S_{n}^{m} = S_{n}^{m-1}\sqrt{\frac{(n-m+1)\left(2-\delta_{m0}\right)}{n+m}}
+++++
+
+and rescales stem:[g_n^m \leftarrow S_n^m\, g_n^m] (and equivalently for stem:[h_n^m], stem:[\dot g_n^m],
+stem:[\dot h_n^m]). It also precomputes the recursion coefficients
+
+[stem]
+++++
+K_{n}^{m} = \frac{(n-1)^{2}-m^{2}}{(2n-1)(2n-3)}
+++++
+
+used by `WMMEarthMagneticFluxDensityEstimator` to generate the associated Legendre functions.
+
+[source,java]
+----
+// load a specific coefficient file (e.g. a newer WMM release than the bundled one)
+WorldMagneticModel model = WMMLoader.loadFromFile("/path/to/WMM.COF");
+
+// or from an arbitrary resource/URL:
+// WMMLoader.loadFromResource("/com/irurueta/navigation/inertial/wmm/wmm.cof");
+// WMMLoader.loadFromUrl("https://example.org/WMM.COF");
+----
+
+== WMMEarthMagneticFluxDensityEstimator: evaluating the model
+
+Given a geodetic position and a decimal year, the estimator:
+
+[mermaid]
+....
+flowchart TD
+    A["geodetic latitude/longitude/height,\ndecimal year"] --> B["Convert geodetic to\ngeocentric spherical coordinates"]
+    B --> C["Time-adjust Gauss coefficients:\ng + (year - epoch) * gdot"]
+    C --> D["Recursively evaluate Schmidt\nsemi-normalized Legendre functions"]
+    D --> E["Accumulate spherical-harmonic sum\n(radial, colatitude, longitude components)"]
+    E --> F["Rotate geocentric components\nto geodetic North/East/Down"]
+    F --> G["Declination, dip, intensity,\nNEDMagneticFluxDensity"]
+....
+
+*1. Geodetic-to-geocentric conversion.* Because the WGS84 ellipsoid is not a sphere, geodetic latitude
+must first be converted to a geocentric colatitude and radius before the spherical-harmonic sum applies.
+
+*2. Time adjustment.* Coefficients are linearly extrapolated from the model epoch:
+
+[stem]
+++++
+g_{n}^{m}(t) = g_{n}^{m} + (t - t_{0})\,\dot g_{n}^{m}, \qquad
+h_{n}^{m}(t) = h_{n}^{m} + (t - t_{0})\,\dot h_{n}^{m}
+++++
+
+This is only a good approximation within the model's 5-year validity window (see
+xref:wmm/index.adoc[]) — extrapolating far past stem:[t_0 + 5] years accumulates error.
+
+*3. Legendre recursion.* The Schmidt semi-normalized associated Legendre functions stem:[P_{n}^{m}(\cos\theta)]
+and their colatitude derivatives are generated by the stable recursion (using stem:[K_n^m] from
+`WMMLoader`):
+
+[stem]
+++++
+P_{n}^{m} = \cos\theta\, P_{n-1}^{m} - K_{n}^{m}\, P_{n-2}^{m}, \qquad
+\frac{dP_{n}^{m}}{d\theta} = \cos\theta\,\frac{dP_{n-1}^{m}}{d\theta} - \sin\theta\, P_{n-1}^{m} - K_{n}^{m}\,\frac{dP_{n-2}^{m}}{d\theta}
+++++
+
+*4. Spherical-harmonic sum.* The field components in geocentric spherical coordinates (radial stem:[B_r],
+colatitude stem:[B_\theta], longitude stem:[B_\phi]) accumulate one term per stem:[(n,m)] pair, using
+stem:[a/r] raised to the stem:[(n+2)]-th power (stem:[a] = 6371.2 km, the WMM reference radius):
+
+[stem]
+++++
+B_{r} = \sum_{n=1}^{12}(n+1)\left(\frac{a}{r}\right)^{n+2}\sum_{m=0}^{n}\left(g_{n}^{m}\cos m\phi + h_{n}^{m}\sin m\phi\right) P_{n}^{m}
+++++
+
+[stem]
+++++
+B_{\theta} = -\sum_{n=1}^{12}\left(\frac{a}{r}\right)^{n+2}\sum_{m=0}^{n}\left(g_{n}^{m}\cos m\phi + h_{n}^{m}\sin m\phi\right) \frac{dP_{n}^{m}}{d\theta}
+++++
+
+[stem]
+++++
+B_{\phi} = \sum_{n=1}^{12}\left(\frac{a}{r}\right)^{n+2}\sum_{m=0}^{n} \frac{m}{\sin\theta}\left(g_{n}^{m}\sin m\phi - h_{n}^{m}\cos m\phi\right) P_{n}^{m}
+++++
+
+(with the stem:[m/\sin\theta] term handled by a separate polar-region recursion at the geographic poles,
+where stem:[\sin\theta \to 0]). See the
+https://repository.library.noaa.gov/view/noaa/24390[NOAA WMM technical report]
+(xref:reference.adoc#wmm-site[[wmm-site\]]) for the full derivation.
+
+*5. Rotate to geodetic North/East/Down.* The geocentric components are rotated back into the geodetic
+frame using the geocentric/geodetic latitude difference angle stem:[\psi] computed during step 1:
+
+[stem]
+++++
+B_N = -B_{\theta}\cos\psi - B_{r}\sin\psi, \qquad
+B_E = B_{\phi}, \qquad
+B_D = B_{\theta}\sin\psi - B_{r}\cos\psi
+++++
+
+*6. Derived quantities.* Horizontal intensity, total intensity, declination, and dip follow directly:
+
+[stem]
+++++
+B_H = \sqrt{B_N^{2}+B_E^{2}}, \qquad
+B_F = \sqrt{B_H^{2}+B_D^{2}}, \qquad
+D = \operatorname{atan2}(B_E, B_N), \qquad
+I = \operatorname{atan2}(B_D, B_H)
+++++
+
+`WMMEarthMagneticFluxDensityEstimator` exposes each of these individually (`getDeclination`, `getDip`,
+`getIntensity`, `getHorizontalIntensity`, `getNorthIntensity`, `getEastIntensity`,
+`getVerticalIntensity`) as well as the full `NEDMagneticFluxDensity` vector via `estimate(...)`.
+
+[source,java]
+----
+// no-arg constructor loads the coefficient file bundled with this library
+WMMEarthMagneticFluxDensityEstimator estimator = new WMMEarthMagneticFluxDensityEstimator();
+
+NEDPosition position = new NEDPosition(Math.toRadians(41.3851), Math.toRadians(2.1734), 0.0);
+double year = 2026.5; // decimal year
+
+double declination = estimator.getDeclination(position, year); // radians
+double dip = estimator.getDip(position.getLatitude(), position.getLongitude(), position.getHeight(), year);
+
+NEDMagneticFluxDensity b = new NEDMagneticFluxDensity();
+estimator.estimate(position.getLatitude(), position.getLongitude(), position.getHeight(), year, b);
+----
+
+== Where to go next
+
+* xref:wmm/earth-magnetic-flux-density.adoc[] — the simpler magnitude/declination/dip container classes.
+* xref:estimators/attitude.adoc[] — how the resulting declination/dip feed into heading estimation.
+* xref:reference.adoc#bibliography[] — bibliography.

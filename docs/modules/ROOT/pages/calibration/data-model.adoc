@@ -1,0 +1,117 @@
+= Calibration Data Model
+
+NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
+
+Classes: `Triad`, `AccelerationTriad`, `AngularSpeedTriad`, `MagneticFluxDensityTriad`, `SpeedTriad`,
+`DistanceTriad`, `BodyKinematicsSequence`, `FrameBodyKinematics`, `FrameBodyMagneticFluxDensity`,
+`StandardDeviationBodyKinematics`, `StandardDeviationFrameBodyKinematics`,
+`StandardDeviationBodyMagneticFluxDensity`, `StandardDeviationFrameBodyMagneticFluxDensity`,
+`StandardDeviationTimedBodyKinematics`, `TimedBodyKinematics`, `TimedBodyKinematicsAndMagneticFluxDensity`,
+`IMUErrors`, `CalibrationException`.
+
+Every calibrator in xref:calibration/accelerometer.adoc[], xref:calibration/gyroscope.adoc[], and
+xref:calibration/magnetometer.adoc[] consumes measurements built from a small set of shared, composable
+data classes. Understanding these once avoids repeating them on every calibrator page.
+
+== Triads
+
+`Triad<U, M>` is the generic base for "three related scalar measurements sharing a unit," specialized as
+`AccelerationTriad`, `AngularSpeedTriad`, `MagneticFluxDensityTriad`, `SpeedTriad`, and `DistanceTriad`.
+Each wraps three `com.irurueta.units` measurements (e.g. three `Acceleration` values) as a single 3-axis
+vector, with conversions to/from a raw `double[]`/`Matrix` for use in the linear algebra that calibrators
+perform internally.
+
+[source,java]
+----
+AccelerationTriad triad = new AccelerationTriad(0.15, -0.18, -9.79); // m/s^2, default unit
+
+double[] asArray = triad.getValuesAsArray();
+double norm = triad.getNorm(); // magnitude of the 3-axis vector
+----
+
+== Building up a measurement
+
+Calibration measurements are built by progressively attaching more context to a raw `BodyKinematics`
+(specific force + angular rate) or magnetic-flux-density reading:
+
+[mermaid]
+....
+flowchart LR
+    BK["BodyKinematics\n(raw specific force + angular rate)"] --> TBK["TimedBodyKinematics\n(+ timestamp)"]
+    TBK --> SDTBK["StandardDeviationTimedBodyKinematics\n(+ measurement std devs)"]
+    BK --> SDBK["StandardDeviationBodyKinematics\n(+ measurement std devs)"]
+    SDBK --> FBK["FrameBodyKinematics\n(+ known NED/ECEF frame)"]
+    FBK --> SDFBK["StandardDeviationFrameBodyKinematics\n(+ std devs, + frame)"]
+    SEQ["BodyKinematicsSequence&lt;T&gt;"] -.orders many TimedBodyKinematics-like items.-> TBK
+    BMFD["BodyMagneticFluxDensity"] --> FBMFD["FrameBodyMagneticFluxDensity\n(+ known frame)"]
+    FBMFD --> SDFBMFD["StandardDeviationFrameBodyMagneticFluxDensity\n(+ std devs)"]
+....
+
+* `TimedBodyKinematics` / `TimedBodyKinematicsAndMagneticFluxDensity` — add a (relative) timestamp,
+  needed once measurements must be processed *in sequence* (e.g. by
+  xref:calibration/gyroscope.adoc[`EasyGyroscopeCalibrator`], which integrates angular rate over time).
+* `StandardDeviationBodyKinematics` / `StandardDeviationBodyMagneticFluxDensity` — add the measurement's
+  standard deviation, used to weight measurements in a least-squares/robust fit (e.g. by a
+  xref:calibration/noise-and-bias.adoc[noise estimator]'s output).
+* `FrameBodyKinematics` / `FrameBodyMagneticFluxDensity` — add the *known* NED/ECEF/velocity/orientation
+  frame the measurement was taken at. This is what lets a "known frame" calibrator solve for sensor
+  errors directly, without needing to also estimate orientation.
+* `StandardDeviationFrameBodyKinematics` / `StandardDeviationFrameBodyMagneticFluxDensity` — both of the
+  above combined; the most complete measurement type, used by most linear/non-linear least-squares
+  calibrators.
+* `BodyKinematicsSequence<T extends TimedBodyKinematics>` — an ordered collection of timed kinematics
+  samples captured while the device was *moving*, bracketed by static periods (whose mean specific force
+  approximates the local gravity direction in body axes). This is the measurement unit consumed by
+  `EasyGyroscopeCalibrator` and is built by xref:calibration/intervals-and-generators.adoc[the interval
+  detector/generator pipeline].
+
+[source,java]
+----
+BodyKinematics rawKinematics = new BodyKinematics(0.15, -0.18, -9.79, 0.001, -0.0005, 0.02);
+
+// a "known frame" measurement: raw kinematics + std devs + the frame it was taken at
+NEDPosition position = new NEDPosition(Math.toRadians(41.3851), Math.toRadians(2.1734), 0.0);
+CoordinateTransformation attitude = new CoordinateTransformation(
+        0.0, 0.0, 0.0, FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
+NEDFrame frame = new NEDFrame(position, attitude);
+
+StandardDeviationFrameBodyKinematics measurement =
+        new StandardDeviationFrameBodyKinematics(frame);
+measurement.setKinematics(rawKinematics);
+measurement.setSpecificForceStandardDeviation(0.01);
+measurement.setAngularRateStandardDeviation(0.001);
+----
+
+== IMUErrors
+
+A container for a *complete* IMU error model: accelerometer bias and stem:[\mathbf{M}_a] (scale
+factor/cross-coupling), gyroscope bias, stem:[\mathbf{M}_g], and stem:[\mathbf{G}_g] (g-dependent
+bias), plus each sensor's noise root-PSD and quantization level (see
+xref:calibration/index.adoc[the sensor error model]). It is the output of a full calibration run
+(assembled by `IMUErrorsCreator`, see xref:calibration/fixers.adoc[]) and can also be used as the input
+to a synthetic-data generator to simulate a specific, imperfect IMU for testing.
+
+[source,java]
+----
+double[] accelerometerBiases = {0.02, -0.01, 0.05};
+double[] gyroBiases = {1e-4, -5e-5, 2e-5};
+Matrix accelerometerMa = new Matrix(3, 3);
+Matrix gyroMg = new Matrix(3, 3);
+double accelerometerNoiseRootPsd = 1.2e-3;
+double gyroNoiseRootPsd = 3.5e-5;
+
+IMUErrors imuErrors = new IMUErrors(accelerometerBiases, gyroBiases, accelerometerMa, gyroMg,
+        accelerometerNoiseRootPsd, gyroNoiseRootPsd);
+----
+
+== CalibrationException
+
+Thrown by calibrators when the underlying numerical solve fails (e.g., an ill-conditioned or
+rank-deficient measurement set — too few measurements, or measurements that don't sufficiently excite all
+axes).
+
+== Where to go next
+
+* xref:calibration/fixers.adoc[] — applying a known `IMUErrors` to correct raw readings.
+* xref:calibration/accelerometer.adoc[], xref:calibration/gyroscope.adoc[], xref:calibration/magnetometer.adoc[] — the calibrators that produce these error parameters.
+* xref:reference.adoc#bibliography[] — bibliography.

@@ -1,0 +1,231 @@
+= Gyroscope Calibration
+
+NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
+
+The `com.irurueta.navigation.inertial.calibration.gyroscope` package (86 classes) estimates gyroscope
+bias stem:[\mathbf{b}_g], the scale-factor/cross-coupling matrix stem:[\mathbf{M}_g], and the
+*g-dependent cross-bias* matrix stem:[\mathbf{G}_g] (extra bias driven by the specific force the
+accelerometer senses — typically from mass unbalance in the sensing element):
+
+[stem]
+++++
+\boldsymbol{\Omega}_{\text{meas}} = \mathbf{b}_{g} + \left(\mathbf{I}_{3} + \mathbf{M}_{g}\right)\boldsymbol{\Omega}_{\text{true}} + \mathbf{G}_{g}\,\mathbf{f}_{\text{true}} + \mathbf{w}
+++++
+
+== Algorithm families
+
+[cols="1,2,2,1",options="header"]
+|===
+|Family |Reference used |Solves for |Needs a turntable?
+
+|`KnownFrame` / `KnownBiasAndFrame`
+|Full position/orientation/velocity/angular-rate frame known at each measurement (linear + non-linear least-squares variants, as with xref:calibration/accelerometer.adoc[the accelerometer's equivalent families])
+|stem:[\mathbf{b}_g] + stem:[\mathbf{M}_g] + stem:[\mathbf{G}_g] (or just the latter two if bias is known)
+|No, but requires precise external ground truth for angular rate.
+
+|`Turntable` / `KnownBiasTurntable`
+|IMU mounted flat on a turntable spinning at a *known, constant* rate; turntable fast enough that Earth
+rotation is negligible, slow enough to be measured accurately.
+|stem:[\mathbf{b}_g] + stem:[\mathbf{M}_g] + stem:[\mathbf{G}_g] (or just the latter two if bias is known)
+|Yes.
+
+|`Easy` / `KnownBiasEasy`
+|xref:reference.adoc#imu-tk[[imu-tk\]] Tedaldi, Pretto, Menegatti — no turntable, no known frame: the
+IMU sits at a roughly fixed Earth location; several *sequences* of motion (each bracketed by a static
+period) are captured, and the gravity direction sensed during each static bracket stands in for ground
+truth.
+|stem:[\mathbf{b}_g] + stem:[\mathbf{M}_g] + stem:[\mathbf{G}_g] (or just the latter two if bias is known)
+|No.
+|===
+
+`AccelerometerDependentGyroscopeCalibrator` is the common interface marking calibrators that also need
+(already-calibrated) accelerometer measurements, because g-dependent bias estimation requires knowing the
+true specific force.
+
+=== `KnownFrame` example
+
+Each measurement pairs a `BodyKinematics` sample with the known ECEF frame (position, orientation, velocity)
+at which it was taken. `KnownFrameGyroscopeNonLinearLeastSquaresCalibrator` refines an initial
+stem:[\mathbf{b}_g], stem:[\mathbf{M}_g] and stem:[\mathbf{G}_g] guess through non-linear least squares:
+
+[source,java]
+----
+// each measurement bundles a body kinematics sample with the known frame it was taken at
+final Collection<StandardDeviationFrameBodyKinematics> measurements = new ArrayList<>();
+// ...
+measurements.add(new StandardDeviationFrameBodyKinematics(measuredKinematics, ecefFrame, ecefFrame,
+        timeIntervalSeconds, specificForceStandardDeviation, angularRateStandardDeviation));
+
+// initial bg, Mg, Gg guesses close to the expected solution
+final Matrix initialBias = new Matrix(3, 1);
+final Matrix initialMg = new Matrix(3, 3);
+final Matrix initialGg = new Matrix(3, 3);
+
+final var calibrator = new KnownFrameGyroscopeNonLinearLeastSquaresCalibrator(measurements, false, initialBias,
+        initialMg, initialGg, this);
+
+calibrator.calibrate();
+
+final Matrix estimatedBg = calibrator.getEstimatedBiasesAsMatrix();
+final Matrix estimatedMg = calibrator.getEstimatedMg();
+final Matrix estimatedGg = calibrator.getEstimatedGg();
+----
+
+=== `Turntable` example
+
+Measurements only need position (the turntable's fixed location) plus the known, constant rotation rate —
+no per-measurement orientation is required, since the turntable enforces it:
+
+[source,java]
+----
+final NEDPosition position = new NEDPosition(latitude, longitude, height);
+final double rotationRate = Constants.EARTH_ROTATION_RATE; // rad/s
+final double timeInterval = TurntableGyroscopeCalibrator.DEFAULT_TIME_INTERVAL; // seconds
+
+final Collection<StandardDeviationBodyKinematics> measurements = new ArrayList<>();
+// ...
+measurements.add(new StandardDeviationBodyKinematics(measuredKinematics, specificForceStandardDeviation,
+        angularRateStandardDeviation));
+
+final Matrix initialBias = new Matrix(3, 1);
+final Matrix initialMg = new Matrix(3, 3);
+final Matrix initialGg = new Matrix(3, 3);
+
+final var calibrator = new TurntableGyroscopeCalibrator(position, rotationRate, timeInterval, measurements,
+        true, false, initialBias, initialMg, initialGg);
+
+calibrator.calibrate();
+
+final Matrix estimatedBg = calibrator.getEstimatedBiasesAsMatrix();
+final Matrix estimatedMg = calibrator.getEstimatedMg();
+final Matrix estimatedGg = calibrator.getEstimatedGg();
+----
+
+== The "Easy" calibrator: no turntable required
+
+`EasyGyroscopeCalibrator` / `KnownBiasEasyGyroscopeCalibrator` implement the gyroscope half of
+xref:reference.adoc#imu-tk[[imu-tk\]]: the same static-interval philosophy as
+xref:calibration/accelerometer.adoc[the accelerometer's `KnownGravityNorm` family], extended to the
+gyroscope by integrating the angular rate *between* two static brackets and comparing the integrated
+rotation against the attitude change implied by gravity direction before and after:
+
+[mermaid]
+....
+flowchart LR
+    S1["Static interval 1:\nmean specific force -> gravity direction (attitude A)"] --> M["Dynamic interval:\nintegrate gyroscope angular rate over time"]
+    M --> S2["Static interval 2:\nmean specific force -> gravity direction (attitude B)"]
+    S2 --> C["Compare integrated rotation A->B\nagainst gyroscope-only integration"]
+    C --> D["Least-squares fit of\nbg, Mg, Gg"]
+....
+
+Each `BodyKinematicsSequence` (see xref:calibration/data-model.adoc[]) supplies one such
+motion-bracketed-by-statics sample; xref:calibration/intervals-and-generators.adoc[the interval
+detector/generator pipeline] is what produces these sequences from a raw sensor stream in the first
+place. At least 7 sequences are needed (10 without a common z-axis assumption; 16/19 if g-dependent
+bias is also estimated).
+
+=== `Easy` example
+
+Each sequence carries the specific-force readings from the static brackets before/after, plus the
+timed angular-rate samples captured in between:
+
+[source,java]
+----
+final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = new ArrayList<>();
+// ...
+final var sequence = new BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>();
+sequence.setBeforeMeanSpecificForceCoordinates(beforeMeanFx, beforeMeanFy, beforeMeanFz);
+sequence.setAfterMeanSpecificForceCoordinates(afterMeanFx, afterMeanFy, afterMeanFz);
+
+final List<StandardDeviationTimedBodyKinematics> items = new ArrayList<>();
+// ...
+items.add(new StandardDeviationTimedBodyKinematics(measuredKinematics, timestampSeconds,
+        specificForceStandardDeviation, angularRateStandardDeviation));
+sequence.setItems(items);
+sequences.add(sequence);
+
+// known accelerometer bias/cross-coupling, needed because bg-dependent bias
+// requires the true specific force
+final Matrix initialBias = new Matrix(3, 1);
+final Matrix initialMg = new Matrix(3, 3);
+final Matrix initialGg = new Matrix(3, 3);
+final Matrix accelerometerBias = new Matrix(3, 1);
+final Matrix accelerometerMa = new Matrix(3, 3);
+
+final var calibrator = new EasyGyroscopeCalibrator(sequences, true, false, initialBias, initialMg,
+        initialGg, accelerometerBias, accelerometerMa);
+
+calibrator.calibrate();
+
+final Matrix estimatedBg = calibrator.getEstimatedBiasesAsMatrix();
+final Matrix estimatedMg = calibrator.getEstimatedMg();
+final Matrix estimatedGg = calibrator.getEstimatedGg();
+----
+
+== Quaternion step integrators
+
+Integrating angular rate over a dynamic interval means numerically solving the quaternion kinematic
+differential equation
+
+[stem]
+++++
+\dot{\mathbf{q}} = \frac{1}{2}\,\boldsymbol{\Omega}(\boldsymbol{\omega})\,\mathbf{q}
+++++
+
+`QuaternionStepIntegrator` defines this as a strategy interface, with `QuaternionIntegrator` driving it
+step-by-step across a sequence. Six schemes are available (selected via `QuaternionStepIntegratorType`),
+trading off accuracy against computational cost:
+
+[cols="1,3",options="header"]
+|===
+|Integrator |Reference
+
+|`EulerQuaternionStepIntegrator`
+|First-order https://en.wikipedia.org/wiki/Euler_method[Euler method] — cheapest, least accurate.
+
+|`MidPointQuaternionStepIntegrator`
+|https://en.wikipedia.org/wiki/Midpoint_method[Midpoint method] — second-order.
+
+|`RungeKuttaQuaternionStepIntegrator`
+|Classic 4th-order https://en.wikipedia.org/wiki/Runge%E2%80%93Kutta_methods[Runge-Kutta (RK4)] — most
+accurate of the six, at the highest computational cost.
+
+|`SuhQuaternionStepIntegrator`
+|Y. S. Suh, "Orientation estimation using a quaternion-based indirect Kalman filter with adaptive
+estimation of external acceleration," 2010 (xref:reference.adoc#suh2010[[suh2010\]]).
+
+|`TrawnyQuaternionStepIntegrator`
+|N. Trawny, "Indirect Kalman Filter for 3D Attitude Estimation," 2005 (xref:reference.adoc#trawny2005[[trawny2005\]]).
+
+|`YuanQuaternionStepIntegrator`
+|S. Yuan, "Quaternion-based Unscented Kalman Filter for Real-time," 2015 (xref:reference.adoc#yuan2015[[yuan2015\]]).
+|===
+
+`EasyGyroscopeCalibrator` uses one of these (configurable) to integrate each dynamic interval before
+comparing it against the static-interval gravity readings.
+
+=== Integrating a sequence directly
+
+`QuaternionStepIntegrator.create(type)` builds the strategy for one scheme; `QuaternionIntegrator`
+drives it step-by-step across an entire `BodyKinematicsSequence` to obtain the final attitude:
+
+[source,java]
+----
+// integrate a whole sequence in one call, choosing the RK4 scheme
+final Quaternion initialAttitude = new Quaternion(); // identity
+final Quaternion finalAttitude = QuaternionIntegrator.integrateGyroSequenceAndReturnNew(sequence,
+        initialAttitude, QuaternionStepIntegratorType.RUNGE_KUTTA);
+
+// or drive a single integration step manually
+final QuaternionStepIntegrator stepIntegrator =
+        QuaternionStepIntegrator.create(QuaternionStepIntegratorType.RUNGE_KUTTA);
+final Quaternion result = new Quaternion();
+stepIntegrator.integrate(initialAttitude, previousWx, previousWy, previousWz, currentWx, currentWy,
+        currentWz, dt, result);
+----
+
+== Where to go next
+
+* xref:calibration/accelerometer.adoc[] — the accelerometer's parallel known-frame / known-norm structure.
+* xref:calibration/intervals-and-generators.adoc[] — how `BodyKinematicsSequence` inputs are produced from a raw sensor stream.
+* xref:reference.adoc#bibliography[] — bibliography, including the Tedaldi et al. paper and its imu_tk reference implementation.

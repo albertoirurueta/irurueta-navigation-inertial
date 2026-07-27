@@ -1,0 +1,138 @@
+= Kinematics Estimators
+
+NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
+
+Classes: `NEDKinematicsEstimator`, `ECEFKinematicsEstimator`, `ECIKinematicsEstimator`.
+
+== What these classes solve
+
+A xref:navigators/index.adoc[navigator] *integrates* measured specific force and angular rate forward in
+time to obtain position, velocity, and attitude. The kinematics estimators solve the *inverse* problem:
+given two consecutive (attitude, velocity, position) navigation states, they compute the specific force
+and angular rate that an ideal IMU would have measured between them. This is exactly what the referenced
+MATLAB companion scripts (`Kinematics_NED.m`, `Kinematics_ECEF.m`, `Kinematics_ECI.m`) do, and it is the
+standard way to generate noise-free, synthetic IMU measurements for testing a navigator or calibrator
+against a known trajectory.
+
+[mermaid]
+....
+flowchart LR
+    A["Known trajectory:\nattitude, velocity, position\nat consecutive epochs"] --> B["*KinematicsEstimator\n(this page)"]
+    B --> C["Synthetic specific force f_ib\nand angular rate omega_ib"]
+    C --> D["Navigator\n(integrates forward)"]
+    D -->|should reproduce| A
+....
+
+== Common structure
+
+All three estimators follow the same four-step pattern described in Groves §5.1-5.3 (see
+xref:reference.adoc#book-groves[[book-groves\]]), run in reverse:
+
+. *Angular rate*: recover the attitude-increment rotation vector from the old and new
+  body-to-reference coordinate transformation matrices (inverting the exponential attitude-update
+  equation), then divide by the time interval.
+. *Specific force*: difference the old and new velocities, subtract gravity/gravitation, and add back
+  the Coriolis/transport-rate terms that the frame in question rotates with.
+. *Frame transformation*: transform the specific force from the reference-frame resolving axes back to
+  body-frame axes using the (precise, averaged) coordinate transformation matrix.
+. Store the resulting `BodyKinematics` (specific force + angular rate), or a zero result if the time
+  interval is zero.
+
+== ECIKinematicsEstimator
+
+The ECI frame is inertial, so there is no Earth-rotation or transport-rate term. Specific force is
+simply the velocity change minus gravitation (equation family 5.11-5.14):
+
+[stem]
+++++
+\mathbf{f}^{i}_{ib} = \frac{\mathbf{v}^{i}_{ib}(+) - \mathbf{v}^{i}_{ib}(-)}{\tau_i} - \boldsymbol{\gamma}^{i}_{ib}
+++++
+
+using `ECIGravitationEstimator` for stem:[\boldsymbol{\gamma}^{i}_{ib}], then transformed to body axes
+via the averaged attitude matrix stem:[\overline{\mathbf{C}}^{i}_{b}] (equations 5.77, 5.81, 5.84 style
+precise-form averaging).
+
+== ECEFKinematicsEstimator
+
+The ECEF frame rotates with the Earth at rate stem:[\omega_{ie}], so a Coriolis term appears. Specific
+force resolved about ECEF axes is recovered from consecutive ECEF velocities and position using
+
+[stem]
+++++
+\mathbf{f}^{e}_{ib} = \frac{\mathbf{v}^{e}_{eb}(+) - \mathbf{v}^{e}_{eb}(-)}{\tau_i} - \mathbf{g}^{e}_{b} + 2\,\boldsymbol{\Omega}_{ie}^{e}\,\mathbf{v}^{e}_{eb}(-)
+++++
+
+where stem:[\mathbf{g}^{e}_{b}] comes from `ECEFGravityEstimator` and stem:[\boldsymbol{\Omega}_{ie}^{e}]
+is the skew-symmetric Earth-rotation matrix:
+
+[stem]
+++++
+\boldsymbol{\Omega}_{ie}^{e} = \begin{pmatrix} 0 & -\omega_{ie} & 0 \\ \omega_{ie} & 0 & 0 \\ 0 & 0 & 0 \end{pmatrix}
+++++
+
+The attitude increment is recovered from
+stem:[\mathbf{C}^{e}_{b}(+)^{\mathsf T}\mathbf{C}^{e}_{ie}(\tau_i)\,\mathbf{C}^{e}_{b}(-)] (inverting the
+attitude-update equation 5.19/5.20), and the specific force is transformed back to body axes through the
+precise averaged coordinate transformation matrix of equation 5.63/5.81.
+
+== NEDKinematicsEstimator
+
+The local-navigation (NED) frame adds a further *transport-rate* term stem:[\boldsymbol{\omega}_{en}^{n}]
+on top of the Earth-rate term, because the NED axes themselves rotate as the body moves across the
+Earth's surface (equation 5.37, using the meridian/transverse radii of curvature from
+xref:estimators/position-velocity.adoc[`RadiiOfCurvatureEstimator`]):
+
+[stem]
+++++
+\boldsymbol{\omega}_{en}^{n} = \begin{pmatrix}
+v_{E}/(R_{E}+h) \\ -v_{N}/(R_{N}+h) \\ -v_{E}\tan L/(R_{E}+h)
+\end{pmatrix}
+++++
+
+Specific force resolved about NED axes (equation 5.44/5.46 style):
+
+[stem]
+++++
+\mathbf{f}^{n}_{ib} = \frac{\mathbf{v}^{n}_{eb}(+) - \mathbf{v}^{n}_{eb}(-)}{\tau_i} - \mathbf{g}^{n}_{b} + \left(\boldsymbol{\Omega}_{en}^{n} + 2\boldsymbol{\Omega}_{ie}^{n}\right)\mathbf{v}^{n}_{eb}(-)
+++++
+
+using `NEDGravityEstimator` for stem:[\mathbf{g}^{n}_{b}], and the earlier-and-later
+Earth-rate/transport-rate terms averaged when recovering attitude increment and the average coordinate
+transformation matrix (as in equation 5.84/5.86).
+
+[source,java]
+----
+double timeInterval = 1.0; // seconds between the two epochs
+
+// body-to-NED attitude at the start and end of the interval
+CoordinateTransformation oldC = new CoordinateTransformation(
+        0.0, 0.0, 0.0, FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
+CoordinateTransformation c = new CoordinateTransformation(
+        0.01, 0.0, 0.02, FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
+
+double latitude = Math.toRadians(41.3851);
+double oldLatitude = latitude;
+double height = 0.0;
+double oldHeight = 0.0;
+
+// NED velocity at the start and end of the interval (m/s)
+double oldVn = 0.0, oldVe = 0.0, oldVd = 0.0;
+double vn = 1.0, ve = 0.0, vd = 0.0;
+
+BodyKinematics kinematics = new BodyKinematics();
+NEDKinematicsEstimator.estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,
+        latitude, height, oldLatitude, oldHeight, kinematics);
+
+double fx = kinematics.getFx(); // synthetic specific force (m/s^2)
+double angularRateZ = kinematics.getAngularRateZ(); // synthetic angular rate (rad/s)
+----
+
+`ECEFKinematicsEstimator.estimateKinematics(...)` and `ECIKinematicsEstimator.estimateKinematics(...)`
+follow the same pattern, replacing latitude/height with Cartesian stem:[(x,y,z)] position and NED
+velocity with ECEF/ECI velocity, respectively.
+
+== Where to go next
+
+* xref:estimators/gravity.adoc[] — gravity/gravitation models used inside these estimators.
+* xref:navigators/index.adoc[] — the forward (integrating) counterpart of these classes.
+* xref:reference.adoc#bibliography[] — bibliography.

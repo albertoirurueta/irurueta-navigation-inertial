@@ -1,0 +1,145 @@
+= Precision Navigation Equations
+
+NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
+
+Classes: `ECIInertialNavigator`, `ECEFInertialNavigator`, `NEDInertialNavigator`.
+
+All three navigators share the four-step structure introduced in xref:navigators/index.adoc[], but each
+adds the terms relevant to how its resolving frame rotates. See Groves §5.4 (see
+xref:reference.adoc#book-groves[[book-groves\]]) for the full derivations.
+
+== Step 1: attitude update via Rodrigues' formula
+
+Given the angular rate averaged over the update interval, the attitude increment vector is
+stem:[\boldsymbol{\alpha}_{ib}^{b} = \boldsymbol{\omega}_{ib}^{b}\,\tau_i]. Rather than truncating the
+matrix exponential to first order (as in the simplified equations), the *exact* closed form — Rodrigues'
+rotation formula, equation 5.73 — is used:
+
+[stem]
+++++
+\mathbf{C}_{b+}^{b-} = \mathbf{I}_3 + \frac{\sin|\boldsymbol{\alpha}|}{|\boldsymbol{\alpha}|}\left[\boldsymbol{\alpha}\wedge\right] + \frac{1-\cos|\boldsymbol{\alpha}|}{|\boldsymbol{\alpha}|^{2}}\left[\boldsymbol{\alpha}\wedge\right]^{2}
+++++
+
+where stem:[[\boldsymbol{\alpha}\wedge]] is the skew-symmetric matrix of the attitude increment. This
+avoids the drift that the first-order truncation introduces at low iteration rates (see Groves Table
+5.1). Each navigator then pre/post-multiplies this update matrix by whatever additional rotation accounts
+for the frame's own rotation (Earth rate for ECEF, Earth rate + transport rate for NED).
+
+== Step 2: specific-force frame transformation (averaged)
+
+Rather than transforming the specific force using the attitude at just one end of the interval, the
+*averaged* coordinate transformation matrix over the interval is used (equation 5.84):
+
+[stem]
+++++
+\overline{\mathbf{C}}^{\gamma}_{b} = \mathbf{C}_{b}^{\gamma}(-)\left[\mathbf{I}_3 + \frac{1-\cos|\boldsymbol{\alpha}|}{|\boldsymbol{\alpha}|^{2}}\left[\boldsymbol{\alpha}\wedge\right] + \frac{1}{|\boldsymbol{\alpha}|^{2}}\left(1-\frac{\sin|\boldsymbol{\alpha}|}{|\boldsymbol{\alpha}|}\right)\left[\boldsymbol{\alpha}\wedge\right]^{2}\right] - (\text{frame-rotation correction})
+++++
+
+The frame-rotation correction term is zero for ECI, involves the Earth-rotation skew matrix for ECEF
+(equation 5.85), and involves both Earth rotation and transport rate for NED (equation 5.86).
+
+== ECIInertialNavigator
+
+The simplest case: no Earth-rotation or transport-rate correction terms appear anywhere, and gravitation
+(not gravity) is used since the ECI frame does not rotate with the Earth.
+
+[stem]
+++++
+\mathbf{v}^{i}_{ib}(+) = \mathbf{v}^{i}_{ib}(-) + \tau_i\left(\overline{\mathbf{C}}^{i}_{b}\,\mathbf{f}^{b}_{ib} + \boldsymbol{\gamma}^{i}_{ib}\right)
+++++
+
+[stem]
+++++
+\mathbf{r}^{i}_{ib}(+) = \mathbf{r}^{i}_{ib}(-) + \frac{\tau_i}{2}\left(\mathbf{v}^{i}_{ib}(-) + \mathbf{v}^{i}_{ib}(+)\right)
+++++
+
+using `ECIGravitationEstimator` (see xref:estimators/gravity.adoc[]) for stem:[\boldsymbol{\gamma}^{i}_{ib}].
+
+== ECEFInertialNavigator
+
+The ECEF frame rotates with the Earth at rate stem:[\omega_{ie}], so the attitude update is corrected by
+the Earth-rotation matrix stem:[\mathbf{C}_{i}^{e}(\tau_i)] (equation 2.145/5.75), and velocity picks up a
+Coriolis term:
+
+[stem]
+++++
+\mathbf{v}^{e}_{eb}(+) = \mathbf{v}^{e}_{eb}(-) + \tau_i\left(\overline{\mathbf{C}}^{e}_{b}\,\mathbf{f}^{b}_{ib} + \mathbf{g}^{e}_{b} - 2\,\boldsymbol{\Omega}_{ie}^{e}\,\mathbf{v}^{e}_{eb}(-)\right)
+++++
+
+[stem]
+++++
+\mathbf{r}^{e}_{eb}(+) = \mathbf{r}^{e}_{eb}(-) + \frac{\tau_i}{2}\left(\mathbf{v}^{e}_{eb}(-) + \mathbf{v}^{e}_{eb}(+)\right)
+++++
+
+using `ECEFGravityEstimator` (see xref:estimators/gravity.adoc[]) for stem:[\mathbf{g}^{e}_{b}].
+
+== NEDInertialNavigator
+
+Adds a further *transport-rate* term stem:[\boldsymbol{\omega}_{en}^{n}] on top of the Earth-rate term,
+because the NED axes themselves rotate as the body moves across the Earth's surface. Position is updated
+directly in curvilinear form (latitude, longitude, height), using the meridian/transverse radii of
+curvature from xref:estimators/position-velocity.adoc[`RadiiOfCurvatureEstimator`], and re-evaluating
+them at the newly updated latitude — exactly as in `NEDPositionEstimator`:
+
+[stem]
+++++
+\mathbf{v}^{n}_{eb}(+) = \mathbf{v}^{n}_{eb}(-) + \tau_i\left(\overline{\mathbf{C}}^{n}_{b}\,\mathbf{f}^{b}_{ib} + \mathbf{g}^{n}_{b} - \left(\boldsymbol{\Omega}_{en}^{n} + 2\boldsymbol{\Omega}_{ie}^{n}\right)\mathbf{v}^{n}_{eb}(-)\right)
+++++
+
+[stem]
+++++
+h(+) = h(-) - \frac{\tau_i}{2}\left(v_D(-)+v_D(+)\right), \qquad
+L(+) = L(-) + \frac{\tau_i}{2}\left(\frac{v_N(-)}{R_N(L(-))+h(-)} + \frac{v_N(+)}{R_N(L(-))+h(+)}\right)
+++++
+
+[stem]
+++++
+\lambda(+) = \lambda(-) + \frac{\tau_i}{2}\left(\frac{v_E(-)}{(R_E(L(-))+h(-))\cos L(-)} + \frac{v_E(+)}{(R_E(L(+))+h(+))\cos L(+)}\right)
+++++
+
+The class Javadoc notes that only the attitude update and specific-force frame transformation are fully
+precise in this implementation — the Coriolis and transport-rate terms in the velocity update, and the
+position update, use the same first-order (trapezoidal) approximations as `NEDPositionEstimator` and
+`NEDVelocityEstimator`, which Groves §5.4.4 notes is sufficient for all but the most demanding
+high-dynamic applications.
+
+[source,java]
+----
+double timeInterval = 0.02; // 50 Hz IMU
+
+double oldLatitude = Math.toRadians(41.3851);
+double oldLongitude = Math.toRadians(2.1734);
+double oldHeight = 0.0;
+CoordinateTransformation oldC = new CoordinateTransformation(
+        0.0, 0.0, 0.0, FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
+double oldVn = 0.0, oldVe = 0.0, oldVd = 0.0;
+
+// one IMU sample: measured specific force (m/s^2) and angular rate (rad/s)
+double fx = 0.02, fy = -0.01, fz = -9.81;
+double angularRateX = 0.0, angularRateY = 0.0, angularRateZ = 1e-3;
+
+NEDFrame newFrame = NEDInertialNavigator.navigateNEDAndReturnNew(
+        timeInterval, oldLatitude, oldLongitude, oldHeight, oldC, oldVn, oldVe, oldVd,
+        fx, fy, fz, angularRateX, angularRateY, angularRateZ,
+        NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
+
+double newLatitude = newFrame.getLatitude();
+double newVn = newFrame.getVn();
+// newFrame becomes oldC/oldLatitude/... for the next IMU sample
+----
+
+`ECEFInertialNavigator.navigateECEFAndReturnNew(...)` and `ECIInertialNavigator.navigateECIAndReturnNew(...)`
+follow the same pattern, with Cartesian position/velocity in place of curvilinear latitude/longitude and
+NED velocity — and no `accuracyThreshold` parameter, since only the NED navigator's coordinate
+transformation needs that extra rotation-matrix validity check.
+
+== InertialNavigatorException
+
+Thrown by all three `navigate***` methods when the underlying matrix algebra fails (e.g., a computed
+coordinate transformation matrix is not a valid rotation, typically indicating an unstable or
+degenerate input rather than a normal operating condition).
+
+== Where to go next
+
+* xref:estimators/index.adoc[] — the estimators that supply gravity/gravitation and radii of curvature used here.
+* xref:reference.adoc#bibliography[] — bibliography.

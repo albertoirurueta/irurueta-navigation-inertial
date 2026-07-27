@@ -1,3 +1,25 @@
 * xref:index.adoc[]
 * xref:installation.adoc[]
+* Estimators
+** xref:estimators/index.adoc[]
+** xref:estimators/gravity.adoc[]
+** xref:estimators/kinematics.adoc[]
+** xref:estimators/position-velocity.adoc[]
+** xref:estimators/attitude.adoc[]
+* Navigators
+** xref:navigators/index.adoc[]
+** xref:navigators/navigation-equations.adoc[]
+* World Magnetic Model
+** xref:wmm/index.adoc[]
+** xref:wmm/spherical-harmonic-model.adoc[]
+** xref:wmm/earth-magnetic-flux-density.adoc[]
+* Calibration
+** xref:calibration/index.adoc[]
+** xref:calibration/data-model.adoc[]
+** xref:calibration/fixers.adoc[]
+** xref:calibration/accelerometer.adoc[]
+** xref:calibration/gyroscope.adoc[]
+** xref:calibration/magnetometer.adoc[]
+** xref:calibration/intervals-and-generators.adoc[]
+** xref:calibration/noise-and-bias.adoc[]
 * xref:reference.adoc[]

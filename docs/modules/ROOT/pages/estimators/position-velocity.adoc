@@ -1,0 +1,142 @@
+= Radii of Curvature, Position and Velocity Estimators
+
+NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
+
+Classes: `RadiiOfCurvatureEstimator`, `NEDPositionEstimator`, `NEDVelocityEstimator`.
+
+== The WGS84 ellipsoid and curvilinear position
+
+Position on the Earth's surface (or above/below it) can be described either as a Cartesian ECEF vector
+or, more usefully for navigation output, as *curvilinear position*: geodetic latitude stem:[L], longitude
+stem:[\lambda], and height stem:[h] above the WGS84 reference ellipsoid.
+
+image::estimators/height-and-geodetic-latitude.svg[Geodetic height and latitude of a body above the ellipsoid,560,380]
+
+== RadiiOfCurvatureEstimator
+
+Latitude and longitude do not change at a uniform linear rate per meter travelled, because the WGS84
+ellipsoid is not a sphere: it is flattened at the poles. The *meridian radius of curvature*,
+stem:[R_N(L)], governs north-south motion; the *transverse radius of curvature*, stem:[R_E(L)], governs
+east-west motion. Both are smallest at the equator and largest at the poles:
+
+[stem]
+++++
+R_{N}(L) = \frac{R_{0}\left(1-e^{2}\right)}{\left(1-e^{2}\sin^{2}L\right)^{3/2}}, \qquad
+R_{E}(L) = \frac{R_{0}}{\sqrt{1-e^{2}\sin^{2}L}}
+++++
+
+where stem:[R_0] is the WGS84 equatorial radius and stem:[e] is the WGS84 eccentricity. See
+xref:reference.adoc#book-groves[[book-groves\]], §2.3.2.
+
+[source,java]
+----
+double latitude = Math.toRadians(41.3851);
+
+RadiiOfCurvature radii = RadiiOfCurvatureEstimator.estimateRadiiOfCurvatureAndReturnNew(latitude);
+
+double meridianRadius = radii.getRn();   // R_N(L), meters
+double transverseRadius = radii.getRe(); // R_E(L), meters
+----
+
+image::estimators/geodetic-latitude.svg[Geocentric vs. geodetic latitude on the WGS84 ellipsoid,560,380]
+
+Both `NEDPositionEstimator` and `NEDVelocityEstimator` use these radii to convert between the NED
+velocity stem:[(v_N, v_E, v_D)] and the rate of change of curvilinear position:
+
+[stem]
+++++
+\dot L = \frac{v_{N}}{R_{N}(L)+h}, \qquad
+\dot\lambda = \frac{v_{E}}{\left(R_{E}(L)+h\right)\cos L}, \qquad
+\dot h = -v_{D}
+++++
+
+== NEDPositionEstimator
+
+Integrates curvilinear position forward over one time step from the old and new NED velocity, using the
+trapezoidal (average of old/new rate) form of the classic 4th-order Runge-Kutta integration scheme
+described in Groves §5.4.1 for the general state equation stem:[\dot{\mathbf{x}} = \mathbf{g}(\mathbf{x},\mathbf{u})]:
+
+[stem]
+++++
+h(+) = h(-) - \frac{1}{2}\tau_i\left(v_D(-) + v_D(+)\right)
+++++
+
+[stem]
+++++
+L(+) = L(-) + \frac{1}{2}\tau_i\left(\frac{v_N(-)}{R_N(L(-))+h(-)} + \frac{v_N(+)}{R_N(L(-))+h(+)}\right)
+++++
+
+[stem]
+++++
+\lambda(+) = \lambda(-) + \frac{1}{2}\tau_i\left(\frac{v_E(-)}{(R_E(L(-))+h(-))\cos L(-)} + \frac{v_E(+)}{(R_E(L(+))+h(+))\cos L(+)}\right)
+++++
+
+Height, then latitude, then longitude must be updated in that order, since each subsequent equation
+depends on the previous result (the radii of curvature are re-evaluated at the newly updated latitude).
+
+[source,java]
+----
+double timeInterval = 1.0; // seconds
+double oldLatitude = Math.toRadians(41.3851);
+double oldLongitude = Math.toRadians(2.1734);
+double oldHeight = 0.0;
+double oldVn = 1.0, oldVe = 0.0, oldVd = 0.0; // previous NED velocity (m/s)
+double vn = 1.0, ve = 0.0, vd = 0.0;          // current NED velocity (m/s)
+
+NEDPosition newPosition = NEDPositionEstimator.estimatePositionAndReturnNew(
+        timeInterval, oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd, vn, ve, vd);
+
+double newLatitude = newPosition.getLatitude();
+double newHeight = newPosition.getHeight();
+----
+
+== NEDVelocityEstimator
+
+The inverse operation: given curvilinear position at two epochs, estimate the average NED velocity
+between them by finite-differencing latitude/longitude/height and then inverting the same trapezoidal
+relation used above (solving for the "new" velocity component given the "old" one and the average rate):
+
+[stem]
+++++
+v_N(+) = \left(R_N(L(-))+h(+)\right)\left(2\dot L - \frac{v_N(-)}{R_N(L(-))+h(-)}\right)
+++++
+
+[stem]
+++++
+v_E(+) = \left(R_E(L(+))+h(+)\right)\cos L(+)\left(2\dot\lambda - \frac{v_E(-)}{\left(R_E(L(-))+h(-)\right)\cos L(-)}\right)
+++++
+
+[stem]
+++++
+v_D(+) = -2\dot h - v_D(-)
+++++
+
+This is mainly useful for turning a sequence of positions (e.g., from a reference trajectory or a GNSS
+log) into the velocity time series needed as input to xref:estimators/kinematics.adoc[kinematics
+estimators] or a xref:navigators/index.adoc[navigator] initialization step.
+
+[source,java]
+----
+double timeInterval = 1.0; // seconds
+double oldLatitude = Math.toRadians(41.3851);
+double oldLongitude = Math.toRadians(2.1734);
+double oldHeight = 0.0;
+double oldVn = 1.0, oldVe = 0.0, oldVd = 0.0; // previous NED velocity (m/s)
+
+// current position, e.g. the next GNSS fix in a log
+double latitude = Math.toRadians(41.38511);
+double longitude = oldLongitude;
+double height = 0.0;
+
+NEDVelocity velocity = NEDVelocityEstimator.estimateVelocityAndReturnNew(
+        timeInterval, oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd,
+        latitude, longitude, height);
+
+double vn = velocity.getVn();
+----
+
+== Where to go next
+
+* xref:estimators/kinematics.adoc[] — consumes the position/velocity pairs computed here.
+* xref:navigators/index.adoc[] — propagates curvilinear position forward continuously during navigation.
+* xref:reference.adoc#bibliography[] — bibliography.

@@ -1,0 +1,186 @@
+= Attitude Estimators: Leveling, Gyrocompassing, and Magnetic Heading
+
+NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
+
+Classes: `LevelingEstimator`, `LevelingEstimator2`, `AttitudeEstimator`, `BodyMagneticFluxDensityEstimator`.
+
+== The alignment problem
+
+Before an INS can start integrating IMU measurements, it needs an initial attitude. *Self-alignment*
+(Groves §5.5.2, see xref:reference.adoc#book-groves[[book-groves\]]) splits this into two steps:
+*leveling* (roll and pitch, from the sensed reaction to gravity) and *gyrocompassing/magnetic heading*
+(yaw, from either the Earth's rotation sensed by high-grade gyros, or a magnetometer).
+
+image::estimators/leveling-principle.svg[Leveling principle: sensed specific force is the reaction to gravity when stationary,520,280]
+
+[IMPORTANT]
+====
+Every formula on this page assumes stem:[f_x, f_y, f_z] (and the angular rate) follow Groves' body-frame
+convention: stem:[x] = forward, stem:[y] = right, stem:[z] = down (FRD — see
+xref:estimators/index.adoc[the estimators overview] for the full explanation and the conversion to apply
+if your IMU instead reports an ENU-aligned body convention). Getting this wrong will not throw an
+exception — it will silently produce a wrong roll/pitch/heading, since e.g. swapping stem:[x]/stem:[y] or
+flipping the sign of stem:[z] changes which formula below computes which angle.
+====
+
+== LevelingEstimator
+
+The simplest form. When the body is stationary, the only specific force sensed is the reaction to
+gravity, stem:[\mathbf{f}^{b}_{ib} \approx -\mathbf{g}^{b}]; roll and pitch follow directly (equation
+5.88/5.89 — this implementation neglects Earth rotation and the small north component of gravity, so it
+is accurate to about stem:[10^{-3}] rad / 0.05°):
+
+[stem]
+++++
+\text{roll} = \operatorname{atan2}(-f_y, -f_z), \qquad
+\text{pitch} = \operatorname{atan}\!\left(\frac{f_x}{\sqrt{f_y^{2}+f_z^{2}}}\right)
+++++
+
+If sufficiently accurate (aviation-grade) gyroscope measurements are also available, `LevelingEstimator`
+can additionally derive yaw through *direct gyrocompassing*, sensing the Earth-rotation vector itself
+(equation 5.90/5.91):
+
+[stem]
+++++
+\sin\psi_{nb} = -\omega^{b}_{ib,y}\cos\phi_{nb} + \omega^{b}_{ib,z}\sin\phi_{nb}, \qquad
+\cos\psi_{nb} = \omega^{b}_{ib,x}\cos\theta_{nb} + \left(\omega^{b}_{ib,y}\sin\phi_{nb}+\omega^{b}_{ib,z}\cos\phi_{nb}\right)\sin\theta_{nb}
+++++
+
+Because stem:[\omega_{ie}\approx 7\times10^{-5}] rad/s is tiny, this only works with aviation- or
+marine-grade gyros (drift well under about 0.01°/hr); consumer-grade MEMS gyros cannot gyrocompass at
+all, which is why `AttitudeEstimator` exists as a magnetometer-based alternative.
+
+[source,java]
+----
+// specific force sensed while stationary (m/s^2)
+double fx = 0.1, fy = -0.2, fz = -9.81;
+
+// roll/pitch only
+CoordinateTransformation attitude = LevelingEstimator.getAttitude(fx, fy, fz, 0.0, 0.0, 0.0);
+
+// roll/pitch + gyrocompassed yaw (requires aviation-grade angular rate, rad/s)
+double angularRateX = 1e-7, angularRateY = -3e-8, angularRateZ = 5e-8;
+CoordinateTransformation attitudeWithYaw = LevelingEstimator.getAttitude(
+        fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+
+double roll = attitudeWithYaw.getRollEulerAngle();
+double yaw = attitudeWithYaw.getYawEulerAngle();
+----
+
+== LevelingEstimator2
+
+A refinement of `LevelingEstimator` that no longer assumes the Earth is spherical: it uses
+`NEDGravityEstimator` to obtain the *true* NED gravity vector at the device's actual latitude and height
+(which has a small north component because the Earth is flattened), then computes the rotation that
+aligns the normalized measured specific force with the normalized true gravity direction, via the
+axis-angle (Rodrigues) form:
+
+[stem]
+++++
+\cos\alpha = \hat{\mathbf f}\cdot\hat{\mathbf g}, \qquad
+\hat{\mathbf n} = \frac{\hat{\mathbf g}\times\hat{\mathbf f}}{\lVert\hat{\mathbf g}\times\hat{\mathbf f}\rVert}, \qquad
+\mathbf q = \left(\hat{\mathbf n}, \alpha\right)
+++++
+
+The resulting quaternion only fixes roll and pitch — yaw is left arbitrary and must be resolved
+separately (e.g. by `AttitudeEstimator` or gyrocompassing), exactly as with `LevelingEstimator`.
+
+[source,java]
+----
+double latitude = Math.toRadians(41.3851);
+double height = 0.0;
+double fx = 0.1, fy = -0.2, fz = -9.81;
+
+// yaw in the result is arbitrary; only roll/pitch are meaningful here
+CoordinateTransformation attitude = LevelingEstimator2.getAttitude(
+        latitude, height, fx, fy, fz, 0.0, 0.0, 0.0);
+----
+
+== AttitudeEstimator
+
+Combines a leveling solution (roll/pitch, via `LevelingEstimator2`) with a magnetometer measurement to
+resolve yaw as well — the practical option for consumer-grade IMUs where the gyroscopes are not accurate
+enough for gyrocompassing:
+
+[mermaid]
+....
+flowchart TD
+    A["Accelerometer specific force f_ib^b"] --> B["LevelingEstimator2:\nroll, pitch (yaw arbitrary)"]
+    C["Magnetometer measurement b^b\n+ declination angle"] --> D["Magnetic heading"]
+    B --> D
+    D --> E["Full attitude:\nroll, pitch, yaw"]
+....
+
+Magnetic heading and yaw (true heading = magnetic heading + declination):
+
+[stem]
+++++
+\text{heading} = \operatorname{atan2}\left(-b_y\cos\phi + b_z\sin\phi,\; b_x\cos\theta + (b_y\sin\phi+b_z\cos\phi)\sin\theta\right)
+++++
+
+[stem]
+++++
+\psi = \text{heading} + \text{declination}
+++++
+
+Declination and dip can come from xref:wmm/index.adoc[the WMM package]
+(`WMMEarthMagneticFluxDensityEstimator`) or from a directly measured
+`NEDMagneticFluxDensity` (`EarthMagneticFluxDensityEstimator`).
+
+[source,java]
+----
+double latitude = Math.toRadians(41.3851);
+double height = 0.0;
+double fx = 0.1, fy = -0.2, fz = -9.81;   // measured specific force (m/s^2)
+double bx = 2.3e-5, by = 1.1e-5, bz = 4.2e-5; // measured magnetic flux density (T)
+
+// declination for this position/date, e.g. from WMMEarthMagneticFluxDensityEstimator
+double declination = Math.toRadians(1.2);
+
+CoordinateTransformation attitude = AttitudeEstimator.getAttitude(
+        latitude, height, fx, fy, fz, bx, by, bz, declination);
+
+double yaw = attitude.getYawEulerAngle(); // true heading (rad)
+----
+
+== BodyMagneticFluxDensityEstimator
+
+The inverse of the attitude problem above: given the Earth's magnetic flux density (magnitude,
+declination, dip — typically from xref:wmm/index.adoc[the WMM package]) and a known body attitude, it
+predicts what a magnetometer *would* measure in body-frame axes. This is used both to generate synthetic
+magnetometer test data and, internally, wherever a NED-to-body magnetic-field transform is needed:
+
+[stem]
+++++
+b_N = \cos(\psi-D)\cos(\text{dip})\,B, \qquad
+b_E = \sin(\psi-D)\cos(\text{dip})\,B, \qquad
+b_D = \sin(\text{dip})\,B
+++++
+
+[stem]
+++++
+\begin{pmatrix} b_x \\ b_y \\ b_z \end{pmatrix} = \mathbf{C}^{b}_{n}
+\begin{pmatrix} b_N \\ b_E \\ b_D \end{pmatrix}
+++++
+
+where stem:[\psi] is yaw (true heading), stem:[D] is declination, stem:[B] is the field magnitude, and
+stem:[\mathbf{C}^{b}_{n}] is the NED-to-body coordinate transformation matrix built from roll/pitch/yaw.
+
+[source,java]
+----
+double magnitude = 4.8e-5;             // Earth field magnitude (T)
+double declination = Math.toRadians(1.2);
+double dip = Math.toRadians(58.0);
+double roll = 0.0, pitch = 0.0, yaw = Math.toRadians(30.0); // known body attitude
+
+BodyMagneticFluxDensity b = new BodyMagneticFluxDensity();
+BodyMagneticFluxDensityEstimator.estimate(magnitude, declination, dip, roll, pitch, yaw, b);
+
+double bx = b.getBx(); // predicted magnetometer reading, body x-axis (T)
+----
+
+== Where to go next
+
+* xref:wmm/index.adoc[] — Earth magnetic field model supplying declination/dip/magnitude.
+* xref:navigators/index.adoc[] — where the resulting attitude is used to initialize a navigator.
+* xref:reference.adoc#bibliography[] — bibliography.

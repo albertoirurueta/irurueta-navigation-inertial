@@ -1,0 +1,92 @@
+= World Magnetic Model (WMM)
+
+NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
+
+The `com.irurueta.navigation.inertial.wmm` package estimates the Earth's magnetic flux density at a
+given position and date, using the U.S./U.K. https://www.ngdc.noaa.gov/geomag/WMM/[World Magnetic Model
+(WMM)] — see xref:reference.adoc#wmm-site[[wmm-site\]]. It is used both as an independent heading
+reference (see xref:estimators/attitude.adoc[`AttitudeEstimator`]) and as an input to magnetometer
+calibration (see xref:calibration/index.adoc[]).
+
+[WARNING]
+====
+This library bundles a *default* WMM coefficient file (`wmm.cof`, currently WMM-2025, valid
+2025.0-2030.0 — see xref:wmm/spherical-harmonic-model.adoc[]). Every WMM release expires after 5 years:
+past its valid period, the model's secular-variation extrapolation drifts and declination/dip estimates
+become unreliable. Applications running past 2030 (or bundling this library long-term) should download
+the current release from
+https://www.ncei.noaa.gov/products/world-magnetic-model/wmm-coefficients[NOAA/NCEI's WMM coefficients
+page] and load it explicitly with `WMMLoader`, instead of relying on the bundled default — see
+xref:wmm/spherical-harmonic-model.adoc[] for how to load a custom coefficient file.
+====
+
+== What the WMM provides
+
+At any given latitude, longitude, height, and date, the Earth's magnetic field can be described by three
+independent quantities:
+
+[cols="1,3",options="header"]
+|===
+|Element |Meaning
+
+|*Magnitude* (intensity)
+|Total field strength, roughly 30 microtesla (µT) at the equator up to about 60 µT near the poles.
+
+|*Declination*
+|The bearing of the magnetic field from true north — the angle a compass needle's reading must be
+corrected by to get true heading.
+
+|*Dip* (inclination)
+|The angle the field makes below the local horizontal plane — essentially the "magnetic latitude,"
+typically within about 10° of the geodetic latitude.
+|===
+
+image::wmm/geomagnetic-elements.svg[Elements of the geomagnetic field: declination and dip versus horizontal and total intensity,520,380]
+
+Declination is the only one of the three needed to convert a magnetometer heading measurement into true
+heading (see xref:estimators/attitude.adoc[`AttitudeEstimator`]). It is *not* constant: it drifts slowly
+over years (secular variation) and varies significantly with location, which is why a global model like
+the WMM — rather than a single fixed value — is needed.
+
+== Classes
+
+[cols="1,3",options="header"]
+|===
+|Class |Role
+
+|`WorldMagneticModel`
+|Holds the loaded Gauss coefficients (main field + secular variation) and derived normalization factors
+for one 5-year WMM release.
+
+|`WMMLoader`
+|Parses a WMM coefficient file (`.cof`) — from a resource, file, or URL — into a `WorldMagneticModel`.
+
+|`WMMEarthMagneticFluxDensityEstimator`
+|Evaluates the spherical-harmonic model at a given position/date to get declination, dip, intensity, and
+the full NED magnetic flux density vector. This is the actual WMM algorithm.
+
+|`EarthMagneticFluxDensityEstimator`
+|A much simpler helper: builds a NED magnetic flux density vector directly from an already-known
+magnitude/declination/dip (e.g. supplied by the caller, without needing the full WMM coefficient set).
+
+|`NEDMagneticFluxDensity`
+|Data container for magnetic flux density resolved about north, east, down axes.
+|===
+
+[mermaid]
+....
+flowchart LR
+    A[".cof coefficient file\n(NOAA/NGA/BGS release)"] -->|WMMLoader| B["WorldMagneticModel\n(Gauss coefficients)"]
+    B --> C["WMMEarthMagneticFluxDensityEstimator\n(spherical harmonic evaluation)"]
+    D["latitude, longitude,\nheight, date"] --> C
+    C --> E["declination, dip, intensity,\nNEDMagneticFluxDensity"]
+    E --> F["AttitudeEstimator\n(heading correction)"]
+    E --> G["Magnetometer calibration"]
+....
+
+== Where to go next
+
+* xref:wmm/spherical-harmonic-model.adoc[] — the coefficient file format and the spherical-harmonic algorithm.
+* xref:wmm/earth-magnetic-flux-density.adoc[] — the simpler magnitude/declination/dip container classes.
+* xref:estimators/attitude.adoc[] — how declination and dip feed into heading estimation.
+* xref:reference.adoc#bibliography[] — bibliography.
