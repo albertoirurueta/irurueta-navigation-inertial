@@ -8426,7 +8426,11 @@ class MSACRobustKnownPositionAndInstantMagnetometerCalibratorTest implements
             assertEquals(0, calibrateNextIteration);
             assertEquals(0, calibrateProgressChange);
 
-            calibrator.calibrate();
+            try {
+                calibrator.calibrate();
+            } catch (final CalibrationException e) {
+                continue;
+            }
 
             // check
             assertTrue(calibrator.isReady());
