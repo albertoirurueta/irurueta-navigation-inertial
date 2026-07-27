@@ -1,4 +1,5 @@
 * xref:index.adoc[]
+* xref:whats-new.adoc[]
 * xref:installation.adoc[]
 * Estimators
 ** xref:estimators/index.adoc[]

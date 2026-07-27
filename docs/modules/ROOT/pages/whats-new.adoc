@@ -1,0 +1,7 @@
+= What's New
+
+NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
+
+== 1.10.0
+
+* ♻️ Build now targets Java 21 (up from Java 17).
