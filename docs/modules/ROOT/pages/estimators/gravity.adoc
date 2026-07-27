@@ -1,0 +1,157 @@
+= Gravity and Gravitation Estimators
+
+NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
+
+Classes: `NEDGravityEstimator`, `ECEFGravityEstimator`, `ECIGravitationEstimator`.
+
+== Gravity vs. gravitation
+
+*Gravitation* is the fundamental mass-attraction force; it does not include any centripetal effect.
+*Gravity* is what a body actually experiences at (or near) the Earth's surface: the gravitational
+acceleration plus the (outward) centrifugal acceleration caused by the Earth's rotation. An
+accelerometer never measures gravity or gravitation directly — it measures *specific force*, the
+non-gravitational force per unit mass, which is zero in freefall and equal and opposite to gravity
+when the body is held stationary:
+
+image::estimators/gravity-spring.svg[Specific force is zero in freefall and equals m·gamma when stationary,560,300]
+
+[mermaid]
+....
+flowchart LR
+    A["Gravitation (gamma)\nmass attraction only"] --> C["Gravity (g)\ngamma minus centrifugal term"]
+    B["Earth-rotation centrifugal\nacceleration"] --> C
+    C -->|sensed via reaction| D["Specific force f\n(what accelerometers measure)"]
+....
+
+== NEDGravityEstimator
+
+Computes acceleration due to gravity resolved about the north, east, and down axes of the local
+navigation frame, for a given geodetic latitude and height, using the WGS84 *Somigliana model* for
+surface gravity plus first-order height corrections. East gravity is always zero by symmetry.
+
+Surface gravity (Somigliana model):
+
+[stem]
+++++
+g_{0}(L) = 9.7803253359 \, \frac{1 + 0.001931853 \sin^{2} L}{\sqrt{1 - e^{2} \sin^{2} L}}
+++++
+
+North component (height correction due to the flattened, non-spherical Earth):
+
+[stem]
+++++
+g_{N} = -8.08 \times 10^{-9} \, h \sin(2L)
+++++
+
+Down component (height and Earth-shape correction):
+
+[stem]
+++++
+g_{D} = g_{0}(L)\left[1 - \frac{2}{R_{0}}\left(1 + f + \frac{\omega_{ie}^{2} R_{0}^{2} R_{P}}{\mu}\right) h + \frac{3 h^{2}}{R_{0}^{2}}\right]
+++++
+
+where stem:[L] is geodetic latitude, stem:[h] is height, stem:[e] is the WGS84 eccentricity,
+stem:[R_0] / stem:[R_P] are the WGS84 equatorial/polar radii, stem:[f] is the flattening,
+stem:[\omega_{ie}] is the Earth rotation rate, and stem:[\mu] is the Earth gravitational constant. See
+xref:reference.adoc#book-groves[[book-groves\]], §2.3.5.
+
+[source,java]
+----
+double latitude = Math.toRadians(41.3851); // Barcelona, in radians
+double height = 0.0; // meters
+
+// static, stateless call - no need to instantiate the estimator
+NEDGravity gravity = NEDGravityEstimator.estimateGravityAndReturnNew(latitude, height);
+
+double gn = gravity.getGn(); // north component (m/s^2), typically near zero
+double gd = gravity.getGd(); // down component (m/s^2), approximately 9.8
+
+// an instance can be reused instead, if preferred
+NEDGravityEstimator estimator = new NEDGravityEstimator();
+NEDGravity result = new NEDGravity();
+estimator.estimate(latitude, height, result);
+----
+
+== ECEFGravityEstimator
+
+Computes the same gravity vector, but resolved about ECEF-frame axes for a Cartesian position
+stem:[(x,y,z)]. The gravitational term uses a spherical-harmonic approximation truncated to the
+stem:[J_2] zonal term (Earth's oblateness), and the centrifugal term is added explicitly since ECEF axes
+rotate with the Earth:
+
+[stem]
+++++
+\boldsymbol{\gamma}^{e}_{ib} = -\frac{\mu}{|\mathbf{r}|^{3}}
+\left\{ \mathbf{r} + \frac{3}{2} J_{2} \frac{R_{0}^{2}}{|\mathbf{r}|^{2}}
+\begin{pmatrix} \left[1-5(z/|\mathbf{r}|)^{2}\right]\,x \\ \left[1-5(z/|\mathbf{r}|)^{2}\right]\,y \\ \left[3-5(z/|\mathbf{r}|)^{2}\right]\,z \end{pmatrix} \right\}
+++++
+
+[stem]
+++++
+g_{x} = \gamma_{x} + \omega_{ie}^{2} x, \qquad g_{y} = \gamma_{y} + \omega_{ie}^{2} y, \qquad g_{z} = \gamma_{z}
+++++
+
+The last step adds the outward centrifugal acceleration
+stem:[\boldsymbol{\Omega}_{ie}^{e}\boldsymbol{\Omega}_{ie}^{e}\mathbf{r}^{e}_{eb}] to the gravitational
+acceleration, matching the general relation
+stem:[\mathbf{g}^{e}_{b} = \boldsymbol{\gamma}^{e}_{ib} + \omega_{ie}^{2}\operatorname{diag}(1,1,0)\,\mathbf{r}^{e}_{eb}].
+
+[source,java]
+----
+double x = 4_789_000.0; // ECEF position (m)
+double y = 177_000.0;
+double z = 4_195_000.0;
+
+ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(x, y, z);
+
+double gx = gravity.getGx();
+double gy = gravity.getGy();
+double gz = gravity.getGz();
+double norm = gravity.getNorm(); // total gravity magnitude (m/s^2)
+----
+
+== ECIGravitationEstimator
+
+Computes *gravitation only* (no centrifugal term) resolved about ECI-frame axes, using the same
+stem:[J_2] spherical-harmonic model as `ECEFGravityEstimator`. Because the ECI frame is inertial (does
+not rotate with the Earth), there is no centrifugal acceleration to add — the ECI navigation equations
+add that term separately when needed via the Earth-rotation skew-symmetric matrix
+stem:[\boldsymbol{\Omega}_{ie}].
+
+[source,java]
+----
+double x = 4_789_000.0; // ECI position at a given instant (m)
+double y = 177_000.0;
+double z = 4_195_000.0;
+
+ECIGravitation gravitation = ECIGravitationEstimator.estimateGravitationAndReturnNew(x, y, z);
+
+double gammaX = gravitation.getGx();
+double gammaY = gravitation.getGy();
+double gammaZ = gravitation.getGz();
+----
+
+== Which one should I use?
+
+[cols="1,2,2",options="header"]
+|===
+|Class |Resolving frame |Returns
+
+|`NEDGravityEstimator`
+|Local navigation (north, east, down)
+|Gravity `g` (gravitation + centrifugal)
+
+|`ECEFGravityEstimator`
+|ECEF (rotates with the Earth)
+|Gravity `g` (gravitation + centrifugal)
+
+|`ECIGravitationEstimator`
+|ECI (inertial)
+|Gravitation `gamma` only (no centrifugal term)
+|===
+
+== Where to go next
+
+* xref:estimators/kinematics.adoc[] — uses these gravity models to convert integrated velocity changes into specific force.
+* xref:estimators/position-velocity.adoc[] — radii of curvature and curvilinear position/velocity.
+* xref:reference.adoc#bibliography[] — bibliography.

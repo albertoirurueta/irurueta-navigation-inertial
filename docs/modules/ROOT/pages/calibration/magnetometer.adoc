@@ -1,0 +1,206 @@
+= Magnetometer Calibration
+
+NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
+
+The `com.irurueta.navigation.inertial.calibration.magnetometer` package (79 classes) estimates the
+magnetometer's *hard iron* bias stem:[\mathbf{b}_m] and *soft iron* scale-factor/cross-coupling matrix
+stem:[\mathbf{M}_m]:
+
+[stem]
+++++
+\mathbf{b}_{\text{meas}} = \mathbf{b}_{m} + \left(\mathbf{I}_{3} + \mathbf{M}_{m}\right)\mathbf{b}_{\text{true}} + \mathbf{w}
+++++
+
+Its structure closely mirrors xref:calibration/accelerometer.adoc[the accelerometer package]: 6 distinct
+algorithms, differing in how the ground-truth field stem:[\mathbf{b}_{\text{true}}] is obtained and
+whether hard iron is already known, each wrapped by the same 5 robust-estimator variants.
+
+[cols="1,2,2,1",options="header"]
+|===
+|Family |How stem:[\mathbf{b}_{\text{true}}] is obtained |Solves for |Min. measurements
+
+|`KnownFrame`
+|Directly: full frame known at each measurement, so xref:wmm/index.adoc[the WMM] gives the true field
+in NED and it is rotated into body axes.
+|stem:[\mathbf{b}_m] + stem:[\mathbf{M}_m]
+|4 (linear or non-linear)
+
+|`KnownHardIronAndFrame`
+|Same as above
+|Only stem:[\mathbf{M}_m] (hard iron given)
+|3
+
+|`KnownMagneticFluxDensityNorm`
+|Indirectly: only the *magnitude* of the Earth's field is known, at several unknown orientations.
+|stem:[\mathbf{b}_m] + stem:[\mathbf{M}_m]
+|10 (13 without common z-axis)
+
+|`KnownHardIronMagneticFluxDensityNorm`
+|Same as above
+|Only stem:[\mathbf{M}_m]
+|7 (10 without common z-axis)
+
+|`KnownPositionAndInstant`
+|Indirectly: measurement position and date known; field norm derived via xref:wmm/index.adoc[the WMM] instead of given directly.
+|stem:[\mathbf{b}_m] + stem:[\mathbf{M}_m]
+|10 (13 without common z-axis)
+
+|`KnownHardIronPositionAndInstant`
+|Same as above
+|Only stem:[\mathbf{M}_m]
+|7 (10 without common z-axis)
+|===
+
+== Example: `KnownFrameMagnetometerLinearLeastSquaresCalibrator`
+
+Each measurement pairs a raw magnetometer reading with the full frame (position, velocity,
+orientation) at which it was taken, so the true field can be derived directly from the WMM without
+any non-linear solving:
+
+[source,java]
+----
+// Each measurement pairs a raw body magnetic flux density reading with the
+// known frame (position/velocity/orientation) at which it was taken.
+final List<FrameBodyMagneticFluxDensity> measurements = new ArrayList<>();
+for (int i = 0; i < numMeasurements; i++) {
+    final NEDFrame frame = ...; // known position, velocity and orientation
+    final BodyMagneticFluxDensity measuredB = ...; // raw magnetometer reading
+    measurements.add(new FrameBodyMagneticFluxDensity(measuredB, frame));
+}
+
+final var calibrator = new KnownFrameMagnetometerLinearLeastSquaresCalibrator(
+        measurements, true); // assume common z-axis
+
+calibrator.calibrate();
+
+final double[] estimatedHardIron = calibrator.getEstimatedHardIron();
+final Matrix estimatedMm = calibrator.getEstimatedMm();
+----
+
+`KnownFrameMagnetometerNonLinearLeastSquaresCalibrator` exposes the same constructors and getters,
+using Levenberg-Marquardt instead of a closed-form solution.
+
+Two family pairs share a common abstract base — `KnownHardIronMagneticFluxDensityNorm` and
+`KnownHardIronPositionAndInstant` both extend `BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator`;
+`KnownMagneticFluxDensityNorm` and `KnownPositionAndInstant` both extend
+`BaseMagneticFluxDensityNormMagnetometerCalibrator` — since they differ only in *where* the field norm
+comes from (a direct value vs. a WMM lookup from position/date), not in the fitting algorithm itself. All
+six are Levenberg-Marquardt non-linear solvers; the two frame-based families additionally offer a linear
+least-squares variant, exactly as in xref:calibration/accelerometer.adoc[the accelerometer package].
+
+== Example: `KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator`
+
+Here only the field *magnitude* is known (e.g. a local reference value), the device is held static at
+several unknown orientations, and the hard iron is already known — so only stem:[\mathbf{M}_m] is
+solved for:
+
+[source,java]
+----
+// Measurements taken at a single unknown position/instant, each with the
+// magnetometer's standard deviation.
+final List<StandardDeviationBodyMagneticFluxDensity> measurements = new ArrayList<>();
+for (int i = 0; i < numMeasurements; i++) {
+    final BodyMagneticFluxDensity measuredB = ...; // raw magnetometer reading
+    measurements.add(new StandardDeviationBodyMagneticFluxDensity(measuredB, noiseStd));
+}
+
+final double groundTruthNorm = ...; // known Earth field magnitude, in Teslas
+final double[] knownHardIron = ...; // already-known hard iron, length 3
+
+final var calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+        groundTruthNorm, measurements, false, knownHardIron);
+
+calibrator.calibrate();
+
+final Matrix estimatedMm = calibrator.getEstimatedMm();
+----
+
+`KnownHardIronPositionAndInstant` and the "hard iron unknown" siblings
+(`KnownMagneticFluxDensityNorm`, `KnownPositionAndInstant`) follow the same shape, adding
+`getEstimatedHardIron()`/`getEstimatedHardIronAsMatrix()` getters when the hard iron is solved for too.
+
+== Example: `KnownPositionAndInstantMagnetometerCalibrator`
+
+This family only needs a known geodetic position and timestamp; the field magnitude (and, when the
+frame is not otherwise known, its direction) is derived internally via xref:wmm/index.adoc[the WMM]:
+
+[source,java]
+----
+final NEDPosition position = new NEDPosition(latitude, longitude, height);
+final Date timestamp = ...; // instant at which measurements were taken
+
+final List<StandardDeviationBodyMagneticFluxDensity> measurements = new ArrayList<>();
+for (int i = 0; i < numMeasurements; i++) {
+    final BodyMagneticFluxDensity measuredB = ...; // raw magnetometer reading
+    measurements.add(new StandardDeviationBodyMagneticFluxDensity(measuredB, noiseStd));
+}
+
+// initialHardIron/initialMm seed the Levenberg-Marquardt search since both are unknown.
+final Matrix initialHardIron = ...;
+final Matrix initialMm = ...;
+final var calibrator = new KnownPositionAndInstantMagnetometerCalibrator(
+        position, measurements, false, initialHardIron, initialMm);
+calibrator.setTime(timestamp);
+
+calibrator.calibrate();
+
+final Matrix estimatedHardIron = calibrator.getEstimatedHardIronAsMatrix();
+final Matrix estimatedMm = calibrator.getEstimatedMm();
+----
+
+== Supporting interfaces
+
+[cols="1,4",options="header"]
+|===
+|Class group |Purpose
+
+|`MagnetometerCalibrator`, `MagnetometerNonLinearCalibrator`, `MagnetometerCalibratorMeasurementType`
+|Root marker interfaces / enum implemented by every calibrator.
+
+|`KnownHardIronMagnetometerCalibrator`
+|Mixin exposing known hard-iron getters/setters — implemented by the 3 "hard iron known" families.
+
+|`UnknownHardIronMagnetometerCalibrator`, `UnknownHardIronNonLinearMagnetometerCalibrator`
+|Mixin exposing *estimated* hard-iron getters — implemented by the 3 "hard iron unknown" families.
+
+|`QualityScoredMagnetometerCalibrator`
+|Interface required by measurement collections used with PROSAC/PROMedS robust variants.
+
+|`OrderedStandardDeviationBodyMagneticFluxDensityMagnetometerCalibrator`, `OrderedStandardDeviationFrameBodyMagneticFluxDensityMagnetometerCalibrator`
+|Interfaces for calibrators needing an ordered measurement list (RANSAC/PROSAC-style robust variants).
+
+|`UnorderedFrameBodyMagneticFluxDensityMagnetometerCalibrator`, `UnorderedStandardDeviationBodyMagneticFluxDensityMagnetometerCalibrator`, `UnorderedStandardDeviationFrameBodyMagneticFluxDensityMagnetometerCalibrator`
+|Interfaces for calibrators taking a plain, unordered measurement collection.
+|===
+
+== Example: a RANSAC robust wrapper
+
+Robust variants take the same measurement/hard-iron/initial-soft-iron arguments as their plain
+counterpart, plus an inlier threshold (`setThreshold(...)`, or `DEFAULT_THRESHOLD` if left unset) used
+to decide whether a candidate solution's residual for a given measurement is small enough to count as
+an inlier:
+
+[source,java]
+----
+final Matrix knownHardIron = ...; // already-known hard iron, as a 3x1 matrix
+final Matrix initialMm = ...; // initial soft-iron guess seeding the LM search
+
+final var calibrator = new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+        groundTruthNorm, measurements, false, knownHardIron, initialMm);
+calibrator.setThreshold(1e-9); // residual threshold to accept a measurement as an inlier
+
+calibrator.calibrate();
+
+final Matrix estimatedMm = calibrator.getEstimatedMm();
+----
+
+`MSACRobust*`, `LMedSRobust*`, `PROSACRobust*` and `PROMedSRobust*` mirror this shape for the same
+family; `PROSACRobust*`/`PROMedSRobust*` additionally require measurements implementing
+`QualityScoredMagnetometerCalibrator` to supply per-sample quality scores.
+
+== Where to go next
+
+* xref:calibration/accelerometer.adoc[] — the same known-frame / known-norm / known-position structure.
+* xref:wmm/index.adoc[] — how the true magnetic field is obtained from position and date.
+* xref:calibration/intervals-and-generators.adoc[] — producing the static-interval measurements these calibrators consume.
+* xref:reference.adoc#bibliography[] — bibliography.

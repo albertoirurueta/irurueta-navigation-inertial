@@ -1,0 +1,127 @@
+= IMU Calibration
+
+NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
+
+The `com.irurueta.navigation.inertial.calibration` package (and its `accelerometer`, `gyroscope`,
+`magnetometer`, `bias`, `generators`, `intervals`, and `noise` sub-packages) estimates the systematic
+errors of an accelerometer, gyroscope, and/or magnetometer — bias, scale factor, and cross-axis coupling
+— and, once known, corrects ("fixes") raw sensor readings back to their true values.
+
+This package is by far the largest in the library (around 280 classes). Rather than one page per class,
+this documentation groups classes by *what they do*, since the vast majority of classes are boilerplate
+variants (different robust outlier-rejection strategies, different measurement orderings, unit
+conversions) of a much smaller number of distinct algorithms.
+
+== The sensor error model
+
+Every calibratable sensor in this library (accelerometer, gyroscope, magnetometer) is assumed to follow
+the same linear error model: a fixed bias, plus a matrix of scale-factor and cross-coupling errors
+applied to the true signal, plus noise. For the accelerometer:
+
+[stem]
+++++
+\mathbf{f}_{\text{meas}} = \mathbf{b}_{a} + \left(\mathbf{I}_{3} + \mathbf{M}_{a}\right)\mathbf{f}_{\text{true}} + \mathbf{w}
+++++
+
+The gyroscope additionally picks up a *g-dependent* bias driven by the specific force sensed by the
+accelerometer (typically caused by mass unbalance in the spinning/vibrating element):
+
+[stem]
+++++
+\boldsymbol{\Omega}_{\text{meas}} = \mathbf{b}_{g} + \left(\mathbf{I}_{3} + \mathbf{M}_{g}\right)\boldsymbol{\Omega}_{\text{true}} + \mathbf{G}_{g}\,\mathbf{f}_{\text{true}} + \mathbf{w}
+++++
+
+and the magnetometer follows the accelerometer's form, with "hard iron" playing the role of bias and
+"soft iron" playing the role of cross-coupling:
+
+[stem]
+++++
+\mathbf{b}_{\text{meas}} = \mathbf{b}_{m} + \left(\mathbf{I}_{3} + \mathbf{M}_{m}\right)\mathbf{b}_{\text{true}} + \mathbf{w}
+++++
+
+image::calibration/sensor-error-model.svg[Sensor error model: bias offset plus scale-factor and cross-coupling misalignment,560,320]
+
+*Calibration* means estimating stem:[\mathbf{b}] and stem:[\mathbf{M}] (and, for the gyroscope,
+stem:[\mathbf{G}_g]) from measurements taken at known or partially-known references. *Fixing* means
+applying the inverse of this model to a raw reading once those parameters are known, to recover
+stem:[\mathbf{x}_{\text{true}}] (see xref:calibration/fixers.adoc[]).
+
+NOTE: stem:[\mathbf{f}_{\text{meas}}], stem:[\boldsymbol{\Omega}_{\text{meas}}], and
+stem:[\mathbf{b}_{\text{meas}}] above are always resolved about *body-frame* axes — the raw sensor
+reading itself is never "in NED." NED only appears as one of two interchangeable ways to describe the
+*known frame/position* some calibrators need alongside a measurement: `FrameBodyKinematics` (see
+xref:calibration/data-model.adoc[]) stores that frame internally as `ECEFFrame` and exposes an
+NED-converted view via `getNedFrame()`/`setNedFrame()`, and calibrator families such as
+`KnownPositionAccelerometerCalibrator` (xref:calibration/accelerometer.adoc[]) and
+`TurntableGyroscopeCalibrator` (xref:calibration/gyroscope.adoc[]) accept a position as either
+`NEDPosition` or `ECEFPosition` — neither is mandatory. Only the magnetometer's WMM-position families
+(xref:calibration/magnetometer.adoc[]) and the xref:calibration/noise-and-bias.adoc[bias estimators]
+require geodetic (NED-style latitude/longitude/height) position, since that is what
+xref:wmm/index.adoc[the WMM] and xref:estimators/gravity.adoc[gravity models] are keyed on.
+
+[WARNING]
+====
+Do not confuse the point above (the *resolving* frame for a known position, which is flexible) with the
+*body*-frame axis convention of stem:[\mathbf{f}_{\text{meas}}], stem:[\boldsymbol{\Omega}_{\text{meas}}],
+and stem:[\mathbf{b}_{\text{meas}}] themselves, which is *not* flexible: every equation and every
+`Ma`/`Mg`/`Gg`/`Mm` matrix in this package assumes the raw sensor vector already follows Groves'
+forward-right-down (FRD) body convention (§2.1.4, xref:reference.adoc#book-groves[[book-groves\]]) — see
+xref:estimators/index.adoc[the same warning on the estimators page] for the exact conversion to apply if
+your IMU instead reports an ENU-aligned body convention. This library performs no such conversion itself;
+getting it wrong will not raise an error, only wrong bias/scale-factor/cross-coupling estimates.
+====
+
+== Map of the package
+
+[cols="1,3",options="header"]
+|===
+|Page |Covers
+
+|xref:calibration/data-model.adoc[]
+|Data containers shared by every calibrator: triads, `BodyKinematics`-based measurement types, `IMUErrors`.
+
+|xref:calibration/fixers.adoc[]
+|`AccelerationFixer`, `AngularRateFixer`, `MagneticFluxDensityFixer`, `BodyKinematicsFixer`, `IMUErrorsCreator` — applying the inverse error model.
+
+|xref:calibration/accelerometer.adoc[]
+|The `accelerometer` sub-package: ~79 classes, 4 distinct calibration algorithms x 5 robust-estimator variants.
+
+|xref:calibration/gyroscope.adoc[]
+|The `gyroscope` sub-package: ~86 classes, including the Tedaldi et al. "Easy" calibrator and quaternion integrators.
+
+|xref:calibration/magnetometer.adoc[]
+|The `magnetometer` sub-package: ~79 classes, mirroring the accelerometer's algorithm/robust-estimator structure.
+
+|xref:calibration/intervals-and-generators.adoc[]
+|Static/dynamic interval detection and measurement-sequence generation — the preprocessing step before calibration.
+
+|xref:calibration/noise-and-bias.adoc[]
+|Noise (PSD/root-PSD) and approximate-bias estimators used to seed calibrators and Kalman filter configs.
+|===
+
+== Why so many classes per algorithm?
+
+Every non-trivial calibration algorithm in `accelerometer`, `gyroscope`, and `magnetometer` appears in up
+to *six* forms:
+
+[mermaid]
+....
+flowchart LR
+    A["Known&lt;X&gt;...Calibrator\n(base: assumes every measurement is trustworthy)"] --> B["RANSACRobust...\n(random sample consensus)"]
+    A --> C["MSACRobust...\n(RANSAC + soft cost function)"]
+    A --> D["LMedSRobust...\n(least median of squares)"]
+    A --> E["PROSACRobust...\n(RANSAC + measurement quality ordering)"]
+    A --> F["PROMedSRobust...\n(LMedS + measurement quality ordering)"]
+....
+
+The base (non-robust) calibrator is the one that actually implements the algorithm's math — it assumes
+every input measurement can be trusted. The five `Robust*` classes wrap it with an outlier-rejection
+strategy from `irurueta-numerical-computing`'s robust-estimator framework, useful when some measurements
+(e.g. from a noisy or disturbed static interval) might be bad. This documentation describes each
+algorithm's math once and lists all six forms in a summary table, rather than repeating the same
+equations six times.
+
+== Where to go next
+
+* xref:calibration/data-model.adoc[] — start here for the shared data types.
+* xref:reference.adoc#bibliography[] — bibliography, including the Tedaldi et al. paper used by the gyroscope's "Easy" calibrator.

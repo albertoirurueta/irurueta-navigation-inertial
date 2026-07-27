@@ -1,0 +1,34 @@
+<svg viewBox="0 0 520 280" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <!-- Redrawn after Groves, "Principles of GNSS, Inertial, and Multisensor Integrated Navigation Systems", Fig. 5.9 -->
+
+  <!-- Down arrow: gravity direction -->
+  <line x1="90" y1="50" x2="90" y2="190" stroke="#333333" stroke-width="2"/>
+  <polygon points="90,190 82,174 98,174" fill="#333333"/>
+  <text x="55" y="215" font-size="14" fill="#333333">Down</text>
+
+  <!-- Up arrow: sensed specific force f_ib^b = -g^b -->
+  <line x1="170" y1="190" x2="170" y2="50" stroke="#2980b9" stroke-width="2"/>
+  <polygon points="170,50 162,66 178,66" fill="#2980b9"/>
+  <text x="182" y="60" font-size="14" fill="#2980b9" font-style="italic">f^b_ib = -g^b</text>
+
+  <!-- Body/IMU triad, drawn as a tetrahedral "caltrop" icon -->
+  <g transform="translate(360,150)">
+    <line x1="0" y1="0" x2="90" y2="-6" stroke="#333333" stroke-width="2"/>
+    <polygon points="90,-6 74,-14 76,0" fill="#333333"/>
+    <text x="96" y="-6" font-size="14" fill="#333333" font-style="italic">x^b</text>
+
+    <line x1="0" y1="0" x2="-46" y2="42" stroke="#333333" stroke-width="2"/>
+    <polygon points="-46,42 -50,26 -34,32" fill="#333333"/>
+    <text x="-70" y="60" font-size="14" fill="#333333" font-style="italic">y^b</text>
+
+    <line x1="0" y1="0" x2="30" y2="60" stroke="#333333" stroke-width="2"/>
+    <polygon points="30,60 16,50 30,44" fill="#333333"/>
+    <text x="34" y="76" font-size="14" fill="#333333" font-style="italic">z^b</text>
+
+    <line x1="0" y1="0" x2="-56" y2="-30" stroke="#333333" stroke-width="2"/>
+    <line x1="0" y1="0" x2="20" y2="-46" stroke="#333333" stroke-width="2"/>
+  </g>
+
+  <text x="40" y="255" font-size="13" fill="#555555">When stationary, the accelerometers sense only the reaction to gravity: roll and pitch</text>
+  <text x="40" y="272" font-size="13" fill="#555555">follow from the direction of f^b_ib in the body frame (heading is not observable this way).</text>
+</svg>

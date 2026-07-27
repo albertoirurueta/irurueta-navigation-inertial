@@ -1,0 +1,81 @@
+= Navigators
+
+NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
+
+The `com.irurueta.navigation.inertial.navigators` package implements the *precision* strapdown inertial
+navigation equations described in Groves §5.4 (see xref:reference.adoc#book-groves[[book-groves\]]):
+given the previous navigation solution (attitude, velocity, position) and a new IMU measurement
+(specific force + angular rate, averaged over the update interval), each navigator computes the next
+navigation solution. This is the forward, integrating counterpart of the
+xref:estimators/kinematics.adoc[kinematics estimators], which solve the inverse problem.
+
+== The navigation loop
+
+[mermaid]
+....
+flowchart TD
+    IMU["IMU measurement:\nspecific force f_ib, angular rate omega_ib"] --> N["Navigator.navigate***(...)"]
+    P0["Previous solution:\nattitude, velocity, position"] --> N
+    N --> A["1. Attitude update\n(Rodrigues' formula)"]
+    A --> B["2. Specific-force frame transform\n(averaged attitude matrix)"]
+    B --> C["3. Velocity update\n(gravity + Coriolis/transport-rate)"]
+    C --> D["4. Position update\n(trapezoidal integration)"]
+    D --> P1["New solution:\nattitude, velocity, position"]
+    P1 -->|next epoch, feeds back as| P0
+....
+
+Unlike the simplified, first-order equations shown in Groves §5.1-§5.3 (small-angle attitude update,
+first-order Coriolis/transport-rate terms), every navigator in this package implements the *precision*
+form from §5.4: attitude increments use the exact Rodrigues' rotation formula (no small-angle
+truncation), and the specific force is transformed using the *averaged* coordinate transformation matrix
+over the update interval rather than just the matrix at one end of it.
+
+image::navigators/trapezoidal-integration.svg[Trapezoidal integration of velocity to obtain position,560,260]
+
+== Classes
+
+[cols="1,2,3",options="header"]
+|===
+|Class |Resolving frame |Notes
+
+|`ECIInertialNavigator`
+|ECI (inertial)
+|Simplest: no Earth-rotation or transport-rate terms; gravitation only (no centrifugal term).
+
+|`ECEFInertialNavigator`
+|ECEF (rotates with the Earth)
+|Adds the Earth-rotation (Coriolis + attitude) term; gravity includes the centrifugal component.
+
+|`NEDInertialNavigator`
+|Local navigation (north, east, down)
+|Adds the further transport-rate term from moving across the Earth's surface; position is curvilinear
+(latitude, longitude, height) rather than Cartesian.
+
+|`InertialNavigatorException`
+|—
+|Thrown when navigation fails due to numerical instabilities (e.g., an invalid rotation matrix).
+|===
+
+See xref:navigators/navigation-equations.adoc[] for the full equations of each navigator.
+
+NOTE: The IMU measurement itself (`fx`/`fy`/`fz`, `angularRateX`/`Y`/`Z`) is always resolved about
+*body-frame* axes for all three navigators — NED is not required as the *resolving* frame. Choosing
+`NEDInertialNavigator` versus `ECEFInertialNavigator`/`ECIInertialNavigator` only decides which frame the
+*output* position, velocity, and attitude are resolved in; pick whichever matches what the rest of your
+application (or your GNSS/GPS input) already uses, and convert between them if needed (see
+`com.irurueta.navigation.frames` frame converters) rather than assuming NED is mandatory.
+
+[WARNING]
+====
+Separately, the *body*-frame axes of `fx`/`fy`/`fz`/`angularRateX`/`Y`/`Z` themselves must already follow
+Groves' forward-right-down (FRD) convention (§2.1.4, xref:reference.adoc#book-groves[[book-groves\]]) —
+see xref:estimators/index.adoc[the same warning on the estimators page] for why, and the conversion to
+apply if your IMU instead reports an ENU-aligned body convention (stem:[x]=East, stem:[y]=North,
+stem:[z]=Up). This is unrelated to the NED/ECEF/ECI resolving-frame choice above; do not confuse the two.
+====
+
+== Where to go next
+
+* xref:navigators/navigation-equations.adoc[] — detailed equations for each frame.
+* xref:estimators/kinematics.adoc[] — the inverse problem (known trajectory to synthetic IMU measurements).
+* xref:reference.adoc#bibliography[] — bibliography.

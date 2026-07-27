@@ -1,0 +1,66 @@
+= Earth Magnetic Flux Density Container and Simple Estimator
+
+NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
+
+Classes: `EarthMagneticFluxDensityEstimator`, `NEDMagneticFluxDensity`.
+
+== NEDMagneticFluxDensity
+
+A plain data container for the Earth's magnetic flux density resolved about the north, east, and down
+axes of the local navigation frame: stem:[(B_N, B_E, B_D)], typically expressed in Teslas. It offers
+`getBn()`/`getBe()`/`getBd()` accessors and an `asMatrix()`/`asArray()` view for use in matrix algebra
+(e.g. in xref:estimators/attitude.adoc[`BodyMagneticFluxDensityEstimator`]).
+
+== EarthMagneticFluxDensityEstimator
+
+A lightweight alternative to the full xref:wmm/spherical-harmonic-model.adoc[spherical-harmonic model]:
+given a magnitude, declination, and dip that are *already known* (from any source — a WMM evaluation, a
+manufacturer datasheet, a fixed test value, or the
+https://www.ngdc.noaa.gov/IAGA/vmod/igrf.html[International Geomagnetic Reference Field (IGRF)]
+instead of the WMM), it builds the corresponding `NEDMagneticFluxDensity` vector directly:
+
+[stem]
+++++
+B_N = \cos(D)\cos(I)\,B, \qquad
+B_E = \sin(D)\cos(I)\,B, \qquad
+B_D = \sin(I)\,B
+++++
+
+where stem:[D] is declination, stem:[I] is dip (inclination), and stem:[B] is the field magnitude. This
+is exactly the inverse of the derived-quantities step in
+xref:wmm/spherical-harmonic-model.adoc[`WMMEarthMagneticFluxDensityEstimator`], and the class also
+provides the reverse conversion, recovering declination and dip from an existing
+`NEDMagneticFluxDensity`:
+
+[stem]
+++++
+D = \operatorname{atan2}(B_E, B_N), \qquad
+I = \operatorname{atan}\!\left(\frac{B_D}{\sqrt{B_N^{2}+B_E^{2}}}\right)
+++++
+
+Use this class when the three scalar parameters are already available and only the vector form (or its
+inverse) is needed; use `WMMEarthMagneticFluxDensityEstimator` when they must be *computed* from a
+position and date.
+
+[source,java]
+----
+double magnitude = 4.8e-5;             // field magnitude (T)
+double declination = Math.toRadians(1.2);
+double dip = Math.toRadians(58.0);
+
+// static, stateless call - no need to instantiate the estimator
+NEDMagneticFluxDensity b = EarthMagneticFluxDensityEstimator.estimate(magnitude, declination, dip);
+
+double bn = b.getBn();
+double be = b.getBe();
+
+// and the reverse conversion
+double recoveredDeclination = EarthMagneticFluxDensityEstimator.getDeclination(b);
+double recoveredDip = EarthMagneticFluxDensityEstimator.getDip(b);
+----
+
+== Where to go next
+
+* xref:wmm/spherical-harmonic-model.adoc[] — computing declination/dip/intensity from position and date.
+* xref:estimators/attitude.adoc[] — `BodyMagneticFluxDensityEstimator` and `AttitudeEstimator`, which consume `NEDMagneticFluxDensity`.
+* xref:reference.adoc#bibliography[] — bibliography.

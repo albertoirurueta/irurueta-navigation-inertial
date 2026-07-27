@@ -1,0 +1,248 @@
+= Accelerometer Calibration
+
+NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
+
+The `com.irurueta.navigation.inertial.calibration.accelerometer` package (79 classes) estimates
+accelerometer bias stem:[\mathbf{b}_a] and the scale-factor/cross-coupling matrix stem:[\mathbf{M}_a]
+from the model introduced in xref:calibration/index.adoc[the sensor error model]:
+
+[stem]
+++++
+\mathbf{f}_{\text{meas}} = \mathbf{b}_{a} + \left(\mathbf{I}_{3} + \mathbf{M}_{a}\right)\mathbf{f}_{\text{true}} + \mathbf{w}
+++++
+
+Every calibrator needs several measurements of stem:[\mathbf{f}_{\text{meas}}] at different, sufficiently
+varied orientations, together with the corresponding stem:[\mathbf{f}_{\text{true}}] (or enough
+information to derive it). The 79 classes reduce to *6 distinct algorithms*, differing only in *how
+stem:[\mathbf{f}_{\text{true}}] is known* and *whether the bias is already known*:
+
+[cols="1,2,2,1",options="header"]
+|===
+|Family |How stem:[\mathbf{f}_{\text{true}}] is obtained |Solves for |Min. measurements
+
+|`KnownFrame`
+|Directly: the full position/orientation/velocity frame at each measurement is known, so
+xref:estimators/gravity.adoc[gravity] rotated into body axes gives stem:[\mathbf{f}_{\text{true}}] exactly.
+|stem:[\mathbf{b}_a] + stem:[\mathbf{M}_a]
+|4 (linear) / 10 (non-linear, or 13 without common z-axis)
+
+|`KnownBiasAndFrame`
+|Same as above
+|Only stem:[\mathbf{M}_a] (bias given)
+|3 (linear) / 7 (non-linear)
+
+|`KnownGravityNorm`
+|Indirectly: device held static at several *unknown* orientations; only the *magnitude* stem:[\lVert\mathbf{g}\rVert] is assumed known (e.g. local standard gravity).
+|stem:[\mathbf{b}_a] + stem:[\mathbf{M}_a]
+|10 (13 without common z-axis)
+
+|`KnownBiasAndGravityNorm`
+|Same as above
+|Only stem:[\mathbf{M}_a]
+|7 (10 without common z-axis)
+
+|`KnownPosition`
+|Indirectly: device static at several unknown orientations, but at a *known geodetic position* — gravity
+magnitude is derived via xref:estimators/gravity.adoc[`NEDGravityEstimator`] instead of assumed.
+|stem:[\mathbf{b}_a] + stem:[\mathbf{M}_a]
+|10 (13 without common z-axis)
+
+|`KnownBiasAndPosition`
+|Same as above
+|Only stem:[\mathbf{M}_a]
+|7 (10 without common z-axis)
+|===
+
+== Usage examples
+
+The snippets below are simplified illustrations (not full copies of the test suite) showing how to
+construct each family's plain calibrator, run `calibrate()`, and read back the results. Measurement
+collection is elided with `// ...` since in practice it comes from several real orientations/positions
+of the device.
+
+=== `KnownFrame`
+
+`KnownFrameAccelerometerLinearLeastSquaresCalibrator` takes a collection of `FrameBodyKinematics`
+(measured specific force plus the known frame it was taken at) and solves for both bias and
+stem:[\mathbf{M}_a]:
+
+[source,java]
+----
+List<FrameBodyKinematics> measurements = new ArrayList<>();
+// ... add FrameBodyKinematics(bodyKinematics, ecefFrame, previousEcefFrame) for each measurement
+
+var calibrator = new KnownFrameAccelerometerLinearLeastSquaresCalibrator(measurements);
+calibrator.calibrate();
+
+double[] estimatedBiases = calibrator.getEstimatedBiases();
+Matrix estimatedMa = calibrator.getEstimatedMa();
+----
+
+=== `KnownBiasAndFrame`
+
+Same measurements, but the bias is already known and passed to the constructor, so only
+stem:[\mathbf{M}_a] is solved for:
+
+[source,java]
+----
+List<FrameBodyKinematics> measurements = new ArrayList<>();
+// ... add FrameBodyKinematics measurements as above
+
+double biasX = 0.01, biasY = 0.02, biasZ = 0.03; // known bias, in m/s^2
+
+var calibrator = new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(
+        measurements, biasX, biasY, biasZ);
+calibrator.calibrate();
+
+Matrix estimatedMa = calibrator.getEstimatedMa();
+----
+
+=== `KnownGravityNorm`
+
+The device is held static at several unknown orientations; each `StandardDeviationBodyKinematics`
+measurement only needs the measured kinematics plus its noise standard deviations, and the known
+gravity-norm magnitude is passed once to the calibrator:
+
+[source,java]
+----
+List<StandardDeviationBodyKinematics> measurements = new ArrayList<>();
+// ... add StandardDeviationBodyKinematics(bodyKinematics, specificForceStd, angularRateStd)
+//     for each static orientation
+
+double groundTruthGravityNorm = 9.81; // m/s^2, e.g. local standard gravity
+
+var calibrator = new KnownGravityNormAccelerometerCalibrator(groundTruthGravityNorm, measurements);
+calibrator.calibrate();
+
+double[] estimatedBiases = calibrator.getEstimatedBiases();
+Matrix estimatedMa = calibrator.getEstimatedMa();
+----
+
+=== `KnownBiasAndGravityNorm`
+
+Same idea, but with a known bias supplied up front so only stem:[\mathbf{M}_a] is estimated:
+
+[source,java]
+----
+List<StandardDeviationBodyKinematics> measurements = new ArrayList<>();
+// ... add StandardDeviationBodyKinematics measurements as above
+
+double groundTruthGravityNorm = 9.81; // m/s^2
+double biasX = 0.01, biasY = 0.02, biasZ = 0.03; // known bias, in m/s^2
+
+var calibrator = new KnownBiasAndGravityNormAccelerometerCalibrator(
+        groundTruthGravityNorm, measurements, biasX, biasY, biasZ);
+calibrator.calibrate();
+
+Matrix estimatedMa = calibrator.getEstimatedMa();
+----
+
+=== `KnownPosition`
+
+Instead of an assumed gravity-norm magnitude, the device's known geodetic position is used to derive
+gravity via `NEDGravityEstimator` internally:
+
+[source,java]
+----
+List<StandardDeviationBodyKinematics> measurements = new ArrayList<>();
+// ... add StandardDeviationBodyKinematics measurements as above, all taken at the same position
+
+NEDPosition position = new NEDPosition(latitude, longitude, height);
+
+var calibrator = new KnownPositionAccelerometerCalibrator(position, measurements);
+calibrator.calibrate();
+
+double[] estimatedBiases = calibrator.getEstimatedBiases();
+Matrix estimatedMa = calibrator.getEstimatedMa();
+----
+
+=== `KnownBiasAndPosition`
+
+Same as `KnownPosition`, but with the bias already known:
+
+[source,java]
+----
+List<StandardDeviationBodyKinematics> measurements = new ArrayList<>();
+// ... add StandardDeviationBodyKinematics measurements as above
+
+NEDPosition position = new NEDPosition(latitude, longitude, height);
+double[] bias = new double[]{0.01, 0.02, 0.03}; // known bias, in m/s^2
+
+var calibrator = new KnownBiasAndPositionAccelerometerCalibrator(position, measurements, bias);
+calibrator.calibrate();
+
+Matrix estimatedMa = calibrator.getEstimatedMa();
+----
+
+=== Robust wrapper: `RANSACRobustKnownFrameAccelerometerCalibrator`
+
+Robust variants of `KnownFrame` need each measurement's standard deviation (a
+`List<StandardDeviationFrameBodyKinematics>` instead of a plain `FrameBodyKinematics` collection) so
+that residuals can be weighed, and RANSAC additionally exposes a `threshold` controlling how large a
+residual is still considered an inlier:
+
+[source,java]
+----
+List<StandardDeviationFrameBodyKinematics> measurements = new ArrayList<>();
+// ... add StandardDeviationFrameBodyKinematics(bodyKinematics, ecefFrame, specificForceStd, angularRateStd)
+//     for each measurement, including a few outliers
+
+var calibrator = new RANSACRobustKnownFrameAccelerometerCalibrator(measurements);
+calibrator.setThreshold(0.1); // m/s^2, default is RANSACRobustKnownFrameAccelerometerCalibrator.DEFAULT_THRESHOLD
+calibrator.calibrate();
+
+double[] estimatedBiases = calibrator.getEstimatedBiases();
+Matrix estimatedMa = calibrator.getEstimatedMa();
+----
+
+TIP: `KnownGravityNorm`/`KnownBiasAndGravityNorm` is the accelerometer half of the same idea as
+xref:calibration/gyroscope.adoc[the Tedaldi et al. "Easy" gyroscope calibrator]: hold the device
+static at several orientations and rely only on the (approximately known, ~9.81 m/s²) magnitude of
+gravity — no turntable or precisely known frame needed. In this codebase, the two ideas are implemented
+as siblings rather than a single combined class.
+
+== Linear vs. non-linear solvers
+
+The `KnownFrame` and `KnownBiasAndFrame` families additionally offer a *linear least-squares* variant
+(`...LinearLeastSquaresCalibrator`) alongside the default Levenberg-Marquardt *non-linear least-squares*
+one (`...NonLinearLeastSquaresCalibrator`). Because stem:[\mathbf{f}_{\text{true}}] is exactly known for
+these two families, the model can be rearranged into a linear system solved in closed form (fast, no
+initial guess needed); the non-linear form is typically used to refine that solution or when a linear
+solution is not accurate enough. The gravity-norm and position families only expose a non-linear solver,
+since stem:[\lVert\mathbf{f}_{\text{true}}\rVert] being known (but not its direction) makes the problem
+inherently non-linear.
+
+== The robust-estimator wrapper
+
+As described in xref:calibration/index.adoc[], each of the 6 families above has a plain (non-robust) form
+plus 5 `Robust*` outlier-rejection wrappers (`RANSACRobust*`, `MSACRobust*`, `LMedSRobust*`,
+`PROSACRobust*`, `PROMedSRobust*`), all extending a shared abstract `Robust*AccelerometerCalibrator`
+base. `QualityScoredAccelerometerCalibrator` is the interface robust variants that use measurement
+quality scores (PROSAC, PROMedS) require their input to implement.
+
+[cols="1,4",options="header"]
+|===
+|Class group |Purpose
+
+|`AccelerometerCalibrator`, `AccelerometerNonLinearCalibrator`
+|Root marker interfaces implemented by every calibrator (all / non-linear-only, respectively).
+
+|`AccelerometerCalibratorMeasurementType`
+|Enum distinguishing which measurement container a given calibrator instance expects.
+
+|`UnknownBiasAccelerometerCalibrator`, `UnknownBiasNonLinearAccelerometerCalibrator`
+|Mixin interfaces exposing *estimated* bias getters, implemented by the "unknown bias" half of each family.
+
+|`OrderedStandardDeviationBodyKinematicsAccelerometerCalibrator`, `OrderedStandardDeviationFrameBodyKinematicsAccelerometerCalibrator`
+|Interfaces for calibrators that need an ordered measurement list (used by RANSAC/PROSAC-style robust variants).
+
+|`UnorderedFrameBodyKinematicsAccelerometerCalibrator`, `UnorderedStandardDeviationBodyKinematicsAccelerometerCalibrator`, `UnorderedStandardDeviationFrameBodyKinematicsAccelerometerCalibrator`
+|Interfaces for calibrators taking a plain, unordered measurement collection (the non-robust calibrators).
+|===
+
+== Where to go next
+
+* xref:calibration/gyroscope.adoc[] — the Tedaldi et al. "Easy" calibrator and turntable-based gyroscope calibration.
+* xref:calibration/magnetometer.adoc[] — the same known-frame / known-norm / known-position structure, applied to hard-iron/soft-iron.
+* xref:calibration/intervals-and-generators.adoc[] — how static-interval measurements like the ones `KnownGravityNorm` needs are actually produced from a raw sensor stream.
+* xref:reference.adoc#bibliography[] — bibliography.

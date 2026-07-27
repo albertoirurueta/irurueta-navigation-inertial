@@ -1,0 +1,150 @@
+= Noise and Approximate-Bias Estimators
+
+NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
+
+Classes: `com.irurueta.navigation.inertial.calibration.noise` (37 classes),
+`com.irurueta.navigation.inertial.calibration.bias` (5 classes), plus the root-level interfaces
+`AccelerometerNoiseRootPsdSource`, `GyroscopeNoiseRootPsdSource`, `AccelerometerBiasUncertaintySource`,
+`GyroscopeBiasUncertaintySource`, `AccelerometerCalibrationSource`, `GyroscopeCalibrationSource`.
+
+These classes don't perform full calibration — they estimate simpler statistics (noise level, or an
+approximate bias) that either feed into xref:calibration/intervals-and-generators.adoc[static-interval
+detection], seed a non-linear calibrator's initial guess, or configure a Kalman filter's initial
+uncertainty.
+
+== Noise estimators: PSD and root-PSD
+
+All noise estimators reduce to two orthogonal choices — *what statistic*, and *how much history*:
+
+[cols="1,3",options="header"]
+|===
+|Family |Behavior
+
+|`Accumulated*NoiseEstimator`
+|A single running (recursive) mean/variance over *all* samples seen so far, using a biased (divide-by-N)
+variance estimator that converges to the unbiased one for large stem:[N]. Intended for use when the
+device is static for the *entire* capture.
+
+|`Windowed*NoiseEstimator`
+|Recomputes mean/variance over only the most recent `windowSize` samples (default 101) each time a new
+sample arrives, using the unbiased (divide-by-stem:[(N-1)]) estimator. Intended for tracking noise that
+changes over time — e.g. inside
+xref:calibration/intervals-and-generators.adoc[`TriadStaticIntervalDetector`], which needs to notice when
+motion starts.
+|===
+
+Each of those two comes in a single-axis form (`*MeasurementNoiseEstimator`, for a plain
+`Acceleration`/`AngularSpeed`/`MagneticFluxDensity` value) and a 3-axis form
+(`*TriadNoiseEstimator`), and both single-axis and triad forms are further specialized per sensor
+(`Acceleration`, `AngularSpeed`, `MagneticFluxDensity`) — that specialization only binds generic types and
+adds no new algorithm, which is why 4 conceptual families expand into most of the package's 37 classes.
+`AccumulatedBodyKinematicsNoiseEstimator` / `WindowedBodyKinematicsNoiseEstimator` run the accelerometer
+and gyroscope triad versions together for a combined `BodyKinematics` stream.
+
+The recursive (online) update, common to every `Accumulated*` estimator:
+
+[stem]
+++++
+\overline{x} \leftarrow \overline{x}\,\frac{n}{n+1} + \frac{x}{n+1}, \qquad
+\sigma^{2} \leftarrow \sigma^{2}\,\frac{n}{n+1} + \frac{(x-\overline{x})^{2}}{n+1}
+++++
+
+and the PSD / root-PSD relation used throughout (both families, all sensors):
+
+[stem]
+++++
+\text{PSD} = \sigma^{2}\,\tau, \qquad \text{root-PSD} = \sqrt{\text{PSD}} = \sigma\sqrt{\tau}
+++++
+
+where stem:[\tau] is the sample time interval (see `TimeIntervalEstimator` in
+xref:calibration/intervals-and-generators.adoc[]). For a triad, the norm of the per-axis root-PSDs
+(stem:[\sqrt{\text{PSD}_x+\text{PSD}_y+\text{PSD}_z}]) is also exposed, since this is exactly what
+`AccelerometerNoiseRootPsdSource` / `GyroscopeNoiseRootPsdSource` (below) report.
+
+[source,java]
+----
+AccumulatedAccelerationTriadNoiseEstimator noiseEstimator =
+        new AccumulatedAccelerationTriadNoiseEstimator();
+
+// feed samples while the device is known to be static
+for (double[] fxyz : staticSpecificForceSamples) {
+    noiseEstimator.addTriad(fxyz[0], fxyz[1], fxyz[2]);
+}
+
+double stdNorm = noiseEstimator.getStandardDeviationNorm(); // m/s^2
+double rootPsdNorm = noiseEstimator.getAccelerometerBaseNoiseLevelRootPsd(); // m/s^1.5 (AccelerometerNoiseRootPsdSource)
+----
+
+== Approximate bias estimators
+
+Unlike the full calibrators in xref:calibration/accelerometer.adoc[], xref:calibration/gyroscope.adoc[],
+and xref:calibration/magnetometer.adoc[], the `bias` package's two estimators assume the device is
+*static* at a single *known* position/orientation and *neglect cross-coupling entirely* — they only
+average measurements to get a quick bias (and noise PSD) estimate, good enough to seed a non-linear
+calibrator's initial guess, or to use directly when cross-coupling errors are known to be negligible:
+
+[cols="1,3",options="header"]
+|===
+|Class |Purpose
+
+|`BodyKinematicsBiasEstimator`
+|Averages `BodyKinematics` samples at a known static NED/ECEF frame to estimate accelerometer and
+gyroscope bias plus noise PSD.
+
+|`BodyMagneticFluxDensityBiasEstimator`
+|Averages magnetic flux density samples at a known static position/orientation/instant (using
+xref:wmm/index.adoc[the WMM] for the expected field) to estimate hard-iron bias plus noise PSD.
+|===
+
+Both classes' Javadoc explicitly point back to the `noise` estimators above for the case where only PSD
+(not bias) is needed and no known frame is available.
+
+[source,java]
+----
+double latitude = Math.toRadians(41.3851);
+double longitude = Math.toRadians(2.1734);
+double height = 0.0;
+
+BodyKinematicsBiasEstimator biasEstimator =
+        new BodyKinematicsBiasEstimator(latitude, longitude, height);
+
+// feed samples while the device is known to be static at this position
+for (BodyKinematics sample : staticKinematicsSamples) {
+    biasEstimator.addBodyKinematics(sample);
+}
+
+Matrix accelerometerBias = biasEstimator.getAccelerometerBias(); // 3x1, m/s^2
+Matrix gyroBias = biasEstimator.getGyroBias();                   // 3x1, rad/s
+----
+
+== Root-level interfaces: how components exchange calibration results
+
+These small interfaces are how xref:calibration/fixers.adoc[`IMUErrorsCreator`] and Kalman-filter
+configuration classes stay decoupled from *which specific* calibrator/estimator produced a value:
+
+[cols="1,3",options="header"]
+|===
+|Interface |Purpose
+
+|`AccelerometerNoiseRootPsdSource` / `GyroscopeNoiseRootPsdSource`
+|Exposes a single `double getXxxBaseNoiseLevelRootPsd()` — implemented by the noise estimators above and
+by the static-interval detectors/generators in
+xref:calibration/intervals-and-generators.adoc[], any of which can supply `IMUErrorsCreator` with a noise
+root-PSD.
+
+|`AccelerometerBiasUncertaintySource` / `GyroscopeBiasUncertaintySource`
+|Exposes the norm of the estimated bias's standard deviation, used to seed a Kalman filter's initial
+uncertainty configuration (`INSLooselyCoupledKalmanInitializerConfig` / `INSTightlyCoupledKalmanInitializerConfig`).
+
+|`AccelerometerCalibrationSource` / `GyroscopeCalibrationSource`
+|Exposes the estimated bias vector plus stem:[\mathbf{M}_a] (or stem:[\mathbf{M}_g] and
+stem:[\mathbf{G}_g]) — implemented by every calibrator in
+xref:calibration/accelerometer.adoc[] / xref:calibration/gyroscope.adoc[], and consumed by
+`IMUErrorsCreator`.
+|===
+
+== Where to go next
+
+* xref:calibration/intervals-and-generators.adoc[] — how these noise estimators feed static/dynamic interval detection.
+* xref:calibration/fixers.adoc[] — `IMUErrorsCreator`, which assembles a full `IMUErrors` from these sources.
+* xref:reference.adoc#bibliography[] — bibliography.
