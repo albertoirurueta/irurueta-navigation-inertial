@@ -1,50 +1,54 @@
 <svg viewBox="0 0 520 380" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
   <!-- Standard geomagnetic field element diagram (X north, Y east, Z down, H horizontal, F total field, D declination, I inclination/dip) -->
+  <!-- Drawn as a 3D isometric-style tripod: X, Y, Z are three genuinely distinct (non-collinear) -->
+  <!-- directions, 120 degrees apart on screen, not a flat 2D cross. H lies in the X-Y plane at -->
+  <!-- angle D from north (X); F is offset from H, perpendicular to OH, by angle I, so O-H-F forms -->
+  <!-- a right triangle with the right angle at H (F, the hypotenuse, is correctly longer than H). -->
 
-  <!-- horizontal plane, drawn in perspective as an ellipse -->
-  <ellipse cx="240" cy="200" rx="170" ry="60" fill="none" stroke="#999999" stroke-width="1.2" stroke-dasharray="4 3"/>
+  <!-- generic horizontal-plane reference disk -->
+  <ellipse cx="240" cy="200" rx="190" ry="85" fill="none" stroke="#999999" stroke-width="1.2" stroke-dasharray="4 3"/>
 
   <!-- origin -->
   <circle cx="240" cy="200" r="3" fill="#333333"/>
-  <text x="222" y="220" font-size="13" fill="#333333">O</text>
+  <text x="222" y="222" font-size="13" fill="#333333">O</text>
 
-  <!-- X axis: geographic north, into the horizontal plane (toward top of ellipse) -->
-  <line x1="240" y1="200" x2="240" y2="70" stroke="#333333" stroke-width="2"/>
-  <polygon points="240,70 233,84 247,84" fill="#333333"/>
-  <text x="248" y="76" font-size="14" fill="#333333" font-style="italic">X (north)</text>
+  <!-- X axis: north, up and to the left -->
+  <line x1="240" y1="200" x2="180" y2="96.1" stroke="#333333" stroke-width="2"/>
+  <polygon points="180,96.1 192.2,105.22 181.8,111.22" fill="#333333"/>
+  <text x="150" y="86" font-size="14" fill="#333333" font-style="italic">X (north)</text>
 
-  <!-- Y axis: east, along the ellipse to the right -->
-  <line x1="240" y1="200" x2="405" y2="212" stroke="#333333" stroke-width="2"/>
-  <polygon points="405,212 390,205 391,220" fill="#333333"/>
-  <text x="410" y="216" font-size="14" fill="#333333" font-style="italic">Y (east)</text>
+  <!-- Y axis: east, to the right -->
+  <line x1="240" y1="200" x2="400" y2="200" stroke="#333333" stroke-width="2"/>
+  <polygon points="400,200 386,206 386,194" fill="#333333"/>
+  <text x="406" y="204" font-size="14" fill="#333333" font-style="italic">Y (east)</text>
 
-  <!-- Z axis: down, vertical -->
-  <line x1="240" y1="200" x2="240" y2="340" stroke="#333333" stroke-width="2"/>
-  <polygon points="240,340 233,326 247,326" fill="#333333"/>
-  <text x="248" y="335" font-size="14" fill="#333333" font-style="italic">Z (down)</text>
+  <!-- Z axis: down and to the left -->
+  <line x1="240" y1="200" x2="175" y2="312.6" stroke="#333333" stroke-width="2"/>
+  <polygon points="175,312.6 176.8,297.48 187.2,303.48" fill="#333333"/>
+  <text x="120" y="330" font-size="14" fill="#333333" font-style="italic">Z (down)</text>
 
   <!-- H: horizontal component, in the X-Y plane at angle D from X -->
-  <line x1="240" y1="200" x2="365" y2="150" stroke="#2980b9" stroke-width="2.5"/>
-  <polygon points="365,150 349,151 355,164" fill="#2980b9"/>
-  <text x="370" y="146" font-size="14" fill="#2980b9" font-style="italic">H</text>
+  <line x1="240" y1="200" x2="271.6" y2="63.6" stroke="#2980b9" stroke-width="2.5"/>
+  <polygon points="271.6,63.6 274.28,78.60 262.60,75.88" fill="#2980b9"/>
+  <text x="277" y="60" font-size="14" fill="#2980b9" font-style="italic">H</text>
 
-  <!-- F: total field vector, tilted down from H toward Z by dip angle I -->
-  <line x1="240" y1="200" x2="330" y2="270" stroke="#c0392b" stroke-width="2.5"/>
-  <polygon points="330,270 315,262 313,276" fill="#c0392b"/>
-  <text x="336" y="278" font-size="14" fill="#c0392b" font-style="italic">F</text>
+  <!-- F: total field vector, from O directly to a point offset from H, perpendicular to OH -->
+  <line x1="240" y1="200" x2="378.8" y2="88.4" stroke="#c0392b" stroke-width="2.5"/>
+  <polygon points="378.8,88.4 363.80,91.08 366.52,79.40" fill="#c0392b"/>
+  <text x="384" y="86" font-size="14" fill="#c0392b" font-style="italic">F</text>
 
-  <!-- vertical drop from F's tip down to the H line, showing Z component -->
-  <line x1="330" y1="270" x2="365" y2="150" stroke="#888888" stroke-width="1.2" stroke-dasharray="3 2"/>
+  <!-- drop from H's tip to F's tip: the Z (down) component, perpendicular to H -->
+  <line x1="271.6" y1="63.6" x2="378.8" y2="88.4" stroke="#888888" stroke-width="1.2" stroke-dasharray="3 2"/>
 
-  <!-- angle D between X axis and H, in the horizontal plane -->
-  <path d="M 270 195 A 32 12 0 0 1 262 172" fill="none" stroke="#2980b9" stroke-width="1.5"/>
-  <text x="272" y="182" font-size="13" fill="#2980b9" font-style="italic">D</text>
+  <!-- angle D at O, between the X axis and H -->
+  <path d="M 217.5 161.0 A 45 45 0 0 1 250.2 156.2" fill="none" stroke="#2980b9" stroke-width="1.5"/>
+  <text x="223" y="146" font-size="13" fill="#2980b9" font-style="italic">D</text>
 
-  <!-- angle I between H and F -->
-  <path d="M 320 175 A 40 40 0 0 1 305 205" fill="none" stroke="#c0392b" stroke-width="1.5"/>
-  <text x="300" y="196" font-size="13" fill="#c0392b" font-style="italic">I</text>
+  <!-- angle I at O, between H and F -->
+  <path d="M 252.4 146.4 A 55 55 0 0 1 282.9 165.5" fill="none" stroke="#c0392b" stroke-width="1.5"/>
+  <text x="276" y="140" font-size="13" fill="#c0392b" font-style="italic">I</text>
 
   <text x="30" y="30" font-size="14" fill="#333333">Elements of the geomagnetic field</text>
-  <text x="30" y="360" font-size="13" fill="#555555">D = declination (bearing of H from true north), I = inclination / dip (angle of F below the horizontal),</text>
-  <text x="30" y="376" font-size="13" fill="#555555">H = horizontal intensity, F = total field intensity.</text>
+  <text x="30" y="352" font-size="13" fill="#555555">D = declination (bearing of H from true north), I = inclination / dip (angle of F below the horizontal),</text>
+  <text x="30" y="368" font-size="13" fill="#555555">H = horizontal intensity, F = total field intensity.</text>
 </svg>
