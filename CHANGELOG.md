@@ -7,6 +7,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [1.10.0] - 2026-07-27
+
+### Changed
+
+- Build now targets Java 21 (up from Java 17).
+
 ## [1.9.0] - 2026-03-05
 
 ### Changed
@@ -189,7 +195,8 @@ Test-only fix; no functional changes to library source.
 
 - Ensured correct `Serializable` implementation (`serialVersionUID`, etc.) across inertial data classes.
 
-[Unreleased]: https://github.com/albertoirurueta/irurueta-navigation-inertial/compare/1.9.0...HEAD
+[Unreleased]: https://github.com/albertoirurueta/irurueta-navigation-inertial/compare/1.10.0...HEAD
+[1.10.0]: https://github.com/albertoirurueta/irurueta-navigation-inertial/compare/1.9.0...1.10.0
 [1.9.0]: https://github.com/albertoirurueta/irurueta-navigation-inertial/compare/1.8.0...1.9.0
 [1.8.0]: https://github.com/albertoirurueta/irurueta-navigation-inertial/compare/1.7.1...1.8.0
 [1.7.1]: https://github.com/albertoirurueta/irurueta-navigation-inertial/compare/1.7.0...1.7.1
