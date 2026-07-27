@@ -10,7 +10,7 @@ Position on the Earth's surface (or above/below it) can be described either as a
 or, more usefully for navigation output, as *curvilinear position*: geodetic latitude stem:[L], longitude
 stem:[\lambda], and height stem:[h] above the WGS84 reference ellipsoid.
 
-image::estimators/height-and-geodetic-latitude.svg[Geodetic height and latitude of a body above the ellipsoid,560,380]
+image::estimators/height-and-geodetic-latitude.svg[Geodetic height and latitude of a body above the ellipsoid,620,460]
 
 == RadiiOfCurvatureEstimator
 
