@@ -30,7 +30,7 @@ form from §5.4: attitude increments use the exact Rodrigues' rotation formula (
 truncation), and the specific force is transformed using the *averaged* coordinate transformation matrix
 over the update interval rather than just the matrix at one end of it.
 
-image::navigators/trapezoidal-integration.svg[Trapezoidal integration of velocity to obtain position,560,260]
+image::navigators/trapezoidal-integration.svg[Trapezoidal integration of velocity to obtain position,560,280]
 
 == Classes
 
