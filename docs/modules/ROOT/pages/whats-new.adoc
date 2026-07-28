@@ -2,6 +2,10 @@
 
 NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
 
+== 1.10.1
+
+* 🐛 Fixed flaky test assertions in magnetometer calibrator tests; no functional changes to library source.
+
 == 1.10.0
 
 * ♻️ Build now targets Java 21 (up from Java 17).
