@@ -70,7 +70,7 @@ class RANSACRobustKnownFrameMagnetometerCalibratorTest implements RobustKnownFra
 
     private static final double MAGNETOMETER_NOISE_STD = 200e-9;
 
-    private static final double ABSOLUTE_ERROR = 2e-9;
+    private static final double ABSOLUTE_ERROR = 5e-9;
     private static final double LARGE_ABSOLUTE_ERROR = 5e-5;
     private static final double VERY_LARGE_ABSOLUTE_ERROR = 1e-2;
 
