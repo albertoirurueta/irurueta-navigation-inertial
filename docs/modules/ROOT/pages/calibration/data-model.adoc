@@ -7,7 +7,8 @@ Classes: `Triad`, `AccelerationTriad`, `AngularSpeedTriad`, `MagneticFluxDensity
 `StandardDeviationBodyKinematics`, `StandardDeviationFrameBodyKinematics`,
 `StandardDeviationBodyMagneticFluxDensity`, `StandardDeviationFrameBodyMagneticFluxDensity`,
 `StandardDeviationTimedBodyKinematics`, `TimedBodyKinematics`, `TimedBodyKinematicsAndMagneticFluxDensity`,
-`IMUErrors`, `CalibrationException`.
+`IMUErrors`, `CalibrationException` (see the <<Class Reference>> table at the end of this page for
+Javadoc and source links).
 
 Every calibrator in xref:calibration/accelerometer.adoc[], xref:calibration/gyroscope.adoc[], and
 xref:calibration/magnetometer.adoc[] consumes measurements built from a small set of shared, composable
@@ -109,6 +110,92 @@ IMUErrors imuErrors = new IMUErrors(accelerometerBiases, gyroBiases, acceleromet
 Thrown by calibrators when the underlying numerical solve fails (e.g., an ill-conditioned or
 rank-deficient measurement set — too few measurements, or measurements that don't sufficiently excite all
 axes).
+
+== Class Reference
+
+Javadoc and source links for the classes used in the examples above:
+
+[cols="1,1,1",options="header"]
+|===
+|Class |Javadoc |Source
+
+|`Triad`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/Triad.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/Triad.java[Source^]
+
+|`AccelerationTriad`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/AccelerationTriad.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/AccelerationTriad.java[Source^]
+
+|`AngularSpeedTriad`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/AngularSpeedTriad.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/AngularSpeedTriad.java[Source^]
+
+|`MagneticFluxDensityTriad`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/MagneticFluxDensityTriad.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/MagneticFluxDensityTriad.java[Source^]
+
+|`SpeedTriad`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/SpeedTriad.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/SpeedTriad.java[Source^]
+
+|`DistanceTriad`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/DistanceTriad.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/DistanceTriad.java[Source^]
+
+|`BodyKinematics`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/BodyKinematics.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/BodyKinematics.java[Source^]
+
+|`BodyKinematicsSequence`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/BodyKinematicsSequence.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/BodyKinematicsSequence.java[Source^]
+
+|`FrameBodyKinematics`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/FrameBodyKinematics.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/FrameBodyKinematics.java[Source^]
+
+|`FrameBodyMagneticFluxDensity`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/FrameBodyMagneticFluxDensity.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/FrameBodyMagneticFluxDensity.java[Source^]
+
+|`StandardDeviationBodyKinematics`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/StandardDeviationBodyKinematics.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/StandardDeviationBodyKinematics.java[Source^]
+
+|`StandardDeviationFrameBodyKinematics`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/StandardDeviationFrameBodyKinematics.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/StandardDeviationFrameBodyKinematics.java[Source^]
+
+|`StandardDeviationBodyMagneticFluxDensity`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/StandardDeviationBodyMagneticFluxDensity.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/StandardDeviationBodyMagneticFluxDensity.java[Source^]
+
+|`StandardDeviationFrameBodyMagneticFluxDensity`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/StandardDeviationFrameBodyMagneticFluxDensity.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/StandardDeviationFrameBodyMagneticFluxDensity.java[Source^]
+
+|`StandardDeviationTimedBodyKinematics`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/StandardDeviationTimedBodyKinematics.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/StandardDeviationTimedBodyKinematics.java[Source^]
+
+|`TimedBodyKinematics`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/TimedBodyKinematics.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/TimedBodyKinematics.java[Source^]
+
+|`TimedBodyKinematicsAndMagneticFluxDensity`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/TimedBodyKinematicsAndMagneticFluxDensity.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/TimedBodyKinematicsAndMagneticFluxDensity.java[Source^]
+
+|`IMUErrors`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/IMUErrors.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/IMUErrors.java[Source^]
+
+|`CalibrationException`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/CalibrationException.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/CalibrationException.java[Source^]
+
+|===
 
 == Where to go next
 

@@ -2,7 +2,8 @@
 
 NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
 
-Classes: `EarthMagneticFluxDensityEstimator`, `NEDMagneticFluxDensity`.
+Classes: `EarthMagneticFluxDensityEstimator`, `NEDMagneticFluxDensity` (see the <<Class Reference>> table
+at the end of this page for Javadoc and source links).
 
 == NEDMagneticFluxDensity
 
@@ -58,6 +59,24 @@ double be = b.getBe();
 double recoveredDeclination = EarthMagneticFluxDensityEstimator.getDeclination(b);
 double recoveredDip = EarthMagneticFluxDensityEstimator.getDip(b);
 ----
+
+== Class Reference
+
+Javadoc and source links for the classes used in the examples above:
+
+[cols="1,1,1",options="header"]
+|===
+|Class |Javadoc |Source
+
+|`EarthMagneticFluxDensityEstimator`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/wmm/EarthMagneticFluxDensityEstimator.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/wmm/EarthMagneticFluxDensityEstimator.java[Source^]
+
+|`NEDMagneticFluxDensity`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/wmm/NEDMagneticFluxDensity.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/wmm/NEDMagneticFluxDensity.java[Source^]
+
+|===
 
 == Where to go next
 

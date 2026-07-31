@@ -2,7 +2,8 @@
 
 NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
 
-Classes: `LevelingEstimator`, `LevelingEstimator2`, `AttitudeEstimator`, `BodyMagneticFluxDensityEstimator`.
+Classes: `LevelingEstimator`, `LevelingEstimator2`, `AttitudeEstimator`, `BodyMagneticFluxDensityEstimator`
+(see the <<Class Reference>> table at the end of this page for Javadoc and source links).
 
 == The alignment problem
 
@@ -178,6 +179,36 @@ BodyMagneticFluxDensityEstimator.estimate(magnitude, declination, dip, roll, pit
 
 double bx = b.getBx(); // predicted magnetometer reading, body x-axis (T)
 ----
+
+== Class Reference
+
+Javadoc and source links for the classes used in the examples above:
+
+[cols="1,1,1",options="header"]
+|===
+|Class |Javadoc |Source
+
+|`LevelingEstimator`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/estimators/LevelingEstimator.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/estimators/LevelingEstimator.java[Source^]
+
+|`LevelingEstimator2`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/estimators/LevelingEstimator2.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/estimators/LevelingEstimator2.java[Source^]
+
+|`AttitudeEstimator`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/estimators/AttitudeEstimator.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/estimators/AttitudeEstimator.java[Source^]
+
+|`BodyMagneticFluxDensityEstimator`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/estimators/BodyMagneticFluxDensityEstimator.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/estimators/BodyMagneticFluxDensityEstimator.java[Source^]
+
+|`BodyMagneticFluxDensity`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/BodyMagneticFluxDensity.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/BodyMagneticFluxDensity.java[Source^]
+
+|===
 
 == Where to go next
 

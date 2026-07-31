@@ -5,7 +5,8 @@ NOTE: This documentation was generated with the assistance of AI. Please report 
 Classes: `com.irurueta.navigation.inertial.calibration.intervals` (detection, 9 classes),
 `com.irurueta.navigation.inertial.calibration.generators` (measurement building, 13 classes), plus the
 root-level `BodyKinematicsGenerator`, `BodyMagneticFluxDensityGenerator`, `TimeIntervalEstimator`, and
-`TimeIntervalEstimatorListener`.
+`TimeIntervalEstimatorListener` (see the <<Class Reference>> table at the end of this page for Javadoc
+and source links).
 
 This is the preprocessing step behind the calibrators in xref:calibration/accelerometer.adoc[] and
 xref:calibration/gyroscope.adoc[] that don't need a turntable or precisely known frames — most directly,
@@ -173,6 +174,60 @@ detection — they go the *other* direction, synthesizing noisy, uncalibrated me
 known-true kinematics/field plus a known xref:calibration/data-model.adoc[`IMUErrors`] model, for testing
 calibrators and fixers against ground truth. They follow xref:reference.adoc#book-groves[[book-groves\]]
 and its companion `IMU_model.m` script rather than the Tedaldi et al. method.
+
+== Class Reference
+
+Javadoc and source links for the classes used in the examples above:
+
+[cols="1,1,1",options="header"]
+|===
+|Class |Javadoc |Source
+
+|`com.irurueta.navigation.inertial.calibration.intervals` (detection, 9 classes)
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/intervals/package-summary.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/tree/master/src/main/java/com/irurueta/navigation/inertial/calibration/intervals[Source^]
+
+|`com.irurueta.navigation.inertial.calibration.generators` (measurement building, 13 classes)
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/generators/package-summary.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/tree/master/src/main/java/com/irurueta/navigation/inertial/calibration/generators[Source^]
+
+|`BodyKinematicsGenerator`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/BodyKinematicsGenerator.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/BodyKinematicsGenerator.java[Source^]
+
+|`BodyMagneticFluxDensityGenerator`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/BodyMagneticFluxDensityGenerator.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/BodyMagneticFluxDensityGenerator.java[Source^]
+
+|`TimeIntervalEstimator`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/TimeIntervalEstimator.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/TimeIntervalEstimator.java[Source^]
+
+|`TimeIntervalEstimatorListener`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/TimeIntervalEstimatorListener.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/TimeIntervalEstimatorListener.java[Source^]
+
+|`AccelerationTriadStaticIntervalDetector`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/intervals/AccelerationTriadStaticIntervalDetector.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/intervals/AccelerationTriadStaticIntervalDetector.java[Source^]
+
+|`AccelerationTriadStaticIntervalDetectorListener`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/intervals/AccelerationTriadStaticIntervalDetectorListener.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/intervals/AccelerationTriadStaticIntervalDetectorListener.java[Source^]
+
+|`AccelerometerMeasurementsGenerator`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/generators/AccelerometerMeasurementsGenerator.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/generators/AccelerometerMeasurementsGenerator.java[Source^]
+
+|`BodyKinematics`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/BodyKinematics.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/BodyKinematics.java[Source^]
+
+|`StandardDeviationBodyKinematics`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/StandardDeviationBodyKinematics.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/StandardDeviationBodyKinematics.java[Source^]
+
+|===
 
 == Where to go next
 

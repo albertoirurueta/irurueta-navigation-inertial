@@ -12,6 +12,9 @@ accelerometer senses — typically from mass unbalance in the sensing element):
 \boldsymbol{\Omega}_{\text{meas}} = \mathbf{b}_{g} + \left(\mathbf{I}_{3} + \mathbf{M}_{g}\right)\boldsymbol{\Omega}_{\text{true}} + \mathbf{G}_{g}\,\mathbf{f}_{\text{true}} + \mathbf{w}
 ++++
 
+NOTE: Javadoc and source links for every class used in the examples below are collected in the
+<<Class Reference>> table at the end of this page.
+
 == Algorithm families
 
 [cols="1,2,2,1",options="header"]
@@ -223,6 +226,64 @@ final Quaternion result = new Quaternion();
 stepIntegrator.integrate(initialAttitude, previousWx, previousWy, previousWz, currentWx, currentWy,
         currentWz, dt, result);
 ----
+
+== Class Reference
+
+Javadoc and source links for the classes used in the examples above:
+
+[cols="1,1,1",options="header"]
+|===
+|Class |Javadoc |Source
+
+|`com.irurueta.navigation.inertial.calibration.gyroscope` (86 classes)
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/gyroscope/package-summary.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/tree/master/src/main/java/com/irurueta/navigation/inertial/calibration/gyroscope[Source^]
+
+|`KnownFrameGyroscopeNonLinearLeastSquaresCalibrator`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/gyroscope/KnownFrameGyroscopeNonLinearLeastSquaresCalibrator.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/gyroscope/KnownFrameGyroscopeNonLinearLeastSquaresCalibrator.java[Source^]
+
+|`TurntableGyroscopeCalibrator`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/gyroscope/TurntableGyroscopeCalibrator.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/gyroscope/TurntableGyroscopeCalibrator.java[Source^]
+
+|`EasyGyroscopeCalibrator`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/gyroscope/EasyGyroscopeCalibrator.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/gyroscope/EasyGyroscopeCalibrator.java[Source^]
+
+|`KnownBiasEasyGyroscopeCalibrator`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/gyroscope/KnownBiasEasyGyroscopeCalibrator.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/gyroscope/KnownBiasEasyGyroscopeCalibrator.java[Source^]
+
+|`BodyKinematicsSequence`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/BodyKinematicsSequence.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/BodyKinematicsSequence.java[Source^]
+
+|`StandardDeviationBodyKinematics`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/StandardDeviationBodyKinematics.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/StandardDeviationBodyKinematics.java[Source^]
+
+|`StandardDeviationFrameBodyKinematics`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/StandardDeviationFrameBodyKinematics.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/StandardDeviationFrameBodyKinematics.java[Source^]
+
+|`StandardDeviationTimedBodyKinematics`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/StandardDeviationTimedBodyKinematics.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/StandardDeviationTimedBodyKinematics.java[Source^]
+
+|`QuaternionIntegrator`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/gyroscope/QuaternionIntegrator.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/gyroscope/QuaternionIntegrator.java[Source^]
+
+|`QuaternionStepIntegrator`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/gyroscope/QuaternionStepIntegrator.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/gyroscope/QuaternionStepIntegrator.java[Source^]
+
+|`QuaternionStepIntegratorType`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/gyroscope/QuaternionStepIntegratorType.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/gyroscope/QuaternionStepIntegratorType.java[Source^]
+
+|===
 
 == Where to go next
 

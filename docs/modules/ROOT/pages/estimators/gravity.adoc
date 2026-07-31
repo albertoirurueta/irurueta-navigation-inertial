@@ -2,7 +2,8 @@
 
 NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
 
-Classes: `NEDGravityEstimator`, `ECEFGravityEstimator`, `ECIGravitationEstimator`.
+Classes: `NEDGravityEstimator`, `ECEFGravityEstimator`, `ECIGravitationEstimator` (see the
+<<Class Reference>> table at the end of this page for Javadoc and source links).
 
 == Gravity vs. gravitation
 
@@ -148,6 +149,40 @@ double gammaZ = gravitation.getGz();
 |`ECIGravitationEstimator`
 |ECI (inertial)
 |Gravitation `gamma` only (no centrifugal term)
+|===
+
+== Class Reference
+
+Javadoc and source links for the classes used in the examples above:
+
+[cols="1,1,1",options="header"]
+|===
+|Class |Javadoc |Source
+
+|`NEDGravityEstimator`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/estimators/NEDGravityEstimator.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/estimators/NEDGravityEstimator.java[Source^]
+
+|`NEDGravity`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/NEDGravity.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/NEDGravity.java[Source^]
+
+|`ECEFGravityEstimator`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/estimators/ECEFGravityEstimator.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/estimators/ECEFGravityEstimator.java[Source^]
+
+|`ECEFGravity`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/ECEFGravity.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/ECEFGravity.java[Source^]
+
+|`ECIGravitationEstimator`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/estimators/ECIGravitationEstimator.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/estimators/ECIGravitationEstimator.java[Source^]
+
+|`ECIGravitation`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/ECIGravitation.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/ECIGravitation.java[Source^]
+
 |===
 
 == Where to go next

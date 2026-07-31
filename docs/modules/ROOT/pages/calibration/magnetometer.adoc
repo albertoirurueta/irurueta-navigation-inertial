@@ -51,6 +51,9 @@ in NED and it is rotated into body axes.
 |7 (10 without common z-axis)
 |===
 
+NOTE: Javadoc and source links for every class used in the examples below are collected in the
+<<Class Reference>> table at the end of this page.
+
 == Example: `KnownFrameMagnetometerLinearLeastSquaresCalibrator`
 
 Each measurement pairs a raw magnetometer reading with the full frame (position, velocity,
@@ -197,6 +200,52 @@ final Matrix estimatedMm = calibrator.getEstimatedMm();
 `MSACRobust*`, `LMedSRobust*`, `PROSACRobust*` and `PROMedSRobust*` mirror this shape for the same
 family; `PROSACRobust*`/`PROMedSRobust*` additionally require measurements implementing
 `QualityScoredMagnetometerCalibrator` to supply per-sample quality scores.
+
+== Class Reference
+
+Javadoc and source links for the classes used in the examples above:
+
+[cols="1,1,1",options="header"]
+|===
+|Class |Javadoc |Source
+
+|`com.irurueta.navigation.inertial.calibration.magnetometer` (79 classes)
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/magnetometer/package-summary.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/tree/master/src/main/java/com/irurueta/navigation/inertial/calibration/magnetometer[Source^]
+
+|`KnownFrameMagnetometerLinearLeastSquaresCalibrator`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/magnetometer/KnownFrameMagnetometerLinearLeastSquaresCalibrator.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/magnetometer/KnownFrameMagnetometerLinearLeastSquaresCalibrator.java[Source^]
+
+|`KnownFrameMagnetometerNonLinearLeastSquaresCalibrator`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/magnetometer/KnownFrameMagnetometerNonLinearLeastSquaresCalibrator.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/magnetometer/KnownFrameMagnetometerNonLinearLeastSquaresCalibrator.java[Source^]
+
+|`KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/magnetometer/KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/magnetometer/KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator.java[Source^]
+
+|`KnownPositionAndInstantMagnetometerCalibrator`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/magnetometer/KnownPositionAndInstantMagnetometerCalibrator.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/magnetometer/KnownPositionAndInstantMagnetometerCalibrator.java[Source^]
+
+|`RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/magnetometer/RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/magnetometer/RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator.java[Source^]
+
+|`BodyMagneticFluxDensity`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/BodyMagneticFluxDensity.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/BodyMagneticFluxDensity.java[Source^]
+
+|`FrameBodyMagneticFluxDensity`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/FrameBodyMagneticFluxDensity.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/FrameBodyMagneticFluxDensity.java[Source^]
+
+|`StandardDeviationBodyMagneticFluxDensity`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/StandardDeviationBodyMagneticFluxDensity.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/StandardDeviationBodyMagneticFluxDensity.java[Source^]
+
+|===
 
 == Where to go next
 

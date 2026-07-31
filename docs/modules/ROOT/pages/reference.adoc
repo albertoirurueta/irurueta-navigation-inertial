@@ -11,7 +11,7 @@ These reports are generated during the build.
 |Report
 |Description
 
-|https://albertoirurueta.github.io/irurueta-navigation-inertial[Maven Site Report]
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/[Maven Site Report]
 |Aggregated Maven site published to GitHub Pages: Javadoc API documentation, JaCoCo code coverage, Surefire test results, Checkstyle, SpotBugs, PMD and JXR cross-referenced source.
 
 |https://sonarcloud.io/dashboard?id=albertoirurueta_irurueta-navigation-inertial[SonarCloud Dashboard]

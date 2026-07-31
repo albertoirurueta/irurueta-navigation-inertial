@@ -2,7 +2,8 @@
 
 NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
 
-Classes: `NEDKinematicsEstimator`, `ECEFKinematicsEstimator`, `ECIKinematicsEstimator`.
+Classes: `NEDKinematicsEstimator`, `ECEFKinematicsEstimator`, `ECIKinematicsEstimator` (see the
+<<Class Reference>> table at the end of this page for Javadoc and source links).
 
 == What these classes solve
 
@@ -130,6 +131,32 @@ double angularRateZ = kinematics.getAngularRateZ(); // synthetic angular rate (r
 `ECEFKinematicsEstimator.estimateKinematics(...)` and `ECIKinematicsEstimator.estimateKinematics(...)`
 follow the same pattern, replacing latitude/height with Cartesian stem:[(x,y,z)] position and NED
 velocity with ECEF/ECI velocity, respectively.
+
+== Class Reference
+
+Javadoc and source links for the classes used in the examples above:
+
+[cols="1,1,1",options="header"]
+|===
+|Class |Javadoc |Source
+
+|`NEDKinematicsEstimator`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/estimators/NEDKinematicsEstimator.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/estimators/NEDKinematicsEstimator.java[Source^]
+
+|`ECEFKinematicsEstimator`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/estimators/ECEFKinematicsEstimator.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/estimators/ECEFKinematicsEstimator.java[Source^]
+
+|`ECIKinematicsEstimator`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/estimators/ECIKinematicsEstimator.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/estimators/ECIKinematicsEstimator.java[Source^]
+
+|`BodyKinematics`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/BodyKinematics.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/BodyKinematics.java[Source^]
+
+|===
 
 == Where to go next
 

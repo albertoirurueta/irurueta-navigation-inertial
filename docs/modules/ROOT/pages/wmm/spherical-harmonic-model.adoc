@@ -2,7 +2,8 @@
 
 NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
 
-Classes: `WorldMagneticModel`, `WMMLoader`, `WMMEarthMagneticFluxDensityEstimator`.
+Classes: `WorldMagneticModel`, `WMMLoader`, `WMMEarthMagneticFluxDensityEstimator` (see the
+<<Class Reference>> table at the end of this page for Javadoc and source links).
 
 == Coefficient files
 
@@ -173,6 +174,32 @@ double dip = estimator.getDip(position.getLatitude(), position.getLongitude(), p
 NEDMagneticFluxDensity b = new NEDMagneticFluxDensity();
 estimator.estimate(position.getLatitude(), position.getLongitude(), position.getHeight(), year, b);
 ----
+
+== Class Reference
+
+Javadoc and source links for the classes used in the examples above:
+
+[cols="1,1,1",options="header"]
+|===
+|Class |Javadoc |Source
+
+|`WorldMagneticModel`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/wmm/WorldMagneticModel.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/wmm/WorldMagneticModel.java[Source^]
+
+|`WMMLoader`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/wmm/WMMLoader.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/wmm/WMMLoader.java[Source^]
+
+|`WMMEarthMagneticFluxDensityEstimator`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/wmm/WMMEarthMagneticFluxDensityEstimator.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/wmm/WMMEarthMagneticFluxDensityEstimator.java[Source^]
+
+|`NEDMagneticFluxDensity`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/wmm/NEDMagneticFluxDensity.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/wmm/NEDMagneticFluxDensity.java[Source^]
+
+|===
 
 == Where to go next
 

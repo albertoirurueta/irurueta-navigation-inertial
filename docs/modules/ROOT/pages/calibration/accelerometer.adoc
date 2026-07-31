@@ -55,6 +55,9 @@ magnitude is derived via xref:estimators/gravity.adoc[`NEDGravityEstimator`] ins
 
 == Usage examples
 
+NOTE: Javadoc and source links for every class used in the examples below are collected in the
+<<Class Reference>> table at the end of this page.
+
 The snippets below are simplified illustrations (not full copies of the test suite) showing how to
 construct each family's plain calibrator, run `calibrate()`, and read back the results. Measurement
 collection is elided with `// ...` since in practice it comes from several real orientations/positions
@@ -238,6 +241,60 @@ quality scores (PROSAC, PROMedS) require their input to implement.
 
 |`UnorderedFrameBodyKinematicsAccelerometerCalibrator`, `UnorderedStandardDeviationBodyKinematicsAccelerometerCalibrator`, `UnorderedStandardDeviationFrameBodyKinematicsAccelerometerCalibrator`
 |Interfaces for calibrators taking a plain, unordered measurement collection (the non-robust calibrators).
+|===
+
+== Class Reference
+
+Javadoc and source links for the classes used in the examples above:
+
+[cols="1,1,1",options="header"]
+|===
+|Class |Javadoc |Source
+
+|`com.irurueta.navigation.inertial.calibration.accelerometer` (79 classes)
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/accelerometer/package-summary.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/tree/master/src/main/java/com/irurueta/navigation/inertial/calibration/accelerometer[Source^]
+
+|`KnownFrameAccelerometerLinearLeastSquaresCalibrator`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/accelerometer/KnownFrameAccelerometerLinearLeastSquaresCalibrator.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/accelerometer/KnownFrameAccelerometerLinearLeastSquaresCalibrator.java[Source^]
+
+|`KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/accelerometer/KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/accelerometer/KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator.java[Source^]
+
+|`KnownGravityNormAccelerometerCalibrator`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/accelerometer/KnownGravityNormAccelerometerCalibrator.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/accelerometer/KnownGravityNormAccelerometerCalibrator.java[Source^]
+
+|`KnownBiasAndGravityNormAccelerometerCalibrator`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/accelerometer/KnownBiasAndGravityNormAccelerometerCalibrator.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/accelerometer/KnownBiasAndGravityNormAccelerometerCalibrator.java[Source^]
+
+|`KnownPositionAccelerometerCalibrator`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/accelerometer/KnownPositionAccelerometerCalibrator.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/accelerometer/KnownPositionAccelerometerCalibrator.java[Source^]
+
+|`KnownBiasAndPositionAccelerometerCalibrator`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/accelerometer/KnownBiasAndPositionAccelerometerCalibrator.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/accelerometer/KnownBiasAndPositionAccelerometerCalibrator.java[Source^]
+
+|`RANSACRobustKnownFrameAccelerometerCalibrator`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/accelerometer/RANSACRobustKnownFrameAccelerometerCalibrator.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/accelerometer/RANSACRobustKnownFrameAccelerometerCalibrator.java[Source^]
+
+|`FrameBodyKinematics`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/FrameBodyKinematics.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/FrameBodyKinematics.java[Source^]
+
+|`StandardDeviationBodyKinematics`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/StandardDeviationBodyKinematics.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/StandardDeviationBodyKinematics.java[Source^]
+
+|`StandardDeviationFrameBodyKinematics`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/StandardDeviationFrameBodyKinematics.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/StandardDeviationFrameBodyKinematics.java[Source^]
+
 |===
 
 == Where to go next

@@ -2,7 +2,9 @@
 
 NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
 
-Classes: `ECIInertialNavigator`, `ECEFInertialNavigator`, `NEDInertialNavigator`.
+Classes: `ECIInertialNavigator`, `ECEFInertialNavigator`, `NEDInertialNavigator`, plus
+`InertialNavigatorException` (see the <<Class Reference>> table at the end of this page for Javadoc and
+source links).
 
 All three navigators share the four-step structure introduced in xref:navigators/index.adoc[], but each
 adds the terms relevant to how its resolving frame rotates. See Groves §5.4 (see
@@ -138,6 +140,32 @@ transformation needs that extra rotation-matrix validity check.
 Thrown by all three `navigate***` methods when the underlying matrix algebra fails (e.g., a computed
 coordinate transformation matrix is not a valid rotation, typically indicating an unstable or
 degenerate input rather than a normal operating condition).
+
+== Class Reference
+
+Javadoc and source links for the classes used in the examples above:
+
+[cols="1,1,1",options="header"]
+|===
+|Class |Javadoc |Source
+
+|`ECIInertialNavigator`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/navigators/ECIInertialNavigator.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/navigators/ECIInertialNavigator.java[Source^]
+
+|`ECEFInertialNavigator`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/navigators/ECEFInertialNavigator.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/navigators/ECEFInertialNavigator.java[Source^]
+
+|`NEDInertialNavigator`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/navigators/NEDInertialNavigator.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/navigators/NEDInertialNavigator.java[Source^]
+
+|`InertialNavigatorException`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/navigators/InertialNavigatorException.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/navigators/InertialNavigatorException.java[Source^]
+
+|===
 
 == Where to go next
 
