@@ -2,7 +2,8 @@
 
 NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
 
-Classes: `RadiiOfCurvatureEstimator`, `NEDPositionEstimator`, `NEDVelocityEstimator`.
+Classes: `RadiiOfCurvatureEstimator`, `NEDPositionEstimator`, `NEDVelocityEstimator` (see the
+<<Class Reference>> table at the end of this page for Javadoc and source links).
 
 == The WGS84 ellipsoid and curvilinear position
 
@@ -134,6 +135,32 @@ NEDVelocity velocity = NEDVelocityEstimator.estimateVelocityAndReturnNew(
 
 double vn = velocity.getVn();
 ----
+
+== Class Reference
+
+Javadoc and source links for the classes used in the examples above:
+
+[cols="1,1,1",options="header"]
+|===
+|Class |Javadoc |Source
+
+|`RadiiOfCurvatureEstimator`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/estimators/RadiiOfCurvatureEstimator.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/estimators/RadiiOfCurvatureEstimator.java[Source^]
+
+|`RadiiOfCurvature`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/RadiiOfCurvature.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/RadiiOfCurvature.java[Source^]
+
+|`NEDPositionEstimator`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/estimators/NEDPositionEstimator.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/estimators/NEDPositionEstimator.java[Source^]
+
+|`NEDVelocityEstimator`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/estimators/NEDVelocityEstimator.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/estimators/NEDVelocityEstimator.java[Source^]
+
+|===
 
 == Where to go next
 

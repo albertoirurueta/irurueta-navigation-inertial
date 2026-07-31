@@ -5,7 +5,8 @@ NOTE: This documentation was generated with the assistance of AI. Please report 
 Classes: `com.irurueta.navigation.inertial.calibration.noise` (37 classes),
 `com.irurueta.navigation.inertial.calibration.bias` (5 classes), plus the root-level interfaces
 `AccelerometerNoiseRootPsdSource`, `GyroscopeNoiseRootPsdSource`, `AccelerometerBiasUncertaintySource`,
-`GyroscopeBiasUncertaintySource`, `AccelerometerCalibrationSource`, `GyroscopeCalibrationSource`.
+`GyroscopeBiasUncertaintySource`, `AccelerometerCalibrationSource`, `GyroscopeCalibrationSource` (see the
+<<Class Reference>> table at the end of this page for Javadoc and source links).
 
 These classes don't perform full calibration — they estimate simpler statistics (noise level, or an
 approximate bias) that either feed into xref:calibration/intervals-and-generators.adoc[static-interval
@@ -141,6 +142,60 @@ uncertainty configuration (`INSLooselyCoupledKalmanInitializerConfig` / `INSTigh
 stem:[\mathbf{G}_g]) — implemented by every calibrator in
 xref:calibration/accelerometer.adoc[] / xref:calibration/gyroscope.adoc[], and consumed by
 `IMUErrorsCreator`.
+|===
+
+== Class Reference
+
+Javadoc and source links for the classes used in the examples above:
+
+[cols="1,1,1",options="header"]
+|===
+|Class |Javadoc |Source
+
+|`com.irurueta.navigation.inertial.calibration.noise` (37 classes)
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/noise/package-summary.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/tree/master/src/main/java/com/irurueta/navigation/inertial/calibration/noise[Source^]
+
+|`com.irurueta.navigation.inertial.calibration.bias` (5 classes)
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/bias/package-summary.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/tree/master/src/main/java/com/irurueta/navigation/inertial/calibration/bias[Source^]
+
+|`AccelerometerNoiseRootPsdSource`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/AccelerometerNoiseRootPsdSource.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/AccelerometerNoiseRootPsdSource.java[Source^]
+
+|`GyroscopeNoiseRootPsdSource`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/GyroscopeNoiseRootPsdSource.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/GyroscopeNoiseRootPsdSource.java[Source^]
+
+|`AccelerometerBiasUncertaintySource`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/AccelerometerBiasUncertaintySource.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/AccelerometerBiasUncertaintySource.java[Source^]
+
+|`GyroscopeBiasUncertaintySource`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/GyroscopeBiasUncertaintySource.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/GyroscopeBiasUncertaintySource.java[Source^]
+
+|`AccelerometerCalibrationSource`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/AccelerometerCalibrationSource.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/AccelerometerCalibrationSource.java[Source^]
+
+|`GyroscopeCalibrationSource`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/GyroscopeCalibrationSource.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/GyroscopeCalibrationSource.java[Source^]
+
+|`AccumulatedAccelerationTriadNoiseEstimator`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/noise/AccumulatedAccelerationTriadNoiseEstimator.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/noise/AccumulatedAccelerationTriadNoiseEstimator.java[Source^]
+
+|`BodyKinematicsBiasEstimator`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/bias/BodyKinematicsBiasEstimator.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/bias/BodyKinematicsBiasEstimator.java[Source^]
+
+|`BodyKinematics`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/BodyKinematics.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/BodyKinematics.java[Source^]
+
 |===
 
 == Where to go next
