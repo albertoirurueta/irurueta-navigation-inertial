@@ -11,11 +11,23 @@ These reports are generated during the build.
 |Report
 |Description
 
+| https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs[Javadoc]
+| API reference generated as part of Maven site execution.
+
+| https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/jacoco/index.html[JaCoCo]
+| Code coverage report generated during the Maven build.
+
+| https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/surefire.html[Surefire]
+| Unit test execution report.
+
 |https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/[Maven Site Report]
 |Aggregated Maven site published to GitHub Pages: Javadoc API documentation, JaCoCo code coverage, Surefire test results, Checkstyle, SpotBugs, PMD and JXR cross-referenced source.
 
 |https://sonarcloud.io/dashboard?id=albertoirurueta_irurueta-navigation-inertial[SonarCloud Dashboard]
 |Continuous code quality analysis: bugs, code smells, coverage, duplications, maintainability, reliability, security and technical debt ratings.
+
+|https://github.com/albertoirurueta/irurueta-navigation-inertial[Repository]
+|Github repository
 |===
 
 [#bibliography]
