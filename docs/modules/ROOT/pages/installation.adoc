@@ -1,4 +1,6 @@
 = Installation
+:description: How to add irurueta-navigation-inertial as a Maven dependency, including release and snapshot versions, Java requirements, and building from source.
+:keywords: Maven dependency, installation, Java library, Maven Central, snapshot repository, build from source, irurueta-navigation-inertial
 
 NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
 

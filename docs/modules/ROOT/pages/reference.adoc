@@ -1,4 +1,6 @@
 = Reference
+:description: Links to generated Javadoc, code coverage, test, and quality reports, plus the full bibliography of books, papers, and companion software cited across the documentation.
+:keywords: Javadoc, JaCoCo coverage, Surefire, SonarCloud, bibliography, Groves GNSS book, IMU calibration papers, World Magnetic Model references
 
 NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
 

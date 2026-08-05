@@ -1,4 +1,6 @@
 = Accelerometer Calibration
+:description: Accelerometer calibration algorithms (KnownFrame, KnownGravityNorm, KnownPosition families) for estimating bias and scale-factor/cross-coupling errors, with Java usage examples.
+:keywords: accelerometer calibration, bias estimation, scale factor, cross-coupling, KnownFrame calibrator, KnownGravityNorm, RANSAC, robust calibration, Java
 
 NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
 

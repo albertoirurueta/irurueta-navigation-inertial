@@ -1,4 +1,6 @@
 = Gravity and Gravitation Estimators
+:description: Gravity and gravitation estimators for NED, ECEF, and ECI frames using the WGS84 Somigliana model and a J2 spherical-harmonic approximation.
+:keywords: gravity model, gravitation, WGS84, Somigliana model, NEDGravityEstimator, ECEFGravityEstimator, ECIGravitationEstimator, specific force
 
 NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
 

@@ -1,4 +1,6 @@
 = Gyroscope Calibration
+:description: Gyroscope calibration algorithms — KnownFrame, Turntable, and the turntable-free "Easy" calibrator — for estimating bias, scale-factor, cross-coupling, and g-dependent bias, plus quaternion step integrators.
+:keywords: gyroscope calibration, turntable calibration, Easy calibrator, Tedaldi, g-dependent bias, quaternion integration, Runge-Kutta, angular rate calibration
 
 NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
 

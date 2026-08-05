@@ -1,4 +1,6 @@
 = The Spherical Harmonic Model
+:description: The WMM spherical-harmonic algorithm — coefficient file format, Schmidt semi-normalization, and the Legendre recursion used to evaluate declination, dip, and intensity.
+:keywords: spherical harmonic model, WMM coefficients, Schmidt normalization, Legendre functions, Gauss coefficients, WMMEarthMagneticFluxDensityEstimator
 
 NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
 

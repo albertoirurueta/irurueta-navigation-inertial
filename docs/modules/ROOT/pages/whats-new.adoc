@@ -1,4 +1,6 @@
 = What's New
+:description: Release notes for irurueta-navigation-inertial, listing fixes and changes for each version.
+:keywords: release notes, changelog, version history, irurueta-navigation-inertial
 
 NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
 

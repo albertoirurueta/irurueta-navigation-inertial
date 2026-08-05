@@ -1,4 +1,6 @@
 = Calibration Data Model
+:description: Shared data classes used by every calibrator — triads, BodyKinematics-based measurement types, sequences, and the IMUErrors container.
+:keywords: IMU data model, BodyKinematics, triad, FrameBodyKinematics, IMUErrors, calibration measurements
 
 NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
 

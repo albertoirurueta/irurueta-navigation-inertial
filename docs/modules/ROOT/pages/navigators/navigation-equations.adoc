@@ -1,4 +1,6 @@
 = Precision Navigation Equations
+:description: Detailed precision navigation equations for ECI, ECEF, and NED inertial navigators, including Rodrigues' attitude update and the averaged specific-force frame transformation.
+:keywords: navigation equations, Rodrigues formula, attitude update, Coriolis, transport rate, ECIInertialNavigator, ECEFInertialNavigator, NEDInertialNavigator
 
 NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
 

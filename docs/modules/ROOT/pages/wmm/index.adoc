@@ -1,4 +1,6 @@
 = World Magnetic Model (WMM)
+:description: Overview of the World Magnetic Model (WMM) package for computing Earth's magnetic field magnitude, declination, and dip at a given position and date.
+:keywords: World Magnetic Model, WMM, magnetic declination, dip inclination, geomagnetic field, WorldMagneticModel, WMMLoader
 
 NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
 

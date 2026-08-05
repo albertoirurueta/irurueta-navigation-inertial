@@ -1,4 +1,6 @@
 = Navigators
+:description: Overview of the precision strapdown inertial navigation equations implemented for ECI, ECEF, and NED frames.
+:keywords: strapdown inertial navigation, inertial navigator, ECI navigator, ECEF navigator, NED navigator, navigation equations
 
 NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
 
