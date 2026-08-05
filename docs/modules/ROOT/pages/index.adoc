@@ -1,4 +1,6 @@
 = Overview
+:description: Java library for strapdown inertial navigation, IMU calibration, and Earth magnetic field modeling (WMM) for GNSS/INS integrated navigation systems.
+:keywords: inertial navigation, IMU calibration, strapdown navigation, GNSS/INS integration, Kalman filter, World Magnetic Model, Java library, accelerometer, gyroscope, magnetometer
 
 NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
 

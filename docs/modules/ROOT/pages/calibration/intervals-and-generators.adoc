@@ -1,4 +1,6 @@
 = Static/Dynamic Interval Detection and Measurement Generation
+:description: Static/dynamic interval detection and measurement-sequence generation used to preprocess a raw IMU stream before turntable-free calibration.
+:keywords: static interval detection, dynamic interval, TriadStaticIntervalDetector, MeasurementsGenerator, IMU preprocessing, time interval estimator
 
 NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
 

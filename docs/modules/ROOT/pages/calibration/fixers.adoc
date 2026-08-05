@@ -1,4 +1,6 @@
 = Fixers: Undoing the Sensor Error Model
+:description: How to invert the sensor error model with AccelerationFixer, AngularRateFixer, MagneticFluxDensityFixer, and BodyKinematicsFixer to correct raw IMU readings once calibration parameters are known.
+:keywords: sensor fixer, error correction, AccelerationFixer, AngularRateFixer, MagneticFluxDensityFixer, IMUErrorsCreator
 
 NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
 

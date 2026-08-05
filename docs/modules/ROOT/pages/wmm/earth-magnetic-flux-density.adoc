@@ -1,4 +1,6 @@
 = Earth Magnetic Flux Density Container and Simple Estimator
+:description: NEDMagneticFluxDensity container and the lightweight EarthMagneticFluxDensityEstimator for building or decomposing a magnetic field vector from known magnitude, declination, and dip.
+:keywords: NEDMagneticFluxDensity, EarthMagneticFluxDensityEstimator, magnetic declination, dip, magnetic flux density vector
 
 NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
 

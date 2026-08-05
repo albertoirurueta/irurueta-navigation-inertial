@@ -1,4 +1,6 @@
 = Attitude Estimators: Leveling, Gyrocompassing, and Magnetic Heading
+:description: Attitude estimation via leveling, gyrocompassing, and magnetometer-based magnetic heading using LevelingEstimator, AttitudeEstimator, and BodyMagneticFluxDensityEstimator.
+:keywords: attitude estimation, leveling, gyrocompassing, magnetic heading, roll pitch yaw, LevelingEstimator, AttitudeEstimator
 
 NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
 

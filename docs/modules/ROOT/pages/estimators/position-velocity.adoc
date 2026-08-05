@@ -1,4 +1,6 @@
 = Radii of Curvature, Position and Velocity Estimators
+:description: Radii-of-curvature, curvilinear position, and NED velocity estimators built on the WGS84 ellipsoid.
+:keywords: radii of curvature, WGS84 ellipsoid, curvilinear position, NED velocity, RadiiOfCurvatureEstimator, NEDPositionEstimator, NEDVelocityEstimator
 
 NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
 
