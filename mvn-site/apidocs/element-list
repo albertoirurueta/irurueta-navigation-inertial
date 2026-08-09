@@ -1,0 +1,12 @@
+com.irurueta.navigation.inertial
+com.irurueta.navigation.inertial.calibration
+com.irurueta.navigation.inertial.calibration.accelerometer
+com.irurueta.navigation.inertial.calibration.bias
+com.irurueta.navigation.inertial.calibration.generators
+com.irurueta.navigation.inertial.calibration.gyroscope
+com.irurueta.navigation.inertial.calibration.intervals
+com.irurueta.navigation.inertial.calibration.magnetometer
+com.irurueta.navigation.inertial.calibration.noise
+com.irurueta.navigation.inertial.estimators
+com.irurueta.navigation.inertial.navigators
+com.irurueta.navigation.inertial.wmm

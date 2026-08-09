@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>What&#8217;s New :: Irurueta Inertial Navigation</title>
+    <meta name="description" content="Release notes for irurueta-navigation-inertial, listing fixes and changes for each version.">
+    <meta name="keywords" content="release notes, changelog, version history, irurueta-navigation-inertial">
+    <meta name="generator" content="Antora 3.1.15">
+    <link rel="stylesheet" href="../../_/css/site.css">
+<link rel="icon" type="image/svg+xml" href="../../_/img/logo.svg">
+  </head>
+  <body class="article">
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs'; mermaid.initialize({"startOnLoad":true}); </script><header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="../.."><img src="../../_/img/logo.svg" alt="Irurueta Inertial Navigation" class="navbar-brand-logo">Irurueta Inertial Navigation</a>
+      <div class="navbar-item search hide-for-print">
+        <div id="search-field" class="field">
+          <input id="search-input" type="text" placeholder="Search the docs">
+        </div>
+      </div>
+      <button class="navbar-burger" aria-controls="topbar-nav" aria-expanded="false" aria-label="Toggle main menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu" style="display: none;">
+      <div class="navbar-end">
+        <a class="navbar-item" href="#">Home</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Products</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Product A</a>
+            <a class="navbar-item" href="#">Product B</a>
+            <a class="navbar-item" href="#">Product C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Services</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Service A</a>
+            <a class="navbar-item" href="#">Service B</a>
+            <a class="navbar-item" href="#">Service C</a>
+          </div>
+        </div>
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="#">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="irurueta-navigation-inertial" data-version="1.10.1">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="index.html">Irurueta Inertial Navigation</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="index.html">Overview</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="1">
+    <a class="nav-link" href="whats-new.html">What&#8217;s New</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="installation.html">Installation</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Estimators</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="estimators/index.html">Estimators</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="estimators/gravity.html">Gravity and Gravitation Estimators</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="estimators/kinematics.html">Kinematics Estimators</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="estimators/position-velocity.html">Radii of Curvature, Position and Velocity Estimators</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="estimators/attitude.html">Attitude Estimators: Leveling, Gyrocompassing, and Magnetic Heading</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Navigators</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="navigators/index.html">Navigators</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="navigators/navigation-equations.html">Precision Navigation Equations</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">World Magnetic Model</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="wmm/index.html">World Magnetic Model (WMM)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="wmm/spherical-harmonic-model.html">The Spherical Harmonic Model</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="wmm/earth-magnetic-flux-density.html">Earth Magnetic Flux Density Container and Simple Estimator</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Calibration</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="calibration/index.html">IMU Calibration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="calibration/data-model.html">Calibration Data Model</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="calibration/fixers.html">Fixers: Undoing the Sensor Error Model</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="calibration/accelerometer.html">Accelerometer Calibration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="calibration/gyroscope.html">Gyroscope Calibration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="calibration/magnetometer.html">Magnetometer Calibration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="calibration/intervals-and-generators.html">Static/Dynamic Interval Detection and Measurement Generation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="calibration/noise-and-bias.html">Noise and Approximate-Bias Estimators</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="reference.html">Reference</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Irurueta Inertial Navigation</span>
+    <span class="version">1.10.1</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <div class="title"><a href="index.html">Irurueta Inertial Navigation</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">1.10.1</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">Irurueta Inertial Navigation</a></li>
+    <li><a href="whats-new.html">What&#8217;s New</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/albertoirurueta/irurueta-navigation-inertial/edit/develop/docs/modules/ROOT/pages/whats-new.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">What&#8217;s New</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+This documentation was generated with the assistance of AI. Please report any inaccuracies.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_1_10_1"><a class="anchor" href="#_1_10_1"></a>1.10.1</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>🐛 Fixed flaky test assertions in magnetometer calibrator tests; no functional changes to library source.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_1_10_0"><a class="anchor" href="#_1_10_0"></a>1.10.0</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>♻️ Build now targets Java 21 (up from Java 17).</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>Made with ♥ from <strong>BCN</strong></p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+<script src="../../_/js/vendor/lunr.js"></script>
+<script src="../../_/js/search-ui.js" id="search-ui-script" data-site-root-path="../.." data-snippet-length="100" data-stylesheet="../../_/css/search.css"></script>
+<script async src="../../search-index.js"></script>
+  </body>
+</html>

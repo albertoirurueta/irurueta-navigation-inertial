@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Navigators :: Irurueta Inertial Navigation</title>
+    <meta name="description" content="Overview of the precision strapdown inertial navigation equations implemented for ECI, ECEF, and NED frames.">
+    <meta name="keywords" content="strapdown inertial navigation, inertial navigator, ECI navigator, ECEF navigator, NED navigator, navigation equations">
+    <meta name="generator" content="Antora 3.1.15">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+<link rel="icon" type="image/svg+xml" href="../../../_/img/logo.svg">
+  </head>
+  <body class="article">
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs'; mermaid.initialize({"startOnLoad":true}); </script><header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="../../.."><img src="../../../_/img/logo.svg" alt="Irurueta Inertial Navigation" class="navbar-brand-logo">Irurueta Inertial Navigation</a>
+      <div class="navbar-item search hide-for-print">
+        <div id="search-field" class="field">
+          <input id="search-input" type="text" placeholder="Search the docs">
+        </div>
+      </div>
+      <button class="navbar-burger" aria-controls="topbar-nav" aria-expanded="false" aria-label="Toggle main menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu" style="display: none;">
+      <div class="navbar-end">
+        <a class="navbar-item" href="#">Home</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Products</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Product A</a>
+            <a class="navbar-item" href="#">Product B</a>
+            <a class="navbar-item" href="#">Product C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Services</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Service A</a>
+            <a class="navbar-item" href="#">Service B</a>
+            <a class="navbar-item" href="#">Service C</a>
+          </div>
+        </div>
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="#">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="irurueta-navigation-inertial" data-version="1.10.1">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="../index.html">Irurueta Inertial Navigation</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../index.html">Overview</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../whats-new.html">What&#8217;s New</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../installation.html">Installation</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Estimators</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../estimators/index.html">Estimators</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../estimators/gravity.html">Gravity and Gravitation Estimators</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../estimators/kinematics.html">Kinematics Estimators</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../estimators/position-velocity.html">Radii of Curvature, Position and Velocity Estimators</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../estimators/attitude.html">Attitude Estimators: Leveling, Gyrocompassing, and Magnetic Heading</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Navigators</span>
+<ul class="nav-list">
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="index.html">Navigators</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="navigation-equations.html">Precision Navigation Equations</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">World Magnetic Model</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../wmm/index.html">World Magnetic Model (WMM)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../wmm/spherical-harmonic-model.html">The Spherical Harmonic Model</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../wmm/earth-magnetic-flux-density.html">Earth Magnetic Flux Density Container and Simple Estimator</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Calibration</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../calibration/index.html">IMU Calibration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../calibration/data-model.html">Calibration Data Model</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../calibration/fixers.html">Fixers: Undoing the Sensor Error Model</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../calibration/accelerometer.html">Accelerometer Calibration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../calibration/gyroscope.html">Gyroscope Calibration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../calibration/magnetometer.html">Magnetometer Calibration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../calibration/intervals-and-generators.html">Static/Dynamic Interval Detection and Measurement Generation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../calibration/noise-and-bias.html">Noise and Approximate-Bias Estimators</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../reference.html">Reference</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Irurueta Inertial Navigation</span>
+    <span class="version">1.10.1</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <div class="title"><a href="../index.html">Irurueta Inertial Navigation</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">1.10.1</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">Irurueta Inertial Navigation</a></li>
+    <li>Navigators</li>
+    <li><a href="index.html">Navigators</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/albertoirurueta/irurueta-navigation-inertial/edit/develop/docs/modules/ROOT/pages/navigators/index.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Navigators</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+This documentation was generated with the assistance of AI. Please report any inaccuracies.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The <code>com.irurueta.navigation.inertial.navigators</code> package implements the <strong>precision</strong> strapdown inertial
+navigation equations described in Groves §5.4 (see <a href="../reference.html#book-groves" class="xref page">[book-groves]</a>):
+given the previous navigation solution (attitude, velocity, position) and a new IMU measurement
+(specific force + angular rate, averaged over the update interval), each navigator computes the next
+navigation solution. This is the forward, integrating counterpart of the
+<a href="../estimators/kinematics.html" class="xref page">kinematics estimators</a>, which solve the inverse problem.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_the_navigation_loop"><a class="anchor" href="#_the_navigation_loop"></a>The navigation loop</h2>
+<div class="sectionbody">
+<div class="imageblock"><div class="mermaid content" style=" ">flowchart TD
+    IMU["IMU measurement:\nspecific force f_ib, angular rate omega_ib"] --> N["Navigator.navigate***(...)"]
+    P0["Previous solution:\nattitude, velocity, position"] --> N
+    N --> A["1. Attitude update\n(Rodrigues' formula)"]
+    A --> B["2. Specific-force frame transform\n(averaged attitude matrix)"]
+    B --> C["3. Velocity update\n(gravity + Coriolis/transport-rate)"]
+    C --> D["4. Position update\n(trapezoidal integration)"]
+    D --> P1["New solution:\nattitude, velocity, position"]
+    P1 -->|next epoch, feeds back as| P0</div></div>
+<div class="paragraph">
+<p>Unlike the simplified, first-order equations shown in Groves §5.1-§5.3 (small-angle attitude update,
+first-order Coriolis/transport-rate terms), every navigator in this package implements the <strong>precision</strong>
+form from §5.4: attitude increments use the exact Rodrigues' rotation formula (no small-angle
+truncation), and the specific force is transformed using the <strong>averaged</strong> coordinate transformation matrix
+over the update interval rather than just the matrix at one end of it.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/navigators/trapezoidal-integration.svg" alt="Trapezoidal integration of velocity to obtain position" width="560" height="280">
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_classes"><a class="anchor" href="#_classes"></a>Classes</h2>
+<div class="sectionbody">
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 33.3333%;">
+<col style="width: 50.0001%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Class</th>
+<th class="tableblock halign-left valign-top">Resolving frame</th>
+<th class="tableblock halign-left valign-top">Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ECIInertialNavigator</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ECI (inertial)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Simplest: no Earth-rotation or transport-rate terms; gravitation only (no centrifugal term).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ECEFInertialNavigator</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ECEF (rotates with the Earth)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Adds the Earth-rotation (Coriolis + attitude) term; gravity includes the centrifugal component.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>NEDInertialNavigator</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Local navigation (north, east, down)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Adds the further transport-rate term from moving across the Earth&#8217;s surface; position is curvilinear
+(latitude, longitude, height) rather than Cartesian.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>InertialNavigatorException</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">—</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Thrown when navigation fails due to numerical instabilities (e.g., an invalid rotation matrix).</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>See <a href="navigation-equations.html" class="xref page">Precision Navigation Equations</a> for the full equations of each navigator.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The IMU measurement itself (<code>fx</code>/<code>fy</code>/<code>fz</code>, <code>angularRateX</code>/<code>Y</code>/<code>Z</code>) is always resolved about
+<strong>body-frame</strong> axes for all three navigators — NED is not required as the <strong>resolving</strong> frame. Choosing
+<code>NEDInertialNavigator</code> versus <code>ECEFInertialNavigator</code>/<code>ECIInertialNavigator</code> only decides which frame the
+<strong>output</strong> position, velocity, and attitude are resolved in; pick whichever matches what the rest of your
+application (or your GNSS/GPS input) already uses, and convert between them if needed (see
+<code>com.irurueta.navigation.frames</code> frame converters) rather than assuming NED is mandatory.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Separately, the <strong>body</strong>-frame axes of <code>fx</code>/<code>fy</code>/<code>fz</code>/<code>angularRateX</code>/<code>Y</code>/<code>Z</code> themselves must already follow
+Groves' forward-right-down (FRD) convention (§2.1.4, <a href="../reference.html#book-groves" class="xref page">[book-groves]</a>) —
+see <a href="../estimators/index.html" class="xref page">the same warning on the estimators page</a> for why, and the conversion to
+apply if your IMU instead reports an ENU-aligned body convention (<span class="steminline"> <svg style="vertical-align: -0.025ex; overflow: visible;" xmlns="http://www.w3.org/2000/svg" width="1.294ex" height="1.025ex" role="img" focusable="false" viewBox="0 -442 572 453"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D465" d="M52 289Q59 331 106 386T222 442Q257 442 286 424T329 379Q371 442 430 442Q467 442 494 420T522 361Q522 332 508 314T481 292T458 288Q439 288 427 299T415 328Q415 374 465 391Q454 404 425 404Q412 404 406 402Q368 386 350 336Q290 115 290 78Q290 50 306 38T341 26Q378 26 414 59T463 140Q466 150 469 151T485 153H489Q504 153 504 145Q504 144 502 134Q486 77 440 33T333 -11Q263 -11 227 52Q186 -10 133 -10H127Q78 -10 57 16T35 71Q35 103 54 123T99 143Q142 143 142 101Q142 81 130 66T107 46T94 41L91 40Q91 39 97 36T113 29T132 26Q168 26 194 71Q203 87 217 139T245 247T261 313Q266 340 266 352Q266 380 251 392T217 404Q177 404 142 372T93 290Q91 281 88 280T72 278H58Q52 284 52 289Z"></path></g></g></g></svg> </span>=East, <span class="steminline"> <svg style="vertical-align: -0.464ex; overflow: visible;" xmlns="http://www.w3.org/2000/svg" width="1.109ex" height="1.464ex" role="img" focusable="false" viewBox="0 -442 490 647"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D466" d="M21 287Q21 301 36 335T84 406T158 442Q199 442 224 419T250 355Q248 336 247 334Q247 331 231 288T198 191T182 105Q182 62 196 45T238 27Q261 27 281 38T312 61T339 94Q339 95 344 114T358 173T377 247Q415 397 419 404Q432 431 462 431Q475 431 483 424T494 412T496 403Q496 390 447 193T391 -23Q363 -106 294 -155T156 -205Q111 -205 77 -183T43 -117Q43 -95 50 -80T69 -58T89 -48T106 -45Q150 -45 150 -87Q150 -107 138 -122T115 -142T102 -147L99 -148Q101 -153 118 -160T152 -167H160Q177 -167 186 -165Q219 -156 247 -127T290 -65T313 -9T321 21L315 17Q309 13 296 6T270 -6Q250 -11 231 -11Q185 -11 150 11T104 82Q103 89 103 113Q103 170 138 262T173 379Q173 380 173 381Q173 390 173 393T169 400T158 404H154Q131 404 112 385T82 344T65 302T57 280Q55 278 41 278H27Q21 284 21 287Z"></path></g></g></g></svg> </span>=North,
+<span class="steminline"> <svg style="vertical-align: -0.025ex; overflow: visible;" xmlns="http://www.w3.org/2000/svg" width="1.052ex" height="1.025ex" role="img" focusable="false" viewBox="0 -442 465 453"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><path data-c="1D467" d="M347 338Q337 338 294 349T231 360Q211 360 197 356T174 346T162 335T155 324L153 320Q150 317 138 317Q117 317 117 325Q117 330 120 339Q133 378 163 406T229 440Q241 442 246 442Q271 442 291 425T329 392T367 375Q389 375 411 408T434 441Q435 442 449 442H462Q468 436 468 434Q468 430 463 420T449 399T432 377T418 358L411 349Q368 298 275 214T160 106L148 94L163 93Q185 93 227 82T290 71Q328 71 360 90T402 140Q406 149 409 151T424 153Q443 153 443 143Q443 138 442 134Q425 72 376 31T278 -11Q252 -11 232 6T193 40T155 57Q111 57 76 -3Q70 -11 59 -11H54H41Q35 -5 35 -2Q35 13 93 84Q132 129 225 214T340 322Q352 338 347 338Z"></path></g></g></g></svg> </span>=Up). This is unrelated to the NED/ECEF/ECI resolving-frame choice above; do not confuse the two.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_where_to_go_next"><a class="anchor" href="#_where_to_go_next"></a>Where to go next</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><a href="navigation-equations.html" class="xref page">Precision Navigation Equations</a> — detailed equations for each frame.</p>
+</li>
+<li>
+<p><a href="../estimators/kinematics.html" class="xref page">Kinematics Estimators</a> — the inverse problem (known trajectory to synthetic IMU measurements).</p>
+</li>
+<li>
+<p><a href="../reference.html#bibliography" class="xref page">reference.adoc#bibliography</a> — bibliography.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>Made with ♥ from <strong>BCN</strong></p>
+</footer>
+<script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+<script src="../../../_/js/vendor/lunr.js"></script>
+<script src="../../../_/js/search-ui.js" id="search-ui-script" data-site-root-path="../../.." data-snippet-length="100" data-stylesheet="../../../_/css/search.css"></script>
+<script async src="../../../search-index.js"></script>
+  </body>
+</html>

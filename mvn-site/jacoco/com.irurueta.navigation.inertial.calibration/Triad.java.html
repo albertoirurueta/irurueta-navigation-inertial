@@ -1,0 +1,491 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Triad.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-inertial</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.inertial.calibration</a> &gt; <span class="el_source">Triad.java</span></div><h1>Triad.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2020 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.inertial.calibration;
+
+import com.irurueta.algebra.Matrix;
+import com.irurueta.algebra.WrongSizeException;
+import com.irurueta.units.Measurement;
+
+import java.io.Serializable;
+import java.util.Objects;
+
+/**
+ * Contains a triad of measurement data.
+ *
+ * @param &lt;U&gt; type of unit.
+ * @param &lt;M&gt; a type of measurement.
+ */
+public abstract class Triad&lt;U extends Enum&lt;?&gt;, M extends Measurement&lt;U&gt;, T extends Triad&lt;U, M, T&gt;&gt;
+        implements Serializable {
+
+    /**
+     * Number of components of measurements.
+     */
+    public static final int COMPONENTS = 3;
+
+    /**
+     * Contains x coordinate of measurement value.
+     */
+    private double valueX;
+
+    /**
+     * Contains y coordinate of measurement value.
+     */
+    private double valueY;
+
+    /**
+     * Contains z coordinate of measurement value.
+     */
+    private double valueZ;
+
+    /**
+     * Contains unit of measurement.
+     */
+    private U unit;
+
+    /**
+     * Constructor.
+     *
+     * @param unit unit of measurement.
+     * @throws IllegalArgumentException if provided unit is null.
+     */
+<span class="fc" id="L65">    protected Triad(final U unit) {</span>
+<span class="pc bpc" id="L66" title="1 of 2 branches missed.">        if (unit == null) {</span>
+<span class="nc" id="L67">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L70">        this.unit = unit;</span>
+<span class="fc" id="L71">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param unit   unit of measurement.
+     * @param valueX value of x-coordinate.
+     * @param valueY value of y-coordinate.
+     * @param valueZ value of z-coordinate.
+     * @throws IllegalArgumentException if provided unit is null.
+     */
+    protected Triad(final U unit, final double valueX, final double valueY, final double valueZ) {
+<span class="fc" id="L83">        this(unit);</span>
+<span class="fc" id="L84">        setValueCoordinates(valueX, valueY, valueZ);</span>
+<span class="fc" id="L85">    }</span>
+
+    /**
+     * Copy constructor.
+     *
+     * @param other instance to copy from.
+     */
+<span class="fc" id="L92">    protected Triad(final Triad&lt;U, M, T&gt; other) {</span>
+<span class="fc" id="L93">        copyFrom(other);</span>
+<span class="fc" id="L94">    }</span>
+
+    /**
+     * Gets x coordinate of measurement value expressed in current unit.
+     *
+     * @return x coordinate of measurement value.
+     */
+    public double getValueX() {
+<span class="fc" id="L102">        return valueX;</span>
+    }
+
+    /**
+     * Sets x coordinate of measurement value using current unit.
+     *
+     * @param valueX x coordinate of measurement value.
+     */
+    public void setValueX(final double valueX) {
+<span class="fc" id="L111">        this.valueX = valueX;</span>
+<span class="fc" id="L112">    }</span>
+
+    /**
+     * Gets y coordinate of measurement value expressed in current unit.
+     *
+     * @return y coordinate of measurement value.
+     */
+    public double getValueY() {
+<span class="fc" id="L120">        return valueY;</span>
+    }
+
+    /**
+     * Sets y coordinate of measurement value using current unit.
+     *
+     * @param valueY y coordinate of measurement value.
+     */
+    public void setValueY(final double valueY) {
+<span class="fc" id="L129">        this.valueY = valueY;</span>
+<span class="fc" id="L130">    }</span>
+
+    /**
+     * Gets z coordinate of measurement value expressed in current unit.
+     *
+     * @return z coordinate of measurement value.
+     */
+    public double getValueZ() {
+<span class="fc" id="L138">        return valueZ;</span>
+    }
+
+    /**
+     * Sets z coordinate of measurement value using current unit.
+     *
+     * @param valueZ z coordinate of measurement value.
+     */
+    public void setValueZ(final double valueZ) {
+<span class="fc" id="L147">        this.valueZ = valueZ;</span>
+<span class="fc" id="L148">    }</span>
+
+    /**
+     * Sets coordinates of measurement using current unit.
+     *
+     * @param valueX x coordinate of measurement.
+     * @param valueY y coordinate of measurement.
+     * @param valueZ z coordinate of measurement.
+     */
+    public void setValueCoordinates(final double valueX, final double valueY, final double valueZ) {
+<span class="fc" id="L158">        this.valueX = valueX;</span>
+<span class="fc" id="L159">        this.valueY = valueY;</span>
+<span class="fc" id="L160">        this.valueZ = valueZ;</span>
+<span class="fc" id="L161">    }</span>
+
+    /**
+     * Gets unit of measurement.
+     *
+     * @return unit of measurement.
+     */
+    public U getUnit() {
+<span class="fc" id="L169">        return unit;</span>
+    }
+
+    /**
+     * Sets unit of measurement.
+     *
+     * @param unit unit of measurement.
+     * @throws IllegalArgumentException if provided value is null.
+     */
+    public void setUnit(final U unit) {
+<span class="fc bfc" id="L179" title="All 2 branches covered.">        if (unit == null) {</span>
+<span class="fc" id="L180">            throw new IllegalArgumentException();</span>
+        }
+<span class="fc" id="L182">        this.unit = unit;</span>
+<span class="fc" id="L183">    }</span>
+
+    /**
+     * Sets value coordinates and unit.
+     *
+     * @param valueX x coordinate of measurement.
+     * @param valueY y coordinate of measurement.
+     * @param valueZ z coordinate of measurement.
+     * @param unit   unit of measurement.
+     * @throws IllegalArgumentException if provided unit is null.
+     */
+    public void setValueCoordinatesAndUnit(
+            final double valueX, final double valueY, final double valueZ, final U unit) {
+<span class="fc" id="L196">        setValueCoordinates(valueX, valueY, valueZ);</span>
+<span class="fc" id="L197">        setUnit(unit);</span>
+<span class="fc" id="L198">    }</span>
+
+    /**
+     * Gets measurement values as an array expressed in current unit.
+     *
+     * @return array containing measurement values.
+     */
+    public double[] getValuesAsArray() {
+<span class="fc" id="L206">        return new double[]{valueX, valueY, valueZ};</span>
+    }
+
+    /**
+     * Gets measurement values as an array expressed in current unit.
+     *
+     * @param result instance where result will be stored.
+     * @throws IllegalArgumentException if provided array does not have
+     *                                  length 3.
+     */
+    public void getValuesAsArray(final double[] result) {
+<span class="fc bfc" id="L217" title="All 2 branches covered.">        if (result.length != COMPONENTS) {</span>
+<span class="fc" id="L218">            throw new IllegalArgumentException();</span>
+        }
+<span class="fc" id="L220">        result[0] = valueX;</span>
+<span class="fc" id="L221">        result[1] = valueY;</span>
+<span class="fc" id="L222">        result[2] = valueZ;</span>
+<span class="fc" id="L223">    }</span>
+
+    /**
+     * Sets measurement coordinates from provided array.
+     *
+     * @param values array to set values from.
+     * @throws IllegalArgumentException if provided array does not have
+     *                                  length 3.
+     */
+    public void setValueCoordinates(final double[] values) {
+<span class="fc bfc" id="L233" title="All 2 branches covered.">        if (values.length != COMPONENTS) {</span>
+<span class="fc" id="L234">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L237">        valueX = values[0];</span>
+<span class="fc" id="L238">        valueY = values[1];</span>
+<span class="fc" id="L239">        valueZ = values[2];</span>
+<span class="fc" id="L240">    }</span>
+
+    /**
+     * Gets measurement values as a column matrix expressed in current unit.
+     *
+     * @return matrix containing measurement values.
+     */
+    public Matrix getValuesAsMatrix() {
+<span class="fc" id="L248">        Matrix result = null;</span>
+        try {
+<span class="fc" id="L250">            result = new Matrix(COMPONENTS, 1);</span>
+<span class="fc" id="L251">            getValuesAsMatrix(result);</span>
+<span class="nc" id="L252">        } catch (final WrongSizeException ignore) {</span>
+            // never happens
+<span class="fc" id="L254">        }</span>
+
+<span class="fc" id="L256">        return result;</span>
+    }
+
+    /**
+     * Gets measurement values as a column matrix expressed in current unit.
+     *
+     * @param result instance where result will be stored.
+     * @throws IllegalArgumentException if provided matrix is not 3x1.
+     */
+    public void getValuesAsMatrix(final Matrix result) {
+<span class="fc bfc" id="L266" title="All 4 branches covered.">        if (result.getRows() != COMPONENTS || result.getColumns() != 1) {</span>
+<span class="fc" id="L267">            throw new IllegalArgumentException();</span>
+        }
+<span class="fc" id="L269">        result.setElementAtIndex(0, valueX);</span>
+<span class="fc" id="L270">        result.setElementAtIndex(1, valueY);</span>
+<span class="fc" id="L271">        result.setElementAtIndex(2, valueZ);</span>
+<span class="fc" id="L272">    }</span>
+
+    /**
+     * Sets measurement coordinates from provided column matrix.
+     *
+     * @param values matrix to set values from.
+     * @throws IllegalArgumentException if provided matrix is not 3x1.
+     */
+    public void setValueCoordinates(final Matrix values) {
+<span class="fc bfc" id="L281" title="All 4 branches covered.">        if (values.getRows() != COMPONENTS || values.getColumns() != 1) {</span>
+<span class="fc" id="L282">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L285">        valueX = values.getElementAtIndex(0);</span>
+<span class="fc" id="L286">        valueY = values.getElementAtIndex(1);</span>
+<span class="fc" id="L287">        valueZ = values.getElementAtIndex(2);</span>
+<span class="fc" id="L288">    }</span>
+
+    /**
+     * Gets x coordinate of measurement value.
+     *
+     * @return x coordinate of measurement value.
+     */
+    public abstract M getMeasurementX();
+
+    /**
+     * Gets x coordinate of measurement value.
+     *
+     * @param result instance where x coordinate of measurement value
+     *               will be stored.
+     */
+    public abstract void getMeasurementX(final M result);
+
+    /**
+     * Sets x coordinate of measurement value.
+     *
+     * @param measurementX x coordinate of measurement value.
+     */
+    public abstract void setMeasurementX(final M measurementX);
+
+    /**
+     * Gets y coordinate of measurement value.
+     *
+     * @return y coordinate of measurement value.
+     */
+    public abstract M getMeasurementY();
+
+    /**
+     * Gets y coordinate of measurement value.
+     *
+     * @param result instance where y coordinate of measurement value
+     *               will be stored.
+     */
+    public abstract void getMeasurementY(final M result);
+
+    /**
+     * Sets y coordinate of measurement value.
+     *
+     * @param measurementY y coordinate of measurement value.
+     */
+    public abstract void setMeasurementY(final M measurementY);
+
+    /**
+     * Gets z coordinate of measurement value.
+     *
+     * @return z coordinate of measurement value.
+     */
+    public abstract M getMeasurementZ();
+
+    /**
+     * Gets z coordinate of measurement value.
+     *
+     * @param result instance where z coordinate of measurement value
+     *               will be stored.
+     */
+    public abstract void getMeasurementZ(final M result);
+
+    /**
+     * Sets z coordinate of measurement value.
+     *
+     * @param measurementZ z coordinate of measurement value.
+     */
+    public abstract void setMeasurementZ(final M measurementZ);
+
+    /**
+     * Sets measurement coordinates.
+     *
+     * @param measurementX x coordinate of measurement value.
+     * @param measurementY y coordinate of measurement value.
+     * @param measurementZ z coordinate of measurement value.
+     */
+    public abstract void setMeasurementCoordinates(
+            final M measurementX, final M measurementY, final M measurementZ);
+
+    /**
+     * Gets squared norm expressed in squared current unit.
+     *
+     * @return squared norm for triad values.
+     */
+    public double getSqrNorm() {
+<span class="fc" id="L372">        return valueX * valueX + valueY * valueY + valueZ * valueZ;</span>
+    }
+
+    /**
+     * Gets norm expressed in current unit.
+     *
+     * @return norm for triad values.
+     */
+    public double getNorm() {
+<span class="fc" id="L381">        return Math.sqrt(getSqrNorm());</span>
+    }
+
+    /**
+     * Gets norm as a measurement.
+     *
+     * @return norm as a measurement.
+     */
+    public abstract M getMeasurementNorm();
+
+    /**
+     * Gets norm as a measurement.
+     *
+     * @param result instance where norm value will be stored.
+     */
+    public void getMeasurementNorm(final M result) {
+<span class="fc" id="L397">        result.setValue(getNorm());</span>
+<span class="fc" id="L398">        result.setUnit(getUnit());</span>
+<span class="fc" id="L399">    }</span>
+
+    /**
+     * Copies this instance data into provided instance.
+     *
+     * @param output destination instance where data will be copied to.
+     */
+    public void copyTo(final Triad&lt;U, M, T&gt; output) {
+<span class="fc" id="L407">        output.copyFrom(this);</span>
+<span class="fc" id="L408">    }</span>
+
+    /**
+     * Copies data of provided instance into this instance.
+     *
+     * @param input instance to copy data from.
+     */
+    public void copyFrom(final Triad&lt;U, M, T&gt; input) {
+<span class="fc" id="L416">        valueX = input.valueX;</span>
+<span class="fc" id="L417">        valueY = input.valueY;</span>
+<span class="fc" id="L418">        valueZ = input.valueZ;</span>
+<span class="fc" id="L419">        unit = input.unit;</span>
+<span class="fc" id="L420">    }</span>
+
+    /**
+     * Creates and returns a new instance having exactly the same contents
+     * as this instance.
+     *
+     * @return a copy of this instance.
+     */
+    public abstract T copy();
+
+    /**
+     * Computes and returns hash code for this instance. Hash codes are almost unique
+     * values that are useful for fas classification and storage of objects in collections.
+     *
+     * @return Hash code.
+     */
+    @Override
+    public int hashCode() {
+<span class="fc" id="L438">        return Objects.hash(valueX, valueY, valueZ, unit);</span>
+    }
+
+    /**
+     * Checks if provided instance has exactly the same contents as this instance.
+     *
+     * @param other instance to be compared.
+     * @return true if both instances are considered to be equal, false otherwise.
+     */
+    public boolean equals(final Triad&lt;U, M, T&gt; other) {
+<span class="fc" id="L448">        return equals(other, 0.0);</span>
+    }
+
+    /**
+     * Checks if provided instance has contents similar to this instance up to provided
+     * threshold value.
+     *
+     * @param other     instance to be compared.
+     * @param threshold maximum allowed difference between values.
+     * @return true if both instances are considered to be equal (up to provided
+     * threshold), false otherwise.
+     */
+    public boolean equals(final Triad&lt;U, M, T&gt; other, final double threshold) {
+<span class="fc bfc" id="L461" title="All 2 branches covered.">        if (other == null) {</span>
+<span class="fc" id="L462">            return false;</span>
+        }
+
+<span class="pc bpc" id="L465" title="1 of 4 branches missed.">        return Math.abs(valueX - other.valueX) &lt;= threshold &amp;&amp; Math.abs(valueY - other.valueY) &lt;= threshold</span>
+<span class="pc bpc" id="L466" title="2 of 4 branches missed.">                &amp;&amp; Math.abs(valueZ - other.valueZ) &lt;= threshold &amp;&amp; Objects.equals(unit, other.unit);</span>
+    }
+
+
+    /**
+     * Checks if provided object is a Triad instance having exactly the same contents
+     * as this instance.
+     *
+     * @param o object to be compared.
+     * @return true if both objects are considered to be equal, false otherwise.
+     */
+    @Override
+    public boolean equals(final Object o) {
+<span class="pc bpc" id="L479" title="1 of 2 branches missed.">        if (this == o) {</span>
+<span class="nc" id="L480">            return true;</span>
+        }
+<span class="pc bpc" id="L482" title="1 of 4 branches missed.">        if (o == null || getClass() != o.getClass()) {</span>
+<span class="fc" id="L483">            return false;</span>
+        }
+
+        //noinspection unchecked
+<span class="fc" id="L487">        final var triad = (Triad&lt;U, M, T&gt;) o;</span>
+<span class="fc" id="L488">        return equals(triad);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>
