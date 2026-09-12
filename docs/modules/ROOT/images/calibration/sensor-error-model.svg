@@ -11,12 +11,12 @@
 
     <!-- Actual, non-orthogonal, scaled sensitive axes -->
     <line x1="0" y1="0" x2="96" y2="18" stroke="#c0392b" stroke-width="2.5"/>
-    <polygon points="96,18 81,15 87,28" fill="#c0392b"/>
+    <polygon points="96,18 82.7,23.7 85.7,7.9" fill="#c0392b"/>
     <text x="100" y="34" font-size="13" fill="#c0392b">actual x-axis</text>
     <text x="100" y="50" font-size="11" fill="#c0392b">(scale factor + misalignment)</text>
 
     <line x1="0" y1="0" x2="-24" y2="-92" stroke="#c0392b" stroke-width="2.5"/>
-    <polygon points="-24,-92 -34,-82 -18,-80" fill="#c0392b"/>
+    <polygon points="-24,-92 -13.2,-82.4 -28.7,-78.4" fill="#c0392b"/>
     <text x="-96" y="-96" font-size="13" fill="#c0392b">actual y-axis</text>
 
     <!-- angle between ideal and actual x -->

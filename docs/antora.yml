@@ -1,5 +1,5 @@
 name: irurueta-navigation-inertial
 version: 1.10.1
-title: Irurueta Navigation Inertial
+title: Irurueta Inertial Navigation
 nav:
   - modules/ROOT/nav.adoc

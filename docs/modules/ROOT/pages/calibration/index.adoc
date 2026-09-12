@@ -1,4 +1,6 @@
 = IMU Calibration
+:description: Overview of IMU sensor calibration: the shared bias, scale-factor, and cross-coupling error model for accelerometers, gyroscopes, and magnetometers, and a map of the calibration package.
+:keywords: IMU calibration, sensor error model, bias, scale factor, cross-axis coupling, accelerometer calibration, gyroscope calibration, magnetometer calibration, robust estimation
 
 NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
 

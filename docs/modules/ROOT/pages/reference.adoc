@@ -1,4 +1,6 @@
 = Reference
+:description: Links to generated Javadoc, code coverage, test, and quality reports, plus the full bibliography of books, papers, and companion software cited across the documentation.
+:keywords: Javadoc, JaCoCo coverage, Surefire, SonarCloud, bibliography, Groves GNSS book, IMU calibration papers, World Magnetic Model references
 
 NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
 
@@ -11,11 +13,23 @@ These reports are generated during the build.
 |Report
 |Description
 
-|https://albertoirurueta.github.io/irurueta-navigation-inertial[Maven Site Report]
+| https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs[Javadoc]
+| API reference generated as part of Maven site execution.
+
+| https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/jacoco/index.html[JaCoCo]
+| Code coverage report generated during the Maven build.
+
+| https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/surefire.html[Surefire]
+| Unit test execution report.
+
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/[Maven Site Report]
 |Aggregated Maven site published to GitHub Pages: Javadoc API documentation, JaCoCo code coverage, Surefire test results, Checkstyle, SpotBugs, PMD and JXR cross-referenced source.
 
 |https://sonarcloud.io/dashboard?id=albertoirurueta_irurueta-navigation-inertial[SonarCloud Dashboard]
 |Continuous code quality analysis: bugs, code smells, coverage, duplications, maintainability, reliability, security and technical debt ratings.
+
+|https://github.com/albertoirurueta/irurueta-navigation-inertial[Repository]
+|Github repository
 |===
 
 [#bibliography]
@@ -71,11 +85,14 @@ xref:calibration/intervals-and-generators.adoc[] and the accelerometer's gravity
 
 [[suh2010]] *[suh2010]* Y. S. Suh, "Orientation estimation using a quaternion-based indirect Kalman
 filter with adaptive estimation of external acceleration," _IEEE Transactions on Instrumentation and
-Measurement_, 2010. Used by xref:calibration/gyroscope.adoc[`SuhQuaternionStepIntegrator`].
+Measurement_, 2010. https://ieeexplore.ieee.org/document/5462839/[IEEE Xplore]. Used by
+xref:calibration/gyroscope.adoc[`SuhQuaternionStepIntegrator`].
 
 [[trawny2005]] *[trawny2005]* N. Trawny, S. I. Roumeliotis, "Indirect Kalman Filter for 3D Attitude
 Estimation," University of Minnesota, Dept. of Computer Science & Engineering, Technical Report
-2005-002, 2005. Used by xref:calibration/gyroscope.adoc[`TrawnyQuaternionStepIntegrator`].
+2005-002, 2005. https://mars.cs.umn.edu/tr/reports/Trawny05b.pdf[PDF]. Used by
+xref:calibration/gyroscope.adoc[`TrawnyQuaternionStepIntegrator`].
 
 [[yuan2015]] *[yuan2015]* S. Yuan, "Quaternion-based Unscented Kalman Filter for Real-time Attitude
-Estimation," 2015. Used by xref:calibration/gyroscope.adoc[`YuanQuaternionStepIntegrator`].
+Estimation," 2015. (No official source could be located for this citation.) Used by
+xref:calibration/gyroscope.adoc[`YuanQuaternionStepIntegrator`].

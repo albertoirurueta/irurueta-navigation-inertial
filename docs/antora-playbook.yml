@@ -1,5 +1,5 @@
 site:
-  title: irurueta-navigation-inertial
+  title: Irurueta Inertial Navigation
   start_page: irurueta-navigation-inertial::index.adoc
 content:
   sources:
@@ -28,6 +28,6 @@ asciidoc:
   attributes:
     stem: latexmath
     mathjax-tex-tags: ams
-    mathjax-tex-packages: "ams boldsymbol"
+    mathjax-tex-packages: ams boldsymbol
   extensions:
     - '@djencks/asciidoctor-mathjax'

@@ -1,9 +1,12 @@
 = Fixers: Undoing the Sensor Error Model
+:description: How to invert the sensor error model with AccelerationFixer, AngularRateFixer, MagneticFluxDensityFixer, and BodyKinematicsFixer to correct raw IMU readings once calibration parameters are known.
+:keywords: sensor fixer, error correction, AccelerationFixer, AngularRateFixer, MagneticFluxDensityFixer, IMUErrorsCreator
 
 NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
 
 Classes: `AccelerationFixer`, `AngularRateFixer`, `MagneticFluxDensityFixer`, `BodyKinematicsFixer`,
-`IMUErrorsCreator`.
+`IMUErrorsCreator` (see the <<Class Reference>> table at the end of this page for Javadoc and source
+links).
 
 Once a calibrator (xref:calibration/accelerometer.adoc[], xref:calibration/gyroscope.adoc[],
 xref:calibration/magnetometer.adoc[]) has estimated bias and the cross-coupling matrix, the *fixers*
@@ -135,6 +138,44 @@ IMUErrorsCreator creator = new IMUErrorsCreator(
 
 IMUErrors imuErrors = creator.create();
 ----
+
+== Class Reference
+
+Javadoc and source links for the classes used in the examples above:
+
+[cols="1,1,1",options="header"]
+|===
+|Class |Javadoc |Source
+
+|`AccelerationFixer`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/AccelerationFixer.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/AccelerationFixer.java[Source^]
+
+|`AngularRateFixer`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/AngularRateFixer.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/AngularRateFixer.java[Source^]
+
+|`MagneticFluxDensityFixer`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/MagneticFluxDensityFixer.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/MagneticFluxDensityFixer.java[Source^]
+
+|`BodyKinematicsFixer`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/BodyKinematicsFixer.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/BodyKinematicsFixer.java[Source^]
+
+|`IMUErrorsCreator`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/IMUErrorsCreator.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/IMUErrorsCreator.java[Source^]
+
+|`BodyKinematics`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/BodyKinematics.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/BodyKinematics.java[Source^]
+
+|`IMUErrors`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/IMUErrors.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/IMUErrors.java[Source^]
+
+|===
 
 == Where to go next
 

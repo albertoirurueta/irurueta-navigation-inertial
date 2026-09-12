@@ -1,4 +1,6 @@
 = Estimators
+:description: Overview of the estimators package — stateless utility classes for gravity, kinematics, position/velocity, and attitude computations across NED, ECEF, and ECI reference frames.
+:keywords: inertial navigation estimators, gravity model, kinematics estimator, NED ECEF ECI frames, WGS84, body-frame convention
 
 NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
 
