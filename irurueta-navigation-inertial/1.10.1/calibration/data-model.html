@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Calibration Data Model :: Irurueta Inertial Navigation</title>
+    <meta name="description" content="Shared data classes used by every calibrator — triads, BodyKinematics-based measurement types, sequences, and the IMUErrors container.">
+    <meta name="keywords" content="IMU data model, BodyKinematics, triad, FrameBodyKinematics, IMUErrors, calibration measurements">
+    <meta name="generator" content="Antora 3.1.15">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+<link rel="icon" type="image/svg+xml" href="../../../_/img/logo.svg">
+  </head>
+  <body class="article">
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs'; mermaid.initialize({"startOnLoad":true}); </script><header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="../../.."><img src="../../../_/img/logo.svg" alt="Irurueta Inertial Navigation" class="navbar-brand-logo">Irurueta Inertial Navigation</a>
+      <div class="navbar-item search hide-for-print">
+        <div id="search-field" class="field">
+          <input id="search-input" type="text" placeholder="Search the docs">
+        </div>
+      </div>
+      <button class="navbar-burger" aria-controls="topbar-nav" aria-expanded="false" aria-label="Toggle main menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu" style="display: none;">
+      <div class="navbar-end">
+        <a class="navbar-item" href="#">Home</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Products</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Product A</a>
+            <a class="navbar-item" href="#">Product B</a>
+            <a class="navbar-item" href="#">Product C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Services</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Service A</a>
+            <a class="navbar-item" href="#">Service B</a>
+            <a class="navbar-item" href="#">Service C</a>
+          </div>
+        </div>
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="#">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="irurueta-navigation-inertial" data-version="1.10.1">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="../index.html">Irurueta Inertial Navigation</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../index.html">Overview</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../whats-new.html">What&#8217;s New</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../installation.html">Installation</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Estimators</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../estimators/index.html">Estimators</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../estimators/gravity.html">Gravity and Gravitation Estimators</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../estimators/kinematics.html">Kinematics Estimators</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../estimators/position-velocity.html">Radii of Curvature, Position and Velocity Estimators</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../estimators/attitude.html">Attitude Estimators: Leveling, Gyrocompassing, and Magnetic Heading</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Navigators</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../navigators/index.html">Navigators</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../navigators/navigation-equations.html">Precision Navigation Equations</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">World Magnetic Model</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../wmm/index.html">World Magnetic Model (WMM)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../wmm/spherical-harmonic-model.html">The Spherical Harmonic Model</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../wmm/earth-magnetic-flux-density.html">Earth Magnetic Flux Density Container and Simple Estimator</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Calibration</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html">IMU Calibration</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="data-model.html">Calibration Data Model</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="fixers.html">Fixers: Undoing the Sensor Error Model</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="accelerometer.html">Accelerometer Calibration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="gyroscope.html">Gyroscope Calibration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="magnetometer.html">Magnetometer Calibration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="intervals-and-generators.html">Static/Dynamic Interval Detection and Measurement Generation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="noise-and-bias.html">Noise and Approximate-Bias Estimators</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../reference.html">Reference</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Irurueta Inertial Navigation</span>
+    <span class="version">1.10.1</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <div class="title"><a href="../index.html">Irurueta Inertial Navigation</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">1.10.1</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">Irurueta Inertial Navigation</a></li>
+    <li>Calibration</li>
+    <li><a href="data-model.html">Calibration Data Model</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/albertoirurueta/irurueta-navigation-inertial/edit/develop/docs/modules/ROOT/pages/calibration/data-model.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Calibration Data Model</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+This documentation was generated with the assistance of AI. Please report any inaccuracies.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Classes: <code>Triad</code>, <code>AccelerationTriad</code>, <code>AngularSpeedTriad</code>, <code>MagneticFluxDensityTriad</code>, <code>SpeedTriad</code>,
+<code>DistanceTriad</code>, <code>BodyKinematicsSequence</code>, <code>FrameBodyKinematics</code>, <code>FrameBodyMagneticFluxDensity</code>,
+<code>StandardDeviationBodyKinematics</code>, <code>StandardDeviationFrameBodyKinematics</code>,
+<code>StandardDeviationBodyMagneticFluxDensity</code>, <code>StandardDeviationFrameBodyMagneticFluxDensity</code>,
+<code>StandardDeviationTimedBodyKinematics</code>, <code>TimedBodyKinematics</code>, <code>TimedBodyKinematicsAndMagneticFluxDensity</code>,
+<code>IMUErrors</code>, <code>CalibrationException</code> (see the <a href="#_class_reference">Class Reference</a> table at the end of this page for
+Javadoc and source links).</p>
+</div>
+<div class="paragraph">
+<p>Every calibrator in <a href="accelerometer.html" class="xref page">Accelerometer Calibration</a>, <a href="gyroscope.html" class="xref page">Gyroscope Calibration</a>, and
+<a href="magnetometer.html" class="xref page">Magnetometer Calibration</a> consumes measurements built from a small set of shared, composable
+data classes. Understanding these once avoids repeating them on every calibrator page.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_triads"><a class="anchor" href="#_triads"></a>Triads</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><code>Triad&lt;U, M&gt;</code> is the generic base for "three related scalar measurements sharing a unit," specialized as
+<code>AccelerationTriad</code>, <code>AngularSpeedTriad</code>, <code>MagneticFluxDensityTriad</code>, <code>SpeedTriad</code>, and <code>DistanceTriad</code>.
+Each wraps three <code>com.irurueta.units</code> measurements (e.g. three <code>Acceleration</code> values) as a single 3-axis
+vector, with conversions to/from a raw <code>double[]</code>/<code>Matrix</code> for use in the linear algebra that calibrators
+perform internally.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">AccelerationTriad triad = new AccelerationTriad(0.15, -0.18, -9.79); // m/s^2, default unit
+
+double[] asArray = triad.getValuesAsArray();
+double norm = triad.getNorm(); // magnitude of the 3-axis vector</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_building_up_a_measurement"><a class="anchor" href="#_building_up_a_measurement"></a>Building up a measurement</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Calibration measurements are built by progressively attaching more context to a raw <code>BodyKinematics</code>
+(specific force + angular rate) or magnetic-flux-density reading:</p>
+</div>
+<div class="imageblock"><div class="mermaid content" style=" ">flowchart LR
+    BK["BodyKinematics\n(raw specific force + angular rate)"] --> TBK["TimedBodyKinematics\n(+ timestamp)"]
+    TBK --> SDTBK["StandardDeviationTimedBodyKinematics\n(+ measurement std devs)"]
+    BK --> SDBK["StandardDeviationBodyKinematics\n(+ measurement std devs)"]
+    SDBK --> FBK["FrameBodyKinematics\n(+ known NED/ECEF frame)"]
+    FBK --> SDFBK["StandardDeviationFrameBodyKinematics\n(+ std devs, + frame)"]
+    SEQ["BodyKinematicsSequence&lt;T&gt;"] -.orders many TimedBodyKinematics-like items.-> TBK
+    BMFD["BodyMagneticFluxDensity"] --> FBMFD["FrameBodyMagneticFluxDensity\n(+ known frame)"]
+    FBMFD --> SDFBMFD["StandardDeviationFrameBodyMagneticFluxDensity\n(+ std devs)"]</div></div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>TimedBodyKinematics</code> / <code>TimedBodyKinematicsAndMagneticFluxDensity</code> — add a (relative) timestamp,
+needed once measurements must be processed <strong>in sequence</strong> (e.g. by
+<a href="gyroscope.html" class="xref page"><code>EasyGyroscopeCalibrator</code></a>, which integrates angular rate over time).</p>
+</li>
+<li>
+<p><code>StandardDeviationBodyKinematics</code> / <code>StandardDeviationBodyMagneticFluxDensity</code> — add the measurement&#8217;s
+standard deviation, used to weight measurements in a least-squares/robust fit (e.g. by a
+<a href="noise-and-bias.html" class="xref page">noise estimator</a>'s output).</p>
+</li>
+<li>
+<p><code>FrameBodyKinematics</code> / <code>FrameBodyMagneticFluxDensity</code> — add the <strong>known</strong> NED/ECEF/velocity/orientation
+frame the measurement was taken at. This is what lets a "known frame" calibrator solve for sensor
+errors directly, without needing to also estimate orientation.</p>
+</li>
+<li>
+<p><code>StandardDeviationFrameBodyKinematics</code> / <code>StandardDeviationFrameBodyMagneticFluxDensity</code> — both of the
+above combined; the most complete measurement type, used by most linear/non-linear least-squares
+calibrators.</p>
+</li>
+<li>
+<p><code>BodyKinematicsSequence&lt;T extends TimedBodyKinematics&gt;</code> — an ordered collection of timed kinematics
+samples captured while the device was <strong>moving</strong>, bracketed by static periods (whose mean specific force
+approximates the local gravity direction in body axes). This is the measurement unit consumed by
+<code>EasyGyroscopeCalibrator</code> and is built by <a href="intervals-and-generators.html" class="xref page">the interval
+detector/generator pipeline</a>.</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">BodyKinematics rawKinematics = new BodyKinematics(0.15, -0.18, -9.79, 0.001, -0.0005, 0.02);
+
+// a "known frame" measurement: raw kinematics + std devs + the frame it was taken at
+NEDPosition position = new NEDPosition(Math.toRadians(41.3851), Math.toRadians(2.1734), 0.0);
+CoordinateTransformation attitude = new CoordinateTransformation(
+        0.0, 0.0, 0.0, FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
+NEDFrame frame = new NEDFrame(position, attitude);
+
+StandardDeviationFrameBodyKinematics measurement =
+        new StandardDeviationFrameBodyKinematics(frame);
+measurement.setKinematics(rawKinematics);
+measurement.setSpecificForceStandardDeviation(0.01);
+measurement.setAngularRateStandardDeviation(0.001);</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_imuerrors"><a class="anchor" href="#_imuerrors"></a>IMUErrors</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A container for a <strong>complete</strong> IMU error model: accelerometer bias and <span class="steminline"> <svg style="vertical-align: -0.355ex; overflow: visible;" xmlns="http://www.w3.org/2000/svg" width="3.505ex" height="1.907ex" role="img" focusable="false" viewBox="0 -686 1549.1 843.1"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msub"><g data-mml-node="TeXAtom" data-mjx-texclass="ORD"><g data-mml-node="mi"><path data-c="1D40C" d="M314 0Q296 3 181 3T48 0H39V62H147V624H39V686H305Q316 679 323 667Q330 653 434 414L546 157L658 414Q766 662 773 674Q778 681 788 686H1052V624H944V62H1052V0H1040Q1016 3 874 3T708 0H696V62H804V341L803 618L786 580Q770 543 735 462T671 315Q540 13 536 9Q528 1 507 1Q485 1 477 9Q472 14 408 162T281 457T217 603Q215 603 215 334V62H323V0H314Z"></path></g></g><g data-mml-node="mi" transform="translate(1125,-150) scale(0.707)"><path data-c="1D44E" d="M33 157Q33 258 109 349T280 441Q331 441 370 392Q386 422 416 422Q429 422 439 414T449 394Q449 381 412 234T374 68Q374 43 381 35T402 26Q411 27 422 35Q443 55 463 131Q469 151 473 152Q475 153 483 153H487Q506 153 506 144Q506 138 501 117T481 63T449 13Q436 0 417 -8Q409 -10 393 -10Q359 -10 336 5T306 36L300 51Q299 52 296 50Q294 48 292 46Q233 -10 172 -10Q117 -10 75 30T33 157ZM351 328Q351 334 346 350T323 385T277 405Q242 405 210 374T160 293Q131 214 119 129Q119 126 119 118T118 106Q118 61 136 44T179 26Q217 26 254 59T298 110Q300 114 325 217T351 328Z"></path></g></g></g></g></svg> </span> (scale
+factor/cross-coupling), gyroscope bias, <span class="steminline"> <svg style="vertical-align: -0.667ex; overflow: visible;" xmlns="http://www.w3.org/2000/svg" width="3.421ex" height="2.219ex" role="img" focusable="false" viewBox="0 -686 1512.3 981"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msub"><g data-mml-node="TeXAtom" data-mjx-texclass="ORD"><g data-mml-node="mi"><path data-c="1D40C" d="M314 0Q296 3 181 3T48 0H39V62H147V624H39V686H305Q316 679 323 667Q330 653 434 414L546 157L658 414Q766 662 773 674Q778 681 788 686H1052V624H944V62H1052V0H1040Q1016 3 874 3T708 0H696V62H804V341L803 618L786 580Q770 543 735 462T671 315Q540 13 536 9Q528 1 507 1Q485 1 477 9Q472 14 408 162T281 457T217 603Q215 603 215 334V62H323V0H314Z"></path></g></g><g data-mml-node="mi" transform="translate(1125,-150) scale(0.707)"><path data-c="1D454" d="M311 43Q296 30 267 15T206 0Q143 0 105 45T66 160Q66 265 143 353T314 442Q361 442 401 394L404 398Q406 401 409 404T418 412T431 419T447 422Q461 422 470 413T480 394Q480 379 423 152T363 -80Q345 -134 286 -169T151 -205Q10 -205 10 -137Q10 -111 28 -91T74 -71Q89 -71 102 -80T116 -111Q116 -121 114 -130T107 -144T99 -154T92 -162L90 -164H91Q101 -167 151 -167Q189 -167 211 -155Q234 -144 254 -122T282 -75Q288 -56 298 -13Q311 35 311 43ZM384 328L380 339Q377 350 375 354T369 368T359 382T346 393T328 402T306 405Q262 405 221 352Q191 313 171 233T151 117Q151 38 213 38Q269 38 323 108L331 118L384 328Z"></path></g></g></g></g></svg> </span>, and <span class="steminline"> <svg style="vertical-align: -0.667ex; overflow: visible;" xmlns="http://www.w3.org/2000/svg" width="2.996ex" height="2.244ex" role="img" focusable="false" viewBox="0 -697 1324.3 992"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msub"><g data-mml-node="TeXAtom" data-mjx-texclass="ORD"><g data-mml-node="mi"><path data-c="1D406" d="M465 -10Q281 -10 173 88T64 343Q64 413 85 471T143 568T217 631T298 670Q371 697 449 697Q452 697 459 697T470 696Q502 696 531 690T582 675T618 658T644 641T656 632L732 695Q734 697 745 697Q758 697 761 692T765 668V627V489V449Q765 428 761 424T741 419H731H724Q705 419 702 422T695 444Q683 520 631 577T495 635Q364 635 295 563Q261 528 247 477T232 343Q232 296 236 260T256 185T296 120T366 76T472 52Q481 51 498 51Q544 51 573 67T607 108Q608 111 608 164V214H464V276H479Q506 273 680 273Q816 273 834 276H845V214H765V113V51Q765 16 763 8T750 0Q742 2 709 16T658 40L648 46Q592 -10 465 -10Z"></path></g></g><g data-mml-node="mi" transform="translate(937,-150) scale(0.707)"><path data-c="1D454" d="M311 43Q296 30 267 15T206 0Q143 0 105 45T66 160Q66 265 143 353T314 442Q361 442 401 394L404 398Q406 401 409 404T418 412T431 419T447 422Q461 422 470 413T480 394Q480 379 423 152T363 -80Q345 -134 286 -169T151 -205Q10 -205 10 -137Q10 -111 28 -91T74 -71Q89 -71 102 -80T116 -111Q116 -121 114 -130T107 -144T99 -154T92 -162L90 -164H91Q101 -167 151 -167Q189 -167 211 -155Q234 -144 254 -122T282 -75Q288 -56 298 -13Q311 35 311 43ZM384 328L380 339Q377 350 375 354T369 368T359 382T346 393T328 402T306 405Q262 405 221 352Q191 313 171 233T151 117Q151 38 213 38Q269 38 323 108L331 118L384 328Z"></path></g></g></g></g></svg> </span> (g-dependent
+bias), plus each sensor&#8217;s noise root-PSD and quantization level (see
+<a href="index.html" class="xref page">the sensor error model</a>). It is the output of a full calibration run
+(assembled by <code>IMUErrorsCreator</code>, see <a href="fixers.html" class="xref page">Fixers: Undoing the Sensor Error Model</a>) and can also be used as the input
+to a synthetic-data generator to simulate a specific, imperfect IMU for testing.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">double[] accelerometerBiases = {0.02, -0.01, 0.05};
+double[] gyroBiases = {1e-4, -5e-5, 2e-5};
+Matrix accelerometerMa = new Matrix(3, 3);
+Matrix gyroMg = new Matrix(3, 3);
+double accelerometerNoiseRootPsd = 1.2e-3;
+double gyroNoiseRootPsd = 3.5e-5;
+
+IMUErrors imuErrors = new IMUErrors(accelerometerBiases, gyroBiases, accelerometerMa, gyroMg,
+        accelerometerNoiseRootPsd, gyroNoiseRootPsd);</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_calibrationexception"><a class="anchor" href="#_calibrationexception"></a>CalibrationException</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Thrown by calibrators when the underlying numerical solve fails (e.g., an ill-conditioned or
+rank-deficient measurement set — too few measurements, or measurements that don&#8217;t sufficiently excite all
+axes).</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_class_reference"><a class="anchor" href="#_class_reference"></a>Class Reference</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Javadoc and source links for the classes used in the examples above:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Class</th>
+<th class="tableblock halign-left valign-top">Javadoc</th>
+<th class="tableblock halign-left valign-top">Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Triad</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/Triad.html" target="_blank" rel="noopener">Javadoc</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/Triad.java" target="_blank" rel="noopener">Source</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>AccelerationTriad</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/AccelerationTriad.html" target="_blank" rel="noopener">Javadoc</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/AccelerationTriad.java" target="_blank" rel="noopener">Source</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>AngularSpeedTriad</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/AngularSpeedTriad.html" target="_blank" rel="noopener">Javadoc</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/AngularSpeedTriad.java" target="_blank" rel="noopener">Source</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>MagneticFluxDensityTriad</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/MagneticFluxDensityTriad.html" target="_blank" rel="noopener">Javadoc</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/MagneticFluxDensityTriad.java" target="_blank" rel="noopener">Source</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>SpeedTriad</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/SpeedTriad.html" target="_blank" rel="noopener">Javadoc</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/SpeedTriad.java" target="_blank" rel="noopener">Source</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>DistanceTriad</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/DistanceTriad.html" target="_blank" rel="noopener">Javadoc</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/DistanceTriad.java" target="_blank" rel="noopener">Source</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>BodyKinematics</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/BodyKinematics.html" target="_blank" rel="noopener">Javadoc</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/BodyKinematics.java" target="_blank" rel="noopener">Source</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>BodyKinematicsSequence</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/BodyKinematicsSequence.html" target="_blank" rel="noopener">Javadoc</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/BodyKinematicsSequence.java" target="_blank" rel="noopener">Source</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>FrameBodyKinematics</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/FrameBodyKinematics.html" target="_blank" rel="noopener">Javadoc</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/FrameBodyKinematics.java" target="_blank" rel="noopener">Source</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>FrameBodyMagneticFluxDensity</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/FrameBodyMagneticFluxDensity.html" target="_blank" rel="noopener">Javadoc</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/FrameBodyMagneticFluxDensity.java" target="_blank" rel="noopener">Source</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>StandardDeviationBodyKinematics</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/StandardDeviationBodyKinematics.html" target="_blank" rel="noopener">Javadoc</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/StandardDeviationBodyKinematics.java" target="_blank" rel="noopener">Source</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>StandardDeviationFrameBodyKinematics</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/StandardDeviationFrameBodyKinematics.html" target="_blank" rel="noopener">Javadoc</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/StandardDeviationFrameBodyKinematics.java" target="_blank" rel="noopener">Source</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>StandardDeviationBodyMagneticFluxDensity</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/StandardDeviationBodyMagneticFluxDensity.html" target="_blank" rel="noopener">Javadoc</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/StandardDeviationBodyMagneticFluxDensity.java" target="_blank" rel="noopener">Source</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>StandardDeviationFrameBodyMagneticFluxDensity</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/StandardDeviationFrameBodyMagneticFluxDensity.html" target="_blank" rel="noopener">Javadoc</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/StandardDeviationFrameBodyMagneticFluxDensity.java" target="_blank" rel="noopener">Source</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>StandardDeviationTimedBodyKinematics</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/StandardDeviationTimedBodyKinematics.html" target="_blank" rel="noopener">Javadoc</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/StandardDeviationTimedBodyKinematics.java" target="_blank" rel="noopener">Source</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>TimedBodyKinematics</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/TimedBodyKinematics.html" target="_blank" rel="noopener">Javadoc</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/TimedBodyKinematics.java" target="_blank" rel="noopener">Source</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>TimedBodyKinematicsAndMagneticFluxDensity</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/TimedBodyKinematicsAndMagneticFluxDensity.html" target="_blank" rel="noopener">Javadoc</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/TimedBodyKinematicsAndMagneticFluxDensity.java" target="_blank" rel="noopener">Source</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>IMUErrors</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/IMUErrors.html" target="_blank" rel="noopener">Javadoc</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/IMUErrors.java" target="_blank" rel="noopener">Source</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>CalibrationException</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/CalibrationException.html" target="_blank" rel="noopener">Javadoc</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/CalibrationException.java" target="_blank" rel="noopener">Source</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_where_to_go_next"><a class="anchor" href="#_where_to_go_next"></a>Where to go next</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><a href="fixers.html" class="xref page">Fixers: Undoing the Sensor Error Model</a> — applying a known <code>IMUErrors</code> to correct raw readings.</p>
+</li>
+<li>
+<p><a href="accelerometer.html" class="xref page">Accelerometer Calibration</a>, <a href="gyroscope.html" class="xref page">Gyroscope Calibration</a>, <a href="magnetometer.html" class="xref page">Magnetometer Calibration</a> — the calibrators that produce these error parameters.</p>
+</li>
+<li>
+<p><a href="../reference.html#bibliography" class="xref page">reference.adoc#bibliography</a> — bibliography.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>Made with ♥ from <strong>BCN</strong></p>
+</footer>
+<script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+<script src="../../../_/js/vendor/lunr.js"></script>
+<script src="../../../_/js/search-ui.js" id="search-ui-script" data-site-root-path="../../.." data-snippet-length="100" data-stylesheet="../../../_/css/search.css"></script>
+<script async src="../../../search-index.js"></script>
+  </body>
+</html>

@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>World Magnetic Model (WMM) :: Irurueta Inertial Navigation</title>
+    <meta name="description" content="Overview of the World Magnetic Model (WMM) package for computing Earth's magnetic field magnitude, declination, and dip at a given position and date.">
+    <meta name="keywords" content="World Magnetic Model, WMM, magnetic declination, dip inclination, geomagnetic field, WorldMagneticModel, WMMLoader">
+    <meta name="generator" content="Antora 3.1.15">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+<link rel="icon" type="image/svg+xml" href="../../../_/img/logo.svg">
+  </head>
+  <body class="article">
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs'; mermaid.initialize({"startOnLoad":true}); </script><header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="../../.."><img src="../../../_/img/logo.svg" alt="Irurueta Inertial Navigation" class="navbar-brand-logo">Irurueta Inertial Navigation</a>
+      <div class="navbar-item search hide-for-print">
+        <div id="search-field" class="field">
+          <input id="search-input" type="text" placeholder="Search the docs">
+        </div>
+      </div>
+      <button class="navbar-burger" aria-controls="topbar-nav" aria-expanded="false" aria-label="Toggle main menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu" style="display: none;">
+      <div class="navbar-end">
+        <a class="navbar-item" href="#">Home</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Products</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Product A</a>
+            <a class="navbar-item" href="#">Product B</a>
+            <a class="navbar-item" href="#">Product C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Services</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Service A</a>
+            <a class="navbar-item" href="#">Service B</a>
+            <a class="navbar-item" href="#">Service C</a>
+          </div>
+        </div>
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="#">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="irurueta-navigation-inertial" data-version="1.10.1">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="../index.html">Irurueta Inertial Navigation</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../index.html">Overview</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../whats-new.html">What&#8217;s New</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../installation.html">Installation</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Estimators</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../estimators/index.html">Estimators</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../estimators/gravity.html">Gravity and Gravitation Estimators</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../estimators/kinematics.html">Kinematics Estimators</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../estimators/position-velocity.html">Radii of Curvature, Position and Velocity Estimators</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../estimators/attitude.html">Attitude Estimators: Leveling, Gyrocompassing, and Magnetic Heading</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Navigators</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../navigators/index.html">Navigators</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../navigators/navigation-equations.html">Precision Navigation Equations</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">World Magnetic Model</span>
+<ul class="nav-list">
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="index.html">World Magnetic Model (WMM)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="spherical-harmonic-model.html">The Spherical Harmonic Model</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="earth-magnetic-flux-density.html">Earth Magnetic Flux Density Container and Simple Estimator</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Calibration</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../calibration/index.html">IMU Calibration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../calibration/data-model.html">Calibration Data Model</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../calibration/fixers.html">Fixers: Undoing the Sensor Error Model</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../calibration/accelerometer.html">Accelerometer Calibration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../calibration/gyroscope.html">Gyroscope Calibration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../calibration/magnetometer.html">Magnetometer Calibration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../calibration/intervals-and-generators.html">Static/Dynamic Interval Detection and Measurement Generation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../calibration/noise-and-bias.html">Noise and Approximate-Bias Estimators</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../reference.html">Reference</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Irurueta Inertial Navigation</span>
+    <span class="version">1.10.1</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <div class="title"><a href="../index.html">Irurueta Inertial Navigation</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">1.10.1</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">Irurueta Inertial Navigation</a></li>
+    <li>World Magnetic Model</li>
+    <li><a href="index.html">World Magnetic Model (WMM)</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/albertoirurueta/irurueta-navigation-inertial/edit/develop/docs/modules/ROOT/pages/wmm/index.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">World Magnetic Model (WMM)</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+This documentation was generated with the assistance of AI. Please report any inaccuracies.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The <code>com.irurueta.navigation.inertial.wmm</code> package estimates the Earth&#8217;s magnetic flux density at a
+given position and date, using the U.S./U.K. <a href="https://www.ngdc.noaa.gov/geomag/WMM/">World Magnetic Model
+(WMM)</a> — see <a href="../reference.html#wmm-site" class="xref page">[wmm-site]</a>. It is used both as an independent heading
+reference (see <a href="../estimators/attitude.html" class="xref page"><code>AttitudeEstimator</code></a>) and as an input to magnetometer
+calibration (see <a href="../calibration/index.html" class="xref page">IMU Calibration</a>).</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>This library bundles a <strong>default</strong> WMM coefficient file (<code>wmm.cof</code>, currently WMM-2025, valid
+2025.0-2030.0 — see <a href="spherical-harmonic-model.html" class="xref page">The Spherical Harmonic Model</a>). Every WMM release expires after 5 years:
+past its valid period, the model&#8217;s secular-variation extrapolation drifts and declination/dip estimates
+become unreliable. Applications running past 2030 (or bundling this library long-term) should download
+the current release from
+<a href="https://www.ncei.noaa.gov/products/world-magnetic-model/wmm-coefficients">NOAA/NCEI&#8217;s WMM coefficients
+page</a> and load it explicitly with <code>WMMLoader</code>, instead of relying on the bundled default — see
+<a href="spherical-harmonic-model.html" class="xref page">The Spherical Harmonic Model</a> for how to load a custom coefficient file.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_what_the_wmm_provides"><a class="anchor" href="#_what_the_wmm_provides"></a>What the WMM provides</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>At any given latitude, longitude, height, and date, the Earth&#8217;s magnetic field can be described by three
+independent quantities:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 75%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Element</th>
+<th class="tableblock halign-left valign-top">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Magnitude</strong> (intensity)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Total field strength, roughly 30 microtesla (µT) at the equator up to about 60 µT near the poles.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Declination</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The bearing of the magnetic field from true north — the angle a compass needle&#8217;s reading must be
+corrected by to get true heading.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Dip</strong> (inclination)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The angle the field makes below the local horizontal plane — essentially the "magnetic latitude,"
+typically within about 10° of the geodetic latitude.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/wmm/geomagnetic-elements.svg" alt="Elements of the geomagnetic field: declination and dip versus horizontal and total intensity" width="520" height="380">
+</div>
+</div>
+<div class="paragraph">
+<p>Declination is the only one of the three needed to convert a magnetometer heading measurement into true
+heading (see <a href="../estimators/attitude.html" class="xref page"><code>AttitudeEstimator</code></a>). It is <strong>not</strong> constant: it drifts slowly
+over years (secular variation) and varies significantly with location, which is why a global model like
+the WMM — rather than a single fixed value — is needed.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_classes"><a class="anchor" href="#_classes"></a>Classes</h2>
+<div class="sectionbody">
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 75%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Class</th>
+<th class="tableblock halign-left valign-top">Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>WorldMagneticModel</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Holds the loaded Gauss coefficients (main field + secular variation) and derived normalization factors
+for one 5-year WMM release.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>WMMLoader</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Parses a WMM coefficient file (<code>.cof</code>) — from a resource, file, or URL — into a <code>WorldMagneticModel</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>WMMEarthMagneticFluxDensityEstimator</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Evaluates the spherical-harmonic model at a given position/date to get declination, dip, intensity, and
+the full NED magnetic flux density vector. This is the actual WMM algorithm.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>EarthMagneticFluxDensityEstimator</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A much simpler helper: builds a NED magnetic flux density vector directly from an already-known
+magnitude/declination/dip (e.g. supplied by the caller, without needing the full WMM coefficient set).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>NEDMagneticFluxDensity</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Data container for magnetic flux density resolved about north, east, down axes.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="imageblock"><div class="mermaid content" style=" ">flowchart LR
+    A[".cof coefficient file\n(NOAA/NGA/BGS release)"] -->|WMMLoader| B["WorldMagneticModel\n(Gauss coefficients)"]
+    B --> C["WMMEarthMagneticFluxDensityEstimator\n(spherical harmonic evaluation)"]
+    D["latitude, longitude,\nheight, date"] --> C
+    C --> E["declination, dip, intensity,\nNEDMagneticFluxDensity"]
+    E --> F["AttitudeEstimator\n(heading correction)"]
+    E --> G["Magnetometer calibration"]</div></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_where_to_go_next"><a class="anchor" href="#_where_to_go_next"></a>Where to go next</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><a href="spherical-harmonic-model.html" class="xref page">The Spherical Harmonic Model</a> — the coefficient file format and the spherical-harmonic algorithm.</p>
+</li>
+<li>
+<p><a href="earth-magnetic-flux-density.html" class="xref page">Earth Magnetic Flux Density Container and Simple Estimator</a> — the simpler magnitude/declination/dip container classes.</p>
+</li>
+<li>
+<p><a href="../estimators/attitude.html" class="xref page">Attitude Estimators: Leveling, Gyrocompassing, and Magnetic Heading</a> — how declination and dip feed into heading estimation.</p>
+</li>
+<li>
+<p><a href="../reference.html#bibliography" class="xref page">reference.adoc#bibliography</a> — bibliography.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>Made with ♥ from <strong>BCN</strong></p>
+</footer>
+<script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+<script src="../../../_/js/vendor/lunr.js"></script>
+<script src="../../../_/js/search-ui.js" id="search-ui-script" data-site-root-path="../../.." data-snippet-length="100" data-stylesheet="../../../_/css/search.css"></script>
+<script async src="../../../search-index.js"></script>
+  </body>
+</html>

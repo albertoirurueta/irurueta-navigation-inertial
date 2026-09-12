@@ -1,0 +1,50 @@
+<svg viewBox="0 0 560 380" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <!-- Redrawn after Groves, "Principles of GNSS, Inertial, and Multisensor Integrated Navigation Systems", Fig. 2.12 -->
+
+  <!-- Ellipsoid cross-section, centered at O=(260,220), a=190 (equatorial), b=120 (polar) -->
+  <ellipse cx="260" cy="220" rx="190" ry="120" fill="none" stroke="#333333" stroke-width="2"/>
+
+  <!-- polar axis z^e -->
+  <line x1="260" y1="45" x2="260" y2="340" stroke="#333333" stroke-width="1.5"/>
+  <polygon points="260,45 254,58 266,58" fill="#333333"/>
+  <text x="266" y="55" font-size="15" fill="#333333" font-style="italic">z^e</text>
+
+  <!-- equatorial plane -->
+  <line x1="45" y1="220" x2="500" y2="220" stroke="#333333" stroke-width="1.5"/>
+  <text x="60" y="212" font-size="14" fill="#333333">Equatorial plane</text>
+
+  <!-- center O -->
+  <circle cx="260" cy="220" r="3" fill="#333333"/>
+  <text x="243" y="238" font-size="14" fill="#333333">O</text>
+
+  <!-- point S on surface -->
+  <circle cx="369" cy="122" r="4" fill="#c0392b"/>
+  <text x="376" y="115" font-size="15" fill="#c0392b">S</text>
+
+  <!-- center-surface line O-S -->
+  <line x1="260" y1="220" x2="369" y2="122" stroke="#2980b9" stroke-width="2"/>
+  <text x="330" y="163" font-size="13" fill="#2980b9" font-style="italic">r^e_eS</text>
+  <text x="220" y="150" font-size="12" fill="#2980b9">center-surface line</text>
+
+  <!-- normal to equatorial plane (dashed vertical from S) -->
+  <line x1="369" y1="122" x2="369" y2="220" stroke="#888888" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <text x="374" y="175" font-size="12" fill="#666666" font-style="italic">z^e_eS</text>
+  <text x="330" y="234" font-size="12" fill="#666666" font-style="italic">beta^e_eS</text>
+
+  <!-- normal to ellipsoid at S, extended through equatorial plane crossing at (325.6,220) -->
+  <line x1="317.5" y1="238.3" x2="385.2" y2="85.1" stroke="#27ae60" stroke-width="2"/>
+  <polygon points="385.2,85.1 375,93 390,98" fill="#27ae60"/>
+  <text x="392" y="90" font-size="12" fill="#27ae60">normal to ellipsoid</text>
+
+  <!-- angle Phi at O -->
+  <path d="M 300 220 A 40 40 0 0 0 289.7 184.7" fill="none" stroke="#2980b9" stroke-width="1.5"/>
+  <text x="303" y="200" font-size="13" fill="#2980b9" font-style="italic">Phi_S</text>
+
+  <!-- angle L at normal's crossing of equatorial plane -->
+  <circle cx="325.6" cy="220" r="2.5" fill="#27ae60"/>
+  <path d="M 365 220 A 40 40 0 0 0 342.1 184.4" fill="none" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="352" y="196" font-size="13" fill="#27ae60" font-style="italic">L_S</text>
+
+  <text x="45" y="358" font-size="13" fill="#555555">Geocentric latitude Phi_S: angle of the center-surface line at O.</text>
+  <text x="45" y="374" font-size="13" fill="#555555">Geodetic latitude L_S: angle of the normal to the ellipsoid surface (L_S &gt; Phi_S off the equator).</text>
+</svg>
