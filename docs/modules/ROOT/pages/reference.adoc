@@ -85,11 +85,14 @@ xref:calibration/intervals-and-generators.adoc[] and the accelerometer's gravity
 
 [[suh2010]] *[suh2010]* Y. S. Suh, "Orientation estimation using a quaternion-based indirect Kalman
 filter with adaptive estimation of external acceleration," _IEEE Transactions on Instrumentation and
-Measurement_, 2010. Used by xref:calibration/gyroscope.adoc[`SuhQuaternionStepIntegrator`].
+Measurement_, 2010. https://ieeexplore.ieee.org/document/5462839/[IEEE Xplore]. Used by
+xref:calibration/gyroscope.adoc[`SuhQuaternionStepIntegrator`].
 
 [[trawny2005]] *[trawny2005]* N. Trawny, S. I. Roumeliotis, "Indirect Kalman Filter for 3D Attitude
 Estimation," University of Minnesota, Dept. of Computer Science & Engineering, Technical Report
-2005-002, 2005. Used by xref:calibration/gyroscope.adoc[`TrawnyQuaternionStepIntegrator`].
+2005-002, 2005. https://mars.cs.umn.edu/tr/reports/Trawny05b.pdf[PDF]. Used by
+xref:calibration/gyroscope.adoc[`TrawnyQuaternionStepIntegrator`].
 
 [[yuan2015]] *[yuan2015]* S. Yuan, "Quaternion-based Unscented Kalman Filter for Real-time Attitude
-Estimation," 2015. Used by xref:calibration/gyroscope.adoc[`YuanQuaternionStepIntegrator`].
+Estimation," 2015. (No official source could be located for this citation.) Used by
+xref:calibration/gyroscope.adoc[`YuanQuaternionStepIntegrator`].
