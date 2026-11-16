@@ -109,7 +109,7 @@ to *six* forms:
 [mermaid]
 ....
 flowchart LR
-    A["Known&lt;X&gt;...Calibrator\n(base: assumes every measurement is trustworthy)"] --> B["RANSACRobust...\n(random sample consensus)"]
+    A["Known&amp;lt;X&amp;gt;...Calibrator\n(base: assumes every measurement is trustworthy)"] --> B["RANSACRobust...\n(random sample consensus)"]
     A --> C["MSACRobust...\n(RANSAC + soft cost function)"]
     A --> D["LMedSRobust...\n(least median of squares)"]
     A --> E["PROSACRobust...\n(RANSAC + measurement quality ordering)"]

@@ -45,7 +45,7 @@ flowchart LR
     BK --> SDBK["StandardDeviationBodyKinematics\n(+ measurement std devs)"]
     SDBK --> FBK["FrameBodyKinematics\n(+ known NED/ECEF frame)"]
     FBK --> SDFBK["StandardDeviationFrameBodyKinematics\n(+ std devs, + frame)"]
-    SEQ["BodyKinematicsSequence&lt;T&gt;"] -.orders many TimedBodyKinematics-like items.-> TBK
+    SEQ["BodyKinematicsSequence&amp;lt;T&amp;gt;"] -.orders many TimedBodyKinematics-like items.-> TBK
     BMFD["BodyMagneticFluxDensity"] --> FBMFD["FrameBodyMagneticFluxDensity\n(+ known frame)"]
     FBMFD --> SDFBMFD["StandardDeviationFrameBodyMagneticFluxDensity\n(+ std devs)"]
 ....
