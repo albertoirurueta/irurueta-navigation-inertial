@@ -4,6 +4,10 @@
 
 NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
 
+== 1.10.2
+
+* ♻️ Updated internal dependencies to their latest patch versions: `irurueta-numerical` 1.6.1, `irurueta-geometry` 1.6.1, `irurueta-units` 1.4.1, `irurueta-algebra` 1.4.1 and `irurueta-navigation` 1.8.2. No changes to this library's own source.
+
 == 1.10.1
 
 * 🐛 Fixed flaky test assertions in magnetometer calibrator tests; no functional changes to library source.
