@@ -7,6 +7,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [1.10.2] - 2026-11-16
+
+### Changed
+
+- Updated internal dependencies: `irurueta-numerical` to 1.6.1, `irurueta-geometry` to 1.6.1, `irurueta-units` to
+  1.4.1, `irurueta-algebra` to 1.4.1, and `irurueta-navigation` to 1.8.2. No changes to this library's own source.
+
 ## [1.10.1] - 2026-07-28
 
 ### Fixed
@@ -201,7 +208,8 @@ Test-only fix; no functional changes to library source.
 
 - Ensured correct `Serializable` implementation (`serialVersionUID`, etc.) across inertial data classes.
 
-[Unreleased]: https://github.com/albertoirurueta/irurueta-navigation-inertial/compare/1.10.1...HEAD
+[Unreleased]: https://github.com/albertoirurueta/irurueta-navigation-inertial/compare/1.10.2...HEAD
+[1.10.2]: https://github.com/albertoirurueta/irurueta-navigation-inertial/compare/1.10.1...1.10.2
 [1.10.1]: https://github.com/albertoirurueta/irurueta-navigation-inertial/compare/1.10.0...1.10.1
 [1.10.0]: https://github.com/albertoirurueta/irurueta-navigation-inertial/compare/1.9.0...1.10.0
 [1.9.0]: https://github.com/albertoirurueta/irurueta-navigation-inertial/compare/1.8.0...1.9.0
