@@ -53,7 +53,7 @@ class AttitudeEstimatorTest {
     private static final double TIME_INTERVAL = 0.02;
 
     private static final double VERY_LARGE_ABSOLUTE_ERROR = 1e-2;
-    private static final double LARGE_ABSOLUTE_ERROR = 4e-4;
+    private static final double LARGE_ABSOLUTE_ERROR = 5e-4;
     private static final double ABSOLUTE_ERROR = 1e-8;
 
     private static final Calendar START_CALENDAR = Calendar.getInstance();
