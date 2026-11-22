@@ -133,7 +133,7 @@ Here stem:[\boldsymbol{\Omega}_{ie}^{e} = [(0,0,\omega_{ie})^{T}\wedge\]] is the
 rate, stem:[\hat{\mathbf{C}}_b^e] the current body-to-ECEF attitude of the Kalman state, stem:[\mathbf{f}_{ib}^b] the
 bias-corrected specific force of the last IMU sample, stem:[\boldsymbol{\gamma}_{ib}^e] the gravity at the current
 position (`ECEFGravityEstimator`) and stem:[r_{eS}^e] the geocentric radius at the previous latitude (Groves 2.137,
-using the WGS84 equatorial radius and eccentricity). The block in row 3 / column 2 links position error to velocity
+using the WGS84 equatorial radius and eccentricity). The block in row 2 / column 3 feeds position error into velocity
 error through the gravity gradient, and the stem:[\tau\,\mathbf{I}] block integrates velocity error into position
 error. The tightly coupled matrix is stem:[\boldsymbol{\Phi}] extended with an identity block for the clock states and
 one extra element, stem:[\Phi_{16,17} = \tau], that integrates drift into offset.

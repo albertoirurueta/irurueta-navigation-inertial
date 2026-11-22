@@ -151,7 +151,7 @@ measurements for stem:[n] unknowns. The classes enforce the following minimums (
 |===
 |Family (linear solver) |Unknowns (general) |Unknowns (common z-axis) |Minimum measurements
 
-|Accelerometer / magnetometer `KnownFrame`, `KnownBiasAndFrame`: bias and M
+|Accelerometer / magnetometer `KnownFrame`: bias and M
 |12
 |9
 |4

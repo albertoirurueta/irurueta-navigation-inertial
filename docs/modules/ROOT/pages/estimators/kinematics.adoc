@@ -94,7 +94,7 @@ skew-symmetric part, the inverse of the Rodrigues update used by the navigators
 
 [stem]
 ++++
-\boldsymbol{\alpha}^{b}_{ib} \approx \tfrac{1}{2}\begin{pmatrix} c_{32}-c_{23} \\ c_{13}-c_{31} \\ c_{21}-c_{12} \end{pmatrix}
+\boldsymbol{\alpha}^{b}_{ib} \approx \tfrac{1}{2}\begin{pmatrix} c_{23}-c_{32} \\ c_{31}-c_{13} \\ c_{12}-c_{21} \end{pmatrix}
 \frac{\theta}{\sin\theta}, \qquad \theta = \arccos\!\left(\tfrac{\operatorname{tr}(\mathbf{C}) - 1}{2}\right), \qquad
 \boldsymbol{\omega}^{b}_{ib} = \frac{\boldsymbol{\alpha}^{b}_{ib}}{\tau_i}
 ++++
@@ -165,7 +165,7 @@ into the rotation matrix stem:[\mathbf{C}^{e}_{i}(\alpha_{ie})]. The attitude in
 
 [stem]
 ++++
-\mathbf{C}^{b-}_{b+} = \mathbf{C}^{e}_{b}(+)^{\mathsf T}\,\mathbf{C}^{e}_{i}(\alpha_{ie})\,\mathbf{C}^{e}_{b}(-)
+\mathbf{C}^{b+}_{b-} = \mathbf{C}^{e}_{b}(+)^{\mathsf T}\,\mathbf{C}^{e}_{i}(\alpha_{ie})\,\mathbf{C}^{e}_{b}(-)
 ++++
 
 (inverting the attitude update of equations 5.19/5.20), and the specific force is transformed back to
@@ -204,7 +204,7 @@ The attitude increment uses the Earth rate plus the average of the old and new t
 
 [stem]
 ++++
-\mathbf{C}^{b-}_{b+} = \mathbf{C}^{n}_{b}(+)^{\mathsf T}\left(\mathbf{I}_3 - \left[\left(\boldsymbol{\omega}^{n}_{ie} + \tfrac{1}{2}\boldsymbol{\omega}^{n}_{en}(-) + \tfrac{1}{2}\boldsymbol{\omega}^{n}_{en}(+)\right)\wedge\right]\tau_i\right)\mathbf{C}^{n}_{b}(-)
+\mathbf{C}^{b+}_{b-} = \mathbf{C}^{n}_{b}(+)^{\mathsf T}\left(\mathbf{I}_3 - \left[\left(\boldsymbol{\omega}^{n}_{ie} + \tfrac{1}{2}\boldsymbol{\omega}^{n}_{en}(-) + \tfrac{1}{2}\boldsymbol{\omega}^{n}_{en}(+)\right)\wedge\right]\tau_i\right)\mathbf{C}^{n}_{b}(-)
 ++++
 
 Specific force resolved about NED axes (equation 5.54), with the old-state transport rate, old velocity and
