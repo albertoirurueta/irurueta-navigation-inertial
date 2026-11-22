@@ -1696,6 +1696,14 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
                 frame.setVelocityCoordinates(estimation.getVx(), estimation.getVy(), estimation.getVz());
             }
 
+            if (isPropagateReady()) {
+                // measurements are consumed by a Kalman filter epoch, which notifies
+                // its own propagation events
+                solveEpoch(timestamp);
+            }
+
+            // notified once provided measurements have been completely processed, so
+            // that this estimator already holds the corrected solution
             if (listener != null) {
                 listener.onUpdateGNSSMeasurementsEnd(this);
             }
@@ -1704,10 +1712,6 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
             throw new INSGNSSException(e);
         } finally {
             running = false;
-        }
-
-        if (isPropagateReady()) {
-            runEpoch(timestamp);
         }
 
         return true;
@@ -1973,6 +1977,26 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * @throws INSGNSSException if estimation fails due to numerical instabilities.
      */
     private void runEpoch(final double timestamp) throws INSGNSSException {
+        try {
+            running = true;
+            solveEpoch(timestamp);
+        } finally {
+            running = false;
+        }
+    }
+
+    /**
+     * Solves a Kalman filter epoch at provided timestamp using the INS-propagated
+     * solution as the predicted state and the last provided GNSS measurements, and
+     * applies the resulting closed-loop correction to the INS solution.
+     * This method notifies propagation events and must only be called while this
+     * estimator is locked (i.e. running), when it is ready to propagate and the epoch
+     * is not rejected.
+     *
+     * @param timestamp timestamp expressed in seconds since epoch time.
+     * @throws INSGNSSException if estimation fails due to numerical instabilities.
+     */
+    private void solveEpoch(final double timestamp) throws INSGNSSException {
         // the first epoch propagates the covariance over the time the INS solution has
         // been integrated
         final double propagationInterval;
@@ -1985,8 +2009,6 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
         }
 
         try {
-            running = true;
-
             if (listener != null) {
                 listener.onPropagateStart(this);
             }
@@ -2027,8 +2049,6 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
 
         } catch (final AlgebraException e) {
             throw new INSGNSSException(e);
-        } finally {
-            running = false;
         }
     }
 

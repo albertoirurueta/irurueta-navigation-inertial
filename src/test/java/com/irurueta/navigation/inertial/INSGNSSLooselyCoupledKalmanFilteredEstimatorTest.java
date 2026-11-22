@@ -481,6 +481,7 @@ class INSGNSSLooselyCoupledKalmanFilteredEstimatorTest implements INSGNSSLoosely
     private int updateBodyKinematicsEnd;
     private int propagateStart;
     private int propagateEnd;
+    private int propagateEndAtUpdateGNSSMeasurementsEnd;
     private int reset;
 
     @Test
@@ -3254,6 +3255,10 @@ class INSGNSSLooselyCoupledKalmanFilteredEstimatorTest implements INSGNSSLoosely
         assertEquals(3, propagateEnd);
         assertEquals(0, updateBodyKinematicsStart);
         assertEquals(0, updateBodyKinematicsEnd);
+
+        // end of each GNSS measurements update is notified after its Kalman filter epoch
+        assertEquals(propagateEnd, propagateEndAtUpdateGNSSMeasurementsEnd);
+        assertEquals(3, propagateEndAtUpdateGNSSMeasurementsEnd);
     }
 
     /**
@@ -3338,6 +3343,7 @@ class INSGNSSLooselyCoupledKalmanFilteredEstimatorTest implements INSGNSSLoosely
     public void onUpdateGNSSMeasurementsEnd(final INSGNSSLooselyCoupledKalmanFilteredEstimator estimator) {
         checkLocked(estimator);
         updateGNSSMeasurementsEnd++;
+        propagateEndAtUpdateGNSSMeasurementsEnd = propagateEnd;
     }
 
     @Override
@@ -3377,6 +3383,7 @@ class INSGNSSLooselyCoupledKalmanFilteredEstimatorTest implements INSGNSSLoosely
         updateBodyKinematicsEnd = 0;
         propagateStart = 0;
         propagateEnd = 0;
+        propagateEndAtUpdateGNSSMeasurementsEnd = 0;
         reset = 0;
     }
 

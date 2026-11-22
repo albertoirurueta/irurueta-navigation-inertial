@@ -507,6 +507,7 @@ class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements INSGNSSTightly
     private int updateBodyKinematicsEnd;
     private int propagateStart;
     private int propagateEnd;
+    private int propagateEndAtUpdateGNSSMeasurementsEnd;
     private int reset;
 
     @Test
@@ -3425,6 +3426,10 @@ class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements INSGNSSTightly
         assertEquals(3, updateGNSSMeasurementsEnd);
         assertEquals(3, propagateStart);
         assertEquals(3, propagateEnd);
+
+        // end of each GNSS measurements update is notified after its Kalman filter epoch
+        assertEquals(propagateEnd, propagateEndAtUpdateGNSSMeasurementsEnd);
+        assertEquals(3, propagateEndAtUpdateGNSSMeasurementsEnd);
     }
 
     @Override
@@ -3437,6 +3442,7 @@ class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements INSGNSSTightly
     public void onUpdateGNSSMeasurementsEnd(final INSGNSSTightlyCoupledKalmanFilteredEstimator estimator) {
         checkLocked(estimator);
         updateGNSSMeasurementsEnd++;
+        propagateEndAtUpdateGNSSMeasurementsEnd = propagateEnd;
     }
 
     @Override
@@ -3476,6 +3482,7 @@ class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements INSGNSSTightly
         updateBodyKinematicsEnd = 0;
         propagateStart = 0;
         propagateEnd = 0;
+        propagateEndAtUpdateGNSSMeasurementsEnd = 0;
         reset = 0;
     }
 

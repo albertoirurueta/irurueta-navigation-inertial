@@ -1675,10 +1675,6 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimator {
             lsEstimator.setMeasurements(this.measurements);
             estimatePositionAndVelocity();
 
-            if (listener != null) {
-                listener.onUpdateGNSSMeasurementsEnd(this);
-            }
-
             if (insEstimator.isPropagateReady()) {
                 // GNSS solution is the measurement of the Kalman filter epoch, valid at
                 // provided timestamp. The INS-propagated solution is the predicted state
@@ -1687,6 +1683,12 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimator {
             }
 
             updateState();
+
+            // notified once provided measurements have been completely processed, so
+            // that this estimator already holds the corrected solution
+            if (listener != null) {
+                listener.onUpdateGNSSMeasurementsEnd(this);
+            }
         } catch (final GNSSException | INSException e) {
             throw new INSGNSSException(e);
         } finally {
