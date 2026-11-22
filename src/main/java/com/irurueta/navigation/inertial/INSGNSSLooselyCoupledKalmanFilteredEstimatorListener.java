@@ -29,6 +29,9 @@ public interface INSGNSSLooselyCoupledKalmanFilteredEstimatorListener {
 
     /**
      * Called when GNSS measurements update ends.
+     * This is notified once provided measurements have been completely processed,
+     * after the propagation events of the Kalman filter epoch they trigger (if any),
+     * so that the estimator already holds the corrected solution.
      *
      * @param estimator estimator raising the event.
      */

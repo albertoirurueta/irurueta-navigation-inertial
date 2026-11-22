@@ -44,6 +44,18 @@ main-field Gauss coefficients (nT) at the model epoch; stem:[\dot g_n^m], stem:[
 secular-variation rates (nT/year). `WorldMagneticModel` stores these (Schmidt semi-normalized, see
 below) together with the epoch year.
 
+The model is built on a scalar potential: outside the sources, the main field is the negative gradient of
+
+[stem]
+++++
+V(r,\theta,\phi,t) = a\sum_{n=1}^{12}\left(\frac{a}{r}\right)^{n+1}\sum_{m=0}^{n}
+\left(g_{n}^{m}(t)\cos m\phi + h_{n}^{m}(t)\sin m\phi\right)P_{n}^{m}(\cos\theta),
+\qquad \mathbf{B} = -\nabla V
+++++
+
+whose gradient components are the sums given in step 4 below (the factor stem:[n+1] in stem:[B_r] comes
+from differentiating stem:[(a/r)^{n+1}] with respect to stem:[r]).
+
 == WMMLoader: Schmidt semi-normalization
 
 Raw Gauss coefficients are published in *Schmidt quasi-normalized* form. `WMMLoader` converts them, once,
@@ -91,7 +103,19 @@ flowchart TD
 ....
 
 *1. Geodetic-to-geocentric conversion.* Because the WGS84 ellipsoid is not a sphere, geodetic latitude
-must first be converted to a geocentric colatitude and radius before the spherical-harmonic sum applies.
+stem:[\varphi] and height stem:[h] must first be converted to a geocentric latitude stem:[\varphi'] (colatitude
+stem:[\theta = 90^\circ - \varphi']) and radius stem:[r]. With semi-axes stem:[a], stem:[b] (WGS84) and
+stem:[q = \sqrt{a^{2}\cos^{2}\varphi + b^{2}\sin^{2}\varphi}]:
+
+[stem]
+++++
+\tan\varphi' = \frac{hq + b^{2}}{hq + a^{2}}\tan\varphi, \qquad
+r^{2} = h^{2} + 2hq + \frac{a^{4}\cos^{2}\varphi + b^{4}\sin^{2}\varphi}{q^{2}}, \qquad
+\cos\psi = \frac{h+q}{r}, \quad \sin\psi = \frac{(a^{2}-b^{2})\sin\varphi\cos\varphi}{r\,q}
+++++
+
+where stem:[\psi = \varphi - \varphi'] is the angle later used in step 5. See
+xref:wmm/index.adoc[] for the full pipeline and a diagram of the coordinate conversion.
 
 *2. Time adjustment.* Coefficients are linearly extrapolated from the model epoch:
 
@@ -139,7 +163,7 @@ https://repository.library.noaa.gov/view/noaa/24390[NOAA WMM technical report]
 (xref:reference.adoc#wmm-site[[wmm-site\]]) for the full derivation.
 
 *5. Rotate to geodetic North/East/Down.* The geocentric components are rotated back into the geodetic
-frame using the geocentric/geodetic latitude difference angle stem:[\psi] computed during step 1:
+frame using the geocentric/geodetic latitude difference angle stem:[\psi = \varphi - \varphi'] computed during step 1:
 
 [stem]
 ++++

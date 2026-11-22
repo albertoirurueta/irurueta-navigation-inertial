@@ -32,6 +32,8 @@ import com.irurueta.navigation.frames.converters.ECEFtoECIFrameConverter;
 import com.irurueta.navigation.frames.converters.NEDtoECEFFrameConverter;
 import com.irurueta.navigation.geodesic.Constants;
 import com.irurueta.navigation.inertial.BodyKinematics;
+import com.irurueta.navigation.inertial.navigators.InertialNavigatorException;
+import com.irurueta.navigation.inertial.navigators.NEDInertialNavigator;
 import com.irurueta.statistics.UniformRandomizer;
 import com.irurueta.units.Angle;
 import com.irurueta.units.AngleUnit;
@@ -79,6 +81,68 @@ class NEDKinematicsEstimatorTest {
     private static final double LARGE_ABSOLUTE_ERROR = 1e-1;
 
     private static final int TIMES = 100;
+
+    /**
+     * Shortest time interval of the navigator round-trip test, expressed in seconds (s).
+     */
+    private static final double ROUND_TRIP_SHORT_TIME_INTERVAL_SECONDS = 0.1;
+
+    /**
+     * Longest time interval of the navigator round-trip test, expressed in seconds (s).
+     */
+    private static final double ROUND_TRIP_LONG_TIME_INTERVAL_SECONDS = 1.0;
+
+    /**
+     * Old NED velocity (north, east, down) of the navigator round-trip test, expressed in meters per second (m/s).
+     */
+    private static final double[] ROUND_TRIP_OLD_VELOCITY = {30.0, 20.0, -1.0};
+
+    /**
+     * Old body attitude (roll, pitch, yaw) of the navigator round-trip test, expressed in degrees.
+     */
+    private static final double[] ROUND_TRIP_OLD_ATTITUDE_DEGREES = {10.0, -20.0, 30.0};
+
+    /**
+     * Specific force (x, y, z) navigated in the round-trip test, expressed in meters per squared second (m/s^2).
+     */
+    private static final double[] ROUND_TRIP_SPECIFIC_FORCE = {1.0, 2.0, -9.8};
+
+    /**
+     * Angular rate (x, y, z) navigated in the round-trip test, expressed in radians per second (rad/s).
+     */
+    private static final double[] ROUND_TRIP_ANGULAR_RATE = {0.5, -0.3, 1.0};
+
+    /**
+     * Threshold used by the navigator of the round-trip test to accept the navigated body-to-NED matrix as a
+     * rotation.
+     * Nav_equations_NED updates attitude with the first-order factor (I - tau * skew(omega_in^n)) of eq. (5.77),
+     * which is not orthonormal: for these inputs the measured Frobenius norm of (C' * C - I) is 8.4e-11 for
+     * tau = 0.1 s and 8.6e-9 for tau = 1 s (it grows as (omega_in * tau)^2), so the default threshold of 1e-11
+     * rejects both and the smallest passing power of ten is 1e-8 for tau = 1 s. 1e-7 leaves one order of magnitude
+     * of margin over that.
+     */
+    private static final double ROUND_TRIP_ACCURACY_THRESHOLD = 1e-7;
+
+    /**
+     * Tolerance of the navigator round-trip test for tau = 0.1 s, for both specific force (m/s^2) and angular rate
+     * (rad/s).
+     * Derived from the measured round-trip error of the current (correct) implementation: the largest component
+     * error is 4.0e-12 m/s^2 in specific force and 1.9e-11 rad/s in angular rate, caused by the first-order
+     * attitude terms of eq. (5.46)-(5.54) and (5.77). 1e-9 is about 50 times the largest measured error, and still
+     * 280 times below the 2.8e-7 m/s^2 gravity change produced by using the new height (0.09 m away) instead of
+     * the old one.
+     */
+    private static final double ROUND_TRIP_SHORT_INTERVAL_ABSOLUTE_ERROR = 1e-9;
+
+    /**
+     * Tolerance of the navigator round-trip test for tau = 1 s, for both specific force (m/s^2) and angular rate
+     * (rad/s).
+     * Derived from the measured round-trip error of the current (correct) implementation: the largest component
+     * error is 6.9e-9 m/s^2 in specific force and 1.9e-9 rad/s in angular rate (the first-order error grows as
+     * tau^2 with respect to the 0.1 s case). 1e-7 is about 15 times the largest measured error, and still 10 times
+     * below the 1.0e-6 m/s^2 gravity change produced by using the new height (0.32 m away) instead of the old one.
+     */
+    private static final double ROUND_TRIP_LONG_INTERVAL_ABSOLUTE_ERROR = 1e-7;
 
     @Test
     void testEstimate() throws InvalidSourceAndDestinationFrameTypeException, InvalidRotationMatrixException {
@@ -1249,6 +1313,24 @@ class NEDKinematicsEstimatorTest {
         }
     }
 
+    /**
+     * Navigates one epoch with {@link NEDInertialNavigator} (Groves' {@code Nav_equations_NED}) from a fixed, rotating
+     * old frame and checks that {@link NEDKinematicsEstimator} (Groves' {@code Kinematics_NED}), fed with the old
+     * latitude and height, recovers the body kinematics that were navigated, for time intervals of 0.1 s and 1 s.
+     * This is a regression guard for the start-of-interval position convention.
+     *
+     * @throws InvalidSourceAndDestinationFrameTypeException never thrown, the frame types used are valid.
+     * @throws InvalidRotationMatrixException                never thrown, the old attitude is a valid rotation.
+     * @throws InertialNavigatorException                    never thrown, the navigated attitude is valid within
+     *                                                       {@link #ROUND_TRIP_ACCURACY_THRESHOLD}.
+     */
+    @Test
+    void testNavigatorRoundTripWithRotation() throws InvalidSourceAndDestinationFrameTypeException,
+            InvalidRotationMatrixException, InertialNavigatorException {
+        assertNavigatorRoundTrip(ROUND_TRIP_SHORT_TIME_INTERVAL_SECONDS, ROUND_TRIP_SHORT_INTERVAL_ABSOLUTE_ERROR);
+        assertNavigatorRoundTrip(ROUND_TRIP_LONG_TIME_INTERVAL_SECONDS, ROUND_TRIP_LONG_INTERVAL_ABSOLUTE_ERROR);
+    }
+
     private static NEDFrame createOldNedFrame() throws InvalidSourceAndDestinationFrameTypeException,
             InvalidRotationMatrixException {
 
@@ -1464,5 +1546,49 @@ class NEDKinematicsEstimatorTest {
             // If the time interval is zero, set the angular rate and specific force to zero
             return new BodyKinematics();
         }
+    }
+
+    /**
+     * Navigates one epoch of the given duration from the fixed old frame of the round-trip test and asserts that
+     * the kinematics estimated back from the old and navigated frames, using the old latitude and height, match
+     * the navigated ones.
+     *
+     * @param timeInterval  time interval between epochs expressed in seconds (s).
+     * @param absoluteError maximum allowed absolute error per component of specific force (m/s^2) and angular rate
+     *                      (rad/s).
+     * @throws InvalidSourceAndDestinationFrameTypeException never thrown, the frame types used are valid.
+     * @throws InvalidRotationMatrixException                never thrown, the old attitude is a valid rotation.
+     * @throws InertialNavigatorException                    if the navigated attitude is not a valid rotation within
+     *                                                       {@link #ROUND_TRIP_ACCURACY_THRESHOLD}.
+     */
+    private static void assertNavigatorRoundTrip(final double timeInterval, final double absoluteError)
+            throws InvalidSourceAndDestinationFrameTypeException, InvalidRotationMatrixException,
+            InertialNavigatorException {
+        final var q = new Quaternion(
+                Math.toRadians(ROUND_TRIP_OLD_ATTITUDE_DEGREES[0]),
+                Math.toRadians(ROUND_TRIP_OLD_ATTITUDE_DEGREES[1]),
+                Math.toRadians(ROUND_TRIP_OLD_ATTITUDE_DEGREES[2]));
+        final var oldC = new CoordinateTransformation(q.asInhomogeneousMatrix(), FrameType.BODY_FRAME,
+                FrameType.LOCAL_NAVIGATION_FRAME);
+        final var oldFrame = new NEDFrame(Math.toRadians(LATITUDE_DEGREES), Math.toRadians(LONGITUDE_DEGREES), HEIGHT,
+                ROUND_TRIP_OLD_VELOCITY[0], ROUND_TRIP_OLD_VELOCITY[1], ROUND_TRIP_OLD_VELOCITY[2], oldC);
+        final var kinematics = new BodyKinematics(
+                ROUND_TRIP_SPECIFIC_FORCE[0], ROUND_TRIP_SPECIFIC_FORCE[1], ROUND_TRIP_SPECIFIC_FORCE[2],
+                ROUND_TRIP_ANGULAR_RATE[0], ROUND_TRIP_ANGULAR_RATE[1], ROUND_TRIP_ANGULAR_RATE[2]);
+
+        final var frame = NEDInertialNavigator.navigateNEDAndReturnNew(timeInterval, oldFrame, kinematics,
+                ROUND_TRIP_ACCURACY_THRESHOLD);
+        final var result = new BodyKinematics();
+        NEDKinematicsEstimator.estimateKinematics(timeInterval,
+                frame.getCoordinateTransformation(), oldFrame.getCoordinateTransformation(),
+                frame.getVn(), frame.getVe(), frame.getVd(), oldFrame.getVn(), oldFrame.getVe(), oldFrame.getVd(),
+                frame.getLatitude(), frame.getHeight(), oldFrame.getLatitude(), oldFrame.getHeight(), result);
+
+        assertEquals(kinematics.getFx(), result.getFx(), absoluteError);
+        assertEquals(kinematics.getFy(), result.getFy(), absoluteError);
+        assertEquals(kinematics.getFz(), result.getFz(), absoluteError);
+        assertEquals(kinematics.getAngularRateX(), result.getAngularRateX(), absoluteError);
+        assertEquals(kinematics.getAngularRateY(), result.getAngularRateY(), absoluteError);
+        assertEquals(kinematics.getAngularRateZ(), result.getAngularRateZ(), absoluteError);
     }
 }

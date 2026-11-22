@@ -10,12 +10,14 @@
 * Navigators
 ** xref:navigators/index.adoc[]
 ** xref:navigators/navigation-equations.adoc[]
+** xref:navigators/kalman-filtered-estimators.adoc[]
 * World Magnetic Model
 ** xref:wmm/index.adoc[]
 ** xref:wmm/spherical-harmonic-model.adoc[]
 ** xref:wmm/earth-magnetic-flux-density.adoc[]
 * Calibration
 ** xref:calibration/index.adoc[]
+** xref:calibration/algorithms.adoc[]
 ** xref:calibration/data-model.adoc[]
 ** xref:calibration/fixers.adoc[]
 ** xref:calibration/accelerometer.adoc[]

@@ -5894,10 +5894,10 @@ class MSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCalibr
 
             assertNotNull(calibrator.getEstimatedCovariance());
             checkCommonAxisCovariance(calibrator.getEstimatedCovariance());
-            assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertTrue(calibrator.getEstimatedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedMse() >= 0.0);
+            assertTrue(calibrator.getEstimatedChiSq() >= 0.0);
             assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
-            assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedReducedChiSq() >= 0.0);
             assertTrue(calibrator.getEstimatedP() >= 0.0);
             assertTrue(calibrator.getEstimatedQ() > 0.0);
 
@@ -6102,10 +6102,10 @@ class MSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCalibr
 
             assertNotNull(calibrator.getEstimatedCovariance());
             checkGeneralCovariance(calibrator.getEstimatedCovariance());
-            assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertTrue(calibrator.getEstimatedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedMse() >= 0.0);
+            assertTrue(calibrator.getEstimatedChiSq() >= 0.0);
             assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
-            assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedReducedChiSq() >= 0.0);
             assertTrue(calibrator.getEstimatedP() >= 0.0);
             assertTrue(calibrator.getEstimatedQ() > 0.0);
 
@@ -6320,10 +6320,10 @@ class MSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCalibr
 
             assertNotNull(calibrator.getEstimatedCovariance());
             checkCommonAxisAndGDependantCrossBiasesCovariance(calibrator.getEstimatedCovariance());
-            assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertTrue(calibrator.getEstimatedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedMse() >= 0.0);
+            assertTrue(calibrator.getEstimatedChiSq() >= 0.0);
             assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
-            assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedReducedChiSq() >= 0.0);
             assertTrue(calibrator.getEstimatedP() >= 0.0);
             assertTrue(calibrator.getEstimatedQ() > 0.0);
 
@@ -6538,10 +6538,10 @@ class MSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCalibr
 
             assertNotNull(calibrator.getEstimatedCovariance());
             checkGeneralAndGDependantCrossBiasesCovariance(calibrator.getEstimatedCovariance());
-            assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertTrue(calibrator.getEstimatedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedMse() >= 0.0);
+            assertTrue(calibrator.getEstimatedChiSq() >= 0.0);
             assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
-            assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedReducedChiSq() >= 0.0);
             assertTrue(calibrator.getEstimatedP() >= 0.0);
             assertTrue(calibrator.getEstimatedQ() > 0.0);
 

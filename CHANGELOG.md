@@ -7,6 +7,61 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [1.11.0] - 2026-11-22
+
+### Fixed
+
+- `INSLooselyCoupledKalmanFilteredEstimator`, `INSGNSSLooselyCoupledKalmanFilteredEstimator` and
+  `INSGNSSTightlyCoupledKalmanFilteredEstimator` now integrate every provided IMU sample with the ECEF inertial
+  navigation equations (previously only samples one epoch interval apart were used), and each Kalman filter epoch
+  uses the resulting INS-propagated solution as its predicted state, applying the closed-loop correction back to
+  it, as in Groves' `Loosely_coupled_INS_GNSS.m` / `Tightly_coupled_INS_GNSS.m` reference algorithms.
+- `INSGNSSLooselyCoupledKalmanFilteredEstimator` now uses the GNSS least-squares solution as the Kalman
+  measurement at its own timestamp instead of navigating it forward and feeding the INS solution back as a
+  measurement.
+- `INSGNSSTightlyCoupledKalmanFilteredEstimator` now re-orthonormalises the attitude after each Kalman epoch and
+  initialises the state's receiver clock offset and drift from the least-squares solution.
+- `ECEFKinematicsEstimator` now computes the Earth-rotation term of the average body-to-ECEF coordinate
+  transformation matrix (Groves eq. 5.85) from the attitude at the start of the interval, matching
+  `ECEFInertialNavigator`.
+- The `(frame, oldFrame)` overloads of `ECEFKinematicsEstimator` and `ECIKinematicsEstimator` now evaluate
+  gravity/gravitation at the start-of-interval position (the one in `oldFrame`) instead of the end-of-interval one,
+  so that they are the exact inverse of `ECEFInertialNavigator` / `ECIInertialNavigator`.
+- The epoch gate of the three filtered estimators now accepts fixes/measurements arriving exactly one epoch
+  interval after the previous Kalman epoch (they were previously rejected), also when the difference of both
+  timestamps is rounded below the epoch interval (e.g. `0.7 - 0.2 < 0.5`).
+- The first Kalman epoch of the three filtered estimators now propagates the covariance over the time elapsed since
+  the first IMU sample, instead of using a zero propagation interval.
+- `INSGNSSTightlyCoupledKalmanFilteredEstimator` now integrates IMU samples provided before the first GNSS
+  measurements, so that attitude changes before position and velocity are initialised are not lost.
+
+### Added
+
+- `INSLooselyCoupledKalmanFilteredEstimator.updatePositionAndVelocity(...)` (three overloads), which provides a
+  position and velocity fix and runs a Kalman filter epoch with it.
+- `getLastKinematicsTimestamp()` and `getLastKinematicsTimestampAsTime(...)` on
+  `INSLooselyCoupledKalmanFilteredEstimator` and `INSGNSSTightlyCoupledKalmanFilteredEstimator`, returning the
+  timestamp of the last integrated IMU sample.
+
+### Changed
+
+- Behaviour of the filtered estimators' methods changed, with unchanged signatures:
+  - `INSLooselyCoupledKalmanFilteredEstimator.update` and `updateBodyKinematics` of both INS/GNSS estimators
+    integrate every sample whose timestamp is greater than the previous one (the first sample only sets the time
+    reference), regardless of the epoch interval, and no longer run a Kalman filter epoch. Their return value now
+    tells whether the sample was integrated.
+  - `updateMeasurements` of both INS/GNSS estimators runs the Kalman filter epoch itself, at the timestamp of the
+    measurements, whenever the estimator is ready to propagate.
+  - `INSLooselyCoupledKalmanFilteredEstimator.propagate` is deprecated: it only initialises/synchronises the Kalman
+    state with the INS solution and always returns `false`; use `updatePositionAndVelocity` instead.
+    `INSGNSSLooselyCoupledKalmanFilteredEstimator.propagate` likewise always returns `false`, and
+    `INSGNSSTightlyCoupledKalmanFilteredEstimator.propagate` only runs an epoch for measurements not yet consumed
+    by one.
+  - `INSLooselyCoupledKalmanFilteredEstimator.setFrame` also synchronises an already initialised Kalman state with
+    the provided frame, preserving estimated biases and covariance.
+  - `INSGNSSTightlyCoupledKalmanFilteredEstimator.updateBodyKinematics` reports inertial navigation failures as
+    `INSGNSSException`.
+
 ## [1.10.2] - 2026-11-16
 
 ### Changed
@@ -208,7 +263,8 @@ Test-only fix; no functional changes to library source.
 
 - Ensured correct `Serializable` implementation (`serialVersionUID`, etc.) across inertial data classes.
 
-[Unreleased]: https://github.com/albertoirurueta/irurueta-navigation-inertial/compare/1.10.2...HEAD
+[Unreleased]: https://github.com/albertoirurueta/irurueta-navigation-inertial/compare/1.11.0...HEAD
+[1.11.0]: https://github.com/albertoirurueta/irurueta-navigation-inertial/compare/1.10.2...1.11.0
 [1.10.2]: https://github.com/albertoirurueta/irurueta-navigation-inertial/compare/1.10.1...1.10.2
 [1.10.1]: https://github.com/albertoirurueta/irurueta-navigation-inertial/compare/1.10.0...1.10.1
 [1.10.0]: https://github.com/albertoirurueta/irurueta-navigation-inertial/compare/1.9.0...1.10.0

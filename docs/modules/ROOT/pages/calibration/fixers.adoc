@@ -10,9 +10,63 @@ links).
 
 Once a calibrator (xref:calibration/accelerometer.adoc[], xref:calibration/gyroscope.adoc[],
 xref:calibration/magnetometer.adoc[]) has estimated bias and the cross-coupling matrix, the *fixers*
-apply the algebraic inverse of xref:calibration/index.adoc[the sensor error model] to turn a raw reading
+apply the algebraic inverse of xref:calibration/index.adoc#error-model[the sensor error model] to turn a raw reading
 back into an estimate of the true signal.
 
+[#inverse-model]
+== The inverse model
+
+All three sensors share the structure
+stem:[\mathbf{y} = \mathbf{b} + (\mathbf{I}_3+\mathbf{M})\,\mathbf{x} + \mathbf{w}] (plus
+stem:[\mathbf{G}_g\mathbf{f}] for the gyroscope). A fixer drops the noise term, which cannot be recovered
+from a single reading, and solves for stem:[\mathbf{x}]:
+
+[stem]
+++++
+\hat{\mathbf{x}} = \left(\mathbf{I}_3+\mathbf{M}\right)^{-1}\left(\mathbf{y}-\mathbf{b}\right)
+++++
+
+How this maps onto the code (identical in `AccelerationFixer`, `AngularRateFixer` and
+`MagneticFluxDensityFixer`):
+
+* *stem:[\mathbf{M}] is the full matrix, diagonal included.* The fixer stores the matrix exactly as a
+  calibrator reports it (`getEstimatedMa()`, `getEstimatedMg()`, ...), with the scale-factor errors on the
+  diagonal and the cross-coupling terms off it:
++
+[stem]
+++++
+\mathbf{M}=\begin{pmatrix} s_x & m_{xy} & m_{xz}\\ m_{yx} & s_y & m_{yz}\\ m_{zx} & m_{zy} & s_z\end{pmatrix}
+++++
++
+`setSx(...)`, `setMxy(...)` and the other element setters just rewrite one entry of this matrix and then
+rebuild the inverse. Because the fixer adds the identity itself, pass stem:[\mathbf{M}] and *not*
+stem:[\mathbf{I}+\mathbf{M}]; the zero matrix means "no scale or cross-coupling error".
+* *The inverse is of stem:[\mathbf{I}_3+\mathbf{M}], computed once.* Every `setCrossCouplingErrors(...)`
+  (and every element setter) forms stem:[\mathbf{I}_3+\mathbf{M}] and inverts it with a general matrix
+  inverse (`Utils.inverse`), caching the result for all later `fix` calls. A singular
+  stem:[\mathbf{I}_3+\mathbf{M}] raises an `AlgebraException`. Before any matrix is set, the cached inverse
+  is the identity and the bias is zero, so a fresh fixer returns its input unchanged. The `fix` overloads
+  that take an explicit bias and matrix instead recompute the inverse on every call.
+* *stem:[\mathbf{G}_g] is never inverted.* It multiplies the *true* specific force and is subtracted from
+  the reading before stem:[(\mathbf{I}_3+\mathbf{M}_g)^{-1}] is applied. Its setter stores the matrix and
+  does no algebra.
+* *Order of operations* (gyroscope): stem:[\mathbf{r}=\boldsymbol{\Omega}_{\text{meas}}-\mathbf{b}_g-\mathbf{G}_g\mathbf{f}_{\text{true}}],
+  then stem:[\hat{\boldsymbol{\Omega}}=(\mathbf{I}_3+\mathbf{M}_g)^{-1}\mathbf{r}]. Bias and g-term are removed
+  _before_ the matrix is undone, because in the forward model they are added _after_ the matrix acts on the
+  angular rate.
+
+Since stem:[\mathbf{M}] is small for a decent sensor, one may be tempted to use the first-order
+stem:[\mathbf{I}-\mathbf{M}] instead of the exact inverse. The residual is the matrix
+stem:[\mathbf{M}^2(\mathbf{I}+\mathbf{M})^{-1}], so a 1 % scale or cross-coupling error leaves roughly a
+stem:[10^{-4}] relative error. The fixers do not take that shortcut. (This error estimate is an own
+derivation, not something the code or Javadoc states.)
+
+The calibrators and the fixers use the same convention for stem:[\mathbf{M}], so a calibrator's output can
+be fed straight into a fixer. The synthetic-data generator `BodyKinematicsGenerator` applies the forward model
+with the same stem:[\mathbf{I}+\mathbf{M}] form, which makes generator, calibrator and fixer a closed loop: for
+noise-free data, fixing the generated readings recovers the true signal up to round-off.
+
+[#acceleration-fixer]
 == AccelerationFixer
 
 Inverts stem:[\mathbf{f}_{\text{meas}} = \mathbf{b}_a + (\mathbf{I}_3+\mathbf{M}_a)\,\mathbf{f}_{\text{true}}]:
@@ -37,6 +91,7 @@ double[] trueF = new double[3];
 fixer.fix(measuredF, trueF);
 ----
 
+[#angular-rate-fixer]
 == AngularRateFixer
 
 Inverts stem:[\boldsymbol{\Omega}_{\text{meas}} = \mathbf{b}_g + (\mathbf{I}_3+\mathbf{M}_g)\,\boldsymbol{\Omega}_{\text{true}} + \mathbf{G}_g\,\mathbf{f}_{\text{true}}].
@@ -65,6 +120,7 @@ double[] trueAngularRate = new double[3];
 fixer.fix(measuredAngularRate, trueF, trueAngularRate);
 ----
 
+[#magnetic-flux-density-fixer]
 == MagneticFluxDensityFixer
 
 Inverts stem:[\mathbf{b}_{\text{meas}} = \mathbf{b}_m + (\mathbf{I}_3+\mathbf{M}_m)\,\mathbf{b}_{\text{true}}]
@@ -89,11 +145,28 @@ double[] trueB = new double[3];
 fixer.fix(measuredB, trueB);
 ----
 
+[#body-kinematics-fixer]
 == BodyKinematicsFixer
 
 A convenience wrapper combining `AccelerationFixer` and `AngularRateFixer` to fix a whole
 `BodyKinematics` (specific force + angular rate) reading in one call, correctly threading the fixed
-specific force into the angular-rate fixer's g-dependent term.
+specific force into the angular-rate fixer's g-dependent term:
+
+[mermaid]
+....
+flowchart LR
+    F["Measured specific force"] --> AF["AccelerationFixer\n(I + Ma)^-1 (f - ba)"]
+    AF --> FT["Fixed specific force"]
+    W["Measured angular rate"] --> GF["AngularRateFixer\n(I + Mg)^-1 (w - bg - Gg f)"]
+    FT --> GF
+    GF --> WT["Fixed angular rate"]
+....
+
+The specific force must be fixed first and the *fixed* value, not the raw reading, goes into the g-term:
+using the raw reading would subtract stem:[\mathbf{G}_g] times a force that still contains
+stem:[\mathbf{b}_a] and the accelerometer's own cross-coupling, leaving an error of order
+stem:[\lVert\mathbf{G}_g\rVert\,(\lVert\mathbf{b}_a\rVert+\lVert\mathbf{M}_a\rVert\,\lVert\mathbf{f}\rVert)]
+(own estimate, not stated in the code).
 
 [source,java]
 ----
@@ -109,6 +182,7 @@ BodyKinematics fixed = new BodyKinematics();
 fixer.fix(measured, fixed);
 ----
 
+[#imu-errors-creator]
 == IMUErrorsCreator
 
 Assembles a complete xref:calibration/data-model.adoc[`IMUErrors`] from whatever combination of sources
@@ -121,6 +195,15 @@ is available, rather than requiring a single calibrator to produce every paramet
   `AccelerometerNoiseRootPsdSource` / `GyroscopeNoiseRootPsdSource`
   (see xref:calibration/noise-and-bias.adoc[] and
   xref:calibration/intervals-and-generators.adoc[]).
+
+`create()` copies the sources' biases, stem:[\mathbf{M}_a], stem:[\mathbf{M}_g] and stem:[\mathbf{G}_g] into
+the `IMUErrors` and takes the two noise values from `getAccelerometerBaseNoiseLevelRootPsd()` and
+`getGyroscopeBaseNoiseLevelRootPsd()`. It throws `NotReadyException` unless all four sources are set and
+every bias/matrix they return is non-null (`isReady()`). Quantization levels are not estimated by anything in
+the package: they default to zero (no quantization) and can only be supplied through the six-argument
+constructor. The noise values are *norm-form* root-PSDs (see
+xref:calibration/noise-and-bias.adoc#psd[PSD and root-PSD]), which matters when `IMUErrors` later drives
+`BodyKinematicsGenerator`.
 
 This lets a calibration pipeline mix, for example, bias/cross-coupling from a robust
 xref:calibration/accelerometer.adoc[`KnownGravityNormAccelerometerCalibrator`] with a noise root-PSD from

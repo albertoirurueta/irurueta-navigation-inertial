@@ -44,25 +44,118 @@ adds no new algorithm, which is why 4 conceptual families expand into most of th
 `AccumulatedBodyKinematicsNoiseEstimator` / `WindowedBodyKinematicsNoiseEstimator` run the accelerometer
 and gyroscope triad versions together for a combined `BodyKinematics` stream.
 
-The recursive (online) update, common to every `Accumulated*` estimator:
+[#psd]
+=== PSD and root-PSD: definitions
 
-[stem]
-++++
-\overline{x} \leftarrow \overline{x}\,\frac{n}{n+1} + \frac{x}{n+1}, \qquad
-\sigma^{2} \leftarrow \sigma^{2}\,\frac{n}{n+1} + \frac{(x-\overline{x})^{2}}{n+1}
-++++
-
-and the PSD / root-PSD relation used throughout (both families, all sensors):
+A discrete sensor reading with white noise of standard deviation stem:[\sigma] sampled every
+stem:[\tau] seconds carries a noise *power spectral density* (PSD) and *root-PSD* of
 
 [stem]
 ++++
 \text{PSD} = \sigma^{2}\,\tau, \qquad \text{root-PSD} = \sqrt{\text{PSD}} = \sigma\sqrt{\tau}
 ++++
 
-where stem:[\tau] is the sample time interval (see `TimeIntervalEstimator` in
-xref:calibration/intervals-and-generators.adoc[]). For a triad, the norm of the per-axis root-PSDs
-(stem:[\sqrt{\text{PSD}_x+\text{PSD}_y+\text{PSD}_z}]) is also exposed, since this is exactly what
-`AccelerometerNoiseRootPsdSource` / `GyroscopeNoiseRootPsdSource` (below) report.
+and, inverting, the standard deviation that a given root-PSD produces at a given sampling interval is
+stem:[\sigma = \text{root-PSD}/\sqrt{\tau}]. Every estimator in this package applies exactly these two
+relations to its variance estimate (the `getPsd()` / `getPsdX()...` getters return
+stem:[\sigma^2\tau]; `getRootPsd()` and friends return the square root of that), where stem:[\tau] is the
+estimator's configured `timeInterval` (seconds, default 0.02 s in every estimator of this page, and
+non-negative). The estimators never measure stem:[\tau] themselves: it is a setter, typically fed from
+`TimeIntervalEstimator` (see xref:calibration/intervals-and-generators.adoc[]), which averages the
+timestamps of the incoming samples.
+
+[cols="1,1,1,1",options="header"]
+|===
+|Sensor |PSD unit |Root-PSD unit |Common name
+
+|Accelerometer |stem:[\text{m}^2\text{s}^{-3}] |stem:[\text{m}\,\text{s}^{-1.5}] |velocity random walk
+|Gyroscope |stem:[\text{rad}^2\text{s}^{-1}] |stem:[\text{rad}\,\text{s}^{-0.5}] |angle random walk
+|Magnetometer |stem:[\text{T}^2\text{s}] |stem:[\text{T}\,\text{s}^{0.5}] |--
+|===
+
+==== Why the time interval appears: averaging
+
+The root-PSD is the *rate-independent* way to quote noise. Averaging stem:[N] consecutive white samples
+divides the standard deviation by stem:[\sqrt{N}], and the averaging time is stem:[T = N\tau], so
+
+[stem]
+++++
+\sigma_{N} = \frac{\sigma}{\sqrt{N}} = \frac{\text{root-PSD}}{\sqrt{\tau}\sqrt{N}} = \frac{\text{root-PSD}}{\sqrt{T}}
+++++
+
+i.e. the noise left after averaging over stem:[T] seconds depends only on the root-PSD and stem:[T], not on
+the sampling rate. Halving stem:[\tau] makes the per-sample stem:[\sigma] grow by stem:[\sqrt{2}] while the
+root-PSD stays the same. This is also why the synthetic-data generator
+(xref:calibration/data-model.adoc#imu-errors[`IMUErrors`] consumed by `BodyKinematicsGenerator`) draws
+each axis of noise with stem:[\sigma=\text{root-PSD}/\sqrt{\tau}], and draws no noise at all when
+stem:[\tau \le 0].
+
+NOTE: The averaging argument assumes white, uncorrelated noise. The package does not model bias
+instability or any other coloured noise.
+
+[#per-axis-forms]
+==== Per-axis, average and norm forms
+
+A triad estimator keeps one variance per axis, so for stem:[i \in \{x,y,z\}] it exposes
+stem:[\text{PSD}_i = \sigma_i^2\tau] and stem:[\text{root-PSD}_i=\sigma_i\sqrt{\tau}] plus two
+aggregates:
+
+[stem]
+++++
+\overline{\text{PSD}} = \frac{\text{PSD}_x+\text{PSD}_y+\text{PSD}_z}{3}, \qquad
+\left\lVert\text{root-PSD}\right\rVert = \sqrt{\text{PSD}_x+\text{PSD}_y+\text{PSD}_z}
+= \lVert\boldsymbol{\sigma}\rVert\sqrt{\tau}
+\quad\text{with}\quad \lVert\boldsymbol{\sigma}\rVert=\sqrt{\sigma_x^2+\sigma_y^2+\sigma_z^2}
+++++
+
+The *norm* form (`getNoiseRootPsdNorm()`) is what `AccelerometerNoiseRootPsdSource` /
+`GyroscopeNoiseRootPsdSource` report: the triad estimators return it from
+`getAccelerometerBaseNoiseLevelRootPsd()` / `getGyroscopeBaseNoiseLevelRootPsd()`, and the static-interval
+detectors report stem:[\text{baseNoiseLevel}\cdot\sqrt{\tau}], where the base noise level is the accumulated
+standard-deviation *norm* (see xref:calibration/intervals-and-generators.adoc[]). The magnitude is the same
+in both cases. Two consequences are worth knowing:
+
+* For isotropic noise with per-axis deviation stem:[\sigma] the norm form is
+  stem:[\sqrt{3}\,\sigma\sqrt{\tau}], i.e. stem:[\sqrt{3}] times the per-axis root-PSD, not equal to it.
+* `IMUErrors` stores *one* root-PSD per sensor and `BodyKinematicsGenerator` applies it to every axis, so a
+  norm-form value produced by `IMUErrorsCreator` yields synthetic noise stem:[\sqrt{3}] times larger per axis
+  than the device it was measured on. Divide by stem:[\sqrt{3}] (or use the per-axis getters) if that matters.
+
+(The stem:[\sqrt{3}] consequence is an own derivation from the formulas above and from how
+`BodyKinematicsGenerator` uses the value; it is not stated in the Javadoc.)
+
+[#recursive-variance]
+=== Recursive and windowed variance
+
+The recursive (online) update, common to every `Accumulated*` estimator, with stem:[n] samples already
+processed and the new sample stem:[x]:
+
+[stem]
+++++
+\overline{x}_{n+1} = \overline{x}_{n}\,\frac{n}{n+1} + \frac{x}{n+1}, \qquad
+\sigma^{2}_{n+1} = \sigma^{2}_{n}\,\frac{n}{n+1} + \frac{\left(x-\overline{x}_{n+1}\right)^{2}}{n+1}
+++++
+
+The deviation is taken from the *already updated* mean. The exact population-variance recursion would
+use the product of the deviations from the old and the new mean; the form above is a slightly low
+approximation (the last term is smaller by a factor stem:[n/(n+1)]) whose effect vanishes for large
+stem:[n]. The first sample sets the mean to the sample and leaves the variance at zero. Because the
+variance is a running population estimate, an `Accumulated*` estimator also forgets nothing: feed it only
+samples taken while the device is static.
+
+The `Windowed*` estimators instead recompute, over the last `windowSize` samples (101 by default), the
+mean stem:[\overline{x}] and the unbiased variance
+
+[stem]
+++++
+\sigma^{2} = \frac{1}{W-1}\sum_{k=1}^{W}\left(x_k-\overline{x}\right)^{2}
+++++
+
+with stem:[W] the window size. The PSD relations above are applied to that variance in the same way. Statistics are recomputed only by
+the `add...AndProcess` methods (`addMeasurementAndProcess`, `addTriadAndProcess`); the plain
+`addMeasurement` / `addTriad` methods just store the sample. While the window holds fewer than
+stem:[W] samples the missing ones count as zero in the mean and variance, so read the statistics only once
+`isWindowFilled()` is true.
 
 [source,java]
 ----
@@ -78,6 +171,7 @@ double stdNorm = noiseEstimator.getStandardDeviationNorm(); // m/s^2
 double rootPsdNorm = noiseEstimator.getAccelerometerBaseNoiseLevelRootPsd(); // m/s^1.5 (AccelerometerNoiseRootPsdSource)
 ----
 
+[#approximate-bias]
 == Approximate bias estimators
 
 Unlike the full calibrators in xref:calibration/accelerometer.adoc[], xref:calibration/gyroscope.adoc[],
@@ -101,6 +195,52 @@ xref:wmm/index.adoc[the WMM] for the expected field) to estimate hard-iron bias 
 
 Both classes' Javadoc explicitly point back to the `noise` estimators above for the case where only PSD
 (not bias) is needed and no known frame is available.
+
+=== The estimate
+
+With the cross-coupling and g-dependent terms set to zero the sensor models of
+xref:calibration/index.adoc#error-model[the error model] reduce to
+stem:[\mathbf{x}_{\text{meas}} = \mathbf{b} + \mathbf{x}_{\text{true}} + \mathbf{w}]. Since the device is
+static at a known pose, stem:[\mathbf{x}_{\text{true}}] is known and constant; call its predicted value
+stem:[\mathbf{x}_{\text{exp}}]. Each sample therefore gives an observation of the bias,
+stem:[\mathbf{d}_k = \mathbf{x}_{\text{meas},k}-\mathbf{x}_{\text{exp}}], and the estimator keeps the
+running mean and variance of stem:[\mathbf{d}_k] per axis, with the same recursion as the
+`Accumulated*` noise estimators (see <<recursive-variance,recursive variance>>):
+
+[stem]
+++++
+\hat{\mathbf{b}}_{n+1}=\hat{\mathbf{b}}_{n}\frac{n}{n+1}+\frac{\mathbf{d}_{n+1}}{n+1},\qquad
+\sigma^{2}_{i,n+1}=\sigma^{2}_{i,n}\frac{n}{n+1}+\frac{\left(d_{i,n+1}-\hat{b}_{i,n+1}\right)^{2}}{n+1}
+++++
+
+The noise PSD uses the same relations as before, with stem:[\tau] the estimator's `timeInterval`
+(0.02 s by default): stem:[\text{PSD}_i=\sigma_i^2\tau]. `getAccelerometerNoisePSD()` and
+`getGyroNoisePSD()` return the mean over the three axes, while `getAccelerometerNoiseRootPSD()` and
+`getGyroNoiseRootPSD()` return the *norm* stem:[\sqrt{\sum_i \text{PSD}_i}] (see <<per-axis-forms,per-axis, average and norm forms>>); per-axis values are available as `getRootPSDFx()`, `getRootPSDAngularRateX()`, etc.
+
+[cols="1,3",options="header"]
+|===
+|Estimator |Expected (known-pose) value stem:[\mathbf{x}_{\text{exp}}]
+
+|`BodyKinematicsBiasEstimator`
+|Accelerometer and gyroscope outputs of an ideal IMU at rest, obtained from `ECEFKinematicsEstimator`
+with the same ECEF orientation at both epochs and zero velocity: the specific force that opposes gravity
+(and carries the centripetal term) resolved in body axes, and the Earth-rotation rate resolved in body
+axes. It is rebuilt whenever the position, orientation or time interval changes. The position/orientation
+can be given as NED or ECEF; it is stored as an ECEF frame.
+
+|`BodyMagneticFluxDensityBiasEstimator`
+|The WMM field at the given position and decimal `year`, rotated into body axes with the inverse of the
+frame's attitude (stem:[\mathbf{C}_n^b]). `getRootPsd()`, `getAvgPsd()` and `getPsdX()...` follow the same
+definitions as above.
+|===
+
+Two practical limits follow from the model. First, anything the model leaves out — scale factor,
+cross-coupling, g-dependent bias — is absorbed into the estimated bias and is only valid at that one
+orientation; an orientation error leaks the (large) gravity or field vector into the bias. Second, the
+reported variance is that of the *samples*, not of the mean: the standard error of the bias estimate
+after stem:[n] samples is roughly stem:[\sigma/\sqrt{n}] (an own, textbook statement, not exposed as a
+getter by these classes).
 
 [source,java]
 ----
@@ -136,14 +276,17 @@ xref:calibration/intervals-and-generators.adoc[], any of which can supply `IMUEr
 root-PSD.
 
 |`AccelerometerBiasUncertaintySource` / `GyroscopeBiasUncertaintySource`
-|Exposes the norm of the estimated bias's standard deviation, used to seed a Kalman filter's initial
-uncertainty configuration (`INSLooselyCoupledKalmanInitializerConfig` / `INSTightlyCoupledKalmanInitializerConfig`).
+|Exposes `Double getEstimatedBiasStandardDeviationNorm()`: the square root of the sum of the three bias
+variances taken from the calibrator's estimated covariance, stem:[\sqrt{\sigma_{b_x}^2+\sigma_{b_y}^2+\sigma_{b_z}^2}],
+or `null` while no covariance has been estimated. Implemented by the non-linear and robust
+accelerometer/gyroscope calibrators (not by the linear ones, nor by the magnetometer calibrators); used to seed a Kalman filter's initial uncertainty
+(`INSLooselyCoupledKalmanInitializerConfig` / `INSTightlyCoupledKalmanInitializerConfig`).
 
 |`AccelerometerCalibrationSource` / `GyroscopeCalibrationSource`
-|Exposes the estimated bias vector plus stem:[\mathbf{M}_a] (or stem:[\mathbf{M}_g] and
-stem:[\mathbf{G}_g]) — implemented by every calibrator in
-xref:calibration/accelerometer.adoc[] / xref:calibration/gyroscope.adoc[], and consumed by
-`IMUErrorsCreator`.
+|Expose `getEstimatedBiases()` and `getEstimatedMa()` (accelerometer) or `getEstimatedBiases()`,
+`getEstimatedMg()` and `getEstimatedGg()` (gyroscope), i.e. stem:[\mathbf{b}], stem:[\mathbf{M}] and
+stem:[\mathbf{G}_g] of the xref:calibration/index.adoc#error-model[error model]. `IMUErrorsCreator` is ready
+only when all of them are non-null (see xref:calibration/fixers.adoc#imu-errors-creator[]).
 |===
 
 == Class Reference
@@ -203,5 +346,6 @@ Javadoc and source links for the classes used in the examples above:
 == Where to go next
 
 * xref:calibration/intervals-and-generators.adoc[] — how these noise estimators feed static/dynamic interval detection.
+* xref:calibration/algorithms.adoc[] — the estimators that produce the calibration sources above.
 * xref:calibration/fixers.adoc[] — `IMUErrorsCreator`, which assembles a full `IMUErrors` from these sources.
 * xref:reference.adoc#bibliography[] — bibliography.

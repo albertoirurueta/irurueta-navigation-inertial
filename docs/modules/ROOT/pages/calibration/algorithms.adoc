@@ -1,0 +1,626 @@
+= Calibration algorithms
+:description: The mathematics behind the calibrators: the linear least-squares system, the non-linear gravity-norm / field-norm formulation solved with Levenberg-Marquardt, robust estimation (RANSAC, MSAC, LMedS, PROSAC, PROMedS) and the Tedaldi et al. static-interval method.
+:keywords: IMU calibration algorithms, linear least squares, normal equations, design matrix, Levenberg-Marquardt, gravity norm, RANSAC, MSAC, LMedS, PROSAC, PROMedS, Tedaldi, static interval, multi-position calibration
+
+NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
+
+The per-sensor pages (xref:calibration/accelerometer.adoc[], xref:calibration/gyroscope.adoc[],
+xref:calibration/magnetometer.adoc[]) list *which* calibrator class to use. This page explains *how* the
+calibrators work: the system of equations they build, how it is solved, how outliers are rejected and how
+the turntable-free method of Tedaldi et al. (xref:reference.adoc#imu-tk[[imu-tk\]]) is put together from the
+interval detectors, the measurement generators and the "Easy" calibrators.
+
+All the derivations below start from the shared error model of xref:calibration/index.adoc[]. For the
+accelerometer it reads
+
+[stem]
+++++
+\mathbf{f}_{\text{meas}} = \mathbf{b} + \left(\mathbf{I}_{3} + \mathbf{M}\right)\mathbf{f}_{\text{true}} + \mathbf{w}
+++++
+
+and the magnetometer uses the same form with stem:[\mathbf{b}_{\text{true}}] in place of
+stem:[\mathbf{f}_{\text{true}}]. Throughout this page stem:[\mathbf{b}] is the bias (hard iron for the
+magnetometer) and stem:[\mathbf{M}] is the matrix of scale-factor and cross-coupling errors, so
+stem:[\mathbf{I}_3 + \mathbf{M}] is the full "gain" matrix of the sensor.
+
+[#linear-model]
+== Linear least squares (known true signal)
+
+=== The error model is linear in its parameters
+
+When the true signal stem:[\mathbf{f}_{\text{true}}] of every measurement is known (the `KnownFrame` and
+`KnownBiasAndFrame` families, for every sensor), the unknowns stem:[\mathbf{b}] and stem:[\mathbf{M}] enter
+the model linearly. Writing the entries of stem:[\mathbf{M}] as stem:[m_{ij}] (row stem:[i], column
+stem:[j]; the diagonal entries are the scale factors stem:[s_x, s_y, s_z]) and moving the known term to the
+left gives, per measurement stem:[k],
+
+[stem]
+++++
+\mathbf{f}_{\text{meas},k} - \mathbf{f}_{\text{true},k} = \mathbf{b} + \mathbf{M}\,\mathbf{f}_{\text{true},k}
+++++
+
+Stack the three entries of stem:[\mathbf{b}] and the nine of stem:[\mathbf{M}] (column by column) into one
+parameter vector
+
+[stem]
+++++
+\boldsymbol{\theta} = \begin{bmatrix} \mathbf{b} \\ \operatorname{vec}(\mathbf{M}) \end{bmatrix} \in \mathbb{R}^{12}
+++++
+
+Using the identity stem:[\mathbf{M}\mathbf{f} = (\mathbf{f}^{T} \otimes \mathbf{I}_3)\operatorname{vec}(\mathbf{M})],
+every measurement contributes one *3-row block* to the system:
+
+[stem]
+++++
+\underbrace{\begin{bmatrix} \mathbf{I}_3 & \mathbf{f}_{\text{true},k}^{T} \otimes \mathbf{I}_3 \end{bmatrix}}_{\mathbf{A}_k\ (3 \times 12)}
+\boldsymbol{\theta}
+= \underbrace{\mathbf{f}_{\text{meas},k} - \mathbf{f}_{\text{true},k}}_{\mathbf{y}_k\ (3 \times 1)}
+++++
+
+With stem:[N] measurements the blocks are stacked into the *design matrix* stem:[\mathbf{A}] (stem:[3N \times 12])
+and the observation vector stem:[\mathbf{y}] (stem:[3N]):
+
+[stem]
+++++
+\mathbf{A} = \begin{bmatrix} \mathbf{A}_1 \\ \vdots \\ \mathbf{A}_N \end{bmatrix},
+\qquad
+\mathbf{y} = \begin{bmatrix} \mathbf{y}_1 \\ \vdots \\ \mathbf{y}_N \end{bmatrix}
+++++
+
+The library orders the unknowns with the diagonal first, as
+stem:[(b_x, b_y, b_z, s_x, s_y, s_z, m_{xy}, m_{xz}, m_{yx}, m_{yz}, m_{zx}, m_{zy})]. That is only a column
+permutation of the vector above. In that ordering, and writing stem:[(f_x, f_y, f_z)] for the components of
+stem:[\mathbf{f}_{\text{true},k}], the block of measurement stem:[k] is
+
+[stem]
+++++
+\mathbf{A}_k =
+\begin{bmatrix}
+1 & 0 & 0 & f_x & 0 & 0 & f_y & f_z & 0 & 0 & 0 & 0 \\
+0 & 1 & 0 & 0 & f_y & 0 & 0 & 0 & f_x & f_z & 0 & 0 \\
+0 & 0 & 1 & 0 & 0 & f_z & 0 & 0 & 0 & 0 & f_x & f_y
+\end{bmatrix}
+++++
+
+The first row reads stem:[f_{\text{meas},x} - f_x = b_x + s_x f_x + m_{xy} f_y + m_{xz} f_z], which is just the
+first component of the matrix equation above.
+
+=== Normal equations and the least-squares solution
+
+The system is over-determined as soon as there are more rows than unknowns, so the noise stem:[\mathbf{w}]
+prevents an exact solution. The calibrator looks for the stem:[\boldsymbol{\theta}] that minimizes the sum of
+squared residuals:
+
+[stem]
+++++
+\hat{\boldsymbol{\theta}} = \arg\min_{\boldsymbol{\theta}} \lVert \mathbf{A}\boldsymbol{\theta} - \mathbf{y} \rVert^{2}
+\quad\Longrightarrow\quad
+\mathbf{A}^{T}\mathbf{A}\,\hat{\boldsymbol{\theta}} = \mathbf{A}^{T}\mathbf{y}
+\quad\Longrightarrow\quad
+\hat{\boldsymbol{\theta}} = \left(\mathbf{A}^{T}\mathbf{A}\right)^{-1}\mathbf{A}^{T}\mathbf{y}
+++++
+
+`KnownFrameAccelerometerLinearLeastSquaresCalibrator` (and the equivalent gyroscope and magnetometer classes)
+builds stem:[\mathbf{A}] and stem:[\mathbf{y}] exactly as above and hands them to the least-squares solve of
+the algebra library, which returns the same minimizer as the normal equations without the need to form
+stem:[\mathbf{A}^{T}\mathbf{A}] explicitly (squaring the matrix would square its condition number). The
+estimated stem:[\hat{\mathbf{b}}] and stem:[\hat{\mathbf{M}}] are then copied out of
+stem:[\hat{\boldsymbol{\theta}}]. Because the problem is linear no initial guess is needed and the solution
+is obtained in a single step.
+
+For the `KnownBias...` variants the bias is moved to the left-hand side too
+(stem:[\mathbf{y}_k = \mathbf{f}_{\text{meas},k} - \mathbf{f}_{\text{true},k} - \mathbf{b}]) and the first three
+columns of stem:[\mathbf{A}_k] disappear, leaving only the entries of stem:[\mathbf{M}].
+
+=== The common z-axis reduction
+
+A general stem:[\mathbf{M}] has nine entries. The "common z-axis" assumption (`commonAxisUsed = true`)
+declares that the z axis of the sensor frame coincides with the z axis of the orthogonal body frame and that
+the x-y plane contains the sensor's y axis. This forces stem:[\mathbf{M}] to be *upper triangular*:
+
+[stem]
+++++
+\mathbf{M} = \begin{bmatrix} s_x & m_{xy} & m_{xz} \\ 0 & s_y & m_{yz} \\ 0 & 0 & s_z \end{bmatrix}
+++++
+
+so stem:[m_{yx} = m_{zx} = m_{zy} = 0] and only six entries remain. The parameter vector drops from twelve
+to *nine* unknowns (three biases plus six entries of stem:[\mathbf{M}]), the last three columns of every
+stem:[\mathbf{A}_k] are removed, and the block becomes
+
+[stem]
+++++
+\mathbf{A}_k =
+\begin{bmatrix}
+1 & 0 & 0 & f_x & 0 & 0 & f_y & f_z & 0 \\
+0 & 1 & 0 & 0 & f_y & 0 & 0 & 0 & f_z \\
+0 & 0 & 1 & 0 & 0 & f_z & 0 & 0 & 0
+\end{bmatrix}
+++++
+
+with unknowns stem:[(b_x, b_y, b_z, s_x, s_y, s_z, m_{xy}, m_{xz}, m_{yz})]. This is the same triangular
+structure Tedaldi et al. impose on their accelerometer misalignment matrix (see <<tedaldi>>). In the
+`Known...Frame...LinearLeastSquares` classes the flag defaults to `false`, i.e. the general twelve-unknown
+case.
+
+=== How many measurements are needed
+
+Each measurement contributes three scalar equations, so the linear solvers need at least stem:[\lceil n/3 \rceil]
+measurements for stem:[n] unknowns. The classes enforce the following minimums (`MINIMUM_MEASUREMENTS`):
+
+[cols="3,1,1,1",options="header"]
+|===
+|Family (linear solver) |Unknowns (general) |Unknowns (common z-axis) |Minimum measurements
+
+|Accelerometer / magnetometer `KnownFrame`: bias and M
+|12
+|9
+|4
+
+|Accelerometer / magnetometer with a known bias: only M
+|9
+|6
+|3
+
+|Gyroscope `KnownFrame` (b, M and G, 21 unknowns)
+|21
+|18
+|7
+
+|Gyroscope `KnownBiasAndFrame` (M and G, 18 unknowns)
+|18
+|15
+|6
+|===
+
+The minimum is a single constant per class: it is the value needed by the general case. With the common
+z-axis flag the system is smaller, so the same measurements give more redundancy.
+
+NOTE: The gyroscope classes extend the model with the g-dependent term: the stacked equations become
+stem:[\boldsymbol{\Omega}_{\text{meas}} - \boldsymbol{\Omega}_{\text{true}} = \mathbf{b} + \mathbf{M}_g\boldsymbol{\Omega}_{\text{true}} + \mathbf{G}_g\mathbf{f}_{\text{true}}],
+so each block has the columns of stem:[\mathbf{M}_g] multiplying stem:[\boldsymbol{\Omega}_{\text{true}}] followed by the nine
+columns of stem:[\mathbf{G}_g] multiplying stem:[\mathbf{f}_{\text{true}}], for 21 unknowns in the general case.
+
+=== Conditioning
+
+The matrix stem:[\mathbf{A}^{T}\mathbf{A}] is only invertible, and well conditioned, if the true signals are
+*diverse*. If every measurement is taken with the same stem:[\mathbf{f}_{\text{true}}] (for instance the sensor
+always lying flat), the columns multiplying stem:[f_x], stem:[f_y] and stem:[f_z] are constant multiples of the
+bias columns and the bias becomes indistinguishable from the scale factors. Good data therefore needs the
+sensor held static in many different attitudes, covering all three axes in both directions. Measurement noise
+is averaged out only if the number of measurements exceeds the minimum, so use more than the bare minimum
+whenever possible.
+
+[#nonlinear-model]
+== Non-linear least squares (known norm only)
+
+=== Why the problem becomes non-linear
+
+The `KnownGravityNorm`, `KnownPosition`, `KnownMagneticFluxDensityNorm` and `KnownPositionAndInstant`
+families do not know the *direction* of the true signal, only its *magnitude*: the device is held static in
+unknown attitudes, so the accelerometer must read a vector of length stem:[\lVert\mathbf{g}\rVert], and the
+magnetometer a vector of the local field magnitude. The linear system above cannot be written (the right-hand
+side is unknown) and the problem is solved with an iterative non-linear fit instead.
+
+=== Reparametrization used by the solver
+
+Inverting the model (with stem:[\mathbf{M}_{\text{full}} = \mathbf{I}_3 + \mathbf{M}]) gives the true signal as a
+function of the measurement, and the solver internally optimizes the pair
+stem:[(\mathbf{M}_{\text{full}}, \mathbf{b}')], where stem:[\mathbf{b}'] is the bias expressed *before* the gain
+matrix:
+
+[stem]
+++++
+\mathbf{f}_{\text{meas}} = \mathbf{M}_{\text{full}}\left(\mathbf{f}_{\text{true}} + \mathbf{b}'\right)
+\qquad\Longleftrightarrow\qquad
+\mathbf{f}_{\text{true}} = \mathbf{M}_{\text{full}}^{-1}\mathbf{f}_{\text{meas}} - \mathbf{b}',
+\qquad \mathbf{b} = \mathbf{M}_{\text{full}}\mathbf{b}'
+++++
+
+The code comments state that this form converges better than optimizing stem:[\mathbf{b}] directly. After the
+fit the result is converted back: stem:[\mathbf{b} = \mathbf{M}_{\text{full}}\mathbf{b}'] and
+stem:[\mathbf{M} = \mathbf{M}_{\text{full}} - \mathbf{I}_3]. A user-supplied initial bias stem:[\mathbf{b}_0]
+and matrix stem:[\mathbf{M}_0] are converted the same way: stem:[\mathbf{b}'_0 = (\mathbf{I}_3 + \mathbf{M}_0)^{-1}\mathbf{b}_0].
+
+=== Cost function and residual
+
+Let stem:[g] be the known magnitude (the gravity norm, or the field magnitude from the WMM; for
+`KnownPosition` it is computed from the position with the gravity estimator and for
+`KnownPositionAndInstant` from the world magnetic model). The model prediction for measurement stem:[k] is the
+squared norm of the corrected measurement, and the observation is the squared known magnitude:
+
+[stem]
+++++
+h_k(\boldsymbol{\theta}) = \left\lVert \mathbf{M}_{\text{full}}^{-1}\mathbf{f}_{\text{meas},k} - \mathbf{b}' \right\rVert^{2},
+\qquad y_k = g^{2}
+++++
+
+The Levenberg-Marquardt fitter minimizes the weighted chi-square
+
+[stem]
+++++
+\chi^{2}(\boldsymbol{\theta}) = \sum_{k=1}^{N}\left(\frac{y_k - h_k(\boldsymbol{\theta})}{\sigma_k}\right)^{2}
+++++
+
+where stem:[\sigma_k] is the standard deviation attached to the measurement (the
+`StandardDeviationBodyKinematics` specific-force deviation, or its magnetic counterpart). Working with squared
+norms avoids a square root and keeps the cost smooth around zero. With
+stem:[\mathbf{Q} = (\mathbf{M}_{\text{full}}\mathbf{M}_{\text{full}}^{T})^{-1}] the prediction is
+stem:[h_k = (\mathbf{f}_{\text{meas},k} - \mathbf{M}_{\text{full}}\mathbf{b}')^{T}\mathbf{Q}(\mathbf{f}_{\text{meas},k} - \mathbf{M}_{\text{full}}\mathbf{b}')],
+i.e. the measurements are fitted with an *ellipsoid* (stem:[\mathbf{f}_{\text{meas}}] lies on the ellipsoid
+centered at the bias with shape stem:[\mathbf{M}_{\text{full}}\mathbf{M}_{\text{full}}^{T}]) that must map onto a sphere of radius
+stem:[g] once corrected. See xref:calibration/magnetometer.adoc[] for the same picture applied to hard and soft iron.
+
+[NOTE]
+====
+The prediction depends on stem:[\mathbf{M}_{\text{full}}] only through
+stem:[\mathbf{M}_{\text{full}}\mathbf{M}_{\text{full}}^{T}], which has six degrees of freedom, so replacing
+stem:[\mathbf{M}_{\text{full}}] by stem:[\mathbf{M}_{\text{full}}\mathbf{R}] (and stem:[\mathbf{b}'] by
+stem:[\mathbf{R}^{T}\mathbf{b}']) for any rotation stem:[\mathbf{R}] leaves the cost unchanged. The norm
+constraint alone cannot fix the orientation of the sensor frame. Restricting stem:[\mathbf{M}] to the upper
+triangular form of the common z-axis case removes exactly that freedom, which is why the common-axis problem has
+nine unknowns, a unique minimum and is the better conditioned choice. In the general (twelve-unknown) case the
+solver converges to one of the equivalent solutions, selected by the initial guess.
+====
+
+=== Jacobian, damping and iteration
+
+Levenberg-Marquardt linearizes the model around the current estimate, using the Jacobian
+stem:[\mathbf{J}_{ki} = \partial h_k/\partial\theta_i], and solves a damped version of the Gauss-Newton step:
+
+[stem]
+++++
+\left(\mathbf{J}^{T}\mathbf{W}\mathbf{J} + \lambda\,\operatorname{diag}\!\left(\mathbf{J}^{T}\mathbf{W}\mathbf{J}\right)\right)\delta\boldsymbol{\theta} = \mathbf{J}^{T}\mathbf{W}\,(\mathbf{y} - \mathbf{h}),
+\qquad \mathbf{W} = \operatorname{diag}\!\left(\sigma_k^{-2}\right)
+++++
+
+If the step lowers stem:[\chi^2] it is accepted and the damping stem:[\lambda] is decreased (the iteration
+behaves like Gauss-Newton); otherwise it is rejected and stem:[\lambda] is increased (the step shrinks toward
+gradient descent). The iteration stops when stem:[\chi^2] no longer changes appreciably.
+
+In this library the fitter is `LevenbergMarquardtMultiDimensionFitter` of `irurueta-numerical-computing`. For the
+norm-based and "Easy" calibrators the Jacobian row of each measurement is not coded analytically: the model
+is wrapped in a `GradientEstimator` that obtains the partial derivatives numerically. The `KnownFrame` non-linear
+calibrators are the exception: their model is the linear one above, evaluated by a multivariate fitter that is
+given the analytical Jacobian (the entries of stem:[\mathbf{A}_k]), and therefore converges almost immediately.
+
+After convergence the fitter exposes the covariance matrix of the estimate, stem:[\chi^2], its degrees of
+freedom, the reduced stem:[\chi^2], the mean squared error and the goodness-of-fit probabilities; the
+calibrators publish these as `getEstimatedCovariance()`, `getEstimatedChiSq()`, `getEstimatedReducedChiSq()`,
+`getEstimatedMse()`, `getEstimatedP()` and `getEstimatedQ()`. The covariance of stem:[(\mathbf{M}_{\text{full}}, \mathbf{b}')]
+is propagated to stem:[(\mathbf{b}, \mathbf{M})] through the Jacobian of the conversion above.
+
+=== Initial guess and convergence
+
+LM only finds a *local* minimum, so the starting point matters. The calibrators take it from the caller
+(`setInitialBias`, `setInitialMa`, ... or the constructor arguments); if nothing is given the starting point is
+stem:[\mathbf{b}_0 = \mathbf{0}] and stem:[\mathbf{M}_0 = \mathbf{0}] (an identity gain), which is a sensible default because real
+sensors are close to ideal. A better start is any approximate estimate, for example a previous
+calibration, the datasheet values, or the linear solution when a `KnownFrame` data set is available for the
+same sensor. When the common z-axis flag is set, the lower triangle of the initial gain matrix is forced to zero
+before inverting it. The solver then needs at least *one more measurement than unknowns* (the minimum is
+stem:[n + 1]), which gives:
+
+[cols="3,1,1,1,1",options="header"]
+|===
+|Family |Unknowns (general) |Unknowns (common z-axis) |Min. (general) |Min. (common z-axis)
+
+|Accelerometer `KnownGravityNorm`, `KnownPosition`; magnetometer `KnownMagneticFluxDensityNorm`, `KnownPositionAndInstant`
+|12
+|9
+|13
+|10
+
+|Same with a known bias or hard iron (only M)
+|9
+|6
+|10
+|7
+|===
+
+Poorly spread attitudes, a bad initial guess or an inconsistent known magnitude can make LM stall at a poor
+minimum; the covariance and reduced stem:[\chi^2] are the quantities to inspect. For data sets that may contain
+bad static intervals use the robust wrappers described next.
+
+[#robust-estimation]
+== Robust estimation
+
+Every non-trivial calibrator has five `Robust...` variants (see xref:calibration/index.adoc[] for the family
+tree). They all follow the same pattern. A *hypothesis* is computed by running the plain calibrator on a small random
+subset of the measurements; the hypothesis is *scored* by how well it explains every measurement; the best
+hypothesis wins; optionally the winner is *refined* using all the measurements it classifies as inliers.
+
+=== Residuals
+
+The residual of measurement stem:[k] for a hypothesis (stem:[\mathbf{b}], stem:[\mathbf{M}]) is the squared
+disagreement with the known magnitude, using the user-facing parameters:
+
+[stem]
+++++
+r_k = \left(g - \left\lVert (\mathbf{I}_3 + \mathbf{M})^{-1}\left(\mathbf{f}_{\text{meas},k} - \mathbf{b}\right)\right\rVert\right)^{2}
+++++
+
+For the `KnownFrame` families the residual instead compares the measurement predicted by the hypothesis from the
+known true signal, stem:[\mathbf{b} + (\mathbf{I}_3 + \mathbf{M})\mathbf{f}_{\text{true},k}], with the actual one. Residuals are therefore in squared units of the signal (for example stem:[(\text{m/s}^2)^2]), which is
+the unit of the threshold parameters below. If the hypothesis matrix cannot be inverted the residual is set to
+the largest representable value.
+
+=== Methods
+
+[cols="1,3,2",options="header"]
+|===
+|Method |Sample selection and scoring |Main parameters
+
+|RANSAC
+|Random subsets. A measurement is an *inlier* when its residual is below `threshold`. The hypothesis with
+the most inliers wins. The number of iterations adapts to the requested confidence and the inlier ratio seen so far.
+|`threshold` (default `1e-2`), `confidence` (`0.99`), `maxIterations` (`5000`)
+
+|MSAC
+|Same random subsets, but the score is a *truncated cost*: every residual is clipped at `threshold` and the
+clipped residuals are summed (smaller is better). Inliers contribute their actual error instead of a flat vote,
+so among hypotheses with the same inlier count the tighter one wins.
+|Same as RANSAC
+
+|LMedS
+|Random subsets, scored by the *median* of all residuals (smaller is better). No inlier threshold is needed
+because the median is robust up to about half of outliers. The best median also yields the threshold used to classify inliers afterwards.
+|`stopThreshold` (`1e-4`): iteration stops early when the best median falls below it; `confidence`, `maxIterations`
+
+|PROSAC
+|Like RANSAC, but measurements are *ordered by a quality score* (larger is better) and subsets are drawn
+first from the best-ranked measurements, growing the pool progressively. Good measurements are found much
+sooner when scores are informative.
+|`threshold`, plus one quality score per measurement (`QualityScoredAccelerometerCalibrator` and the equivalents)
+
+|PROMedS
+|LMedS scoring with the PROSAC progressive sampling.
+|`stopThreshold` plus quality scores
+|===
+
+The quality score of a measurement is any number you can attach to it (for example the inverse of its standard
+deviation, or the length of the static interval it came from); only the ordering matters.
+
+=== Flow
+
+[mermaid]
+....
+flowchart TD
+    A["Measurements"] --> B["Pick a random subset<br/>(PROSAC and PROMedS: from the best-scored first)"]
+    B --> C["Run the plain calibrator on the subset<br/>to obtain a hypothesis b and M"]
+    C --> D["Compute residual r of every measurement"]
+    D --> E{"Method"}
+    E -->|"RANSAC"| F["Score = number of residuals below threshold"]
+    E -->|"MSAC"| G["Score = sum of residuals clipped at threshold"]
+    E -->|"LMedS and PROMedS"| H["Score = median residual"]
+    F --> I{"Better than the best so far?"}
+    G --> I
+    H --> I
+    I -->|"yes"| J["Keep hypothesis, inliers and residuals"]
+    I -->|"no"| K{"Stop?<br/>(confidence reached, max iterations<br/>or median below stop threshold)"}
+    J --> K
+    K -->|"no"| B
+    K -->|"yes"| L{"refineResult?"}
+    L -->|"yes (default)"| M["Recalibrate using only the inliers,<br/>starting from the best hypothesis"]
+    L -->|"no"| N["Use the best hypothesis"]
+    M --> O["Estimated b, M and covariance"]
+    N --> O
+....
+
+=== Practical notes
+
+* The subset size defaults to the minimum number of measurements the plain calibrator needs and can be raised
+  (`setPreliminarySubsetSize`), which makes each hypothesis less noisy at the cost of a lower chance of a clean sample.
+* The refinement step (`refineResult`, `true` by default) runs the plain calibrator on the inliers only, starting
+  from the best hypothesis, and falls back to the unrefined hypothesis if it fails. The covariance is kept by default (`keepCovariance`).
+* The inlier flags and per-measurement residuals can be retained (`computeAndKeepInliers`, `computeAndKeepResiduals`) and are
+  always available when refinement is on.
+* RANSAC and MSAC are sensitive to the `threshold`; LMedS and PROMedS need none, which is convenient when the
+  noise level is not known beforehand.
+
+[#tedaldi]
+== The Tedaldi et al. method
+
+Tedaldi, Pretto and Menegatti (xref:reference.adoc#imu-tk[[imu-tk\]]) describe a procedure that needs no
+turntable or external reference: the operator holds the IMU still for an initial period, then moves it between
+a set of distinct *static* attitudes. The accelerometer triad is calibrated from the static attitudes alone, and
+the gyroscope triad is then calibrated by checking that integrating the angular rate between two static
+attitudes reproduces the change of the gravity direction measured by the already calibrated accelerometer.
+The library splits this into detection, measurement generation and calibration stages.
+
+[mermaid]
+....
+flowchart LR
+    S["Raw samples<br/>(BodyKinematics or TimedBodyKinematics)"] --> D["TriadStaticIntervalDetector<br/>(AccelerationTriadStaticIntervalDetector)"]
+    D -->|"static / dynamic status"| G["MeasurementsGenerator<br/>(AccelerometerMeasurementsGenerator,<br/>GyroscopeMeasurementsGenerator)"]
+    G -->|"one StandardDeviationBodyKinematics<br/>per static interval"| A["Accelerometer calibrators<br/>KnownGravityNorm, KnownPosition"]
+    G -->|"one BodyKinematicsSequence<br/>per dynamic interval"| E["EasyGyroscopeCalibrator<br/>KnownBiasEasyGyroscopeCalibrator"]
+    A -->|"b and M of the accelerometer"| E
+    E --> R["Gyroscope b, M and G"]
+....
+
+=== Static-interval detection
+
+Detection works on the accelerometer stream. After an initial period during which the device must not move
+(`initialStaticSamples`, default 5000 samples), the detector measures the base noise level: the Euclidean norm
+of the per-axis standard deviations accumulated over that period. For every new sample it computes the same norm
+over a sliding window (`windowSize`, default 101 samples) and applies a simple test:
+
+[stem]
+++++
+\sigma_{w}(t) = \sqrt{\sigma_{x}^{2}(t) + \sigma_{y}^{2}(t) + \sigma_{z}^{2}(t)},
+\qquad
+\text{status} =
+\begin{cases}
+\text{static} & \sigma_{w}(t) < \kappa\,\sigma_{0} \\
+\text{dynamic} & \text{otherwise}
+\end{cases}
+++++
+
+where stem:[\sigma_0] is the base noise level and stem:[\kappa] is `thresholdFactor` (default 2). The library therefore compares the norm of the windowed
+standard deviation with stem:[\kappa\sigma_0]. This is the same idea as the detector of the paper, which instead compares the
+magnitude of the windowed variances with a multiple of the one measured in the initial period. The paper estimates the multiplier automatically inside its calibration
+loop; the library instead exposes it as a parameter, and the generator documentation recommends repeating the calibration with several
+threshold factors, because the gyroscope calibration is very sensitive to where intervals start and end.
+Two safeguards act during initialization: if the windowed noise suddenly exceeds the accumulated one by
+`instantaneousNoiseLevelFactor` (default 2), or the base level is above `baseNoiseLevelAbsoluteThreshold`, the
+detector fails and must be reset, because the initial period was not still.
+
+=== Measurements for the accelerometer
+
+While the detector reports a static interval, the accumulated average of the accelerometer samples is the
+single input measurement of that interval:
+
+[stem]
+++++
+\bar{\mathbf{f}}_{\text{meas}} = \frac{1}{n}\sum_{j=1}^{n}\mathbf{f}_{\text{meas},j}
+++++
+
+When the interval ends (a transition to dynamic), `AccelerometerMeasurementsGenerator` emits one
+`StandardDeviationBodyKinematics` whose specific force is that mean and whose standard deviation is the average
+of the three per-axis deviations. Intervals shorter than `minStaticSamples` (default two windows) are discarded as unreliable,
+and a dynamic interval longer than `maxDynamicSamples` (default 30 windows) is skipped. Averaging suppresses
+the noise, so the noise term can be dropped from the model, as the paper does.
+
+=== Accelerometer cost (multi-position method)
+
+In each static attitude the corrected measurement must have the magnitude of gravity. With the paper's model
+stem:[\mathbf{a}^{O} = \mathbf{T}_a\mathbf{K}_a(\mathbf{a}^{S} + \mathbf{b}_a)] (upper triangular
+misalignment stem:[\mathbf{T}_a], diagonal scaling stem:[\mathbf{K}_a], bias stem:[\mathbf{b}_a]) the cost over the
+stem:[M] static intervals is
+
+[stem]
+++++
+L(\boldsymbol{\theta}_{\text{acc}}) = \sum_{k=1}^{M}\left(\lVert\mathbf{g}\rVert^{2} - \left\lVert h(\mathbf{a}^{S}_k, \boldsymbol{\theta}_{\text{acc}})\right\rVert^{2}\right)^{2},
+\qquad h(\mathbf{a}^{S},\boldsymbol{\theta}_{\text{acc}}) = \mathbf{T}_a\mathbf{K}_a(\mathbf{a}^{S} + \mathbf{b}_a)
+++++
+
+with nine parameters (three misalignments, three scale factors, three biases), minimized with Levenberg-Marquardt.
+This is exactly the cost of xref:calibration/algorithms.adoc#nonlinear-model[the norm-based formulation above]: stem:[\mathbf{M}_{\text{full}}^{-1}]
+plays the role of stem:[\mathbf{T}_a\mathbf{K}_a] and the paper's bias, expressed on the measured side, is the
+negative of the library's stem:[\mathbf{b}] (stem:[\mathbf{b}_a = -\mathbf{b}]), and the upper-triangular common z-axis case has the same nine unknowns. In the library it is
+implemented by `KnownGravityNormAccelerometerCalibrator` (gravity norm given) or `KnownPositionAccelerometerCalibrator`
+(gravity norm computed from the position), fed with the generator's measurements.
+
+=== Gyroscope cost (integrated rotation vs. gravity direction)
+
+The gyroscope calibration uses the *dynamic* intervals between consecutive static intervals. Let
+stem:[\mathbf{u}_{a,k}] be the unit gravity direction measured by the *calibrated* accelerometer averaged in the
+stem:[k]-th static interval, and let stem:[\Psi] be an attitude integrator that, given the angular-rate samples of the motion between
+intervals stem:[k-1] and stem:[k] and the starting direction stem:[\mathbf{u}_{a,k-1}], returns the predicted
+direction stem:[\mathbf{u}_{g,k}]:
+
+[stem]
+++++
+\mathbf{u}_{g,k} = \Psi\!\left(\boldsymbol{\omega}_i^{S},\ \mathbf{u}_{a,k-1}\right),
+\qquad
+L(\boldsymbol{\theta}_{\text{gyro}}) = \sum_{k=2}^{M}\left\lVert \mathbf{u}_{a,k} - \mathbf{u}_{g,k}\right\rVert^{2}
+++++
+
+The integration advances a quaternion with the kinematics equation stem:[\dot{\mathbf{q}} = \tfrac{1}{2}\boldsymbol{\Omega}(\boldsymbol{\omega})\mathbf{q}]
+using a fourth-order Runge-Kutta step (the paper's RK4n, followed by a re-normalization of the quaternion).
+
+`EasyGyroscopeCalibrator` implements this cost as follows. Each *sequence* (one `BodyKinematicsSequence`: the mean
+specific force of the preceding static interval, the samples of the movement, and the mean specific force of the
+following static interval) is one observation:
+
+. The two static means are corrected with the accelerometer bias and cross-coupling errors supplied by the user
+  (that is why the calibrator is an `AccelerometerDependentGyroscopeCalibrator`) and normalized to unit vectors, so the
+  result does not depend on the local gravity magnitude. The pair of directions is stored as the input row, and the target stem:[y_k] is
+  zero.
+. For the current parameter guess, every sample of the sequence is corrected with the gyroscope model,
+  stem:[\boldsymbol{\Omega}_{\text{true}} = \mathbf{M}_{\text{full}}^{-1}\boldsymbol{\Omega}_{\text{meas}} - \mathbf{b}' - \mathbf{G}'\mathbf{f}_{\text{true}}]
+  (the same reparametrization as before, with the g-dependent term when it is being estimated).
+. The corrected angular rates are integrated with `QuaternionIntegrator` using the Runge-Kutta step to obtain the
+  rotation stem:[\mathbf{q}] over the sequence.
+. The starting gravity direction is rotated by the inverse of that attitude change (the body frame turns while gravity is
+  fixed) and compared with the measured end direction; the residual is the Euclidean distance between the two
+  unit vectors.
+
+The residual is weighted by the average angular-rate standard deviation of the sequence and minimized with
+Levenberg-Marquardt over stem:[\mathbf{b}], stem:[\mathbf{M}_g] (and optionally stem:[\mathbf{G}_g]), using the
+numerically estimated gradient. Two differences from the paper are worth knowing: the library takes the gyroscope bias as an
+unknown of the fit (the paper averages the gyroscope in the initial still period and removes it), and it has a general
+(full) matrix option besides the upper-triangular common z-axis form, which is the default for `EasyGyroscopeCalibrator`.
+As with any one-scalar-residual-per-observation fit, the calibrator needs one more sequence than unknowns:
+
+[cols="3,1,1",options="header"]
+|===
+|Configuration |Unknowns |Minimum sequences
+
+|Common z-axis, no g-dependent term
+|9
+|10
+
+|General, no g-dependent term
+|12
+|13
+
+|Common z-axis, with g-dependent term
+|18
+|19
+
+|General, with g-dependent term
+|21
+|22
+|===
+
+Each sequence must also contain a few body kinematics items (the Javadoc asks for at least three).
+
+=== Putting it together
+
+. Keep the device still for the initial period (long enough for `initialStaticSamples`).
+. Move it to a new attitude and hold it still, many times, producing alternating static and dynamic intervals.
+. Feed every sample through an `AccelerometerAndGyroscopeMeasurementsGenerator` (or the individual accelerometer and gyroscope
+  generators); collect the generated `StandardDeviationBodyKinematics` and `BodyKinematicsSequence` instances.
+. Calibrate the accelerometer with `KnownGravityNorm`/`KnownPosition` using the first collection.
+. Pass the estimated accelerometer bias and `Ma` plus the sequences to `EasyGyroscopeCalibrator`
+  (or `KnownBiasEasyGyroscopeCalibrator` when the gyroscope bias is known), optionally wrapped by a robust variant.
+
+See xref:calibration/intervals-and-generators.adoc[] for the detector and generator classes in detail.
+
+== Class Reference
+
+[cols="1,1,1",options="header"]
+|===
+|Class |Javadoc |Source
+
+|`KnownFrameAccelerometerLinearLeastSquaresCalibrator`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/accelerometer/KnownFrameAccelerometerLinearLeastSquaresCalibrator.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/accelerometer/KnownFrameAccelerometerLinearLeastSquaresCalibrator.java[Source^]
+
+|`KnownGravityNormAccelerometerCalibrator`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/accelerometer/KnownGravityNormAccelerometerCalibrator.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/accelerometer/KnownGravityNormAccelerometerCalibrator.java[Source^]
+
+|`KnownPositionAccelerometerCalibrator`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/accelerometer/KnownPositionAccelerometerCalibrator.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/accelerometer/KnownPositionAccelerometerCalibrator.java[Source^]
+
+|`RobustKnownGravityNormAccelerometerCalibrator`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/accelerometer/RobustKnownGravityNormAccelerometerCalibrator.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/accelerometer/RobustKnownGravityNormAccelerometerCalibrator.java[Source^]
+
+|`TriadStaticIntervalDetector`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/intervals/TriadStaticIntervalDetector.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/intervals/TriadStaticIntervalDetector.java[Source^]
+
+|`MeasurementsGenerator`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/generators/MeasurementsGenerator.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/generators/MeasurementsGenerator.java[Source^]
+
+|`GyroscopeMeasurementsGenerator`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/generators/GyroscopeMeasurementsGenerator.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/generators/GyroscopeMeasurementsGenerator.java[Source^]
+
+|`EasyGyroscopeCalibrator`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/calibration/gyroscope/EasyGyroscopeCalibrator.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/calibration/gyroscope/EasyGyroscopeCalibrator.java[Source^]
+|===
+
+== Where to go next
+
+* xref:calibration/accelerometer.adoc[] — the accelerometer families that use these algorithms.
+* xref:calibration/gyroscope.adoc[] — the turntable, known-frame and "Easy" gyroscope calibrators.
+* xref:calibration/magnetometer.adoc[] — the same linear and norm-based formulations for hard and soft iron.
+* xref:calibration/intervals-and-generators.adoc[] — the detector and generators that feed the Tedaldi pipeline.
+* xref:reference.adoc#bibliography[] — bibliography.

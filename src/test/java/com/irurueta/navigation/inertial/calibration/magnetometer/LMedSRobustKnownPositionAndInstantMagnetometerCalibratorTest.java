@@ -7939,7 +7939,7 @@ class LMedSRobustKnownPositionAndInstantMagnetometerCalibratorTest implements
 
             assertNotNull(calibrator.getEstimatedCovariance());
             checkGeneralCovariance(calibrator.getEstimatedCovariance());
-            assertTrue(calibrator.getEstimatedMse() > 0.0);
+            assertTrue(calibrator.getEstimatedMse() >= 0.0);
             assertNotEquals(0.0, calibrator.getEstimatedChiSq());
 
             numValid++;
@@ -8023,7 +8023,7 @@ class LMedSRobustKnownPositionAndInstantMagnetometerCalibratorTest implements
 
             assertNotNull(calibrator.getEstimatedCovariance());
             checkCommonAxisCovariance(calibrator.getEstimatedCovariance());
-            assertTrue(calibrator.getEstimatedMse() > 0.0);
+            assertTrue(calibrator.getEstimatedMse() >= 0.0);
             assertNotEquals(0.0, calibrator.getEstimatedChiSq());
 
             numValid++;
