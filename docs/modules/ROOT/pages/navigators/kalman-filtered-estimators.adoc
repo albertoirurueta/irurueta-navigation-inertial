@@ -72,6 +72,236 @@ The first Kalman filter epoch propagates the covariance over the time elapsed si
 IMU samples provided before the first fix or GNSS measurements are integrated too, so attitude changes
 before position and velocity are initialised are kept.
 
+== The error-state Kalman filter
+
+The filter does not estimate the navigation solution directly. It estimates the *errors* of the INS-propagated
+solution and feeds them back to it (closed-loop correction). The equation numbers below are those of
+xref:reference.adoc#book-groves[[book-groves\]] quoted by the comments of `INSLooselyCoupledKalmanEpochEstimator`
+and `INSTightlyCoupledKalmanEpochEstimator`; the symbols are restated here in their own notation.
+
+=== State vector
+
+Loosely coupled filters (`INSLooselyCoupledKalmanState`, `NUM_PARAMS = 15`) estimate
+
+[stem]
+++++
+\mathbf{x} = \begin{pmatrix} \delta\boldsymbol{\psi}_{eb}^{e} \\ \delta\mathbf{v}_{eb}^{e} \\ \delta\mathbf{r}_{eb}^{e} \\ \mathbf{b}_a \\ \mathbf{b}_g \end{pmatrix}
+\qquad \text{(3 + 3 + 3 + 3 + 3 = 15 states)}
+++++
+
+where stem:[\delta\boldsymbol{\psi}] is the attitude error of the body-to-ECEF rotation (small rotation vector, rad),
+stem:[\delta\mathbf{v}] and stem:[\delta\mathbf{r}] are the ECEF velocity (m/s) and position (m) errors, and
+stem:[\mathbf{b}_a], stem:[\mathbf{b}_g] are the accelerometer (m/s^2^) and gyroscope (rad/s) biases. The tightly coupled
+filter (`INSTightlyCoupledKalmanState`, `NUM_PARAMS = 17`) appends two GNSS receiver clock states:
+
+[stem]
+++++
+\mathbf{x}_{TC} = \begin{pmatrix} \mathbf{x} \\ \delta\rho_{c} \\ \delta\dot{\rho}_{c} \end{pmatrix}
+++++
+
+with the receiver clock offset stem:[\delta\rho_c] expressed in metres and the clock drift
+stem:[\delta\dot\rho_c] in metres per second.
+
+Because every epoch is followed by a closed-loop correction, the error states are reset to zero after each
+update, so the predicted error state is zero (Groves 3.14). The only exception is the tightly coupled clock pair,
+which is carried across epochs and predicted as stem:[\delta\rho_c^{-} = \delta\rho_c + \delta\dot\rho_c\,\tau] and
+stem:[\delta\dot\rho_c^{-} = \delta\dot\rho_c].
+
+The initial covariance stem:[\mathbf{P}_0] is diagonal and built by `INSLooselyCoupledKalmanInitializer` /
+`INSTightlyCoupledKalmanInitializer` from the initial attitude, velocity, position, accelerometer-bias,
+gyroscope-bias (and clock offset and drift) uncertainties, each squared.
+
+=== Propagation: system matrix and process noise
+
+For a propagation interval stem:[\tau] (seconds since the previous Kalman epoch), the first-order transition matrix
+(Groves 14.50) is the identity plus the following non-zero blocks, with rows and columns ordered as in the state
+vector:
+
+[stem]
+++++
+\boldsymbol{\Phi} =
+\begin{pmatrix}
+\mathbf{I} - \boldsymbol{\Omega}_{ie}^{e}\tau & \mathbf{0} & \mathbf{0} & \mathbf{0} & \hat{\mathbf{C}}_b^e\,\tau \\
+-\tau\left[\hat{\mathbf{C}}_b^e\,\mathbf{f}_{ib}^{b}\wedge\right] & \mathbf{I} - 2\boldsymbol{\Omega}_{ie}^{e}\tau & -\dfrac{2\tau\,\boldsymbol{\gamma}_{ib}^{e}}{r_{eS}^{e}}\dfrac{\hat{\mathbf{r}}_{eb}^{e\,T}}{|\hat{\mathbf{r}}_{eb}^{e}|} & \hat{\mathbf{C}}_b^e\,\tau & \mathbf{0} \\
+\mathbf{0} & \tau\,\mathbf{I} & \mathbf{I} & \mathbf{0} & \mathbf{0} \\
+\mathbf{0} & \mathbf{0} & \mathbf{0} & \mathbf{I} & \mathbf{0} \\
+\mathbf{0} & \mathbf{0} & \mathbf{0} & \mathbf{0} & \mathbf{I}
+\end{pmatrix}
+++++
+
+Here stem:[\boldsymbol{\Omega}_{ie}^{e} = [(0,0,\omega_{ie})^{T}\wedge\]] is the skew-symmetric matrix of the Earth rotation
+rate, stem:[\hat{\mathbf{C}}_b^e] the current body-to-ECEF attitude of the Kalman state, stem:[\mathbf{f}_{ib}^b] the
+bias-corrected specific force of the last IMU sample, stem:[\boldsymbol{\gamma}_{ib}^e] the gravity at the current
+position (`ECEFGravityEstimator`) and stem:[r_{eS}^e] the geocentric radius at the previous latitude (Groves 2.137,
+using the WGS84 equatorial radius and eccentricity). The block in row 2 / column 3 feeds position error into velocity
+error through the gravity gradient, and the stem:[\tau\,\mathbf{I}] block integrates velocity error into position
+error. The tightly coupled matrix is stem:[\boldsymbol{\Phi}] extended with an identity block for the clock states and
+one extra element, stem:[\Phi_{16,17} = \tau], that integrates drift into offset.
+
+The process noise is approximated (Groves 14.82) by a diagonal matrix built from the power spectral densities of
+`INSLooselyCoupledKalmanConfig` / `INSTightlyCoupledKalmanConfig`:
+
+[stem]
+++++
+\mathbf{Q}' = \tau\,\mathrm{diag}\left(S_{rg}\mathbf{1}_3,\; S_{ra}\mathbf{1}_3,\; \mathbf{0}_3,\; S_{bad}\mathbf{1}_3,\; S_{bgd}\mathbf{1}_3 \;[,\; S_{c\phi},\; S_{cf}]\right)
+++++
+
+where stem:[S_{rg}] is the gyroscope noise PSD (rad^2^/s), stem:[S_{ra}] the accelerometer noise PSD (m^2^/s^3^),
+stem:[S_{bad}] the accelerometer bias random-walk PSD (m^2^/s^5^), stem:[S_{bgd}] the gyroscope bias random-walk PSD
+(rad^2^/s^3^), and, for the tightly coupled filter only, stem:[S_{c\phi}] the clock phase PSD (m^2^/s) and
+stem:[S_{cf}] the clock frequency PSD (m^2^/s^3^). The position-error rows have no process noise.
+
+The code propagates the covariance with the trapezoidal form of Groves 3.46, which averages the noise between the
+start and the end of the interval, instead of adding stem:[\mathbf{Q}'] once:
+
+[stem]
+++++
+\mathbf{P}^{-} = \boldsymbol{\Phi}\left(\mathbf{P}^{+}_{k-1} + \tfrac{1}{2}\mathbf{Q}'\right)\boldsymbol{\Phi}^{T} + \tfrac{1}{2}\mathbf{Q}'
+++++
+
+=== Loosely coupled measurement model
+
+The aiding data are an ECEF position stem:[\mathbf{r}_{GNSS}] and velocity stem:[\mathbf{v}_{GNSS}] (supplied directly by
+`INSLooselyCoupledKalmanFilteredEstimator`, or solved from GNSS measurements by
+`INSGNSSLooselyCoupledKalmanFilteredEstimator`). The innovation is the difference between the GNSS and the
+INS-propagated solution; the code assumes a zero lever arm between the GNSS antenna and the IMU (Groves 14.102):
+
+[stem]
+++++
+\delta\mathbf{z}^{-} = \begin{pmatrix} \mathbf{r}_{GNSS} - \hat{\mathbf{r}}_{eb}^{e} \\ \mathbf{v}_{GNSS} - \hat{\mathbf{v}}_{eb}^{e} \end{pmatrix}
+++++
+
+Since the filter states are errors of the INS solution (estimate minus truth), the measurement matrix of the
+6 x 15 problem (Groves 14.115) only selects the velocity and position error states with a negative sign:
+
+[stem]
+++++
+\mathbf{H} = \begin{pmatrix} \mathbf{0}_3 & \mathbf{0}_3 & -\mathbf{I}_3 & \mathbf{0}_3 & \mathbf{0}_3 \\ \mathbf{0}_3 & -\mathbf{I}_3 & \mathbf{0}_3 & \mathbf{0}_3 & \mathbf{0}_3 \end{pmatrix}
+++++
+
+with the first block row acting on position and the second on velocity. All six components are assumed independent
+with the standard deviations from the configuration:
+
+[stem]
+++++
+\mathbf{R} = \mathrm{diag}\left(\sigma_{r}^{2}\mathbf{1}_3,\; \sigma_{v}^{2}\mathbf{1}_3\right)
+++++
+
+=== Tightly coupled measurement model
+
+With `n` satellites the measurement vector holds `n` pseudo-ranges followed by `n` pseudo-range rates, so
+stem:[\mathbf{H}] is stem:[2n \times 17]. For satellite stem:[j] the filter predicts the measurements from the
+INS-propagated position stem:[\hat{\mathbf{r}}] and velocity stem:[\hat{\mathbf{v}}]:
+
+. Approximate range stem:[\tilde{r}_j = |\mathbf{r}_{aj} - \hat{\mathbf{r}}|], where stem:[\mathbf{r}_{aj}] is the satellite
+  position.
+. The Earth rotates while the signal travels, so the satellite position is rotated by the small frame rotation
+  stem:[\mathbf{C}_I^e \approx \mathbf{I} - \omega_{ie}\tilde{r}_j/c\,[\mathbf{e}_3\wedge\]] (Groves 8.36, with stem:[c] the speed of light).
+. Predicted pseudo-range, with the propagated clock offset (Groves 9.165):
+
+[stem]
+++++
+\hat\rho_j = \left|\mathbf{C}_I^e\,\mathbf{r}_{aj} - \hat{\mathbf{r}}\right| + \delta\rho_c^{-}
+++++
+
+. Line of sight stem:[\mathbf{u}_j = (\mathbf{C}_I^e\mathbf{r}_{aj} - \hat{\mathbf{r}}) / |\mathbf{C}_I^e\mathbf{r}_{aj} - \hat{\mathbf{r}}|] and predicted pseudo-range rate
+  (Groves 9.165):
+
+[stem]
+++++
+\hat{\dot\rho}_j = \mathbf{u}_j^{T}\left[\mathbf{C}_I^e\left(\mathbf{v}_{aj} + \boldsymbol{\Omega}_{ie}^{e}\mathbf{r}_{aj}\right) - \left(\hat{\mathbf{v}} + \boldsymbol{\Omega}_{ie}^{e}\hat{\mathbf{r}}\right)\right] + \delta\dot\rho_c^{-}
+++++
+
+The innovation (Groves 14.119) is the measured minus the predicted value, for each satellite and each measurement
+type:
+
+[stem]
+++++
+\delta\mathbf{z}^{-} = \begin{pmatrix} \rho_{1} - \hat\rho_1 \\ \vdots \\ \rho_{n} - \hat\rho_n \\ \dot\rho_{1} - \hat{\dot\rho}_1 \\ \vdots \\ \dot\rho_{n} - \hat{\dot\rho}_n \end{pmatrix}
+++++
+
+and the measurement matrix (Groves 14.126) projects the position error onto each line of sight for the
+pseudo-ranges, the velocity error for the pseudo-range rates, and picks the clock states:
+
+[stem]
+++++
+\mathbf{H} = \begin{pmatrix}
+\mathbf{0}_{n\times 3} & \mathbf{0}_{n\times 3} & \mathbf{U} & \mathbf{0}_{n\times 3} & \mathbf{0}_{n\times 3} & \mathbf{1}_n & \mathbf{0}_n \\
+\mathbf{0}_{n\times 3} & \mathbf{U} & \mathbf{0}_{n\times 3} & \mathbf{0}_{n\times 3} & \mathbf{0}_{n\times 3} & \mathbf{0}_n & \mathbf{1}_n
+\end{pmatrix},
+\qquad
+\mathbf{U} = \begin{pmatrix} \mathbf{u}_1^{T} \\ \vdots \\ \mathbf{u}_n^{T} \end{pmatrix}
+++++
+
+Measurement noise is diagonal, with one variance for all pseudo-ranges and another for all pseudo-range rates:
+stem:[\mathbf{R} = \mathrm{diag}(\sigma_{\rho}^{2}\mathbf{1}_n,\; \sigma_{\dot\rho}^{2}\mathbf{1}_n)].
+
+=== Update and closed-loop correction
+
+Both filters then apply the standard Kalman update, with the matrices of the chosen model:
+
+[stem]
+++++
+\mathbf{K} = \mathbf{P}^{-}\mathbf{H}^{T}\left(\mathbf{H}\mathbf{P}^{-}\mathbf{H}^{T} + \mathbf{R}\right)^{-1}
+\qquad \text{(Groves 3.21)}
+++++
+
+[stem]
+++++
+\hat{\mathbf{x}}^{+} = \hat{\mathbf{x}}^{-} + \mathbf{K}\,\delta\mathbf{z}^{-}
+\qquad \text{(Groves 3.24)}
+++++
+
+[stem]
+++++
+\mathbf{P}^{+} = \left(\mathbf{I} - \mathbf{K}\mathbf{H}\right)\mathbf{P}^{-}
+\qquad \text{(Groves 3.25)}
+++++
+
+The estimated errors are then removed from the INS solution (Groves 14.7 to 14.9). Attitude is corrected with
+the small-angle rotation of the estimated attitude error, velocity and position are decreased by their estimated
+errors, and the bias estimates are increased by the estimated bias states:
+
+[stem]
+++++
+\hat{\mathbf{C}}_b^e \leftarrow \left(\mathbf{I} - \left[\delta\hat{\boldsymbol{\psi}}\wedge\right]\right)\hat{\mathbf{C}}_b^e,
+\qquad
+\hat{\mathbf{v}} \leftarrow \hat{\mathbf{v}} - \delta\hat{\mathbf{v}},
+\qquad
+\hat{\mathbf{r}} \leftarrow \hat{\mathbf{r}} - \delta\hat{\mathbf{r}}
+++++
+
+[stem]
+++++
+\hat{\mathbf{b}}_a \leftarrow \hat{\mathbf{b}}_a + \delta\hat{\mathbf{b}}_a,
+\qquad
+\hat{\mathbf{b}}_g \leftarrow \hat{\mathbf{b}}_g + \delta\hat{\mathbf{b}}_g
+++++
+
+In the tightly coupled filter the receiver clock offset and drift are not corrected but replaced by the updated
+clock states. The corrected attitude is orthonormal only to first order, so
+`INSGNSSTightlyCoupledKalmanFilteredEstimator` re-orthonormalizes it after each epoch. The updated biases are used
+to correct the next IMU samples before they are integrated, which closes the loop.
+
+=== Block diagram
+
+[mermaid]
+....
+flowchart LR
+    IMU["IMU sample\n(f, ω)"] --> BC["Subtract estimated\nbiases"]
+    BC --> INS["Inertial navigator\n(attitude, velocity, position)"]
+    INS --> PRED["INS-propagated\nsolution"]
+    PRED --> INNOV
+    GNSS["Fix (loose) or\npseudo-ranges and rates (tight)"] --> INNOV["Innovation δz\n(measurement minus prediction)"]
+    PHI["Φ, Q' from f, attitude,\nposition and τ"] --> COV["Covariance propagation\nP⁻ = Φ(P + Q'/2)Φᵀ + Q'/2"]
+    COV --> KG["Kalman gain K\nfrom H, R"]
+    KG --> UPD["State update\nx = K δz\nP = (I - K H) P⁻"]
+    INNOV --> UPD
+    UPD -->|"attitude, velocity,\nposition errors"| PRED
+    UPD -->|"bias errors"| BC
+    UPD -->|"clock offset, drift\n(tight only)"| INNOV
+....
+
 == Usage loop
 
 Feed every IMU sample as it arrives, and every fix or set of GNSS measurements at the timestamp it is

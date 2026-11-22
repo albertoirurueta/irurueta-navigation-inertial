@@ -32,6 +32,29 @@ double[] asArray = triad.getValuesAsArray();
 double norm = triad.getNorm(); // magnitude of the 3-axis vector
 ----
 
+[#conventions]
+== Conventions shared by all containers
+
+* *SI units internally.* Raw `double` getters and setters are always in m/s^2 (specific force), rad/s
+  (angular rate), T (magnetic flux density), s (time) and radians/metres (geodetic position). The overloads
+  that take `Acceleration`, `AngularSpeed`, `MagneticFluxDensity`, `Time`, `Angle` or `Distance` objects
+  convert on the way in and out, so the unit you pass does not change the stored value.
+* *Body-frame vectors.* Specific force, angular rate and magnetic flux density are resolved about the
+  *body* axes in the forward-right-down convention described in
+  xref:calibration/index.adoc#error-model[the error model]. The known frame that some containers carry
+  describes where the body is, not the axes the reading is resolved in.
+* *Triads versus matrices.* A `Triad` is a convenience wrapper; calibrators convert it with
+  `getValuesAsMatrix()` / `getValuesAsArray()`, and `getNorm()` returns the Euclidean norm, which is what
+  the norm-based families of xref:calibration/algorithms.adoc#nonlinear-model[the non-linear model] consume.
+* *One standard deviation per sensor, not per axis.* The `StandardDeviation*` containers hold a single
+  specific-force deviation (m/s^2) and a single angular-rate deviation (rad/s) (or one for the field, in
+  T). They are used to weight measurements. The accelerometer measurement generator fills the value with the
+  mean of the three per-axis standard deviations of the samples in the static interval, i.e. the
+  *per-sample* deviation, not that deviation divided by stem:[\sqrt{N}] (see
+  xref:calibration/noise-and-bias.adoc#psd[PSD and root-PSD] for how that relates to root-PSD).
+* *Everything is copyable and serializable.* Containers implement `Serializable` and `Cloneable` and offer
+  copy constructors, `copyFrom` and `copyTo`.
+
 == Building up a measurement
 
 Calibration measurements are built by progressively attaching more context to a raw `BodyKinematics`
@@ -58,13 +81,21 @@ flowchart LR
   xref:calibration/noise-and-bias.adoc[noise estimator]'s output).
 * `FrameBodyKinematics` / `FrameBodyMagneticFluxDensity` — add the *known* NED/ECEF/velocity/orientation
   frame the measurement was taken at. This is what lets a "known frame" calibrator solve for sensor
-  errors directly, without needing to also estimate orientation.
+  errors directly, without needing to also estimate orientation. Internally the frame is an `ECEFFrame`
+  (`getFrame()`), with NED views `getNedFrame()` / `setNedFrame()`. `FrameBodyKinematics` also keeps a
+  `previousFrame` and the `timeInterval` between the two frames: together they describe the motion over
+  one sample, which is what the true specific force and angular rate are derived from (see
+  xref:calibration/accelerometer.adoc[]). `FrameBodyMagneticFluxDensity` instead carries the decimal `year`
+  needed to evaluate the WMM at that position.
 * `StandardDeviationFrameBodyKinematics` / `StandardDeviationFrameBodyMagneticFluxDensity` — both of the
   above combined; the most complete measurement type, used by most linear/non-linear least-squares
   calibrators.
-* `BodyKinematicsSequence<T extends TimedBodyKinematics>` — an ordered collection of timed kinematics
-  samples captured while the device was *moving*, bracketed by static periods (whose mean specific force
-  approximates the local gravity direction in body axes). This is the measurement unit consumed by
+* `BodyKinematicsSequence<T extends TimedBodyKinematics>` — a collection of timed kinematics
+  samples captured while the device was *moving*, bracketed by static periods. Items may be added in any
+  order; `getSortedItems()` returns them by ascending timestamp. The static periods are not stored sample
+  by sample, only as the mean specific force *before* and *after* the sequence
+  (`getBeforeMeanFx/Fy/Fz()`, `getAfterMeanFx/Fy/Fz()`), which approximates gravity in body axes at the
+  start and at the end. This is the measurement unit consumed by
   `EasyGyroscopeCalibrator` and is built by xref:calibration/intervals-and-generators.adoc[the interval
   detector/generator pipeline].
 
@@ -85,14 +116,54 @@ measurement.setSpecificForceStandardDeviation(0.01);
 measurement.setAngularRateStandardDeviation(0.001);
 ----
 
+[#imu-errors]
 == IMUErrors
 
 A container for a *complete* IMU error model: accelerometer bias and stem:[\mathbf{M}_a] (scale
 factor/cross-coupling), gyroscope bias, stem:[\mathbf{M}_g], and stem:[\mathbf{G}_g] (g-dependent
 bias), plus each sensor's noise root-PSD and quantization level (see
-xref:calibration/index.adoc[the sensor error model]). It is the output of a full calibration run
-(assembled by `IMUErrorsCreator`, see xref:calibration/fixers.adoc[]) and can also be used as the input
-to a synthetic-data generator to simulate a specific, imperfect IMU for testing.
+xref:calibration/index.adoc#error-model[the sensor error model]). It is the output of a full calibration run
+(assembled by `IMUErrorsCreator`, see xref:calibration/fixers.adoc#imu-errors-creator[]) and can also be used
+as the input to a synthetic-data generator (`BodyKinematicsGenerator`) to simulate a specific, imperfect
+IMU for testing.
+
+[cols="2,1,2",options="header"]
+|===
+|Field |Shape |Unit
+
+|Accelerometer biases stem:[\mathbf{b}_a] |3 |m/s^2
+|Gyroscope biases stem:[\mathbf{b}_g] |3 |rad/s
+|`accelerometerScaleFactorAndCrossCouplingErrors` (stem:[\mathbf{M}_a]) |3x3 |unit-less
+|`gyroScaleFactorAndCrossCouplingErrors` (stem:[\mathbf{M}_g]) |3x3 |unit-less
+|`gyroGDependentBiases` (stem:[\mathbf{G}_g]) |3x3 |rad s / m (= rad/s per m/s^2)
+|Accelerometer noise root-PSD |scalar |m s^-1.5
+|Gyroscope noise root-PSD |scalar |rad s^-0.5
+|Accelerometer / gyroscope quantization level |scalar |m/s^2 / rad/s
+|===
+
+Biases can be given as `double[]`, 3x1 `Matrix` or arrays of `Acceleration` / `AngularSpeed`; sizes are
+checked and a wrong size raises `IllegalArgumentException`, as does a negative noise root-PSD. The
+shorter constructors leave stem:[\mathbf{G}_g] and the quantization levels at zero.
+
+The matrix stem:[\mathbf{M}] stored here is the same *full* matrix (scale factors on the diagonal) that the
+calibrators estimate and the fixers expect; the model applies it as stem:[\mathbf{I}_3+\mathbf{M}] (see
+xref:calibration/fixers.adoc#inverse-model[the inverse model]). The Javadoc describes it as the product
+stem:[\mathbf{T}\mathbf{K}] of a unit-diagonal misalignment matrix stem:[\mathbf{T}] and a diagonal
+scale-factor matrix stem:[\mathbf{K}=\operatorname{diag}(s_x,s_y,s_z)]:
+
+[stem]
+++++
+\mathbf{M}=\mathbf{T}\mathbf{K}=\begin{pmatrix} s_x & -s_y\alpha_{xy} & s_z\alpha_{xz}\\ s_x\alpha_{yx} & s_y & -s_z\alpha_{yz}\\ -s_x\alpha_{zx} & s_y\alpha_{zy} & s_z\end{pmatrix}
+++++
+
+and notes that when the sensor z axis is assumed aligned with the body z axis the three lower-triangular
+entries stem:[m_{yx}=m_{zx}=m_{zy}=0] (the "common z-axis" simplification of
+xref:calibration/algorithms.adoc#linear-model[the linear model]).
+
+WARNING: The no-argument `IMUErrors()` constructor initializes the two scale-factor/cross-coupling matrices to
+the *identity*, although the field Javadoc says the default is the zero matrix. Because the model uses
+stem:[\mathbf{I}_3+\mathbf{M}], an `IMUErrors` created that way and not overwritten would double the signal.
+For an ideal sensor, set the matrices explicitly to the zero matrix (as in the example below).
 
 [source,java]
 ----
@@ -111,7 +182,8 @@ IMUErrors imuErrors = new IMUErrors(accelerometerBiases, gyroBiases, acceleromet
 
 Thrown by calibrators when the underlying numerical solve fails (e.g., an ill-conditioned or
 rank-deficient measurement set — too few measurements, or measurements that don't sufficiently excite all
-axes).
+axes; see xref:calibration/algorithms.adoc#linear-model[how many measurements are needed]). It extends `InertialException` and carries a message and/or cause. Calibrators raise it from `calibrate()`; a calibrator
+that was not given enough data or inputs raises `NotReadyException` instead, before any solving starts.
 
 == Class Reference
 

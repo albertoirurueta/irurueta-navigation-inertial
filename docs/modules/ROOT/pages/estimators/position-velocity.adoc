@@ -15,6 +15,50 @@ stem:[\lambda], and height stem:[h] above the WGS84 reference ellipsoid.
 
 image::estimators/height-and-geodetic-latitude.svg[Geodetic height and latitude of a body above the ellipsoid,620,460]
 
+The ellipsoid is described by the equatorial radius stem:[R_0], the polar radius stem:[R_P], the flattening
+stem:[f=(R_0-R_P)/R_0] and the eccentricity stem:[e=\sqrt{f(2-f)}]. Three frames take part in the
+conversions of this page, and the diagram shows how they relate:
+
+[mermaid]
+....
+flowchart LR
+    ECEF["ECEF (x, y, z)\nCartesian, fixed to the Earth"] <-->|"L, lambda, h\n(ellipsoid geometry)"| CURV["Curvilinear\n(L, lambda, h)"]
+    CURV -->|"rates: v_N, v_E, v_D\nand radii R_N, R_E"| NED["NED velocity\n(north, east, down)\nlocal tangent frame at (L, lambda, h)"]
+    NED -->|"C_n^e from L and lambda"| ECEF
+....
+
+== ECEF and curvilinear conversion
+
+With stem:[R_E(L)] the transverse radius defined in the next section, the Cartesian position of a point at
+curvilinear position stem:[(L,\lambda,h)] is (Groves chapter 2, geodetic-to-Cartesian conversion):
+
+[stem]
+++++
+\mathbf{r}^{e}_{eb} = \begin{pmatrix}
+\left(R_{E}(L)+h\right)\cos L\cos\lambda \\
+\left(R_{E}(L)+h\right)\cos L\sin\lambda \\
+\left(\left(1-e^{2}\right)R_{E}(L)+h\right)\sin L
+\end{pmatrix}
+++++
+
+The inverse (Cartesian to geodetic) has no closed form in terms of elementary functions for the exact
+ellipsoid and is solved iteratively; longitude is simply stem:[\lambda=\operatorname{atan2}(y,x)]. The local
+NED axes at that point are related to ECEF by the rotation stem:[\mathbf{C}^{e}_{n}], which depends only on
+stem:[L] and stem:[\lambda]:
+
+[stem]
+++++
+\mathbf{C}^{e}_{n} = \begin{pmatrix}
+-\sin L\cos\lambda & -\sin\lambda & -\cos L\cos\lambda \\
+-\sin L\sin\lambda & \cos\lambda & -\cos L\sin\lambda \\
+\cos L & 0 & -\sin L
+\end{pmatrix}, \qquad
+\mathbf{v}^{e}_{eb} = \mathbf{C}^{e}_{n}\,\mathbf{v}^{n}_{eb}
+++++
+
+These conversions are not performed by the three estimators of this page; they are used around them, by the
+frame and converter classes that turn an ECEF state into the NED state the estimators consume.
+
 == RadiiOfCurvatureEstimator
 
 Latitude and longitude do not change at a uniform linear rate per meter travelled, because the WGS84
@@ -28,8 +72,12 @@ R_{N}(L) = \frac{R_{0}\left(1-e^{2}\right)}{\left(1-e^{2}\sin^{2}L\right)^{3/2}}
 R_{E}(L) = \frac{R_{0}}{\sqrt{1-e^{2}\sin^{2}L}}
 ++++
 
-where stem:[R_0] is the WGS84 equatorial radius and stem:[e] is the WGS84 eccentricity. See
-xref:reference.adoc#book-groves[[book-groves\]], §2.3.2.
+where stem:[R_0] is the WGS84 equatorial radius and stem:[e] is the WGS84 eccentricity (equations 2.105 and
+2.106 in the implementation). See xref:reference.adoc#book-groves[[book-groves\]], chapter 2.
+
+Intuitively, stem:[R_N] is the radius of the circle that best fits the meridian ellipse at latitude
+stem:[L], and stem:[R_E] is the distance from the surface point to the rotation axis measured along the
+ellipsoid normal. On a sphere (stem:[e=0]) both collapse to stem:[R_0].
 
 [source,java]
 ----
@@ -44,7 +92,9 @@ double transverseRadius = radii.getRe(); // R_E(L), meters
 image::estimators/geodetic-latitude.svg[Geocentric vs. geodetic latitude on the WGS84 ellipsoid,560,380]
 
 Both `NEDPositionEstimator` and `NEDVelocityEstimator` use these radii to convert between the NED
-velocity stem:[(v_N, v_E, v_D)] and the rate of change of curvilinear position:
+velocity stem:[(v_N, v_E, v_D)] and the rate of change of curvilinear position. A north displacement
+stem:[v_N\,dt] subtends an angle stem:[v_N\,dt/(R_N+h)] at the centre of curvature; an east displacement
+travels on a parallel of radius stem:[(R_E+h)\cos L], and down velocity is minus the height rate:
 
 [stem]
 ++++
@@ -56,8 +106,8 @@ velocity stem:[(v_N, v_E, v_D)] and the rate of change of curvilinear position:
 == NEDPositionEstimator
 
 Integrates curvilinear position forward over one time step from the old and new NED velocity, using the
-trapezoidal (average of old/new rate) form of the classic 4th-order Runge-Kutta integration scheme
-described in Groves §5.4.1 for the general state equation stem:[\dot{\mathbf{x}} = \mathbf{g}(\mathbf{x},\mathbf{u})]:
+trapezoidal (average of old/new rate) integration of the position-rate equations above (equation 5.56 in the
+code comments). In Groves §5.4 this is the position-update step of the NED navigation equations:
 
 [stem]
 ++++
@@ -75,7 +125,9 @@ L(+) = L(-) + \frac{1}{2}\tau_i\left(\frac{v_N(-)}{R_N(L(-))+h(-)} + \frac{v_N(+
 ++++
 
 Height, then latitude, then longitude must be updated in that order, since each subsequent equation
-depends on the previous result (the radii of curvature are re-evaluated at the newly updated latitude).
+depends on the previous result. The latitude update uses the meridian radius at the old latitude together with the new height,
+while the new-velocity term of the longitude update uses the transverse radius re-evaluated at the newly
+updated latitude.
 
 [source,java]
 ----
@@ -97,7 +149,8 @@ double newHeight = newPosition.getHeight();
 
 The inverse operation: given curvilinear position at two epochs, estimate the average NED velocity
 between them by finite-differencing latitude/longitude/height and then inverting the same trapezoidal
-relation used above (solving for the "new" velocity component given the "old" one and the average rate):
+relation used above (equation 5.56 solved for the new velocity: the average rate is stem:[\dot L], so
+stem:[v_N(+)/(R_N+h(+)) = 2\dot L - v_N(-)/(R_N(L(-))+h(-))]):
 
 [stem]
 ++++

@@ -41,6 +41,11 @@ D = \operatorname{atan2}(B_E, B_N), \qquad
 I = \operatorname{atan}\!\left(\frac{B_D}{\sqrt{B_N^{2}+B_E^{2}}}\right)
 ++++
 
+In the WMM notation stem:[B_N = X], stem:[B_E = Y], stem:[B_D = Z], the magnitude is the total intensity
+stem:[B = F] and the horizontal intensity is stem:[H = B\cos I]. The two conversions are exact inverses of
+each other, except that stem:[D] is undefined when stem:[H = 0] (at the magnetic poles). See
+xref:wmm/index.adoc[] for how stem:[X, Y, Z] arise from a position and date.
+
 Use this class when the three scalar parameters are already available and only the vector form (or its
 inverse) is needed; use `WMMEarthMagneticFluxDensityEstimator` when they must be *computed* from a
 position and date.

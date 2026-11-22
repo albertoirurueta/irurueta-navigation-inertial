@@ -14,6 +14,12 @@ accelerometer senses — typically from mass unbalance in the sensing element):
 \boldsymbol{\Omega}_{\text{meas}} = \mathbf{b}_{g} + \left(\mathbf{I}_{3} + \mathbf{M}_{g}\right)\boldsymbol{\Omega}_{\text{true}} + \mathbf{G}_{g}\,\mathbf{f}_{\text{true}} + \mathbf{w}
 ++++
 
+The page first lists the algorithm families, then derives the equations each family solves
+(<<known-frame>>, <<turntable>>, <<easy>>, <<g-dependent>>), and finally compares the quaternion step
+integrators the "Easy" family relies on (<<quaternion-integration>>). The generic machinery (linear least
+squares, Levenberg-Marquardt, robust wrappers, the static-interval pipeline) is explained once in
+xref:calibration/algorithms.adoc[] and only referenced here.
+
 NOTE: Javadoc and source links for every class used in the examples below are collected in the
 <<Class Reference>> table at the end of this page.
 
@@ -24,28 +30,84 @@ NOTE: Javadoc and source links for every class used in the examples below are co
 |Family |Reference used |Solves for |Needs a turntable?
 
 |`KnownFrame` / `KnownBiasAndFrame`
-|Full position/orientation/velocity/angular-rate frame known at each measurement (linear + non-linear least-squares variants, as with xref:calibration/accelerometer.adoc[the accelerometer's equivalent families])
+|Position, orientation, velocity and angular rate known at each measurement (linear and non-linear
+least-squares variants, as with xref:calibration/accelerometer.adoc[the accelerometer's equivalent families]).
 |stem:[\mathbf{b}_g] + stem:[\mathbf{M}_g] + stem:[\mathbf{G}_g] (or just the latter two if bias is known)
 |No, but requires precise external ground truth for angular rate.
 
 |`Turntable` / `KnownBiasTurntable`
-|IMU mounted flat on a turntable spinning at a *known, constant* rate; turntable fast enough that Earth
-rotation is negligible, slow enough to be measured accurately.
+|IMU on a turntable spinning at a *known, constant* rate. The Earth rate seen at the known position is
+subtracted, so the norm of the remaining true rate is the turntable rate. Fast enough that Earth rotation is
+negligible, slow enough to be measured accurately.
 |stem:[\mathbf{b}_g] + stem:[\mathbf{M}_g] + stem:[\mathbf{G}_g] (or just the latter two if bias is known)
 |Yes.
 
 |`Easy` / `KnownBiasEasy`
-|xref:reference.adoc#imu-tk[[imu-tk\]] Tedaldi, Pretto, Menegatti — no turntable, no known frame: the
-IMU sits at a roughly fixed Earth location; several *sequences* of motion (each bracketed by a static
-period) are captured, and the gravity direction sensed during each static bracket stands in for ground
-truth.
+|xref:reference.adoc#imu-tk[[imu-tk\]] Tedaldi, Pretto, Menegatti: no turntable, no known frame. Several
+*sequences* of motion, each bracketed by static periods, are captured and the gravity direction measured in
+the static brackets stands in for ground truth (see xref:calibration/algorithms.adoc#tedaldi[the Tedaldi et al. method]).
 |stem:[\mathbf{b}_g] + stem:[\mathbf{M}_g] + stem:[\mathbf{G}_g] (or just the latter two if bias is known)
 |No.
 |===
 
 `AccelerometerDependentGyroscopeCalibrator` is the common interface marking calibrators that also need
-(already-calibrated) accelerometer measurements, because g-dependent bias estimation requires knowing the
-true specific force.
+(already-calibrated) accelerometer bias and cross-coupling, because the g-dependent term requires the true
+specific force. `TurntableGyroscopeCalibrator`, `KnownBiasTurntableGyroscopeCalibrator`, `EasyGyroscopeCalibrator`
+and `KnownBiasEasyGyroscopeCalibrator` implement it.
+
+[#minimums]
+=== Unknowns and minimum data
+
+All counts below are taken from the constants of the classes. A "measurement" is one body-kinematics sample
+(`KnownFrame`, `Turntable`); a "sequence" is one `BodyKinematicsSequence` (`Easy`).
+
+[cols="3,1,1,1,1",options="header"]
+|===
+|Calibrator |Unknowns (general) |Unknowns (common z-axis) |Minimum (general) |Minimum (common z-axis)
+
+|`KnownFrame...LinearLeastSquares` and `...NonLinearLeastSquares`: b, M, G
+|21
+|18
+|7 (a single `MINIMUM_MEASUREMENTS`)
+|7
+
+|`KnownBiasAndFrame...`: M, G
+|18
+|15
+|6 (a single `MINIMUM_MEASUREMENTS`)
+|6
+
+|`Turntable` / `Easy`, b and M only
+|12
+|9
+|13
+|10
+
+|`Turntable` / `Easy`, b, M and G (defaults)
+|21
+|18
+|22
+|19
+
+|`KnownBiasTurntable` / `KnownBiasEasy`, M only
+|9
+|6
+|10
+|7
+
+|`KnownBiasTurntable` / `KnownBiasEasy`, M and G
+|18
+|15
+|19
+|16
+|===
+
+The `KnownFrame` classes are linear in the unknowns and each measurement gives three equations, so
+stem:[\lceil 21/3 \rceil = 7] and stem:[\lceil 18/3 \rceil = 6] measurements suffice, and the minimum is the same for
+the linear and the non-linear classes and does not depend on the common-axis flag. The turntable and Easy
+calibrators produce one scalar residual per measurement or sequence, so they need one more than the number of
+unknowns. Defaults: `commonAxisUsed = true` and `estimateGDependentCrossBiases = true` for `Turntable`,
+`KnownBiasTurntable`, `Easy` and `KnownBiasEasy`; `commonAxisUsed = false` for the `KnownFrame` classes.
 
 === `KnownFrame` example
 
@@ -96,6 +158,8 @@ final Matrix initialBias = new Matrix(3, 1);
 final Matrix initialMg = new Matrix(3, 3);
 final Matrix initialGg = new Matrix(3, 3);
 
+// accelerometer bias/cross-coupling are only used when the g-dependent term is estimated
+// (setAccelerometerBias / setAccelerometerMa); here it is disabled with the second flag
 final var calibrator = new TurntableGyroscopeCalibrator(position, rotationRate, timeInterval, measurements,
         true, false, initialBias, initialMg, initialGg);
 
@@ -106,28 +170,170 @@ final Matrix estimatedMg = calibrator.getEstimatedMg();
 final Matrix estimatedGg = calibrator.getEstimatedGg();
 ----
 
-== The "Easy" calibrator: no turntable required
+[#known-frame]
+== KnownFrame calibrators: linear in the unknowns
 
-`EasyGyroscopeCalibrator` / `KnownBiasEasyGyroscopeCalibrator` implement the gyroscope half of
-xref:reference.adoc#imu-tk[[imu-tk\]]: the same static-interval philosophy as
-xref:calibration/accelerometer.adoc[the accelerometer's `KnownGravityNorm` family], extended to the
-gyroscope by integrating the angular rate *between* two static brackets and comparing the integrated
-rotation against the attitude change implied by gravity direction before and after:
+With a known frame at every measurement the true angular rate stem:[\boldsymbol{\Omega}_{\text{true},k}] and the true
+specific force stem:[\mathbf{f}_{\text{true},k}] are computed from the frame (the library derives both from the
+ECEF frames of the measurement with its kinematics estimator). Moving the known stem:[\boldsymbol{\Omega}_{\text{true}}]
+to the left of the error model of this page makes every unknown appear linearly:
+
+[stem]
+++++
+\boldsymbol{\Omega}_{\text{meas},k} - \boldsymbol{\Omega}_{\text{true},k}
+= \mathbf{b}_g + \mathbf{M}_g\,\boldsymbol{\Omega}_{\text{true},k} + \mathbf{G}_g\,\mathbf{f}_{\text{true},k}
+++++
+
+With the common z-axis assumption stem:[\mathbf{M}_g] is upper triangular (six entries), otherwise it has nine.
+The code orders the unknowns as stem:[(b_x, b_y, b_z, s_x, s_y, s_z, m_{xy}, m_{xz}, m_{yz}, \mathbf{g}_{1\bullet}, \mathbf{g}_{2\bullet}, \mathbf{g}_{3\bullet})]
+(common axis; the general case has three more entries of stem:[\mathbf{M}_g]) and each measurement contributes a three-row block. Using stem:[\boldsymbol{\Omega}_{\text{true}} = (\Omega_x,\Omega_y,\Omega_z)] and
+stem:[\mathbf{f}_{\text{true}} = (f_x,f_y,f_z)], the first block of columns is stem:[\mathbf{I}_3] (bias), the next ones multiply the
+entries of stem:[\mathbf{M}_g] by the components of stem:[\boldsymbol{\Omega}_{\text{true}}] (as in
+xref:calibration/algorithms.adoc#linear-model[the linear model]) and the last nine are stem:[\mathbf{I}_3 \otimes \mathbf{f}_{\text{true}}^{T}].
+
+Written out row by row for the common-axis case with the full stem:[\mathbf{G}_g]:
+
+[stem]
+++++
+\begin{aligned}
+\Omega_{\text{meas},x}-\Omega_x &= b_x + s_x\Omega_x + m_{xy}\Omega_y + m_{xz}\Omega_z + g_{11}f_x + g_{12}f_y + g_{13}f_z\\
+\Omega_{\text{meas},y}-\Omega_y &= b_y + s_y\Omega_y + m_{yz}\Omega_z + g_{21}f_x + g_{22}f_y + g_{23}f_z\\
+\Omega_{\text{meas},z}-\Omega_z &= b_z + s_z\Omega_z + g_{31}f_x + g_{32}f_y + g_{33}f_z
+\end{aligned}
+++++
+
+Stacking the blocks gives stem:[\mathbf{A}\boldsymbol{\theta} = \mathbf{y}] exactly as in
+xref:calibration/algorithms.adoc#linear-model[the linear model], with 21 columns (18 with the common axis).
+`KnownFrameGyroscopeLinearLeastSquaresCalibrator` solves it in one step. The non-linear
+`KnownFrameGyroscopeNonLinearLeastSquaresCalibrator` runs Levenberg-Marquardt on the *same* linear model, but
+feeds the fitter the analytical Jacobian (the entries of stem:[\mathbf{A}_k] above, no numerical differentiation),
+so it needs an initial guess and then converges almost immediately. `KnownBiasAndFrame...` drops the first block
+(stem:[\mathbf{b}_g] subtracted from the left side instead): 18 or 15 unknowns.
+
+[#turntable]
+== Turntable calibrators: constant known rate and Earth rate
+
+=== Idea
+
+A turntable spinning at a constant, known rate stem:[\omega_t] gives a reference *magnitude* but not the
+direction of the true rate in the sensor frame, in the same way a static accelerometer gives only the magnitude
+stem:[\lVert\mathbf{g}\rVert]. The calibrators therefore reuse the norm-based formulation of
+xref:calibration/algorithms.adoc#nonlinear-model[the non-linear model], with the known rate in place of the
+gravity norm.
+
+=== Earth rate removal
+
+Both the turntable and the Earth rotate, so the code first removes the Earth-rate vector. At the given
+position (`NEDPosition` or `ECEFPosition`) it builds a frame whose body axes coincide with the local
+navigation axes (identity attitude), asks the kinematics estimator for the angular rate that frame senses, and
+takes that vector stem:[\boldsymbol{\Omega}_{\text{ref}}] (the Earth rate resolved on those axes) as the Earth contribution. Every
+sample is shifted by it:
+
+[stem]
+++++
+\boldsymbol{\Omega}'_{k} = \boldsymbol{\Omega}_{\text{meas},k} - \boldsymbol{\Omega}_{\text{ref}},
+\qquad
+\text{target: } \lVert\boldsymbol{\Omega}_{\text{true}}\rVert^{2} = \omega_t^{2}
+++++
+
+so the squared turntable rate stem:[\omega_t^2] is the observation stem:[y_k] of every measurement.
+(`DEFAULT_TURNTABLE_ROTATION_RATE` is the Earth rate and `DEFAULT_TIME_INTERVAL` is 0.02 s, defaults only.)
+Only the magnitude of the rate enters, so the sense of rotation does not matter.
+
+=== Model and bias handling
+
+Using the reparametrization of the non-linear model, stem:[\mathbf{M} = \mathbf{I}_3 + \mathbf{M}_g],
+stem:[\mathbf{b} = \mathbf{M}^{-1}\mathbf{b}_g], stem:[\mathbf{G} = \mathbf{M}^{-1}\mathbf{G}_g], the error model
+becomes stem:[\boldsymbol{\Omega}_{\text{meas}} = \mathbf{M}(\boldsymbol{\Omega}_{\text{true}} + \mathbf{b} + \mathbf{G}\mathbf{f}_{\text{true}})].
+Solving for the true rate and taking its squared norm gives the prediction fitted by Levenberg-Marquardt:
+
+[stem]
+++++
+h_k(\mathbf{b},\mathbf{M},\mathbf{G}) =
+\left\lVert \mathbf{M}^{-1}\boldsymbol{\Omega}'_{k} - \mathbf{b} - \mathbf{G}\,\mathbf{f}_{\text{true},k} \right\rVert^{2},
+\qquad
+\chi^{2} = \sum_k \left(\frac{\omega_t^{2} - h_k}{\sigma_k}\right)^{2}
+++++
+
+stem:[\mathbf{f}_{\text{true},k}] is the measured specific force corrected with the accelerometer bias and
+cross-coupling supplied by the user, and stem:[\sigma_k] is the angular-rate standard deviation of the
+measurement. Geometrically the corrected samples lie on a sphere of radius stem:[\omega_t]; in measurement space
+this is an ellipsoid whose *center is the gyroscope bias* and whose shape is stem:[\mathbf{M}\mathbf{M}^{T}]. The bias
+is therefore not eliminated by differencing but estimated as the ellipsoid center, jointly with the scale
+factors and cross-couplings (the same picture as hard and soft iron in xref:calibration/magnetometer.adoc[]).
+`TurntableGyroscopeCalibrator` fits stem:[\mathbf{b}], stem:[\mathbf{M}] (and stem:[\mathbf{G}] by default) with the
+Jacobian obtained by numerical `GradientEstimator`, not analytically.
+`KnownBiasTurntableGyroscopeCalibrator` removes the bias unknowns: the supplied bias is subtracted inside the
+same expression, leaving only stem:[\mathbf{M}] (and stem:[\mathbf{G}]) to estimate. If `estimateGDependentCrossBiases` is false the
+stem:[\mathbf{G}\mathbf{f}] term is dropped. With the common z-axis flag stem:[\mathbf{M}] is upper triangular, which also
+removes the rotational ambiguity of the norm-only cost described in xref:calibration/algorithms.adoc#nonlinear-model[the non-linear model].
+
+NOTE: The measurements must cover several directions of the true rate (for example by mounting the IMU in
+different orientations on the table). If every sample shares the same direction the ellipsoid cannot be
+recovered and the fit is rank deficient.
+
+[#easy]
+== Easy calibrators: integrated rotation versus gravity direction
+
+The pipeline that produces the sequences is described in
+xref:calibration/algorithms.adoc#tedaldi[the Tedaldi et al. method] and
+xref:calibration/intervals-and-generators.adoc[]. This section gives the per-sequence residual that
+`EasyGyroscopeCalibrator` actually minimizes.
+
+For sequence stem:[k] let stem:[\bar{\mathbf{f}}^{-}_k] and stem:[\bar{\mathbf{f}}^{+}_k] be the mean specific forces of
+the static bracket before and after the motion. They are corrected with the accelerometer bias and
+cross-coupling supplied by the user and normalized, so only the gravity direction remains:
+
+[stem]
+++++
+\mathbf{u}^{-}_k = \frac{\hat{\mathbf{f}}^{-}_k}{\lVert\hat{\mathbf{f}}^{-}_k\rVert},
+\qquad
+\mathbf{u}^{+}_k = \frac{\hat{\mathbf{f}}^{+}_k}{\lVert\hat{\mathbf{f}}^{+}_k\rVert}
+++++
+
+For a candidate stem:[(\mathbf{b}, \mathbf{M}, \mathbf{G})] (same reparametrization as above) every timed sample of
+the sequence is corrected with the gyroscope model, including its own corrected specific force:
+
+[stem]
+++++
+\boldsymbol{\Omega}_{\text{true},j} = \mathbf{M}^{-1}\boldsymbol{\Omega}_{\text{meas},j} - \mathbf{b} - \mathbf{G}\,\mathbf{f}_{\text{true},j}
+++++
+
+The corrected rates are integrated with the Runge-Kutta step integrator (this choice is fixed inside the
+calibrator, it is not configurable) starting from the identity attitude, giving the attitude change
+stem:[\mathbf{q}_k] of the body over the motion. Gravity is fixed in the world, so in body axes it turns by the
+inverse rotation, and the residual is the distance between the predicted and the measured final direction:
+
+[stem]
+++++
+r_k(\mathbf{b},\mathbf{M},\mathbf{G}) =
+\left\lVert \mathbf{u}^{+}_k - \mathbf{q}_k^{-1}\!\left(\mathbf{u}^{-}_k\right) \right\rVert,
+\qquad
+\chi^{2} = \sum_k \left(\frac{r_k}{\bar{\sigma}_k}\right)^{2}
+++++
+
+where stem:[\mathbf{q}_k^{-1}(\cdot)] rotates a vector by the inverse quaternion and stem:[\bar{\sigma}_k] is the
+average angular-rate standard deviation of the items of the sequence. The observation is zero, the Jacobian is
+estimated numerically (`GradientEstimator`) and Levenberg-Marquardt fits all unknowns at once.
+
+Differences from the paper (see the Tedaldi notes on the algorithms page): the gyroscope bias is an
+*unknown of this fit* (nothing is subtracted beforehand), the residual is a distance between unit vectors rather
+than between integrated vectors in the paper's own parametrization, and the default is the common z-axis
+(upper-triangular) form with the g-dependent term estimated. The accelerometer must be calibrated first because
+stem:[\mathbf{u}^{\pm}_k] and stem:[\mathbf{f}_{\text{true},j}] depend on it. `KnownBiasEasyGyroscopeCalibrator` is the same
+fit with the bias taken from the caller (6 to 18 unknowns, see <<minimums>>).
 
 [mermaid]
 ....
 flowchart LR
-    S1["Static interval 1:\nmean specific force -> gravity direction (attitude A)"] --> M["Dynamic interval:\nintegrate gyroscope angular rate over time"]
-    M --> S2["Static interval 2:\nmean specific force -> gravity direction (attitude B)"]
-    S2 --> C["Compare integrated rotation A->B\nagainst gyroscope-only integration"]
-    C --> D["Least-squares fit of\nbg, Mg, Gg"]
+    S1["Static bracket before:<br/>mean f, corrected, normalized -> u_minus"] --> R["Rotate u_minus by the inverse of q<br/>-> predicted u_plus"]
+    M["Motion samples:<br/>Omega_true = inv(M) Omega_meas - b - G f_true"] --> I["Integrate with Runge-Kutta<br/>-> attitude change q"]
+    I --> R
+    R --> C["Residual r = distance(u_plus, predicted)"]
+    S2["Static bracket after:<br/>mean f, corrected, normalized -> u_plus"] --> C
+    C --> LM["Levenberg-Marquardt<br/>(numerical gradient) updates b, M, G"]
+    LM -->|"new parameters"| M
 ....
-
-Each `BodyKinematicsSequence` (see xref:calibration/data-model.adoc[]) supplies one such
-motion-bracketed-by-statics sample; xref:calibration/intervals-and-generators.adoc[the interval
-detector/generator pipeline] is what produces these sequences from a raw sensor stream in the first
-place. At least 7 sequences are needed (10 without a common z-axis assumption; 16/19 if g-dependent
-bias is also estimated).
 
 === `Easy` example
 
@@ -167,6 +373,24 @@ final Matrix estimatedMg = calibrator.getEstimatedMg();
 final Matrix estimatedGg = calibrator.getEstimatedGg();
 ----
 
+[#g-dependent]
+== The g-dependent matrix
+
+stem:[\mathbf{G}_g] captures the part of the bias that follows the specific force (typically a mass unbalance in
+the sensing element): the term stem:[\mathbf{G}_g\mathbf{f}_{\text{true}}] adds nine unknowns. It is observable only if
+the specific force changes *independently* of the angular-rate information, so the data must be gathered in
+several attitudes. How each family estimates it:
+
+* `KnownFrame`: exactly as in the block above, nine extra columns stem:[\mathbf{I}_3\otimes\mathbf{f}_{\text{true}}^{T}]
+  (stored row by row: stem:[g_{11}, g_{12}, g_{13}, g_{21}, \dots]) multiply the known true specific force.
+* `Turntable` and `Easy`: through stem:[\mathbf{G} = \mathbf{M}^{-1}\mathbf{G}_g] inside the non-linear model, where the specific force is
+  the measured one corrected by the accelerometer bias and cross-coupling. The calibrator reports
+  stem:[\mathbf{G}_g = \mathbf{M}\mathbf{G}] after the fit. This is why the accelerometer has to be calibrated
+  before the gyroscope (`AccelerometerDependentGyroscopeCalibrator`).
+* Disable it (`estimateGDependentCrossBiases = false`) when the data have little specific-force diversity or when
+  the minimum counts in <<minimums>> cannot be met; the g-term is then assumed zero.
+
+[#quaternion-integration]
 == Quaternion step integrators
 
 Integrating angular rate over a dynamic interval means numerically solving the quaternion kinematic
@@ -174,40 +398,156 @@ differential equation
 
 [stem]
 ++++
-\dot{\mathbf{q}} = \frac{1}{2}\,\boldsymbol{\Omega}(\boldsymbol{\omega})\,\mathbf{q}
+\dot{\mathbf{q}} = \tfrac{1}{2}\,\boldsymbol{\Omega}(\boldsymbol{\omega})\,\mathbf{q},
+\qquad
+\boldsymbol{\Omega}(\boldsymbol{\omega}) =
+\begin{bmatrix}
+0 & -\omega_x & -\omega_y & -\omega_z\\
+\omega_x & 0 & \omega_z & -\omega_y\\
+\omega_y & -\omega_z & 0 & \omega_x\\
+\omega_z & \omega_y & -\omega_x & 0
+\end{bmatrix}
 ++++
 
-`QuaternionStepIntegrator` defines this as a strategy interface, with `QuaternionIntegrator` driving it
-step-by-step across a sequence. Six schemes are available (selected via `QuaternionStepIntegratorType`),
-trading off accuracy against computational cost:
+(the matrix stem:[\boldsymbol{\Omega}] is exactly the one built by `QuaternionStepIntegrator.computeOmegaSkew`; it
+satisfies stem:[\boldsymbol{\Omega}(\boldsymbol{\omega})^2 = -\lVert\boldsymbol{\omega}\rVert^2\mathbf{I}_4]).
+`QuaternionStepIntegrator` defines the strategy interface; `QuaternionIntegrator` drives it over a sequence:
+for consecutive items it calls the step with the previous rate stem:[\boldsymbol{\omega}_0], the current rate
+stem:[\boldsymbol{\omega}_1] and stem:[\Delta t] equal to the timestamp difference, starting from the identity or a given
+attitude. Every step ends with a re-normalization of the quaternion. Six schemes exist (selected with
+`QuaternionStepIntegratorType`, default `RUNGE_KUTTA`).
 
-[cols="1,3",options="header"]
+=== Step equations
+
+In the formulas below stem:[\mathbf{q}_0] is the attitude at the start of the step, stem:[\mathbf{q}_1] the result
+(before normalization), stem:[\boldsymbol{\Omega}_0 = \boldsymbol{\Omega}(\boldsymbol{\omega}_0)],
+stem:[\boldsymbol{\Omega}_1 = \boldsymbol{\Omega}(\boldsymbol{\omega}_1)], stem:[\bar{\boldsymbol{\omega}} = (\boldsymbol{\omega}_0+\boldsymbol{\omega}_1)/2]
+and stem:[\bar{\boldsymbol{\Omega}} = \boldsymbol{\Omega}(\bar{\boldsymbol{\omega}})]. Define
+stem:[F(\mathbf{q},\boldsymbol{\Omega}) = \tfrac{1}{2}\boldsymbol{\Omega}\mathbf{q}].
+
+*Euler* (`EulerQuaternionStepIntegrator`): only the rate at the start of the step is used.
+
+[stem]
+++++
+\mathbf{q}_1 = \mathbf{q}_0 + \Delta t\,F(\mathbf{q}_0,\boldsymbol{\Omega}_0)
+++++
+
+*Mid-point* (`MidPointQuaternionStepIntegrator`): a half Euler step with the start rate, then a full step with the
+slope evaluated at the half-step state using the average rate.
+
+[stem]
+++++
+\mathbf{k}_1 = F(\mathbf{q}_0,\boldsymbol{\Omega}_0),\quad
+\mathbf{k}_2 = F\!\left(\mathbf{q}_0 + \tfrac{\Delta t}{2}\mathbf{k}_1,\ \bar{\boldsymbol{\Omega}}\right),\quad
+\mathbf{q}_1 = \mathbf{q}_0 + \Delta t\,\mathbf{k}_2
+++++
+
+*Runge-Kutta* (`RungeKuttaQuaternionStepIntegrator`): classic RK4 where the rate is stem:[\boldsymbol{\omega}_0] at the start,
+stem:[\bar{\boldsymbol{\omega}}] for both mid-step slopes and stem:[\boldsymbol{\omega}_1] at the end.
+
+[stem]
+++++
+\begin{aligned}
+\mathbf{k}_1 &= F(\mathbf{q}_0,\boldsymbol{\Omega}_0), &
+\mathbf{k}_2 &= F(\mathbf{q}_0 + \tfrac{\Delta t}{2}\mathbf{k}_1,\bar{\boldsymbol{\Omega}}),\\
+\mathbf{k}_3 &= F(\mathbf{q}_0 + \tfrac{\Delta t}{2}\mathbf{k}_2,\bar{\boldsymbol{\Omega}}), &
+\mathbf{k}_4 &= F(\mathbf{q}_0 + \Delta t\,\mathbf{k}_3,\boldsymbol{\Omega}_1),\\
+\mathbf{q}_1 &= \mathbf{q}_0 + \Delta t\left(\tfrac{1}{6}\mathbf{k}_1 + \tfrac{1}{3}\mathbf{k}_2 + \tfrac{1}{3}\mathbf{k}_3 + \tfrac{1}{6}\mathbf{k}_4\right)
+\end{aligned}
+++++
+
+*Yuan* (`YuanQuaternionStepIntegrator`): the closed-form rotation for a constant rate equal to the average
+(exact matrix exponential, using stem:[\boldsymbol{\Omega}^2 = -\lVert\boldsymbol{\omega}\rVert^2\mathbf{I}]). With
+stem:[\theta = \lVert\bar{\boldsymbol{\omega}}\rVert\Delta t], and stem:[\operatorname{sinc}(x) = \sin x / x] (taken as 1 when stem:[\theta \le 10^{-15}]):
+
+[stem]
+++++
+\mathbf{q}_1 = \left[\cos\tfrac{\theta}{2}\,\mathbf{I}_4 + \tfrac{\Delta t}{2}\operatorname{sinc}\!\left(\tfrac{\theta}{2}\right)\bar{\boldsymbol{\Omega}}\right]\mathbf{q}_0
+++++
+
+*Suh* (`SuhQuaternionStepIntegrator`): a truncated expansion that combines the two rates with weights stem:[\tfrac34] and
+stem:[-\tfrac14] and adds second and third order terms in stem:[\Delta t]:
+
+[stem]
+++++
+\mathbf{q}_1 = \left[\mathbf{I}_4 + \tfrac{3}{4}\Delta t\,\boldsymbol{\Omega}_1 - \tfrac{1}{4}\Delta t\,\boldsymbol{\Omega}_0
+- \tfrac{\lVert\boldsymbol{\omega}_1\rVert^2\Delta t^2}{6}\mathbf{I}_4
+- \tfrac{\Delta t^2}{24}\boldsymbol{\Omega}_1\boldsymbol{\Omega}_0
+- \tfrac{\lVert\boldsymbol{\omega}_1\rVert^2\Delta t^3}{48}\boldsymbol{\Omega}_1\right]\mathbf{q}_0
+++++
+
+*Trawny* (`TrawnyQuaternionStepIntegrator`): matrix exponential of the rate extrapolated by its first derivative
+stem:[\dot{\boldsymbol{\omega}} = (\boldsymbol{\omega}_1-\boldsymbol{\omega}_0)/\Delta t], plus a commutator correction:
+
+[stem]
+++++
+\mathbf{q}_1 = \left[\exp\!\left(\tfrac{\Delta t}{2}\left(\boldsymbol{\Omega}_1 + \tfrac{\Delta t}{2}\boldsymbol{\Omega}(\dot{\boldsymbol{\omega}})\right)\right)
++ \tfrac{\Delta t^2}{48}\left(\boldsymbol{\Omega}_1\boldsymbol{\Omega}_0 - \boldsymbol{\Omega}_0\boldsymbol{\Omega}_1\right)\right]\mathbf{q}_0
+++++
+
+The Suh and Trawny formulas are the ones of the cited papers (xref:reference.adoc#suh2010[[suh2010\]],
+xref:reference.adoc#trawny2005[[trawny2005\]]), restated; the code evaluates them as written above.
+
+=== Accuracy and cost
+
+[cols="2,1,1,1,2",options="header"]
 |===
-|Integrator |Reference
+|Integrator |Order, constant rate |Order, varying rate (as called by the library) |Work per step |Remarks
 
-|`EulerQuaternionStepIntegrator`
-|First-order https://en.wikipedia.org/wiki/Euler_method[Euler method] — cheapest, least accurate.
+|Euler
+|2 (measured, thanks to re-normalization; the formal order is 1)
+|1
+|1 slope evaluation
+|Cheapest. Uses only the start rate.
 
-|`MidPointQuaternionStepIntegrator`
-|https://en.wikipedia.org/wiki/Midpoint_method[Midpoint method] — second-order.
+|Mid-point
+|2
+|2
+|2 slopes
+|Uses the average rate (linear interpolation of the rate).
 
-|`RungeKuttaQuaternionStepIntegrator`
-|Classic 4th-order https://en.wikipedia.org/wiki/Runge%E2%80%93Kutta_methods[Runge-Kutta (RK4)] — most
-accurate of the six, at the highest computational cost.
+|Runge-Kutta
+|4
+|2
+|4 slopes (3 skew matrices)
+|Default. With only two rate samples per step the rate is linearly interpolated, which caps the order at 2 when the rate varies.
 
-|`SuhQuaternionStepIntegrator`
-|Y. S. Suh, "Orientation estimation using a quaternion-based indirect Kalman filter with adaptive
-estimation of external acceleration," 2010 (xref:reference.adoc#suh2010[[suh2010\]]).
+|Yuan
+|exact
+|2
+|1 skew matrix, 1 sin and 1 cos, no matrix product
+|Exact for a constant axis; the error comes from the rate variation inside the step.
 
-|`TrawnyQuaternionStepIntegrator`
-|N. Trawny, "Indirect Kalman Filter for 3D Attitude Estimation," 2005 (xref:reference.adoc#trawny2005[[trawny2005\]]).
+|Suh
+|4
+|1
+|2 skew matrices, 1 matrix product
+|The 3/4 and -1/4 weights extrapolate the rate; see the note below.
 
-|`YuanQuaternionStepIntegrator`
-|S. Yuan, "Quaternion-based Unscented Kalman Filter for Real-time," 2015 (xref:reference.adoc#yuan2015[[yuan2015\]]).
+|Trawny
+|exact
+|1
+|a 4x4 matrix exponential plus 2 matrix products
+|Most expensive; same extrapolation caveat as Suh.
 |===
 
-`EasyGyroscopeCalibrator` uses one of these (configurable) to integrate each dynamic interval before
-comparing it against the static-interval gravity readings.
+image::calibration/quaternion-integrator-error.svg[Measured final attitude error versus step size for the six quaternion step integrators on a smoothly varying angular rate: Euler, Suh and Trawny have slope one, mid-point Runge-Kutta and Yuan slope two,560,380]
+
+The orders in the table come from a numerical experiment run for this page, not from the library tests: the six
+formulas above were applied to stem:[\boldsymbol{\omega}(t) = 2\,(\sin 2t + 0.3,\ \cos 3t,\ 0.5 + \sin t)^{T}] rad/s over 2 s with
+the rate sampled at both ends of each step, the result compared with a fine reference, and the slope of the
+log-log error read for 10 to 160 steps. For a constant rate the same experiment gave slope 4 for Runge-Kutta and Suh, slope 2
+for Euler and mid-point, and zero error (machine precision) for Yuan and Trawny.
+
+NOTE: Suh and Trawny are designed to *predict* the next interval from the previous and the current rate
+(the weights stem:[\tfrac34,-\tfrac14] and the term stem:[\boldsymbol{\Omega}(\dot{\boldsymbol{\omega}})] extrapolate the rate to the middle of the *next* step). `QuaternionIntegrator`
+instead passes the rates at both ends of the interval being integrated, so for these two integrators the rate is
+extrapolated beyond the interval and the experiment shows first-order accuracy; feeding the same formulas the previous
+rate and the current rate to advance to the next instant gave second-order accuracy. Prefer Runge-Kutta, Yuan or
+mid-point with `QuaternionIntegrator`, and note that the choice matters little when the sampling is fast
+compared with the rate dynamics (the typical gyroscope case).
+
+`EasyGyroscopeCalibrator` always integrates its sequences with the Runge-Kutta scheme.
 
 === Integrating a sequence directly
 

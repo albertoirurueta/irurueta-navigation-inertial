@@ -26,6 +26,79 @@ exception — it will silently produce a wrong roll/pitch/heading, since e.g. sw
 flipping the sign of stem:[z] changes which formula below computes which angle.
 ====
 
+== Attitude representations
+
+All estimators on this page ultimately produce a `CoordinateTransformation`, which stores one attitude and
+can present it in any of the equivalent forms below. Throughout, stem:[\mathbf{C}^{b}_{n}] rotates a vector
+resolved in NED axes into body axes and its transpose does the reverse.
+
+*Euler angles.* Roll stem:[\phi], pitch stem:[\theta] and yaw (heading) stem:[\psi] describe the rotation
+from NED to body as three successive rotations, applied in this order: yaw about the down axis, pitch about
+the (new) east/right axis, roll about the (new) forward axis.
+
+[mermaid]
+....
+flowchart LR
+    N["NED axes\n(n)"] -->|"yaw psi about z"| A["Intermediate 1"]
+    A -->|"pitch theta about y"| B["Intermediate 2"]
+    B -->|"roll phi about x"| C["Body axes\n(b)"]
+....
+
+*Direction cosine matrix (DCM).* Multiplying the three elementary rotations gives (Groves chapter 2, Euler to
+coordinate-transformation matrix)
+
+[stem]
+++++
+\mathbf{C}^{b}_{n} = \begin{pmatrix}
+\cos\theta\cos\psi & \cos\theta\sin\psi & -\sin\theta \\
+\sin\phi\sin\theta\cos\psi-\cos\phi\sin\psi & \sin\phi\sin\theta\sin\psi+\cos\phi\cos\psi & \sin\phi\cos\theta \\
+\cos\phi\sin\theta\cos\psi+\sin\phi\sin\psi & \cos\phi\sin\theta\sin\psi-\sin\phi\cos\psi & \cos\phi\cos\theta
+\end{pmatrix}
+++++
+
+and the angles are recovered from its entries stem:[c_{jk}] as
+stem:[\phi=\operatorname{atan2}(c_{23},c_{33})], stem:[\theta=-\arcsin c_{13}] and
+stem:[\psi=\operatorname{atan2}(c_{12},c_{11})]. This is why leveling needs only the last column: gravity in
+body axes is stem:[\mathbf{g}^{b}=\mathbf{C}^{b}_{n}(0,0,g)^{\mathsf T}=g\,(-\sin\theta,\ \sin\phi\cos\theta,\ \cos\phi\cos\theta)^{\mathsf T}], and with stem:[\mathbf{f}^{b}_{ib}=-\mathbf{g}^{b}] at rest this yields
+exactly the roll and pitch formulas of `LevelingEstimator` below. Yaw does not appear in that column, so it
+cannot be observed from gravity alone.
+
+*Quaternion and axis-angle.* The same rotation by an angle stem:[\alpha] about a unit axis
+stem:[\hat{\mathbf n}] is the unit quaternion
+stem:[\mathbf q=\left(\cos\tfrac{\alpha}{2},\ \hat{\mathbf n}\sin\tfrac{\alpha}{2}\right)], which is how
+`LevelingEstimator2` builds its result (`new Quaternion(axis, alpha)`). Quaternions need four numbers and one
+normalization constraint instead of nine redundant DCM entries, and have no gimbal-lock singularity (the
+Euler form is singular at stem:[\theta=\pm 90^{\circ}]).
+
+*Rodrigues' formula.* Converting an axis-angle (rotation vector stem:[\boldsymbol\alpha], with
+stem:[\alpha=|\boldsymbol\alpha|]) into a DCM gives the closed form used by the navigators
+(xref:navigators/navigation-equations.adoc[], equation 5.73):
+
+[stem]
+++++
+\mathbf{C} = \mathbf{I}_3 + \frac{\sin\alpha}{\alpha}\left[\boldsymbol\alpha\wedge\right] + \frac{1-\cos\alpha}{\alpha^{2}}\left[\boldsymbol\alpha\wedge\right]^{2}
+++++
+
+stem:[\left[\boldsymbol\alpha\wedge\right\]] is the skew-symmetric (cross-product) matrix of
+stem:[\boldsymbol\alpha]. For small angles it reduces to stem:[\mathbf{I}_3+[\boldsymbol\alpha\wedge\]]. The
+kinematics estimators invert this relation to turn two consecutive DCMs into an angular rate (see
+xref:estimators/kinematics.adoc[]).
+
+*Attitude kinematics.* How attitude evolves under body angular rate stem:[\boldsymbol\omega^{b}_{ib}]:
+
+[stem]
+++++
+\dot{\mathbf{C}}^{i}_{b} = \mathbf{C}^{i}_{b}\,\boldsymbol\Omega^{b}_{ib}, \qquad
+\dot{\mathbf q} = \tfrac{1}{2}\,\mathbf q \otimes \begin{pmatrix}0\\ \boldsymbol\omega^{b}_{ib}\end{pmatrix}
+++++
+
+Integrating the first equation over an interval stem:[\tau_i] with a constant rate gives the matrix
+exponential stem:[\mathbf{C}(+)=\mathbf{C}(-)\exp(\boldsymbol\Omega^{b}_{ib}\tau_i)], which Rodrigues' formula
+evaluates exactly with stem:[\boldsymbol\alpha=\boldsymbol\omega^{b}_{ib}\tau_i]. In rotating reference frames
+(ECEF, NED) the navigators additionally subtract the Earth-rate and transport-rate rotations of the frame,
+as described in xref:navigators/navigation-equations.adoc[]; the estimators here only need the static
+relations above.
+
 == LevelingEstimator
 
 The simplest form. When the body is stationary, the only specific force sensed is the reaction to

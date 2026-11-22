@@ -1,6 +1,6 @@
 = Precision Navigation Equations
-:description: Detailed precision navigation equations for ECI, ECEF, and NED inertial navigators, including Rodrigues' attitude update and the averaged specific-force frame transformation.
-:keywords: navigation equations, Rodrigues formula, attitude update, Coriolis, transport rate, ECIInertialNavigator, ECEFInertialNavigator, NEDInertialNavigator
+:description: Attitude, velocity and position update equations of the ECI, ECEF and NED inertial navigators, in the order they are evaluated, with Groves equation references and a flow of one integration step.
+:keywords: navigation equations, Rodrigues formula, attitude update, specific force, Coriolis, transport rate, gravity, ECIInertialNavigator, ECEFInertialNavigator, NEDInertialNavigator
 
 NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
 
@@ -8,87 +8,208 @@ Classes: `ECIInertialNavigator`, `ECEFInertialNavigator`, `NEDInertialNavigator`
 `InertialNavigatorException` (see the <<Class Reference>> table at the end of this page for Javadoc and
 source links).
 
-All three navigators share the four-step structure introduced in xref:navigators/index.adoc[], but each
-adds the terms relevant to how its resolving frame rotates. See Groves §5.4 (see
-xref:reference.adoc#book-groves[[book-groves\]]) for the full derivations.
+Each navigator advances the previous solution by one IMU epoch of duration stem:[\tau_i]. This page lists, per
+frame, the equations in the order the code evaluates them. The equation numbers refer to P. D. Groves,
+_Principles of GNSS, Inertial, and Multisensor Integrated Navigation Systems_, 2nd ed.
+(xref:reference.adoc#book-groves[[book-groves\]]); they are the numbers quoted in the source comments of the
+navigators. The wording is ours, not the book's.
 
-== Step 1: attitude update via Rodrigues' formula
+== Notation
 
-Given the angular rate averaged over the update interval, the attitude increment vector is
-stem:[\boldsymbol{\alpha}_{ib}^{b} = \boldsymbol{\omega}_{ib}^{b}\,\tau_i]. Rather than truncating the
-matrix exponential to first order (as in the simplified equations), the *exact* closed form — Rodrigues'
-rotation formula, equation 5.73 — is used:
+[cols="1,3",options="header"]
+|===
+|Symbol |Meaning
+
+|stem:[\tau_i]
+|Time interval between epochs (s).
+
+|stem:[\mathbf{f}_{ib}^{b}]
+|Specific force of the body frame with respect to an inertial frame, resolved along body axes and averaged over the interval (m/s^2^).
+
+|stem:[\boldsymbol{\omega}_{ib}^{b}]
+|Angular rate of the body frame with respect to an inertial frame, resolved along body axes and averaged over the interval (rad/s).
+
+|stem:[\boldsymbol{\alpha}_{ib}^{b}]
+|Attitude increment, stem:[\boldsymbol{\omega}_{ib}^{b}\tau_i]; stem:[\alpha = \lVert\boldsymbol{\alpha}_{ib}^{b}\rVert].
+
+|stem:[[\mathbf{x}\wedge\]]
+|Skew-symmetric (cross-product) matrix of a vector stem:[\mathbf{x}].
+
+|stem:[\boldsymbol{\Omega}_{ie}^{\gamma}]
+|Skew matrix of the Earth rotation vector stem:[\boldsymbol{\omega}_{ie}] (rad/s, constant `EARTH_ROTATION_RATE`) resolved in frame stem:[\gamma].
+
+|stem:[\boldsymbol{\Omega}_{en}^{n}]
+|Skew matrix of the transport rate (angular rate of NED with respect to ECEF), resolved along NED axes.
+
+|stem:[\mathbf{C}_{b}^{\gamma}]
+|Body-to-stem:[\gamma] coordinate transformation (rotation) matrix; stem:[(-)] and stem:[(+)] mark the values at the start and end of the interval.
+
+|stem:[\overline{\mathbf{C}}_{b}^{\gamma}]
+|Average of stem:[\mathbf{C}_{b}^{\gamma}] over the interval.
+|===
+
+== Terms shared by the three navigators
+
+=== Attitude increment and Rodrigues' formula
+
+The increment is stem:[\boldsymbol{\alpha}_{ib}^{b} = \boldsymbol{\omega}_{ib}^{b}\,\tau_i]. The rotation from the new
+body attitude to the old one is built with the exact closed form of the rotation (no first-order
+truncation of the matrix exponential), Groves (5.73):
 
 [stem]
 ++++
-\mathbf{C}_{b+}^{b-} = \mathbf{I}_3 + \frac{\sin|\boldsymbol{\alpha}|}{|\boldsymbol{\alpha}|}\left[\boldsymbol{\alpha}\wedge\right] + \frac{1-\cos|\boldsymbol{\alpha}|}{|\boldsymbol{\alpha}|^{2}}\left[\boldsymbol{\alpha}\wedge\right]^{2}
+\mathbf{C}_{b+}^{b-} = \mathbf{I}_3 + \frac{\sin\alpha}{\alpha}\left[\boldsymbol{\alpha}_{ib}^{b}\wedge\right] + \frac{1-\cos\alpha}{\alpha^{2}}\left[\boldsymbol{\alpha}_{ib}^{b}\wedge\right]^{2}
 ++++
 
-where stem:[[\boldsymbol{\alpha}\wedge]] is the skew-symmetric matrix of the attitude increment. This
-avoids the drift that the first-order truncation introduces at low iteration rates (see Groves Table
-5.1). Each navigator then pre/post-multiplies this update matrix by whatever additional rotation accounts
-for the frame's own rotation (Earth rate for ECEF, Earth rate + transport rate for NED).
+When stem:[\alpha \le 10^{-8}] (constant `ALPHA_THRESHOLD`, to avoid dividing by a vanishing norm) the code
+falls back to stem:[\mathbf{C}_{b+}^{b-} \approx \mathbf{I}_3 + [\boldsymbol{\alpha}_{ib}^{b}\wedge\]].
 
-== Step 2: specific-force frame transformation (averaged)
+=== Average transformation over the interval
 
-Rather than transforming the specific force using the attitude at just one end of the interval, the
-*averaged* coordinate transformation matrix over the interval is used (equation 5.84):
+To integrate the specific force the attitude is not frozen at the start of the interval. Groves (5.84) gives the
+average body-to-frame matrix; its body-rotation part is the same for all three frames:
 
 [stem]
 ++++
-\overline{\mathbf{C}}^{\gamma}_{b} = \mathbf{C}_{b}^{\gamma}(-)\left[\mathbf{I}_3 + \frac{1-\cos|\boldsymbol{\alpha}|}{|\boldsymbol{\alpha}|^{2}}\left[\boldsymbol{\alpha}\wedge\right] + \frac{1}{|\boldsymbol{\alpha}|^{2}}\left(1-\frac{\sin|\boldsymbol{\alpha}|}{|\boldsymbol{\alpha}|}\right)\left[\boldsymbol{\alpha}\wedge\right]^{2}\right] - (\text{frame-rotation correction})
+\mathbf{M}_{\alpha} = \mathbf{I}_3 + \frac{1-\cos\alpha}{\alpha^{2}}\left[\boldsymbol{\alpha}_{ib}^{b}\wedge\right] + \frac{1}{\alpha^{2}}\left(1-\frac{\sin\alpha}{\alpha}\right)\left[\boldsymbol{\alpha}_{ib}^{b}\wedge\right]^{2}
 ++++
 
-The frame-rotation correction term is zero for ECI, involves the Earth-rotation skew matrix for ECEF
-(equation 5.85), and involves both Earth rotation and transport rate for NED (equation 5.86).
+so that stem:[\overline{\mathbf{C}}_{b}^{\gamma} = \mathbf{C}_{b}^{\gamma}(-)\,\mathbf{M}_{\alpha} - (\text{frame correction})]. If
+stem:[\alpha \le 10^{-8}], stem:[\mathbf{M}_{\alpha}] is taken as the identity. The frame correction is
+zero for ECI and is given by Groves (5.85) and (5.86) for ECEF and NED respectively (see below).
+
+=== Order of evaluation
+
+ECI and ECEF update the attitude first, then the specific force, velocity and position. NED evaluates the
+specific force, velocity and position first and the attitude last, because the NED attitude update needs
+the transport rate at the _new_ position and velocity.
+
+[mermaid]
+....
+flowchart TD
+    IN["Inputs: old attitude, velocity, position,\nf_ib^b, omega_ib^b, tau_i"] --> ALPHA["alpha = omega_ib^b * tau_i\nRodrigues: C_new_to_old, eq 5.73"]
+    ALPHA --> FRAME{"Frame"}
+    FRAME -->|"ECI, ECEF"| ATT["Attitude update\neq 5.73, 5.75 for ECEF"]
+    ATT --> AVG["Average matrix\neq 5.84, 5.85 for ECEF"]
+    FRAME -->|"NED"| RATES["Earth rate (2.123) and\ntransport rate at old state (5.44)"]
+    RATES --> AVG
+    AVG --> SF["Specific force in frame axes\nf = avgC * f_ib^b"]
+    SF --> VEL["Velocity update\neq 5.18/5.20 ECI, 5.36 ECEF, 5.54 NED"]
+    VEL --> POS["Position update\neq 5.23 ECI, 5.38 ECEF, 5.56 NED"]
+    POS --> NEDATT["NED only: transport rate at new state,\nattitude update eq 5.77"]
+    POS --> OUT["New attitude, velocity, position"]
+    NEDATT --> OUT
+....
 
 == ECIInertialNavigator
 
-The simplest case: no Earth-rotation or transport-rate correction terms appear anywhere, and gravitation
-(not gravity) is used since the ECI frame does not rotate with the Earth.
+Resolving frame: Earth-centred inertial. No Earth-rotation or transport-rate terms appear, and the gravity
+term is the pure gravitation vector stem:[\boldsymbol{\gamma}_{ib}^{i}] from `ECIGravitationEstimator`
+(see xref:estimators/gravity.adoc[]) evaluated at the old Cartesian position.
+
+*Attitude update* (Rodrigues, (5.73)):
 
 [stem]
 ++++
-\mathbf{v}^{i}_{ib}(+) = \mathbf{v}^{i}_{ib}(-) + \tau_i\left(\overline{\mathbf{C}}^{i}_{b}\,\mathbf{f}^{b}_{ib} + \boldsymbol{\gamma}^{i}_{ib}\right)
+\mathbf{C}_{b}^{i}(+) = \mathbf{C}_{b}^{i}(-)\,\mathbf{C}_{b+}^{b-}
 ++++
+
+*Average matrix* ((5.84), no frame correction) and *specific force* ((5.81)):
+
+[stem]
+++++
+\overline{\mathbf{C}}_{b}^{i} = \mathbf{C}_{b}^{i}(-)\,\mathbf{M}_{\alpha}, \qquad \mathbf{f}_{ib}^{i} = \overline{\mathbf{C}}_{b}^{i}\,\mathbf{f}_{ib}^{b}
+++++
+
+*Velocity update* ((5.18), (5.20)):
+
+[stem]
+++++
+\mathbf{v}^{i}_{ib}(+) = \mathbf{v}^{i}_{ib}(-) + \tau_i\left(\mathbf{f}_{ib}^{i} + \boldsymbol{\gamma}^{i}_{ib}(\mathbf{r}^{i}_{ib}(-))\right)
+++++
+
+*Position update* (trapezoidal rule, (5.23)):
 
 [stem]
 ++++
 \mathbf{r}^{i}_{ib}(+) = \mathbf{r}^{i}_{ib}(-) + \frac{\tau_i}{2}\left(\mathbf{v}^{i}_{ib}(-) + \mathbf{v}^{i}_{ib}(+)\right)
 ++++
 
-using `ECIGravitationEstimator` (see xref:estimators/gravity.adoc[]) for stem:[\boldsymbol{\gamma}^{i}_{ib}].
-
 == ECEFInertialNavigator
 
-The ECEF frame rotates with the Earth at rate stem:[\omega_{ie}], so the attitude update is corrected by
-the Earth-rotation matrix stem:[\mathbf{C}_{i}^{e}(\tau_i)] (equation 2.145/5.75), and velocity picks up a
-Coriolis term:
+Resolving frame: Earth-centred Earth-fixed, which rotates with the Earth about its z axis at
+stem:[\omega_{ie}]. The Earth rotation over the interval is the single angle stem:[\alpha_{ie} = \omega_{ie}\tau_i]
+and stem:[\mathbf{C}_{i}^{e}(\tau_i)] is the rotation about z by that angle (Groves (2.145)); the code builds it with
+`CoordinateTransformation.eciToEcefMatrixFromAngle`. Gravity stem:[\mathbf{g}_{b}^{e}] comes from
+`ECEFGravityEstimator` (it already includes the centrifugal term) at the old position.
+
+*Attitude update* ((5.73), (5.75)). The Earth rotation is applied on the left and the body rotation on the right:
 
 [stem]
 ++++
-\mathbf{v}^{e}_{eb}(+) = \mathbf{v}^{e}_{eb}(-) + \tau_i\left(\overline{\mathbf{C}}^{e}_{b}\,\mathbf{f}^{b}_{ib} + \mathbf{g}^{e}_{b} - 2\,\boldsymbol{\Omega}_{ie}^{e}\,\mathbf{v}^{e}_{eb}(-)\right)
+\mathbf{C}_{b}^{e}(+) = \mathbf{C}_{i}^{e}(\tau_i)\,\mathbf{C}_{b}^{e}(-)\,\mathbf{C}_{b+}^{b-}
 ++++
+
+*Average matrix* ((5.84), (5.85)) and *specific force*:
+
+[stem]
+++++
+\overline{\mathbf{C}}_{b}^{e} = \mathbf{C}_{b}^{e}(-)\,\mathbf{M}_{\alpha} - \frac{1}{2}\,\boldsymbol{\Omega}_{ie}^{e}\,\tau_i\,\mathbf{C}_{b}^{e}(-), \qquad \mathbf{f}_{ib}^{e} = \overline{\mathbf{C}}_{b}^{e}\,\mathbf{f}_{ib}^{b}
+++++
+
+with stem:[\boldsymbol{\Omega}_{ie}^{e}\tau_i = [(0,0,\alpha_{ie})^{T}\wedge\]].
+
+*Velocity update* ((5.36)): gravity plus a Coriolis term stem:[2\boldsymbol{\Omega}_{ie}^{e}\mathbf{v}], both
+evaluated at the start of the interval:
+
+[stem]
+++++
+\mathbf{v}^{e}_{eb}(+) = \mathbf{v}^{e}_{eb}(-) + \tau_i\left(\mathbf{f}_{ib}^{e} + \mathbf{g}^{e}_{b}(\mathbf{r}^{e}_{eb}(-)) - 2\,\boldsymbol{\Omega}_{ie}^{e}\,\mathbf{v}^{e}_{eb}(-)\right)
+++++
+
+*Position update* ((5.38)):
 
 [stem]
 ++++
 \mathbf{r}^{e}_{eb}(+) = \mathbf{r}^{e}_{eb}(-) + \frac{\tau_i}{2}\left(\mathbf{v}^{e}_{eb}(-) + \mathbf{v}^{e}_{eb}(+)\right)
 ++++
 
-using `ECEFGravityEstimator` (see xref:estimators/gravity.adoc[]) for stem:[\mathbf{g}^{e}_{b}].
-
 == NEDInertialNavigator
 
-Adds a further *transport-rate* term stem:[\boldsymbol{\omega}_{en}^{n}] on top of the Earth-rate term,
-because the NED axes themselves rotate as the body moves across the Earth's surface. Position is updated
-directly in curvilinear form (latitude, longitude, height), using the meridian/transverse radii of
-curvature from xref:estimators/position-velocity.adoc[`RadiiOfCurvatureEstimator`], and re-evaluating
-them at the newly updated latitude — exactly as in `NEDPositionEstimator`:
+Resolving frame: local navigation (north, east, down). Besides the Earth rotation, the NED axes turn as the
+body moves over the ellipsoid, so a transport rate is needed. Position is curvilinear: latitude stem:[L],
+longitude stem:[\lambda] and height stem:[h]. The meridian and transverse radii of curvature
+stem:[R_N(L)] and stem:[R_E(L)] come from `RadiiOfCurvatureEstimator`
+(see xref:estimators/position-velocity.adoc[]) and gravity stem:[\mathbf{g}_{b}^{n}] from `NEDGravityEstimator`.
+
+*Step 1: angular rates at the old state.* Earth rate resolved in NED ((2.123)) and transport rate ((5.44)):
 
 [stem]
 ++++
-\mathbf{v}^{n}_{eb}(+) = \mathbf{v}^{n}_{eb}(-) + \tau_i\left(\overline{\mathbf{C}}^{n}_{b}\,\mathbf{f}^{b}_{ib} + \mathbf{g}^{n}_{b} - \left(\boldsymbol{\Omega}_{en}^{n} + 2\boldsymbol{\Omega}_{ie}^{n}\right)\mathbf{v}^{n}_{eb}(-)\right)
+\boldsymbol{\omega}_{ie}^{n} = \omega_{ie}\begin{pmatrix}\cos L(-)\\ 0\\ -\sin L(-)\end{pmatrix}, \qquad
+\boldsymbol{\omega}_{en}^{n}(-) = \begin{pmatrix}\dfrac{v_E(-)}{R_E(L(-))+h(-)}\\[2ex] -\dfrac{v_N(-)}{R_N(L(-))+h(-)}\\[2ex] -\dfrac{v_E(-)\tan L(-)}{R_E(L(-))+h(-)}\end{pmatrix}
 ++++
+
+*Step 2: average matrix and specific force* ((5.84), (5.86)):
+
+[stem]
+++++
+\overline{\mathbf{C}}_{b}^{n} = \mathbf{C}_{b}^{n}(-)\,\mathbf{M}_{\alpha} - \frac{1}{2}\left[\left(\boldsymbol{\omega}_{en}^{n}(-)+\boldsymbol{\omega}_{ie}^{n}\right)\wedge\right]\mathbf{C}_{b}^{n}(-), \qquad \mathbf{f}_{ib}^{n} = \overline{\mathbf{C}}_{b}^{n}\,\mathbf{f}_{ib}^{b}
+++++
+
+NOTE: As implemented, the frame-correction term of this step carries no stem:[\tau_i] factor (the ECEF
+counterpart above does). Its magnitude is of the order of the Earth rate, so its effect on the specific force
+is tiny; the page documents what the code does, and the discrepancy is flagged for review.
+
+*Step 3: velocity update* ((5.54)), with gravity and the combined Coriolis and transport terms at the old state:
+
+[stem]
+++++
+\mathbf{v}^{n}_{eb}(+) = \mathbf{v}^{n}_{eb}(-) + \tau_i\left(\mathbf{f}_{ib}^{n} + \mathbf{g}^{n}_{b}(L(-),h(-))\right) - \tau_i\left[\left(\boldsymbol{\omega}_{en}^{n}(-) + 2\boldsymbol{\omega}_{ie}^{n}\right)\wedge\right]\mathbf{v}^{n}_{eb}(-)
+++++
+
+*Step 4: position update* ((5.56)). Height first, then latitude, then the radii at the new latitude, then
+longitude (stem:[v_D] is positive downwards, hence the minus sign):
 
 [stem]
 ++++
@@ -101,11 +222,63 @@ L(+) = L(-) + \frac{\tau_i}{2}\left(\frac{v_N(-)}{R_N(L(-))+h(-)} + \frac{v_N(+)
 \lambda(+) = \lambda(-) + \frac{\tau_i}{2}\left(\frac{v_E(-)}{(R_E(L(-))+h(-))\cos L(-)} + \frac{v_E(+)}{(R_E(L(+))+h(+))\cos L(+)}\right)
 ++++
 
-The class Javadoc notes that only the attitude update and specific-force frame transformation are fully
-precise in this implementation — the Coriolis and transport-rate terms in the velocity update, and the
-position update, use the same first-order (trapezoidal) approximations as `NEDPositionEstimator` and
-`NEDVelocityEstimator`, which Groves §5.4.4 notes is sufficient for all but the most demanding
-high-dynamic applications.
+*Step 5: attitude update* ((5.73), (5.77)). The transport rate is re-evaluated with the new velocity,
+latitude and height, stem:[\boldsymbol{\omega}_{en}^{n}(+)] (same expression as in step 1), and the Earth rate
+keeps its old-latitude value. The NED rotation over the interval is the average of the old and new transport
+rates plus the Earth rate:
+
+[stem]
+++++
+\mathbf{C}_{b}^{n}(+) = \left(\mathbf{I}_3 - \left[\left(\boldsymbol{\omega}_{ie}^{n} + \tfrac{1}{2}\boldsymbol{\omega}_{en}^{n}(-) + \tfrac{1}{2}\boldsymbol{\omega}_{en}^{n}(+)\right)\tau_i\wedge\right]\right)\mathbf{C}_{b}^{n}(-)\,\mathbf{C}_{b+}^{b-}
+++++
+
+The resulting matrix is validated with the `accuracyThreshold` argument (default
+`NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD`) when it is wrapped in a `CoordinateTransformation`; a
+matrix that is not a valid rotation raises `InertialNavigatorException`.
+
+The class Javadoc notes that only the attitude update and the specific-force frame transformation are fully
+precise in this implementation. The Coriolis and transport-rate terms in the velocity update and the
+position update use first-order (trapezoidal) approximations, which Groves reports as sufficient for all
+but the most demanding high-dynamic applications.
+
+== Summary by frame
+
+[cols="1,2,2,2",options="header"]
+|===
+| |ECI |ECEF |NED
+
+|Attitude update
+|stem:[\mathbf C(-)\mathbf C_{b+}^{b -}]
+|stem:[\mathbf{C}_{i}^{e}(\tau_i)\mathbf C(-)\mathbf C_{b+}^{b -}]
+|stem:[(\mathbf{I}-[\boldsymbol{\omega}\tau_i\wedge\])\mathbf C(-)\mathbf C_{b+}^{b -}], evaluated last
+
+|Average-matrix correction
+|none
+|stem:[\tfrac{1}{2}\boldsymbol{\Omega}_{ie}^{e}\tau_i\mathbf C(-)]
+|stem:[\tfrac{1}{2}[(\boldsymbol{\omega}_{en}^{n}+\boldsymbol{\omega}_{ie}^{n})\wedge\]\mathbf C(-)]
+
+|Gravity term
+|gravitation
+|gravity (includes centrifugal)
+|gravity (includes centrifugal)
+
+|Velocity extra terms
+|none
+|stem:[-2\boldsymbol{\Omega}_{ie}^{e}\mathbf{v}]
+|stem:[-(\boldsymbol{\Omega}_{en}^{n}+2\boldsymbol{\Omega}_{ie}^{n})\mathbf{v}]
+
+|Position
+|Cartesian, trapezoidal
+|Cartesian, trapezoidal
+|Curvilinear, trapezoidal with radii of curvature
+
+|Groves equations
+|5.73, 5.81, 5.84, 5.18, 5.20, 5.23
+|2.145, 5.73, 5.75, 5.84, 5.85, 5.36, 5.38
+|2.123, 5.44, 5.73, 5.77, 5.84, 5.86, 5.54, 5.56
+|===
+
+== Usage example
 
 [source,java]
 ----

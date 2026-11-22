@@ -1,60 +1,243 @@
 = Magnetometer Calibration
 :description: Magnetometer calibration algorithms for estimating hard-iron bias and soft-iron scale-factor/cross-coupling errors, using known frame, magnetic norm, or WMM-derived position/instant.
-:keywords: magnetometer calibration, hard iron, soft iron, magnetic flux density, WMM calibration, cross-coupling, robust calibration
+:keywords: magnetometer calibration, hard iron, soft iron, ellipsoid fitting, magnetic flux density, WMM calibration, cross-coupling, robust calibration
 
 NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
 
 The `com.irurueta.navigation.inertial.calibration.magnetometer` package (79 classes) estimates the
 magnetometer's *hard iron* bias stem:[\mathbf{b}_m] and *soft iron* scale-factor/cross-coupling matrix
-stem:[\mathbf{M}_m]:
+stem:[\mathbf{M}_m]. Its structure closely mirrors xref:calibration/accelerometer.adoc[the accelerometer package]:
+6 distinct algorithms, differing in how the ground-truth field stem:[\mathbf{b}_{\text{true}}] is obtained and
+whether hard iron is already known, each wrapped by the same 5 robust-estimator variants (see
+xref:calibration/algorithms.adoc#robust-estimation[robust estimation]).
+
+== Hard-iron and soft-iron model
+
+A magnetometer does not read the Earth's field directly. Two families of disturbance, both fixed to the
+device body, distort it:
+
+* *Hard iron* is a permanent offset added to every reading, produced by magnetized parts (speaker magnets,
+  battery leads, ferromagnetic screws) that rotate with the sensor. It is a constant vector
+  stem:[\mathbf{b}_m] in body axes.
+* *Soft iron* is the response of non-permanently-magnetized ferromagnetic material (and of the sensor's own
+  axis gains and misalignments) to the ambient field. It reshapes the field linearly, so it is a matrix.
+
+With stem:[\mathbf{b}_{\text{true}}] the Earth's field resolved in body axes and stem:[\mathbf{w}] white noise
+(the same form of error model as in xref:calibration/data-model.adoc[the data model]):
 
 [stem]
 ++++
-\mathbf{b}_{\text{meas}} = \mathbf{b}_{m} + \left(\mathbf{I}_{3} + \mathbf{M}_{m}\right)\mathbf{b}_{\text{true}} + \mathbf{w}
+\mathbf{b}_{\text{meas}} = \mathbf{b}_{m} + \left(\mathbf{I}_{3} + \mathbf{M}_{m}\right)\mathbf{b}_{\text{true}} + \mathbf{w},
+\qquad
+\mathbf{M}_{m} = \begin{pmatrix} s_x & m_{xy} & m_{xz} \\ m_{yx} & s_y & m_{yz} \\ m_{zx} & m_{zy} & s_z \end{pmatrix}
 ++++
 
-Its structure closely mirrors xref:calibration/accelerometer.adoc[the accelerometer package]: 6 distinct
-algorithms, differing in how the ground-truth field stem:[\mathbf{b}_{\text{true}}] is obtained and
-whether hard iron is already known, each wrapped by the same 5 robust-estimator variants.
+The diagonal terms stem:[s_x, s_y, s_z] are scale-factor errors and the off-diagonal terms are cross-couplings.
+The calibrators estimate stem:[\mathbf{b}_m] and stem:[\mathbf{M}_m]; a *fixer* (see
+xref:calibration/fixers.adoc[]) later inverts the model to recover the true field:
+
+[stem]
+++++
+\hat{\mathbf{b}}_{\text{true}} = \left(\mathbf{I}_{3} + \mathbf{M}_{m}\right)^{-1}\left(\mathbf{b}_{\text{meas}} - \mathbf{b}_{m}\right)
+++++
+
+The magnetic flux density is expressed in teslas (T) throughout the code; the Earth's field is roughly 25 to 65
+microteslas depending on location.
+
+== Families at a glance
+
+All numbers below were checked against the `MINIMUM_MEASUREMENTS*` constants and the unknown counts in the
+source.
 
 [cols="1,2,2,1",options="header"]
 |===
 |Family |How stem:[\mathbf{b}_{\text{true}}] is obtained |Solves for |Min. measurements
 
 |`KnownFrame`
-|Directly: full frame known at each measurement, so xref:wmm/index.adoc[the WMM] gives the true field
-in NED and it is rotated into body axes.
-|stem:[\mathbf{b}_m] + stem:[\mathbf{M}_m]
-|4 (linear or non-linear)
+|Directly: the full frame (position, orientation) and the date are known at each measurement, so
+xref:wmm/index.adoc[the WMM] gives the true field in NED and it is rotated into body axes.
+|stem:[\mathbf{b}_m] + stem:[\mathbf{M}_m] (12 unknowns, or 9 with common z-axis)
+|4 (linear and non-linear)
 
 |`KnownHardIronAndFrame`
 |Same as above
-|Only stem:[\mathbf{M}_m] (hard iron given)
-|3
+|Only stem:[\mathbf{M}_m] (hard iron given; 9 unknowns, or 6 with common z-axis)
+|3 (linear and non-linear)
 
 |`KnownMagneticFluxDensityNorm`
 |Indirectly: only the *magnitude* of the Earth's field is known, at several unknown orientations.
-|stem:[\mathbf{b}_m] + stem:[\mathbf{M}_m]
-|10 (13 without common z-axis)
+|stem:[\mathbf{b}_m] + stem:[\mathbf{M}_m] (12 unknowns, or 9 with common z-axis)
+|13 (10 with common z-axis)
 
 |`KnownHardIronMagneticFluxDensityNorm`
 |Same as above
-|Only stem:[\mathbf{M}_m]
-|7 (10 without common z-axis)
+|Only stem:[\mathbf{M}_m] (9 unknowns, or 6 with common z-axis)
+|10 (7 with common z-axis)
 
 |`KnownPositionAndInstant`
-|Indirectly: measurement position and date known; field norm derived via xref:wmm/index.adoc[the WMM] instead of given directly.
-|stem:[\mathbf{b}_m] + stem:[\mathbf{M}_m]
-|10 (13 without common z-axis)
+|Indirectly: measurement position and date known; the field magnitude is computed from
+xref:wmm/index.adoc[the WMM] instead of being given directly.
+|stem:[\mathbf{b}_m] + stem:[\mathbf{M}_m] (12 unknowns, or 9 with common z-axis)
+|13 (10 with common z-axis)
 
 |`KnownHardIronPositionAndInstant`
 |Same as above
-|Only stem:[\mathbf{M}_m]
-|7 (10 without common z-axis)
+|Only stem:[\mathbf{M}_m] (9 unknowns, or 6 with common z-axis)
+|10 (7 with common z-axis)
 |===
+
+For the norm-based and position-based families the minimum is the number of unknowns plus one
+(`MINIMUM_MEASUREMENTS_GENERAL` and `MINIMUM_MEASUREMENTS_COMMON_Z_AXIS`); `isReady()` is false until at
+least that many measurements are present. For the frame families the constant is fixed (4 and 3) because every
+measurement contributes three equations; the linear-system counting argument is in
+xref:calibration/algorithms.adoc#linear-model[linear least squares]. The common z-axis flag defaults to `false`
+in every family, and it restricts stem:[\mathbf{M}_m] to an upper-triangular matrix (the lower off-diagonal
+terms are forced to zero).
 
 NOTE: Javadoc and source links for every class used in the examples below are collected in the
 <<Class Reference>> table at the end of this page.
+
+== The ellipsoid view of norm-based calibration
+
+When the frame is unknown, the direction of stem:[\mathbf{b}_{\text{true}}] is lost, but its length is not: the
+Earth's field has the same magnitude stem:[B] at a given place and time no matter how the device is turned.
+Rotating the device through many orientations therefore makes the *true* field sweep out a sphere of radius
+stem:[B], and the *measured* readings sweep out the image of that sphere under the affine map of the error model.
+An affine image of a sphere is an ellipsoid:
+
+[stem]
+++++
+\mathbf{b}_{\text{meas}} = \mathbf{b}_m + \mathbf{M}\,\mathbf{u},\quad \lVert\mathbf{u}\rVert = B
+\;\;\Longrightarrow\;\;
+\left(\mathbf{b}_{\text{meas}} - \mathbf{b}_m\right)^{T}\left(\mathbf{M}\mathbf{M}^{T}\right)^{-1}\left(\mathbf{b}_{\text{meas}} - \mathbf{b}_m\right) = B^{2},
+\qquad \mathbf{M} = \mathbf{I}_3 + \mathbf{M}_m
+++++
+
+* The ellipsoid's *centre* is the hard iron stem:[\mathbf{b}_m]. Without disturbance the readings would be
+  centred at the origin.
+* Its *semi-axes* are stem:[B] times the singular values of stem:[\mathbf{M}], and its *orientation* is given by
+  the left singular vectors. Scale-factor errors stretch the axes; cross-couplings tilt them.
+* Calibration is the search for the offset and the matrix that turn the measured ellipsoid back into a sphere
+  centred at the origin.
+
+image::calibration/magnetometer-ellipsoid-vs-sphere.svg[Two-dimensional cross-section: measured readings lie on an offset, tilted ellipse centred at the hard iron bias; after subtracting the bias and applying the inverse soft iron matrix they lie on a circle of radius equal to the Earth field magnitude,640,300]
+
+The picture is the geometric reading of the cost used by the solver, described in
+xref:calibration/algorithms.adoc#nonlinear-model[non-linear least squares] (the same
+rotation ambiguity discussed there applies: the norm constraint alone cannot determine the sensor-frame
+orientation, and the common z-axis form removes it).
+
+=== `KnownHardIronMagneticFluxDensityNorm`: soft iron only
+
+Here the hard iron is given, so the ellipsoid centre is known and only the shape matrix is estimated. The
+implementation optimizes the full matrix stem:[\mathbf{M}] (9 parameters; 6 for the upper-triangular common
+z-axis form), initialized from stem:[\mathbf{I}_3 + \mathbf{M}_{m,0}] with stem:[\mathbf{M}_{m,0}] the initial
+soft iron (the `setInitialMm` value). For each measurement stem:[k] it predicts the squared norm of the
+corrected vector and compares it to the squared known magnitude:
+
+[stem]
+++++
+h_k(\mathbf{M}) = \left\lVert \mathbf{M}^{-1}\left(\mathbf{b}_{\text{meas},k} - \mathbf{b}_m\right)\right\rVert^{2},
+\qquad y_k = B^{2},
+\qquad \chi^2 = \sum_{k=1}^{N}\left(\frac{y_k - h_k}{\sigma_k}\right)^{2}
+++++
+
+stem:[\sigma_k] is the magnetic flux density standard deviation attached to each
+`StandardDeviationBodyMagneticFluxDensity`. The solver is Levenberg-Marquardt
+(`LevenbergMarquardtMultiDimensionFitter`), and the *Jacobian is not analytical*: each evaluation obtains the
+gradient of stem:[h_k] with respect to the parameters with `GradientEstimator`, i.e. by numerical differences.
+After the fit the code subtracts the identity, so `getEstimatedMm()` returns stem:[\mathbf{M}_m] and not
+stem:[\mathbf{M}], and the fit covariance is kept unchanged because only a constant is subtracted. For the
+common z-axis case the covariance is additionally mapped into the nine-parameter general layout with a constant
+selection matrix.
+
+=== `KnownMagneticFluxDensityNorm`: hard iron and soft iron
+
+When the hard iron is unknown too, the solver works with the reparametrization
+stem:[\mathbf{b}_{\text{meas}} = \mathbf{M}(\mathbf{b}_{\text{true}} + \mathbf{b}')], so that the centre is
+stem:[\mathbf{b}_m = \mathbf{M}\mathbf{b}']. The twelve parameters are the entries of stem:[\mathbf{M}] and
+stem:[\mathbf{b}'] (nine with the common z-axis form), the prediction is
+
+[stem]
+++++
+h_k(\mathbf{M},\mathbf{b}') = \left\lVert \mathbf{M}^{-1}\mathbf{b}_{\text{meas},k} - \mathbf{b}'\right\rVert^{2},
+\qquad y_k = B^{2}
+++++
+
+and after the fit the code converts back with stem:[\mathbf{b}_m = \mathbf{M}\mathbf{b}'] and
+stem:[\mathbf{M}_m = \mathbf{M} - \mathbf{I}_3], propagating the covariance through the Jacobian of that
+conversion. The initial hard iron and soft iron seed the search
+(stem:[\mathbf{b}'_0 = (\mathbf{I}_3 + \mathbf{M}_{m,0})^{-1}\mathbf{b}_{m,0}]); also here the gradient is
+numerical. See xref:calibration/algorithms.adoc#nonlinear-model[non-linear least squares] for the damping
+and iteration details shared with the accelerometer.
+
+=== Linear and non-linear variants as implemented
+
+* The *norm-based* and *position-and-instant* families exist *only* as non-linear (Levenberg-Marquardt)
+  calibrators. There is no closed-form linear ellipsoid fit in the package: because the unknowns enter the cost
+  through the inverse stem:[\mathbf{M}^{-1}], the constraint is not linear in them.
+* The *frame-based* families offer both variants. The linear one stacks three equations per measurement into a
+  system that is linear in stem:[\mathbf{b}_m] and stem:[\mathbf{M}_m] (rows of the form
+  stem:[\mathbf{b}_{\text{meas}} - \mathbf{b}_{\text{true}} = \mathbf{b}_m + \mathbf{M}_m\mathbf{b}_{\text{true}}]
+  with stem:[\mathbf{b}_{\text{true}}] known) and solves it directly; the non-linear one minimizes the same
+  residual iteratively and, unlike the norm-based solvers, supplies an *analytical* Jacobian.
+* *Robust* wrappers (RANSAC, LMedS, MSAC, PROSAC, PROMedS) fit the inner non-linear calibrator on random subsets
+  (default subset size equals the general minimum: 10 for hard-iron-known, 13 for hard-iron-unknown) and score
+  every measurement with the *non-squared* norm discrepancy
+  stem:[\left(B - \lVert\mathbf{M}^{-1}(\mathbf{b}_{\text{meas}} - \mathbf{b}_m)\rVert\right)^{2}], which is not
+  identical to the squared-norm cost minimized by the inner solver. `DEFAULT_THRESHOLD` of the RANSAC wrapper is
+  1e-9. See xref:calibration/algorithms.adoc#robust-estimation[robust estimation].
+
+== The WMM-based families
+
+`KnownFrame*` and `KnownHardIronAndFrame*` use the WMM to get the full true field vector; the
+`KnownPositionAndInstant` and `KnownHardIronPositionAndInstant` families use it only to get the field
+*magnitude*. In both cases the reference comes from `WMMEarthMagneticFluxDensityEstimator` of the
+xref:wmm/earth-magnetic-flux-density.adoc[wmm package], which returns an `NEDMagneticFluxDensity` in teslas.
+
+[cols="1,2",options="header"]
+|===
+|Family |Reference computed as
+
+|`KnownFrame`, `KnownHardIronAndFrame`
+|For each measurement: convert the ECEF frame to NED to obtain latitude, longitude, height and the body
+attitude, evaluate the WMM at that position and the measurement's own year to get stem:[\mathbf{b}^{n}_{\text{Earth}}],
+then rotate it into body axes with the inverse of the frame's body-to-NED rotation, giving the vector
+stem:[\mathbf{b}_{\text{true}}] used in the linear equations or the non-linear residual.
+
+|`KnownPositionAndInstant`, `KnownHardIronPositionAndInstant`
+|Once, in `onBeforeCalibrate()` (so every `calibrate()` call recomputes it): evaluate the WMM at the configured
+`NEDPosition` (latitude, longitude, height) and decimal year, and keep only the Euclidean norm of the NED
+vector as the ground-truth magnitude stem:[B]. The direction is never used, so no attitude is needed.
+|===
+
+Practical points verified in the source:
+
+* The instant is stored as a decimal year. `setTime(...)` accepts epoch milliseconds, a `Date` or a
+  `GregorianCalendar`, and `setYear(...)` takes the decimal year directly. If nothing is set it defaults to the
+  time at which the calibrator was constructed.
+* `isReady()` for these families additionally requires a position and a year; without an explicit
+  `WorldMagneticModel` the default coefficient file is loaded, and an I/O failure surfaces as a
+  `CalibrationException`.
+* Measurements must be taken at that one position within a short time span, so the field can be treated as
+  constant.
+* The WMM describes the main (core) field only. Crustal anomalies, nearby structures and the
+  device's own electronics change the magnitude actually present, so a norm taken from the model is a
+  reference, not exact truth; where a locally measured magnitude is available, use the
+  `KnownMagneticFluxDensityNorm` families with that value instead.
+
+[mermaid]
+....
+flowchart TD
+    A["Magnetometer readings"] --> B{"Is the body frame known?"}
+    B -->|"Yes"| C["KnownFrame / KnownHardIronAndFrame: WMM vector rotated into body axes"]
+    B -->|"No"| D{"Where does the field magnitude come from?"}
+    D -->|"A given value B"| E["KnownMagneticFluxDensityNorm / KnownHardIronMagneticFluxDensityNorm"]
+    D -->|"Position and date"| F["KnownPositionAndInstant / KnownHardIronPositionAndInstant: WMM norm"]
+    C --> G["Linear or Levenberg-Marquardt fit"]
+    E --> H["Ellipsoid-to-sphere Levenberg-Marquardt fit"]
+    F --> H
+....
 
 == Example: `KnownFrameMagnetometerLinearLeastSquaresCalibrator`
 
@@ -89,9 +272,10 @@ Two family pairs share a common abstract base — `KnownHardIronMagneticFluxDens
 `KnownHardIronPositionAndInstant` both extend `BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator`;
 `KnownMagneticFluxDensityNorm` and `KnownPositionAndInstant` both extend
 `BaseMagneticFluxDensityNormMagnetometerCalibrator` — since they differ only in *where* the field norm
-comes from (a direct value vs. a WMM lookup from position/date), not in the fitting algorithm itself. All
-six are Levenberg-Marquardt non-linear solvers; the two frame-based families additionally offer a linear
-least-squares variant, exactly as in xref:calibration/accelerometer.adoc[the accelerometer package].
+comes from (a direct value vs. a WMM lookup from position/date), not in the fitting algorithm itself. The four
+norm-based and position-based families are Levenberg-Marquardt non-linear solvers only; the two frame-based
+families offer both a linear least-squares and a non-linear variant, exactly as in
+xref:calibration/accelerometer.adoc[the accelerometer package].
 
 == Example: `KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator`
 
@@ -126,8 +310,9 @@ final Matrix estimatedMm = calibrator.getEstimatedMm();
 
 == Example: `KnownPositionAndInstantMagnetometerCalibrator`
 
-This family only needs a known geodetic position and timestamp; the field magnitude (and, when the
-frame is not otherwise known, its direction) is derived internally via xref:wmm/index.adoc[the WMM]:
+This family only needs a known geodetic position and timestamp; only the field *magnitude* is
+derived internally via xref:wmm/index.adoc[the WMM] (the direction is not used, see
+<<The WMM-based families>>):
 
 [source,java]
 ----

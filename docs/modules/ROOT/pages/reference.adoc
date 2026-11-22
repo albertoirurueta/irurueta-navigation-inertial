@@ -76,7 +76,7 @@ xref:wmm/earth-magnetic-flux-density.adoc[`EarthMagneticFluxDensityEstimator`]'s
 
 [[imu-tk]] *[imu-tk]* D. Tedaldi, A. Pretto, E. Menegatti, "A Robust and Easy to Implement Method for IMU
 Calibration without External Equipments," _IEEE International Conference on Robotics and Automation
-(ICRA)_, 2014. https://albertopretto.altervista.org/papers/tpm_icra2014.pdf[PDF]. Reference
+(ICRA)_, 2014 (Tedaldi, Pretto and Menegatti, ICRA 2014). https://albertopretto.altervista.org/papers/tpm_icra2014.pdf[PDF]. Reference
 implementation: https://github.com/Kyle-ak/imu_tk[github.com/Kyle-ak/imu_tk]. This is the basis for
 xref:calibration/gyroscope.adoc[`EasyGyroscopeCalibrator`]/`KnownBiasEasyGyroscopeCalibrator` and the
 static/dynamic interval philosophy used throughout

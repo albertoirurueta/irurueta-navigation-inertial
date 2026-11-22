@@ -14,11 +14,12 @@ this documentation groups classes by *what they do*, since the vast majority of 
 variants (different robust outlier-rejection strategies, different measurement orderings, unit
 conversions) of a much smaller number of distinct algorithms.
 
+[#error-model]
 == The sensor error model
 
 Every calibratable sensor in this library (accelerometer, gyroscope, magnetometer) is assumed to follow
 the same linear error model: a fixed bias, plus a matrix of scale-factor and cross-coupling errors
-applied to the true signal, plus noise. For the accelerometer:
+applied to the true signal, plus noise stem:[\mathbf{w}]. For the accelerometer:
 
 [stem]
 ++++
@@ -42,6 +43,13 @@ and the magnetometer follows the accelerometer's form, with "hard iron" playing 
 ++++
 
 image::calibration/sensor-error-model.svg[Sensor error model: bias offset plus scale-factor and cross-coupling misalignment,560,320]
+
+Here stem:[\mathbf{M}] is the *full* 3x3 matrix with the scale-factor errors on the diagonal and the
+cross-coupling terms off it, and the model applies stem:[\mathbf{I}_3+\mathbf{M}] to the true signal, so
+stem:[\mathbf{M}=\mathbf{0}] is an ideal sensor. The noise stem:[\mathbf{w}] is white, with a per-sample
+standard deviation stem:[\sigma=\text{root-PSD}/\sqrt{\tau}] for sampling interval stem:[\tau] (see
+xref:calibration/noise-and-bias.adoc#psd[PSD and root-PSD]); it is estimated separately from bias and
+matrices, never by the calibrators themselves.
 
 *Calibration* means estimating stem:[\mathbf{b}] and stem:[\mathbf{M}] (and, for the gyroscope,
 stem:[\mathbf{G}_g]) from measurements taken at known or partially-known references. *Fixing* means
@@ -79,6 +87,9 @@ getting it wrong will not raise an error, only wrong bias/scale-factor/cross-cou
 |===
 |Page |Covers
 
+|xref:calibration/algorithms.adoc[]
+|The mathematics shared by all calibrators: linear least-squares system, non-linear norm-based fit (Levenberg-Marquardt), robust estimation and the Tedaldi et al. method.
+
 |xref:calibration/data-model.adoc[]
 |Data containers shared by every calibrator: triads, `BodyKinematics`-based measurement types, `IMUErrors`.
 
@@ -86,13 +97,13 @@ getting it wrong will not raise an error, only wrong bias/scale-factor/cross-cou
 |`AccelerationFixer`, `AngularRateFixer`, `MagneticFluxDensityFixer`, `BodyKinematicsFixer`, `IMUErrorsCreator` — applying the inverse error model.
 
 |xref:calibration/accelerometer.adoc[]
-|The `accelerometer` sub-package: ~79 classes, 4 distinct calibration algorithms x 5 robust-estimator variants.
+|The `accelerometer` sub-package (79 files): six `Known...` families, each with the five robust wrappers.
 
 |xref:calibration/gyroscope.adoc[]
-|The `gyroscope` sub-package: ~86 classes, including the Tedaldi et al. "Easy" calibrator and quaternion integrators.
+|The `gyroscope` sub-package (86 files), including the Tedaldi et al. "Easy" calibrator and quaternion integrators.
 
 |xref:calibration/magnetometer.adoc[]
-|The `magnetometer` sub-package: ~79 classes, mirroring the accelerometer's algorithm/robust-estimator structure.
+|The `magnetometer` sub-package (79 files), mirroring the accelerometer's algorithm/robust-estimator structure.
 
 |xref:calibration/intervals-and-generators.adoc[]
 |Static/dynamic interval detection and measurement-sequence generation — the preprocessing step before calibration.
@@ -100,6 +111,59 @@ getting it wrong will not raise an error, only wrong bias/scale-factor/cross-cou
 |xref:calibration/noise-and-bias.adoc[]
 |Noise (PSD/root-PSD) and approximate-bias estimators used to seed calibrators and Kalman filter configs.
 |===
+
+[#calibrator-families]
+== Which calibrator family uses which algorithm
+
+Which algorithm a calibrator runs depends on what is *known* about each measurement: the full reference
+signal, only its norm, or nothing but the raw motion. The names below are the class-name stems; each
+page of the sensor family lists the concrete classes.
+
+[cols="2,3,2",options="header"]
+|===
+|Family |What is known |Algorithm and sensor page
+
+|`KnownFrame`, `KnownBiasAndFrame` (accelerometer, gyroscope, magnetometer; the magnetometer's version is
+`KnownHardIronAndFrame`)
+|Position, orientation and (for the gyroscope) angular rate of the body at every measurement, so the
+true signal is known as a vector. Linear and non-linear least-squares variants exist.
+|xref:calibration/algorithms.adoc#linear-model[Linear least squares] (the non-linear variants minimise the
+same residual with an analytical Jacobian, see xref:calibration/algorithms.adoc#nonlinear-model[]).
+Pages: xref:calibration/accelerometer.adoc[], xref:calibration/gyroscope.adoc[],
+xref:calibration/magnetometer.adoc[].
+
+|`KnownGravityNorm`, `KnownBiasAndGravityNorm`, `KnownPosition`, `KnownBiasAndPosition` (accelerometer);
+`KnownMagneticFluxDensityNorm`, `KnownHardIronMagneticFluxDensityNorm`, `KnownPositionAndInstant`,
+`KnownHardIronPositionAndInstant` (magnetometer)
+|Only the *norm* of the true signal: a given gravity norm, the gravity model evaluated at a known
+position, or the WMM field magnitude at a known position and instant. Orientation is unknown.
+|xref:calibration/algorithms.adoc#nonlinear-model[Non-linear least squares] (Levenberg-Marquardt over the
+norm residual; the Jacobian is estimated numerically). Pages: xref:calibration/accelerometer.adoc[],
+xref:calibration/magnetometer.adoc[].
+
+|`Turntable`, `KnownBiasTurntable` (gyroscope)
+|The IMU spins flat on a turntable at constant rate; the true angular-rate norm is known, orientation and
+position are not.
+|xref:calibration/algorithms.adoc#nonlinear-model[Non-linear least squares], using the norm of the
+angular rate. Page: xref:calibration/gyroscope.adoc[].
+
+|`Easy`, `KnownBiasEasy` (gyroscope)
+|Nothing external: static-moving-static sequences recorded by hand, with gravity as the only reference.
+|xref:calibration/algorithms.adoc#tedaldi[Tedaldi et al. method]: integrates the angular rate across each
+sequence and compares the rotated gravity direction. It estimates the gyroscope bias inside the same fit
+(except in the `KnownBias` variant) and assumes a common z-axis by default. Page:
+xref:calibration/gyroscope.adoc[].
+
+|`Robust...` wrappers (every family above)
+|The same inputs, but some measurements may be outliers.
+|xref:calibration/algorithms.adoc#robust-estimation[Robust estimation]: RANSAC, MSAC, LMedS, PROSAC or
+PROMedS around the base calibrator.
+|===
+
+TIP: The quantities that feed these calibrators come from the preprocessing stage in
+xref:calibration/intervals-and-generators.adoc[], and the root-PSD and approximate-bias estimators in
+xref:calibration/noise-and-bias.adoc[] seed or complement them. Once calibrated, the readings are corrected
+with the xref:calibration/fixers.adoc#inverse-model[fixers].
 
 == Why so many classes per algorithm?
 
@@ -126,4 +190,5 @@ equations six times.
 == Where to go next
 
 * xref:calibration/data-model.adoc[] — start here for the shared data types.
+* xref:calibration/algorithms.adoc[] — the equations, solvers and robust estimators behind every calibrator.
 * xref:reference.adoc#bibliography[] — bibliography, including the Tedaldi et al. paper used by the gyroscope's "Easy" calibrator.
