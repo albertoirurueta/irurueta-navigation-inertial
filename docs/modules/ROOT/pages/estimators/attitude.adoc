@@ -59,8 +59,7 @@ coordinate-transformation matrix)
 and the angles are recovered from its entries stem:[c_{jk}] as
 stem:[\phi=\operatorname{atan2}(c_{23},c_{33})], stem:[\theta=-\arcsin c_{13}] and
 stem:[\psi=\operatorname{atan2}(c_{12},c_{11})]. This is why leveling needs only the last column: gravity in
-body axes is stem:[\mathbf{g}^{b}=\mathbf{C}^{b}_{n}(0,0,g)^{\mathsf T}=g\,(-\sin\theta,\ \sin\phi\cos\theta,\
-\cos\phi\cos\theta)^{\mathsf T}], and with stem:[\mathbf{f}^{b}_{ib}=-\mathbf{g}^{b}] at rest this yields
+body axes is stem:[\mathbf{g}^{b}=\mathbf{C}^{b}_{n}(0,0,g)^{\mathsf T}=g\,(-\sin\theta,\ \sin\phi\cos\theta,\ \cos\phi\cos\theta)^{\mathsf T}], and with stem:[\mathbf{f}^{b}_{ib}=-\mathbf{g}^{b}] at rest this yields
 exactly the roll and pitch formulas of `LevelingEstimator` below. Yaw does not appear in that column, so it
 cannot be observed from gravity alone.
 
@@ -80,8 +79,8 @@ stem:[\alpha=|\boldsymbol\alpha|]) into a DCM gives the closed form used by the 
 \mathbf{C} = \mathbf{I}_3 + \frac{\sin\alpha}{\alpha}\left[\boldsymbol\alpha\wedge\right] + \frac{1-\cos\alpha}{\alpha^{2}}\left[\boldsymbol\alpha\wedge\right]^{2}
 ++++
 
-stem:[\left[\boldsymbol\alpha\wedge\right]] is the skew-symmetric (cross-product) matrix of
-stem:[\boldsymbol\alpha]. For small angles it reduces to stem:[\mathbf{I}_3+[\boldsymbol\alpha\wedge]]. The
+stem:[\left[\boldsymbol\alpha\wedge\right\]] is the skew-symmetric (cross-product) matrix of
+stem:[\boldsymbol\alpha]. For small angles it reduces to stem:[\mathbf{I}_3+[\boldsymbol\alpha\wedge\]]. The
 kinematics estimators invert this relation to turn two consecutive DCMs into an angular rate (see
 xref:estimators/kinematics.adoc[]).
 

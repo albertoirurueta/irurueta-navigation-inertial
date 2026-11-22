@@ -129,7 +129,7 @@ vector:
 \end{pmatrix}
 ++++
 
-Here stem:[\boldsymbol{\Omega}_{ie}^{e} = [(0,0,\omega_{ie})^{T}\wedge]] is the skew-symmetric matrix of the Earth rotation
+Here stem:[\boldsymbol{\Omega}_{ie}^{e} = [(0,0,\omega_{ie})^{T}\wedge\]] is the skew-symmetric matrix of the Earth rotation
 rate, stem:[\hat{\mathbf{C}}_b^e] the current body-to-ECEF attitude of the Kalman state, stem:[\mathbf{f}_{ib}^b] the
 bias-corrected specific force of the last IMU sample, stem:[\boldsymbol{\gamma}_{ib}^e] the gravity at the current
 position (`ECEFGravityEstimator`) and stem:[r_{eS}^e] the geocentric radius at the previous latitude (Groves 2.137,
@@ -196,7 +196,7 @@ INS-propagated position stem:[\hat{\mathbf{r}}] and velocity stem:[\hat{\mathbf{
 . Approximate range stem:[\tilde{r}_j = |\mathbf{r}_{aj} - \hat{\mathbf{r}}|], where stem:[\mathbf{r}_{aj}] is the satellite
   position.
 . The Earth rotates while the signal travels, so the satellite position is rotated by the small frame rotation
-  stem:[\mathbf{C}_I^e \approx \mathbf{I} - \omega_{ie}\tilde{r}_j/c\,[\mathbf{e}_3\wedge]] (Groves 8.36, with stem:[c] the speed of light).
+  stem:[\mathbf{C}_I^e \approx \mathbf{I} - \omega_{ie}\tilde{r}_j/c\,[\mathbf{e}_3\wedge\]] (Groves 8.36, with stem:[c] the speed of light).
 . Predicted pseudo-range, with the propagated clock offset (Groves 9.165):
 
 [stem]

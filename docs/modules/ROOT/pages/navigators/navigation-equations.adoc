@@ -62,7 +62,7 @@ truncation of the matrix exponential), Groves (5.73):
 ++++
 
 When stem:[\alpha \le 10^{-8}] (constant `ALPHA_THRESHOLD`, to avoid dividing by a vanishing norm) the code
-falls back to stem:[\mathbf{C}_{b+}^{b-} \approx \mathbf{I}_3 + [\boldsymbol{\alpha}_{ib}^{b}\wedge]].
+falls back to stem:[\mathbf{C}_{b+}^{b-} \approx \mathbf{I}_3 + [\boldsymbol{\alpha}_{ib}^{b}\wedge\]].
 
 === Average transformation over the interval
 
@@ -250,12 +250,12 @@ but the most demanding high-dynamic applications.
 |Attitude update
 |stem:[\mathbf C(-)\mathbf C_{b+}^{b -}]
 |stem:[\mathbf{C}_{i}^{e}(\tau_i)\mathbf C(-)\mathbf C_{b+}^{b -}]
-|stem:[(\mathbf{I}-[\boldsymbol{\omega}\tau_i\wedge])\mathbf C(-)\mathbf C_{b+}^{b -}], evaluated last
+|stem:[(\mathbf{I}-[\boldsymbol{\omega}\tau_i\wedge\])\mathbf C(-)\mathbf C_{b+}^{b -}], evaluated last
 
 |Average-matrix correction
 |none
 |stem:[\tfrac{1}{2}\boldsymbol{\Omega}_{ie}^{e}\tau_i\mathbf C(-)]
-|stem:[\tfrac{1}{2}[(\boldsymbol{\omega}_{en}^{n}+\boldsymbol{\omega}_{ie}^{n})\wedge]\mathbf C(-)]
+|stem:[\tfrac{1}{2}[(\boldsymbol{\omega}_{en}^{n}+\boldsymbol{\omega}_{ie}^{n})\wedge\]\mathbf C(-)]
 
 |Gravity term
 |gravitation
