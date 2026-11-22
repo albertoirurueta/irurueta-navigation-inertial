@@ -21,6 +21,7 @@ import com.irurueta.navigation.frames.CoordinateTransformation;
 import com.irurueta.navigation.frames.ECEFFrame;
 import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeException;
 import com.irurueta.navigation.geodesic.Constants;
+import com.irurueta.navigation.gnss.ECEFPositionAndVelocity;
 import com.irurueta.navigation.gnss.GNSSEstimation;
 import com.irurueta.navigation.gnss.GNSSException;
 import com.irurueta.navigation.gnss.GNSSLeastSquaresPositionAndVelocityEstimator;
@@ -36,6 +37,13 @@ import java.util.Collection;
  * Calculates position, velocity, attitude and IMU biases using a GNSS unweighted
  * iterated least squares estimator along with an INS loosely coupled Kalman filter
  * to take into account inertial measurements to smooth results.
+ * Every IMU sample provided through {@link #updateBodyKinematics(BodyKinematics, double)} is
+ * integrated with the ECEF inertial navigation equations, so that this estimator always holds the
+ * INS-propagated solution. Every time GNSS measurements are provided through
+ * {@link #updateMeasurements(Collection, double)}, their least squares position and velocity
+ * solution is used as the measurement of a Kalman filter epoch, valid at the timestamp of the
+ * measurements, whose closed-loop correction is applied to the INS solution. The first GNSS
+ * solution initializes the position and velocity of the INS solution.
  * This implementation is based on the equations defined in "Principles of GNSS, Inertial, and Multisensor
  * Integrated Navigation Systems, Second Edition" and on the companion software available at:
  * <a href="https://github.com/ymjdz/MATLAB-Codes/blob/master/Loosely_coupled_INS_GNSS.m">
@@ -131,6 +139,12 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimator {
      * and clock drift.
      */
     private GNSSEstimation estimation;
+
+    /**
+     * Indicates whether the position and velocity of the INS solution (frame) have
+     * already been initialized with a GNSS position and velocity solution.
+     */
+    private boolean positionAndVelocityInitialized;
 
     /**
      * Indicates whether this estimator is running or not.
@@ -1457,6 +1471,9 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimator {
     /**
      * Gets current estimation containing user ECEF position, user ECEF velocity,
      * clock offset and clock drift.
+     * This is the least squares solution of the last provided GNSS measurements, which
+     * is the measurement used by the Kalman filter. The solution combining GNSS and
+     * inertial measurements is the one returned by {@link #getState()}.
      *
      * @return current estimation containing user ECEF position, user ECEF velocity,
      * clock offset and clock drift.
@@ -1468,6 +1485,9 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimator {
     /**
      * Gets current estimation containing user ECEF position, user ECEF velocity,
      * clock offset and clock drift.
+     * This is the least squares solution of the last provided GNSS measurements, which
+     * is the measurement used by the Kalman filter. The solution combining GNSS and
+     * inertial measurements is the one returned by {@link #getState(INSLooselyCoupledKalmanState)}.
      * This method does not update result instance if no estimation is available.
      *
      * @param result instance where estimation will be stored.
@@ -1565,8 +1585,18 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimator {
     /**
      * Updates GNSS measurements of this estimator when new satellite measurements
      * are available.
-     * Calls to this method will be ignored if interval between provided timestamp
-     * and last timestamp when Kalman filter was updated is less than epoch interval.
+     * The least squares position and velocity solution of provided measurements is
+     * computed using the INS solution as prior. The first solution initializes the
+     * position and velocity of the INS solution (any configured attitude is preserved).
+     * Then, if a Kalman filter configuration is available, a Kalman filter epoch is run
+     * using the INS-propagated solution as predicted state and the least squares
+     * solution as a measurement valid at provided timestamp (the solution is not
+     * navigated forward in time), and the closed-loop correction is applied to the INS
+     * solution.
+     * Call to this method will be ignored if the interval between provided timestamp
+     * and the timestamp of the last Kalman filter epoch is not positive or is less
+     * than the epoch interval. Measurements arriving exactly one epoch interval after
+     * the previous epoch are accepted.
      *
      * @param measurements GNSS measurements to be updated.
      * @param timestamp    timestamp since epoch time when GNSS measurements were
@@ -1585,8 +1615,18 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimator {
     /**
      * Updates GNSS measurements of this estimator when new satellite measurements
      * are available.
-     * Call to this method will be ignored if interval between provided timestamp
-     * and last timestamp when Kalman filter was updated is less than epoch interval.
+     * The least squares position and velocity solution of provided measurements is
+     * computed using the INS solution as prior. The first solution initializes the
+     * position and velocity of the INS solution (any configured attitude is preserved).
+     * Then, if a Kalman filter configuration is available, a Kalman filter epoch is run
+     * using the INS-propagated solution as predicted state and the least squares
+     * solution as a measurement valid at provided timestamp (the solution is not
+     * navigated forward in time), and the closed-loop correction is applied to the INS
+     * solution.
+     * Call to this method will be ignored if the interval between provided timestamp
+     * and the timestamp of the last Kalman filter epoch is not positive or is less
+     * than the epoch interval. Measurements arriving exactly one epoch interval after
+     * the previous epoch are accepted.
      *
      * @param measurements GNSS measurements to be updated.
      * @param timestamp    timestamp expressed in seconds since epoch time when
@@ -1608,8 +1648,11 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimator {
         }
 
         final var lastStateTimestamp = insEstimator.getLastStateTimestamp();
-        if (lastStateTimestamp != null && timestamp - lastStateTimestamp <= insEstimator.getEpochInterval()) {
-            return false;
+        if (lastStateTimestamp != null) {
+            final var propagationInterval = timestamp - lastStateTimestamp;
+            if (propagationInterval <= 0.0 || propagationInterval < insEstimator.getEpochInterval()) {
+                return false;
+            }
         }
 
         try {
@@ -1622,29 +1665,25 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimator {
             this.measurements = new ArrayList<>(measurements);
 
             lsEstimator.setMeasurements(this.measurements);
-            lsEstimator.setPriorPositionAndVelocityFromEstimation(estimation);
-            if (estimation != null) {
-                lsEstimator.estimate(estimation);
-            } else {
-                estimation = lsEstimator.estimate();
-            }
+            estimatePositionAndVelocity();
 
             if (listener != null) {
                 listener.onUpdateGNSSMeasurementsEnd(this);
             }
-        } catch (final GNSSException e) {
+
+            if (insEstimator.isPropagateReady()) {
+                // GNSS solution is the measurement of the Kalman filter epoch, valid at
+                // provided timestamp. The INS-propagated solution is the predicted state
+                insEstimator.updatePositionAndVelocity(estimation.getX(), estimation.getY(), estimation.getZ(),
+                        estimation.getVx(), estimation.getVy(), estimation.getVz(), timestamp);
+            }
+
+            updateState();
+        } catch (final GNSSException | INSException e) {
             throw new INSGNSSException(e);
         } finally {
             running = false;
         }
-
-        if (kinematics == null) {
-            kinematics = insEstimator.getKinematics();
-        } else {
-            insEstimator.getKinematics(kinematics);
-        }
-
-        updateBodyKinematics(kinematics, timestamp);
 
         return true;
     }
@@ -1652,13 +1691,24 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimator {
     /**
      * Updates specific force and angular rate applied to the user's
      * body expressed in coordinates resolved along body-frame axes.
+     * Every provided sample is corrected with the currently estimated biases and
+     * integrated with the ECEF inertial navigation equations over the interval elapsed
+     * since the previous sample, regardless of the epoch interval, starting from the
+     * last corrected INS solution. The first provided sample only sets the time
+     * reference: no navigation is performed for it.
+     * Samples whose timestamp is not greater than the timestamp of the previous sample
+     * are ignored.
+     * This method does not run any Kalman filter epoch: epochs are run when GNSS
+     * measurements are provided.
      *
      * @param kinematics kinematics applied to body (specific force and angular rate)
      *                   during last period of time. These measures are obtained from
      *                   an inertial unit (IMU).
      * @param timestamp  timestamp since epoch time when specific force and
      *                   angular rate values were updated.
-     * @return true if body kinematics values were updated, false otherwise.
+     * @return true if body kinematics values were integrated, false if they were
+     * ignored because their timestamp is not greater than the one of the previous
+     * sample.
      * @throws LockedException  if this estimator is already running.
      * @throws INSGNSSException if estimation fails due to numerical instabilities.
      */
@@ -1671,13 +1721,24 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimator {
     /**
      * Updates specific force and angular rate applied to the user's
      * body expressed in coordinates resolved along body-frame axes.
+     * Every provided sample is corrected with the currently estimated biases and
+     * integrated with the ECEF inertial navigation equations over the interval elapsed
+     * since the previous sample, regardless of the epoch interval, starting from the
+     * last corrected INS solution. The first provided sample only sets the time
+     * reference: no navigation is performed for it.
+     * Samples whose timestamp is not greater than the timestamp of the previous sample
+     * are ignored.
+     * This method does not run any Kalman filter epoch: epochs are run when GNSS
+     * measurements are provided.
      *
      * @param kinematics kinematics applied to body (specific force and angular rate)
      *                   during last period of time. These measures are obtained from
      *                   an inertial unit (IMU).
      * @param timestamp  timestamp expressed in seconds since epoch time when specific
      *                   force and angular rate values were updated.
-     * @return true if body kinematics values were updated, false otherwise.
+     * @return true if body kinematics values were integrated, false if they were
+     * ignored because their timestamp is not greater than the one of the previous
+     * sample.
      * @throws LockedException  if this estimator is already running.
      * @throws INSGNSSException if estimation fails due to numerical instabilities.
      */
@@ -1691,30 +1752,22 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimator {
         try {
             running = true;
 
-            initFrame();
-            if (estimation != null) {
-                frame.setCoordinates(estimation.getX(), estimation.getY(), estimation.getZ());
-                frame.setVelocityCoordinates(estimation.getVx(), estimation.getVy(), estimation.getVz());
+            if (initFrame()) {
+                insEstimator.setFrame(frame);
             }
-            insEstimator.setFrame(frame);
 
-            var result = false;
-            if (insEstimator.isUpdateReady()) {
-                result = insEstimator.update(kinematics, timestamp);
-                if (result) {
-                    if (this.kinematics == null) {
-                        this.kinematics = insEstimator.getKinematics();
-                    } else {
-                        insEstimator.getKinematics(this.kinematics);
-                    }
-
-                    if (estimation != null) {
-                        initState();
-                        insEstimator.getState(state);
-                    }
+            // every sample is integrated, starting from the last corrected INS solution
+            final var result = insEstimator.update(kinematics, timestamp);
+            if (result) {
+                if (this.kinematics == null) {
+                    this.kinematics = insEstimator.getKinematics();
+                } else {
+                    insEstimator.getKinematics(this.kinematics);
                 }
-            } else {
-                this.kinematics = kinematics;
+
+                if (estimation != null) {
+                    updateState();
+                }
             }
 
             if (kinematics != null) {
@@ -1740,13 +1793,16 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimator {
     }
 
     /**
-     * Propagates Kalman filter state held by this estimator at provided
-     * timestamp.
-     * Call to this method will be ignored if interval between provided timestamp
-     * and last timestamp when Kalman filter was updated is less than epoch interval.
+     * Ensures that the Kalman filter state held by this estimator is synchronized
+     * with the current INS solution.
+     * This method does not run a Kalman filter epoch: an epoch needs a position and
+     * velocity measurement, and is run when GNSS measurements are provided through
+     * {@link #updateMeasurements(Collection, double)}. Neither the INS solution nor
+     * the GNSS estimation are modified, and no listener is notified.
      *
-     * @param timestamp timestamp since epoch to propagate state.
-     * @return true if state was propagated, false otherwise.
+     * @param timestamp timestamp since epoch. It is ignored.
+     * @return always false, since no Kalman filter epoch is run without GNSS
+     * measurements.
      * @throws LockedException  if this estimator is already running.
      * @throws INSGNSSException if estimation fails due to numerical instabilities.
      */
@@ -1756,16 +1812,20 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimator {
     }
 
     /**
-     * Propagates Kalman filter state held by this estimator at provided
-     * timestamp.
-     * Call to this method will be ignored if interval between provided timestamp
-     * and last timestamp when Kalman filter was updated is less than epoch interval.
+     * Ensures that the Kalman filter state held by this estimator is synchronized
+     * with the current INS solution.
+     * This method does not run a Kalman filter epoch: an epoch needs a position and
+     * velocity measurement, and is run when GNSS measurements are provided through
+     * {@link #updateMeasurements(Collection, double)}. Neither the INS solution nor
+     * the GNSS estimation are modified, and no listener is notified.
      *
-     * @param timestamp timestamp expressed in seconds since epoch to propagate state.
-     * @return true if state was propagated, false otherwise.
+     * @param timestamp timestamp expressed in seconds since epoch. It is ignored.
+     * @return always false, since no Kalman filter epoch is run without GNSS
+     * measurements.
      * @throws LockedException  if this estimator is already running.
      * @throws INSGNSSException if estimation fails due to numerical instabilities.
      */
+    @SuppressWarnings("deprecation")
     public boolean propagate(final double timestamp) throws LockedException, INSGNSSException {
 
         if (running) {
@@ -1779,21 +1839,10 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimator {
         try {
             running = true;
 
-            if (initFrame()) {
-                frame.setCoordinates(estimation.getX(), estimation.getY(), estimation.getZ());
-                frame.setVelocityCoordinates(estimation.getVx(), estimation.getVy(), estimation.getVz());
-                insEstimator.setFrame(frame);
-            }
-
+            // GNSS estimation is not replaced by the INS solution: otherwise the INS
+            // solution would later be fed back to the Kalman filter as a measurement
             final var result = insEstimator.propagate(timestamp);
-            if (result) {
-                insEstimator.getFrame(frame);
-                estimation.setPositionCoordinates(frame.getX(), frame.getY(), frame.getZ());
-                estimation.setVelocityCoordinates(frame.getVx(), frame.getVy(), frame.getVz());
-
-                initState();
-                insEstimator.getState(state);
-            }
+            updateState();
 
             return result;
 
@@ -1821,6 +1870,7 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimator {
         kinematics = null;
         correctedKinematics = null;
         frame = null;
+        positionAndVelocityInitialized = false;
 
         insEstimator.reset();
 
@@ -1855,6 +1905,79 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimator {
         if (state == null) {
             state = new INSLooselyCoupledKalmanState();
         }
+    }
+
+    /**
+     * Copies the Kalman filter state of the internal INS estimator, which holds the
+     * current INS solution, into the state exposed by this estimator.
+     * State is left unavailable if the internal INS estimator has no state yet.
+     */
+    private void updateState() {
+        initState();
+        if (!insEstimator.getState(state)) {
+            state = null;
+        }
+    }
+
+    /**
+     * Computes the least squares position and velocity solution of current GNSS
+     * measurements, using the INS solution as prior.
+     * On the first solution there is no INS position yet: the least squares estimator
+     * starts from its own default prior, its solution initializes the position and
+     * velocity of the INS solution, and then the solution is refined once using that
+     * position as prior, as it is done for any later solution.
+     *
+     * @throws LockedException   if this estimator is already running.
+     * @throws NotReadyException if estimator is not ready for measurements updates.
+     * @throws GNSSException     if estimation fails due to numerical instabilities.
+     */
+    private void estimatePositionAndVelocity() throws LockedException, NotReadyException, GNSSException {
+        final var firstSolution = !positionAndVelocityInitialized;
+        if (firstSolution) {
+            lsEstimator.setPriorPositionAndVelocity(null);
+            estimateWithCurrentPrior();
+            initializePositionAndVelocity();
+        }
+
+        lsEstimator.setPriorPositionAndVelocity(new ECEFPositionAndVelocity(frame.getX(), frame.getY(), frame.getZ(),
+                frame.getVx(), frame.getVy(), frame.getVz()));
+        estimateWithCurrentPrior();
+
+        if (firstSolution) {
+            initializePositionAndVelocity();
+        }
+    }
+
+    /**
+     * Computes the least squares position and velocity solution of current GNSS
+     * measurements using the prior currently set into the least squares estimator,
+     * and stores it as current estimation.
+     *
+     * @throws LockedException   if this estimator is already running.
+     * @throws NotReadyException if estimator is not ready for measurements updates.
+     * @throws GNSSException     if estimation fails due to numerical instabilities.
+     */
+    private void estimateWithCurrentPrior() throws LockedException, NotReadyException, GNSSException {
+        if (estimation != null) {
+            lsEstimator.estimate(estimation);
+        } else {
+            estimation = lsEstimator.estimate();
+        }
+    }
+
+    /**
+     * Sets the position and velocity of the INS solution (frame) to the ones of
+     * current GNSS estimation, preserving the attitude (either the configured one, the
+     * one integrated so far, or the default one if frame does not exist yet).
+     *
+     * @throws LockedException if internal INS estimator is already running.
+     */
+    private void initializePositionAndVelocity() throws LockedException {
+        initFrame();
+        frame.setCoordinates(estimation.getX(), estimation.getY(), estimation.getZ());
+        frame.setVelocityCoordinates(estimation.getVx(), estimation.getVy(), estimation.getVz());
+        insEstimator.setFrame(frame);
+        positionAndVelocityInitialized = true;
     }
 
     /**

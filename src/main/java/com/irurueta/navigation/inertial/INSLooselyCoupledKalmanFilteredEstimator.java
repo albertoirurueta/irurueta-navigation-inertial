@@ -19,6 +19,8 @@ import com.irurueta.algebra.AlgebraException;
 import com.irurueta.navigation.LockedException;
 import com.irurueta.navigation.NotReadyException;
 import com.irurueta.navigation.frames.ECEFFrame;
+import com.irurueta.navigation.frames.ECEFPosition;
+import com.irurueta.navigation.frames.ECEFVelocity;
 import com.irurueta.navigation.inertial.navigators.ECEFInertialNavigator;
 import com.irurueta.navigation.inertial.navigators.InertialNavigatorException;
 import com.irurueta.units.Time;
@@ -29,6 +31,13 @@ import com.irurueta.units.TimeUnit;
  * Calculates position, velocity, attitude and IMU biases using an INS loosely
  * coupled Kalman filter to take into account inertial measurements to
  * smooth results and taking into account an initial position.
+ * Every IMU sample provided through {@link #update(BodyKinematics, double)} is corrected with the
+ * currently estimated biases and integrated with the ECEF inertial navigation equations, so that the
+ * frame held by this estimator is always the INS solution. A Kalman filter epoch is only run when a
+ * position and velocity fix is provided through
+ * {@link #updatePositionAndVelocity(ECEFPosition, ECEFVelocity, double)}, which uses the INS solution
+ * as the predicted state, the fix as the measurement, and then applies the closed-loop correction to
+ * the INS solution. Without fixes this estimator behaves as a pure inertial navigator.
  * This implementation is based on the equations defined in "Principles of GNSS, Inertial, and Multisensor
  * Integrated Navigation Systems, Second Edition" and on the companion software available at:
  * <a href="https://github.com/ymjdz/MATLAB-Codes/blob/master/Loosely_coupled_INS_GNSS.m">
@@ -45,9 +54,10 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
 
     /**
      * Minimum epoch interval expressed in seconds (s) between consecutive
-     * propagations or measurements.
-     * Attempting to propagate results using Kalman filter or updating measurements
-     * when intervals are less than this value, will be ignored.
+     * Kalman filter epochs.
+     * Attempting to provide a position and velocity fix when the interval since the
+     * last Kalman filter epoch is less than this value, will be ignored.
+     * IMU samples are always integrated regardless of this value.
      */
     private double epochInterval;
 
@@ -71,6 +81,8 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
 
     /**
      * Contains current or initial user position, velocity and attitude.
+     * This is the INS solution: it is propagated with every IMU sample and
+     * corrected on every Kalman filter epoch.
      */
     private ECEFFrame frame;
 
@@ -90,9 +102,15 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
 
     /**
      * Timestamp expressed in seconds since epoch time when Kalman filter state
-     * was last propagated.
+     * was last propagated (i.e. timestamp of the last Kalman filter epoch).
      */
     private Double lastStateTimestamp;
+
+    /**
+     * Timestamp expressed in seconds since epoch time of the last IMU sample
+     * (body kinematics) that was provided to this estimator.
+     */
+    private Double lastKinematicsTimestamp;
 
     /**
      * Indicates whether this estimator is running or not.
@@ -157,7 +175,7 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
     /**
      * Constructor.
      *
-     * @param config   INS tightly coupled Kalman filter configuration parameters
+     * @param config   INS loosely coupled Kalman filter configuration parameters
      *                 (usually obtained through calibration).
      * @param listener listener to notify events raised by this instance.
      */
@@ -213,7 +231,7 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
     /**
      * Constructor.
      *
-     * @param config        INS tightly coupled Kalman filter configuration
+     * @param config        INS loosely coupled Kalman filter configuration
      *                      parameters (usually obtained through calibration).
      * @param epochInterval minimum epoch interval between consecutive
      *                      propagations or measurements.
@@ -406,7 +424,7 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      * @param epochInterval minimum epoch interval between consecutive
      *                      propagations or measurements.
      * @param frame         frame containing initial user position, velocity and attitude
-     *                      resolved along eCEF axes.
+     *                      resolved along ECEF axes.
      * @throws IllegalArgumentException if provided epoch interval is negative.
      */
     public INSLooselyCoupledKalmanFilteredEstimator(final Time epochInterval, final ECEFFrame frame) {
@@ -1164,6 +1182,11 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
     /**
      * Sets ECEF frame containing current or initial user position, velocity and
      * attitude.
+     * Provided instance is kept (not copied) and is updated in place as IMU samples
+     * are integrated and Kalman filter corrections are applied.
+     * If the Kalman filter state has already been initialized, its position, velocity
+     * and attitude are synchronized with provided frame, while its estimated biases and
+     * covariance are preserved.
      *
      * @param frame ECEF frame containing current or initial user position, velocity
      *              and attitude to be set.
@@ -1175,6 +1198,11 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
         }
 
         this.frame = frame;
+
+        if (state != null && frame != null) {
+            // keep Kalman filter state synchronized with the INS solution
+            state.setFrame(frame);
+        }
     }
 
     /**
@@ -1262,7 +1290,7 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
     }
 
     /**
-     * Gets corrected kinematics which are the las provided user kinematics after
+     * Gets corrected kinematics which are the last provided user kinematics after
      * removal of the biases estimated by the Kalman filter.
      *
      * @param result instance where corrected body kinematics will be stored.
@@ -1344,6 +1372,46 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
     }
 
     /**
+     * Gets timestamp expressed in seconds since epoch time of the last IMU sample
+     * (body kinematics) that was provided to this estimator.
+     *
+     * @return timestamp expressed in seconds since epoch time of the last IMU
+     * sample, or null if no sample has been provided yet.
+     */
+    public Double getLastKinematicsTimestamp() {
+        return lastKinematicsTimestamp;
+    }
+
+    /**
+     * Gets timestamp since epoch time of the last IMU sample (body kinematics) that
+     * was provided to this estimator.
+     *
+     * @param result instance where timestamp since epoch time of the last IMU
+     *               sample will be stored.
+     * @return true if result instance is updated, false otherwise.
+     */
+    public boolean getLastKinematicsTimestampAsTime(final Time result) {
+        if (lastKinematicsTimestamp != null) {
+            result.setValue(lastKinematicsTimestamp);
+            result.setUnit(TimeUnit.SECOND);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Gets timestamp since epoch time of the last IMU sample (body kinematics) that
+     * was provided to this estimator.
+     *
+     * @return timestamp since epoch time of the last IMU sample, or null if no
+     * sample has been provided yet.
+     */
+    public Time getLastKinematicsTimestampAsTime() {
+        return lastKinematicsTimestamp != null ? new Time(lastKinematicsTimestamp, TimeUnit.SECOND) : null;
+    }
+
+    /**
      * Indicates whether this estimator is running or not.
      *
      * @return true if this estimator is running, false otherwise.
@@ -1365,13 +1433,26 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
     /**
      * Updates specific force and angular rate applied to the user's
      * body expressed in coordinates resolved along body-frame axes.
+     * Every provided sample is corrected with the currently estimated biases and
+     * integrated with the ECEF inertial navigation equations over the interval elapsed
+     * since the previous sample, regardless of the epoch interval, so that the frame
+     * (and the Kalman filter state) always hold the INS-propagated solution.
+     * The first provided sample only initializes the Kalman filter state and sets the
+     * time reference: no navigation is performed for it.
+     * Samples whose timestamp is not greater than the timestamp of the previous sample
+     * are ignored.
+     * This method does not run any Kalman filter epoch. Use
+     * {@link #updatePositionAndVelocity(ECEFPosition, ECEFVelocity, double)} to provide
+     * a position and velocity fix.
      *
      * @param kinematics kinematics applied to body (specific force and angular rate)
-     *                   during las period of time. These measures are obtained from
-     *                   an inertial unit (IMU).
+     *                   during last period of time. These measures are obtained from
+     *                   an inertial unit (IMU). If null, no navigation is performed and
+     *                   only the time reference is updated.
      * @param timestamp  timestamp since epoch time when specific force and
      *                   angular rate values were updated.
-     * @return true if body kinematics values were updated, false otherwise.
+     * @return true if the sample was integrated, false if it was ignored because its
+     * timestamp is not greater than the timestamp of the previous sample.
      * @throws LockedException   if this estimator is already running.
      * @throws NotReadyException if this estimator is not ready to be updated.
      * @throws INSException      if estimation fails due to numerical instabilities.
@@ -1385,13 +1466,26 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
     /**
      * Updates specific force and angular rate applied to the user's
      * body expressed in coordinates resolved along body-frame axes.
+     * Every provided sample is corrected with the currently estimated biases and
+     * integrated with the ECEF inertial navigation equations over the interval elapsed
+     * since the previous sample, regardless of the epoch interval, so that the frame
+     * (and the Kalman filter state) always hold the INS-propagated solution.
+     * The first provided sample only initializes the Kalman filter state and sets the
+     * time reference: no navigation is performed for it.
+     * Samples whose timestamp is not greater than the timestamp of the previous sample
+     * are ignored.
+     * This method does not run any Kalman filter epoch. Use
+     * {@link #updatePositionAndVelocity(ECEFPosition, ECEFVelocity, double)} to provide
+     * a position and velocity fix.
      *
      * @param kinematics kinematics applied to body (specific force and angular rate)
-     *                   during las period of time. These measures are obtained from
-     *                   an inertial unit (IMU).
+     *                   during last period of time. These measures are obtained from
+     *                   an inertial unit (IMU). If null, no navigation is performed and
+     *                   only the time reference is updated.
      * @param timestamp  timestamp expressed in seconds since epoch time when specific
      *                   force and angular rate values were updated.
-     * @return true if body kinematics values were updated, false otherwise.
+     * @return true if the sample was integrated, false if it was ignored because its
+     * timestamp is not greater than the timestamp of the previous sample.
      * @throws LockedException   if this estimator is already running.
      * @throws NotReadyException if this estimator is not ready to be updated.
      * @throws INSException      if estimation fails due to numerical instabilities.
@@ -1407,8 +1501,7 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
             throw new NotReadyException();
         }
 
-        final var propagationInterval = lastStateTimestamp != null ? timestamp - lastStateTimestamp : 0.0;
-        if (lastStateTimestamp != null && propagationInterval <= epochInterval) {
+        if (lastKinematicsTimestamp != null && timestamp <= lastKinematicsTimestamp) {
             return false;
         }
 
@@ -1419,12 +1512,23 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
                 listener.onUpdateStart(this);
             }
 
+            initState();
+
             if (kinematics != null) {
                 correctKinematics(kinematics);
-                ECEFInertialNavigator.navigateECEF(propagationInterval, frame, correctedKinematics, frame);
+
+                if (lastKinematicsTimestamp != null) {
+                    // integrate sample over the interval elapsed since previous sample
+                    ECEFInertialNavigator.navigateECEF(timestamp - lastKinematicsTimestamp, frame,
+                            correctedKinematics, frame);
+                }
             }
 
+            // state always holds the INS-propagated solution
+            state.setFrame(frame);
+
             this.kinematics = kinematics;
+            lastKinematicsTimestamp = timestamp;
 
             if (listener != null) {
                 listener.onUpdateEnd(this);
@@ -1436,13 +1540,12 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
             running = false;
         }
 
-        propagate(timestamp);
-
         return true;
     }
 
     /**
-     * Indicates whether this estimator is ready for state propagations.
+     * Indicates whether this estimator is ready for state propagations (i.e. to run
+     * Kalman filter epochs when position and velocity fixes are provided).
      *
      * @return true if estimator is ready, false otherwise.
      */
@@ -1451,35 +1554,69 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
     }
 
     /**
-     * Propagates Kalman filter state held by this estimator at provided
-     * timestamp.
-     * Call to this method will be ignored if interval between provided timestamp
-     * and last timestamp when Kalman filter was updated is less than epoch interval.
+     * Provides a position and velocity fix (e.g. a GNSS solution) and runs a Kalman
+     * filter epoch.
+     * The INS-propagated solution held by this estimator is used as the predicted
+     * state, provided fix is used as the measurement, the interval since the last
+     * Kalman filter epoch is used as the propagation interval (zero on the first
+     * epoch), and the latest bias-corrected specific force is used to build the
+     * transition matrix. Once the epoch is solved, the closed-loop correction is
+     * applied to the INS solution (frame) and estimated biases are updated.
+     * Call to this method will be ignored if the interval between provided timestamp
+     * and the timestamp of the last Kalman filter epoch is not positive or is less
+     * than the epoch interval. A fix arriving exactly one epoch interval after the
+     * previous epoch is accepted.
      *
-     * @param timestamp timestamp since epoch to propagate state.
-     * @return true if state was propagated, false otherwise.
+     * @param position  ECEF position of the fix.
+     * @param velocity  ECEF velocity of the fix.
+     * @param timestamp timestamp expressed in seconds since epoch time when the fix
+     *                  was obtained.
+     * @return true if the Kalman filter epoch was run, false otherwise.
      * @throws LockedException   if this estimator is already running.
      * @throws NotReadyException if estimator is not ready for measurements updates.
      * @throws INSException      if estimation fails due to numerical instabilities.
      */
-    public boolean propagate(final Time timestamp) throws LockedException, NotReadyException, INSException {
-        return propagate(TimeConverter.convert(timestamp.getValue().doubleValue(), timestamp.getUnit(),
-                TimeUnit.SECOND));
+    public boolean updatePositionAndVelocity(
+            final ECEFPosition position, final ECEFVelocity velocity, final double timestamp)
+            throws LockedException, NotReadyException, INSException {
+        return updatePositionAndVelocity(position.getX(), position.getY(), position.getZ(),
+                velocity.getVx(), velocity.getVy(), velocity.getVz(), timestamp);
     }
 
     /**
-     * Propagates Kalman filter state held by this estimator at provided
-     * timestamp.
-     * Call to this method will be ignored if interval between provided timestamp
-     * and last timestamp when Kalman filter was updated is less than epoch interval.
+     * Provides a position and velocity fix (e.g. a GNSS solution) and runs a Kalman
+     * filter epoch.
+     * The INS-propagated solution held by this estimator is used as the predicted
+     * state, provided fix is used as the measurement, the interval since the last
+     * Kalman filter epoch is used as the propagation interval (zero on the first
+     * epoch), and the latest bias-corrected specific force is used to build the
+     * transition matrix. Once the epoch is solved, the closed-loop correction is
+     * applied to the INS solution (frame) and estimated biases are updated.
+     * Call to this method will be ignored if the interval between provided timestamp
+     * and the timestamp of the last Kalman filter epoch is not positive or is less
+     * than the epoch interval. A fix arriving exactly one epoch interval after the
+     * previous epoch is accepted.
      *
-     * @param timestamp timestamp expressed in seconds since epoch to propagate state.
-     * @return true if state was propagated, false otherwise.
+     * @param x         ECEF x coordinate of the fix position expressed in meters (m).
+     * @param y         ECEF y coordinate of the fix position expressed in meters (m).
+     * @param z         ECEF z coordinate of the fix position expressed in meters (m).
+     * @param vx        ECEF x coordinate of the fix velocity expressed in meters per
+     *                  second (m/s).
+     * @param vy        ECEF y coordinate of the fix velocity expressed in meters per
+     *                  second (m/s).
+     * @param vz        ECEF z coordinate of the fix velocity expressed in meters per
+     *                  second (m/s).
+     * @param timestamp timestamp expressed in seconds since epoch time when the fix
+     *                  was obtained.
+     * @return true if the Kalman filter epoch was run, false otherwise.
      * @throws LockedException   if this estimator is already running.
      * @throws NotReadyException if estimator is not ready for measurements updates.
      * @throws INSException      if estimation fails due to numerical instabilities.
      */
-    public boolean propagate(final double timestamp) throws LockedException, NotReadyException, INSException {
+    public boolean updatePositionAndVelocity(
+            final double x, final double y, final double z,
+            final double vx, final double vy, final double vz, final double timestamp)
+            throws LockedException, NotReadyException, INSException {
 
         if (running) {
             throw new LockedException();
@@ -1490,7 +1627,7 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
         }
 
         final var propagationInterval = lastStateTimestamp != null ? timestamp - lastStateTimestamp : 0.0;
-        if (lastStateTimestamp != null && propagationInterval <= epochInterval) {
+        if (lastStateTimestamp != null && (propagationInterval <= 0.0 || propagationInterval < epochInterval)) {
             return false;
         }
 
@@ -1501,19 +1638,9 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
                 listener.onPropagateStart(this);
             }
 
-            if (state == null) {
-                // initialize state
-                initInitialConfig();
-                final var covariance = INSLooselyCoupledKalmanInitializer.initialize(initialConfig);
-
-                state = new INSLooselyCoupledKalmanState();
-                state.setFrame(frame);
-                state.setCovariance(covariance);
-            }
-
-            if (kinematics != null) {
-                correctKinematics(kinematics);
-            }
+            // previous state is the INS-propagated solution
+            initState();
+            state.setFrame(frame);
 
             final double fx;
             final double fy;
@@ -1528,16 +1655,12 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
                 fz = 0.0;
             }
 
-            final var x = frame.getX();
-            final var y = frame.getY();
-            final var z = frame.getZ();
-            final var vx = frame.getVx();
-            final var vy = frame.getVy();
-            final var vz = frame.getVz();
             INSLooselyCoupledKalmanEpochEstimator.estimate(x, y, z, vx, vy, vz, propagationInterval, state, fx, fy, fz,
                     config, state);
             lastStateTimestamp = timestamp;
 
+            // closed-loop correction of the INS solution (state re-orthonormalizes the
+            // corrected attitude when converting it into a frame)
             state.getFrame(frame);
 
             if (listener != null) {
@@ -1554,6 +1677,94 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
     }
 
     /**
+     * Provides a position and velocity fix (e.g. a GNSS solution) and runs a Kalman
+     * filter epoch.
+     * The INS-propagated solution held by this estimator is used as the predicted
+     * state, provided fix is used as the measurement, the interval since the last
+     * Kalman filter epoch is used as the propagation interval (zero on the first
+     * epoch), and the latest bias-corrected specific force is used to build the
+     * transition matrix. Once the epoch is solved, the closed-loop correction is
+     * applied to the INS solution (frame) and estimated biases are updated.
+     * Call to this method will be ignored if the interval between provided timestamp
+     * and the timestamp of the last Kalman filter epoch is not positive or is less
+     * than the epoch interval. A fix arriving exactly one epoch interval after the
+     * previous epoch is accepted.
+     *
+     * @param position  ECEF position of the fix.
+     * @param velocity  ECEF velocity of the fix.
+     * @param timestamp timestamp since epoch time when the fix was obtained.
+     * @return true if the Kalman filter epoch was run, false otherwise.
+     * @throws LockedException   if this estimator is already running.
+     * @throws NotReadyException if estimator is not ready for measurements updates.
+     * @throws INSException      if estimation fails due to numerical instabilities.
+     */
+    public boolean updatePositionAndVelocity(
+            final ECEFPosition position, final ECEFVelocity velocity, final Time timestamp)
+            throws LockedException, NotReadyException, INSException {
+        return updatePositionAndVelocity(position, velocity, TimeConverter.convert(
+                timestamp.getValue().doubleValue(), timestamp.getUnit(), TimeUnit.SECOND));
+    }
+
+    /**
+     * Ensures that the Kalman filter state held by this estimator is initialized
+     * and synchronized with the current INS solution (frame).
+     * This method no longer runs a Kalman filter epoch: an epoch needs a position and
+     * velocity measurement, and is now triggered by
+     * {@link #updatePositionAndVelocity(ECEFPosition, ECEFVelocity, Time)}.
+     * No listener is notified by this method.
+     *
+     * @param timestamp timestamp since epoch. It is ignored.
+     * @return always false, since no Kalman filter measurement update is possible
+     * without a position and velocity fix.
+     * @throws LockedException   if this estimator is already running.
+     * @throws NotReadyException if estimator is not ready for measurements updates.
+     * @throws INSException      never thrown. Kept for backwards compatibility.
+     * @deprecated Kalman filter epochs are run by
+     * {@link #updatePositionAndVelocity(ECEFPosition, ECEFVelocity, Time)}. Once the
+     * Kalman filter state has been initialized this method makes no action.
+     */
+    @Deprecated
+    public boolean propagate(final Time timestamp) throws LockedException, NotReadyException, INSException {
+        return propagate(TimeConverter.convert(timestamp.getValue().doubleValue(), timestamp.getUnit(),
+                TimeUnit.SECOND));
+    }
+
+    /**
+     * Ensures that the Kalman filter state held by this estimator is initialized
+     * and synchronized with the current INS solution (frame).
+     * This method no longer runs a Kalman filter epoch: an epoch needs a position and
+     * velocity measurement, and is now triggered by
+     * {@link #updatePositionAndVelocity(ECEFPosition, ECEFVelocity, double)}.
+     * No listener is notified by this method.
+     *
+     * @param timestamp timestamp expressed in seconds since epoch. It is ignored.
+     * @return always false, since no Kalman filter measurement update is possible
+     * without a position and velocity fix.
+     * @throws LockedException   if this estimator is already running.
+     * @throws NotReadyException if estimator is not ready for measurements updates.
+     * @throws INSException      never thrown. Kept for backwards compatibility.
+     * @deprecated Kalman filter epochs are run by
+     * {@link #updatePositionAndVelocity(ECEFPosition, ECEFVelocity, double)}. Once the
+     * Kalman filter state has been initialized this method makes no action.
+     */
+    @Deprecated
+    public boolean propagate(final double timestamp) throws LockedException, NotReadyException, INSException {
+
+        if (running) {
+            throw new LockedException();
+        }
+
+        if (!isPropagateReady()) {
+            throw new NotReadyException();
+        }
+
+        initState();
+        state.setFrame(frame);
+
+        return false;
+    }
+
+    /**
      * Resets this estimator.
      *
      * @throws LockedException if this estimator is already running.
@@ -1566,6 +1777,7 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
         running = true;
         state = null;
         lastStateTimestamp = null;
+        lastKinematicsTimestamp = null;
         kinematics = null;
         correctedKinematics = null;
         frame = null;
@@ -1586,6 +1798,24 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
         if (initialConfig == null) {
             initialConfig = new INSLooselyCoupledKalmanInitializerConfig();
         }
+    }
+
+    /**
+     * Initializes Kalman filter state from the current frame and the initial
+     * configuration (which determines the initial covariance).
+     * This method makes no action if state is already initialized.
+     */
+    private void initState() {
+        if (state != null) {
+            return;
+        }
+
+        initInitialConfig();
+        final var covariance = INSLooselyCoupledKalmanInitializer.initialize(initialConfig);
+
+        state = new INSLooselyCoupledKalmanState();
+        state.setFrame(frame);
+        state.setCovariance(covariance);
     }
 
     /**

@@ -41,6 +41,20 @@ xref:reference.adoc#book-groves[[book-groves\]]), run in reverse:
 . Store the resulting `BodyKinematics` (specific force + angular rate), or a zero result if the time
   interval is zero.
 
+[IMPORTANT]
+====
+Gravity (ECEF, NED) or gravitation (ECI) is evaluated at the position at the *start* of the time
+interval, which is the position the matching navigator uses when it integrates the same interval. This is
+what makes each estimator the exact inverse of its navigator:
+
+* The `ECEFKinematicsEstimator` and `ECIKinematicsEstimator` overloads receiving both the current and the
+  previous frame (`estimateKinematics(timeInterval, frame, oldFrame, ...)`) take that position from
+  `oldFrame`; the position contained in `frame` is ignored.
+* Overloads receiving an explicit position (`x`, `y`, `z` or a `Point3D`), or only the current frame together
+  with the previous attitude and velocity, evaluate gravity at the position they are given. When the body
+  moves during the interval, pass the start-of-interval position, or use the `(frame, oldFrame)` overloads.
+====
+
 == ECIKinematicsEstimator
 
 The ECI frame is inertial, so there is no Earth-rotation or transport-rate term. Specific force is
@@ -76,7 +90,13 @@ is the skew-symmetric Earth-rotation matrix:
 The attitude increment is recovered from
 stem:[\mathbf{C}^{e}_{b}(+)^{\mathsf T}\mathbf{C}^{e}_{ie}(\tau_i)\,\mathbf{C}^{e}_{b}(-)] (inverting the
 attitude-update equation 5.19/5.20), and the specific force is transformed back to body axes through the
-precise averaged coordinate transformation matrix of equation 5.63/5.81.
+precise averaged coordinate transformation matrix of equation 5.63/5.81. That average matrix follows
+equations 5.84/5.85, whose Earth-rotation term is built from the attitude at the start of the interval:
+
+[stem]
+++++
+\overline{\mathbf{C}}^{e}_{b} = \mathbf{C}^{e}_{b}(-)\,\mathbf{C}^{\bar{b}}_{b-} - \tfrac{1}{2}\,\boldsymbol{\Omega}_{ie}^{e}\,\tau_i\,\mathbf{C}^{e}_{b}(-)
+++++
 
 == NEDKinematicsEstimator
 
@@ -133,6 +153,16 @@ double angularRateZ = kinematics.getAngularRateZ(); // synthetic angular rate (r
 `ECEFKinematicsEstimator.estimateKinematics(...)` and `ECIKinematicsEstimator.estimateKinematics(...)`
 follow the same pattern, replacing latitude/height with Cartesian stem:[(x,y,z)] position and NED
 velocity with ECEF/ECI velocity, respectively.
+
+When the two navigation states are already available as frames, the frame-based overloads are the simplest
+choice, since they pick the start-of-interval position from the previous frame:
+
+[source,java]
+----
+// oldFrame and frame are the ECEFFrame instances at the start and at the end of the interval
+BodyKinematics kinematics = new BodyKinematics();
+ECEFKinematicsEstimator.estimateKinematics(timeInterval, frame, oldFrame, kinematics);
+----
 
 == Class Reference
 

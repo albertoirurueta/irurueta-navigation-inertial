@@ -54,11 +54,15 @@ flowchart TD
 When raw IMU integration alone is used, small sensor errors accumulate into drift over time. To bound this drift,
 the library also provides Kalman-filter-based estimators:
 
-* `INSLooselyCoupledKalmanFilteredEstimator` propagates INS state and its uncertainty on its own.
-* `INSGNSSLooselyCoupledKalmanFilteredEstimator` fuses a separately-computed GNSS position/velocity solution into
-  the INS propagation as measurement updates.
+* `INSLooselyCoupledKalmanFilteredEstimator` integrates every IMU sample and corrects the resulting INS solution
+  with externally provided position/velocity fixes.
+* `INSGNSSLooselyCoupledKalmanFilteredEstimator` fuses a GNSS position/velocity solution, computed internally from
+  GNSS measurements, into the INS propagation as measurement updates.
 * `INSGNSSTightlyCoupledKalmanFilteredEstimator` feeds raw GNSS measurements directly into the same filter,
   allowing it to work even with a partial satellite geometry.
+
+All three integrate every IMU sample and run a Kalman filter epoch only when a fix or GNSS measurements arrive;
+see xref:navigators/kalman-filtered-estimators.adoc[] for the usage loop.
 
 == Core concept: sensor calibration
 

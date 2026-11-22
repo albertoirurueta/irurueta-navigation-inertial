@@ -4,6 +4,18 @@
 
 NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
 
+== Unreleased
+
+* 🐛 `INSLooselyCoupledKalmanFilteredEstimator`, `INSGNSSLooselyCoupledKalmanFilteredEstimator` and `INSGNSSTightlyCoupledKalmanFilteredEstimator` now integrate every IMU sample and feed the INS-propagated solution to each Kalman filter epoch, as in Groves' reference algorithms. See xref:navigators/kalman-filtered-estimators.adoc[].
+* 🐛 `INSGNSSLooselyCoupledKalmanFilteredEstimator` uses the GNSS solution as the measurement at its own timestamp instead of navigating it forward.
+* 🐛 `INSGNSSTightlyCoupledKalmanFilteredEstimator` re-orthonormalizes the attitude after each epoch and initializes the receiver clock offset and drift of its state from the least-squares solution.
+* 🐛 `ECEFKinematicsEstimator`: fixed the Earth-rotation term of the average coordinate transformation matrix (Groves eq. 5.85).
+* 🐛 The `(frame, oldFrame)` overloads of `ECEFKinematicsEstimator` and `ECIKinematicsEstimator` now evaluate gravity/gravitation at the start-of-interval position. See xref:estimators/kinematics.adoc[].
+* 🐛 The epoch gate of the filtered estimators accepts fixes/measurements arriving exactly one epoch interval after the previous epoch.
+* ✨ New `INSLooselyCoupledKalmanFilteredEstimator.updatePositionAndVelocity(...)` to provide a position and velocity fix and run a Kalman filter epoch.
+* ✨ New `getLastKinematicsTimestamp()` (and `getLastKinematicsTimestampAsTime(...)`) on `INSLooselyCoupledKalmanFilteredEstimator` and `INSGNSSTightlyCoupledKalmanFilteredEstimator`.
+* ♻️ Behaviour change with unchanged signatures: `update`/`updateBodyKinematics` integrate every sample and no longer run Kalman epochs; `updateMeasurements` runs the epoch; `INSLooselyCoupledKalmanFilteredEstimator.propagate` is deprecated and always returns `false`.
+
 == 1.10.2
 
 * ♻️ Updated internal dependencies to their latest patch versions: `irurueta-numerical` 1.6.1, `irurueta-geometry` 1.6.1, `irurueta-units` 1.4.1, `irurueta-algebra` 1.4.1 and `irurueta-navigation` 1.8.2. No changes to this library's own source.
