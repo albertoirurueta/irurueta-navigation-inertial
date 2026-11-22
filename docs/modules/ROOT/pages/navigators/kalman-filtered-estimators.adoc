@@ -1,0 +1,207 @@
+= Kalman Filtered Estimators
+:description: How to feed IMU samples and position/velocity fixes or GNSS measurements to the INS and INS/GNSS Kalman filtered estimators.
+:keywords: INS/GNSS integration, Kalman filter, loosely coupled, tightly coupled, INSLooselyCoupledKalmanFilteredEstimator, INSGNSSLooselyCoupledKalmanFilteredEstimator, INSGNSSTightlyCoupledKalmanFilteredEstimator
+
+NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
+
+Classes: `INSLooselyCoupledKalmanFilteredEstimator`, `INSGNSSLooselyCoupledKalmanFilteredEstimator`,
+`INSGNSSTightlyCoupledKalmanFilteredEstimator` (see the <<Class Reference>> table at the end of this page
+for Javadoc and source links).
+
+== What these classes solve
+
+A xref:navigators/index.adoc[navigator] on its own drifts, because IMU errors are integrated along with
+the true motion. The Kalman filtered estimators in `com.irurueta.navigation.inertial` bound that drift
+by combining the inertial navigation solution with external position/velocity information, following the
+closed-loop error-state filters of Groves chapter 14 and its `Loosely_coupled_INS_GNSS.m` /
+`Tightly_coupled_INS_GNSS.m` companion scripts (see xref:reference.adoc#book-groves[[book-groves\]]).
+
+[cols="2,2,3",options="header"]
+|===
+|Class |Aiding information |Fed through
+
+|`INSLooselyCoupledKalmanFilteredEstimator`
+|An ECEF position and velocity fix computed elsewhere.
+|`update(...)` for IMU samples, `updatePositionAndVelocity(...)` for fixes.
+
+|`INSGNSSLooselyCoupledKalmanFilteredEstimator`
+|GNSS measurements, solved internally by least squares into a position and velocity fix.
+|`updateBodyKinematics(...)` for IMU samples, `updateMeasurements(...)` for GNSS measurements.
+
+|`INSGNSSTightlyCoupledKalmanFilteredEstimator`
+|Raw GNSS pseudo-ranges and pseudo-range rates, used directly as the Kalman measurement.
+|`updateBodyKinematics(...)` for IMU samples, `updateMeasurements(...)` for GNSS measurements.
+|===
+
+== How the estimators work
+
+All three estimators follow the same two-rate scheme:
+
+. *Every IMU sample is integrated.* Each sample is corrected with the currently estimated accelerometer
+  and gyroscope biases and integrated with `ECEFInertialNavigator` over the interval elapsed since the
+  previous sample, regardless of the epoch interval. The estimator therefore always holds the
+  INS-propagated solution. The first sample only sets the time reference, and a sample whose timestamp is
+  not greater than the previous one is ignored (the method returns `false`).
+. *A Kalman filter epoch is only run when a fix or GNSS measurements arrive.* The INS-propagated solution is
+  the predicted state, the fix (or the GNSS measurements) is the measurement at its own timestamp, and the
+  time elapsed since the previous epoch is the propagation interval. The resulting closed-loop correction
+  is applied to the INS solution and to the estimated biases.
+
+[mermaid]
+....
+flowchart TD
+    IMU["IMU sample at its timestamp"] --> C["Correct with estimated biases"]
+    C --> N["ECEFInertialNavigator:\nintegrate since previous sample"]
+    N --> S["INS-propagated solution\n(position, velocity, attitude)"]
+    FIX["Fix or GNSS measurements\nat their timestamp"] --> G{"At least one epoch interval\nsince previous Kalman epoch?"}
+    G -->|no| X["Ignored, returns false"]
+    G -->|yes| K["Kalman filter epoch"]
+    S -->|predicted state| K
+    K -->|closed-loop correction| S
+    K --> B["Updated bias estimates"]
+    B --> C
+....
+
+The *epoch interval* (`setEpochInterval(...)`, or the matching constructor argument) is the minimum time
+between two Kalman filter epochs. A fix or a set of measurements is ignored when it is older than, or
+less than one epoch interval after, the previous epoch; one arriving exactly one epoch interval later is
+accepted (up to the rounding error of the timestamps). The epoch interval does not limit the rate of the
+IMU samples.
+
+The first Kalman filter epoch propagates the covariance over the time elapsed since the first IMU sample.
+IMU samples provided before the first fix or GNSS measurements are integrated too, so attitude changes
+before position and velocity are initialised are kept.
+
+== Usage loop
+
+Feed every IMU sample as it arrives, and every fix or set of GNSS measurements at the timestamp it is
+valid for. Timestamps are expressed in seconds (or as `Time` instances) on a common time base.
+
+A fix or a set of measurements is compared against the INS solution at the time of the last provided IMU
+sample: the solution is not advanced or moved back to the timestamp of the fix. Provide each fix right
+after the IMU sample whose timestamp is closest to it; otherwise the distance travelled between both
+timestamps is attributed to INS errors (1.5 m for a 50 ms offset at 30 m/s).
+
+=== INSLooselyCoupledKalmanFilteredEstimator
+
+[source,java]
+----
+// gyro/accelerometer noise and bias PSDs, and fix position/velocity noise standard deviations
+INSLooselyCoupledKalmanConfig config = new INSLooselyCoupledKalmanConfig(
+        gyroNoisePSD, accelerometerNoisePSD, accelerometerBiasPSD, gyroBiasPSD,
+        positionNoiseSD, velocityNoiseSD);
+
+double epochInterval = 1.0; // minimum seconds between Kalman filter epochs
+INSLooselyCoupledKalmanFilteredEstimator estimator =
+        new INSLooselyCoupledKalmanFilteredEstimator(config, epochInterval);
+
+// initial position, velocity and attitude; the instance is kept and updated in place
+estimator.setFrame(initialFrame);
+
+// on every IMU sample (e.g. at 100 Hz)
+estimator.update(bodyKinematics, imuTimestamp);
+
+// on every position and velocity fix (e.g. at 1 Hz), at the timestamp of the fix
+boolean epochRun = estimator.updatePositionAndVelocity(ecefPosition, ecefVelocity, fixTimestamp);
+
+ECEFFrame solution = estimator.getFrame();                 // corrected INS solution
+INSLooselyCoupledKalmanState state = estimator.getState(); // solution, biases and covariance
+----
+
+Without fixes this estimator behaves as a pure inertial navigator. `getLastKinematicsTimestamp()` returns the
+timestamp of the last integrated IMU sample and `getLastStateTimestamp()` the timestamp of the last Kalman
+filter epoch.
+
+NOTE: `propagate(...)` is deprecated on this class. It no longer runs a Kalman filter epoch (an epoch needs
+a measurement): it only initializes or synchronizes the Kalman state with the INS solution and always
+returns `false`. Use `updatePositionAndVelocity(...)` instead.
+
+=== INSGNSSLooselyCoupledKalmanFilteredEstimator
+
+[source,java]
+----
+INSGNSSLooselyCoupledKalmanFilteredEstimator estimator =
+        new INSGNSSLooselyCoupledKalmanFilteredEstimator(config, epochInterval);
+
+// on every IMU sample
+estimator.updateBodyKinematics(bodyKinematics, imuTimestamp);
+
+// on every set of GNSS measurements, at the timestamp they were taken
+if (INSGNSSLooselyCoupledKalmanFilteredEstimator.isUpdateMeasurementsReady(gnssMeasurements)) {
+    estimator.updateMeasurements(gnssMeasurements, gnssTimestamp);
+}
+
+GNSSEstimation estimation = estimator.getEstimation();
+INSLooselyCoupledKalmanState state = estimator.getState();
+----
+
+The measurements are first solved by least squares into a position and velocity solution. The first
+solution initializes the position and velocity of the INS solution; from then on each solution is used
+as the Kalman measurement at the timestamp of the measurements — it is not navigated forward in time.
+`propagate(...)` does not run an epoch and always returns `false`.
+
+=== INSGNSSTightlyCoupledKalmanFilteredEstimator
+
+[source,java]
+----
+INSGNSSTightlyCoupledKalmanFilteredEstimator estimator =
+        new INSGNSSTightlyCoupledKalmanFilteredEstimator(tightlyCoupledConfig, epochInterval);
+
+// on every IMU sample
+estimator.updateBodyKinematics(bodyKinematics, imuTimestamp);
+
+// on every set of GNSS measurements, at the timestamp they were taken
+if (INSGNSSTightlyCoupledKalmanFilteredEstimator.isUpdateMeasurementsReady(gnssMeasurements)) {
+    estimator.updateMeasurements(gnssMeasurements, gnssTimestamp);
+}
+
+GNSSEstimation estimation = estimator.getEstimation();
+INSTightlyCoupledKalmanState state = estimator.getState();
+----
+
+Here `tightlyCoupledConfig` is an `INSTightlyCoupledKalmanConfig`. The least-squares GNSS solution is only
+used to initialize position, velocity and receiver clock offset and drift until the Kalman filter state
+exists; IMU samples start being integrated once that first solution is available. Afterwards
+`updateMeasurements(...)` runs the Kalman filter epoch directly on the INS-propagated state, using the
+pseudo-ranges and pseudo-range rates as the measurement, and the attitude is re-orthonormalized after each
+epoch. `propagate(...)` only runs an epoch for measurements that were provided before the estimator was
+ready to propagate (for example before its configuration was set); measurements already consumed by an
+epoch are never used twice.
+
+Both INS/GNSS estimators report failures of the inertial navigation or of the filter as `INSGNSSException`.
+
+== Class Reference
+
+Javadoc and source links for the classes used in the examples above:
+
+[cols="1,1,1",options="header"]
+|===
+|Class |Javadoc |Source
+
+|`INSLooselyCoupledKalmanFilteredEstimator`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/INSLooselyCoupledKalmanFilteredEstimator.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/INSLooselyCoupledKalmanFilteredEstimator.java[Source^]
+
+|`INSGNSSLooselyCoupledKalmanFilteredEstimator`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/INSGNSSLooselyCoupledKalmanFilteredEstimator.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/INSGNSSLooselyCoupledKalmanFilteredEstimator.java[Source^]
+
+|`INSGNSSTightlyCoupledKalmanFilteredEstimator`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/INSGNSSTightlyCoupledKalmanFilteredEstimator.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/INSGNSSTightlyCoupledKalmanFilteredEstimator.java[Source^]
+
+|`INSLooselyCoupledKalmanConfig`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/INSLooselyCoupledKalmanConfig.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/INSLooselyCoupledKalmanConfig.java[Source^]
+
+|`INSTightlyCoupledKalmanConfig`
+|https://albertoirurueta.github.io/irurueta-navigation-inertial/mvn-site/apidocs/com/irurueta/navigation/inertial/INSTightlyCoupledKalmanConfig.html[Javadoc^]
+|https://github.com/albertoirurueta/irurueta-navigation-inertial/blob/master/src/main/java/com/irurueta/navigation/inertial/INSTightlyCoupledKalmanConfig.java[Source^]
+
+|===
+
+== Where to go next
+
+* xref:navigators/index.adoc[] — the inertial navigators that integrate each IMU sample.
+* xref:calibration/noise-and-bias.adoc[] — noise and bias estimators used to configure the Kalman filter.
+* xref:reference.adoc#bibliography[] — bibliography.

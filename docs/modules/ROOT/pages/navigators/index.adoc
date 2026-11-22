@@ -79,5 +79,6 @@ stem:[z]=Up). This is unrelated to the NED/ECEF/ECI resolving-frame choice above
 == Where to go next
 
 * xref:navigators/navigation-equations.adoc[] — detailed equations for each frame.
+* xref:navigators/kalman-filtered-estimators.adoc[] — INS and INS/GNSS Kalman filtered estimators built on these navigators.
 * xref:estimators/kinematics.adoc[] — the inverse problem (known trajectory to synthetic IMU measurements).
 * xref:reference.adoc#bibliography[] — bibliography.

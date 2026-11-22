@@ -16,11 +16,14 @@
 package com.irurueta.navigation.inertial;
 
 import com.irurueta.algebra.AlgebraException;
+import com.irurueta.algebra.Matrix;
+import com.irurueta.algebra.SingularValueDecomposer;
 import com.irurueta.navigation.LockedException;
 import com.irurueta.navigation.NotReadyException;
 import com.irurueta.navigation.frames.CoordinateTransformation;
 import com.irurueta.navigation.frames.ECEFFrame;
 import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeException;
+import com.irurueta.navigation.geodesic.Constants;
 import com.irurueta.navigation.gnss.GNSSEstimation;
 import com.irurueta.navigation.gnss.GNSSException;
 import com.irurueta.navigation.gnss.GNSSLeastSquaresPositionAndVelocityEstimator;
@@ -39,6 +42,14 @@ import java.util.Collection;
  * using a GNSS unweighted iterated least squares estimator along with an INS tightly
  * coupled Kalman filter to take into account inertial measurements to
  * smooth results.
+ * Every provided IMU sample (body kinematics) is corrected with the currently estimated
+ * biases and integrated with the ECEF inertial navigation equations, so that this
+ * estimator always holds the INS-propagated solution. A Kalman filter epoch is only run
+ * when GNSS measurements are provided, using the INS-propagated solution as the predicted
+ * state and the interval elapsed since the previous epoch as the propagation interval.
+ * The resulting closed-loop correction is then applied to the INS solution.
+ * The least squares GNSS estimator is only used to initialize position, velocity and
+ * receiver clock until the Kalman filter state exists.
  * This implementation is based on the equations defined in "Principles of GNSS, Inertial, and Multisensor
  * Integrated Navigation Systems, Second Edition" and on the companion software available at:
  * <a href="https://github.com/ymjdz/MATLAB-Codes/blob/master/Tightly_coupled_INS_GNSS.m">
@@ -61,9 +72,9 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
 
     /**
      * Minimum epoch interval expressed in seconds (s) between consecutive
-     * propagations or measurements.
-     * Attempting to propagate results using Kalman filter or updating measurements
-     * when intervals are less than this value, will be ignored.
+     * Kalman filter epochs.
+     * GNSS measurements arriving when the interval since the last Kalman filter
+     * epoch is less than this value, will be ignored.
      */
     private double epochInterval;
 
@@ -91,7 +102,9 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
     private BodyKinematics correctedKinematics;
 
     /**
-     * Internally keeps user position, velocity and attitude.
+     * Internally keeps user position, velocity and attitude. This is the INS
+     * solution, which is integrated on every IMU sample and corrected on every
+     * Kalman filter epoch.
      */
     private ECEFFrame frame;
 
@@ -120,6 +133,26 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * was last propagated.
      */
     private Double lastStateTimestamp;
+
+    /**
+     * Timestamp expressed in seconds since epoch time of the last IMU sample
+     * (body kinematics) that was provided to this estimator.
+     */
+    private Double lastKinematicsTimestamp;
+
+    /**
+     * Indicates whether there are GNSS measurements that have not been consumed
+     * yet by a Kalman filter epoch.
+     */
+    private boolean measurementsPending;
+
+    /**
+     * Timestamp expressed in seconds since epoch time of the first IMU sample
+     * (body kinematics) that was provided to this estimator.
+     * The first Kalman filter epoch propagates the covariance over the interval
+     * elapsed since this timestamp.
+     */
+    private Double firstKinematicsTimestamp;
 
     /**
      * Indicates whether this estimator is running or not.
@@ -1495,6 +1528,46 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
     }
 
     /**
+     * Gets timestamp expressed in seconds since epoch time of the last IMU sample
+     * (body kinematics) that was provided to this estimator.
+     *
+     * @return timestamp expressed in seconds since epoch time of the last IMU
+     * sample, or null if no sample has been provided yet.
+     */
+    public Double getLastKinematicsTimestamp() {
+        return lastKinematicsTimestamp;
+    }
+
+    /**
+     * Gets timestamp since epoch time of the last IMU sample (body kinematics) that
+     * was provided to this estimator.
+     *
+     * @param result instance where timestamp since epoch time of the last IMU
+     *               sample will be stored.
+     * @return true if result instance is updated, false otherwise.
+     */
+    public boolean getLastKinematicsTimestampAsTime(final Time result) {
+        if (lastKinematicsTimestamp != null) {
+            result.setValue(lastKinematicsTimestamp);
+            result.setUnit(TimeUnit.SECOND);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Gets timestamp since epoch time of the last IMU sample (body kinematics) that
+     * was provided to this estimator.
+     *
+     * @return timestamp since epoch time of the last IMU sample, or null if no
+     * sample has been provided yet.
+     */
+    public Time getLastKinematicsTimestampAsTime() {
+        return lastKinematicsTimestamp != null ? new Time(lastKinematicsTimestamp, TimeUnit.SECOND) : null;
+    }
+
+    /**
      * Indicates whether this estimator is running or not.
      *
      * @return true if this estimator is running, false otherwise.
@@ -1516,9 +1589,26 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
 
     /**
      * Updates GNSS measurements of this estimator when new satellite measurements
-     * are available.
-     * Calls to this method will be ignored if interval between provided timestamp
-     * and last timestamp when Kalman filter was updated is less than epoch interval.
+     * are available, and runs a Kalman filter epoch with them.
+     * While the Kalman filter state does not exist, an unweighted iterated least
+     * squares solution is computed to initialize position, velocity and receiver
+     * clock; afterwards those are provided by the Kalman filter state.
+     * Then, if this estimator is ready to propagate, a Kalman filter epoch is run
+     * using the INS-propagated solution held by this estimator as the predicted
+     * state, provided measurements as the measurement, the interval since the last
+     * Kalman filter epoch as the propagation interval (zero on the first epoch), and
+     * the latest bias-corrected specific force to build the transition matrix. Once
+     * the epoch is solved, the closed-loop correction is applied to the INS solution
+     * and estimated biases and receiver clock are updated.
+     * Measurements are compared against the INS solution at the time of the last
+     * provided IMU sample, which is not advanced or moved back to provided timestamp.
+     * For best accuracy, measurements must be provided right after the IMU sample whose
+     * timestamp is closest to theirs: otherwise the distance travelled between both
+     * timestamps is attributed to INS errors.
+     * Call to this method will be ignored if the interval between provided timestamp
+     * and the timestamp of the last Kalman filter epoch is not positive or is less
+     * than the epoch interval. Measurements arriving exactly one epoch interval after
+     * the previous epoch are accepted.
      *
      * @param measurements GNSS measurements to be updated.
      * @param timestamp    timestamp since epoch time when GNSS measurements were
@@ -1536,13 +1626,30 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
 
     /**
      * Updates GNSS measurements of this estimator when new satellite measurements
-     * are available.
-     * Call to this method will be ignored if interval between provided timestamp
-     * and last timestamp when Kalman filter was updated is less than epoch interval.
+     * are available, and runs a Kalman filter epoch with them.
+     * While the Kalman filter state does not exist, an unweighted iterated least
+     * squares solution is computed to initialize position, velocity and receiver
+     * clock; afterwards those are provided by the Kalman filter state.
+     * Then, if this estimator is ready to propagate, a Kalman filter epoch is run
+     * using the INS-propagated solution held by this estimator as the predicted
+     * state, provided measurements as the measurement, the interval since the last
+     * Kalman filter epoch as the propagation interval (zero on the first epoch), and
+     * the latest bias-corrected specific force to build the transition matrix. Once
+     * the epoch is solved, the closed-loop correction is applied to the INS solution
+     * and estimated biases and receiver clock are updated.
+     * Measurements are compared against the INS solution at the time of the last
+     * provided IMU sample, which is not advanced or moved back to provided timestamp.
+     * For best accuracy, measurements must be provided right after the IMU sample whose
+     * timestamp is closest to theirs: otherwise the distance travelled between both
+     * timestamps is attributed to INS errors.
+     * Call to this method will be ignored if the interval between provided timestamp
+     * and the timestamp of the last Kalman filter epoch is not positive or is less
+     * than the epoch interval. Measurements arriving exactly one epoch interval after
+     * the previous epoch are accepted.
      *
      * @param measurements GNSS measurements to be updated.
-     * @param timestamp    timestamp expressed in seconds since epoch time when
-     *                     GNSS measurements were updated.
+     * @param timestamp    timestamp expressed in seconds since epoch time when GNSS measurements were
+     *                     updated.
      * @return true if measurements were updated, false otherwise.
      * @throws LockedException   if this estimator is already running.
      * @throws NotReadyException if estimator is not ready for measurements updates.
@@ -1559,7 +1666,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
             throw new NotReadyException();
         }
 
-        if (lastStateTimestamp != null && timestamp - lastStateTimestamp <= epochInterval) {
+        if (isEpochRejected(timestamp)) {
             return false;
         }
 
@@ -1571,15 +1678,32 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
             }
 
             this.measurements = new ArrayList<>(measurements);
+            measurementsPending = true;
 
-            lsEstimator.setMeasurements(this.measurements);
-            lsEstimator.setPriorPositionAndVelocityFromEstimation(estimation);
-            if (estimation != null) {
-                lsEstimator.estimate(estimation);
-            } else {
-                estimation = lsEstimator.estimate();
+            if (state == null) {
+                // least squares solution is only used to initialize position, velocity
+                // and clock until the Kalman filter state exists
+                lsEstimator.setMeasurements(this.measurements);
+                lsEstimator.setPriorPositionAndVelocityFromEstimation(estimation);
+                if (estimation != null) {
+                    lsEstimator.estimate(estimation);
+                } else {
+                    estimation = lsEstimator.estimate();
+                }
+
+                initFrame();
+                frame.setCoordinates(estimation.getX(), estimation.getY(), estimation.getZ());
+                frame.setVelocityCoordinates(estimation.getVx(), estimation.getVy(), estimation.getVz());
             }
 
+            if (isPropagateReady()) {
+                // measurements are consumed by a Kalman filter epoch, which notifies
+                // its own propagation events
+                solveEpoch(timestamp);
+            }
+
+            // notified once provided measurements have been completely processed, so
+            // that this estimator already holds the corrected solution
             if (listener != null) {
                 listener.onUpdateGNSSMeasurementsEnd(this);
             }
@@ -1590,21 +1714,33 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
             running = false;
         }
 
-        updateBodyKinematics(kinematics, timestamp);
-
         return true;
     }
 
     /**
      * Updates specific force and angular rate applied to the user's
      * body expressed in coordinates resolved along body-frame axes.
+     * Every provided sample is corrected with the currently estimated biases and,
+     * once position and velocity have been initialized from GNSS measurements, it is
+     * integrated with the ECEF inertial navigation equations over the interval
+     * elapsed since the previous sample, regardless of the epoch interval, so that
+     * this estimator always holds the INS-propagated solution.
+     * The first provided sample only sets the time reference: no navigation is
+     * performed for it.
+     * Samples whose timestamp is not greater than the timestamp of the previous
+     * sample are ignored.
+     * This method does not run any Kalman filter epoch. Epochs are run when GNSS
+     * measurements are provided through
+     * {@link #updateMeasurements(Collection, Time)}.
      *
      * @param kinematics kinematics applied to body (specific force and angular rate)
      *                   during last period of time. These measures are obtained from
-     *                   an inertial unit (IMU).
+     *                   an inertial unit (IMU). If null, no navigation is performed and
+     *                   only the time reference is updated.
      * @param timestamp  timestamp since epoch time when specific force and
      *                   angular rate values were updated.
-     * @return true if body kinematics values were updated, false otherwise.
+     * @return true if body kinematics values were updated, false if they were ignored
+     * because their timestamp is not greater than the timestamp of the previous sample.
      * @throws LockedException  if this estimator is already running.
      * @throws INSGNSSException if estimation fails due to numerical instabilities.
      */
@@ -1617,13 +1753,27 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
     /**
      * Updates specific force and angular rate applied to the user's
      * body expressed in coordinates resolved along body-frame axes.
+     * Every provided sample is corrected with the currently estimated biases and,
+     * once position and velocity have been initialized from GNSS measurements, it is
+     * integrated with the ECEF inertial navigation equations over the interval
+     * elapsed since the previous sample, regardless of the epoch interval, so that
+     * this estimator always holds the INS-propagated solution.
+     * The first provided sample only sets the time reference: no navigation is
+     * performed for it.
+     * Samples whose timestamp is not greater than the timestamp of the previous
+     * sample are ignored.
+     * This method does not run any Kalman filter epoch. Epochs are run when GNSS
+     * measurements are provided through
+     * {@link #updateMeasurements(Collection, double)}.
      *
      * @param kinematics kinematics applied to body (specific force and angular rate)
      *                   during last period of time. These measures are obtained from
-     *                   an inertial unit (IMU).
+     *                   an inertial unit (IMU). If null, no navigation is performed and
+     *                   only the time reference is updated.
      * @param timestamp  timestamp expressed in seconds since epoch time when specific
      *                   force and angular rate values were updated.
-     * @return true if body kinematics values were updated, false otherwise.
+     * @return true if body kinematics values were updated, false if they were ignored
+     * because their timestamp is not greater than the timestamp of the previous sample.
      * @throws LockedException  if this estimator is already running.
      * @throws INSGNSSException if estimation fails due to numerical instabilities.
      */
@@ -1634,8 +1784,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
             throw new LockedException();
         }
 
-        final var propagationInterval = lastStateTimestamp != null ? timestamp - lastStateTimestamp : 0.0;
-        if (lastStateTimestamp != null && propagationInterval <= epochInterval) {
+        if (lastKinematicsTimestamp != null && timestamp <= lastKinematicsTimestamp) {
             return false;
         }
 
@@ -1647,35 +1796,52 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
             }
 
             initFrame();
-            if (estimation != null) {
-                frame.setCoordinates(estimation.getX(), estimation.getY(), estimation.getZ());
-                frame.setVelocityCoordinates(estimation.getVx(), estimation.getVy(), estimation.getVz());
-            }
 
             if (kinematics != null) {
                 correctKinematics(kinematics);
-                ECEFInertialNavigator.navigateECEF(propagationInterval, frame, correctedKinematics, frame);
+
+                if (lastKinematicsTimestamp != null) {
+                    // integrate sample over the interval elapsed since previous sample.
+                    // Every sample is integrated so that attitude changes are never lost,
+                    // even before GNSS measurements initialize position and velocity
+                    ECEFInertialNavigator.navigateECEF(timestamp - lastKinematicsTimestamp, frame,
+                            correctedKinematics, frame);
+
+                    // estimation and state always hold the INS-propagated solution.
+                    // Position and velocity are only known once GNSS measurements have
+                    // been provided
+                    if (estimation != null) {
+                        estimation.setPositionCoordinates(frame.getX(), frame.getY(), frame.getZ());
+                        estimation.setVelocityCoordinates(frame.getVx(), frame.getVy(), frame.getVz());
+                    }
+                    if (state != null) {
+                        state.setFrame(frame);
+                    }
+                }
             }
 
             this.kinematics = kinematics;
+            lastKinematicsTimestamp = timestamp;
+            if (firstKinematicsTimestamp == null) {
+                firstKinematicsTimestamp = timestamp;
+            }
 
             if (listener != null) {
                 listener.onUpdateBodyKinematicsEnd(this);
             }
 
         } catch (final InertialNavigatorException e) {
-            return false;
+            throw new INSGNSSException(e);
         } finally {
             running = false;
         }
-
-        propagate(timestamp);
 
         return true;
     }
 
     /**
-     * Indicates whether this estimator is ready for state propagations.
+     * Indicates whether this estimator is ready for state propagations (i.e. to run
+     * Kalman filter epochs when GNSS measurements are provided).
      *
      * @return true if estimator is ready, false otherwise.
      */
@@ -1684,13 +1850,23 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
     }
 
     /**
-     * Propagates Kalman filter state held by this estimator at provided
-     * timestamp.
-     * Call to this method will be ignored if interval between provided timestamp
-     * and last timestamp when Kalman filter was updated is less than epoch interval.
+     * Ensures that the Kalman filter state held by this estimator is initialized
+     * and synchronized with the current INS solution and, only if there are GNSS
+     * measurements that have not been consumed yet by a Kalman filter epoch, runs
+     * a Kalman filter epoch with them at provided timestamp.
+     * Kalman filter epochs are normally run by
+     * {@link #updateMeasurements(Collection, Time)} as soon as measurements are
+     * provided, so measurements only remain pending when this estimator was not
+     * ready to propagate when they were provided (e.g. because the Kalman filter
+     * configuration was set afterwards). Measurements already consumed by an epoch
+     * are never used again.
+     * Call to this method will be ignored if this estimator is not ready to
+     * propagate, or if there are pending measurements but the interval between
+     * provided timestamp and the timestamp of the last Kalman filter epoch is not
+     * positive or is less than the epoch interval.
      *
      * @param timestamp timestamp since epoch to propagate state.
-     * @return true if state was propagated, false otherwise.
+     * @return true if a Kalman filter epoch was run, false otherwise.
      * @throws LockedException  if this estimator is already running.
      * @throws INSGNSSException if estimation fails due to numerical instabilities.
      */
@@ -1700,13 +1876,23 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
     }
 
     /**
-     * Propagates Kalman filter state held by this estimator at provided
-     * timestamp.
-     * Call to this method will be ignored if interval between provided timestamp
-     * and last timestamp when Kalman filter was updated is less than epoch interval.
+     * Ensures that the Kalman filter state held by this estimator is initialized
+     * and synchronized with the current INS solution and, only if there are GNSS
+     * measurements that have not been consumed yet by a Kalman filter epoch, runs
+     * a Kalman filter epoch with them at provided timestamp.
+     * Kalman filter epochs are normally run by
+     * {@link #updateMeasurements(Collection, double)} as soon as measurements are
+     * provided, so measurements only remain pending when this estimator was not
+     * ready to propagate when they were provided (e.g. because the Kalman filter
+     * configuration was set afterwards). Measurements already consumed by an epoch
+     * are never used again.
+     * Call to this method will be ignored if this estimator is not ready to
+     * propagate, or if there are pending measurements but the interval between
+     * provided timestamp and the timestamp of the last Kalman filter epoch is not
+     * positive or is less than the epoch interval.
      *
      * @param timestamp timestamp expressed in seconds since epoch to propagate state.
-     * @return true if state was propagated, false otherwise.
+     * @return true if a Kalman filter epoch was run, false otherwise.
      * @throws LockedException  if this estimator is already running.
      * @throws INSGNSSException if estimation fails due to numerical instabilities.
      */
@@ -1720,68 +1906,16 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
             return false;
         }
 
-        final var propagationInterval = lastStateTimestamp != null ? timestamp - lastStateTimestamp : 0.0;
-        if (lastStateTimestamp != null && propagationInterval <= epochInterval) {
-            return false;
+        if (measurementsPending && !isEpochRejected(timestamp)) {
+            runEpoch(timestamp);
+            return true;
         }
 
-        try {
-            running = true;
-
-            if (listener != null) {
-                listener.onPropagateStart(this);
-            }
-
-            if (initFrame()) {
-                frame.setCoordinates(estimation.getX(), estimation.getY(), estimation.getZ());
-                frame.setVelocityCoordinates(estimation.getVx(), estimation.getVy(), estimation.getVz());
-            }
-
-            if (state == null) {
-                // initialize state
-                initInitialConfig();
-                final var covariance = INSTightlyCoupledKalmanInitializer.initialize(initialConfig);
-
-                state = new INSTightlyCoupledKalmanState();
-                state.setFrame(frame);
-                state.setCovariance(covariance);
-            }
-
-            if (kinematics != null) {
-                correctKinematics(kinematics);
-            }
-
-            final double fx;
-            final double fy;
-            final double fz;
-            if (correctedKinematics != null) {
-                fx = correctedKinematics.getFx();
-                fy = correctedKinematics.getFy();
-                fz = correctedKinematics.getFz();
-            } else {
-                fx = 0.0;
-                fy = 0.0;
-                fz = 0.0;
-            }
-
-            INSTightlyCoupledKalmanEpochEstimator.estimate(measurements, propagationInterval, state, fx, fy, fz,
-                    config, state);
-            lastStateTimestamp = timestamp;
-
-            state.getGNSSEstimation(estimation);
-            state.getFrame(frame);
-
-            if (listener != null) {
-                listener.onPropagateEnd(this);
-            }
-
-        } catch (final AlgebraException e) {
-            throw new INSGNSSException(e);
-        } finally {
-            running = false;
-        }
-
-        return true;
+        // measurements already consumed by an epoch are not used again: only keep
+        // the state synchronized with the INS solution
+        initState();
+        state.setFrame(frame);
+        return false;
     }
 
     /**
@@ -1799,6 +1933,9 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
         estimation = null;
         state = null;
         lastStateTimestamp = null;
+        lastKinematicsTimestamp = null;
+        firstKinematicsTimestamp = null;
+        measurementsPending = false;
         kinematics = null;
         correctedKinematics = null;
         frame = null;
@@ -1811,19 +1948,166 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
     }
 
     /**
+     * Indicates whether a Kalman filter epoch at provided timestamp must be
+     * rejected because the interval elapsed since the last epoch is not positive or
+     * is less than the epoch interval.
+     * The first epoch is never rejected, and an epoch arriving exactly one epoch
+     * interval after the previous one is accepted.
+     *
+     * @param timestamp timestamp expressed in seconds since epoch time.
+     * @return true if epoch must be rejected, false otherwise.
+     */
+    private boolean isEpochRejected(final double timestamp) {
+        if (lastStateTimestamp == null) {
+            return false;
+        }
+
+        return INSLooselyCoupledKalmanFilteredEstimator.isEpochRejected(timestamp, lastStateTimestamp,
+                epochInterval);
+    }
+
+    /**
+     * Runs a Kalman filter epoch at provided timestamp using the INS-propagated
+     * solution as the predicted state and the last provided GNSS measurements, and
+     * applies the resulting closed-loop correction to the INS solution.
+     * This method must only be called when this estimator is ready to propagate and
+     * the epoch is not rejected.
+     *
+     * @param timestamp timestamp expressed in seconds since epoch time.
+     * @throws INSGNSSException if estimation fails due to numerical instabilities.
+     */
+    private void runEpoch(final double timestamp) throws INSGNSSException {
+        try {
+            running = true;
+            solveEpoch(timestamp);
+        } finally {
+            running = false;
+        }
+    }
+
+    /**
+     * Solves a Kalman filter epoch at provided timestamp using the INS-propagated
+     * solution as the predicted state and the last provided GNSS measurements, and
+     * applies the resulting closed-loop correction to the INS solution.
+     * This method notifies propagation events and must only be called while this
+     * estimator is locked (i.e. running), when it is ready to propagate and the epoch
+     * is not rejected.
+     *
+     * @param timestamp timestamp expressed in seconds since epoch time.
+     * @throws INSGNSSException if estimation fails due to numerical instabilities.
+     */
+    private void solveEpoch(final double timestamp) throws INSGNSSException {
+        // the first epoch propagates the covariance over the time the INS solution has
+        // been integrated
+        final double propagationInterval;
+        if (lastStateTimestamp != null) {
+            propagationInterval = timestamp - lastStateTimestamp;
+        } else if (firstKinematicsTimestamp != null) {
+            propagationInterval = Math.max(timestamp - firstKinematicsTimestamp, 0.0);
+        } else {
+            propagationInterval = 0.0;
+        }
+
+        try {
+            if (listener != null) {
+                listener.onPropagateStart(this);
+            }
+
+            // previous state is the INS-propagated solution
+            initState();
+            state.setFrame(frame);
+
+            final double fx;
+            final double fy;
+            final double fz;
+            if (correctedKinematics != null) {
+                fx = correctedKinematics.getFx();
+                fy = correctedKinematics.getFy();
+                fz = correctedKinematics.getFz();
+            } else {
+                fx = 0.0;
+                fy = 0.0;
+                fz = 0.0;
+            }
+
+            INSTightlyCoupledKalmanEpochEstimator.estimate(measurements, propagationInterval, state, fx, fy, fz,
+                    config, state);
+            lastStateTimestamp = timestamp;
+            measurementsPending = false;
+
+            // closed-loop correction of the INS solution. Corrected attitude is only
+            // orthonormal to first order, so it is re-orthonormalized to remain a
+            // valid rotation
+            state.setBodyToEcefCoordinateTransformationMatrix(orthonormalize(
+                    state.getBodyToEcefCoordinateTransformationMatrix()));
+            state.getGNSSEstimation(estimation);
+            state.getFrame(frame);
+
+            if (listener != null) {
+                listener.onPropagateEnd(this);
+            }
+
+        } catch (final AlgebraException e) {
+            throw new INSGNSSException(e);
+        }
+    }
+
+    /**
+     * Obtains the rotation matrix closest to provided matrix.
+     * The closed-loop attitude correction of the Kalman filter multiplies the
+     * attitude by a small angle approximation of a rotation, so the result slightly
+     * deviates from an orthonormal matrix.
+     *
+     * @param m a 3x3 matrix close to a rotation matrix.
+     * @return closest orthonormal matrix.
+     * @throws AlgebraException if singular value decomposition fails.
+     */
+    private static Matrix orthonormalize(final Matrix m) throws AlgebraException {
+        final var decomposer = new SingularValueDecomposer(m);
+        decomposer.decompose();
+
+        // closest rotation is u * v', which is the provided matrix with all its
+        // singular values set to one
+        final var u = decomposer.getU();
+        final var v = decomposer.getV();
+        v.transpose();
+        u.multiply(v);
+        return u;
+    }
+
+    /**
      * Initializes current ECEF frame containing user position, velocity and
      * orientation expressed an resolved in ECEF coordinates.
      * This method makes no action if an initial frame already exists.
-     *
-     * @return true if frame was initialized, false otherwise.
      */
-    private boolean initFrame() {
+    private void initFrame() {
         if (frame == null) {
+            // until GNSS measurements initialize position and velocity, the frame is
+            // placed at the Earth surface so that IMU samples can be integrated
             frame = new ECEFFrame();
-            return true;
-        } else {
-            return false;
+            frame.setCoordinates(Constants.EARTH_EQUATORIAL_RADIUS_WGS84, 0.0, 0.0);
         }
+    }
+
+    /**
+     * Initializes Kalman filter state from the current frame, the receiver clock
+     * of the current estimation and the initial configuration (which determines the
+     * initial covariance).
+     * This method makes no action if state is already initialized.
+     */
+    private void initState() {
+        if (state != null) {
+            return;
+        }
+
+        initInitialConfig();
+        final var covariance = INSTightlyCoupledKalmanInitializer.initialize(initialConfig);
+
+        state = new INSTightlyCoupledKalmanState();
+        state.setFrame(frame);
+        state.setReceiverClockOffset(estimation.getClockOffset());
+        state.setReceiverClockDrift(estimation.getClockDrift());
+        state.setCovariance(covariance);
     }
 
     /**

@@ -89,10 +89,19 @@ public class ECEFKinematicsEstimator {
      *                     per second (m/s).
      * @param x            cartesian x coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param y            cartesian y coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param z            cartesian z coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param result       instance where body kinematics estimation will be stored.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -131,10 +140,19 @@ public class ECEFKinematicsEstimator {
      *                     per second (m/s).
      * @param x            cartesian x coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param y            cartesian y coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param z            cartesian z coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param result       instance where body kinematics estimation will be stored.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -157,10 +175,19 @@ public class ECEFKinematicsEstimator {
      * @param oldVelocity  previous velocity of body frame with respect ECEF frame.
      * @param x            cartesian x coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param y            cartesian y coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param z            cartesian z coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param result       instance where body kinematics estimation will be stored.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -182,10 +209,19 @@ public class ECEFKinematicsEstimator {
      * @param oldVelocity  previous velocity of body frame with respect ECEF frame.
      * @param x            cartesian x coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param y            cartesian y coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param z            cartesian z coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param result       instance where body kinematics estimation will be stored.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -216,6 +252,9 @@ public class ECEFKinematicsEstimator {
      * @param oldVz        z coordinate of previous velocity of body frame expressed in meters per second (m/s) and
      *                     resolved along ECEF-frame axes.
      * @param position     cartesian body position resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param result       instance where estimated body kinematics will be stored.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -247,6 +286,9 @@ public class ECEFKinematicsEstimator {
      * @param oldVz        z coordinate of previous velocity of body frame expressed in meters per second (m/s) and
      *                     resolved along ECEF-frame axes.
      * @param position     cartesian body position resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param result       instance where estimated body kinematics will be stored.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -268,6 +310,9 @@ public class ECEFKinematicsEstimator {
      * @param velocity     velocity of body frame with respect ECEF frame.
      * @param oldVelocity  previous velocity of body frame with respect ECEF frame.
      * @param position     cartesian body position resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param result       instance where body kinematics estimation will be stored.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -288,6 +333,9 @@ public class ECEFKinematicsEstimator {
      * @param velocity     velocity of body frame with respect ECEF frame.
      * @param oldVelocity  previous velocity of body frame with respect ECEF frame.
      * @param position     cartesian body position resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param result       instance where body kinematics estimation will be stored.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -305,6 +353,10 @@ public class ECEFKinematicsEstimator {
      * @param timeInterval time interval between epochs expressed in seconds (s).
      * @param frame        body ECEF frame containing current position, velocity and
      *                     body-to-ECEF frame coordinate transformation.
+     *                     The position contained in this frame is the position where gravity is evaluated; to
+     *                     be consistent with {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m}
+     *                     callers) this must be the position at the start of the time interval. When the body
+     *                     moves, use an overload receiving the previous frame or an explicit position instead.
      * @param oldC         previous body-to-ECEF-frame coordinate transformation matrix.
      * @param oldVx        previous velocity of body frame x coordinate with respect ECEF
      *                     frame, resolved along ECEF-frame axes and expressed in meters
@@ -331,6 +383,10 @@ public class ECEFKinematicsEstimator {
      * @param timeInterval time interval between epochs.
      * @param frame        body ECEF frame containing current position, velocity and
      *                     body-to-ECEF frame coordinate transformation.
+     *                     The position contained in this frame is the position where gravity is evaluated; to
+     *                     be consistent with {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m}
+     *                     callers) this must be the position at the start of the time interval. When the body
+     *                     moves, use an overload receiving the previous frame or an explicit position instead.
      * @param oldC         previous body-to-ECEF-frame coordinate transformation matrix.
      * @param oldVx        previous velocity of body frame x coordinate with respect ECEF
      *                     frame, resolved along ECEF-frame axes and expressed in meters
@@ -357,6 +413,10 @@ public class ECEFKinematicsEstimator {
      * @param timeInterval time interval between epochs expressed in seconds (s).
      * @param frame        body ECEF frame containing current position, velocity and
      *                     body-to-ECEF frame coordinate transformation.
+     *                     The position contained in this frame is the position where gravity is evaluated; to
+     *                     be consistent with {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m}
+     *                     callers) this must be the position at the start of the time interval. When the body
+     *                     moves, use an overload receiving the previous frame or an explicit position instead.
      * @param oldC         previous body-to-ECEF-frame coordinate transformation matrix.
      * @param oldVelocity  previous velocity of body frame with respect ECEF frame.
      * @param result       instance where body kinematics estimation will be stored.
@@ -375,6 +435,10 @@ public class ECEFKinematicsEstimator {
      * @param timeInterval time interval between epochs.
      * @param frame        body ECEF frame containing current position, velocity and
      *                     body-to-ECEF frame coordinate transformation.
+     *                     The position contained in this frame is the position where gravity is evaluated; to
+     *                     be consistent with {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m}
+     *                     callers) this must be the position at the start of the time interval. When the body
+     *                     moves, use an overload receiving the previous frame or an explicit position instead.
      * @param oldC         previous body-to-ECEF-frame coordinate transformation matrix.
      * @param oldVelocity  previous velocity of body frame with respect ECEF frame.
      * @param result       instance where body kinematics estimation will be stored.
@@ -393,9 +457,12 @@ public class ECEFKinematicsEstimator {
      * @param timeInterval time interval between epochs expressed in seconds (s).
      * @param frame        body ECEF frame containing current position, velocity and
      *                     body-to-ECEF frame coordinate transformation.
+     *                     Notice that current position contained in this frame is ignored.
      * @param oldFrame     body ECEF frame containing previous position, velocity and
-     *                     body-to-ECEF frame coordinate transformation. Notice that
-     *                     previous position contained in this frame is ignored.
+     *                     body-to-ECEF frame coordinate transformation. The position
+     *                     contained in this frame is the position where gravity is evaluated; to be consistent
+     *                     with {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be
+     *                     the position at the start of the time interval.
      * @param result       instance where body kinematics estimation will be stored.
      * @throws IllegalArgumentException if provided time interval is negative.
      */
@@ -410,9 +477,12 @@ public class ECEFKinematicsEstimator {
      * @param timeInterval time interval between epochs.
      * @param frame        body ECEF frame containing current position, velocity and
      *                     body-to-ECEF frame coordinate transformation.
+     *                     Notice that current position contained in this frame is ignored.
      * @param oldFrame     body ECEF frame containing previous position, velocity and
-     *                     body-to-ECEF frame coordinate transformation. Notice that
-     *                     previous position contained in this frame is ignored.
+     *                     body-to-ECEF frame coordinate transformation. The position
+     *                     contained in this frame is the position where gravity is evaluated; to be consistent
+     *                     with {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be
+     *                     the position at the start of the time interval.
      * @param result       instance where body kinematics estimation will be stored.
      * @throws IllegalArgumentException if provided time interval is negative.
      */
@@ -441,10 +511,19 @@ public class ECEFKinematicsEstimator {
      *                     frame, resolved along ECEF-frame axes.
      * @param x            cartesian x coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param y            cartesian y coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param z            cartesian z coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param result       instance where body kinematics estimation will be stored.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -476,10 +555,19 @@ public class ECEFKinematicsEstimator {
      *                     frame, resolved along ECEF-frame axes.
      * @param x            cartesian x coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param y            cartesian y coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param z            cartesian z coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param result       instance where body kinematics estimation will be stored.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -510,6 +598,9 @@ public class ECEFKinematicsEstimator {
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
      *                     frame, resolved along ECEF-frame axes.
      * @param position     cartesian body position resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param result       instance where body kinematics estimation will be stored.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -540,6 +631,9 @@ public class ECEFKinematicsEstimator {
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
      *                     frame, resolved along ECEF-frame axes.
      * @param position     cartesian body position resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param result       instance where body kinematics estimation will be stored.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -557,6 +651,10 @@ public class ECEFKinematicsEstimator {
      * @param timeInterval time interval between epochs expressed in seconds (s).
      * @param frame        body ECEF frame containing current position, velocity and
      *                     body-to-ECEF frame coordinate transformation.
+     *                     The position contained in this frame is the position where gravity is evaluated; to
+     *                     be consistent with {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m}
+     *                     callers) this must be the position at the start of the time interval. When the body
+     *                     moves, use an overload receiving the previous frame or an explicit position instead.
      * @param oldC         previous body-to-ECEF-frame coordinate transformation matrix.
      * @param oldVx        previous velocity of body frame x coordinate with respect ECEF
      *                     frame, resolved along ECEF-frame axes.
@@ -580,6 +678,10 @@ public class ECEFKinematicsEstimator {
      * @param timeInterval time interval between epochs.
      * @param frame        body ECEF frame containing current position, velocity and
      *                     body-to-ECEF frame coordinate transformation.
+     *                     The position contained in this frame is the position where gravity is evaluated; to
+     *                     be consistent with {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m}
+     *                     callers) this must be the position at the start of the time interval. When the body
+     *                     moves, use an overload receiving the previous frame or an explicit position instead.
      * @param oldC         previous body-to-ECEF-frame coordinate transformation matrix.
      * @param oldVx        previous velocity of body frame x coordinate with respect ECEF
      *                     frame, resolved along ECEF-frame axes.
@@ -623,6 +725,9 @@ public class ECEFKinematicsEstimator {
      *                     per second (m/s).
      * @param position     body position expressed in meters (m) with respect ECEF frame,
      *                     resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param result       instance where body kinematics estimation will be stored.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -661,6 +766,9 @@ public class ECEFKinematicsEstimator {
      *                     per second (m/s).
      * @param position     body position expressed in meters (m) with respect ECEF frame,
      *                     resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param result       instance where body kinematics estimation will be stored.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -683,6 +791,9 @@ public class ECEFKinematicsEstimator {
      * @param oldVelocity  previous velocity of body frame with respect ECEF frame.
      * @param position     body position expressed in meters (m) with respect ECEF frame,
      *                     resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param result       instance where body kinematics estimation will be stored.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -704,6 +815,9 @@ public class ECEFKinematicsEstimator {
      * @param oldVelocity  previous velocity of body frame with respect ECEF frame.
      * @param position     body position expressed in meters (m) with respect ECEF frame,
      *                     resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param result       instance where body kinematics estimation will be stored.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -735,6 +849,9 @@ public class ECEFKinematicsEstimator {
      *                     frame, resolved along ECEF-frame axes.
      * @param position     body position expressed in meters (m) with respect ECEF frame,
      *                     resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param result       instance where body kinematics estimation will be stored.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -766,6 +883,9 @@ public class ECEFKinematicsEstimator {
      *                     frame, resolved along ECEF-frame axes.
      * @param position     body position expressed in meters (m) with respect ECEF frame,
      *                     resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param result       instance where body kinematics estimation will be stored.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -803,10 +923,19 @@ public class ECEFKinematicsEstimator {
      *                     per second (m/s).
      * @param x            cartesian x coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param y            cartesian y coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param z            cartesian z coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @return a new body kinematics instance.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -845,10 +974,19 @@ public class ECEFKinematicsEstimator {
      *                     per second (m/s).
      * @param x            cartesian x coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param y            cartesian y coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param z            cartesian z coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @return a new body kinematics instance.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -871,10 +1009,19 @@ public class ECEFKinematicsEstimator {
      * @param oldVelocity  previous velocity of body frame with respect ECEF frame.
      * @param x            cartesian x coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param y            cartesian y coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param z            cartesian z coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @return a new body kinematics instance.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -896,10 +1043,19 @@ public class ECEFKinematicsEstimator {
      * @param oldVelocity  previous velocity of body frame with respect ECEF frame.
      * @param x            cartesian x coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param y            cartesian y coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param z            cartesian z coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @return a new body kinematics instance.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -930,6 +1086,9 @@ public class ECEFKinematicsEstimator {
      * @param oldVz        z coordinate of previous velocity of body frame expressed in meters per second (m/s) and
      *                     resolved along ECEF-frame axes.
      * @param position     cartesian body position resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @return a new body kinematics instance.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -960,6 +1119,9 @@ public class ECEFKinematicsEstimator {
      * @param oldVz        z coordinate of previous velocity of body frame expressed in meters per second (m/s) and
      *                     resolved along ECEF-frame axes.
      * @param position     cartesian body position resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @return a new body kinematics instance.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -980,6 +1142,9 @@ public class ECEFKinematicsEstimator {
      * @param velocity     velocity of body frame with respect ECEF frame.
      * @param oldVelocity  previous velocity of body frame with respect ECEF frame.
      * @param position     cartesian body position resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @return a new body kinematics instance.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -999,6 +1164,9 @@ public class ECEFKinematicsEstimator {
      * @param velocity     velocity of body frame with respect ECEF frame.
      * @param oldVelocity  previous velocity of body frame with respect ECEF frame.
      * @param position     cartesian body position resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @return a new body kinematics instance.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -1015,6 +1183,10 @@ public class ECEFKinematicsEstimator {
      * @param timeInterval time interval between epochs expressed in seconds (s).
      * @param frame        body ECEF frame containing current position, velocity and
      *                     body-to-ECEF frame coordinate transformation.
+     *                     The position contained in this frame is the position where gravity is evaluated; to
+     *                     be consistent with {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m}
+     *                     callers) this must be the position at the start of the time interval. When the body
+     *                     moves, use an overload receiving the previous frame or an explicit position instead.
      * @param oldC         previous body-to-ECEF-frame coordinate transformation matrix.
      * @param oldVx        previous velocity of body frame x coordinate with respect ECEF
      *                     frame, resolved along ECEF-frame axes and expressed in meters
@@ -1041,6 +1213,10 @@ public class ECEFKinematicsEstimator {
      * @param timeInterval time interval between epochs.
      * @param frame        body ECEF frame containing current position, velocity and
      *                     body-to-ECEF frame coordinate transformation.
+     *                     The position contained in this frame is the position where gravity is evaluated; to
+     *                     be consistent with {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m}
+     *                     callers) this must be the position at the start of the time interval. When the body
+     *                     moves, use an overload receiving the previous frame or an explicit position instead.
      * @param oldC         previous body-to-ECEF-frame coordinate transformation matrix.
      * @param oldVx        previous velocity of body frame x coordinate with respect ECEF
      *                     frame, resolved along ECEF-frame axes and expressed in meters
@@ -1067,6 +1243,10 @@ public class ECEFKinematicsEstimator {
      * @param timeInterval time interval between epochs expressed in seconds (s).
      * @param frame        body ECEF frame containing current position, velocity and
      *                     body-to-ECEF frame coordinate transformation.
+     *                     The position contained in this frame is the position where gravity is evaluated; to
+     *                     be consistent with {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m}
+     *                     callers) this must be the position at the start of the time interval. When the body
+     *                     moves, use an overload receiving the previous frame or an explicit position instead.
      * @param oldC         previous body-to-ECEF-frame coordinate transformation matrix.
      * @param oldVelocity  previous velocity of body frame with respect ECEF frame.
      * @return a new body kinematics instance.
@@ -1085,6 +1265,10 @@ public class ECEFKinematicsEstimator {
      * @param timeInterval time interval between epochs.
      * @param frame        body ECEF frame containing current position, velocity and
      *                     body-to-ECEF frame coordinate transformation.
+     *                     The position contained in this frame is the position where gravity is evaluated; to
+     *                     be consistent with {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m}
+     *                     callers) this must be the position at the start of the time interval. When the body
+     *                     moves, use an overload receiving the previous frame or an explicit position instead.
      * @param oldC         previous body-to-ECEF-frame coordinate transformation matrix.
      * @param oldVelocity  previous velocity of body frame with respect ECEF frame.
      * @return a new body kinematics instance.
@@ -1103,9 +1287,12 @@ public class ECEFKinematicsEstimator {
      * @param timeInterval time interval between epochs expressed in seconds (s).
      * @param frame        body ECEF frame containing current position, velocity and
      *                     body-to-ECEF frame coordinate transformation.
+     *                     Notice that current position contained in this frame is ignored.
      * @param oldFrame     body ECEF frame containing previous position, velocity and
-     *                     body-to-ECEF frame coordinate transformation. Notice that
-     *                     previous position contained in this frame is ignored.
+     *                     body-to-ECEF frame coordinate transformation. The position
+     *                     contained in this frame is the position where gravity is evaluated; to be consistent
+     *                     with {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be
+     *                     the position at the start of the time interval.
      * @return a new body kinematics instance.
      * @throws IllegalArgumentException if provided time interval is negative.
      */
@@ -1120,9 +1307,12 @@ public class ECEFKinematicsEstimator {
      * @param timeInterval time interval between epochs.
      * @param frame        body ECEF frame containing current position, velocity and
      *                     body-to-ECEF frame coordinate transformation.
+     *                     Notice that current position contained in this frame is ignored.
      * @param oldFrame     body ECEF frame containing previous position, velocity and
-     *                     body-to-ECEF frame coordinate transformation. Notice that
-     *                     previous position contained in this frame is ignored.
+     *                     body-to-ECEF frame coordinate transformation. The position
+     *                     contained in this frame is the position where gravity is evaluated; to be consistent
+     *                     with {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be
+     *                     the position at the start of the time interval.
      * @return a new body kinematics instance.
      * @throws IllegalArgumentException if provided time interval is negative.
      */
@@ -1151,10 +1341,19 @@ public class ECEFKinematicsEstimator {
      *                     frame, resolved along ECEF-frame axes.
      * @param x            cartesian x coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param y            cartesian y coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param z            cartesian z coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @return a new body kinematics instance.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -1186,10 +1385,19 @@ public class ECEFKinematicsEstimator {
      *                     frame, resolved along ECEF-frame axes.
      * @param x            cartesian x coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param y            cartesian y coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param z            cartesian z coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @return a new body kinematics instance.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -1220,6 +1428,9 @@ public class ECEFKinematicsEstimator {
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
      *                     frame, resolved along ECEF-frame axes.
      * @param position     cartesian body position resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @return a new body kinematics instance.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -1250,6 +1461,9 @@ public class ECEFKinematicsEstimator {
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
      *                     frame, resolved along ECEF-frame axes.
      * @param position     cartesian body position resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @return a new body kinematics instance.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -1267,6 +1481,10 @@ public class ECEFKinematicsEstimator {
      * @param timeInterval time interval between epochs expressed in seconds (s).
      * @param frame        body ECEF frame containing current position, velocity and
      *                     body-to-ECEF frame coordinate transformation.
+     *                     The position contained in this frame is the position where gravity is evaluated; to
+     *                     be consistent with {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m}
+     *                     callers) this must be the position at the start of the time interval. When the body
+     *                     moves, use an overload receiving the previous frame or an explicit position instead.
      * @param oldC         previous body-to-ECEF-frame coordinate transformation matrix.
      * @param oldVx        previous velocity of body frame x coordinate with respect ECEF
      *                     frame, resolved along ECEF-frame axes.
@@ -1290,6 +1508,10 @@ public class ECEFKinematicsEstimator {
      * @param timeInterval time interval between epochs.
      * @param frame        body ECEF frame containing current position, velocity and
      *                     body-to-ECEF frame coordinate transformation.
+     *                     The position contained in this frame is the position where gravity is evaluated; to
+     *                     be consistent with {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m}
+     *                     callers) this must be the position at the start of the time interval. When the body
+     *                     moves, use an overload receiving the previous frame or an explicit position instead.
      * @param oldC         previous body-to-ECEF-frame coordinate transformation matrix.
      * @param oldVx        previous velocity of body frame x coordinate with respect ECEF
      *                     frame, resolved along ECEF-frame axes.
@@ -1333,6 +1555,9 @@ public class ECEFKinematicsEstimator {
      *                     per second (m/s).
      * @param position     body position expressed in meters (m) with respect ECEF frame,
      *                     resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @return a new body kinematics instance.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -1370,6 +1595,9 @@ public class ECEFKinematicsEstimator {
      *                     per second (m/s).
      * @param position     body position expressed in meters (m) with respect ECEF frame,
      *                     resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @return a new body kinematics instance.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -1391,6 +1619,9 @@ public class ECEFKinematicsEstimator {
      * @param oldVelocity  previous velocity of body frame with respect ECEF frame.
      * @param position     body position expressed in meters (m) with respect ECEF frame,
      *                     resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @return a new body kinematics instance.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -1411,6 +1642,9 @@ public class ECEFKinematicsEstimator {
      * @param oldVelocity  previous velocity of body frame with respect ECEF frame.
      * @param position     body position expressed in meters (m) with respect ECEF frame,
      *                     resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @return a new body kinematics instance.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -1441,6 +1675,9 @@ public class ECEFKinematicsEstimator {
      *                     frame, resolved along ECEF-frame axes.
      * @param position     body position expressed in meters (m) with respect ECEF frame,
      *                     resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @return a new body kinematics instance.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -1472,6 +1709,9 @@ public class ECEFKinematicsEstimator {
      *                     frame, resolved along ECEF-frame axes.
      * @param position     body position expressed in meters (m) with respect ECEF frame,
      *                     resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @return a new body kinematics instance.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -1503,10 +1743,19 @@ public class ECEFKinematicsEstimator {
      *                     resolved along ECEF-frame axes.
      * @param x            cartesian x coordinate of body position expressed in meters (m) and resolved along
      *                     ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param y            cartesian y coordinate of body position expressed in meters (m) and resolved along
      *                     ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param z            cartesian z coordinate of body position expressed in meters (m) and resolved along
      *                     ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param result       instance where estimated body kinematics will be stored.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -1591,6 +1840,12 @@ public class ECEFKinematicsEstimator {
                 final var alphaNorm = Math.sqrt(alphaX * alphaX + alphaY * alphaY + alphaZ * alphaZ);
                 final var alphaSkew1 = Utils.skewMatrix(new double[]{alphaX, alphaY, alphaZ});
 
+                // 0.5 * skew([0, 0, alpha]) * C(-). This must use the ORIGINAL oldCbe (eq. 5.85), hence it is
+                // computed before oldCbe is modified in place, in the same order as ECEFInertialNavigator
+                final var alphaSkew2 = Utils.skewMatrix(new double[]{0.0, 0.0, alpha});
+                alphaSkew2.multiplyByScalar(0.5);
+                alphaSkew2.multiply(oldCbe);
+
                 if (alphaNorm > ALPHA_THRESHOLD) {
                     final var alphaNorm2 = alphaNorm * alphaNorm;
                     final var value1 = (1.0 - Math.cos(alphaNorm)) / alphaNorm2;
@@ -1603,15 +1858,11 @@ public class ECEFKinematicsEstimator {
                     tmp3.add(tmp1);
                     tmp3.add(tmp2);
 
+                    // C(-) * Cbb
                     oldCbe.multiply(tmp3);
                 }
 
-                final var alphaSkew2 = Utils.skewMatrix(new double[]{0.0, 0.0, alpha});
-                alphaSkew2.multiplyByScalar(0.5);
-                // 0.5 * alphaSkew2 * oldCbe
-                alphaSkew2.multiply(oldCbe);
-
-                // oldCbe - 0.5 * alphaSkew2 * oldCbe
+                // C(-) * Cbb - 0.5 * skew([0, 0, alpha]) * C(-)
                 oldCbe.subtract(alphaSkew2);
                 // oldCbe now contains the average body-to-ECEF-frame coordinate transformation
 
@@ -1663,10 +1914,19 @@ public class ECEFKinematicsEstimator {
      *                     per second (m/s).
      * @param x            cartesian x coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param y            cartesian y coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param z            cartesian z coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param result       instance where body kinematics estimation will be stored.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -1691,10 +1951,19 @@ public class ECEFKinematicsEstimator {
      * @param oldVelocity  previous velocity of body frame with respect ECEF frame.
      * @param x            cartesian x coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param y            cartesian y coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param z            cartesian z coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param result       instance where body kinematics estimation will be stored.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -1717,10 +1986,19 @@ public class ECEFKinematicsEstimator {
      * @param oldVelocity  previous velocity of body frame with respect ECEF frame.
      * @param x            cartesian x coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param y            cartesian y coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param z            cartesian z coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param result       instance where body kinematics estimation will be stored.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -1753,6 +2031,9 @@ public class ECEFKinematicsEstimator {
      * @param oldVz        z coordinate of previous velocity of body frame expressed in meters per second (m/s) and
      *                     resolved along ECEF-frame axes.
      * @param position     cartesian body position resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param result       instance where estimated body kinematics will be stored.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -1785,6 +2066,9 @@ public class ECEFKinematicsEstimator {
      * @param oldVz        z coordinate of previous velocity of body frame expressed in meters per second (m/s) and
      *                     resolved along ECEF-frame axes.
      * @param position     cartesian body position resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param result       instance where estimated body kinematics will be stored.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -1808,6 +2092,9 @@ public class ECEFKinematicsEstimator {
      * @param velocity     velocity of body frame with respect ECEF frame.
      * @param oldVelocity  previous velocity of body frame with respect ECEF frame.
      * @param position     cartesian body position resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param result       instance where body kinematics estimation will be stored.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -1830,6 +2117,9 @@ public class ECEFKinematicsEstimator {
      * @param velocity     velocity of body frame with respect ECEF frame.
      * @param oldVelocity  previous velocity of body frame with respect ECEF frame.
      * @param position     cartesian body position resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param result       instance where body kinematics estimation will be stored.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -1849,6 +2139,10 @@ public class ECEFKinematicsEstimator {
      * @param timeInterval time interval between epochs expressed in seconds (s).
      * @param frame        body ECEF frame containing current position, velocity and
      *                     body-to-ECEF frame coordinate transformation.
+     *                     The position contained in this frame is the position where gravity is evaluated; to
+     *                     be consistent with {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m}
+     *                     callers) this must be the position at the start of the time interval. When the body
+     *                     moves, use an overload receiving the previous frame or an explicit position instead.
      * @param oldC         previous body-to-ECEF-frame coordinate transformation matrix.
      * @param oldVx        previous velocity of body frame x coordinate with respect ECEF
      *                     frame, resolved along ECEF-frame axes and expressed in meters
@@ -1877,6 +2171,10 @@ public class ECEFKinematicsEstimator {
      * @param timeInterval time interval between epochs.
      * @param frame        body ECEF frame containing current position, velocity and
      *                     body-to-ECEF frame coordinate transformation.
+     *                     The position contained in this frame is the position where gravity is evaluated; to
+     *                     be consistent with {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m}
+     *                     callers) this must be the position at the start of the time interval. When the body
+     *                     moves, use an overload receiving the previous frame or an explicit position instead.
      * @param oldC         previous body-to-ECEF-frame coordinate transformation matrix.
      * @param oldVx        previous velocity of body frame x coordinate with respect ECEF
      *                     frame, resolved along ECEF-frame axes and expressed in meters
@@ -1906,6 +2204,10 @@ public class ECEFKinematicsEstimator {
      * @param timeInterval time interval between epochs expressed in seconds (s).
      * @param frame        body ECEF frame containing current position, velocity and
      *                     body-to-ECEF frame coordinate transformation.
+     *                     The position contained in this frame is the position where gravity is evaluated; to
+     *                     be consistent with {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m}
+     *                     callers) this must be the position at the start of the time interval. When the body
+     *                     moves, use an overload receiving the previous frame or an explicit position instead.
      * @param oldC         previous body-to-ECEF-frame coordinate transformation matrix.
      * @param oldVelocity  previous velocity of body frame with respect ECEF frame.
      * @param result       instance where body kinematics estimation will be stored.
@@ -1925,6 +2227,10 @@ public class ECEFKinematicsEstimator {
      * @param timeInterval time interval between epochs.
      * @param frame        body ECEF frame containing current position, velocity and
      *                     body-to-ECEF frame coordinate transformation.
+     *                     The position contained in this frame is the position where gravity is evaluated; to
+     *                     be consistent with {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m}
+     *                     callers) this must be the position at the start of the time interval. When the body
+     *                     moves, use an overload receiving the previous frame or an explicit position instead.
      * @param oldC         previous body-to-ECEF-frame coordinate transformation matrix.
      * @param oldVelocity  previous velocity of body frame with respect ECEF frame.
      * @param result       instance where body kinematics estimation will be stored.
@@ -1945,16 +2251,20 @@ public class ECEFKinematicsEstimator {
      * @param timeInterval time interval between epochs expressed in seconds (s).
      * @param frame        body ECEF frame containing current position, velocity and
      *                     body-to-ECEF frame coordinate transformation.
+     *                     Notice that current position contained in this frame is ignored.
      * @param oldFrame     body ECEF frame containing previous position, velocity and
-     *                     body-to-ECEF frame coordinate transformation. Notice that
-     *                     previous position contained in this frame is ignored.
+     *                     body-to-ECEF frame coordinate transformation. The position
+     *                     contained in this frame is the position where gravity is evaluated; to be consistent
+     *                     with {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be
+     *                     the position at the start of the time interval.
      * @param result       instance where body kinematics estimation will be stored.
      * @throws IllegalArgumentException if provided time interval is negative.
      */
     public static void estimateKinematics(
             final double timeInterval, final ECEFFrame frame, final ECEFFrame oldFrame, final BodyKinematics result) {
-        estimateKinematics(timeInterval, frame, oldFrame.getCoordinateTransformation(),
-                oldFrame.getVx(), oldFrame.getVy(), oldFrame.getVz(), result);
+        estimateKinematics(timeInterval, frame.getCoordinateTransformation(), oldFrame.getCoordinateTransformation(),
+                frame.getVx(), frame.getVy(), frame.getVz(), oldFrame.getVx(), oldFrame.getVy(), oldFrame.getVz(),
+                oldFrame.getX(), oldFrame.getY(), oldFrame.getZ(), result);
     }
 
     /**
@@ -1963,16 +2273,20 @@ public class ECEFKinematicsEstimator {
      * @param timeInterval time interval between epochs.
      * @param frame        body ECEF frame containing current position, velocity and
      *                     body-to-ECEF frame coordinate transformation.
+     *                     Notice that current position contained in this frame is ignored.
      * @param oldFrame     body ECEF frame containing previous position, velocity and
-     *                     body-to-ECEF frame coordinate transformation. Notice that
-     *                     previous position contained in this frame is ignored.
+     *                     body-to-ECEF frame coordinate transformation. The position
+     *                     contained in this frame is the position where gravity is evaluated; to be consistent
+     *                     with {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be
+     *                     the position at the start of the time interval.
      * @param result       instance where body kinematics estimation will be stored.
      * @throws IllegalArgumentException if provided time interval is negative.
      */
     public static void estimateKinematics(
             final Time timeInterval, final ECEFFrame frame, final ECEFFrame oldFrame, final BodyKinematics result) {
-        estimateKinematics(timeInterval, frame, oldFrame.getCoordinateTransformation(),
-                oldFrame.getVx(), oldFrame.getVy(), oldFrame.getVz(), result);
+        estimateKinematics(timeInterval, frame.getCoordinateTransformation(), oldFrame.getCoordinateTransformation(),
+                frame.getVx(), frame.getVy(), frame.getVz(), oldFrame.getVx(), oldFrame.getVy(), oldFrame.getVz(),
+                oldFrame.getX(), oldFrame.getY(), oldFrame.getZ(), result);
     }
 
     /**
@@ -1995,10 +2309,19 @@ public class ECEFKinematicsEstimator {
      *                     frame, resolved along ECEF-frame axes.
      * @param x            cartesian x coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param y            cartesian y coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param z            cartesian z coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param result       instance where body kinematics estimation will be stored.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -2037,10 +2360,19 @@ public class ECEFKinematicsEstimator {
      *                     frame, resolved along ECEF-frame axes.
      * @param x            cartesian x coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param y            cartesian y coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param z            cartesian z coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param result       instance where body kinematics estimation will be stored.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -2078,6 +2410,9 @@ public class ECEFKinematicsEstimator {
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
      *                     frame, resolved along ECEF-frame axes.
      * @param position     cartesian body position resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param result       instance where body kinematics estimation will be stored.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -2109,6 +2444,9 @@ public class ECEFKinematicsEstimator {
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
      *                     frame, resolved along ECEF-frame axes.
      * @param position     cartesian body position resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param result       instance where body kinematics estimation will be stored.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -2127,6 +2465,10 @@ public class ECEFKinematicsEstimator {
      * @param timeInterval time interval between epochs expressed in seconds (s).
      * @param frame        body ECEF frame containing current position, velocity and
      *                     body-to-ECEF frame coordinate transformation.
+     *                     The position contained in this frame is the position where gravity is evaluated; to
+     *                     be consistent with {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m}
+     *                     callers) this must be the position at the start of the time interval. When the body
+     *                     moves, use an overload receiving the previous frame or an explicit position instead.
      * @param oldC         previous body-to-ECEF-frame coordinate transformation matrix.
      * @param oldVx        previous velocity of body frame x coordinate with respect ECEF
      *                     frame, resolved along ECEF-frame axes.
@@ -2154,6 +2496,10 @@ public class ECEFKinematicsEstimator {
      * @param timeInterval time interval between epochs.
      * @param frame        body ECEF frame containing current position, velocity and
      *                     body-to-ECEF frame coordinate transformation.
+     *                     The position contained in this frame is the position where gravity is evaluated; to
+     *                     be consistent with {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m}
+     *                     callers) this must be the position at the start of the time interval. When the body
+     *                     moves, use an overload receiving the previous frame or an explicit position instead.
      * @param oldC         previous body-to-ECEF-frame coordinate transformation matrix.
      * @param oldVx        previous velocity of body frame x coordinate with respect ECEF
      *                     frame, resolved along ECEF-frame axes.
@@ -2201,6 +2547,9 @@ public class ECEFKinematicsEstimator {
      *                     per second (m/s).
      * @param position     body position expressed in meters (m) with respect ECEF frame,
      *                     resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param result       instance where body kinematics estimation will be stored.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -2240,6 +2589,9 @@ public class ECEFKinematicsEstimator {
      *                     per second (m/s).
      * @param position     body position expressed in meters (m) with respect ECEF frame,
      *                     resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param result       instance where body kinematics estimation will be stored.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -2263,6 +2615,9 @@ public class ECEFKinematicsEstimator {
      * @param oldVelocity  previous velocity of body frame with respect ECEF frame.
      * @param position     body position expressed in meters (m) with respect ECEF frame,
      *                     resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param result       instance where body kinematics estimation will be stored.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -2285,6 +2640,9 @@ public class ECEFKinematicsEstimator {
      * @param oldVelocity  previous velocity of body frame with respect ECEF frame.
      * @param position     body position expressed in meters (m) with respect ECEF frame,
      *                     resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param result       instance where body kinematics estimation will be stored.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -2317,6 +2675,9 @@ public class ECEFKinematicsEstimator {
      *                     frame, resolved along ECEF-frame axes.
      * @param position     body position expressed in meters (m) with respect ECEF frame,
      *                     resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param result       instance where body kinematics estimation will be stored.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -2349,6 +2710,9 @@ public class ECEFKinematicsEstimator {
      *                     frame, resolved along ECEF-frame axes.
      * @param position     body position expressed in meters (m) with respect ECEF frame,
      *                     resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param result       instance where body kinematics estimation will be stored.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -2387,10 +2751,19 @@ public class ECEFKinematicsEstimator {
      *                     per second (m/s).
      * @param x            cartesian x coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param y            cartesian y coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param z            cartesian z coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @return a new body kinematics instance.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -2431,10 +2804,19 @@ public class ECEFKinematicsEstimator {
      *                     per second (m/s).
      * @param x            cartesian x coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param y            cartesian y coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param z            cartesian z coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @return a new body kinematics instance.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -2459,10 +2841,19 @@ public class ECEFKinematicsEstimator {
      * @param oldVelocity  previous velocity of body frame with respect ECEF frame.
      * @param x            cartesian x coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param y            cartesian y coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param z            cartesian z coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @return a new body kinematics instance.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -2486,10 +2877,19 @@ public class ECEFKinematicsEstimator {
      * @param oldVelocity  previous velocity of body frame with respect ECEF frame.
      * @param x            cartesian x coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param y            cartesian y coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param z            cartesian z coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @return a new body kinematics instance.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -2522,6 +2922,9 @@ public class ECEFKinematicsEstimator {
      * @param oldVz        z coordinate of previous velocity of body frame expressed in meters per second (m/s) and
      *                     resolved along ECEF-frame axes.
      * @param position     cartesian body position resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @return a new body kinematics instance.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -2554,6 +2957,9 @@ public class ECEFKinematicsEstimator {
      * @param oldVz        z coordinate of previous velocity of body frame expressed in meters per second (m/s) and
      *                     resolved along ECEF-frame axes.
      * @param position     cartesian body position resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @return a new body kinematics instance.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -2576,6 +2982,9 @@ public class ECEFKinematicsEstimator {
      * @param velocity     velocity of body frame with respect ECEF frame.
      * @param oldVelocity  previous velocity of body frame with respect ECEF frame.
      * @param position     cartesian body position resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @return a new body kinematics instance.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -2597,6 +3006,9 @@ public class ECEFKinematicsEstimator {
      * @param velocity     velocity of body frame with respect ECEF frame.
      * @param oldVelocity  previous velocity of body frame with respect ECEF frame.
      * @param position     cartesian body position resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @return a new body kinematics instance.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -2615,6 +3027,10 @@ public class ECEFKinematicsEstimator {
      * @param timeInterval time interval between epochs expressed in seconds (s).
      * @param frame        body ECEF frame containing current position, velocity and
      *                     body-to-ECEF frame coordinate transformation.
+     *                     The position contained in this frame is the position where gravity is evaluated; to
+     *                     be consistent with {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m}
+     *                     callers) this must be the position at the start of the time interval. When the body
+     *                     moves, use an overload receiving the previous frame or an explicit position instead.
      * @param oldC         previous body-to-ECEF-frame coordinate transformation matrix.
      * @param oldVx        previous velocity of body frame x coordinate with respect ECEF
      *                     frame, resolved along ECEF-frame axes and expressed in meters
@@ -2643,6 +3059,10 @@ public class ECEFKinematicsEstimator {
      * @param timeInterval time interval between epochs.
      * @param frame        body ECEF frame containing current position, velocity and
      *                     body-to-ECEF frame coordinate transformation.
+     *                     The position contained in this frame is the position where gravity is evaluated; to
+     *                     be consistent with {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m}
+     *                     callers) this must be the position at the start of the time interval. When the body
+     *                     moves, use an overload receiving the previous frame or an explicit position instead.
      * @param oldC         previous body-to-ECEF-frame coordinate transformation matrix.
      * @param oldVx        previous velocity of body frame x coordinate with respect ECEF
      *                     frame, resolved along ECEF-frame axes and expressed in meters
@@ -2671,6 +3091,10 @@ public class ECEFKinematicsEstimator {
      * @param timeInterval time interval between epochs expressed in seconds (s).
      * @param frame        body ECEF frame containing current position, velocity and
      *                     body-to-ECEF frame coordinate transformation.
+     *                     The position contained in this frame is the position where gravity is evaluated; to
+     *                     be consistent with {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m}
+     *                     callers) this must be the position at the start of the time interval. When the body
+     *                     moves, use an overload receiving the previous frame or an explicit position instead.
      * @param oldC         previous body-to-ECEF-frame coordinate transformation matrix.
      * @param oldVelocity  previous velocity of body frame with respect ECEF frame.
      * @return a new body kinematics instance.
@@ -2691,6 +3115,10 @@ public class ECEFKinematicsEstimator {
      * @param timeInterval time interval between epochs.
      * @param frame        body ECEF frame containing current position, velocity and
      *                     body-to-ECEF frame coordinate transformation.
+     *                     The position contained in this frame is the position where gravity is evaluated; to
+     *                     be consistent with {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m}
+     *                     callers) this must be the position at the start of the time interval. When the body
+     *                     moves, use an overload receiving the previous frame or an explicit position instead.
      * @param oldC         previous body-to-ECEF-frame coordinate transformation matrix.
      * @param oldVelocity  previous velocity of body frame with respect ECEF frame.
      * @return a new body kinematics instance.
@@ -2711,9 +3139,12 @@ public class ECEFKinematicsEstimator {
      * @param timeInterval time interval between epochs expressed in seconds (s).
      * @param frame        body ECEF frame containing current position, velocity and
      *                     body-to-ECEF frame coordinate transformation.
+     *                     Notice that current position contained in this frame is ignored.
      * @param oldFrame     body ECEF frame containing previous position, velocity and
-     *                     body-to-ECEF frame coordinate transformation. Notice that
-     *                     previous position contained in this frame is ignored.
+     *                     body-to-ECEF frame coordinate transformation. The position
+     *                     contained in this frame is the position where gravity is evaluated; to be consistent
+     *                     with {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be
+     *                     the position at the start of the time interval.
      * @return a new body kinematics instance.
      * @throws IllegalArgumentException if provided time interval is negative.
      */
@@ -2730,9 +3161,12 @@ public class ECEFKinematicsEstimator {
      * @param timeInterval time interval between epochs.
      * @param frame        body ECEF frame containing current position, velocity and
      *                     body-to-ECEF frame coordinate transformation.
+     *                     Notice that current position contained in this frame is ignored.
      * @param oldFrame     body ECEF frame containing previous position, velocity and
-     *                     body-to-ECEF frame coordinate transformation. Notice that
-     *                     previous position contained in this frame is ignored.
+     *                     body-to-ECEF frame coordinate transformation. The position
+     *                     contained in this frame is the position where gravity is evaluated; to be consistent
+     *                     with {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be
+     *                     the position at the start of the time interval.
      * @return a new body kinematics instance.
      * @throws IllegalArgumentException if provided time interval is negative.
      */
@@ -2763,10 +3197,19 @@ public class ECEFKinematicsEstimator {
      *                     frame, resolved along ECEF-frame axes.
      * @param x            cartesian x coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param y            cartesian y coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param z            cartesian z coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @return a new body kinematics instance.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -2800,10 +3243,19 @@ public class ECEFKinematicsEstimator {
      *                     frame, resolved along ECEF-frame axes.
      * @param x            cartesian x coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param y            cartesian y coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @param z            cartesian z coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @return a new body kinematics instance.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -2836,6 +3288,9 @@ public class ECEFKinematicsEstimator {
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
      *                     frame, resolved along ECEF-frame axes.
      * @param position     cartesian body position resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @return a new body kinematics instance.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -2868,6 +3323,9 @@ public class ECEFKinematicsEstimator {
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
      *                     frame, resolved along ECEF-frame axes.
      * @param position     cartesian body position resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @return a new body kinematics instance.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -2887,6 +3345,10 @@ public class ECEFKinematicsEstimator {
      * @param timeInterval time interval between epochs expressed in seconds (s).
      * @param frame        body ECEF frame containing current position, velocity and
      *                     body-to-ECEF frame coordinate transformation.
+     *                     The position contained in this frame is the position where gravity is evaluated; to
+     *                     be consistent with {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m}
+     *                     callers) this must be the position at the start of the time interval. When the body
+     *                     moves, use an overload receiving the previous frame or an explicit position instead.
      * @param oldC         previous body-to-ECEF-frame coordinate transformation matrix.
      * @param oldVx        previous velocity of body frame x coordinate with respect ECEF
      *                     frame, resolved along ECEF-frame axes.
@@ -2912,6 +3374,10 @@ public class ECEFKinematicsEstimator {
      * @param timeInterval time interval between epochs.
      * @param frame        body ECEF frame containing current position, velocity and
      *                     body-to-ECEF frame coordinate transformation.
+     *                     The position contained in this frame is the position where gravity is evaluated; to
+     *                     be consistent with {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m}
+     *                     callers) this must be the position at the start of the time interval. When the body
+     *                     moves, use an overload receiving the previous frame or an explicit position instead.
      * @param oldC         previous body-to-ECEF-frame coordinate transformation matrix.
      * @param oldVx        previous velocity of body frame x coordinate with respect ECEF
      *                     frame, resolved along ECEF-frame axes.
@@ -2957,6 +3423,9 @@ public class ECEFKinematicsEstimator {
      *                     per second (m/s).
      * @param position     body position expressed in meters (m) with respect ECEF frame,
      *                     resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @return a new body kinematics instance.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -2995,6 +3464,9 @@ public class ECEFKinematicsEstimator {
      *                     per second (m/s).
      * @param position     body position expressed in meters (m) with respect ECEF frame,
      *                     resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @return a new body kinematics instance.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -3017,6 +3489,9 @@ public class ECEFKinematicsEstimator {
      * @param oldVelocity  previous velocity of body frame with respect ECEF frame.
      * @param position     body position expressed in meters (m) with respect ECEF frame,
      *                     resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @return a new body kinematics instance.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -3039,6 +3514,9 @@ public class ECEFKinematicsEstimator {
      * @param oldVelocity  previous velocity of body frame with respect ECEF frame.
      * @param position     body position expressed in meters (m) with respect ECEF frame,
      *                     resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @return a new body kinematics instance.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -3071,6 +3549,9 @@ public class ECEFKinematicsEstimator {
      *                     frame, resolved along ECEF-frame axes.
      * @param position     body position expressed in meters (m) with respect ECEF frame,
      *                     resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @return a new body kinematics instance.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -3103,6 +3584,9 @@ public class ECEFKinematicsEstimator {
      *                     frame, resolved along ECEF-frame axes.
      * @param position     body position expressed in meters (m) with respect ECEF frame,
      *                     resolved along ECEF-frame axes.
+     *                     This is the position where gravity is evaluated; to be consistent with
+     *                     {@code ECEFInertialNavigator} (and {@code Kinematics_ECEF.m} callers) this must be the
+     *                     position at the start of the time interval.
      * @return a new body kinematics instance.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
