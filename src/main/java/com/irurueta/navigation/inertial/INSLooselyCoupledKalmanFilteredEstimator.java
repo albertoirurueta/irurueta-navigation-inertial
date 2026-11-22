@@ -1580,6 +1580,12 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      * the interval since the first IMU sample, or zero if none was provided), and the latest bias-corrected specific force is used to build the
      * transition matrix. Once the epoch is solved, the closed-loop correction is
      * applied to the INS solution (frame) and estimated biases are updated.
+     * The fix is compared against the INS solution at the time of the last provided
+     * IMU sample (see {@link #getLastKinematicsTimestamp()}), which is not advanced or
+     * moved back to provided timestamp. For best accuracy, a fix must be provided right
+     * after the IMU sample whose timestamp is closest to the timestamp of the fix:
+     * otherwise the distance travelled between both timestamps is attributed to INS
+     * errors.
      * Call to this method will be ignored if the interval between provided timestamp
      * and the timestamp of the last Kalman filter epoch is not positive or is less
      * than the epoch interval. A fix arriving exactly one epoch interval after the
@@ -1610,6 +1616,12 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      * the interval since the first IMU sample, or zero if none was provided), and the latest bias-corrected specific force is used to build the
      * transition matrix. Once the epoch is solved, the closed-loop correction is
      * applied to the INS solution (frame) and estimated biases are updated.
+     * The fix is compared against the INS solution at the time of the last provided
+     * IMU sample (see {@link #getLastKinematicsTimestamp()}), which is not advanced or
+     * moved back to provided timestamp. For best accuracy, a fix must be provided right
+     * after the IMU sample whose timestamp is closest to the timestamp of the fix:
+     * otherwise the distance travelled between both timestamps is attributed to INS
+     * errors.
      * Call to this method will be ignored if the interval between provided timestamp
      * and the timestamp of the last Kalman filter epoch is not positive or is less
      * than the epoch interval. A fix arriving exactly one epoch interval after the
@@ -1714,6 +1726,12 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      * the interval since the first IMU sample, or zero if none was provided), and the latest bias-corrected specific force is used to build the
      * transition matrix. Once the epoch is solved, the closed-loop correction is
      * applied to the INS solution (frame) and estimated biases are updated.
+     * The fix is compared against the INS solution at the time of the last provided
+     * IMU sample (see {@link #getLastKinematicsTimestamp()}), which is not advanced or
+     * moved back to provided timestamp. For best accuracy, a fix must be provided right
+     * after the IMU sample whose timestamp is closest to the timestamp of the fix:
+     * otherwise the distance travelled between both timestamps is attributed to INS
+     * errors.
      * Call to this method will be ignored if the interval between provided timestamp
      * and the timestamp of the last Kalman filter epoch is not positive or is less
      * than the epoch interval. A fix arriving exactly one epoch interval after the

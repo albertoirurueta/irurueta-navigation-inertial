@@ -77,6 +77,11 @@ before position and velocity are initialised are kept.
 Feed every IMU sample as it arrives, and every fix or set of GNSS measurements at the timestamp it is
 valid for. Timestamps are expressed in seconds (or as `Time` instances) on a common time base.
 
+A fix or a set of measurements is compared against the INS solution at the time of the last provided IMU
+sample: the solution is not advanced or moved back to the timestamp of the fix. Provide each fix right
+after the IMU sample whose timestamp is closest to it; otherwise the distance travelled between both
+timestamps is attributed to INS errors (1.5 m for a 50 ms offset at 30 m/s).
+
 === INSLooselyCoupledKalmanFilteredEstimator
 
 [source,java]

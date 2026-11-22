@@ -1593,6 +1593,11 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimator {
      * solution as a measurement valid at provided timestamp (the solution is not
      * navigated forward in time), and the closed-loop correction is applied to the INS
      * solution.
+     * Measurements are compared against the INS solution at the time of the last
+     * provided IMU sample, which is not advanced or moved back to provided timestamp.
+     * For best accuracy, measurements must be provided right after the IMU sample whose
+     * timestamp is closest to theirs: otherwise the distance travelled between both
+     * timestamps is attributed to INS errors.
      * Call to this method will be ignored if the interval between provided timestamp
      * and the timestamp of the last Kalman filter epoch is not positive or is less
      * than the epoch interval. Measurements arriving exactly one epoch interval after
@@ -1623,6 +1628,11 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimator {
      * solution as a measurement valid at provided timestamp (the solution is not
      * navigated forward in time), and the closed-loop correction is applied to the INS
      * solution.
+     * Measurements are compared against the INS solution at the time of the last
+     * provided IMU sample, which is not advanced or moved back to provided timestamp.
+     * For best accuracy, measurements must be provided right after the IMU sample whose
+     * timestamp is closest to theirs: otherwise the distance travelled between both
+     * timestamps is attributed to INS errors.
      * Call to this method will be ignored if the interval between provided timestamp
      * and the timestamp of the last Kalman filter epoch is not positive or is less
      * than the epoch interval. Measurements arriving exactly one epoch interval after
