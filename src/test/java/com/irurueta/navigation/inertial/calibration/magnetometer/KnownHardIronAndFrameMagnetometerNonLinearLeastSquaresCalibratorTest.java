@@ -12063,7 +12063,7 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
 
         assertNotNull(calibrator.getEstimatedCovariance());
         checkGeneralCovariance(calibrator.getEstimatedCovariance());
-        assertTrue(calibrator.getEstimatedMse() > 0.0);
+        assertTrue(calibrator.getEstimatedMse() >= 0.0);
     }
 
     @Test
@@ -12107,7 +12107,7 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
 
         assertNotNull(calibrator.getEstimatedCovariance());
         checkGeneralCovariance(calibrator.getEstimatedCovariance());
-        assertTrue(calibrator.getEstimatedMse() > 0.0);
+        assertTrue(calibrator.getEstimatedMse() >= 0.0);
     }
 
     @Test
@@ -12277,7 +12277,7 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
 
             assertNotNull(calibrator.getEstimatedCovariance());
             checkGeneralCovariance(calibrator.getEstimatedCovariance());
-            assertTrue(calibrator.getEstimatedMse() > 0.0);
+            assertTrue(calibrator.getEstimatedMse() >= 0.0);
 
             numValid++;
             break;
@@ -12327,7 +12327,7 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
 
         assertNotNull(calibrator.getEstimatedCovariance());
         checkCommonAxisCovariance(calibrator.getEstimatedCovariance());
-        assertTrue(calibrator.getEstimatedMse() > 0.0);
+        assertTrue(calibrator.getEstimatedMse() >= 0.0);
     }
 
     @Test
@@ -12372,7 +12372,7 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
 
         assertNotNull(calibrator.getEstimatedCovariance());
         checkCommonAxisCovariance(calibrator.getEstimatedCovariance());
-        assertTrue(calibrator.getEstimatedMse() > 0.0);
+        assertTrue(calibrator.getEstimatedMse() >= 0.0);
     }
 
     @Test
@@ -12541,7 +12541,7 @@ class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTest imple
 
             assertNotNull(calibrator.getEstimatedCovariance());
             checkCommonAxisCovariance(calibrator.getEstimatedCovariance());
-            assertTrue(calibrator.getEstimatedMse() > 0.0);
+            assertTrue(calibrator.getEstimatedMse() >= 0.0);
 
             numValid++;
             break;

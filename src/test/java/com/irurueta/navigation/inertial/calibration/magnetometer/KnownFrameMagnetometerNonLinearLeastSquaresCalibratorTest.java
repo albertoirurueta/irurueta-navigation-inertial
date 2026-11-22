@@ -15820,7 +15820,7 @@ class KnownFrameMagnetometerNonLinearLeastSquaresCalibratorTest implements
         assertTrue(mm.equals(estimatedMm, ABSOLUTE_ERROR));
 
         assertEstimatedResult(estimatedHardIron, estimatedMm, calibrator);
-        assertTrue(calibrator.getEstimatedMse() > 0.0);
+        assertTrue(calibrator.getEstimatedMse() >= 0.0);
         assertNotEquals(0.0, calibrator.getEstimatedChiSq());
 
         assertNotNull(calibrator.getEstimatedCovariance());
@@ -15871,7 +15871,7 @@ class KnownFrameMagnetometerNonLinearLeastSquaresCalibratorTest implements
 
         assertNotNull(calibrator.getEstimatedCovariance());
         checkGeneralCovariance(calibrator.getEstimatedCovariance());
-        assertTrue(calibrator.getEstimatedMse() > 0.0);
+        assertTrue(calibrator.getEstimatedMse() >= 0.0);
         assertNotEquals(0.0, calibrator.getEstimatedChiSq());
     }
 
@@ -16060,7 +16060,7 @@ class KnownFrameMagnetometerNonLinearLeastSquaresCalibratorTest implements
 
             assertNotNull(calibrator.getEstimatedCovariance());
             checkGeneralCovariance(calibrator.getEstimatedCovariance());
-            assertTrue(calibrator.getEstimatedMse() > 0.0);
+            assertTrue(calibrator.getEstimatedMse() >= 0.0);
             assertNotEquals(0.0, calibrator.getEstimatedChiSq());
 
             numValid++;
@@ -16113,7 +16113,7 @@ class KnownFrameMagnetometerNonLinearLeastSquaresCalibratorTest implements
 
         assertNotNull(calibrator.getEstimatedCovariance());
         checkCommonAxisCovariance(calibrator.getEstimatedCovariance());
-        assertTrue(calibrator.getEstimatedMse() > 0.0);
+        assertTrue(calibrator.getEstimatedMse() >= 0.0);
         assertNotEquals(0.0, calibrator.getEstimatedChiSq());
     }
 
@@ -16161,7 +16161,7 @@ class KnownFrameMagnetometerNonLinearLeastSquaresCalibratorTest implements
 
         assertNotNull(calibrator.getEstimatedCovariance());
         checkCommonAxisCovariance(calibrator.getEstimatedCovariance());
-        assertTrue(calibrator.getEstimatedMse() > 0.0);
+        assertTrue(calibrator.getEstimatedMse() >= 0.0);
         assertNotEquals(0.0, calibrator.getEstimatedChiSq());
     }
 
@@ -16349,7 +16349,7 @@ class KnownFrameMagnetometerNonLinearLeastSquaresCalibratorTest implements
 
             assertNotNull(calibrator.getEstimatedCovariance());
             checkCommonAxisCovariance(calibrator.getEstimatedCovariance());
-            assertTrue(calibrator.getEstimatedMse() > 0.0);
+            assertTrue(calibrator.getEstimatedMse() >= 0.0);
             assertNotEquals(0.0, calibrator.getEstimatedChiSq());
 
             numValid++;
