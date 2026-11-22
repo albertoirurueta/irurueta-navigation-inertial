@@ -26,7 +26,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
   gravity/gravitation at the start-of-interval position (the one in `oldFrame`) instead of the end-of-interval one,
   so that they are the exact inverse of `ECEFInertialNavigator` / `ECIInertialNavigator`.
 - The epoch gate of the three filtered estimators now accepts fixes/measurements arriving exactly one epoch
-  interval after the previous Kalman epoch (they were previously rejected).
+  interval after the previous Kalman epoch (they were previously rejected), also when the difference of both
+  timestamps is rounded below the epoch interval (e.g. `0.7 - 0.2 < 0.5`).
+- The first Kalman epoch of the three filtered estimators now propagates the covariance over the time elapsed since
+  the first IMU sample, instead of using a zero propagation interval.
+- `INSGNSSTightlyCoupledKalmanFilteredEstimator` now integrates IMU samples provided before the first GNSS
+  measurements, so that attitude changes before position and velocity are initialised are not lost.
 
 ### Added
 

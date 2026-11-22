@@ -65,7 +65,12 @@ flowchart TD
 The *epoch interval* (`setEpochInterval(...)`, or the matching constructor argument) is the minimum time
 between two Kalman filter epochs. A fix or a set of measurements is ignored when it is older than, or
 less than one epoch interval after, the previous epoch; one arriving exactly one epoch interval later is
-accepted. The epoch interval does not limit the rate of the IMU samples.
+accepted (up to the rounding error of the timestamps). The epoch interval does not limit the rate of the
+IMU samples.
+
+The first Kalman filter epoch propagates the covariance over the time elapsed since the first IMU sample.
+IMU samples provided before the first fix or GNSS measurements are integrated too, so attitude changes
+before position and velocity are initialised are kept.
 
 == Usage loop
 

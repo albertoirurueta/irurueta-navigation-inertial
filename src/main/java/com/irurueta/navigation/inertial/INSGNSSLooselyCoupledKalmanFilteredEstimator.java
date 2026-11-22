@@ -1648,11 +1648,9 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimator {
         }
 
         final var lastStateTimestamp = insEstimator.getLastStateTimestamp();
-        if (lastStateTimestamp != null) {
-            final var propagationInterval = timestamp - lastStateTimestamp;
-            if (propagationInterval <= 0.0 || propagationInterval < insEstimator.getEpochInterval()) {
-                return false;
-            }
+        if (lastStateTimestamp != null && INSLooselyCoupledKalmanFilteredEstimator.isEpochRejected(timestamp,
+                lastStateTimestamp, insEstimator.getEpochInterval())) {
+            return false;
         }
 
         try {

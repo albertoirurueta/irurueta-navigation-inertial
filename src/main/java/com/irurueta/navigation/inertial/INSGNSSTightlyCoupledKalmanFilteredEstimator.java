@@ -23,6 +23,7 @@ import com.irurueta.navigation.NotReadyException;
 import com.irurueta.navigation.frames.CoordinateTransformation;
 import com.irurueta.navigation.frames.ECEFFrame;
 import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeException;
+import com.irurueta.navigation.geodesic.Constants;
 import com.irurueta.navigation.gnss.GNSSEstimation;
 import com.irurueta.navigation.gnss.GNSSException;
 import com.irurueta.navigation.gnss.GNSSLeastSquaresPositionAndVelocityEstimator;
@@ -144,6 +145,14 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * yet by a Kalman filter epoch.
      */
     private boolean measurementsPending;
+
+    /**
+     * Timestamp expressed in seconds since epoch time of the first IMU sample
+     * (body kinematics) that was provided to this estimator.
+     * The first Kalman filter epoch propagates the covariance over the interval
+     * elapsed since this timestamp.
+     */
+    private Double firstKinematicsTimestamp;
 
     /**
      * Indicates whether this estimator is running or not.
@@ -1777,16 +1786,20 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
             if (kinematics != null) {
                 correctKinematics(kinematics);
 
-                // position and velocity of the frame are only known once GNSS
-                // measurements have been provided
-                if (estimation != null && lastKinematicsTimestamp != null) {
-                    // integrate sample over the interval elapsed since previous sample
+                if (lastKinematicsTimestamp != null) {
+                    // integrate sample over the interval elapsed since previous sample.
+                    // Every sample is integrated so that attitude changes are never lost,
+                    // even before GNSS measurements initialize position and velocity
                     ECEFInertialNavigator.navigateECEF(timestamp - lastKinematicsTimestamp, frame,
                             correctedKinematics, frame);
 
-                    // estimation and state always hold the INS-propagated solution
-                    estimation.setPositionCoordinates(frame.getX(), frame.getY(), frame.getZ());
-                    estimation.setVelocityCoordinates(frame.getVx(), frame.getVy(), frame.getVz());
+                    // estimation and state always hold the INS-propagated solution.
+                    // Position and velocity are only known once GNSS measurements have
+                    // been provided
+                    if (estimation != null) {
+                        estimation.setPositionCoordinates(frame.getX(), frame.getY(), frame.getZ());
+                        estimation.setVelocityCoordinates(frame.getVx(), frame.getVy(), frame.getVz());
+                    }
                     if (state != null) {
                         state.setFrame(frame);
                     }
@@ -1795,6 +1808,9 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
 
             this.kinematics = kinematics;
             lastKinematicsTimestamp = timestamp;
+            if (firstKinematicsTimestamp == null) {
+                firstKinematicsTimestamp = timestamp;
+            }
 
             if (listener != null) {
                 listener.onUpdateBodyKinematicsEnd(this);
@@ -1904,6 +1920,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
         state = null;
         lastStateTimestamp = null;
         lastKinematicsTimestamp = null;
+        firstKinematicsTimestamp = null;
         measurementsPending = false;
         kinematics = null;
         correctedKinematics = null;
@@ -1931,8 +1948,8 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
             return false;
         }
 
-        final var propagationInterval = timestamp - lastStateTimestamp;
-        return propagationInterval <= 0.0 || propagationInterval < epochInterval;
+        return INSLooselyCoupledKalmanFilteredEstimator.isEpochRejected(timestamp, lastStateTimestamp,
+                epochInterval);
     }
 
     /**
@@ -1946,7 +1963,16 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * @throws INSGNSSException if estimation fails due to numerical instabilities.
      */
     private void runEpoch(final double timestamp) throws INSGNSSException {
-        final var propagationInterval = lastStateTimestamp != null ? timestamp - lastStateTimestamp : 0.0;
+        // the first epoch propagates the covariance over the time the INS solution has
+        // been integrated
+        final double propagationInterval;
+        if (lastStateTimestamp != null) {
+            propagationInterval = timestamp - lastStateTimestamp;
+        } else if (firstKinematicsTimestamp != null) {
+            propagationInterval = Math.max(timestamp - firstKinematicsTimestamp, 0.0);
+        } else {
+            propagationInterval = 0.0;
+        }
 
         try {
             running = true;
@@ -2026,7 +2052,10 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      */
     private void initFrame() {
         if (frame == null) {
+            // until GNSS measurements initialize position and velocity, the frame is
+            // placed at the Earth surface so that IMU samples can be integrated
             frame = new ECEFFrame();
+            frame.setCoordinates(Constants.EARTH_EQUATORIAL_RADIUS_WGS84, 0.0, 0.0);
         }
     }
 

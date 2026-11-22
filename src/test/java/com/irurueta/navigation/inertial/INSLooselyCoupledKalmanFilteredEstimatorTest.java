@@ -2803,6 +2803,87 @@ class INSLooselyCoupledKalmanFilteredEstimatorTest implements INSLooselyCoupledK
     }
 
     /**
+     * Checks that a fix arriving one epoch interval after the previous epoch is accepted even when the
+     * difference of both timestamps is rounded below the epoch interval (0.7 - 0.2 is lower than 0.5 in
+     * floating point arithmetic).
+     *
+     * @throws LockedException   if estimator is locked.
+     * @throws NotReadyException if estimator is not ready.
+     * @throws INSException      if estimation fails.
+     */
+    @Test
+    void testEpochGateToleratesRoundingErrors() throws LockedException, NotReadyException, INSException {
+        // make sure that this test exercises a difference rounded below the epoch interval
+        assertTrue(0.7 - 0.2 < GATE_EPOCH_INTERVAL);
+
+        final var frame = KalmanFilteredEstimatorTrajectory.yawingStationary(0.0, FIX_TEST_DURATION)
+                .getInitialFrame();
+        final var position = frame.getECEFPosition();
+        final var velocity = frame.getECEFVelocity();
+
+        final var estimator = new INSLooselyCoupledKalmanFilteredEstimator(createKalmanConfig(),
+                GATE_EPOCH_INTERVAL, createInitConfig(), frame, this);
+        reset();
+
+        assertTrue(estimator.updatePositionAndVelocity(position, velocity, 0.2));
+        assertTrue(estimator.updatePositionAndVelocity(position, velocity, 0.7));
+        assertEquals(0.7, estimator.getLastStateTimestamp(), 0.0);
+
+        assertFalse(INSLooselyCoupledKalmanFilteredEstimator.isEpochRejected(0.7, 0.2, GATE_EPOCH_INTERVAL));
+        assertFalse(INSLooselyCoupledKalmanFilteredEstimator.isEpochRejected(1.0, 0.5, GATE_EPOCH_INTERVAL));
+        assertFalse(INSLooselyCoupledKalmanFilteredEstimator.isEpochRejected(1.0, 0.5, 0.0));
+        assertTrue(INSLooselyCoupledKalmanFilteredEstimator.isEpochRejected(0.69, 0.2, GATE_EPOCH_INTERVAL));
+        assertTrue(INSLooselyCoupledKalmanFilteredEstimator.isEpochRejected(0.2, 0.2, GATE_EPOCH_INTERVAL));
+        assertTrue(INSLooselyCoupledKalmanFilteredEstimator.isEpochRejected(0.2, 0.2, 0.0));
+        assertTrue(INSLooselyCoupledKalmanFilteredEstimator.isEpochRejected(0.1, 0.2, 0.0));
+    }
+
+    /**
+     * Checks that the first Kalman filter epoch propagates the covariance over the time elapsed since
+     * the first IMU sample: an estimator that has integrated IMU samples before its first fix must end
+     * with a different covariance (and a larger gyroscope bias uncertainty) than an estimator receiving the
+     * same fix with no elapsed time.
+     *
+     * @throws LockedException   if estimator is locked.
+     * @throws NotReadyException if estimator is not ready.
+     * @throws INSException      if estimation fails.
+     */
+    @Test
+    void testFirstEpochPropagatesOverElapsedTime() throws LockedException, NotReadyException, INSException {
+        final var trajectory = KalmanFilteredEstimatorTrajectory.yawingStationary(0.0, FIX_TEST_DURATION);
+        final var kinematics = trajectory.getKinematics();
+        final var finalTimestamp = trajectory.getTimestamp(kinematics.size());
+        final var finalFrame = trajectory.getFinalFrame();
+        final var position = finalFrame.getECEFPosition();
+        final var velocity = finalFrame.getECEFVelocity();
+
+        final var elapsed = new INSLooselyCoupledKalmanFilteredEstimator(createKalmanConfig(),
+                GATE_EPOCH_INTERVAL, createInitConfig(), new ECEFFrame(trajectory.getInitialFrame()));
+        assertTrue(elapsed.update(kinematics.getFirst(), trajectory.getTimestamp(0)));
+        for (var i = 0; i < kinematics.size(); i++) {
+            assertTrue(elapsed.update(kinematics.get(i), trajectory.getTimestamp(i + 1)));
+        }
+        assertNull(elapsed.getLastStateTimestamp());
+        assertTrue(elapsed.updatePositionAndVelocity(position, velocity, finalTimestamp));
+        assertEquals(finalTimestamp, elapsed.getLastStateTimestamp(), 0.0);
+
+        final var immediate = new INSLooselyCoupledKalmanFilteredEstimator(createKalmanConfig(),
+                GATE_EPOCH_INTERVAL, createInitConfig(), new ECEFFrame(finalFrame));
+        assertTrue(immediate.updatePositionAndVelocity(position, velocity, finalTimestamp));
+
+        final var elapsedCovariance = elapsed.getState().getCovariance();
+        final var immediateCovariance = immediate.getState().getCovariance();
+        // both covariances would be equal if the first epoch used a zero propagation interval
+        assertNotEquals(immediateCovariance, elapsedCovariance);
+
+        // gyroscope biases are not observable in such a short time, hence their uncertainty can only
+        // grow with the elapsed time because of their random walk
+        for (var i = 12; i < 15; i++) {
+            assertTrue(elapsedCovariance.getElementAt(i, i) > immediateCovariance.getElementAt(i, i));
+        }
+    }
+
+    /**
      * Checks that with a zero epoch interval only fixes that do not advance time are ignored.
      *
      * @throws LockedException   if estimator is locked.

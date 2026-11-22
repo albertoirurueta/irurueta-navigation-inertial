@@ -48,6 +48,13 @@ import com.irurueta.units.TimeUnit;
 public class INSLooselyCoupledKalmanFilteredEstimator {
 
     /**
+     * Number of units in the last place of the compared timestamps tolerated when
+     * checking that the interval between Kalman filter epochs is not less than the
+     * epoch interval.
+     */
+    private static final double EPOCH_INTERVAL_TOLERANCE_ULPS = 4.0;
+
+    /**
      * Listener to notify events raised by this instance.
      */
     private INSLooselyCoupledKalmanFilteredEstimatorListener listener;
@@ -111,6 +118,14 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      * (body kinematics) that was provided to this estimator.
      */
     private Double lastKinematicsTimestamp;
+
+    /**
+     * Timestamp expressed in seconds since epoch time of the first IMU sample
+     * (body kinematics) that was provided to this estimator.
+     * The first Kalman filter epoch propagates the covariance over the interval
+     * elapsed since this timestamp.
+     */
+    private Double firstKinematicsTimestamp;
 
     /**
      * Indicates whether this estimator is running or not.
@@ -1529,6 +1544,9 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
 
             this.kinematics = kinematics;
             lastKinematicsTimestamp = timestamp;
+            if (firstKinematicsTimestamp == null) {
+                firstKinematicsTimestamp = timestamp;
+            }
 
             if (listener != null) {
                 listener.onUpdateEnd(this);
@@ -1558,8 +1576,8 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      * filter epoch.
      * The INS-propagated solution held by this estimator is used as the predicted
      * state, provided fix is used as the measurement, the interval since the last
-     * Kalman filter epoch is used as the propagation interval (zero on the first
-     * epoch), and the latest bias-corrected specific force is used to build the
+     * Kalman filter epoch is used as the propagation interval (on the first epoch,
+     * the interval since the first IMU sample, or zero if none was provided), and the latest bias-corrected specific force is used to build the
      * transition matrix. Once the epoch is solved, the closed-loop correction is
      * applied to the INS solution (frame) and estimated biases are updated.
      * Call to this method will be ignored if the interval between provided timestamp
@@ -1588,8 +1606,8 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      * filter epoch.
      * The INS-propagated solution held by this estimator is used as the predicted
      * state, provided fix is used as the measurement, the interval since the last
-     * Kalman filter epoch is used as the propagation interval (zero on the first
-     * epoch), and the latest bias-corrected specific force is used to build the
+     * Kalman filter epoch is used as the propagation interval (on the first epoch,
+     * the interval since the first IMU sample, or zero if none was provided), and the latest bias-corrected specific force is used to build the
      * transition matrix. Once the epoch is solved, the closed-loop correction is
      * applied to the INS solution (frame) and estimated biases are updated.
      * Call to this method will be ignored if the interval between provided timestamp
@@ -1626,9 +1644,20 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
             throw new NotReadyException();
         }
 
-        final var propagationInterval = lastStateTimestamp != null ? timestamp - lastStateTimestamp : 0.0;
-        if (lastStateTimestamp != null && (propagationInterval <= 0.0 || propagationInterval < epochInterval)) {
+        if (lastStateTimestamp != null && isEpochRejected(timestamp, lastStateTimestamp, epochInterval)) {
             return false;
+        }
+
+        // the first epoch propagates the covariance over the time the INS solution has
+        // been integrated (as Groves' reference, where the time of the last epoch is
+        // initialized to the start time)
+        final double propagationInterval;
+        if (lastStateTimestamp != null) {
+            propagationInterval = timestamp - lastStateTimestamp;
+        } else if (firstKinematicsTimestamp != null) {
+            propagationInterval = Math.max(timestamp - firstKinematicsTimestamp, 0.0);
+        } else {
+            propagationInterval = 0.0;
         }
 
         try {
@@ -1681,8 +1710,8 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      * filter epoch.
      * The INS-propagated solution held by this estimator is used as the predicted
      * state, provided fix is used as the measurement, the interval since the last
-     * Kalman filter epoch is used as the propagation interval (zero on the first
-     * epoch), and the latest bias-corrected specific force is used to build the
+     * Kalman filter epoch is used as the propagation interval (on the first epoch,
+     * the interval since the first IMU sample, or zero if none was provided), and the latest bias-corrected specific force is used to build the
      * transition matrix. Once the epoch is solved, the closed-loop correction is
      * applied to the INS solution (frame) and estimated biases are updated.
      * Call to this method will be ignored if the interval between provided timestamp
@@ -1778,6 +1807,7 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
         state = null;
         lastStateTimestamp = null;
         lastKinematicsTimestamp = null;
+        firstKinematicsTimestamp = null;
         kinematics = null;
         correctedKinematics = null;
         frame = null;
@@ -1787,6 +1817,32 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
         }
 
         running = false;
+    }
+
+    /**
+     * Indicates whether a Kalman filter epoch at provided timestamp must be rejected
+     * because the interval elapsed since the previous epoch is not positive or is
+     * less than the epoch interval.
+     * An interval equal to the epoch interval is accepted, up to the rounding errors of
+     * provided timestamps.
+     *
+     * @param timestamp          timestamp of the epoch expressed in seconds (s).
+     * @param lastStateTimestamp timestamp of the previous epoch expressed in seconds (s).
+     * @param epochInterval      minimum interval between epochs expressed in seconds (s).
+     * @return true if epoch must be rejected, false otherwise.
+     */
+    static boolean isEpochRejected(final double timestamp, final double lastStateTimestamp,
+                                   final double epochInterval) {
+        final var propagationInterval = timestamp - lastStateTimestamp;
+        if (propagationInterval <= 0.0) {
+            return true;
+        }
+
+        // the difference of two timestamps is only accurate up to their rounding errors
+        // (e.g. 0.7 - 0.2 is lower than 0.5), which must not reject an epoch arriving
+        // exactly one epoch interval after the previous one
+        final var tolerance = EPOCH_INTERVAL_TOLERANCE_ULPS * (Math.ulp(timestamp) + Math.ulp(lastStateTimestamp));
+        return propagationInterval < epochInterval - tolerance;
     }
 
     /**

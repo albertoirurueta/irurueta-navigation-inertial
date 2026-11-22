@@ -3157,6 +3157,33 @@ class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements INSGNSSTightly
     }
 
     /**
+     * Checks that IMU samples provided before the first GNSS measurements are integrated: rotation
+     * occurred before position and velocity are initialised must not be lost.
+     *
+     * @throws LockedException                               if estimator is locked.
+     * @throws NotReadyException                             if estimator is not ready.
+     * @throws INSGNSSException                              if estimation fails.
+     * @throws InvalidSourceAndDestinationFrameTypeException never thrown.
+     */
+    @Test
+    void testRotationBeforeFirstMeasurementsIsIntegrated() throws LockedException, NotReadyException,
+            INSGNSSException, InvalidSourceAndDestinationFrameTypeException {
+        final var trajectory = KalmanFilteredEstimatorTrajectory.yawingStationary(YAW_RATE, TRAJECTORY_DURATION);
+        final var estimator = createEstimator(0.0, trajectory);
+
+        // no GNSS measurements are provided until the end of the trajectory
+        feed(estimator, trajectory);
+        assertNull(estimator.getEstimation());
+
+        final var timestamp = trajectory.getTimestamp(trajectory.getKinematics().size());
+        assertTrue(estimator.updateMeasurements(generateMeasurements(timestamp, trajectory.getFinalFrame()),
+                timestamp));
+
+        final var nedFrame = ECEFtoNEDFrameConverter.convertECEFtoNEDAndReturnNew(currentFrame(estimator));
+        assertEquals(EXPECTED_FINAL_YAW, nedFrame.getCoordinateTransformation().getYawEulerAngle(), YAW_TOLERANCE);
+    }
+
+    /**
      * Checks that the specific force of every IMU sample is integrated: after moving north at 10 m/s
      * for 10 s, with GNSS measurements provided only at the start, the estimated position and velocity
      * must be the true ones (up to the accuracy of the GNSS initialisation), and must equal the
