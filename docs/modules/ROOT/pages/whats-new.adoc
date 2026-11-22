@@ -4,8 +4,15 @@
 
 NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
 
-== Unreleased
+== 1.11.0
 
+* 🐛 The filtered estimators (`INSLooselyCoupledKalmanFilteredEstimator`, `INSGNSSLooselyCoupledKalmanFilteredEstimator` and `INSGNSSTightlyCoupledKalmanFilteredEstimator`) now follow Groves' reference algorithms: every IMU sample is integrated with the ECEF inertial navigation equations, and each Kalman epoch uses the INS-propagated solution as its predicted state and applies the closed-loop correction back to it.
+* 🐛 `INSGNSSLooselyCoupledKalmanFilteredEstimator` uses the GNSS least-squares solution as the Kalman measurement at its own timestamp; `INSGNSSTightlyCoupledKalmanFilteredEstimator` re-orthonormalises the attitude after each epoch, initialises the receiver clock offset and drift from the least-squares solution, and no longer loses IMU samples provided before the first GNSS measurements.
+* 🐛 `ECEFKinematicsEstimator` and `ECIKinematicsEstimator` are now the exact inverse of `ECEFInertialNavigator` / `ECIInertialNavigator` (Earth-rotation term and gravity evaluated at the start of the interval).
+* 🐛 The epoch gate of the filtered estimators accepts fixes/measurements arriving exactly one epoch interval after the previous epoch, and the first epoch propagates the covariance over the time elapsed since the first IMU sample.
+* ✨ New `INSLooselyCoupledKalmanFilteredEstimator.updatePositionAndVelocity(...)` overloads, which provide a position and velocity fix and run a Kalman filter epoch with it.
+* ✨ New `getLastKinematicsTimestamp()` and `getLastKinematicsTimestampAsTime(...)` on `INSLooselyCoupledKalmanFilteredEstimator` and `INSGNSSTightlyCoupledKalmanFilteredEstimator`.
+* ♻️ Behaviour change with unchanged signatures: `update` / `updateBodyKinematics` only integrate IMU samples and no longer run a Kalman epoch (their return value tells whether the sample was integrated); `updateMeasurements` runs the epoch itself. `INSLooselyCoupledKalmanFilteredEstimator.propagate` is deprecated in favour of `updatePositionAndVelocity`.
 * 📚 Documentation improvements: new calibration algorithms page (least squares, Levenberg-Marquardt, robust estimation and the Tedaldi et al. static-interval method), additional diagrams and equations across the calibration, estimator, navigator and WMM pages, and a more complete bibliography. No changes to library source.
 
 == 1.10.2

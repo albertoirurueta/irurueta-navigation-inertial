@@ -7,6 +7,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [1.11.0] - 2026-11-22
+
 ### Fixed
 
 - `INSLooselyCoupledKalmanFilteredEstimator`, `INSGNSSLooselyCoupledKalmanFilteredEstimator` and
@@ -261,7 +263,8 @@ Test-only fix; no functional changes to library source.
 
 - Ensured correct `Serializable` implementation (`serialVersionUID`, etc.) across inertial data classes.
 
-[Unreleased]: https://github.com/albertoirurueta/irurueta-navigation-inertial/compare/1.10.2...HEAD
+[Unreleased]: https://github.com/albertoirurueta/irurueta-navigation-inertial/compare/1.11.0...HEAD
+[1.11.0]: https://github.com/albertoirurueta/irurueta-navigation-inertial/compare/1.10.2...1.11.0
 [1.10.2]: https://github.com/albertoirurueta/irurueta-navigation-inertial/compare/1.10.1...1.10.2
 [1.10.1]: https://github.com/albertoirurueta/irurueta-navigation-inertial/compare/1.10.0...1.10.1
 [1.10.0]: https://github.com/albertoirurueta/irurueta-navigation-inertial/compare/1.9.0...1.10.0
