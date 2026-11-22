@@ -55,24 +55,97 @@ what makes each estimator the exact inverse of its navigator:
   moves during the interval, pass the start-of-interval position, or use the `(frame, oldFrame)` overloads.
 ====
 
+== Frames and notation
+
+Groves works with three resolving frames for the same physical motion. The notation
+stem:[\mathbf{x}^{\gamma}_{\alpha\beta}] reads "quantity of frame stem:[\beta] with respect to frame
+stem:[\alpha], resolved about the axes of frame stem:[\gamma]". The estimators use:
+
+[cols="1,2,2",options="header"]
+|===
+|Frame |Velocity state |Extra rotation terms
+
+|ECI (stem:[i])
+|stem:[\mathbf{v}^{i}_{ib}]
+|None: the frame is inertial.
+
+|ECEF (stem:[e])
+|stem:[\mathbf{v}^{e}_{eb}]
+|Earth rate stem:[\boldsymbol{\omega}^{e}_{ie}=(0,0,\omega_{ie})^{\mathsf T}] (Coriolis).
+
+|NED (stem:[n])
+|stem:[\mathbf{v}^{n}_{eb}]
+|Earth rate stem:[\boldsymbol{\omega}^{n}_{ie}] and transport rate stem:[\boldsymbol{\omega}^{n}_{en}].
+|===
+
+Two ingredients are common to every frame. The *attitude increment* over one interval of length
+stem:[\tau_i] is the rotation between the old and new body axes seen from a non-rotating reference, and the
+*specific force* is the measured acceleration, i.e. the total acceleration minus gravity (or gravitation):
+
+[stem]
+++++
+\mathbf{f}^{\gamma}_{ib} = \dot{\mathbf{v}}^{\gamma} - \mathbf{g}^{\gamma} + (\text{rotating-frame terms})
+++++
+
+Each frame contributes different rotating-frame terms, derived below. Writing stem:[\mathbf{C}_{b-}^{b+}]
+for the rotation that carries the old body axes into the new ones, the angular rate is recovered from its
+skew-symmetric part, the inverse of the Rodrigues update used by the navigators
+(see xref:estimators/attitude.adoc[] for the rotation algebra):
+
+[stem]
+++++
+\boldsymbol{\alpha}^{b}_{ib} \approx \tfrac{1}{2}\begin{pmatrix} c_{32}-c_{23} \\ c_{13}-c_{31} \\ c_{21}-c_{12} \end{pmatrix}
+\frac{\theta}{\sin\theta}, \qquad \theta = \arccos\!\left(\tfrac{\operatorname{tr}(\mathbf{C}) - 1}{2}\right), \qquad
+\boldsymbol{\omega}^{b}_{ib} = \frac{\boldsymbol{\alpha}^{b}_{ib}}{\tau_i}
+++++
+
+where stem:[c_{jk}] are entries of the old-to-new rotation matrix. The scale factor stem:[\theta/\sin\theta]
+is only applied above a small angle threshold, below which it is 1. A zero interval returns zero specific
+force and angular rate.
+
+[mermaid]
+....
+flowchart TD
+    S["Epoch states (-) and (+):\nC, v, position"] --> R["Old-to-new attitude\nC(+)^T * rotation terms * C(-)"]
+    R --> W["Angular rate\nomega = alpha / tau"]
+    S --> D["Velocity difference / tau"]
+    P["Position at start of interval\n(oldFrame or explicit)"] --> G["Gravity or gravitation\n(NED/ECEF/ECI estimator)"]
+    D --> F["f in reference axes =\ndv/tau - g + Coriolis terms"]
+    G --> F
+    W --> A["Average attitude\nC(-) * Rodrigues-average - frame correction"]
+    A --> B["f in body axes =\ninv(average C) * f"]
+    F --> B
+    B --> O["BodyKinematics\n(specific force, angular rate)"]
+    W --> O
+....
+
 == ECIKinematicsEstimator
 
 The ECI frame is inertial, so there is no Earth-rotation or transport-rate term. Specific force is
-simply the velocity change minus gravitation (equation family 5.11-5.14):
+simply the velocity change minus gravitation (code comment: equations 5.18 and 5.20):
 
 [stem]
 ++++
 \mathbf{f}^{i}_{ib} = \frac{\mathbf{v}^{i}_{ib}(+) - \mathbf{v}^{i}_{ib}(-)}{\tau_i} - \boldsymbol{\gamma}^{i}_{ib}
 ++++
 
-using `ECIGravitationEstimator` for stem:[\boldsymbol{\gamma}^{i}_{ib}], then transformed to body axes
-via the averaged attitude matrix stem:[\overline{\mathbf{C}}^{i}_{b}] (equations 5.77, 5.81, 5.84 style
-precise-form averaging).
+using `ECIGravitationEstimator` for stem:[\boldsymbol{\gamma}^{i}_{ib}] at the start-of-interval position. The
+old-to-new attitude is simply stem:[\mathbf{C}^{i}_{b}(+)^{\mathsf T}\mathbf{C}^{i}_{b}(-)], and the average
+attitude has no frame correction (equation 5.84):
+
+[stem]
+++++
+\overline{\mathbf{C}}^{i}_{b} = \mathbf{C}^{i}_{b}(-)\left(\mathbf{I}_3 + \frac{1-\cos|\boldsymbol{\alpha}|}{|\boldsymbol{\alpha}|^{2}}[\boldsymbol{\alpha}\wedge] + \frac{1}{|\boldsymbol{\alpha}|^{2}}\left(1-\frac{\sin|\boldsymbol{\alpha}|}{|\boldsymbol{\alpha}|}\right)[\boldsymbol{\alpha}\wedge]^{2}\right)
+++++
+
+The body-axes specific force follows from equation 5.81,
+stem:[\mathbf{f}^{b}_{ib} = (\overline{\mathbf{C}}^{i}_{b})^{-1}\mathbf{f}^{i}_{ib}].
 
 == ECEFKinematicsEstimator
 
-The ECEF frame rotates with the Earth at rate stem:[\omega_{ie}], so a Coriolis term appears. Specific
-force resolved about ECEF axes is recovered from consecutive ECEF velocities and position using
+The ECEF frame rotates with the Earth at rate stem:[\omega_{ie}]. Differentiating
+stem:[\mathbf{v}^{e}_{eb}] introduces a Coriolis term, which is why the specific force is recovered from
+consecutive ECEF velocities and the start-of-interval position using (code comment: equation 5.36)
 
 [stem]
 ++++
@@ -87,41 +160,71 @@ is the skew-symmetric Earth-rotation matrix:
 \boldsymbol{\Omega}_{ie}^{e} = \begin{pmatrix} 0 & -\omega_{ie} & 0 \\ \omega_{ie} & 0 & 0 \\ 0 & 0 & 0 \end{pmatrix}
 ++++
 
-The attitude increment is recovered from
-stem:[\mathbf{C}^{e}_{b}(+)^{\mathsf T}\mathbf{C}^{e}_{ie}(\tau_i)\,\mathbf{C}^{e}_{b}(-)] (inverting the
-attitude-update equation 5.19/5.20), and the specific force is transformed back to body axes through the
-precise averaged coordinate transformation matrix of equation 5.63/5.81. That average matrix follows
-equations 5.84/5.85, whose Earth-rotation term is built from the attitude at the start of the interval:
+The Earth rotation over the interval is the angle stem:[\alpha_{ie}=\omega_{ie}\tau_i] (equation 2.145), turned
+into the rotation matrix stem:[\mathbf{C}^{e}_{i}(\alpha_{ie})]. The attitude increment is recovered from
+
+[stem]
+++++
+\mathbf{C}^{b-}_{b+} = \mathbf{C}^{e}_{b}(+)^{\mathsf T}\,\mathbf{C}^{e}_{i}(\alpha_{ie})\,\mathbf{C}^{e}_{b}(-)
+++++
+
+(inverting the attitude update of equations 5.19/5.20), and the specific force is transformed back to
+body axes with the precise average matrix (equations 5.84/5.85, then 5.81). The Earth-rotation term of
+5.85 is built from the attitude at the *start* of the interval:
 
 [stem]
 ++++
 \overline{\mathbf{C}}^{e}_{b} = \mathbf{C}^{e}_{b}(-)\,\mathbf{C}^{\bar{b}}_{b-} - \tfrac{1}{2}\,\boldsymbol{\Omega}_{ie}^{e}\,\tau_i\,\mathbf{C}^{e}_{b}(-)
 ++++
 
+Here stem:[\mathbf{C}^{\bar{b}}_{b-}] is the Rodrigues average bracket shown for ECI. The correction
+stem:[\tfrac{1}{2}\boldsymbol{\Omega}_{ie}^{e}\tau_i\mathbf{C}^{e}_{b}(-)] (the code builds it as the skew matrix of
+stem:[(0,0,\alpha_{ie})] times one half times stem:[\mathbf{C}^{e}_{b}(-)]) must use the original old attitude
+matrix, before the Rodrigues factor is multiplied in. This ordering was corrected in issue #36 so that the
+estimator is the exact inverse of `ECEFInertialNavigator`.
+
 == NEDKinematicsEstimator
 
 The local-navigation (NED) frame adds a further *transport-rate* term stem:[\boldsymbol{\omega}_{en}^{n}]
 on top of the Earth-rate term, because the NED axes themselves rotate as the body moves across the
-Earth's surface (equation 5.37, using the meridian/transverse radii of curvature from
-xref:estimators/position-velocity.adoc[`RadiiOfCurvatureEstimator`]):
+Earth's surface (equation 5.44, using the meridian/transverse radii of curvature from
+xref:estimators/position-velocity.adoc[`RadiiOfCurvatureEstimator`]). The Earth rate resolved in NED
+(equation 2.123) uses the start-of-interval latitude stem:[L(-)]:
 
 [stem]
 ++++
+\boldsymbol{\omega}_{ie}^{n} = \begin{pmatrix} \omega_{ie}\cos L \\ 0 \\ -\omega_{ie}\sin L \end{pmatrix}, \qquad
 \boldsymbol{\omega}_{en}^{n} = \begin{pmatrix}
 v_{E}/(R_{E}+h) \\ -v_{N}/(R_{N}+h) \\ -v_{E}\tan L/(R_{E}+h)
 \end{pmatrix}
 ++++
 
-Specific force resolved about NED axes (equation 5.44/5.46 style):
+The attitude increment uses the Earth rate plus the average of the old and new transport rates
+(equation 5.77):
 
 [stem]
 ++++
-\mathbf{f}^{n}_{ib} = \frac{\mathbf{v}^{n}_{eb}(+) - \mathbf{v}^{n}_{eb}(-)}{\tau_i} - \mathbf{g}^{n}_{b} + \left(\boldsymbol{\Omega}_{en}^{n} + 2\boldsymbol{\Omega}_{ie}^{n}\right)\mathbf{v}^{n}_{eb}(-)
+\mathbf{C}^{b-}_{b+} = \mathbf{C}^{n}_{b}(+)^{\mathsf T}\left(\mathbf{I}_3 - \left[\left(\boldsymbol{\omega}^{n}_{ie} + \tfrac{1}{2}\boldsymbol{\omega}^{n}_{en}(-) + \tfrac{1}{2}\boldsymbol{\omega}^{n}_{en}(+)\right)\wedge\right]\tau_i\right)\mathbf{C}^{n}_{b}(-)
 ++++
 
-using `NEDGravityEstimator` for stem:[\mathbf{g}^{n}_{b}], and the earlier-and-later
-Earth-rate/transport-rate terms averaged when recovering attitude increment and the average coordinate
-transformation matrix (as in equation 5.84/5.86).
+Specific force resolved about NED axes (equation 5.54), with the old-state transport rate, old velocity and
+the gravity vector at the old latitude and height:
+
+[stem]
+++++
+\mathbf{f}^{n}_{ib} = \frac{\mathbf{v}^{n}_{eb}(+) - \mathbf{v}^{n}_{eb}(-)}{\tau_i} - \mathbf{g}^{n}_{b} + \left(\boldsymbol{\Omega}_{en}^{n}(-) + 2\boldsymbol{\Omega}_{ie}^{n}\right)\mathbf{v}^{n}_{eb}(-)
+++++
+
+using `NEDGravityEstimator` for stem:[\mathbf{g}^{n}_{b}]. Finally the average attitude of equations
+5.84/5.86 uses the old Earth and transport rates, evaluated exactly as the matching
+`NEDInertialNavigator` does:
+
+[stem]
+++++
+\overline{\mathbf{C}}^{n}_{b} = \mathbf{C}^{n}_{b}(-)\,\mathbf{C}^{\bar{b}}_{b-} - \tfrac{1}{2}\left[\left(\boldsymbol{\omega}^{n}_{en}(-)+\boldsymbol{\omega}^{n}_{ie}\right)\wedge\right]\mathbf{C}^{n}_{b}(-)
+++++
+
+and the body-axes specific force again follows from equation 5.81.
 
 [source,java]
 ----

@@ -18,13 +18,21 @@ xref:estimators/kinematics.adoc[kinematics estimators], which solve the inverse 
 flowchart TD
     IMU["IMU measurement:\nspecific force f_ib, angular rate omega_ib"] --> N["Navigator.navigate***(...)"]
     P0["Previous solution:\nattitude, velocity, position"] --> N
-    N --> A["1. Attitude update\n(Rodrigues' formula)"]
-    A --> B["2. Specific-force frame transform\n(averaged attitude matrix)"]
-    B --> C["3. Velocity update\n(gravity + Coriolis/transport-rate)"]
-    C --> D["4. Position update\n(trapezoidal integration)"]
+    N --> R["Attitude increment and Rodrigues' formula\n(eq 5.73)"]
+    R --> A["Attitude update\n(ECI, ECEF)"]
+    A --> B["Specific-force frame transform\n(averaged attitude matrix, eq 5.84)"]
+    R --> B
+    B --> C["Velocity update\n(gravity + Coriolis/transport-rate)"]
+    C --> D["Position update\n(trapezoidal integration)"]
+    D --> E["NED only: attitude update\nwith new transport rate"]
     D --> P1["New solution:\nattitude, velocity, position"]
+    E --> P1
     P1 -->|next epoch, feeds back as| P0
 ....
+
+The attitude update comes first for ECI and ECEF and last for NED, whose attitude update needs the transport
+rate at the new position and velocity. The equations of each step, with their Groves equation numbers, are in
+xref:navigators/navigation-equations.adoc[].
 
 Unlike the simplified, first-order equations shown in Groves §5.1-§5.3 (small-angle attitude update,
 first-order Coriolis/transport-rate terms), every navigator in this package implements the *precision*

@@ -1,0 +1,29 @@
+<svg viewBox="0 0 560 360" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <!-- Gravity = gravitation + centrifugal acceleration (after Groves, 2nd ed., sec. 2.4.3). Vector lengths are exaggerated. -->
+  <ellipse cx="200" cy="190" rx="150" ry="140" fill="none" stroke="#333333" stroke-width="2"/>
+  <line x1="200" y1="20" x2="200" y2="355" stroke="#888888" stroke-width="1" stroke-dasharray="6,4"/>
+  <text x="208" y="32" font-size="12" fill="#555555">rotation axis (omega_ie)</text>
+  <line x1="40" y1="190" x2="360" y2="190" stroke="#888888" stroke-width="1"/>
+  <text x="312" y="206" font-size="12" fill="#555555">equator</text>
+  <circle cx="200" cy="190" r="3" fill="#333333"/>
+  <circle cx="300" cy="105" r="4" fill="#333333"/>
+  <text x="310" y="88" font-size="13" fill="#333333">body</text>
+  <line x1="200" y1="190" x2="300" y2="105" stroke="#999999" stroke-width="1" stroke-dasharray="3,3"/>
+  <line x1="200" y1="105" x2="300" y2="105" stroke="#999999" stroke-width="1" stroke-dasharray="3,3"/>
+  <text x="240" y="99" font-size="12" fill="#555555">p</text>
+  <!-- gravitation toward the Earth centre -->
+  <line x1="300" y1="105" x2="258" y2="140" stroke="#c0392b" stroke-width="2.5"/>
+  <polygon points="258,140 270,139 263,130" fill="#c0392b"/>
+  <text x="212" y="150" font-size="13" fill="#c0392b" font-style="italic">gamma</text>
+  <!-- centrifugal term, perpendicular to the axis -->
+  <line x1="300" y1="105" x2="348" y2="105" stroke="#2980b9" stroke-width="2.5"/>
+  <polygon points="348,105 336,99 336,111" fill="#2980b9"/>
+  <text x="352" y="109" font-size="13" fill="#2980b9" font-style="italic">omega_ie^2 p</text>
+  <!-- resulting gravity -->
+  <line x1="300" y1="105" x2="294" y2="152" stroke="#27ae60" stroke-width="3"/>
+  <polygon points="294,152 288,141 300,142" fill="#27ae60"/>
+  <text x="304" y="150" font-size="14" fill="#27ae60" font-style="italic">g</text>
+  <text x="380" y="240" font-size="13" fill="#27ae60" font-style="italic">g = gamma + centrifugal</text>
+  <text x="380" y="260" font-size="12" fill="#555555">p = distance to the axis</text>
+  <text x="380" y="278" font-size="12" fill="#555555">at rest, f = -g</text>
+</svg>

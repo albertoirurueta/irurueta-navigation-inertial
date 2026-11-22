@@ -26,6 +26,57 @@ flowchart LR
     C -->|sensed via reaction| D["Specific force f\n(what accelerometers measure)"]
 ....
 
+== Derivation chain
+
+The estimators follow the gravity-modelling chain of Groves chapter 2, restated here in outline.
+
+. *Gravitation.* A mass distribution attracts a test mass; for a body at ECEF position
+  stem:[\mathbf{r}^{e}_{eb}] the attraction is the gradient of a gravitational potential. Truncating the
+  spherical-harmonic expansion of that potential to the first zonal term stem:[J_2] (oblateness) gives the
+  gravitation vector stem:[\boldsymbol{\gamma}^{e}_{ib}] used by the ECEF and ECI estimators (equation 2.142,
+  see below). A point-mass model alone would be the stem:[J_2=0] special case.
+. *Centrifugal term.* A body co-rotating with the Earth also experiences an outward acceleration. Gravity is
+  the sum of both effects (equation 2.133):
++
+[stem]
+++++
+\mathbf{g}^{e}_{b} = \boldsymbol{\gamma}^{e}_{ib} - \boldsymbol{\Omega}^{e}_{ie}\boldsymbol{\Omega}^{e}_{ie}\,\mathbf{r}^{e}_{eb}
+= \boldsymbol{\gamma}^{e}_{ib} + \omega_{ie}^{2}\begin{pmatrix} x \\ y \\ 0 \end{pmatrix}
+++++
++
+The matrix product is stem:[-\omega_{ie}^{2}\operatorname{diag}(1,1,0)], so subtracting it adds a term that
+points away from the rotation axis and has no component along the stem:[z] axis.
+. *Surface gravity.* On the ellipsoid surface the combined effect is a closed-form function of latitude, the
+  Somigliana model (2.134), which equals roughly 9.78 m/s² at the equator and 9.83 m/s² at the poles.
+  Gravity is stronger at the poles because they are closer to the Earth's centre and have no centrifugal
+  relief.
+. *Height correction.* Away from the surface, gravity falls with height roughly like an inverse square. The
+  estimator applies a second-order polynomial correction in stem:[h] to the down component (2.139) and a
+  small north component that arises because the local vertical is not exactly toward the Earth's centre
+  (2.140). East gravity is zero by symmetry about the rotation axis.
+. *Gravity versus specific force.* The accelerometer senses stem:[\mathbf{f}^{n}_{ib}], the non-gravitational
+  acceleration. At rest in NED, stem:[\mathbf{f}^{n}_{ib} = -\mathbf{g}^{n}_{b}], so the sensed down
+  component is stem:[-g_D] (about -9.8 m/s²). The navigation equations add gravity back
+  (stem:[\dot{\mathbf{v}} = \mathbf{f} + \mathbf{g} + \dots]) while the kinematics estimators subtract it.
+
+image::estimators/gravity-decomposition.svg[Gravity as the sum of gravitation toward the Earth centre and the centrifugal term pointing away from the rotation axis,560,360]
+
+[mermaid]
+....
+flowchart TD
+    A["Position (L, h) or (x, y, z)"] --> B{"Frame"}
+    B -->|NED| C["Somigliana g0(L)\n(2.134)"]
+    C --> D["Height correction\n(2.139, 2.140)"]
+    D --> G["g^n = (gN, 0, gD)"]
+    B -->|ECEF| E["J2 gravitation gamma^e\n(2.142)"]
+    E --> F["Subtract Omega*Omega*r\n(2.133)"]
+    F --> H["g^e"]
+    B -->|ECI| I["J2 gravitation gamma^i\n(2.142), no centrifugal term"]
+    G --> J["Specific force f = a - g\n(kinematics estimators)"]
+    H --> J
+    I --> J
+....
+
 == NEDGravityEstimator
 
 Computes acceleration due to gravity resolved about the north, east, and down axes of the local
@@ -50,13 +101,14 @@ Down component (height and Earth-shape correction):
 
 [stem]
 ++++
-g_{D} = g_{0}(L)\left[1 - \frac{2}{R_{0}}\left(1 + f + \frac{\omega_{ie}^{2} R_{0}^{2} R_{P}}{\mu}\right) h + \frac{3 h^{2}}{R_{0}^{2}}\right]
+g_{D} = g_{0}(L)\left[1 - \frac{2}{R_{0}}\left(1 + f\left(1-2\sin^{2}L\right) + \frac{\omega_{ie}^{2} R_{0}^{2} R_{P}}{\mu}\right) h + \frac{3 h^{2}}{R_{0}^{2}}\right]
 ++++
 
 where stem:[L] is geodetic latitude, stem:[h] is height, stem:[e] is the WGS84 eccentricity,
 stem:[R_0] / stem:[R_P] are the WGS84 equatorial/polar radii, stem:[f] is the flattening,
-stem:[\omega_{ie}] is the Earth rotation rate, and stem:[\mu] is the Earth gravitational constant. See
-xref:reference.adoc#book-groves[[book-groves\]], §2.3.5.
+stem:[\omega_{ie}] is the Earth rotation rate, and stem:[\mu] is the Earth gravitational constant. The equation numbers cited by the
+implementation are (2.134) for surface gravity, (2.140) for north gravity and (2.139) for down gravity. See
+xref:reference.adoc#book-groves[[book-groves\]], chapter 2 (gravity and gravitation models).
 
 [source,java]
 ----
@@ -94,10 +146,11 @@ rotate with the Earth:
 g_{x} = \gamma_{x} + \omega_{ie}^{2} x, \qquad g_{y} = \gamma_{y} + \omega_{ie}^{2} y, \qquad g_{z} = \gamma_{z}
 ++++
 
-The last step adds the outward centrifugal acceleration
-stem:[\boldsymbol{\Omega}_{ie}^{e}\boldsymbol{\Omega}_{ie}^{e}\mathbf{r}^{e}_{eb}] to the gravitational
-acceleration, matching the general relation
+The gravitational part is equation (2.142) and the last step, equation (2.133), subtracts
+stem:[\boldsymbol{\Omega}_{ie}^{e}\boldsymbol{\Omega}_{ie}^{e}\mathbf{r}^{e}_{eb}], which is the same as adding the
+outward centrifugal acceleration:
 stem:[\mathbf{g}^{e}_{b} = \boldsymbol{\gamma}^{e}_{ib} + \omega_{ie}^{2}\operatorname{diag}(1,1,0)\,\mathbf{r}^{e}_{eb}].
+A position of exactly zero returns a zero vector instead of dividing by zero.
 
 [source,java]
 ----
@@ -118,8 +171,9 @@ double norm = gravity.getNorm(); // total gravity magnitude (m/s^2)
 Computes *gravitation only* (no centrifugal term) resolved about ECI-frame axes, using the same
 stem:[J_2] spherical-harmonic model as `ECEFGravityEstimator`. Because the ECI frame is inertial (does
 not rotate with the Earth), there is no centrifugal acceleration to add — the ECI navigation equations
-add that term separately when needed via the Earth-rotation skew-symmetric matrix
-stem:[\boldsymbol{\Omega}_{ie}].
+account for Earth rotation separately where needed, through the Earth-rotation skew-symmetric matrix
+stem:[\boldsymbol{\Omega}_{ie}] and the stem:[\mathbf{C}^{e}_{i}] rotation. The code evaluates the same
+equation (2.142) as the ECEF estimator, just without the centrifugal step.
 
 [source,java]
 ----

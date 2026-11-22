@@ -23,37 +23,42 @@ stem:[\mathbf{f}_{\text{true}}] is known* and *whether the bias is already known
 |Family |How stem:[\mathbf{f}_{\text{true}}] is obtained |Solves for |Min. measurements
 
 |`KnownFrame`
-|Directly: the full position/orientation/velocity frame at each measurement is known, so
-xref:estimators/gravity.adoc[gravity] rotated into body axes gives stem:[\mathbf{f}_{\text{true}}] exactly.
+|Directly: the full position/orientation/velocity frame at each measurement is known, so the
+specific force that an ideal sensor would read follows from the frame (gravity rotated into body axes plus any
+motion).
 |stem:[\mathbf{b}_a] + stem:[\mathbf{M}_a]
-|4 (linear) / 10 (non-linear, or 13 without common z-axis)
+|4 (linear and non-linear solvers)
 
 |`KnownBiasAndFrame`
 |Same as above
 |Only stem:[\mathbf{M}_a] (bias given)
-|3 (linear) / 7 (non-linear)
+|3 (linear and non-linear solvers)
 
 |`KnownGravityNorm`
 |Indirectly: device held static at several *unknown* orientations; only the *magnitude* stem:[\lVert\mathbf{g}\rVert] is assumed known (e.g. local standard gravity).
 |stem:[\mathbf{b}_a] + stem:[\mathbf{M}_a]
-|10 (13 without common z-axis)
+|13 (10 with common z-axis)
 
 |`KnownBiasAndGravityNorm`
 |Same as above
 |Only stem:[\mathbf{M}_a]
-|7 (10 without common z-axis)
+|10 (7 with common z-axis)
 
 |`KnownPosition`
-|Indirectly: device static at several unknown orientations, but at a *known geodetic position* — gravity
-magnitude is derived via xref:estimators/gravity.adoc[`NEDGravityEstimator`] instead of assumed.
+|Indirectly: device static at several unknown orientations, but at a *known geodetic position*: the gravity
+magnitude is computed from the position with the `ECEFGravityEstimator` (see xref:estimators/gravity.adoc[gravity])
+instead of being assumed.
 |stem:[\mathbf{b}_a] + stem:[\mathbf{M}_a]
-|10 (13 without common z-axis)
+|13 (10 with common z-axis)
 
 |`KnownBiasAndPosition`
 |Same as above
 |Only stem:[\mathbf{M}_a]
-|7 (10 without common z-axis)
+|10 (7 with common z-axis)
 |===
+
+The equations behind each row are written out in <<equations>>, and the numerical methods in
+xref:calibration/algorithms.adoc[].
 
 == Usage examples
 
@@ -145,7 +150,7 @@ Matrix estimatedMa = calibrator.getEstimatedMa();
 === `KnownPosition`
 
 Instead of an assumed gravity-norm magnitude, the device's known geodetic position is used to derive
-gravity via `NEDGravityEstimator` internally:
+the gravity magnitude internally (the position is converted to ECEF and passed to `ECEFGravityEstimator`):
 
 [source,java]
 ----
@@ -206,24 +211,212 @@ static at several orientations and rely only on the (approximately known, ~9.81 
 gravity — no turntable or precisely known frame needed. In this codebase, the two ideas are implemented
 as siblings rather than a single combined class.
 
-== Linear vs. non-linear solvers
+[#equations]
+== The system of equations per family
 
-The `KnownFrame` and `KnownBiasAndFrame` families additionally offer a *linear least-squares* variant
-(`...LinearLeastSquaresCalibrator`) alongside the default Levenberg-Marquardt *non-linear least-squares*
-one (`...NonLinearLeastSquaresCalibrator`). Because stem:[\mathbf{f}_{\text{true}}] is exactly known for
-these two families, the model can be rearranged into a linear system solved in closed form (fast, no
-initial guess needed); the non-linear form is typically used to refine that solution or when a linear
-solution is not accurate enough. The gravity-norm and position families only expose a non-linear solver,
-since stem:[\lVert\mathbf{f}_{\text{true}}\rVert] being known (but not its direction) makes the problem
-inherently non-linear.
+All families fit the same model. Writing stem:[\mathbf{G} = \mathbf{I}_3 + \mathbf{M}_a] for the full gain
+matrix, one measurement of the sensor is
 
-== The robust-estimator wrapper
+[stem]
+++++
+\mathbf{f}_{\text{meas},k} = \mathbf{b}_a + \mathbf{G}\,\mathbf{f}_{\text{true},k} + \mathbf{w}_k
+++++
 
-As described in xref:calibration/index.adoc[], each of the 6 families above has a plain (non-robust) form
-plus 5 `Robust*` outlier-rejection wrappers (`RANSACRobust*`, `MSACRobust*`, `LMedSRobust*`,
-`PROSACRobust*`, `PROMedSRobust*`), all extending a shared abstract `Robust*AccelerometerCalibrator`
-base. `QualityScoredAccelerometerCalibrator` is the interface robust variants that use measurement
-quality scores (PROSAC, PROMedS) require their input to implement.
+What changes between families is what is known about stem:[\mathbf{f}_{\text{true},k}], and therefore which
+equation each measurement contributes. The unknowns are always the same: the bias (3 values) and the entries of
+stem:[\mathbf{M}_a] (9 values in general, 6 with the common z-axis assumption, which makes stem:[\mathbf{M}_a] upper
+triangular; see xref:calibration/algorithms.adoc#linear-model[the common z-axis reduction]). The `KnownBias...`
+variants remove the three bias unknowns. Every calibrator defaults to `commonAxisUsed = false`.
+
+=== KnownFrame: stem:[\mathbf{f}_{\text{true}}] from the frame
+
+Each measurement is a `FrameBodyKinematics`: the measured specific force, the ECEF frame of the body when it was
+taken, the previous frame and the time interval between them. The calibrator gives the frame pair to
+`ECEFKinematicsEstimator`, which returns the specific force an ideal accelerometer would have measured. That is
+stem:[\mathbf{f}_{\text{true},k}], and no iteration is needed to obtain it. The model then gives *three linear
+scalar equations per measurement* (one per axis), for example the x axis:
+
+[stem]
+++++
+f_{\text{meas},x} - f_{\text{true},x} = b_x + s_x f_{\text{true},x} + m_{xy} f_{\text{true},y} + m_{xz} f_{\text{true},z}
+++++
+
+Stacked as stem:[\mathbf{A}_k\boldsymbol{\theta} = \mathbf{y}_k], the full derivation, the column order of
+stem:[\boldsymbol{\theta}] and the block stem:[\mathbf{A}_k] are given in
+xref:calibration/algorithms.adoc#linear-model[the linear model]. In short, with unknowns ordered as
+stem:[(b_x, b_y, b_z, s_x, s_y, s_z, m_{xy}, m_{xz}, m_{yx}, m_{yz}, m_{zx}, m_{zy})] the right-hand side is
+stem:[\mathbf{y}_k = \mathbf{f}_{\text{meas},k} - \mathbf{f}_{\text{true},k}] and for the `KnownBiasAndFrame`
+variants it is stem:[\mathbf{f}_{\text{meas},k} - \mathbf{f}_{\text{true},k} - \mathbf{b}] with the three bias columns
+dropped.
+
+The *linear* calibrators solve this system directly. The *non-linear* `KnownFrame` calibrators describe exactly the
+same model to a Levenberg-Marquardt fitter and supply its Jacobian analytically (the entries of
+stem:[\mathbf{A}_k]); because the model is linear in the parameters this converges in very few iterations. The
+non-linear form lets you give an initial guess and obtain the covariance and goodness-of-fit values of the fitter,
+which are the reasons to pick it.
+
+[#minimum-measurements]
+Each measurement adds three equations, but the three rows do not share unknowns: the x row involves only
+stem:[b_x, s_x, m_{xy}, m_{xz}], the y row only stem:[b_y, s_y, m_{yx}, m_{yz}], and the z row only
+stem:[b_z, s_z, m_{zx}, m_{zy}]. Each row therefore has four unknowns in the general case and needs four
+measurements, or three once the bias is known. This agrees with the constants in the code:
+`MINIMUM_MEASUREMENTS` is 4 for `KnownFrame` and 3 for `KnownBiasAndFrame`, in both the linear and the non-linear
+classes, and it does not change with the common z-axis flag.
+
+=== KnownGravityNorm: a norm constraint
+
+Here the orientation of each static measurement is unknown, so stem:[\mathbf{f}_{\text{true},k}] cannot be
+computed. All that is known is its length: a body at rest feels a specific force of magnitude
+stem:[g = \lVert\mathbf{g}\rVert], whatever its attitude. The equation contributed by measurement stem:[k] is a
+*single scalar* one,
+
+[stem]
+++++
+\left\lVert \mathbf{G}^{-1}\left(\mathbf{f}_{\text{meas},k} - \mathbf{b}_a\right) \right\rVert^{2} = g^{2}
+++++
+
+which is non-linear in stem:[\mathbf{G}] and stem:[\mathbf{b}_a]. It is solved by Levenberg-Marquardt over the
+reparametrization described in xref:calibration/algorithms.adoc#nonlinear-model[the non-linear model], with the
+Jacobian obtained numerically (`GradientEstimator`, not an analytical expression). The norm alone cannot fix the
+rotation of the sensor frame, so the general (nine-entry) stem:[\mathbf{M}_a] has equivalent solutions; the common
+z-axis option removes that ambiguity.
+
+*Minimum measurements.* One scalar equation per measurement, and the implementation asks for one more measurement
+than unknowns:
+
+[cols="2,1,1,1",options="header"]
+|===
+|Calibrator |Unknowns |Constant in code |Minimum measurements
+
+|`KnownGravityNorm` / `KnownPosition`, general
+|12
+|`MINIMUM_MEASUREMENTS_GENERAL`
+|13
+
+|`KnownGravityNorm` / `KnownPosition`, common z-axis
+|9
+|`MINIMUM_MEASUREMENTS_COMMON_Z_AXIS`
+|10
+
+|`KnownBiasAndGravityNorm` / `KnownBiasAndPosition`, general
+|9
+|`MINIMUM_MEASUREMENTS_GENERAL`
+|10
+
+|`KnownBiasAndGravityNorm` / `KnownBiasAndPosition`, common z-axis
+|6
+|`MINIMUM_MEASUREMENTS_COMMON_Z_AXIS`
+|7
+|===
+
+=== KnownPosition: the norm from the gravity model
+
+`KnownPosition` and `KnownBiasAndPosition` use exactly the equation above. The only difference is where
+stem:[g] comes from: instead of a value supplied by the user, setting the position (a `NEDPosition` is converted to
+ECEF with zero velocity) makes the calibrator evaluate `ECEFGravityEstimator` at that position and use the norm of
+the resulting gravity vector. Unknown counts and minimum measurements are therefore identical to the
+`KnownGravityNorm` rows, and all measurements are assumed to have been taken at that one position.
+
+== Worked example: the linear system layout
+
+This example builds the `KnownFrame` system by hand for four static measurements, the minimum. The values are
+invented for illustration (they are not taken from the test suite) and are noise free, so the exact parameters are
+recovered. Take stem:[g = 9.81\ \text{m/s}^2] and a sensor with
+
+[stem]
+++++
+\mathbf{b}_a = \begin{bmatrix} 0.05 \\ -0.03 \\ 0.02 \end{bmatrix},
+\qquad
+\mathbf{M}_a = \begin{bmatrix} 0.010 & 0.003 & -0.002 \\ 0.001 & -0.020 & 0.004 \\ -0.003 & 0.002 & 0.015 \end{bmatrix}
+++++
+
+At rest the specific force is minus gravity expressed in body axes, so with the sensor level (z down) it reads
+stem:[(0, 0, -g)]. The four orientations and the readings they produce through
+stem:[\mathbf{f}_{\text{meas}} = \mathbf{b}_a + (\mathbf{I}_3 + \mathbf{M}_a)\mathbf{f}_{\text{true}}] are:
+
+[cols="1,2,2,2",options="header"]
+|===
+|k |stem:[\mathbf{f}_{\text{true},k}] (m/s²) |stem:[\mathbf{f}_{\text{meas},k}] (m/s²) |stem:[\mathbf{y}_k = \mathbf{f}_{\text{meas},k} - \mathbf{f}_{\text{true},k}]
+
+|1 |stem:[(0,\ 0,\ -9.81)] |stem:[(0.06962,\ -0.06924,\ -9.93715)] |stem:[(0.06962,\ -0.06924,\ -0.12715)]
+|2 |stem:[(9.81,\ 0,\ 0)] |stem:[(9.95810,\ -0.02019,\ -0.00943)] |stem:[(0.14810,\ -0.02019,\ -0.00943)]
+|3 |stem:[(0,\ 9.81,\ 0)] |stem:[(0.07943,\ 9.58380,\ 0.03962)] |stem:[(0.07943,\ -0.22620,\ 0.03962)]
+|4 |stem:[(0,\ 0,\ 9.81)] |stem:[(0.03038,\ 0.00924,\ 9.97715)] |stem:[(0.03038,\ 0.00924,\ 0.16715)]
+|===
+
+With the library's unknown order stem:[(b_x, b_y, b_z, s_x, s_y, s_z, m_{xy}, m_{xz}, m_{yx}, m_{yz}, m_{zx}, m_{zy})],
+the first two blocks are
+
+[stem]
+++++
+\mathbf{A}_1 =
+\begin{bmatrix}
+1 & 0 & 0 & 0 & 0 & 0 & 0 & -9.81 & 0 & 0 & 0 & 0 \\
+0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & -9.81 & 0 & 0 \\
+0 & 0 & 1 & 0 & 0 & -9.81 & 0 & 0 & 0 & 0 & 0 & 0
+\end{bmatrix},
+\qquad
+\mathbf{y}_1 = \begin{bmatrix} 0.06962 \\ -0.06924 \\ -0.12715 \end{bmatrix}
+++++
+
+[stem]
+++++
+\mathbf{A}_2 =
+\begin{bmatrix}
+1 & 0 & 0 & 9.81 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 9.81 & 0 & 0 & 0 \\
+0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 9.81 & 0
+\end{bmatrix},
+\qquad
+\mathbf{y}_2 = \begin{bmatrix} 0.14810 \\ -0.02019 \\ -0.00943 \end{bmatrix}
+++++
+
+Blocks 3 and 4 follow the same pattern with the entries stem:[9.81] placed in the columns of stem:[m_{xy}, s_y, m_{zy}]
+(for stem:[\mathbf{f}_{\text{true},3} = (0, 9.81, 0)]) and of stem:[m_{xz}, m_{yz}, s_z] (for
+stem:[\mathbf{f}_{\text{true},4} = (0, 0, 9.81)]). The stacked matrix is stem:[12 \times 12], and because the
+three output axes do not share unknowns it splits into three independent stem:[4 \times 4] problems. The x axis, with unknowns
+stem:[(b_x, s_x, m_{xy}, m_{xz})], is
+
+[stem]
+++++
+\begin{bmatrix}
+1 & 0 & 0 & -9.81 \\
+1 & 9.81 & 0 & 0 \\
+1 & 0 & 9.81 & 0 \\
+1 & 0 & 0 & 9.81
+\end{bmatrix}
+\begin{bmatrix} b_x \\ s_x \\ m_{xy} \\ m_{xz} \end{bmatrix}
+=
+\begin{bmatrix} 0.06962 \\ 0.14810 \\ 0.07943 \\ 0.03038 \end{bmatrix}
+\quad\Longrightarrow\quad
+\begin{aligned}
+b_x &= \tfrac{0.06962 + 0.03038}{2} = 0.05 \\
+m_{xz} &= \tfrac{0.03038 - 0.06962}{2 \cdot 9.81} = -0.002 \\
+s_x &= \tfrac{0.14810 - 0.05}{9.81} = 0.010,\quad m_{xy} = \tfrac{0.07943 - 0.05}{9.81} = 0.003
+\end{aligned}
+++++
+
+which are the true values. With real, noisy data you use more than four orientations and the least-squares solve
+averages the noise; an orientation set where, say, no measurement has a non-zero stem:[f_y] leaves the stem:[m_{xy}]
+column empty and the system singular. For the same attitudes with the bias known, the bias columns and the
+stem:[-\mathbf{b}_a] term disappear and each axis needs only three measurements.
+
+[NOTE]
+====
+The worked example, and the observation that the three rows of the linear system are independent (which explains why
+the minimum is four), are derived from the layout in the code and are not stated in the Javadoc. The sensor values are
+made up for illustration.
+====
+
+== Robust variants
+
+Each family also has five `Robust*` wrappers (RANSAC, MSAC, LMedS, PROSAC and PROMedS) that run the plain calibrator
+on random subsets of the measurements, whose size defaults to the minimum above, and keep the hypothesis that best
+explains the data; see xref:calibration/algorithms.adoc#robust-estimation[robust estimation] for residuals, scoring
+and parameters. `QualityScoredAccelerometerCalibrator` is the interface that the PROSAC and PROMedS variants need
+their measurements to implement.
+
+== Supporting types
 
 [cols="1,4",options="header"]
 |===
@@ -239,7 +432,7 @@ quality scores (PROSAC, PROMedS) require their input to implement.
 |Mixin interfaces exposing *estimated* bias getters, implemented by the "unknown bias" half of each family.
 
 |`OrderedStandardDeviationBodyKinematicsAccelerometerCalibrator`, `OrderedStandardDeviationFrameBodyKinematicsAccelerometerCalibrator`
-|Interfaces for calibrators that need an ordered measurement list (used by RANSAC/PROSAC-style robust variants).
+|Interfaces for calibrators that need an ordered measurement list (used by PROSAC-style robust variants).
 
 |`UnorderedFrameBodyKinematicsAccelerometerCalibrator`, `UnorderedStandardDeviationBodyKinematicsAccelerometerCalibrator`, `UnorderedStandardDeviationFrameBodyKinematicsAccelerometerCalibrator`
 |Interfaces for calibrators taking a plain, unordered measurement collection (the non-robust calibrators).
