@@ -725,6 +725,23 @@ public class AccelerometerAndGyroscopeMeasurementsGenerator
     }
 
     /**
+     * Generates the gyroscope sequence that is pending, if any, without waiting for the end of the static
+     * interval that follows it. This must be called when no more samples are going to be processed (e.g.
+     * a recording ends while the device remains static), otherwise the last sequence is not generated.
+     *
+     * @return true if a sequence has been generated, false otherwise.
+     * @throws LockedException if generator is busy.
+     * @see GyroscopeMeasurementsGenerator#flush()
+     */
+    public boolean flush() throws LockedException {
+        if (running) {
+            throw new LockedException();
+        }
+
+        return gyroscopeMeasurementsGenerator.flush();
+    }
+
+    /**
      * Resets this generator.
      *
      * @throws LockedException if generator is busy.

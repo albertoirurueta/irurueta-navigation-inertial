@@ -266,7 +266,9 @@ is too short, it provides no gravity reference and the dynamic intervals on both
 single sequence. A sequence whose preceding static interval has no samples is discarded.
 * A sequence is emitted when the static interval that follows it *ends*, so that its `afterMeanSpecificForce` is
 the accumulated average of that *entire* static interval (previously it was the last window at the moment the static
-interval was detected). The same average is the `beforeMeanSpecificForce` of the next sequence.
+interval was detected). The same average is the `beforeMeanSpecificForce` of the next sequence. Consequently, when
+a recording ends while the device is at rest, the last sequence is still pending: call `flush()` once no more samples
+are going to be processed to generate it from the static samples classified so far (at least `minStaticSamples`).
 * The initialization period is static: its average (initialization samples included) is the first
 `beforeMeanSpecificForce`, so a motion starting right after initialization never gets a `(0, 0, 0)` reference.
 * The items of the sequence are aligned with the samples classified as dynamic by the centred-window detector,
@@ -305,7 +307,7 @@ The accelerometer and magnetometer generators drop short static intervals.
 |xref:calibration/gyroscope.adoc[`EasyGyroscopeCalibrator` / `KnownBiasEasyGyroscopeCalibrator`]
 
 |`MagnetometerMeasurementsGenerator`
-|One `StandardDeviationBodyMagneticFluxDensity` per kept static interval (mean field, and the norm of the field standard deviation measured in the initial period as its deviation)
+|One `StandardDeviationBodyMagneticFluxDensity` per kept static interval (mean field of the samples classified as static, and the average of the three axis deviations divided by the square root of the number of averaged samples)
 |xref:calibration/magnetometer.adoc[Norm/position magnetometer calibrators]
 
 |`AccelerometerAndGyroscopeMeasurementsGenerator`

@@ -49,7 +49,8 @@ import java.util.List;
  *     <li>If a static interval is too short to be valid, the dynamic intervals on both of its sides are
  *     joined into a single sequence.</li>
  *     <li>A sequence is generated when the static interval that follows it ends, so that the "after"
- *     vector is the average of the entire static interval.</li>
+ *     vector is the average of the entire static interval. When no more samples are going to be processed,
+ *     {@link #flush()} generates the sequence that is still pending.</li>
  *     <li>Items of a sequence are aligned with the samples that the (centred window) detector classified as
  *     dynamic, taking into account {@link #getDetectionDelaySamples()}.</li>
  *     <li>Generated sequences contain a gravity direction standard deviation
@@ -106,6 +107,29 @@ public class GyroscopeMeasurementsGenerator extends
      * Number of samples used to compute the average specific force of the static interval before the sequence.
      */
     private int previousAvgSamples;
+
+    /**
+     * Sum of x-coordinate of specific force of the samples of the static interval being processed,
+     * expressed in meters per squared second (m/s^2).
+     */
+    private double currentStaticSumX;
+
+    /**
+     * Sum of y-coordinate of specific force of the samples of the static interval being processed,
+     * expressed in meters per squared second (m/s^2).
+     */
+    private double currentStaticSumY;
+
+    /**
+     * Sum of z-coordinate of specific force of the samples of the static interval being processed,
+     * expressed in meters per squared second (m/s^2).
+     */
+    private double currentStaticSumZ;
+
+    /**
+     * Number of samples of the static interval being processed.
+     */
+    private int currentStaticSamples;
 
     /**
      * Accumulated noise estimator for angular speed measurements.
@@ -192,6 +216,7 @@ public class GyroscopeMeasurementsGenerator extends
         pendingItems.clear();
         initializationSamplePending = false;
         previousAvgSamples = 0;
+        resetCurrentStatic();
 
         accelerationStandardDeviation = 0.0;
         angularSpeedStandardDeviation = 0.0;
@@ -356,7 +381,44 @@ public class GyroscopeMeasurementsGenerator extends
                 currentStaticItems = new ArrayList<>();
             }
             currentStaticItems.add(item);
+
+            final var kinematics = item.getKinematics();
+            currentStaticSumX += kinematics.getFx();
+            currentStaticSumY += kinematics.getFy();
+            currentStaticSumZ += kinematics.getFz();
+            currentStaticSamples++;
         }
+    }
+
+    /**
+     * Generates the sequence that is pending, if any, without waiting for the end of the static interval
+     * that follows it.
+     * A sequence is normally generated when the static interval that follows it ends, so that the
+     * "after" gravity vector is the average of the entire static interval. Consequently, when no more
+     * samples are going to be processed (e.g. a recording ends while the device remains static), the last
+     * sequence would never be generated. This method generates it using the samples of the current static
+     * interval that have been classified so far, as long as there are at least
+     * {@link #getMinStaticSamples()} of them.
+     * If more samples are processed afterwards, the sequence is not generated again.
+     *
+     * @return true if a sequence has been generated, false otherwise.
+     * @throws LockedException if generator is busy.
+     */
+    public boolean flush() throws LockedException {
+        if (isRunning()) {
+            throw new LockedException();
+        }
+
+        if (listener == null || currentSequenceItems == null || currentSequenceItems.isEmpty()
+                || previousAvgX == null || currentStaticSamples < Math.max(getMinStaticSamples(), 1)
+                || staticIntervalDetector.getStatus() != TriadStaticIntervalDetector.Status.STATIC_INTERVAL) {
+            return false;
+        }
+
+        emitSequence(currentStaticSumX / currentStaticSamples, currentStaticSumY / currentStaticSamples,
+                currentStaticSumZ / currentStaticSamples, currentStaticSamples);
+        currentStaticItems = null;
+        return true;
     }
 
     /**
@@ -424,6 +486,7 @@ public class GyroscopeMeasurementsGenerator extends
         // items are discarded until a valid static interval is found
 
         currentStaticItems = null;
+        resetCurrentStatic();
     }
 
     /**
@@ -432,6 +495,7 @@ public class GyroscopeMeasurementsGenerator extends
     @Override
     protected void handleDynamicToStaticChange() {
         currentStaticItems = null;
+        resetCurrentStatic();
     }
 
     /**
@@ -450,6 +514,7 @@ public class GyroscopeMeasurementsGenerator extends
         currentStaticItems = null;
         pendingItems.clear();
         initializationSamplePending = true;
+        resetCurrentStatic();
     }
 
     /**
@@ -467,6 +532,16 @@ public class GyroscopeMeasurementsGenerator extends
         } catch (final LockedException ignore) {
             // no action needed
         }
+    }
+
+    /**
+     * Resets accumulated specific force of the static interval being processed.
+     */
+    private void resetCurrentStatic() {
+        currentStaticSumX = 0.0;
+        currentStaticSumY = 0.0;
+        currentStaticSumZ = 0.0;
+        currentStaticSamples = 0;
     }
 
     /**
@@ -509,13 +584,18 @@ public class GyroscopeMeasurementsGenerator extends
         final var beforeNorm = Math.sqrt(previousAvgX * previousAvgX + previousAvgY * previousAvgY
                 + previousAvgZ * previousAvgZ);
         final var afterNorm = Math.sqrt(afterAvgX * afterAvgX + afterAvgY * afterAvgY + afterAvgZ * afterAvgZ);
-        final var beforeVariance = beforeNorm > 0.0 ? accelerationStandardDeviation * accelerationStandardDeviation
-                / (previousAvgSamples * beforeNorm * beforeNorm) : 0.0;
-        final var afterVariance = afterNorm > 0.0 ? accelerationStandardDeviation * accelerationStandardDeviation
-                / (afterSamples * afterNorm * afterNorm) : 0.0;
+        // accelerationStandardDeviation and angularSpeedNoiseRootPsd are norms of the three coordinates, so
+        // they are converted to per-coordinate variances, since the result is a per-component standard deviation
+        final var accelerationVariance = accelerationStandardDeviation * accelerationStandardDeviation
+                / BodyKinematics.COMPONENTS;
+        final var beforeVariance = beforeNorm > 0.0
+                ? accelerationVariance / (previousAvgSamples * beforeNorm * beforeNorm) : 0.0;
+        final var afterVariance = afterNorm > 0.0
+                ? accelerationVariance / (afterSamples * afterNorm * afterNorm) : 0.0;
         final var duration = Math.max(
                 items.get(items.size() - 1).getTimestampSeconds() - items.get(0).getTimestampSeconds(), 0.0);
-        final var gyroVariance = angularSpeedNoiseRootPsd * angularSpeedNoiseRootPsd * duration;
+        final var gyroVariance = angularSpeedNoiseRootPsd * angularSpeedNoiseRootPsd * duration
+                / BodyKinematics.COMPONENTS;
         sequence.setGravityDirectionStandardDeviation(Math.sqrt(beforeVariance + afterVariance + gyroVariance));
 
         currentSequenceItems = null;

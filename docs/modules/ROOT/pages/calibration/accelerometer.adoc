@@ -337,9 +337,8 @@ the resulting gravity vector. Unknown counts and minimum measurements are theref
 `KnownGravityNorm` rows, and all measurements are assumed to have been taken at that one position.
 
 NOTE: The new `commonAxisUsed = true` default applies to `KnownPosition` and `KnownBiasAndPosition` (they share the
-gravity-norm base class). The robust `...RobustKnownPosition...` and `...RobustKnownBiasAndPosition...` wrappers
-declare their own `DEFAULT_USE_COMMON_Z_AXIS`, which is still `false`; set `setCommonAxisUsed(true)` explicitly on them
-when an observable model is wanted.
+gravity-norm base class) and also to the robust `...RobustKnownPosition...` and `...RobustKnownBiasAndPosition...`
+wrappers, which declare their own `DEFAULT_USE_COMMON_Z_AXIS`.
 
 == Worked example: the linear system layout
 

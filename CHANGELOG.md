@@ -41,13 +41,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `GyroscopeMeasurementsGenerator` and the combined generators now only generate a sequence when both neighbouring
   static intervals are valid, join the dynamic intervals around a too short static interval, and emit the sequence when
   the following static interval ends, using the average of that whole interval as the "after" gravity vector
-  (issue #41, N4).
+  (issue #41, N4). When no more samples are going to be processed (e.g. a recording that ends at rest), the new
+  `flush()` method generates the sequence that is still pending.
+- `MagnetometerMeasurementsGenerator` is now aligned with the centred detection window: only samples classified as
+  static are averaged (previously, with the centred window, about half a window of motion samples was included), the
+  initialization period is part of the first static interval, and the reported standard deviation is the one of the
+  average (mean per-axis standard deviation of the interval divided by `sqrt(N)`) instead of the norm of the standard
+  deviation of the initialization period (issue #41, N3 and N6).
 - The initialization period is now the first static interval of the generators (its average is kept, instead of being
   reset), so a motion right after initialization no longer gets a zero "before" gravity vector (issue #41, N9).
 - Standard deviations are now consistent with the quantity they describe (issue #41, N6): averaged static
   measurements report `sigma/sqrt(N)`; the gravity-norm accelerometer and norm-based magnetometer calibrators give the
   fitter `2*g*sigma` (resp. `2*|B|*sigma`) for the squared-norm residual, so chi-square and covariance are properly
-  scaled; gyroscope sequences carry a gravity-direction standard deviation.
+  scaled; gyroscope sequences carry a per-component gravity-direction
+  standard deviation.
 - The easy gyroscope calibrators (`EasyGyroscopeCalibrator`, `KnownBiasEasyGyroscopeCalibrator`) now fit a
   three-component residual (`R^T * u_before` against `u_after`) with `LevenbergMarquardtMultiVariateFitter` and a
   numerical Jacobian that does not vanish near zero, instead of the scalar distance between unit vectors (issue #41,
@@ -86,12 +93,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - **Behaviour change, affects `irurueta-navigation-inertial-extra`
   ([albertoirurueta/irurueta-navigation-inertial-extra#29](https://github.com/albertoirurueta/irurueta-navigation-inertial-extra/issues/29))**:
   `DEFAULT_USE_COMMON_Z_AXIS` is now `true` in the gravity-norm accelerometer calibrators (`KnownGravityNorm`,
-  `KnownBiasAndGravityNorm`, `KnownPosition`, `KnownBiasAndPosition` and `RobustKnown[BiasAnd]GravityNorm` variants) and
+  `KnownBiasAndGravityNorm`, `KnownPosition`, `KnownBiasAndPosition` and their `RobustKnown[BiasAnd]GravityNorm` and
+  `RobustKnown[BiasAnd]Position` variants) and
   the norm-based magnetometer calibrators (`KnownMagneticFluxDensityNorm`, `KnownHardIronMagneticFluxDensityNorm`,
   `KnownPositionAndInstant`, `KnownHardIronPositionAndInstant` and robust variants). The general (full 3x3) mode
   remains available with `setCommonAxisUsed(false)`, but its matrix is only defined up to a rotation. Minimum
-  measurements with the new default are 10 / 7 (unknown / known bias or hard iron) instead of 13 / 10. The
-  `RobustKnown[BiasAnd]PositionAccelerometerCalibrator` classes still declare their own default of `false` (issue #41, N1).
+  measurements with the new default are 10 / 7 (unknown / known bias or hard iron) instead of 13 / 10 (issue #41, N1).
 - **Behaviour change**: `EasyGyroscopeCalibrator`, `KnownBiasEasyGyroscopeCalibrator`, `RobustEasyGyroscopeCalibrator`
   and `RobustKnownBiasEasyGyroscopeCalibrator` now default to `commonAxisUsed = false` and
   `estimateGDependentCrossBiases = false`, as in the paper. Minimum sequences with the new defaults are 13 and 10.

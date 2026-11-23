@@ -180,9 +180,9 @@ class PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
@@ -295,9 +295,9 @@ class PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
@@ -411,9 +411,9 @@ class PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
@@ -644,9 +644,9 @@ class PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertSame(calibrator.getMagneticModel(), magneticModel);
@@ -766,9 +766,9 @@ class PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
@@ -892,9 +892,9 @@ class PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
@@ -1034,9 +1034,9 @@ class PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
@@ -1172,9 +1172,9 @@ class PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
@@ -1299,9 +1299,9 @@ class PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
@@ -1425,9 +1425,9 @@ class PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
@@ -1809,9 +1809,9 @@ class PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
@@ -1946,9 +1946,9 @@ class PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
@@ -2357,9 +2357,9 @@ class PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
@@ -2500,9 +2500,9 @@ class PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
@@ -2941,9 +2941,9 @@ class PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
@@ -3104,9 +3104,9 @@ class PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
@@ -3572,9 +3572,9 @@ class PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
@@ -3698,9 +3698,9 @@ class PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
@@ -3824,9 +3824,9 @@ class PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
@@ -4208,9 +4208,9 @@ class PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
@@ -4345,9 +4345,9 @@ class PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
@@ -4756,9 +4756,9 @@ class PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
@@ -4898,9 +4898,9 @@ class PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
@@ -5337,9 +5337,9 @@ class PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
@@ -5500,9 +5500,9 @@ class PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
@@ -5962,9 +5962,9 @@ class PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
@@ -6207,9 +6207,9 @@ class PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertSame(magneticModel, calibrator.getMagneticModel());
@@ -6337,9 +6337,9 @@ class PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
@@ -6468,9 +6468,9 @@ class PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
@@ -6615,9 +6615,9 @@ class PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
@@ -6758,9 +6758,9 @@ class PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
@@ -6891,9 +6891,9 @@ class PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
@@ -7024,9 +7024,9 @@ class PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
@@ -7429,9 +7429,9 @@ class PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
@@ -7571,9 +7571,9 @@ class PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
@@ -7997,9 +7997,9 @@ class PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
@@ -8144,9 +8144,9 @@ class PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
@@ -8598,9 +8598,9 @@ class PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
@@ -8766,9 +8766,9 @@ class PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
@@ -9250,9 +9250,9 @@ class PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
@@ -9383,9 +9383,9 @@ class PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
@@ -9516,9 +9516,9 @@ class PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
@@ -9921,9 +9921,9 @@ class PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
@@ -10063,9 +10063,9 @@ class PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
@@ -10489,9 +10489,9 @@ class PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
@@ -10636,9 +10636,9 @@ class PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
@@ -11090,9 +11090,9 @@ class PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
@@ -11258,9 +11258,9 @@ class PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
@@ -12419,7 +12419,7 @@ class PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
         final var calibrator = new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator();
 
         // check default value
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
 
         // set a new value
         calibrator.setCommonAxisUsed(true);
@@ -12447,15 +12447,15 @@ class PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
         final var calibrator = new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator();
 
         // check default value
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
-        assertFalse(calibrator.isCommonAxisUsed());
-
-        // set a new value
-        calibrator.setCommonAxisUsed(true);
-
-        // check
         assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
+
+        // set a new value
+        calibrator.setCommonAxisUsed(false);
+
+        // check
+        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertFalse(calibrator.isCommonAxisUsed());
     }
 
     @Test

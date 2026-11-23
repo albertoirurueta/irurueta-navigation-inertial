@@ -17,8 +17,11 @@ package com.irurueta.navigation.inertial.calibration.generators;
 
 import com.irurueta.navigation.LockedException;
 import com.irurueta.navigation.inertial.BodyKinematics;
+import com.irurueta.navigation.inertial.BodyKinematicsAndMagneticFluxDensity;
+import com.irurueta.navigation.inertial.BodyMagneticFluxDensity;
 import com.irurueta.navigation.inertial.calibration.BodyKinematicsSequence;
 import com.irurueta.navigation.inertial.calibration.StandardDeviationBodyKinematics;
+import com.irurueta.navigation.inertial.calibration.StandardDeviationBodyMagneticFluxDensity;
 import com.irurueta.navigation.inertial.calibration.StandardDeviationTimedBodyKinematics;
 import com.irurueta.navigation.inertial.calibration.TimedBodyKinematics;
 import org.junit.jupiter.api.Test;
@@ -28,7 +31,11 @@ import java.util.List;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.mock;
 
 /**
  * Tests how generators handle static intervals using deterministic synthetic data (N4, N6 and N9).
@@ -48,6 +55,11 @@ class GeneratorsStaticIntervalTest {
 
     private static final double[] A = {0.0, 0.0, 9.8};
     private static final double[] B = {0.0, 9.8, 0.0};
+
+    private static final double MAG_STD = 1e-7;
+    private static final double[] MAG_A = {1e-5, 2e-5, 3e-5};
+    private static final double[] MAG_B = {-3e-5, 1e-5, 2e-5};
+    private static final double[] MAG_DYNAMIC = {4e-5, -4e-5, -1e-5};
 
     private final Random random = new Random(1234);
     private int index;
@@ -173,8 +185,9 @@ class GeneratorsStaticIntervalTest {
         final var rootPsd = generator.getGyroscopeBaseNoiseLevelRootPsd();
         final var g = 9.8;
         final var nAfter = 150 - 2 * DELAY;
-        final var expected = Math.sqrt(accStd * accStd / (g * g) / INITIAL + accStd * accStd / (g * g) / nAfter
-                + rootPsd * rootPsd * duration);
+        // base noise levels are norms of the three coordinates, and the result is per component
+        final var expected = Math.sqrt((accStd * accStd / (g * g) / INITIAL + accStd * accStd / (g * g) / nAfter
+                + rootPsd * rootPsd * duration) / BodyKinematics.COMPONENTS);
         assertTrue(expected > 0.0);
         assertEquals(expected, sequence.getGravityDirectionStandardDeviation(), 0.03 * expected);
     }
@@ -282,6 +295,131 @@ class GeneratorsStaticIntervalTest {
         final var n = 200 - 2 * DELAY;
         assertEquals(ACC_STD / Math.sqrt(n), measurements.get(0).getSpecificForceStandardDeviation(),
                 0.3 * ACC_STD / Math.sqrt(n));
+    }
+
+    @Test
+    void flushGeneratesPendingSequenceWhenRecordingEndsAtRest() throws LockedException {
+        final var sequences = new ArrayList<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>();
+        final var generator = createGenerator(sequences);
+
+        feedStatic(generator, A, INITIAL, 0.0);
+        feedStatic(generator, A, 100, 0.0);
+
+        // nothing is pending yet
+        assertFalse(generator.flush());
+
+        feedDynamic(generator, 80);
+
+        // following static interval is not long enough yet
+        feedStatic(generator, B, MIN_STATIC / 2, 0.0);
+        assertFalse(generator.flush());
+        assertTrue(sequences.isEmpty());
+
+        feedStatic(generator, B, 200, 0.0);
+
+        // recording ends at rest: sequence is still pending until it is flushed
+        assertTrue(sequences.isEmpty());
+        assertTrue(generator.flush());
+
+        assertEquals(1, sequences.size());
+        final var sequence = sequences.get(0);
+        assertEquals(A[2], sequence.getBeforeMeanFz(), 0.01);
+        assertEquals(B[1], sequence.getAfterMeanFy(), 0.01);
+        assertEquals(0.0, sequence.getAfterMeanFz(), 0.01);
+        // dynamic interval is extended half a window on each side by the centred window
+        assertEquals(80 + 2 * DELAY, sequence.getItemsCount(), 6);
+        assertTrue(sequence.getGravityDirectionStandardDeviation() > 0.0);
+
+        // sequence is not generated twice, neither by flushing again nor when the static interval ends
+        assertFalse(generator.flush());
+        feedDynamic(generator, 60);
+        assertEquals(1, sequences.size());
+
+        // and the flushed static interval is still the reference of the next sequence
+        feedStatic(generator, A, 150, 0.0);
+        feedDynamic(generator, 60);
+        assertEquals(2, sequences.size());
+        assertEquals(B[1], sequences.get(1).getBeforeMeanFy(), 0.01);
+        assertEquals(A[2], sequences.get(1).getAfterMeanFz(), 0.01);
+    }
+
+    @Test
+    void gravityDirectionStandardDeviationIsPerComponent() throws LockedException {
+        final var sequences = new ArrayList<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>();
+        final var generator = createGenerator(sequences);
+
+        feedStatic(generator, A, INITIAL, 0.0);
+        feedStatic(generator, A, 100, 0.0);
+        feedDynamic(generator, 80);
+        feedStatic(generator, B, 200, 0.0);
+        feedDynamic(generator, 60);
+
+        assertEquals(1, sequences.size());
+        final var sequence = sequences.get(0);
+
+        // per-component values: accelerometer noise of the averaged static intervals divided by gravity
+        // norm, plus integrated gyroscope noise (sigma^2 * dt * duration)
+        final var before = ACC_STD * ACC_STD / ((INITIAL + 100) * 9.8 * 9.8);
+        final var after = ACC_STD * ACC_STD / (200 * 9.8 * 9.8);
+        final var duration = (sequence.getItemsCount() - 1) * DT;
+        final var gyro = GYRO_STD * GYRO_STD * DT * duration;
+        final var expected = Math.sqrt(before + after + gyro);
+        assertEquals(expected, sequence.getGravityDirectionStandardDeviation(), 0.2 * expected);
+    }
+
+    @Test
+    void magnetometerAverageOnlyUsesSamplesClassifiedAsStatic() throws LockedException {
+        final var measurements = new ArrayList<StandardDeviationBodyMagneticFluxDensity>();
+        final var listener = mock(MagnetometerMeasurementsGeneratorListener.class);
+        doAnswer(invocation -> {
+            measurements.add(invocation.getArgument(1));
+            return null;
+        }).when(listener).onGeneratedMeasurement(any(), any());
+
+        final var generator = new MagnetometerMeasurementsGenerator(listener);
+        configure(generator);
+
+        feedMagnetometer(generator, A, MAG_A, INITIAL, false);
+        feedMagnetometer(generator, A, MAG_A, 100, false);
+        feedMagnetometer(generator, A, MAG_DYNAMIC, 80, true);
+        feedMagnetometer(generator, B, MAG_B, 200, false);
+        feedMagnetometer(generator, A, MAG_DYNAMIC, 80, true);
+
+        assertEquals(2, measurements.size());
+
+        // averages are not contaminated by the samples of the dynamic intervals that surround each
+        // static interval, which would shift them by more than 1e-6 T
+        final var tolerance = 5.0 * MAG_STD / Math.sqrt(200.0);
+        final var first = measurements.get(0).getMagneticFluxDensity();
+        assertEquals(MAG_A[0], first.getBx(), tolerance);
+        assertEquals(MAG_A[1], first.getBy(), tolerance);
+        assertEquals(MAG_A[2], first.getBz(), tolerance);
+
+        final var second = measurements.get(1).getMagneticFluxDensity();
+        assertEquals(MAG_B[0], second.getBx(), tolerance);
+        assertEquals(MAG_B[1], second.getBy(), tolerance);
+        assertEquals(MAG_B[2], second.getBz(), tolerance);
+
+        // standard deviation is the one of the average (sigma / sqrt(N))
+        final var expectedFirstStd = MAG_STD / Math.sqrt(INITIAL + 100.0);
+        assertEquals(expectedFirstStd, measurements.get(0).getMagneticFluxDensityStandardDeviation(),
+                0.3 * expectedFirstStd);
+        final var expectedSecondStd = MAG_STD / Math.sqrt(200.0);
+        assertEquals(expectedSecondStd, measurements.get(1).getMagneticFluxDensityStandardDeviation(),
+                0.3 * expectedSecondStd);
+    }
+
+    private void feedMagnetometer(final MagnetometerMeasurementsGenerator generator, final double[] f,
+                                  final double[] b, final int count, final boolean dynamic)
+            throws LockedException {
+        for (var i = 0; i < count; i++) {
+            final var kinematics = sample(f, 0.0, i, count, dynamic).getKinematics();
+            final var magneticFluxDensity = new BodyMagneticFluxDensity(
+                    b[0] + MAG_STD * random.nextGaussian(),
+                    b[1] + MAG_STD * random.nextGaussian(),
+                    b[2] + MAG_STD * random.nextGaussian());
+            assertTrue(generator.process(new BodyKinematicsAndMagneticFluxDensity(kinematics, magneticFluxDensity)));
+        }
     }
 
     private GyroscopeMeasurementsGenerator createGenerator(
