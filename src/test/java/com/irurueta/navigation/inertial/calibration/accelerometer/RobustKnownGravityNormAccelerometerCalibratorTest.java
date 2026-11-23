@@ -31,6 +31,15 @@ import static org.junit.jupiter.api.Assertions.*;
 class RobustKnownGravityNormAccelerometerCalibratorTest implements 
         RobustKnownGravityNormAccelerometerCalibratorListener {
 
+    /**
+     * Checks that the common z-axis model is used by default, since it is the only
+     * model that is fully observable with norm-based measurements.
+     */
+    @Test
+    void defaultUseCommonZAxis_whenNewInstance_isTrue() {
+        assertTrue(RobustKnownGravityNormAccelerometerCalibrator.DEFAULT_USE_COMMON_Z_AXIS);
+    }
+
     @Test
     void testCreate1() {
         // RANSAC

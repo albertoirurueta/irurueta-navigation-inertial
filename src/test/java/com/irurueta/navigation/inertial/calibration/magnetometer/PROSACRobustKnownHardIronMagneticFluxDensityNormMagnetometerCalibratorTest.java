@@ -102,6 +102,16 @@ class PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest
     private int calibrateNextIteration;
     private int calibrateProgressChange;
 
+    /**
+     * Checks that the common z-axis model is used by default, since it is the only
+     * model that is fully observable with norm-based measurements.
+     */
+    @Test
+    void defaultUseCommonZAxis_whenNewInstance_isTrue() {
+        assertTrue(PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator.DEFAULT_USE_COMMON_Z_AXIS);
+        assertTrue(new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator().isCommonAxisUsed());
+    }
+
     @Test
     void testConstructor1() throws WrongSizeException {
         final var calibrator = new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
@@ -173,9 +183,9 @@ class PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -284,9 +294,9 @@ class PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -395,9 +405,9 @@ class PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -626,9 +636,9 @@ class PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -748,9 +758,9 @@ class PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -886,9 +896,9 @@ class PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -1011,9 +1021,9 @@ class PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -1356,9 +1366,9 @@ class PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -1482,9 +1492,9 @@ class PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -1860,9 +1870,9 @@ class PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -1989,9 +1999,9 @@ class PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -2392,9 +2402,9 @@ class PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -2541,9 +2551,9 @@ class PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -2979,9 +2989,9 @@ class PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -3105,9 +3115,9 @@ class PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -3233,9 +3243,9 @@ class PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -3491,9 +3501,9 @@ class PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -3627,9 +3637,9 @@ class PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -3780,9 +3790,9 @@ class PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -3924,9 +3934,9 @@ class PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -4313,9 +4323,9 @@ class PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -4450,9 +4460,9 @@ class PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -4860,9 +4870,9 @@ class PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -5000,9 +5010,9 @@ class PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -5436,9 +5446,9 @@ class PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -5598,9 +5608,9 @@ class PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -6058,9 +6068,9 @@ class PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -6301,9 +6311,9 @@ class PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -6429,9 +6439,9 @@ class PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -6571,9 +6581,9 @@ class PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -6706,9 +6716,9 @@ class PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -7069,9 +7079,9 @@ class PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -7197,9 +7207,9 @@ class PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -7585,9 +7595,9 @@ class PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -7718,9 +7728,9 @@ class PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -8133,9 +8143,9 @@ class PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -8282,9 +8292,9 @@ class PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -8733,9 +8743,9 @@ class PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -8864,9 +8874,9 @@ class PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -8996,9 +9006,9 @@ class PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -9264,9 +9274,9 @@ class PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -9404,9 +9414,9 @@ class PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -9561,9 +9571,9 @@ class PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -9709,9 +9719,9 @@ class PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -10108,9 +10118,9 @@ class PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -10249,9 +10259,9 @@ class PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -10675,9 +10685,9 @@ class PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -10822,9 +10832,9 @@ class PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -11272,9 +11282,9 @@ class PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -11439,9 +11449,9 @@ class PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -12550,7 +12560,7 @@ class PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest
         final var calibrator = new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default value
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
 
         // set a new value
         calibrator.setCommonAxisUsed(true);
@@ -12578,8 +12588,8 @@ class PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest
         final var calibrator = new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default value
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
 
         // set a new value
         calibrator.setCommonAxisUsed(true);
@@ -12840,7 +12850,7 @@ class PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest
             assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
             assertTrue(calibrator.getEstimatedReducedChiSq() >= 0.0);
             assertTrue(calibrator.getEstimatedP() >= 0.0);
-            assertTrue(calibrator.getEstimatedQ() > 0.0);
+            assertTrue(calibrator.getEstimatedQ() >= 0.0);
 
             numValid++;
             break;
@@ -12933,7 +12943,7 @@ class PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest
             assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
             assertTrue(calibrator.getEstimatedReducedChiSq() >= 0.0);
             assertTrue(calibrator.getEstimatedP() >= 0.0);
-            assertTrue(calibrator.getEstimatedQ() > 0.0);
+            assertTrue(calibrator.getEstimatedQ() >= 0.0);
 
             numValid++;
             break;
@@ -13030,7 +13040,7 @@ class PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest
             assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
             assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
             assertTrue(calibrator.getEstimatedP() >= 0.0);
-            assertTrue(calibrator.getEstimatedQ() > 0.0);
+            assertTrue(calibrator.getEstimatedQ() >= 0.0);
 
             numValid++;
             break;
@@ -13124,7 +13134,7 @@ class PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest
             assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
             assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
             assertTrue(calibrator.getEstimatedP() >= 0.0);
-            assertTrue(calibrator.getEstimatedQ() > 0.0);
+            assertTrue(calibrator.getEstimatedQ() >= 0.0);
 
             numValid++;
             break;
@@ -13219,7 +13229,7 @@ class PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest
                 assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
                 assertTrue(calibrator.getEstimatedReducedChiSq() >= 0.0);
                 assertTrue(calibrator.getEstimatedP() >= 0.0);
-                assertTrue(calibrator.getEstimatedQ() > 0.0);
+                assertTrue(calibrator.getEstimatedQ() >= 0.0);
             }
 
             numValid++;

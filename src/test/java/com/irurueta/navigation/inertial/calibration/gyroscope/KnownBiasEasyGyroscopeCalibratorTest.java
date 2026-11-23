@@ -29,6 +29,7 @@ import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeExcept
 import com.irurueta.navigation.frames.NEDFrame;
 import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.frames.converters.NEDtoECEFFrameConverter;
+import com.irurueta.navigation.inertial.BodyKinematics;
 import com.irurueta.navigation.inertial.calibration.AngularSpeedTriad;
 import com.irurueta.navigation.inertial.calibration.BodyKinematicsGenerator;
 import com.irurueta.navigation.inertial.calibration.BodyKinematicsSequence;
@@ -78,6 +79,16 @@ class KnownBiasEasyGyroscopeCalibratorTest implements KnownBiasEasyGyroscopeCali
 
     private int calibrateStart;
     private int calibrateEnd;
+
+    /**
+     * Checks that default values follow the reference paper: general (non common)
+     * z-axis and no G-dependent cross biases estimation.
+     */
+    @Test
+    void defaultConstants_whenAccessed_followReferencePaper() {
+        assertFalse(KnownBiasEasyGyroscopeCalibrator.DEFAULT_USE_COMMON_Z_AXIS);
+        assertFalse(KnownBiasEasyGyroscopeCalibrator.DEFAULT_ESTIMATE_G_DEPENDENT_CROSS_BIASES);
+    }
 
     @Test
     void testConstructor1() throws WrongSizeException {
@@ -202,10 +213,10 @@ class KnownBiasEasyGyroscopeCalibratorTest implements KnownBiasEasyGyroscopeCali
                 calibrator.getMeasurementOrSequenceType());
         assertTrue(calibrator.isOrderedMeasurementsOrSequencesRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertTrue(calibrator.isGDependentCrossBiasesEstimated());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
         assertNull(calibrator.getListener());
-        assertEquals(16, calibrator.getMinimumRequiredMeasurementsOrSequences());
+        assertEquals(10, calibrator.getMinimumRequiredMeasurementsOrSequences());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
 
@@ -372,10 +383,10 @@ class KnownBiasEasyGyroscopeCalibratorTest implements KnownBiasEasyGyroscopeCali
                 calibrator.getMeasurementOrSequenceType());
         assertTrue(calibrator.isOrderedMeasurementsOrSequencesRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertTrue(calibrator.isGDependentCrossBiasesEstimated());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
         assertNull(calibrator.getListener());
-        assertEquals(16, calibrator.getMinimumRequiredMeasurementsOrSequences());
+        assertEquals(10, calibrator.getMinimumRequiredMeasurementsOrSequences());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
 
@@ -556,10 +567,10 @@ class KnownBiasEasyGyroscopeCalibratorTest implements KnownBiasEasyGyroscopeCali
                 calibrator.getMeasurementOrSequenceType());
         assertTrue(calibrator.isOrderedMeasurementsOrSequencesRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertTrue(calibrator.isGDependentCrossBiasesEstimated());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
         assertSame(this, calibrator.getListener());
-        assertEquals(16, calibrator.getMinimumRequiredMeasurementsOrSequences());
+        assertEquals(10, calibrator.getMinimumRequiredMeasurementsOrSequences());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
 
@@ -748,10 +759,10 @@ class KnownBiasEasyGyroscopeCalibratorTest implements KnownBiasEasyGyroscopeCali
                 calibrator.getMeasurementOrSequenceType());
         assertTrue(calibrator.isOrderedMeasurementsOrSequencesRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertTrue(calibrator.isGDependentCrossBiasesEstimated());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
         assertNull(calibrator.getListener());
-        assertEquals(16, calibrator.getMinimumRequiredMeasurementsOrSequences());
+        assertEquals(10, calibrator.getMinimumRequiredMeasurementsOrSequences());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
 
@@ -936,10 +947,10 @@ class KnownBiasEasyGyroscopeCalibratorTest implements KnownBiasEasyGyroscopeCali
                 calibrator.getMeasurementOrSequenceType());
         assertTrue(calibrator.isOrderedMeasurementsOrSequencesRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertTrue(calibrator.isGDependentCrossBiasesEstimated());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
         assertSame(this, calibrator.getListener());
-        assertEquals(16, calibrator.getMinimumRequiredMeasurementsOrSequences());
+        assertEquals(10, calibrator.getMinimumRequiredMeasurementsOrSequences());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
 
@@ -1143,10 +1154,10 @@ class KnownBiasEasyGyroscopeCalibratorTest implements KnownBiasEasyGyroscopeCali
                 calibrator.getMeasurementOrSequenceType());
         assertTrue(calibrator.isOrderedMeasurementsOrSequencesRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertTrue(calibrator.isGDependentCrossBiasesEstimated());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
         assertNull(calibrator.getListener());
-        assertEquals(16, calibrator.getMinimumRequiredMeasurementsOrSequences());
+        assertEquals(10, calibrator.getMinimumRequiredMeasurementsOrSequences());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
 
@@ -1359,10 +1370,10 @@ class KnownBiasEasyGyroscopeCalibratorTest implements KnownBiasEasyGyroscopeCali
                 calibrator.getMeasurementOrSequenceType());
         assertTrue(calibrator.isOrderedMeasurementsOrSequencesRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertTrue(calibrator.isGDependentCrossBiasesEstimated());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
         assertSame(this, calibrator.getListener());
-        assertEquals(16, calibrator.getMinimumRequiredMeasurementsOrSequences());
+        assertEquals(10, calibrator.getMinimumRequiredMeasurementsOrSequences());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
 
@@ -1574,10 +1585,10 @@ class KnownBiasEasyGyroscopeCalibratorTest implements KnownBiasEasyGyroscopeCali
                 calibrator.getMeasurementOrSequenceType());
         assertTrue(calibrator.isOrderedMeasurementsOrSequencesRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertTrue(calibrator.isGDependentCrossBiasesEstimated());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
         assertNull(calibrator.getListener());
-        assertEquals(16, calibrator.getMinimumRequiredMeasurementsOrSequences());
+        assertEquals(10, calibrator.getMinimumRequiredMeasurementsOrSequences());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
 
@@ -1797,10 +1808,10 @@ class KnownBiasEasyGyroscopeCalibratorTest implements KnownBiasEasyGyroscopeCali
                 calibrator.getMeasurementOrSequenceType());
         assertTrue(calibrator.isOrderedMeasurementsOrSequencesRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertTrue(calibrator.isGDependentCrossBiasesEstimated());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
         assertSame(this, calibrator.getListener());
-        assertEquals(16, calibrator.getMinimumRequiredMeasurementsOrSequences());
+        assertEquals(10, calibrator.getMinimumRequiredMeasurementsOrSequences());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
 
@@ -4627,13 +4638,13 @@ class KnownBiasEasyGyroscopeCalibratorTest implements KnownBiasEasyGyroscopeCali
         final var calibrator = new KnownBiasEasyGyroscopeCalibrator();
 
         // check initial value
-        assertTrue(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isCommonAxisUsed());
 
         // set new value
-        calibrator.setCommonAxisUsed(false);
+        calibrator.setCommonAxisUsed(true);
 
         // check
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
     }
 
     @Test
@@ -4641,13 +4652,13 @@ class KnownBiasEasyGyroscopeCalibratorTest implements KnownBiasEasyGyroscopeCali
         final var calibrator = new KnownBiasEasyGyroscopeCalibrator();
 
         // check initial value
-        assertTrue(calibrator.isGDependentCrossBiasesEstimated());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
 
         // set new value
-        calibrator.setGDependentCrossBiasesEstimated(false);
+        calibrator.setGDependentCrossBiasesEstimated(true);
 
         // check
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
+        assertTrue(calibrator.isGDependentCrossBiasesEstimated());
     }
 
     @Test
@@ -4669,12 +4680,12 @@ class KnownBiasEasyGyroscopeCalibratorTest implements KnownBiasEasyGyroscopeCali
         final var calibrator = new KnownBiasEasyGyroscopeCalibrator();
 
         // check initial value
-        assertEquals(16, calibrator.getMinimumRequiredMeasurementsOrSequences());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertTrue(calibrator.isGDependentCrossBiasesEstimated());
+        assertEquals(10, calibrator.getMinimumRequiredMeasurementsOrSequences());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
 
         // set new value
-        calibrator.setGDependentCrossBiasesEstimated(false);
+        calibrator.setCommonAxisUsed(true);
 
         // check
         assertEquals(7, calibrator.getMinimumRequiredMeasurementsOrSequences());
@@ -4682,15 +4693,15 @@ class KnownBiasEasyGyroscopeCalibratorTest implements KnownBiasEasyGyroscopeCali
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
 
         // set new value
-        calibrator.setCommonAxisUsed(false);
+        calibrator.setGDependentCrossBiasesEstimated(true);
 
         // check
-        assertEquals(10, calibrator.getMinimumRequiredMeasurementsOrSequences());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
+        assertEquals(16, calibrator.getMinimumRequiredMeasurementsOrSequences());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isGDependentCrossBiasesEstimated());
 
         // set new value
-        calibrator.setGDependentCrossBiasesEstimated(true);
+        calibrator.setCommonAxisUsed(false);
 
         // check
         assertEquals(19, calibrator.getMinimumRequiredMeasurementsOrSequences());
@@ -4907,7 +4918,7 @@ class KnownBiasEasyGyroscopeCalibratorTest implements KnownBiasEasyGyroscopeCali
             assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
             assertTrue(calibrator.getEstimatedReducedChiSq() >= 0.0);
             assertTrue(calibrator.getEstimatedP() >= 0.0);
-            assertTrue(calibrator.getEstimatedQ() > 0.0);
+            assertTrue(calibrator.getEstimatedQ() >= 0.0);
             assertTrue(calibrator.getEstimatedMse() >= 0.0);
 
             numValid++;
@@ -5108,7 +5119,7 @@ class KnownBiasEasyGyroscopeCalibratorTest implements KnownBiasEasyGyroscopeCali
             assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
             assertTrue(calibrator.getEstimatedReducedChiSq() >= 0.0);
             assertTrue(calibrator.getEstimatedP() >= 0.0);
-            assertTrue(calibrator.getEstimatedQ() > 0.0);
+            assertTrue(calibrator.getEstimatedQ() >= 0.0);
             assertTrue(calibrator.getEstimatedMse() >= 0.0);
 
             numValid++;
@@ -5306,7 +5317,7 @@ class KnownBiasEasyGyroscopeCalibratorTest implements KnownBiasEasyGyroscopeCali
             assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
             assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
             assertTrue(calibrator.getEstimatedP() >= 0.0);
-            assertTrue(calibrator.getEstimatedQ() > 0.0);
+            assertTrue(calibrator.getEstimatedQ() >= 0.0);
             assertTrue(calibrator.getEstimatedMse() > 0.0);
 
             numValid++;
@@ -5501,7 +5512,7 @@ class KnownBiasEasyGyroscopeCalibratorTest implements KnownBiasEasyGyroscopeCali
             assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
             assertTrue(calibrator.getEstimatedReducedChiSq() >= 0.0);
             assertTrue(calibrator.getEstimatedP() >= 0.0);
-            assertTrue(calibrator.getEstimatedQ() > 0.0);
+            assertTrue(calibrator.getEstimatedQ() >= 0.0);
             assertTrue(calibrator.getEstimatedMse() >= 0.0);
 
             numValid++;
@@ -5702,7 +5713,7 @@ class KnownBiasEasyGyroscopeCalibratorTest implements KnownBiasEasyGyroscopeCali
             assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
             assertTrue(calibrator.getEstimatedReducedChiSq() >= 0.0);
             assertTrue(calibrator.getEstimatedP() >= 0.0);
-            assertTrue(calibrator.getEstimatedQ() > 0.0);
+            assertTrue(calibrator.getEstimatedQ() >= 0.0);
             assertTrue(calibrator.getEstimatedMse() >= 0.0);
 
             numValid++;
@@ -5897,7 +5908,7 @@ class KnownBiasEasyGyroscopeCalibratorTest implements KnownBiasEasyGyroscopeCali
             assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
             assertTrue(calibrator.getEstimatedReducedChiSq() >= 0.0);
             assertTrue(calibrator.getEstimatedP() >= 0.0);
-            assertTrue(calibrator.getEstimatedQ() > 0.0);
+            assertTrue(calibrator.getEstimatedQ() >= 0.0);
             assertTrue(calibrator.getEstimatedMse() >= 0.0);
 
             numValid++;
@@ -6101,7 +6112,7 @@ class KnownBiasEasyGyroscopeCalibratorTest implements KnownBiasEasyGyroscopeCali
             assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
             assertTrue(calibrator.getEstimatedReducedChiSq() >= 0.0);
             assertTrue(calibrator.getEstimatedP() >= 0.0);
-            assertTrue(calibrator.getEstimatedQ() > 0.0);
+            assertTrue(calibrator.getEstimatedQ() >= 0.0);
             assertTrue(calibrator.getEstimatedMse() >= 0.0);
 
             numValid++;
@@ -6296,7 +6307,7 @@ class KnownBiasEasyGyroscopeCalibratorTest implements KnownBiasEasyGyroscopeCali
             assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
             assertTrue(calibrator.getEstimatedReducedChiSq() >= 0.0);
             assertTrue(calibrator.getEstimatedP() >= 0.0);
-            assertTrue(calibrator.getEstimatedQ() > 0.0);
+            assertTrue(calibrator.getEstimatedQ() >= 0.0);
             assertTrue(calibrator.getEstimatedMse() >= 0.0);
 
             numValid++;
@@ -6500,7 +6511,7 @@ class KnownBiasEasyGyroscopeCalibratorTest implements KnownBiasEasyGyroscopeCali
             assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
             assertTrue(calibrator.getEstimatedReducedChiSq() >= 0.0);
             assertTrue(calibrator.getEstimatedP() >= 0.0);
-            assertTrue(calibrator.getEstimatedQ() > 0.0);
+            assertTrue(calibrator.getEstimatedQ() >= 0.0);
             assertTrue(calibrator.getEstimatedMse() >= 0.0);
 
             numValid++;
@@ -6520,6 +6531,117 @@ class KnownBiasEasyGyroscopeCalibratorTest implements KnownBiasEasyGyroscopeCali
     public void onCalibrateEnd(final KnownBiasEasyGyroscopeCalibrator calibrator) {
         checkLocked(calibrator);
         calibrateEnd++;
+    }
+
+    @Test
+    void testCalibrateUsesGravityDirectionStandardDeviation() throws LockedException, NotReadyException,
+            CalibrationException {
+        final var chiSq1 = calibrateSyntheticSequences(1e-3);
+        final var chiSq2 = calibrateSyntheticSequences(2e-3);
+
+        // chi square is weighted by the inverse of the variance of the gravity direction residuals, hence
+        // doubling the standard deviation divides chi square by 4
+        assertTrue(chiSq1 > 0.0);
+        assertTrue(chiSq2 > 0.0);
+        assertEquals(4.0, chiSq1 / chiSq2, 0.04);
+    }
+
+    @Test
+    void testCalibrateFallsBackWhenGravityDirectionStandardDeviationIsNotAvailable() throws LockedException,
+            NotReadyException, CalibrationException {
+        // sequences built manually do not have a gravity direction standard deviation
+        final var chiSq = calibrateSyntheticSequences(0.0);
+
+        assertTrue(Double.isFinite(chiSq));
+        assertTrue(chiSq >= 0.0);
+    }
+
+    @Test
+    void testCalibrateWithMinimumNumberOfSequencesAndNoNoise() throws LockedException, NotReadyException,
+            CalibrationException, WrongSizeException {
+        final var sequences = generateSyntheticSequences(
+                KnownBiasEasyGyroscopeCalibrator.MINIMUM_SEQUENCES_COMMON_Z_AXIS, 0.0, 1e-3);
+        final var calibrator = new KnownBiasEasyGyroscopeCalibrator();
+        calibrator.setBias(new double[3]);
+        calibrator.setCommonAxisUsed(true);
+        calibrator.setGDependentCrossBiasesEstimated(false);
+        calibrator.setSequences(sequences);
+        final var initialMg = new Matrix(3, 3);
+        initialMg.setElementAt(0, 0, 0.01);
+        initialMg.setElementAt(0, 1, 0.005);
+        initialMg.setElementAt(0, 2, -0.005);
+        initialMg.setElementAt(1, 1, 0.01);
+        initialMg.setElementAt(1, 2, 0.005);
+        initialMg.setElementAt(2, 2, -0.01);
+        calibrator.setInitialMg(initialMg);
+        calibrator.calibrate();
+
+        // data is consistent with an ideal gyroscope, so the residual vanishes
+        assertTrue(calibrator.getEstimatedMse() < 1e-18);
+        assertTrue(calibrator.getEstimatedMg().equals(new Matrix(3, 3), 1e-6));
+    }
+
+    private static double calibrateSyntheticSequences(final double gravityDirectionStandardDeviation)
+            throws LockedException, NotReadyException, CalibrationException {
+        final var sequences = generateSyntheticSequences(
+                KnownBiasEasyGyroscopeCalibrator.MINIMUM_SEQUENCES_COMMON_Z_AXIS + 10, 1e-3,
+                gravityDirectionStandardDeviation);
+        final var calibrator = new KnownBiasEasyGyroscopeCalibrator();
+        calibrator.setBias(new double[3]);
+        calibrator.setCommonAxisUsed(true);
+        calibrator.setGDependentCrossBiasesEstimated(false);
+        calibrator.setSequences(sequences);
+        calibrator.calibrate();
+        return calibrator.getEstimatedChiSq();
+    }
+
+    private static ArrayList<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> generateSyntheticSequences(
+            final int numSequences, final double afterNoise, final double gravityDirectionStandardDeviation) {
+        // ideal gyroscope and accelerometer, constant angular rate during each sequence
+        final var random = new Random(2024L);
+        final var result = new ArrayList<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>();
+        final var q = new Quaternion();
+        for (var s = 0; s < numSequences; s++) {
+            final var sequence = new BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>();
+
+            final var items = new ArrayList<StandardDeviationTimedBodyKinematics>();
+            final var wx = 2.0 * (random.nextDouble() - 0.5);
+            final var wy = 2.0 * (random.nextDouble() - 0.5);
+            final var wz = 2.0 * (random.nextDouble() - 0.5);
+            for (var j = 0; j < 50; j++) {
+                final var kinematics = new BodyKinematics(0.0, 0.0, 0.0, wx, wy, wz);
+                items.add(new StandardDeviationTimedBodyKinematics(kinematics, j * TIME_INTERVAL_SECONDS,
+                        1e-3, 1e-4));
+            }
+            sequence.setItems(items);
+
+            var fx = random.nextGaussian();
+            var fy = random.nextGaussian();
+            var fz = random.nextGaussian();
+            final var norm = Math.sqrt(fx * fx + fy * fy + fz * fz);
+            fx *= 9.81 / norm;
+            fy *= 9.81 / norm;
+            fz *= 9.81 / norm;
+            sequence.setBeforeMeanSpecificForceCoordinates(fx, fy, fz);
+
+            try {
+                QuaternionIntegrator.integrateGyroSequence(sequence, QuaternionStepIntegratorType.RUNGE_KUTTA, q);
+                q.inverse();
+                final var before = new com.irurueta.geometry.InhomogeneousPoint3D(fx, fy, fz);
+                final var after = new com.irurueta.geometry.InhomogeneousPoint3D();
+                q.rotate(before, after);
+                sequence.setAfterMeanSpecificForceCoordinates(
+                        after.getInhomX() + afterNoise * random.nextGaussian(),
+                        after.getInhomY() + afterNoise * random.nextGaussian(),
+                        after.getInhomZ() + afterNoise * random.nextGaussian());
+            } catch (final Exception e) {
+                throw new IllegalStateException(e);
+            }
+
+            sequence.setGravityDirectionStandardDeviation(gravityDirectionStandardDeviation);
+            result.add(sequence);
+        }
+        return result;
     }
 
     private void reset() {

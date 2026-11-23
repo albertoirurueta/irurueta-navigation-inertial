@@ -111,8 +111,10 @@ aggregates:
 The *norm* form (`getNoiseRootPsdNorm()`) is what `AccelerometerNoiseRootPsdSource` /
 `GyroscopeNoiseRootPsdSource` report: the triad estimators return it from
 `getAccelerometerBaseNoiseLevelRootPsd()` / `getGyroscopeBaseNoiseLevelRootPsd()`, and the static-interval
-detectors report stem:[\text{baseNoiseLevel}\cdot\sqrt{\tau}], where the base noise level is the accumulated
-standard-deviation *norm* (see xref:calibration/intervals-and-generators.adoc[]). The magnitude is the same
+detectors report stem:[\lVert\boldsymbol{\sigma}\rVert\sqrt{\tau}], where stem:[\lVert\boldsymbol{\sigma}\rVert] is the
+accumulated standard-deviation *norm* of the initialization period (the detector's base noise level itself is now
+variance based, but the PSD accessors keep reporting the standard-deviation based value, see
+xref:calibration/intervals-and-generators.adoc[]). The magnitude is the same
 in both cases. Two consequences are worth knowing:
 
 * For isotropic noise with per-axis deviation stem:[\sigma] the norm form is
@@ -151,11 +153,14 @@ mean stem:[\overline{x}] and the unbiased variance
 \sigma^{2} = \frac{1}{W-1}\sum_{k=1}^{W}\left(x_k-\overline{x}\right)^{2}
 ++++
 
-with stem:[W] the window size. The PSD relations above are applied to that variance in the same way. Statistics are recomputed only by
+with stem:[W] the number of samples in the window (the window size once it is full; the average and the variance are
+always computed over the samples actually stored, using stem:[n-1] with stem:[n] the stored count, and a single sample
+gives a variance of 0). The PSD relations above are applied to that variance in the same way. Statistics are recomputed only by
 the `add...AndProcess` methods (`addMeasurementAndProcess`, `addTriadAndProcess`); the plain
 `addMeasurement` / `addTriad` methods just store the sample. While the window holds fewer than
-stem:[W] samples the missing ones count as zero in the mean and variance, so read the statistics only once
-`isWindowFilled()` is true.
+stem:[W] samples the statistics describe only the stored samples (previous versions divided by the full window size,
+counting the missing samples as zero), but they are still computed over a partial window, so read them only once
+`isWindowFilled()` is true if a full window is required.
 
 [source,java]
 ----

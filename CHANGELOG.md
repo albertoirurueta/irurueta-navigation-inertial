@@ -32,6 +32,26 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
   the first IMU sample, instead of using a zero propagation interval.
 - `INSGNSSTightlyCoupledKalmanFilteredEstimator` now integrates IMU samples provided before the first GNSS
   measurements, so that attitude changes before position and velocity are initialised are not lost.
+- Windowed noise estimators (`WindowedTriadNoiseEstimator`, `WindowedMeasurementNoiseEstimator` and subclasses) now
+  compute the average and the unbiased variance over the number of samples actually stored in the window, instead of
+  dividing by the full window size while it was not yet full (issue #41, N8).
+- `TriadStaticIntervalDetector` now classifies the sample at the centre of the window (as imu_tk), so interval
+  boundaries are symmetric and static averages no longer contain motion samples. Status changes are delayed by half a
+  window, available as `getDetectionDelaySamples()` (issue #41, N3).
+- `GyroscopeMeasurementsGenerator` and the combined generators now only generate a sequence when both neighbouring
+  static intervals are valid, join the dynamic intervals around a too short static interval, and emit the sequence when
+  the following static interval ends, using the average of that whole interval as the "after" gravity vector
+  (issue #41, N4).
+- The initialization period is now the first static interval of the generators (its average is kept, instead of being
+  reset), so a motion right after initialization no longer gets a zero "before" gravity vector (issue #41, N9).
+- Standard deviations are now consistent with the quantity they describe (issue #41, N6): averaged static
+  measurements report `sigma/sqrt(N)`; the gravity-norm accelerometer and norm-based magnetometer calibrators give the
+  fitter `2*g*sigma` (resp. `2*|B|*sigma`) for the squared-norm residual, so chi-square and covariance are properly
+  scaled; gyroscope sequences carry a gravity-direction standard deviation.
+- The easy gyroscope calibrators (`EasyGyroscopeCalibrator`, `KnownBiasEasyGyroscopeCalibrator`) now fit a
+  three-component residual (`R^T * u_before` against `u_after`) with `LevenbergMarquardtMultiVariateFitter` and a
+  numerical Jacobian that does not vanish near zero, instead of the scalar distance between unit vectors (issue #41,
+  N5). The robust variants already scored the norm of that residual.
 
 ### Added
 
@@ -40,6 +60,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `getLastKinematicsTimestamp()` and `getLastKinematicsTimestampAsTime(...)` on
   `INSLooselyCoupledKalmanFilteredEstimator` and `INSGNSSTightlyCoupledKalmanFilteredEstimator`, returning the
   timestamp of the last integrated IMU sample.
+- `BodyKinematicsSequence.getGravityDirectionStandardDeviation()` / `setGravityDirectionStandardDeviation(...)`
+  (dimensionless, default 0), populated by the gyroscope generators and used by the easy gyroscope calibrators.
+- `TriadStaticIntervalDetector.getDetectionDelaySamples()` and `MeasurementsGenerator.getDetectionDelaySamples()`,
+  which report the half-window delay of the detected status changes.
 
 ### Changed
 
@@ -59,6 +83,32 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
     the provided frame, preserving estimated biases and covariance.
   - `INSGNSSTightlyCoupledKalmanFilteredEstimator.updateBodyKinematics` reports inertial navigation failures as
     `INSGNSSException`.
+- **Behaviour change, affects `irurueta-navigation-inertial-extra`
+  ([albertoirurueta/irurueta-navigation-inertial-extra#29](https://github.com/albertoirurueta/irurueta-navigation-inertial-extra/issues/29))**:
+  `DEFAULT_USE_COMMON_Z_AXIS` is now `true` in the gravity-norm accelerometer calibrators (`KnownGravityNorm`,
+  `KnownBiasAndGravityNorm`, `KnownPosition`, `KnownBiasAndPosition` and `RobustKnown[BiasAnd]GravityNorm` variants) and
+  the norm-based magnetometer calibrators (`KnownMagneticFluxDensityNorm`, `KnownHardIronMagneticFluxDensityNorm`,
+  `KnownPositionAndInstant`, `KnownHardIronPositionAndInstant` and robust variants). The general (full 3x3) mode
+  remains available with `setCommonAxisUsed(false)`, but its matrix is only defined up to a rotation. Minimum
+  measurements with the new default are 10 / 7 (unknown / known bias or hard iron) instead of 13 / 10. The
+  `RobustKnown[BiasAnd]PositionAccelerometerCalibrator` classes still declare their own default of `false` (issue #41, N1).
+- **Behaviour change**: `EasyGyroscopeCalibrator`, `KnownBiasEasyGyroscopeCalibrator`, `RobustEasyGyroscopeCalibrator`
+  and `RobustKnownBiasEasyGyroscopeCalibrator` now default to `commonAxisUsed = false` and
+  `estimateGDependentCrossBiases = false`, as in the paper. Minimum sequences with the new defaults are 13 and 10.
+  The Turntable calibrators are unchanged (issue #41, N2).
+- **Behaviour change**: `TriadStaticIntervalDetector` (and the `Acceleration`, `AngularSpeed` and `MagneticFluxDensity`
+  detectors and all generators using them) now decides with the *variance-norm* statistic of imu_tk instead of the
+  standard-deviation norm. The meaning of every `thresholdFactor`, `instantaneousNoiseLevelFactor` and
+  `baseNoiseLevelAbsoluteThreshold` changes, with `k_reference ~ k^2`; `DEFAULT_THRESHOLD_FACTOR` goes from 2.0 to 4.0 and
+  `DEFAULT_INSTANTANEOUS_NOISE_LEVEL_FACTOR` from 2.0 to 9.0. Previously tuned values (for example in
+  `irurueta-navigation-inertial-extra` optimizers) must be revisited (issue #41, N7).
+- Detector status changes are delayed by half a window (centred window), so listener callbacks and generator outputs
+  occur `getDetectionDelaySamples()` samples after the sample they refer to (issue #41, N3).
+- `AccelerometerMeasurementsGenerator` standard deviations are divided by `sqrt(N)`, and the standard deviation given
+  to the fitter by the norm-based calibrators is `2*g*sigma`, so reported chi-square, covariance and weights change
+  (issue #41, N6).
+- The easy gyroscope residual is now three-component and weighted by the sequence gravity-direction standard deviation
+  (issue #41, N5).
 
 ## [1.10.2] - 2026-11-16
 

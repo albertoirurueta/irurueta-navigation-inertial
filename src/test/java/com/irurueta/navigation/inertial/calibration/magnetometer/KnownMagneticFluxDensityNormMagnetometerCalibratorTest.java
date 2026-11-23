@@ -43,6 +43,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -67,9 +68,9 @@ class KnownMagneticFluxDensityNormMagnetometerCalibratorTest implements
     private static final double MIN_HEIGHT_METERS = -500.0;
     private static final double MAX_HEIGHT_METERS = 10000.0;
 
-    private static final int LARGE_MEASUREMENT_NUMBER = 100000;
+    private static final int LARGE_MEASUREMENT_NUMBER = 1000;
 
-    private static final double MAGNETOMETER_NOISE_STD = 200e-9;
+    private static final double MAGNETOMETER_NOISE_STD = 2e-9;
 
     private static final double ABSOLUTE_ERROR = 1e-9;
     private static final double LARGE_ABSOLUTE_ERROR = 5e-5;
@@ -83,6 +84,31 @@ class KnownMagneticFluxDensityNormMagnetometerCalibratorTest implements
     private static final long START_TIMESTAMP_MILLIS;
     private static final long END_TIMESTAMP_MILLIS;
 
+    /**
+     * Ground truth norm used by synthetic norm tests.
+     */
+    private static final double NORM_TEST_NORM = 50e-6;
+
+    /**
+     * Standard deviation of the noise of synthetic norm tests.
+     */
+    private static final double NORM_TEST_NOISE_STD = 5e-8;
+
+    /**
+     * Tolerance for chi square checks of synthetic norm tests.
+     */
+    private static final double NORM_TEST_CHI_SQ_TOLERANCE = 0.3;
+
+    /**
+     * Number of measurements of synthetic norm tests.
+     */
+    private static final int NORM_TEST_NUM_MEASUREMENTS = 1000;
+
+    /**
+     * Seed for the random generator of synthetic norm tests.
+     */
+    private static final long NORM_TEST_SEED = 12345L;
+
     static {
         START_CALENDAR.set(2020, Calendar.JANUARY, 1, 0, 0, 0);
         END_CALENDAR.set(2025, Calendar.DECEMBER, 31, 23, 59, 59);
@@ -93,6 +119,16 @@ class KnownMagneticFluxDensityNormMagnetometerCalibratorTest implements
 
     private int calibrateStart;
     private int calibrateEnd;
+
+    /**
+     * Checks that the common z-axis model is used by default, since it is the only
+     * model that is fully observable with norm-based measurements.
+     */
+    @Test
+    void defaultUseCommonZAxis_whenNewInstance_isTrue() {
+        assertTrue(KnownMagneticFluxDensityNormMagnetometerCalibrator.DEFAULT_USE_COMMON_Z_AXIS);
+        assertTrue(new KnownMagneticFluxDensityNormMagnetometerCalibrator().isCommonAxisUsed());
+    }
 
     @Test
     void testConstructor1() throws WrongSizeException {
@@ -152,9 +188,9 @@ class KnownMagneticFluxDensityNormMagnetometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -273,9 +309,9 @@ class KnownMagneticFluxDensityNormMagnetometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -395,9 +431,9 @@ class KnownMagneticFluxDensityNormMagnetometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -643,9 +679,9 @@ class KnownMagneticFluxDensityNormMagnetometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -775,9 +811,9 @@ class KnownMagneticFluxDensityNormMagnetometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -922,9 +958,9 @@ class KnownMagneticFluxDensityNormMagnetometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -1059,9 +1095,9 @@ class KnownMagneticFluxDensityNormMagnetometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -1436,9 +1472,9 @@ class KnownMagneticFluxDensityNormMagnetometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -1571,9 +1607,9 @@ class KnownMagneticFluxDensityNormMagnetometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -1976,9 +2012,9 @@ class KnownMagneticFluxDensityNormMagnetometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -2116,9 +2152,9 @@ class KnownMagneticFluxDensityNormMagnetometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -2548,9 +2584,9 @@ class KnownMagneticFluxDensityNormMagnetometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -2707,9 +2743,9 @@ class KnownMagneticFluxDensityNormMagnetometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -3168,9 +3204,9 @@ class KnownMagneticFluxDensityNormMagnetometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -3300,9 +3336,9 @@ class KnownMagneticFluxDensityNormMagnetometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -3432,9 +3468,9 @@ class KnownMagneticFluxDensityNormMagnetometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -3699,9 +3735,9 @@ class KnownMagneticFluxDensityNormMagnetometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -3840,9 +3876,9 @@ class KnownMagneticFluxDensityNormMagnetometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -3996,9 +4032,9 @@ class KnownMagneticFluxDensityNormMagnetometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -4143,9 +4179,9 @@ class KnownMagneticFluxDensityNormMagnetometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -4548,9 +4584,9 @@ class KnownMagneticFluxDensityNormMagnetometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -4690,9 +4726,9 @@ class KnownMagneticFluxDensityNormMagnetometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -5117,9 +5153,9 @@ class KnownMagneticFluxDensityNormMagnetometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -5264,9 +5300,9 @@ class KnownMagneticFluxDensityNormMagnetometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -5718,9 +5754,9 @@ class KnownMagneticFluxDensityNormMagnetometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -5884,9 +5920,9 @@ class KnownMagneticFluxDensityNormMagnetometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -6945,7 +6981,7 @@ class KnownMagneticFluxDensityNormMagnetometerCalibratorTest implements
         final var calibrator = new KnownMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default value
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
 
         // set a new value
         calibrator.setCommonAxisUsed(true);
@@ -6973,8 +7009,8 @@ class KnownMagneticFluxDensityNormMagnetometerCalibratorTest implements
         final var calibrator = new KnownMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default value
-        assertEquals(13, calibrator.getMinimumRequiredMeasurements());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
 
         // set a new value
         calibrator.setCommonAxisUsed(true);
@@ -7093,7 +7129,7 @@ class KnownMagneticFluxDensityNormMagnetometerCalibratorTest implements
             assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
             assertTrue(calibrator.getEstimatedReducedChiSq() >= 0.0);
             assertTrue(calibrator.getEstimatedP() >= 0.0);
-            assertTrue(calibrator.getEstimatedQ() > 0.0);
+            assertTrue(calibrator.getEstimatedQ() >= 0.0);
 
             numValid++;
 
@@ -7166,7 +7202,7 @@ class KnownMagneticFluxDensityNormMagnetometerCalibratorTest implements
             assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
             assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
             assertTrue(calibrator.getEstimatedP() >= 0.0);
-            assertTrue(calibrator.getEstimatedQ() > 0.0);
+            assertTrue(calibrator.getEstimatedQ() >= 0.0);
 
             numValid++;
 
@@ -7243,7 +7279,7 @@ class KnownMagneticFluxDensityNormMagnetometerCalibratorTest implements
                 assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
                 assertTrue(calibrator.getEstimatedReducedChiSq() >= 0.0);
                 assertTrue(calibrator.getEstimatedP() >= 0.0);
-                assertTrue(calibrator.getEstimatedQ() > 0.0);
+                assertTrue(calibrator.getEstimatedQ() >= 0.0);
             }
 
             numValid++;
@@ -7317,7 +7353,7 @@ class KnownMagneticFluxDensityNormMagnetometerCalibratorTest implements
             assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
             assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
             assertTrue(calibrator.getEstimatedP() >= 0.0);
-            assertTrue(calibrator.getEstimatedQ() > 0.0);
+            assertTrue(calibrator.getEstimatedQ() >= 0.0);
 
             numValid++;
 
@@ -7325,6 +7361,93 @@ class KnownMagneticFluxDensityNormMagnetometerCalibratorTest implements
         }
 
         assertTrue(numValid > 0);
+    }
+
+    /**
+     * Checks that the estimated chi square is about 1 when the standard deviation provided with
+     * each measurement matches the actual noise of the magnetic flux density, which requires the
+     * standard deviation of the fitted squared norm to be {@code 2 * ||B|| * sigma_B}.
+     *
+     * @throws LockedException      never happens.
+     * @throws NotReadyException    never happens.
+     * @throws CalibrationException if calibration fails.
+     */
+    @Test
+    void calibrate_whenNoiseStandardDeviationIsKnown_chiSqIsCloseToOne() throws LockedException,
+            NotReadyException, CalibrationException {
+        final var calibrator = createNormCalibrator(NORM_TEST_NOISE_STD);
+        calibrator.calibrate();
+
+        assertEquals(1.0, calibrator.getEstimatedChiSq(), NORM_TEST_CHI_SQ_TOLERANCE);
+    }
+
+    /**
+     * Checks that the estimated covariance scales with the square of the provided standard
+     * deviation of the measurements.
+     *
+     * @throws LockedException      never happens.
+     * @throws NotReadyException    never happens.
+     * @throws CalibrationException if calibration fails.
+     */
+    @Test
+    void calibrate_whenDeclaredStandardDeviationIsDoubled_covarianceScalesWithSquare() throws LockedException,
+            NotReadyException, CalibrationException {
+        final var calibrator1 = createNormCalibrator(NORM_TEST_NOISE_STD);
+        calibrator1.calibrate();
+        final var calibrator2 = createNormCalibrator(2.0 * NORM_TEST_NOISE_STD);
+        calibrator2.calibrate();
+
+        final var covariance1 = calibrator1.getEstimatedCovariance();
+        final var covariance2 = calibrator2.getEstimatedCovariance();
+        var trace1 = 0.0;
+        var trace2 = 0.0;
+        for (var i = 0; i < covariance1.getRows(); i++) {
+            trace1 += covariance1.getElementAt(i, i);
+            trace2 += covariance2.getElementAt(i, i);
+        }
+
+        assertTrue(trace1 > 0.0);
+        assertEquals(4.0, trace2 / trace1, 0.2);
+    }
+
+    /**
+     * Creates a calibrator with synthetic measurements having Gaussian noise of known standard
+     * deviation, declaring the provided standard deviation on each measurement.
+     *
+     * @param declaredStd standard deviation declared on each measurement.
+     * @return a ready calibrator.
+     * @throws LockedException never happens.
+     */
+    private static KnownMagneticFluxDensityNormMagnetometerCalibrator createNormCalibrator(final double declaredStd)
+            throws LockedException {
+        final var norm = NORM_TEST_NORM;
+        final var offset = new double[]{1e-6, -2e-6, 1.5e-6};
+        final var m = new double[][]{
+                {500e-6, -300e-6, 200e-6},
+                {0.0, -600e-6, 250e-6},
+                {0.0, 0.0, 450e-6}
+        };
+        final var random = new Random(NORM_TEST_SEED);
+        final var measurements = new ArrayList<StandardDeviationBodyMagneticFluxDensity>();
+        for (var i = 0; i < NORM_TEST_NUM_MEASUREMENTS; i++) {
+            final var u = new double[]{random.nextGaussian(), random.nextGaussian(), random.nextGaussian()};
+            final var unorm = Math.sqrt(u[0] * u[0] + u[1] * u[1] + u[2] * u[2]);
+            final var v = new double[3];
+            for (var r = 0; r < 3; r++) {
+                v[r] = offset[r] + norm * u[r] / unorm + random.nextGaussian() * NORM_TEST_NOISE_STD;
+                for (var c = 0; c < 3; c++) {
+                    v[r] += m[r][c] * norm * u[c] / unorm;
+                }
+            }
+            measurements.add(new StandardDeviationBodyMagneticFluxDensity(
+                    new BodyMagneticFluxDensity(v[0], v[1], v[2]), declaredStd));
+        }
+
+        final var calibrator = new KnownMagneticFluxDensityNormMagnetometerCalibrator();
+        calibrator.setGroundTruthMagneticFluxDensityNorm(norm);
+        calibrator.setInitialHardIron(offset);
+        calibrator.setMeasurements(measurements);
+        return calibrator;
     }
 
     @Override

@@ -32,10 +32,9 @@ import com.irurueta.navigation.inertial.calibration.BodyKinematicsSequence;
 import com.irurueta.navigation.inertial.calibration.CalibrationException;
 import com.irurueta.navigation.inertial.calibration.StandardDeviationTimedBodyKinematics;
 import com.irurueta.numerical.EvaluationException;
-import com.irurueta.numerical.GradientEstimator;
 import com.irurueta.numerical.fitting.FittingException;
-import com.irurueta.numerical.fitting.LevenbergMarquardtMultiDimensionFitter;
-import com.irurueta.numerical.fitting.LevenbergMarquardtMultiDimensionFunctionEvaluator;
+import com.irurueta.numerical.fitting.LevenbergMarquardtMultiVariateFitter;
+import com.irurueta.numerical.fitting.LevenbergMarquardtMultiVariateFunctionEvaluator;
 import com.irurueta.statistics.MaxIterationsExceededException;
 import com.irurueta.units.Acceleration;
 import com.irurueta.units.AccelerationConverter;
@@ -69,6 +68,12 @@ import java.util.List;
  * 19 sequences are required (each containing at least 3 body kinematics
  * measurements) when common z-axis is not assumed.
  * <p>
+ * Each sequence provides three equations (the three components of the gravity versor after
+ * the sequence, compared with the gravity versor before it rotated by the integrated attitude
+ * change), weighted by the standard deviation of the gravity direction error
+ * (see {@link BodyKinematicsSequence#getGravityDirectionStandardDeviation()}).
+ * The minimum number of sequences stated above is kept as a conservative value (number of unknowns plus one).
+ * <p>
  * Measured gyroscope angular rates is assumed to follow the model shown below:
  * <pre>
  *     Ωmeas = bg + (I + Mg) * Ωtrue + Gg * ftrue + w
@@ -98,14 +103,20 @@ public class KnownBiasEasyGyroscopeCalibrator implements GyroscopeNonLinearCalib
     /**
      * Indicates whether by default a common z-axis is assumed for both the accelerometer
      * and gyroscope.
+     * The default is {@code false} (general case), following the reference paper.
+     * Note that the upper-triangular form of the gyroscope scale and misalignment
+     * matrix (common z-axis) is only valid for the sensor that defines the body frame
+     * (the accelerometer), and not for the gyroscope.
      */
-    public static final boolean DEFAULT_USE_COMMON_Z_AXIS = true;
+    public static final boolean DEFAULT_USE_COMMON_Z_AXIS = false;
 
     /**
      * Indicates that by default G-dependent cross biases introduced
-     * by the accelerometer on the gyroscope are estimated.
+     * by the accelerometer on the gyroscope are not estimated, following the reference paper.
+     * Note that the G-dependent cross biases matrix (Gg) is only weakly observable when
+     * gravity is the only available reference.
      */
-    public static final boolean DEFAULT_ESTIMATE_G_DEPENDENT_CROSS_BIASES = true;
+    public static final boolean DEFAULT_ESTIMATE_G_DEPENDENT_CROSS_BIASES = false;
 
     /**
      * Number of unknowns when common z-axis is assumed for both the accelerometer
@@ -161,7 +172,7 @@ public class KnownBiasEasyGyroscopeCalibrator implements GyroscopeNonLinearCalib
     /**
      * Levenberg-Marquardt fitter to find a non-linear solution.
      */
-    private final LevenbergMarquardtMultiDimensionFitter fitter = new LevenbergMarquardtMultiDimensionFitter();
+    private final LevenbergMarquardtMultiVariateFitter fitter = new LevenbergMarquardtMultiVariateFitter();
 
     /**
      * Known x-coordinate of accelerometer bias to be used to fix measured
@@ -511,15 +522,7 @@ public class KnownBiasEasyGyroscopeCalibrator implements GyroscopeNonLinearCalib
     private final InhomogeneousPoint3D endPoint = new InhomogeneousPoint3D();
 
     /**
-     * Contains expected gravity versor obtained from measurements fixed
-     * using known accelerometer parameters.
-     * This is reused for memory efficiency purposes during calibration.
-     */
-    private final InhomogeneousPoint3D expectedEndPoint = new InhomogeneousPoint3D();
-
-    /**
-     * Array containing normalized gravity versor before (former 3 values)
-     * and after (latter 3 values) a given sequence.
+     * Array containing normalized gravity versor before a given sequence.
      * This is used during calibration.
      */
     private double[] point;
@@ -3140,8 +3143,8 @@ public class KnownBiasEasyGyroscopeCalibrator implements GyroscopeNonLinearCalib
         // Notice that M is upper diagonal because Mg is upper diagonal
         // when common axis is assumed
 
-        final var gradientEstimator = new GradientEstimator(
-                params -> evaluateCommonAxisWithGDependentCrossBiases(index, params));
+        final var jacobianEstimator = new ModelJacobianEstimator(
+                (params, estimate) -> evaluateCommonAxisWithGDependentCrossBiases(index, params, estimate));
 
         final var initialM = Matrix.identity(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
         initialM.add(getInitialMg());
@@ -3158,11 +3161,17 @@ public class KnownBiasEasyGyroscopeCalibrator implements GyroscopeNonLinearCalib
         final var bg = getBiasAsMatrix();
         b = invInitM.multiplyAndReturnNew(bg);
 
-        fitter.setFunctionEvaluator(new LevenbergMarquardtMultiDimensionFunctionEvaluator() {
+        fitter.setFunctionEvaluator(new LevenbergMarquardtMultiVariateFunctionEvaluator() {
             @Override
             public int getNumberOfDimensions() {
-                // Before and after normalized gravity versors
-                return 2 * BodyKinematics.COMPONENTS;
+                // Normalized gravity versor before the sequence
+                return BodyKinematics.COMPONENTS;
+            }
+
+            @Override
+            public int getNumberOfVariables() {
+                // Normalized gravity versor after the sequence
+                return BodyKinematics.COMPONENTS;
             }
 
             @Override
@@ -3190,18 +3199,18 @@ public class KnownBiasEasyGyroscopeCalibrator implements GyroscopeNonLinearCalib
             }
 
             @Override
-            public double evaluate(
-                    final int i, final double[] point, final double[] params, final double[] derivatives)
-                    throws EvaluationException {
+            public void evaluate(
+                    final int i, final double[] point, final double[] result, final double[] params,
+                    final Matrix jacobian) throws EvaluationException {
                 KnownBiasEasyGyroscopeCalibrator.this.index = i;
 
-                // point contains fixed gravity versor values for current
+                // point contains the fixed gravity versor before the current
                 // sequence
                 KnownBiasEasyGyroscopeCalibrator.this.point = point;
 
-                gradientEstimator.gradient(params, derivatives);
+                jacobianEstimator.jacobian(params, jacobian);
 
-                return evaluateCommonAxisWithGDependentCrossBiases(i, params);
+                evaluateCommonAxisWithGDependentCrossBiases(i, params, result);
             }
         });
 
@@ -3419,8 +3428,8 @@ public class KnownBiasEasyGyroscopeCalibrator implements GyroscopeNonLinearCalib
         // Ωmeas - M*b - M*G*ftrue = M*Ωtrue
         // M^-1 * (Ωmeas - M*b - M*G*ftrue) = Ωtrue
 
-        final var gradientEstimator = new GradientEstimator(
-                params -> evaluateGeneralWithGDependentCrossBiases(index, params));
+        final var jacobianEstimator = new ModelJacobianEstimator(
+                (params, estimate) -> evaluateGeneralWithGDependentCrossBiases(index, params, estimate));
 
         final var initialM = Matrix.identity(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
         initialM.add(getInitialMg());
@@ -3432,11 +3441,17 @@ public class KnownBiasEasyGyroscopeCalibrator implements GyroscopeNonLinearCalib
         final var bg = getBiasAsMatrix();
         b = invInitialM.multiplyAndReturnNew(bg);
 
-        fitter.setFunctionEvaluator(new LevenbergMarquardtMultiDimensionFunctionEvaluator() {
+        fitter.setFunctionEvaluator(new LevenbergMarquardtMultiVariateFunctionEvaluator() {
             @Override
             public int getNumberOfDimensions() {
-                // Before and after normalized gravity versors
-                return 2 * BodyKinematics.COMPONENTS;
+                // Normalized gravity versor before the sequence
+                return BodyKinematics.COMPONENTS;
+            }
+
+            @Override
+            public int getNumberOfVariables() {
+                // Normalized gravity versor after the sequence
+                return BodyKinematics.COMPONENTS;
             }
 
             @Override
@@ -3458,18 +3473,18 @@ public class KnownBiasEasyGyroscopeCalibrator implements GyroscopeNonLinearCalib
             }
 
             @Override
-            public double evaluate(
-                    final int i, final double[] point, final double[] params, final double[] derivatives)
-                    throws EvaluationException {
+            public void evaluate(
+                    final int i, final double[] point, final double[] result, final double[] params,
+                    final Matrix jacobian) throws EvaluationException {
                 KnownBiasEasyGyroscopeCalibrator.this.index = i;
 
-                // point contains fixed gravity versor values for current
+                // point contains the fixed gravity versor before the current
                 // sequence
                 KnownBiasEasyGyroscopeCalibrator.this.point = point;
 
-                gradientEstimator.gradient(params, derivatives);
+                jacobianEstimator.jacobian(params, jacobian);
 
-                return evaluateGeneralWithGDependentCrossBiases(i, params);
+                evaluateGeneralWithGDependentCrossBiases(i, params, result);
             }
         });
 
@@ -3722,7 +3737,8 @@ public class KnownBiasEasyGyroscopeCalibrator implements GyroscopeNonLinearCalib
         // Notice that M is upper diagonal because Mg is upper diagonal
         // when common axis is assumed
 
-        final var gradientEstimator = new GradientEstimator(params -> evaluateCommonAxis(index, params));
+        final var jacobianEstimator = new ModelJacobianEstimator(
+                (params, estimate) -> evaluateCommonAxis(index, params, estimate));
 
         final var initialM = Matrix.identity(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
         initialM.add(getInitialMg());
@@ -3737,11 +3753,17 @@ public class KnownBiasEasyGyroscopeCalibrator implements GyroscopeNonLinearCalib
         final var bg = getBiasAsMatrix();
         b = invInitialM.multiplyAndReturnNew(bg);
 
-        fitter.setFunctionEvaluator(new LevenbergMarquardtMultiDimensionFunctionEvaluator() {
+        fitter.setFunctionEvaluator(new LevenbergMarquardtMultiVariateFunctionEvaluator() {
             @Override
             public int getNumberOfDimensions() {
-                // Before and after normalized gravity versors
-                return 2 * BodyKinematics.COMPONENTS;
+                // Normalized gravity versor before the sequence
+                return BodyKinematics.COMPONENTS;
+            }
+
+            @Override
+            public int getNumberOfVariables() {
+                // Normalized gravity versor after the sequence
+                return BodyKinematics.COMPONENTS;
             }
 
             @Override
@@ -3763,18 +3785,18 @@ public class KnownBiasEasyGyroscopeCalibrator implements GyroscopeNonLinearCalib
             }
 
             @Override
-            public double evaluate(
-                    final int i, final double[] point, final double[] params, final double[] derivatives)
-                    throws EvaluationException {
+            public void evaluate(
+                    final int i, final double[] point, final double[] result, final double[] params,
+                    final Matrix jacobian) throws EvaluationException {
                 KnownBiasEasyGyroscopeCalibrator.this.index = i;
 
-                // point contains fixed gravity versor values for current
+                // point contains the fixed gravity versor before the current
                 // sequence
                 KnownBiasEasyGyroscopeCalibrator.this.point = point;
 
-                gradientEstimator.gradient(params, derivatives);
+                jacobianEstimator.jacobian(params, jacobian);
 
-                return evaluateCommonAxis(i, params);
+                evaluateCommonAxis(i, params, result);
             }
         });
 
@@ -3927,7 +3949,8 @@ public class KnownBiasEasyGyroscopeCalibrator implements GyroscopeNonLinearCalib
 
         // M^-1 * (Ωmeas - M*b) = Ωtrue
 
-        final var gradientEstimator = new GradientEstimator(params -> evaluateGeneral(index, params));
+        final var jacobianEstimator = new ModelJacobianEstimator(
+                (params, estimate) -> evaluateGeneral(index, params, estimate));
 
         final var initialM = Matrix.identity(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
         initialM.add(getInitialMg());
@@ -3937,11 +3960,17 @@ public class KnownBiasEasyGyroscopeCalibrator implements GyroscopeNonLinearCalib
         final var bg = getBiasAsMatrix();
         b = invInitialM.multiplyAndReturnNew(bg);
 
-        fitter.setFunctionEvaluator(new LevenbergMarquardtMultiDimensionFunctionEvaluator() {
+        fitter.setFunctionEvaluator(new LevenbergMarquardtMultiVariateFunctionEvaluator() {
             @Override
             public int getNumberOfDimensions() {
-                // Before and after normalized gravity versors
-                return 2 * BodyKinematics.COMPONENTS;
+                // Normalized gravity versor before the sequence
+                return BodyKinematics.COMPONENTS;
+            }
+
+            @Override
+            public int getNumberOfVariables() {
+                // Normalized gravity versor after the sequence
+                return BodyKinematics.COMPONENTS;
             }
 
             @Override
@@ -3950,18 +3979,18 @@ public class KnownBiasEasyGyroscopeCalibrator implements GyroscopeNonLinearCalib
             }
 
             @Override
-            public double evaluate(
-                    final int i, final double[] point, final double[] params, final double[] derivatives)
-                    throws EvaluationException {
+            public void evaluate(
+                    final int i, final double[] point, final double[] result, final double[] params,
+                    final Matrix jacobian) throws EvaluationException {
                 KnownBiasEasyGyroscopeCalibrator.this.index = i;
 
-                // point contains fixed gravity versor values for current
+                // point contains the fixed gravity versor before the current
                 // sequence
                 KnownBiasEasyGyroscopeCalibrator.this.point = point;
 
-                gradientEstimator.gradient(params, derivatives);
+                jacobianEstimator.jacobian(params, jacobian);
 
-                return evaluateGeneral(i, params);
+                evaluateGeneral(i, params, result);
             }
         });
 
@@ -4099,8 +4128,8 @@ public class KnownBiasEasyGyroscopeCalibrator implements GyroscopeNonLinearCalib
         final var fixedAfterF = new double[BodyKinematics.COMPONENTS];
 
         final var numSequences = sequences.size();
-        final var x = new Matrix(numSequences, 2 * BodyKinematics.COMPONENTS);
-        final var y = new double[numSequences];
+        final var x = new Matrix(numSequences, BodyKinematics.COMPONENTS);
+        final var y = new Matrix(numSequences, BodyKinematics.COMPONENTS);
         final var standardDeviations = new double[numSequences];
 
         // make a copy of input sequences that will be used to update
@@ -4136,36 +4165,13 @@ public class KnownBiasEasyGyroscopeCalibrator implements GyroscopeNonLinearCalib
             ArrayUtils.normalize(fixedAfterF);
 
             x.setSubmatrix(i, 0, i, 2, fixedBeforeF);
-            x.setSubmatrix(i, 3, i, 5, fixedAfterF);
+            y.setSubmatrix(i, 0, i, 2, fixedAfterF);
 
-            y[i] = 0.0;
-
-            standardDeviations[i] = computeAverageAngularRateStandardDeviation(sequence);
+            standardDeviations[i] = EasyGyroscopeCalibrator.computeGravityDirectionStandardDeviation(sequence);
             i++;
         }
 
         fitter.setInputData(x, y, standardDeviations);
-    }
-
-    /**
-     * Computes average angular rate standard deviation for measurements
-     * in provided sequence.
-     *
-     * @param sequence a sequence.
-     * @return average angular rate standard deviation expressed in radians
-     * per second (rad/s).
-     */
-    private static double computeAverageAngularRateStandardDeviation(
-            final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> sequence) {
-        final var items = sequence.getSortedItems();
-        final var size = items.size();
-
-        var result = 0.0;
-        for (final var item : items) {
-            result += item.getAngularRateStandardDeviation() / size;
-        }
-
-        return result;
     }
 
     /**
@@ -4264,7 +4270,7 @@ public class KnownBiasEasyGyroscopeCalibrator implements GyroscopeNonLinearCalib
     }
 
     /**
-     * Computes gravity versor error at the end of a sequence using provided
+     * Computes the gravity versor at the end of a sequence using provided
      * parameters.
      * This method is internally executed during gradient estimation and
      * Levenberg-Marquardt fitting needed for calibration computation.
@@ -4273,10 +4279,11 @@ public class KnownBiasEasyGyroscopeCalibrator implements GyroscopeNonLinearCalib
      * @param params array containing parameters for the general purpose case
      *               when G-dependent cross biases are taken into account. Must
      *               have length 18.
-     * @return error between estimated and measured gravity versor.
+     * @param result array where the estimated gravity versor at the end of the sequence is stored. Must
+     *               have length 3.
      * @throws EvaluationException if there are numerical instabilities.
      */
-    private double evaluateGeneralWithGDependentCrossBiases(final int i, final double[] params)
+    private void evaluateGeneralWithGDependentCrossBiases(final int i, final double[] params, final double[] result)
             throws EvaluationException {
 
         final var m11 = params[0];
@@ -4303,11 +4310,11 @@ public class KnownBiasEasyGyroscopeCalibrator implements GyroscopeNonLinearCalib
         final var g23 = params[16];
         final var g33 = params[17];
 
-        return evaluate(i, m11, m21, m31, m12, m22, m32, m13, m23, m33, g11, g21, g31, g12, g22, g32, g13, g23, g33);
+        evaluate(i, m11, m21, m31, m12, m22, m32, m13, m23, m33, g11, g21, g31, g12, g22, g32, g13, g23, g33, result);
     }
 
     /**
-     * Computes gravity versor error at the end of a sequence using provided
+     * Computes the gravity versor at the end of a sequence using provided
      * parameters.
      * This method is internally executed during gradient estimation and
      * Levenberg-Marquardt fitting needed for calibration computation.
@@ -4316,10 +4323,11 @@ public class KnownBiasEasyGyroscopeCalibrator implements GyroscopeNonLinearCalib
      * @param params array containing parameters for the general purpose case
      *               when G-dependent cross biases are taken into account. Must
      *               have length 15.
-     * @return error between estimated and measured gravity versor.
+     * @param result array where the estimated gravity versor at the end of the sequence is stored. Must
+     *               have length 3.
      * @throws EvaluationException if there are numerical instabilities.
      */
-    private double evaluateCommonAxisWithGDependentCrossBiases(final int i, final double[] params)
+    private void evaluateCommonAxisWithGDependentCrossBiases(final int i, final double[] params, final double[] result)
             throws EvaluationException {
 
         final var m11 = params[0];
@@ -4343,12 +4351,12 @@ public class KnownBiasEasyGyroscopeCalibrator implements GyroscopeNonLinearCalib
         final var g23 = params[13];
         final var g33 = params[14];
 
-        return evaluate(i, m11, 0.0, 0.0, m12, m22, 0.0, m13, m23, m33, g11, g21, g31, g12, g22, g32,
-                g13, g23, g33);
+        evaluate(i, m11, 0.0, 0.0, m12, m22, 0.0, m13, m23, m33, g11, g21, g31, g12, g22, g32,
+                g13, g23, g33, result);
     }
 
     /**
-     * Computes gravity versor error at the end of a sequence using provided
+     * Computes the gravity versor at the end of a sequence using provided
      * parameters.
      * This method is internally executed during gradient estimation and
      * Levenberg-Marquardt fitting needed for calibration computation.
@@ -4356,10 +4364,11 @@ public class KnownBiasEasyGyroscopeCalibrator implements GyroscopeNonLinearCalib
      * @param i      row position.
      * @param params array containing current parameters for the general purpose case
      *               when G-dependent cross biases are ignored. Must have length 9.
-     * @return error between estimated and measured gravity versor.
+     * @param result array where the estimated gravity versor at the end of the sequence is stored. Must
+     *               have length 3.
      * @throws EvaluationException if there are numerical instabilities.
      */
-    private double evaluateGeneral(final int i, final double[] params) throws EvaluationException {
+    private void evaluateGeneral(final int i, final double[] params, final double[] result) throws EvaluationException {
 
         final var m11 = params[0];
         final var m21 = params[1];
@@ -4373,12 +4382,12 @@ public class KnownBiasEasyGyroscopeCalibrator implements GyroscopeNonLinearCalib
         final var m23 = params[7];
         final var m33 = params[8];
 
-        return evaluate(i, m11, m21, m31, m12, m22, m32, m13, m23, m33,
-                0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+        evaluate(i, m11, m21, m31, m12, m22, m32, m13, m23, m33,
+                0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, result);
     }
 
     /**
-     * Computes gravity versor error at the end of a sequence using provided
+     * Computes the gravity versor at the end of a sequence using provided
      * parameters.
      * This method is internally executed during gradient estimation and
      * Levenberg-Marquardt fitting needed for calibration computation.
@@ -4386,10 +4395,12 @@ public class KnownBiasEasyGyroscopeCalibrator implements GyroscopeNonLinearCalib
      * @param i      row position.
      * @param params array containing current parameters for the common z-axis case
      *               when G-dependent cross biases are ignored. Must have length 9.
-     * @return error between estimated and measured gravity versor.
+     * @param result array where the estimated gravity versor at the end of the sequence is stored. Must
+     *               have length 3.
      * @throws EvaluationException if there are numerical instabilities.
      */
-    private double evaluateCommonAxis(final int i, final double[] params) throws EvaluationException {
+    private void evaluateCommonAxis(final int i, final double[] params, final double[] result)
+            throws EvaluationException {
         final var m11 = params[0];
 
         final var m12 = params[1];
@@ -4399,12 +4410,12 @@ public class KnownBiasEasyGyroscopeCalibrator implements GyroscopeNonLinearCalib
         final var m23 = params[4];
         final var m33 = params[5];
 
-        return evaluate(i, m11, 0.0, 0.0, m12, m22, 0.0, m13, m23, m33,
-                0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+        evaluate(i, m11, 0.0, 0.0, m12, m22, 0.0, m13, m23, m33,
+                0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, result);
     }
 
     /**
-     * Computes gravity versor error at the end of a sequence using provided
+     * Computes the gravity versor at the end of a sequence using provided
      * parameters.
      * This method is internally executed during gradient estimation and
      * Levenberg-Marquardt fitting needed for calibration computation.
@@ -4428,16 +4439,17 @@ public class KnownBiasEasyGyroscopeCalibrator implements GyroscopeNonLinearCalib
      * @param g13 element 1,3 of g-dependent cross bias matrix.
      * @param g23 element 2,3 of g-dependent cross bias matrix.
      * @param g33 element 3,3 of g-dependent cross bias matrix.
-     * @return error between estimated and measured gravity versor.
+     * @param result array where the estimated gravity versor at the end of the sequence is stored. Must
+     *               have length 3.
      * @throws EvaluationException if there are numerical instabilities.
      */
-    private double evaluate(
+    private void evaluate(
             final int i, final double m11, final double m21, final double m31,
             final double m12, final double m22, final double m32,
             final double m13, final double m23, final double m33,
             final double g11, final double g21, final double g31,
             final double g12, final double g22, final double g32,
-            final double g13, final double g23, final double g33) throws EvaluationException {
+            final double g13, final double g23, final double g33, final double[] result) throws EvaluationException {
         try {
             final var measuredSequence = sequences.get(i);
             final var fixedSequence = fixedSequences.get(i);
@@ -4516,9 +4528,11 @@ public class KnownBiasEasyGyroscopeCalibrator implements GyroscopeNonLinearCalib
             q.inverse();
             q.rotate(startPoint, endPoint);
 
-            expectedEndPoint.setInhomogeneousCoordinates(point[3], point[4], point[5]);
-
-            return expectedEndPoint.distanceTo(endPoint);
+            // the residual is computed by the fitter as the difference between the expected
+            // gravity versor after the sequence and the rotated gravity versor before it
+            result[0] = endPoint.getInhomX();
+            result[1] = endPoint.getInhomY();
+            result[2] = endPoint.getInhomZ();
 
         } catch (final AlgebraException | RotationException e) {
             throw new EvaluationException(e);

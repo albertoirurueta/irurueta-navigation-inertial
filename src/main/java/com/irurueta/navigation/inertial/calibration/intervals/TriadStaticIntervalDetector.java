@@ -29,6 +29,19 @@ import com.irurueta.units.TimeUnit;
  * measurements starts and finishes.
  * Static periods are periods of time where the device is considered to
  * remain static (no movement applied to it).
+ * <p>
+ * Static/dynamic decisions are based on the variance-norm statistic
+ * {@code sqrt(varX^2 + varY^2 + varZ^2)} (with {@code varX = stdX^2}, ...) computed on a window of
+ * samples and compared against the same statistic computed during the initialization period
+ * multiplied by the threshold factor. Because the statistic is based on variances, threshold factors
+ * are related to factors expressed in terms of standard deviation norm by {@code k_reference ~ k^2}.
+ * <p>
+ * Windows are centred: the sample being classified is the one at the centre of the window, hence
+ * detected status changes are delayed {@link #getDetectionDelaySamples()} samples (half a window), which
+ * makes interval boundaries symmetric (a status change occurs about half a window before the statistic
+ * of a trailing window exceeds the threshold, and about half a window after motion ends).
+ * Listener callbacks and accumulated averages refer to the classified (delayed) sample, whereas
+ * instantaneous values describe the current window.
  *
  * @param <U> type of unit.
  * @param <M> a type of measurement.
@@ -63,21 +76,28 @@ public abstract class TriadStaticIntervalDetector<U extends Enum<?>, M extends M
     /**
      * Default factor to be applied to detected base noise level in order to determine
      * threshold for static/dynamic period changes. This factor is unit-less.
+     * Since the base noise level is variance-based, this factor is the square of the equivalent factor
+     * expressed in terms of standard deviation (k_reference ~ k^2), so the former default of 2.0 for
+     * standard deviation becomes 4.0.
      */
-    public static final double DEFAULT_THRESHOLD_FACTOR = 2.0;
+    public static final double DEFAULT_THRESHOLD_FACTOR = 4.0;
 
     /**
      * Default factor to determine that a sudden movement has occurred during initialization
      * if instantaneous noise level exceeds accumulated noise level by this factor amount.
-     * This factor is unit-less.
+     * This factor is unit-less and, since noise levels are variance-based, it is the square of the
+     * equivalent factor expressed in terms of standard deviation (k_reference ~ k^2).
+     * The default is larger than the square of the former value (2.0) because the variance norm of a short
+     * window is noisier than its standard deviation norm, and a tighter value produced false sudden
+     * movement detections on very low noise data.
      */
-    public static final double DEFAULT_INSTANTANEOUS_NOISE_LEVEL_FACTOR = 2.0;
+    public static final double DEFAULT_INSTANTANEOUS_NOISE_LEVEL_FACTOR = 9.0;
 
     /**
      * Default overall absolute threshold to determine whether there has been excessive motion
      * during the whole initialization phase.
-     * This threshold is expressed in meters per squared second (m/s^2) for acceleration, radians
-     * per second (rad/s) for angular speed or Teslas (T) for magnetic flux density, and by
+     * This threshold is variance-based, hence it is expressed in (m/s^2)^2 for acceleration,
+     * (rad/s)^2 for angular speed or T^2 for magnetic flux density, and by
      * default it is set to the maximum allowed value, thus effectively disabling this error
      * condition check during initialization.
      */
@@ -121,6 +141,42 @@ public abstract class TriadStaticIntervalDetector<U extends Enum<?>, M extends M
     private double baseNoiseLevelAbsoluteThreshold = DEFAULT_BASE_NOISE_LEVEL_ABSOLUTE_THRESHOLD;
 
     /**
+     * Number of samples that the classification of the window centre is delayed with respect to
+     * the last processed sample (half the window size).
+     */
+    private int detectionDelaySamples = DEFAULT_WINDOW_SIZE / 2;
+
+    /**
+     * Circular buffer containing x-coordinate of the last samples (detection delay + 1), so that the sample at
+     * the centre of the window can be retrieved when it is classified.
+     */
+    private double[] delayedValuesX = new double[DEFAULT_WINDOW_SIZE / 2 + 1];
+
+    /**
+     * Circular buffer containing y-coordinate of the last samples (detection delay + 1), so that the sample at
+     * the centre of the window can be retrieved when it is classified.
+     */
+    private double[] delayedValuesY = new double[DEFAULT_WINDOW_SIZE / 2 + 1];
+
+    /**
+     * Circular buffer containing z-coordinate of the last samples (detection delay + 1), so that the sample at
+     * the centre of the window can be retrieved when it is classified.
+     */
+    private double[] delayedValuesZ = new double[DEFAULT_WINDOW_SIZE / 2 + 1];
+
+    /**
+     * Number of processed samples when the delayed samples buffer was last (re)allocated, or when
+     * initialization completed, whichever is later. Only samples processed after this one can be classified.
+     */
+    private int classificationStartSample;
+
+    /**
+     * Measurement base noise level expressed as standard deviation norm (not variance-based), which is kept to
+     * compute PSD values.
+     */
+    private double baseNoiseStdNorm;
+
+    /**
      * Listener to handle events generated by this detector.
      */
     private L listener;
@@ -131,16 +187,16 @@ public abstract class TriadStaticIntervalDetector<U extends Enum<?>, M extends M
     private Status status = Status.IDLE;
 
     /**
-     * Measurement base noise level that has been detected during initialization expressed in
-     * meters per squared second (m/s^2) for acceleration, radians per second (rad/s) for
-     * angular speed or Teslas (T) for magnetic flux density.
+     * Measurement base noise level that has been detected during initialization.
+     * It is variance-based: {@code sqrt(varX^2 + varY^2 + varZ^2)}, expressed in (m/s^2)^2 for acceleration,
+     * (rad/s)^2 for angular speed or T^2 for magnetic flux density.
      */
     private double baseNoiseLevel;
 
     /**
-     * Threshold to determine static/dynamic period changes expressed in meters per squared
-     * second (m/s^2) for acceleration, radians per second (rad/s) for angular speed or
-     * Teslas (T) for magnetic flux density.
+     * Threshold to determine static/dynamic period changes.
+     * It is variance-based, expressed in (m/s^2)^2 for acceleration, (rad/s)^2 for angular speed or
+     * T^2 for magnetic flux density.
      */
     private double threshold;
 
@@ -338,6 +394,26 @@ public abstract class TriadStaticIntervalDetector<U extends Enum<?>, M extends M
 
         windowedNoiseEstimator.setWindowSize(windowSize);
         this.windowSize = windowSize;
+
+        // delayed samples buffer is reallocated, so only samples processed from now on can be classified
+        detectionDelaySamples = windowSize / 2;
+        delayedValuesX = new double[detectionDelaySamples + 1];
+        delayedValuesY = new double[detectionDelaySamples + 1];
+        delayedValuesZ = new double[detectionDelaySamples + 1];
+        classificationStartSample = processedSamples;
+    }
+
+    /**
+     * Gets number of samples that status changes are delayed with respect to the last processed sample.
+     * Detector classifies the sample at the centre of the window, which is half the window size
+     * ({@code windowSize / 2}) samples older than the last processed sample, so listener callbacks and
+     * accumulated values refer to the sample processed this number of samples ago.
+     * Generators can use this value to align detected intervals with their own items.
+     *
+     * @return number of samples that detection is delayed.
+     */
+    public int getDetectionDelaySamples() {
+        return detectionDelaySamples;
     }
 
     /**
@@ -373,7 +449,8 @@ public abstract class TriadStaticIntervalDetector<U extends Enum<?>, M extends M
     /**
      * Gets factor to be applied to detected base noise level in order to
      * determine threshold for static/dynamic period changes. This factor is
-     * unit-less.
+     * unit-less and applies to the variance-based base noise level, so it is the square of the
+     * equivalent factor expressed in terms of standard deviation (k_reference ~ k^2).
      *
      * @return factor to be applied to detected base noise level.
      */
@@ -384,7 +461,8 @@ public abstract class TriadStaticIntervalDetector<U extends Enum<?>, M extends M
     /**
      * Sets factor to be applied to detected base noise level in order to
      * determine threshold for static/dynamic period changes. This factor is
-     * unit-less.
+     * unit-less and applies to the variance-based base noise level, so it is the square of the
+     * equivalent factor expressed in terms of standard deviation (k_reference ~ k^2).
      *
      * @param thresholdFactor factor to be applied to detected base noise level.
      * @throws LockedException          if detector is busy.
@@ -405,7 +483,7 @@ public abstract class TriadStaticIntervalDetector<U extends Enum<?>, M extends M
      * Gets factor to determine that a sudden movement has occurred during
      * initialization if instantaneous noise level exceeds accumulated noise
      * level by this factor amount.
-     * This factor is unit-less.
+     * This factor is unit-less and applies to variance-based noise levels (k_reference ~ k^2).
      *
      * @return factor to determine that a sudden movement has occurred.
      */
@@ -417,7 +495,7 @@ public abstract class TriadStaticIntervalDetector<U extends Enum<?>, M extends M
      * Sets factor to determine that a sudden movement has occurred during
      * initialization if instantaneous noise level exceeds accumulated noise
      * level by this factor amount.
-     * This factor is unit-less.
+     * This factor is unit-less and applies to variance-based noise levels (k_reference ~ k^2).
      *
      * @param instantaneousNoiseLevelFactor factor to determine that a sudden
      *                                      movement has occurred during
@@ -442,9 +520,9 @@ public abstract class TriadStaticIntervalDetector<U extends Enum<?>, M extends M
      * excessive motion during the whole initialization phase.
      * Failure will be detected if estimated base noise level exceeds this
      * threshold when initialization completes.
-     * This threshold is expressed in meters per squared second (m/s^2) for
-     * acceleration, radians per second (rad/s) for angular speed or Teslas
-     * (T) for magnetic flux density.
+     * This threshold is variance-based (it is compared with the variance-based base noise level), hence
+     * it is expressed in (m/s^2)^2 for acceleration, (rad/s)^2 for angular speed or
+     * T^2 for magnetic flux density.
      *
      * @return overall absolute threshold to determine whether there has
      * been excessive motion.
@@ -458,9 +536,9 @@ public abstract class TriadStaticIntervalDetector<U extends Enum<?>, M extends M
      * excessive motion during the whole initialization phase.
      * Failure will be detected if estimated base noise level exceeds this
      * threshold when initialization completes.
-     * This threshold is expressed in meters per squared second (m/s^2) for
-     * acceleration, radians per second (rad/s) for angular speed or Teslas
-     * (T) for magnetic flux density.
+     * This threshold is variance-based (it is compared with the variance-based base noise level), hence
+     * it is expressed in (m/s^2)^2 for acceleration, (rad/s)^2 for angular speed or
+     * T^2 for magnetic flux density.
      *
      * @param baseNoiseLevelAbsoluteThreshold overall absolute threshold to
      *                                        determine whether there has been
@@ -622,9 +700,10 @@ public abstract class TriadStaticIntervalDetector<U extends Enum<?>, M extends M
 
     /**
      * Gets measurement base noise level that has been detected during
-     * initialization expressed in meters per squared second (m/s^2) for
-     * acceleration, radians per second (rad/s) for angular speed or
-     * Teslas (T) for magnetic flux density.
+     * initialization.
+     * The base noise level is variance-based: {@code sqrt(varX^2 + varY^2 + varZ^2)} of the initialization
+     * period, expressed in (m/s^2)^2 for acceleration, (rad/s)^2 for angular speed or T^2 for magnetic flux
+     * density (the "as measurement" variants only wrap this value using the default unit of the sensor).
      *
      * @return base noise level.
      */
@@ -657,28 +736,32 @@ public abstract class TriadStaticIntervalDetector<U extends Enum<?>, M extends M
      * Gets measurement base noise level PSD (Power Spectral Density) expressed in
      * (m^2 * s^-3) for accelerometer, (rad^2/s) for gyroscope or (T^2 * s) for
      * magnetometer.
+     * PSD is computed from the standard deviation norm of the initialization period, not from the
+     * variance-based base noise level.
      *
      * @return measurement base noise level PSD.
      */
     public double getBaseNoiseLevelPsd() {
-        return baseNoiseLevel * baseNoiseLevel * getTimeInterval();
+        return baseNoiseStdNorm * baseNoiseStdNorm * getTimeInterval();
     }
 
     /**
      * Gets measurement base noise level root PSD (Power SpectralDensity) expressed
      * in (m * s^-1.5) for accelerometer, (rad * s^-0.5) for gyroscope or (T * s^0.5)
      * for magnetometer.
+     * Root PSD is computed from the standard deviation norm of the initialization period, not from the
+     * variance-based base noise level.
      *
      * @return measurement base noise level root PSD.
      */
     public double getBaseNoiseLevelRootPsd() {
-        return baseNoiseLevel * Math.sqrt(getTimeInterval());
+        return baseNoiseStdNorm * Math.sqrt(getTimeInterval());
     }
 
     /**
-     * Gets threshold to determine static/dynamic period changes expressed in
-     * meters per squared second (m/s^2) for acceleration, radians per second
-     * (rad/s) for angular speed or Teslas (T) for magnetic flux density.
+     * Gets threshold to determine static/dynamic period changes.
+     * The threshold is variance-based (base noise level times threshold factor), expressed in
+     * (m/s^2)^2 for acceleration, (rad/s)^2 for angular speed or T^2 for magnetic flux density.
      *
      * @return threshold to determine static/dynamic period changes.
      */
@@ -1367,6 +1450,13 @@ public abstract class TriadStaticIntervalDetector<U extends Enum<?>, M extends M
 
         processedSamples++;
 
+        // keep sample in circular buffer so that it can be classified when it reaches the window centre
+        final var bufferLength = delayedValuesX.length;
+        final var currentSlot = (processedSamples - 1) % bufferLength;
+        delayedValuesX[currentSlot] = valueX;
+        delayedValuesY[currentSlot] = valueY;
+        delayedValuesZ[currentSlot] = valueZ;
+
         windowedNoiseEstimator.addTriadAndProcess(valueX, valueY, valueZ);
 
         instantaneousAvgX = windowedNoiseEstimator.getAvgX();
@@ -1377,24 +1467,27 @@ public abstract class TriadStaticIntervalDetector<U extends Enum<?>, M extends M
         instantaneousStdY = windowedNoiseEstimator.getStandardDeviationY();
         instantaneousStdZ = windowedNoiseEstimator.getStandardDeviationZ();
 
-        final var windowedStdNorm = windowedNoiseEstimator.getStandardDeviationNorm();
+        // variance-norm statistic of the window
+        final var windowedVarNorm = varianceNorm(instantaneousStdX, instantaneousStdY, instantaneousStdZ);
 
         final var filledWindow = windowedNoiseEstimator.isWindowFilled();
 
         if (status == Status.INITIALIZING) {
             // process sample during initialization
             accumulatedNoiseEstimator.addTriad(valueX, valueY, valueZ);
-            final var accumulatedStdNorm = accumulatedNoiseEstimator.getStandardDeviationNorm();
+            final var accumulatedVarNorm = varianceNorm(accumulatedNoiseEstimator.getStandardDeviationX(),
+                    accumulatedNoiseEstimator.getStandardDeviationY(),
+                    accumulatedNoiseEstimator.getStandardDeviationZ());
 
             if (processedSamples < initialStaticSamples) {
-                if (filledWindow && (windowedStdNorm / accumulatedStdNorm > instantaneousNoiseLevelFactor)) {
+                if (filledWindow && (windowedVarNorm / accumulatedVarNorm > instantaneousNoiseLevelFactor)) {
                     // sudden motion detected
                     status = Status.FAILED;
 
                     // notify error
                     if (listener != null) {
                         //noinspection unchecked
-                        listener.onError((D) this, accumulatedStdNorm, windowedStdNorm,
+                        listener.onError((D) this, accumulatedVarNorm, windowedVarNorm,
                                 ErrorReason.SUDDEN_EXCESSIVE_MOVEMENT_DETECTED);
                     }
                 }
@@ -1402,7 +1495,9 @@ public abstract class TriadStaticIntervalDetector<U extends Enum<?>, M extends M
             } else if (filledWindow) {
                 // initialization completed
                 // set base noise level and threshold
-                baseNoiseLevel = accumulatedStdNorm;
+                baseNoiseLevel = accumulatedVarNorm;
+                baseNoiseStdNorm = accumulatedNoiseEstimator.getStandardDeviationNorm();
+                classificationStartSample = processedSamples;
                 threshold = baseNoiseLevel * thresholdFactor;
 
                 // keep average/std measurements triad in case we want to obtain
@@ -1415,9 +1510,10 @@ public abstract class TriadStaticIntervalDetector<U extends Enum<?>, M extends M
                 accumulatedStdY = accumulatedNoiseEstimator.getStandardDeviationY();
                 accumulatedStdZ = accumulatedNoiseEstimator.getStandardDeviationZ();
 
-                // reset accumulated estimator so that we can estimate
-                // average specific force in static periods
-                accumulatedNoiseEstimator.reset();
+                // the accumulated estimator is intentionally NOT reset here: the initialization period is static,
+                // so its samples are the beginning of the first static interval and its average is the
+                // first static average (if motion starts right after initialization the accumulated values
+                // reported when the first dynamic interval is detected are the initialization ones).
 
                 if (baseNoiseLevel > baseNoiseLevelAbsoluteThreshold) {
                     // base noise level exceeds allowed value
@@ -1426,7 +1522,7 @@ public abstract class TriadStaticIntervalDetector<U extends Enum<?>, M extends M
                     // notify error
                     if (listener != null) {
                         //noinspection unchecked
-                        listener.onError((D) this, accumulatedStdNorm, windowedStdNorm,
+                        listener.onError((D) this, accumulatedVarNorm, windowedVarNorm,
                                 ErrorReason.OVERALL_EXCESSIVE_MOVEMENT_DETECTED);
                     }
 
@@ -1445,49 +1541,58 @@ public abstract class TriadStaticIntervalDetector<U extends Enum<?>, M extends M
             running = false;
             return true;
         } else {
-            // detect static or dynamic period
-            final var previousStatus = status;
+            // detect static or dynamic period of the sample at the centre of the window, which is
+            // detectionDelaySamples samples older than the last one. Samples that were part of the
+            // initialization period (or that were processed before the buffer was allocated) are not classified.
+            if (processedSamples - detectionDelaySamples > classificationStartSample) {
+                final var delayedSlot = processedSamples % bufferLength;
+                final var delayedX = delayedValuesX[delayedSlot];
+                final var delayedY = delayedValuesY[delayedSlot];
+                final var delayedZ = delayedValuesZ[delayedSlot];
 
-            if (windowedStdNorm < threshold) {
-                status = Status.STATIC_INTERVAL;
-            } else {
-                status = Status.DYNAMIC_INTERVAL;
-            }
+                final var previousStatus = status;
 
-            if (status == Status.STATIC_INTERVAL) {
-                // while we are in static interval, keep adding samples to estimate
-                // accumulated average measurement triad
-                accumulatedNoiseEstimator.addTriad(valueX, valueY, valueZ);
-            }
+                if (windowedVarNorm < threshold) {
+                    status = Status.STATIC_INTERVAL;
+                } else {
+                    status = Status.DYNAMIC_INTERVAL;
+                }
 
-            if (previousStatus != status) {
-                // static/dynamic period change detected
-                if (status == Status.STATIC_INTERVAL && listener != null) {
-                    //noinspection unchecked
-                    listener.onStaticIntervalDetected((D) this,
-                            instantaneousAvgX, instantaneousAvgY, instantaneousAvgZ,
-                            instantaneousStdX, instantaneousStdY, instantaneousStdZ);
-                } else if (status == Status.DYNAMIC_INTERVAL) {
-                    // when switching from static to dynamic interval,
-                    // pick accumulated average and standard deviation measurement triads
-                    accumulatedAvgX = accumulatedNoiseEstimator.getAvgX();
-                    accumulatedAvgY = accumulatedNoiseEstimator.getAvgY();
-                    accumulatedAvgZ = accumulatedNoiseEstimator.getAvgZ();
+                if (status == Status.STATIC_INTERVAL) {
+                    // while we are in static interval, keep adding (delayed) samples to estimate
+                    // accumulated average measurement triad
+                    accumulatedNoiseEstimator.addTriad(delayedX, delayedY, delayedZ);
+                }
 
-                    accumulatedStdX = accumulatedNoiseEstimator.getStandardDeviationX();
-                    accumulatedStdY = accumulatedNoiseEstimator.getStandardDeviationY();
-                    accumulatedStdZ = accumulatedNoiseEstimator.getStandardDeviationZ();
-
-                    // reset accumulated estimator when switching to dynamic period
-                    accumulatedNoiseEstimator.reset();
-
-                    if (listener != null) {
+                if (previousStatus != status) {
+                    // static/dynamic period change detected
+                    if (status == Status.STATIC_INTERVAL && listener != null) {
                         //noinspection unchecked
-                        listener.onDynamicIntervalDetected((D) this,
+                        listener.onStaticIntervalDetected((D) this,
                                 instantaneousAvgX, instantaneousAvgY, instantaneousAvgZ,
-                                instantaneousStdX, instantaneousStdY, instantaneousStdZ,
-                                accumulatedAvgX, accumulatedAvgY, accumulatedAvgZ,
-                                accumulatedStdX, accumulatedStdY, accumulatedStdZ);
+                                instantaneousStdX, instantaneousStdY, instantaneousStdZ);
+                    } else if (status == Status.DYNAMIC_INTERVAL) {
+                        // when switching from static to dynamic interval,
+                        // pick accumulated average and standard deviation measurement triads
+                        accumulatedAvgX = accumulatedNoiseEstimator.getAvgX();
+                        accumulatedAvgY = accumulatedNoiseEstimator.getAvgY();
+                        accumulatedAvgZ = accumulatedNoiseEstimator.getAvgZ();
+
+                        accumulatedStdX = accumulatedNoiseEstimator.getStandardDeviationX();
+                        accumulatedStdY = accumulatedNoiseEstimator.getStandardDeviationY();
+                        accumulatedStdZ = accumulatedNoiseEstimator.getStandardDeviationZ();
+
+                        // reset accumulated estimator when switching to dynamic period
+                        accumulatedNoiseEstimator.reset();
+
+                        if (listener != null) {
+                            //noinspection unchecked
+                            listener.onDynamicIntervalDetected((D) this,
+                                    instantaneousAvgX, instantaneousAvgY, instantaneousAvgZ,
+                                    instantaneousStdX, instantaneousStdY, instantaneousStdZ,
+                                    accumulatedAvgX, accumulatedAvgY, accumulatedAvgZ,
+                                    accumulatedStdX, accumulatedStdY, accumulatedStdZ);
+                        }
                     }
                 }
             }
@@ -1512,7 +1617,9 @@ public abstract class TriadStaticIntervalDetector<U extends Enum<?>, M extends M
         status = Status.IDLE;
         processedSamples = 0;
         baseNoiseLevel = 0.0;
+        baseNoiseStdNorm = 0.0;
         threshold = 0.0;
+        classificationStartSample = 0;
 
         windowedNoiseEstimator.reset();
         accumulatedNoiseEstimator.reset();
@@ -1523,6 +1630,21 @@ public abstract class TriadStaticIntervalDetector<U extends Enum<?>, M extends M
         }
 
         running = false;
+    }
+
+    /**
+     * Computes variance-norm statistic {@code sqrt(varX^2 + varY^2 + varZ^2)} from standard deviations.
+     *
+     * @param stdX standard deviation of x-coordinate.
+     * @param stdY standard deviation of y-coordinate.
+     * @param stdZ standard deviation of z-coordinate.
+     * @return variance norm.
+     */
+    private static double varianceNorm(final double stdX, final double stdY, final double stdZ) {
+        final var varX = stdX * stdX;
+        final var varY = stdY * stdY;
+        final var varZ = stdZ * stdZ;
+        return Math.sqrt(varX * varX + varY * varY + varZ * varZ);
     }
 
     /**

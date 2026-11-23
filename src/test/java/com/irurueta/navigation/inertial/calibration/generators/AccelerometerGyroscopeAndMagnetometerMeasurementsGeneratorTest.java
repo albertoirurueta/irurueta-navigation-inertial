@@ -1933,8 +1933,12 @@ class AccelerometerGyroscopeAndMagnetometerMeasurementsGeneratorTest implements
         generator.getAccelerometerBaseNoiseLevelAsMeasurement(baseNoiseLevel2);
         assertEquals(baseNoiseLevel1, baseNoiseLevel2);
         final var sqrtTimeInterval = Math.sqrt(generator.getTimeInterval());
-        assertEquals(accelerometerBaseNoiseLevel * sqrtTimeInterval,
-                generator.getAccelerometerBaseNoiseLevelRootPsd(), SMALL_ABSOLUTE_ERROR);
+        // base noise level is variance based (N7), whereas the root PSD is derived from the std norm. For isotropic
+        // noise the variance norm is V = sqrt(3) * sigma^2 and the std norm is S = sqrt(3) * sigma, so S = 3^(1/4) *
+        // sqrt(V)
+        final var expectedRootPsd = Math.sqrt(Math.sqrt(3.0) * accelerometerBaseNoiseLevel) * sqrtTimeInterval;
+        assertTrue(generator.getAccelerometerBaseNoiseLevelRootPsd() > 0.0);
+        assertEquals(expectedRootPsd, generator.getAccelerometerBaseNoiseLevelRootPsd(), 0.25 * expectedRootPsd);
         assertEquals(generator.getAccelerometerBaseNoiseLevelPsd(),
                 Math.pow(generator.getAccelerometerBaseNoiseLevelRootPsd(), 2.0), SMALL_ABSOLUTE_ERROR);
 
@@ -2282,12 +2286,14 @@ class AccelerometerGyroscopeAndMagnetometerMeasurementsGeneratorTest implements
         var oldEcefFrame = new ECEFFrame(ecefFrame);
         var newEcefFrame = new ECEFFrame();
 
-        var oldEcefX = ecefX - deltaX;
-        var oldEcefY = ecefY - deltaY;
-        var oldEcefZ = ecefZ - deltaZ;
-        var oldRoll = roll - deltaRoll;
-        var oldPitch = pitch - deltaPitch;
-        var oldYaw = yaw - deltaYaw;
+        // dynamic period starts at the current static position and orientation (no sudden jump), otherwise
+        // sequences that include static samples next to the motion would be inconsistent with the gravity vectors
+        var oldEcefX = ecefX;
+        var oldEcefY = ecefY;
+        var oldEcefZ = ecefZ;
+        var oldRoll = roll;
+        var oldPitch = pitch;
+        var oldYaw = yaw;
 
         final var random = new Random();
         final var measuredBeforeGravityKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,

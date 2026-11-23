@@ -151,7 +151,7 @@ angular rate. Page: xref:calibration/gyroscope.adoc[].
 |Nothing external: static-moving-static sequences recorded by hand, with gravity as the only reference.
 |xref:calibration/algorithms.adoc#tedaldi[Tedaldi et al. method]: integrates the angular rate across each
 sequence and compares the rotated gravity direction. It estimates the gyroscope bias inside the same fit
-(except in the `KnownBias` variant) and assumes a common z-axis by default. Page:
+(except in the `KnownBias` variant) and, as in the paper, estimates a full (general) gyroscope matrix without the g-dependent term by default. Page:
 xref:calibration/gyroscope.adoc[].
 
 |`Robust...` wrappers (every family above)

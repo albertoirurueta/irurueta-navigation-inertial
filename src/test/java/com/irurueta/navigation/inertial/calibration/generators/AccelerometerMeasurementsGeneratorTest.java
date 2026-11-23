@@ -981,8 +981,12 @@ class AccelerometerMeasurementsGeneratorTest implements AccelerometerMeasurement
         final var baseNoiseLevel2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         generator.getAccelerometerBaseNoiseLevelAsMeasurement(baseNoiseLevel2);
         assertEquals(baseNoiseLevel1, baseNoiseLevel2);
-        assertEquals(baseNoiseLevel * Math.sqrt(generator.getTimeInterval()),
-                generator.getAccelerometerBaseNoiseLevelRootPsd(), SMALL_ABSOLUTE_ERROR);
+        // base noise level is variance based (N7), whereas the root PSD is derived from the std norm. For isotropic
+        // noise the variance norm is V = sqrt(3) * sigma^2 and the std norm is S = sqrt(3) * sigma, so S = 3^(1/4) *
+        // sqrt(V)
+        final var expectedRootPsd = Math.sqrt(Math.sqrt(3.0) * baseNoiseLevel) * Math.sqrt(generator.getTimeInterval());
+        assertTrue(generator.getAccelerometerBaseNoiseLevelRootPsd() > 0.0);
+        assertEquals(expectedRootPsd, generator.getAccelerometerBaseNoiseLevelRootPsd(), 0.25 * expectedRootPsd);
         assertEquals(generator.getAccelerometerBaseNoiseLevelPsd(),
                 Math.pow(generator.getAccelerometerBaseNoiseLevelRootPsd(), 2.0), SMALL_ABSOLUTE_ERROR);
 
