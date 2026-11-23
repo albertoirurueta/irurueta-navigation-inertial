@@ -563,12 +563,15 @@ public abstract class TriadStaticIntervalDetector<U extends Enum<?>, M extends M
      * excessive motion during the whole initialization phase.
      * Failure will be detected if estimated base noise level exceeds this
      * threshold when initialization completes.
+     * Since the internal value is variance-based, the returned measurement is its square root, so that
+     * it is truly expressed in the unit of the sensor (m/s^2, rad/s or T) and can be safely converted to
+     * other units.
      *
      * @return overall absolute threshold to determine whether there has been
      * excessive motion.
      */
     public M getBaseNoiseLevelAbsoluteThresholdAsMeasurement() {
-        return createMeasurement(baseNoiseLevelAbsoluteThreshold, getDefaultUnit());
+        return createMeasurement(Math.sqrt(baseNoiseLevelAbsoluteThreshold), getDefaultUnit());
     }
 
     /**
@@ -576,11 +579,14 @@ public abstract class TriadStaticIntervalDetector<U extends Enum<?>, M extends M
      * excessive motion during the whole initialization phase.
      * Failure will be detected if estimated base noise level exceeds this
      * threshold when initialization completes.
+     * Since the internal value is variance-based, the returned measurement is its square root, so that
+     * it is truly expressed in the unit of the sensor (m/s^2, rad/s or T) and can be safely converted to
+     * other units.
      *
      * @param result instance where result will be stored.
      */
     public void getBaseNoiseLevelAbsoluteThresholdAsMeasurement(final M result) {
-        result.setValue(baseNoiseLevelAbsoluteThreshold);
+        result.setValue(Math.sqrt(baseNoiseLevelAbsoluteThreshold));
         result.setUnit(getDefaultUnit());
     }
 
@@ -589,6 +595,8 @@ public abstract class TriadStaticIntervalDetector<U extends Enum<?>, M extends M
      * excessive motion during the whole initialization phase.
      * Failure will be detected if estimated base noise level exceeds this
      * threshold when initialization completes.
+     * Provided measurement is expressed in the unit of the sensor (m/s^2, rad/s or T), and since the
+     * internal threshold is variance-based, its squared value (in default units) is stored.
      *
      * @param baseNoiseLevelAbsoluteThreshold overall absolute threshold to
      *                                        determine whether there has been
@@ -602,7 +610,9 @@ public abstract class TriadStaticIntervalDetector<U extends Enum<?>, M extends M
             throw new LockedException();
         }
 
-        setBaseNoiseLevelAbsoluteThreshold(convertMeasurement(baseNoiseLevelAbsoluteThreshold));
+        final var value = convertMeasurement(baseNoiseLevelAbsoluteThreshold);
+        // negative values are kept negative so that they are rejected
+        setBaseNoiseLevelAbsoluteThreshold(value * Math.abs(value));
     }
 
     /**
@@ -703,7 +713,7 @@ public abstract class TriadStaticIntervalDetector<U extends Enum<?>, M extends M
      * initialization.
      * The base noise level is variance-based: {@code sqrt(varX^2 + varY^2 + varZ^2)} of the initialization
      * period, expressed in (m/s^2)^2 for acceleration, (rad/s)^2 for angular speed or T^2 for magnetic flux
-     * density (the "as measurement" variants only wrap this value using the default unit of the sensor).
+     * density (the "as measurement" variants return its square root, expressed in the unit of the sensor).
      *
      * @return base noise level.
      */
@@ -714,21 +724,27 @@ public abstract class TriadStaticIntervalDetector<U extends Enum<?>, M extends M
     /**
      * Gets measurement base noise level that has been detected during
      * initialization.
+     * Since the internal value is variance-based, the returned measurement is its square root, so that
+     * it is truly expressed in the unit of the sensor (m/s^2, rad/s or T) and can be safely converted to
+     * other units.
      *
      * @return measurement base noise level.
      */
     public M getBaseNoiseLevelAsMeasurement() {
-        return createMeasurement(baseNoiseLevel, getDefaultUnit());
+        return createMeasurement(Math.sqrt(baseNoiseLevel), getDefaultUnit());
     }
 
     /**
      * Gets measurement base noise level that has been detected during
      * initialization.
+     * Since the internal value is variance-based, the returned measurement is its square root, so that
+     * it is truly expressed in the unit of the sensor (m/s^2, rad/s or T) and can be safely converted to
+     * other units.
      *
      * @param result instance where result will be stored.
      */
     public void getBaseNoiseLevelAsMeasurement(final M result) {
-        result.setValue(baseNoiseLevel);
+        result.setValue(Math.sqrt(baseNoiseLevel));
         result.setUnit(getDefaultUnit());
     }
 
@@ -771,20 +787,26 @@ public abstract class TriadStaticIntervalDetector<U extends Enum<?>, M extends M
 
     /**
      * Gets threshold to determine static/dynamic period changes.
+     * Since the internal value is variance-based, the returned measurement is its square root, so that
+     * it is truly expressed in the unit of the sensor (m/s^2, rad/s or T) and can be safely converted to
+     * other units.
      *
      * @return threshold to determine static/dynamic period changes.
      */
     public M getThresholdAsMeasurement() {
-        return createMeasurement(threshold, getDefaultUnit());
+        return createMeasurement(Math.sqrt(threshold), getDefaultUnit());
     }
 
     /**
      * Gets threshold to determine static/dynamic period changes.
+     * Since the internal value is variance-based, the returned measurement is its square root, so that
+     * it is truly expressed in the unit of the sensor (m/s^2, rad/s or T) and can be safely converted to
+     * other units.
      *
      * @param result instance where result will be stored.
      */
     public void getThresholdAsMeasurement(final M result) {
-        result.setValue(threshold);
+        result.setValue(Math.sqrt(threshold));
         result.setUnit(getDefaultUnit());
     }
 

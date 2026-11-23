@@ -634,7 +634,8 @@ class MagneticFluxDensityTriadStaticIntervalDetectorTest implements
                 detector.getBaseNoiseLevelAbsoluteThreshold(), 0.0);
 
         final var b1 = detector.getBaseNoiseLevelAbsoluteThresholdAsMeasurement();
-        assertEquals(MagneticFluxDensityTriadStaticIntervalDetector.DEFAULT_BASE_NOISE_LEVEL_ABSOLUTE_THRESHOLD,
+        assertEquals(
+                Math.sqrt(MagneticFluxDensityTriadStaticIntervalDetector.DEFAULT_BASE_NOISE_LEVEL_ABSOLUTE_THRESHOLD),
                 b1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, b1.getUnit());
 
@@ -779,7 +780,7 @@ class MagneticFluxDensityTriadStaticIntervalDetectorTest implements
                 detector.getStatus());
         assertTrue(detector.getBaseNoiseLevel() > 0.0);
         b1 = detector.getBaseNoiseLevelAsMeasurement();
-        assertEquals(b1.getValue().doubleValue(), detector.getBaseNoiseLevel(), 0.0);
+        assertEquals(b1.getValue().doubleValue(), Math.sqrt(detector.getBaseNoiseLevel()), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, b1.getUnit());
         detector.getBaseNoiseLevelAsMeasurement(b2);
         assertEquals(b1, b2);
@@ -793,7 +794,7 @@ class MagneticFluxDensityTriadStaticIntervalDetectorTest implements
         assertEquals(detector.getThreshold(), detector.getBaseNoiseLevel() * detector.getThresholdFactor(),
                 0.0);
         b1 = detector.getThresholdAsMeasurement();
-        assertEquals(b1.getValue().doubleValue(), detector.getThreshold(), 0.0);
+        assertEquals(b1.getValue().doubleValue(), Math.sqrt(detector.getThreshold()), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, b1.getUnit());
         detector.getThresholdAsMeasurement(b2);
         assertEquals(b1, b2);
@@ -1042,7 +1043,7 @@ class MagneticFluxDensityTriadStaticIntervalDetectorTest implements
                 detector.getStatus());
         assertTrue(detector.getBaseNoiseLevel() > 0.0);
         b1 = detector.getBaseNoiseLevelAsMeasurement();
-        assertEquals(b1.getValue().doubleValue(), detector.getBaseNoiseLevel(), 0.0);
+        assertEquals(b1.getValue().doubleValue(), Math.sqrt(detector.getBaseNoiseLevel()), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, b1.getUnit());
         detector.getBaseNoiseLevelAsMeasurement(b2);
         assertEquals(b1, b2);
@@ -1056,7 +1057,7 @@ class MagneticFluxDensityTriadStaticIntervalDetectorTest implements
         assertEquals(detector.getBaseNoiseLevel() * detector.getThresholdFactor(), detector.getThreshold(),
                 0.0);
         b1 = detector.getThresholdAsMeasurement();
-        assertEquals(b1.getValue().doubleValue(), detector.getThreshold(), 0.0);
+        assertEquals(b1.getValue().doubleValue(), Math.sqrt(detector.getThreshold()), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, b1.getUnit());
         detector.getThresholdAsMeasurement(b2);
         assertEquals(b1, b2);
@@ -1310,7 +1311,7 @@ class MagneticFluxDensityTriadStaticIntervalDetectorTest implements
                 detector.getStatus());
         assertTrue(detector.getBaseNoiseLevel() > 0.0);
         b1 = detector.getBaseNoiseLevelAsMeasurement();
-        assertEquals(b1.getValue().doubleValue(), detector.getBaseNoiseLevel(), 0.0);
+        assertEquals(b1.getValue().doubleValue(), Math.sqrt(detector.getBaseNoiseLevel()), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, b1.getUnit());
         detector.getBaseNoiseLevelAsMeasurement(b2);
         assertEquals(b1, b2);
@@ -1324,7 +1325,7 @@ class MagneticFluxDensityTriadStaticIntervalDetectorTest implements
         assertEquals(detector.getBaseNoiseLevel() * detector.getThresholdFactor(), detector.getThreshold(), 
                 0.0);
         b1 = detector.getThresholdAsMeasurement();
-        assertEquals(b1.getValue().doubleValue(), detector.getThreshold(), 0.0);
+        assertEquals(b1.getValue().doubleValue(), Math.sqrt(detector.getThreshold()), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, b1.getUnit());
         detector.getThresholdAsMeasurement(b2);
         assertEquals(b1, b2);

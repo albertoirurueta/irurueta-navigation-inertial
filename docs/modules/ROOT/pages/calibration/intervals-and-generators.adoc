@@ -217,9 +217,12 @@ set them explicitly. The skip rules work on sample counters:
 `minStaticSamples`, and `onStaticIntervalSkipped` is raised.
 * The initialization period is static, so its samples are part of the *first* static interval: the average of that
 interval includes the initialization samples (the accumulated estimator is not reset when initialization
-completes), and the first static interval is always valid for the gyroscope generators.
+completes), and they also count towards `minStaticSamples`, for every generator.
 * If the dynamic counter exceeds `maxDynamicSamples`, the current dynamic interval is flagged as skipped
-(once, with `onDynamicIntervalSkipped`) until the next static interval begins.
+(once, with `onDynamicIntervalSkipped`) until the next static interval begins. A gyroscope sequence made of joined
+dynamic intervals is discarded in the same way when its total number of items exceeds `maxDynamicSamples`.
+* Noise levels and thresholds are variance-based as plain `double` values; their measurement-typed variants
+(`...AsMeasurement`) are the square root of those values, expressed in the unit of the sensor.
 
 [mermaid]
 ....

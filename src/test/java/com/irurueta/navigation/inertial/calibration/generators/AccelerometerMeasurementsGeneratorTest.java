@@ -123,8 +123,8 @@ class AccelerometerMeasurementsGeneratorTest implements AccelerometerMeasurement
         assertEquals(TriadStaticIntervalDetector.DEFAULT_BASE_NOISE_LEVEL_ABSOLUTE_THRESHOLD,
                 generator.getBaseNoiseLevelAbsoluteThreshold(), 0.0);
         final var errorThreshold1 = generator.getBaseNoiseLevelAbsoluteThresholdAsMeasurement();
-        assertEquals(errorThreshold1.getValue().doubleValue(), generator.getBaseNoiseLevelAbsoluteThreshold(), 
-                0.0);
+        assertEquals(errorThreshold1.getValue().doubleValue(),
+                Math.sqrt(generator.getBaseNoiseLevelAbsoluteThreshold()), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, errorThreshold1.getUnit());
         final var errorThreshold2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         generator.getBaseNoiseLevelAbsoluteThresholdAsMeasurement(errorThreshold2);
@@ -177,8 +177,8 @@ class AccelerometerMeasurementsGeneratorTest implements AccelerometerMeasurement
         assertEquals(TriadStaticIntervalDetector.DEFAULT_BASE_NOISE_LEVEL_ABSOLUTE_THRESHOLD, 
                 generator.getBaseNoiseLevelAbsoluteThreshold(), 0.0);
         final var errorThreshold1 = generator.getBaseNoiseLevelAbsoluteThresholdAsMeasurement();
-        assertEquals(errorThreshold1.getValue().doubleValue(), generator.getBaseNoiseLevelAbsoluteThreshold(), 
-                0.0);
+        assertEquals(errorThreshold1.getValue().doubleValue(),
+                Math.sqrt(generator.getBaseNoiseLevelAbsoluteThreshold()), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, errorThreshold1.getUnit());
         final var errorThreshold2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         generator.getBaseNoiseLevelAbsoluteThresholdAsMeasurement(errorThreshold2);
@@ -391,7 +391,7 @@ class AccelerometerMeasurementsGeneratorTest implements AccelerometerMeasurement
                 generator.getBaseNoiseLevelAbsoluteThreshold(), 0.0);
 
         final var a1 = generator.getBaseNoiseLevelAbsoluteThresholdAsMeasurement();
-        assertEquals(AccelerationTriadStaticIntervalDetector.DEFAULT_BASE_NOISE_LEVEL_ABSOLUTE_THRESHOLD,
+        assertEquals(Math.sqrt(AccelerationTriadStaticIntervalDetector.DEFAULT_BASE_NOISE_LEVEL_ABSOLUTE_THRESHOLD),
                 a1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, a1.getUnit());
 
@@ -883,6 +883,19 @@ class AccelerometerMeasurementsGeneratorTest implements AccelerometerMeasurement
                 true);
 
         assertEquals(1, dynamicIntervalDetected);
+        // initialization samples are part of the first static interval, which is long enough
+        assertEquals(0, staticIntervalSkipped);
+
+        // generate a second static interval that is too short
+        generateStaticSamples(generator, staticPeriodLength, trueKinematics, errors);
+
+        assertEquals(2, staticIntervalDetected);
+
+        // generate dynamic samples
+        generateDynamicSamples(generator, dynamicPeriodLength, trueKinematics, randomizer, ecefFrame, nedFrame, errors,
+                true);
+
+        assertEquals(2, dynamicIntervalDetected);
         assertEquals(1, staticIntervalSkipped);
     }
 
@@ -976,7 +989,7 @@ class AccelerometerMeasurementsGeneratorTest implements AccelerometerMeasurement
         assertTrue(baseNoiseLevel > 0.0);
         assertEquals(baseNoiseLevel, generator.getAccelerometerBaseNoiseLevel(), 0.0);
         final var baseNoiseLevel1 = generator.getAccelerometerBaseNoiseLevelAsMeasurement();
-        assertEquals(baseNoiseLevel1.getValue().doubleValue(), baseNoiseLevel, 0.0);
+        assertEquals(baseNoiseLevel1.getValue().doubleValue(), Math.sqrt(baseNoiseLevel), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, baseNoiseLevel1.getUnit());
         final var baseNoiseLevel2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         generator.getAccelerometerBaseNoiseLevelAsMeasurement(baseNoiseLevel2);
@@ -992,7 +1005,7 @@ class AccelerometerMeasurementsGeneratorTest implements AccelerometerMeasurement
 
         assertTrue(generator.getThreshold() > 0.0);
         final var threshold1 = generator.getThresholdAsMeasurement();
-        assertEquals(threshold1.getValue().doubleValue(), generator.getThreshold(), 0.0);
+        assertEquals(threshold1.getValue().doubleValue(), Math.sqrt(generator.getThreshold()), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, threshold1.getUnit());
         final var threshold2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         generator.getThresholdAsMeasurement(threshold2);

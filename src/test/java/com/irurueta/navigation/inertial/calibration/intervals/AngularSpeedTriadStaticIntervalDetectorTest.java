@@ -607,7 +607,7 @@ class AngularSpeedTriadStaticIntervalDetectorTest implements AngularSpeedTriadSt
                 detector.getBaseNoiseLevelAbsoluteThreshold(), 0.0);
 
         final var w1 = detector.getBaseNoiseLevelAbsoluteThresholdAsMeasurement();
-        assertEquals(AngularSpeedTriadStaticIntervalDetector.DEFAULT_BASE_NOISE_LEVEL_ABSOLUTE_THRESHOLD,
+        assertEquals(Math.sqrt(AngularSpeedTriadStaticIntervalDetector.DEFAULT_BASE_NOISE_LEVEL_ABSOLUTE_THRESHOLD),
                 w1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, w1.getUnit());
 
@@ -761,7 +761,7 @@ class AngularSpeedTriadStaticIntervalDetectorTest implements AngularSpeedTriadSt
         assertEquals(AngularSpeedTriadStaticIntervalDetector.Status.INITIALIZATION_COMPLETED, detector.getStatus());
         assertTrue(detector.getBaseNoiseLevel() > 0.0);
         w1 = detector.getBaseNoiseLevelAsMeasurement();
-        assertEquals(w1.getValue().doubleValue(), detector.getBaseNoiseLevel(), 0.0);
+        assertEquals(w1.getValue().doubleValue(), Math.sqrt(detector.getBaseNoiseLevel()), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, w1.getUnit());
         detector.getBaseNoiseLevelAsMeasurement(w2);
         assertEquals(w1, w2);
@@ -1015,7 +1015,7 @@ class AngularSpeedTriadStaticIntervalDetectorTest implements AngularSpeedTriadSt
         assertEquals(AngularSpeedTriadStaticIntervalDetector.Status.INITIALIZATION_COMPLETED, detector.getStatus());
         assertTrue(detector.getBaseNoiseLevel() > 0.0);
         w1 = detector.getBaseNoiseLevelAsMeasurement();
-        assertEquals(w1.getValue().doubleValue(), detector.getBaseNoiseLevel(), 0.0);
+        assertEquals(w1.getValue().doubleValue(), Math.sqrt(detector.getBaseNoiseLevel()), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, w1.getUnit());
         detector.getBaseNoiseLevelAsMeasurement(w2);
         assertEquals(w1, w2);
@@ -1277,7 +1277,7 @@ class AngularSpeedTriadStaticIntervalDetectorTest implements AngularSpeedTriadSt
         assertEquals(AngularSpeedTriadStaticIntervalDetector.Status.INITIALIZATION_COMPLETED, detector.getStatus());
         assertTrue(detector.getBaseNoiseLevel() > 0.0);
         w1 = detector.getBaseNoiseLevelAsMeasurement();
-        assertEquals(w1.getValue().doubleValue(), detector.getBaseNoiseLevel(), 0.0);
+        assertEquals(w1.getValue().doubleValue(), Math.sqrt(detector.getBaseNoiseLevel()), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, w1.getUnit());
         detector.getBaseNoiseLevelAsMeasurement(w2);
         assertEquals(w1, w2);

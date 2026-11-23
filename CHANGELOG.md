@@ -109,6 +109,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
   `baseNoiseLevelAbsoluteThreshold` changes, with `k_reference ~ k^2`; `DEFAULT_THRESHOLD_FACTOR` goes from 2.0 to 4.0 and
   `DEFAULT_INSTANTANEOUS_NOISE_LEVEL_FACTOR` from 2.0 to 9.0. Previously tuned values (for example in
   `irurueta-navigation-inertial-extra` optimizers) must be revisited (issue #41, N7).
+- The measurement-typed accessors of the detector and the generators (`getBaseNoiseLevelAsMeasurement`,
+  `getThresholdAsMeasurement`, `getBaseNoiseLevelAbsoluteThresholdAsMeasurement`,
+  `getAccelerometerBaseNoiseLevelAsMeasurement` and the measurement-typed `setBaseNoiseLevelAbsoluteThreshold`) keep
+  working in the unit of the sensor: getters return the square root of the variance-based value and the setter stores
+  the square of the provided measurement, so unit conversions remain valid (issue #41, N7).
+- The initialization samples now count towards `minStaticSamples` for the first static interval, for every
+  generator, so a motion starting shortly after initialization no longer raises `onStaticIntervalSkipped` nor drops
+  the first accelerometer or magnetometer measurement (issue #41, N9).
+- A gyroscope sequence obtained by joining dynamic intervals is discarded, raising `onDynamicIntervalSkipped`, when
+  it exceeds `maxDynamicSamples` (issue #41, N4).
 - Detector status changes are delayed by half a window (centred window), so listener callbacks and generator outputs
   occur `getDetectionDelaySamples()` samples after the sample they refer to (issue #41, N3).
 - `AccelerometerMeasurementsGenerator` standard deviations are divided by `sqrt(N)`, and the standard deviation given

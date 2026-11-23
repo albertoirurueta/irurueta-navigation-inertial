@@ -215,6 +215,52 @@ class GeneratorsStaticIntervalTest {
     }
 
     @Test
+    void initializationSamplesCountForFirstStaticIntervalOfAccelerometerGenerator() throws LockedException {
+        final var measurements = new ArrayList<StandardDeviationBodyKinematics>();
+        final var generator = new AccelerometerMeasurementsGenerator(new AccelerometerListener(measurements));
+        configure(generator);
+
+        // motion starts right after initialization: first static interval is the initialization period
+        feedAccelerometer(generator, A, INITIAL);
+        feedAccelerometerDynamic(generator, 80);
+        feedAccelerometer(generator, B, 200);
+        feedAccelerometerDynamic(generator, 60);
+
+        assertEquals(2, measurements.size());
+        assertEquals(A[2], measurements.get(0).getKinematics().getFz(), 0.01);
+        assertEquals(0.0, measurements.get(0).getKinematics().getFy(), 0.01);
+        assertEquals(B[1], measurements.get(1).getKinematics().getFy(), 0.01);
+    }
+
+    @Test
+    void joinedSequenceLongerThanMaxDynamicSamplesIsDiscarded() throws LockedException {
+        final var sequences = new ArrayList<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>();
+        final var generator = createGenerator(sequences);
+        generator.setMaxDynamicSamples(150);
+
+        // each dynamic interval is short enough, but joined around a too short static interval they are not
+        feedStatic(generator, A, INITIAL, 0.0);
+        feedStatic(generator, A, 100, 0.0);
+        feedDynamic(generator, 80);
+        feedStatic(generator, A, MIN_STATIC / 2, 0.0);
+        feedDynamic(generator, 80);
+        feedStatic(generator, B, 150, 0.0);
+        feedDynamic(generator, 60);
+
+        // joined sequence is discarded
+        assertTrue(sequences.isEmpty());
+
+        // the valid static interval that followed is the reference of the next sequence
+        feedStatic(generator, A, 150, 0.0);
+        feedDynamic(generator, 60);
+
+        assertEquals(1, sequences.size());
+        assertEquals(B[1], sequences.get(0).getBeforeMeanFy(), 0.01);
+        assertEquals(A[2], sequences.get(0).getAfterMeanFz(), 0.01);
+        assertTrue(sequences.get(0).getItemsCount() <= 150);
+    }
+
+    @Test
     void combinedGeneratorsGenerateSequencesAndAverageStandardDeviations() throws LockedException {
         final var sequences = new ArrayList<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>>();
         final var measurements = new ArrayList<StandardDeviationBodyKinematics>();
@@ -291,9 +337,12 @@ class GeneratorsStaticIntervalTest {
         assertEquals(A[2], sequences.get(0).getBeforeMeanFz(), 0.01);
         assertEquals(B[1], sequences.get(0).getAfterMeanFy(), 0.01);
         assertTrue(sequences.get(0).getGravityDirectionStandardDeviation() > 0.0);
-        assertEquals(1, measurements.size());
+        // the initialization period is the first static interval, so it also generates a measurement
+        assertEquals(2, measurements.size());
+        assertEquals(ACC_STD / Math.sqrt(INITIAL), measurements.get(0).getSpecificForceStandardDeviation(),
+                0.3 * ACC_STD / Math.sqrt(INITIAL));
         final var n = 200 - 2 * DELAY;
-        assertEquals(ACC_STD / Math.sqrt(n), measurements.get(0).getSpecificForceStandardDeviation(),
+        assertEquals(ACC_STD / Math.sqrt(n), measurements.get(1).getSpecificForceStandardDeviation(),
                 0.3 * ACC_STD / Math.sqrt(n));
     }
 

@@ -607,7 +607,7 @@ class AccelerationTriadStaticIntervalDetectorTest implements AccelerationTriadSt
                 detector.getBaseNoiseLevelAbsoluteThreshold(), 0.0);
 
         final var a1 = detector.getBaseNoiseLevelAbsoluteThresholdAsMeasurement();
-        assertEquals(AccelerationTriadStaticIntervalDetector.DEFAULT_BASE_NOISE_LEVEL_ABSOLUTE_THRESHOLD,
+        assertEquals(Math.sqrt(AccelerationTriadStaticIntervalDetector.DEFAULT_BASE_NOISE_LEVEL_ABSOLUTE_THRESHOLD),
                 a1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, a1.getUnit());
 
@@ -763,7 +763,7 @@ class AccelerationTriadStaticIntervalDetectorTest implements AccelerationTriadSt
         assertEquals(AccelerationTriadStaticIntervalDetector.Status.INITIALIZATION_COMPLETED, detector.getStatus());
         assertTrue(detector.getBaseNoiseLevel() > 0.0);
         a1 = detector.getBaseNoiseLevelAsMeasurement();
-        assertEquals(a1.getValue().doubleValue(), detector.getBaseNoiseLevel(), 0.0);
+        assertEquals(a1.getValue().doubleValue(), Math.sqrt(detector.getBaseNoiseLevel()), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, a1.getUnit());
         detector.getBaseNoiseLevelAsMeasurement(a2);
         assertEquals(a1, a2);
@@ -778,7 +778,7 @@ class AccelerationTriadStaticIntervalDetectorTest implements AccelerationTriadSt
         assertEquals(detector.getBaseNoiseLevel() * detector.getThresholdFactor(), detector.getThreshold(),
                 0.0);
         a1 = detector.getThresholdAsMeasurement();
-        assertEquals(a1.getValue().doubleValue(), detector.getThreshold(), 0.0);
+        assertEquals(a1.getValue().doubleValue(), Math.sqrt(detector.getThreshold()), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, a1.getUnit());
         detector.getThresholdAsMeasurement(a2);
         assertEquals(a1, a2);
@@ -1049,7 +1049,7 @@ class AccelerationTriadStaticIntervalDetectorTest implements AccelerationTriadSt
         assertEquals(AccelerationTriadStaticIntervalDetector.Status.INITIALIZATION_COMPLETED, detector.getStatus());
         assertTrue(detector.getBaseNoiseLevel() > 0.0);
         a1 = detector.getBaseNoiseLevelAsMeasurement();
-        assertEquals(a1.getValue().doubleValue(), detector.getBaseNoiseLevel(), 0.0);
+        assertEquals(a1.getValue().doubleValue(), Math.sqrt(detector.getBaseNoiseLevel()), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, a1.getUnit());
         detector.getBaseNoiseLevelAsMeasurement(a2);
         assertEquals(a1, a2);
@@ -1065,7 +1065,7 @@ class AccelerationTriadStaticIntervalDetectorTest implements AccelerationTriadSt
         assertEquals(detector.getBaseNoiseLevel() * detector.getThresholdFactor(), detector.getThreshold(),
                 0.0);
         a1 = detector.getThresholdAsMeasurement();
-        assertEquals(a1.getValue().doubleValue(), detector.getThreshold(), 0.0);
+        assertEquals(a1.getValue().doubleValue(), Math.sqrt(detector.getThreshold()), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, a1.getUnit());
         detector.getThresholdAsMeasurement(a2);
         assertEquals(a1, a2);
@@ -1339,7 +1339,7 @@ class AccelerationTriadStaticIntervalDetectorTest implements AccelerationTriadSt
         assertEquals(AccelerationTriadStaticIntervalDetector.Status.INITIALIZATION_COMPLETED, detector.getStatus());
         assertTrue(detector.getBaseNoiseLevel() > 0.0);
         a1 = detector.getBaseNoiseLevelAsMeasurement();
-        assertEquals(a1.getValue().doubleValue(), detector.getBaseNoiseLevel(), 0.0);
+        assertEquals(a1.getValue().doubleValue(), Math.sqrt(detector.getBaseNoiseLevel()), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, a1.getUnit());
         detector.getBaseNoiseLevelAsMeasurement(a2);
         assertEquals(a1, a2);
@@ -1354,7 +1354,7 @@ class AccelerationTriadStaticIntervalDetectorTest implements AccelerationTriadSt
         assertEquals(detector.getBaseNoiseLevel() * detector.getThresholdFactor(), detector.getThreshold(),
                 0.0);
         a1 = detector.getThresholdAsMeasurement();
-        assertEquals(a1.getValue().doubleValue(), detector.getThreshold(), 0.0);
+        assertEquals(a1.getValue().doubleValue(), Math.sqrt(detector.getThreshold()), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, a1.getUnit());
         detector.getThresholdAsMeasurement(a2);
         assertEquals(a1, a2);

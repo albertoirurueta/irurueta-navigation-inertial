@@ -374,6 +374,7 @@ public class GyroscopeMeasurementsGenerator extends
                 previousAvgZ = null;
             } else if (currentSequenceItems != null) {
                 currentSequenceItems.add(item);
+                discardSequenceIfTooLong();
             }
         } else if (currentSequenceItems != null) {
             // static interval, which might be too short to be valid and then be joined to the sequence
@@ -461,9 +462,9 @@ public class GyroscopeMeasurementsGenerator extends
     protected void handleStaticToDynamicChange(
             final double accumulatedAvgX, final double accumulatedAvgY, final double accumulatedAvgZ,
             final double accumulatedStdX, final double accumulatedStdY, final double accumulatedStdZ) {
-        // the interval that starts with the initialization period is always valid because the
-        // initialization period is long enough and its average is the first static average
-        final var valid = isFirstStaticInterval() || !isStaticIntervalSkipped();
+        // the interval that starts with the initialization period includes the initialization samples,
+        // whose average is the first static average
+        final var valid = !isStaticIntervalSkipped();
         final var samples = Math.max(getAccumulatedStaticSamples(), 1);
 
         if (valid) {
@@ -481,6 +482,7 @@ public class GyroscopeMeasurementsGenerator extends
         } else if (currentSequenceItems != null && currentStaticItems != null) {
             // static interval is too short: neighbouring dynamic intervals are joined
             currentSequenceItems.addAll(currentStaticItems);
+            discardSequenceIfTooLong();
         }
         // when there is no previous valid static interval, no sequence is being collected, and
         // items are discarded until a valid static interval is found
@@ -531,6 +533,31 @@ public class GyroscopeMeasurementsGenerator extends
             accumulatedEstimator.reset();
         } catch (final LockedException ignore) {
             // no action needed
+        }
+    }
+
+    /**
+     * Discards the sequence being collected when it exceeds the maximum number of samples allowed in
+     * dynamic intervals. This can only happen when dynamic intervals are joined around too short static
+     * intervals, since single dynamic intervals that are too long are already skipped.
+     * Gravity reference is lost, so no sequence is collected until a new valid static interval is found.
+     */
+    private void discardSequenceIfTooLong() {
+        if (currentSequenceItems == null || currentSequenceItems.size() <= getMaxDynamicSamples()) {
+            return;
+        }
+
+        final var joined = currentSequenceItems.size() > getProcessedDynamicSamples();
+
+        currentSequenceItems = null;
+        currentStaticItems = null;
+        previousAvgX = null;
+        previousAvgY = null;
+        previousAvgZ = null;
+
+        // a single dynamic interval that is too long is notified by the base class
+        if (listener != null && joined) {
+            listener.onDynamicIntervalSkipped(this);
         }
     }
 

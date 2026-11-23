@@ -871,7 +871,8 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
                     final double accumulatedStdY,
                     final double accumulatedStdZ) {
 
-                if (processedStaticSamples < minStaticSamples) {
+                // the initialization period is part of the first static interval
+                if (getAccumulatedStaticSamples() < minStaticSamples) {
                     final var wasSkipped = skipStaticInterval;
                     skipStaticInterval = true;
 
