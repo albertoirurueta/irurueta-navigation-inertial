@@ -226,7 +226,10 @@ What changes between families is what is known about stem:[\mathbf{f}_{\text{tru
 equation each measurement contributes. The unknowns are always the same: the bias (3 values) and the entries of
 stem:[\mathbf{M}_a] (9 values in general, 6 with the common z-axis assumption, which makes stem:[\mathbf{M}_a] upper
 triangular; see xref:calibration/algorithms.adoc#linear-model[the common z-axis reduction]). The `KnownBias...`
-variants remove the three bias unknowns. Every calibrator defaults to `commonAxisUsed = false`.
+variants remove the three bias unknowns. The frame-based calibrators default to `commonAxisUsed = false`, while
+the gravity-norm and position based calibrators (`KnownGravityNorm`, `KnownBiasAndGravityNorm`, `KnownPosition`,
+`KnownBiasAndPosition` and the robust `...GravityNorm` variants) default to `commonAxisUsed = true`
+(`DEFAULT_USE_COMMON_Z_AXIS`), see the note under <<knowngravitynorm>>.
 
 === KnownFrame: stem:[\mathbf{f}_{\text{true}}] from the frame
 
@@ -263,6 +266,7 @@ measurements, or three once the bias is known. This agrees with the constants in
 `MINIMUM_MEASUREMENTS` is 4 for `KnownFrame` and 3 for `KnownBiasAndFrame`, in both the linear and the non-linear
 classes, and it does not change with the common z-axis flag.
 
+[#knowngravitynorm]
 === KnownGravityNorm: a norm constraint
 
 Here the orientation of each static measurement is unknown, so stem:[\mathbf{f}_{\text{true},k}] cannot be
@@ -281,6 +285,21 @@ Jacobian obtained numerically (`GradientEstimator`, not an analytical expression
 rotation of the sensor frame, so the general (nine-entry) stem:[\mathbf{M}_a] has equivalent solutions; the common
 z-axis option removes that ambiguity.
 
+IMPORTANT: Since this release the norm-based calibrators default to the common z-axis (upper-triangular) model,
+the only one that is observable from norm constraints. The general (full 3x3) mode is still available with
+`setCommonAxisUsed(false)`, but the norm is invariant to a rotation of the sensor frame, so the estimated
+stem:[\mathbf{M}_a] is then defined *only up to a rotation* (its covariance is singular in those directions) and the
+result should not be compared with a ground truth matrix directly. Code that relied on the previous default
+(`false`) now gets a different, upper-triangular matrix and a lower minimum number of measurements (10 / 7
+instead of 13 / 10).
+
+The squared-norm residual is kept (it is the minimal change with respect to the paper's cost), and its standard
+deviation is made consistent with the fitted quantity: if the specific force has standard deviation
+stem:[\sigma_f], the squared norm has standard deviation approximately stem:[2\,g\,\sigma_f], which is what
+`setInputData` gives to the fitter. Previously stem:[\sigma_f] itself was given, so the chi-square was off by a
+factor of about stem:[(2g)^2] and the reported covariance was wrongly scaled. The norm is not otherwise reformulated:
+this is one of the deliberate differences with the paper/imu_tk.
+
 *Minimum measurements.* One scalar equation per measurement, and the implementation asks for one more measurement
 than unknowns:
 
@@ -288,7 +307,7 @@ than unknowns:
 |===
 |Calibrator |Unknowns |Constant in code |Minimum measurements
 
-|`KnownGravityNorm` / `KnownPosition`, general
+|`KnownGravityNorm` / `KnownPosition`, general (not the default any more)
 |12
 |`MINIMUM_MEASUREMENTS_GENERAL`
 |13
@@ -316,6 +335,10 @@ stem:[g] comes from: instead of a value supplied by the user, setting the positi
 ECEF with zero velocity) makes the calibrator evaluate `ECEFGravityEstimator` at that position and use the norm of
 the resulting gravity vector. Unknown counts and minimum measurements are therefore identical to the
 `KnownGravityNorm` rows, and all measurements are assumed to have been taken at that one position.
+
+NOTE: The new `commonAxisUsed = true` default applies to `KnownPosition` and `KnownBiasAndPosition` (they share the
+gravity-norm base class) and also to the robust `...RobustKnownPosition...` and `...RobustKnownBiasAndPosition...`
+wrappers, which declare their own `DEFAULT_USE_COMMON_Z_AXIS`.
 
 == Worked example: the linear system layout
 

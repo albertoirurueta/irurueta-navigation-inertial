@@ -75,8 +75,12 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
     /**
      * Indicates whether by default a common z-axis is assumed for the accelerometer,
      * gyroscope and magnetometer.
+     * Common z-axis is used by default because, with norm-based measurements, the general
+     * model is only observable up to a rotation: the norm constraint is invariant to a left
+     * rotation of the inverse of the scale and misalignment matrix, so the covariance of the
+     * general mode is singular in those directions.
      */
-    public static final boolean DEFAULT_USE_COMMON_Z_AXIS = false;
+    public static final boolean DEFAULT_USE_COMMON_Z_AXIS = true;
 
     /**
      * Number of unknowns when common z-axis is assumed for the accelerometer,
@@ -2044,6 +2048,9 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      * Indicates whether z-axis is assumed to be common for accelerometer,
      * gyroscope and magnetometer.
      * When enabled, this eliminates 3 variables from Mm (soft-iron) matrix.
+     * When disabled (general mode), the soft-iron matrix is only estimated up to a rotation,
+     * since the norm constraint is invariant to a left rotation of its inverse, and the
+     * resulting covariance is singular in those directions.
      *
      * @return true if z-axis is assumed to be common for accelerometer,
      * gyroscope and magnetometer, false otherwise.
@@ -2057,6 +2064,9 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      * Specifies whether z-axis is assumed to be common for accelerometer and
      * gyroscope.
      * When enabled, this eliminates 3 variables from Mm matrix.
+     * When disabled (general mode), the soft-iron matrix is only estimated up to a rotation,
+     * since the norm constraint is invariant to a left rotation of its inverse, and the
+     * resulting covariance is singular in those directions.
      *
      * @param commonAxisUsed true if z-axis is assumed to be common for
      *                       accelerometer, gyroscope and magnetometer, false
@@ -2904,6 +2914,13 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
 
     /**
      * Sets input data into Levenberg-Marquardt fitter.
+     * The fitted quantity is the squared norm of the magnetic flux density, whose expected value is
+     * {@code ||B||^2}. Since {@code d(b^2) = 2 * b * db}, a measurement noise of standard deviation
+     * {@code sigma_B} on the magnetic flux density norm propagates (to first order, around
+     * {@code |b| = ||B||}) to a standard deviation of {@code 2 * ||B|| * sigma_B} on the squared norm.
+     * Such value is provided to the fitter so that standard deviations have the same units
+     * as the fitted quantity, and chi square is consistent (about 1 per degree of freedom when
+     * noise is correctly modelled) and the estimated covariance scales with {@code sigma_B^2}.
      *
      * @throws WrongSizeException never happens.
      */
@@ -2929,7 +2946,7 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
 
             y[i] = gtb2;
 
-            specificForceStandardDeviations[i] = measurement.getMagneticFluxDensityStandardDeviation();
+            specificForceStandardDeviations[i] = 2.0 * gtb * measurement.getMagneticFluxDensityStandardDeviation();
 
             i++;
         }

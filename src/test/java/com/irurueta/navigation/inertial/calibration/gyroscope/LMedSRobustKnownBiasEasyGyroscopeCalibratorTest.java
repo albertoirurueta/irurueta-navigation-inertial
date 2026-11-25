@@ -214,10 +214,10 @@ class LMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements RobustKnownBias
                 calibrator.getMeasurementOrSequenceType());
         assertTrue(calibrator.isOrderedMeasurementsOrSequencesRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertTrue(calibrator.isGDependentCrossBiasesEstimated());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
         assertNull(calibrator.getListener());
-        assertEquals(16, calibrator.getMinimumRequiredMeasurementsOrSequences());
+        assertEquals(10, calibrator.getMinimumRequiredMeasurementsOrSequences());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
 
@@ -400,10 +400,10 @@ class LMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements RobustKnownBias
                 calibrator.getMeasurementOrSequenceType());
         assertTrue(calibrator.isOrderedMeasurementsOrSequencesRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertTrue(calibrator.isGDependentCrossBiasesEstimated());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
         assertNull(calibrator.getListener());
-        assertEquals(16, calibrator.getMinimumRequiredMeasurementsOrSequences());
+        assertEquals(10, calibrator.getMinimumRequiredMeasurementsOrSequences());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
 
@@ -606,10 +606,10 @@ class LMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements RobustKnownBias
                 calibrator.getMeasurementOrSequenceType());
         assertTrue(calibrator.isOrderedMeasurementsOrSequencesRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertTrue(calibrator.isGDependentCrossBiasesEstimated());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
         assertSame(this, calibrator.getListener());
-        assertEquals(16, calibrator.getMinimumRequiredMeasurementsOrSequences());
+        assertEquals(10, calibrator.getMinimumRequiredMeasurementsOrSequences());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
 
@@ -813,10 +813,10 @@ class LMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements RobustKnownBias
                 calibrator.getMeasurementOrSequenceType());
         assertTrue(calibrator.isOrderedMeasurementsOrSequencesRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertTrue(calibrator.isGDependentCrossBiasesEstimated());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
         assertNull(calibrator.getListener());
-        assertEquals(16, calibrator.getMinimumRequiredMeasurementsOrSequences());
+        assertEquals(10, calibrator.getMinimumRequiredMeasurementsOrSequences());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
 
@@ -1017,10 +1017,10 @@ class LMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements RobustKnownBias
                 calibrator.getMeasurementOrSequenceType());
         assertTrue(calibrator.isOrderedMeasurementsOrSequencesRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertTrue(calibrator.isGDependentCrossBiasesEstimated());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
         assertSame(this, calibrator.getListener());
-        assertEquals(16, calibrator.getMinimumRequiredMeasurementsOrSequences());
+        assertEquals(10, calibrator.getMinimumRequiredMeasurementsOrSequences());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
 
@@ -1239,10 +1239,10 @@ class LMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements RobustKnownBias
                 calibrator.getMeasurementOrSequenceType());
         assertTrue(calibrator.isOrderedMeasurementsOrSequencesRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertTrue(calibrator.isGDependentCrossBiasesEstimated());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
         assertNull(calibrator.getListener());
-        assertEquals(16, calibrator.getMinimumRequiredMeasurementsOrSequences());
+        assertEquals(10, calibrator.getMinimumRequiredMeasurementsOrSequences());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
 
@@ -1470,10 +1470,10 @@ class LMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements RobustKnownBias
                 calibrator.getMeasurementOrSequenceType());
         assertTrue(calibrator.isOrderedMeasurementsOrSequencesRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertTrue(calibrator.isGDependentCrossBiasesEstimated());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
         assertSame(this, calibrator.getListener());
-        assertEquals(16, calibrator.getMinimumRequiredMeasurementsOrSequences());
+        assertEquals(10, calibrator.getMinimumRequiredMeasurementsOrSequences());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
 
@@ -1700,10 +1700,10 @@ class LMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements RobustKnownBias
                 calibrator.getMeasurementOrSequenceType());
         assertTrue(calibrator.isOrderedMeasurementsOrSequencesRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertTrue(calibrator.isGDependentCrossBiasesEstimated());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
         assertNull(calibrator.getListener());
-        assertEquals(16, calibrator.getMinimumRequiredMeasurementsOrSequences());
+        assertEquals(10, calibrator.getMinimumRequiredMeasurementsOrSequences());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
 
@@ -1939,10 +1939,10 @@ class LMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements RobustKnownBias
                 calibrator.getMeasurementOrSequenceType());
         assertTrue(calibrator.isOrderedMeasurementsOrSequencesRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertTrue(calibrator.isGDependentCrossBiasesEstimated());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
         assertSame(this, calibrator.getListener());
-        assertEquals(16, calibrator.getMinimumRequiredMeasurementsOrSequences());
+        assertEquals(10, calibrator.getMinimumRequiredMeasurementsOrSequences());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
 
@@ -4925,13 +4925,13 @@ class LMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements RobustKnownBias
         final var calibrator = new LMedSRobustKnownBiasEasyGyroscopeCalibrator();
 
         // check initial value
-        assertTrue(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isCommonAxisUsed());
 
         // set new value
-        calibrator.setCommonAxisUsed(false);
+        calibrator.setCommonAxisUsed(true);
 
         // check
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
     }
 
     @Test
@@ -4939,13 +4939,13 @@ class LMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements RobustKnownBias
         final var calibrator = new LMedSRobustKnownBiasEasyGyroscopeCalibrator();
 
         // check initial value
-        assertTrue(calibrator.isGDependentCrossBiasesEstimated());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
 
         // set new value
-        calibrator.setGDependentCrossBiasesEstimated(false);
+        calibrator.setGDependentCrossBiasesEstimated(true);
 
         // check
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
+        assertTrue(calibrator.isGDependentCrossBiasesEstimated());
     }
 
     @Test
@@ -4967,12 +4967,12 @@ class LMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements RobustKnownBias
         final var calibrator = new LMedSRobustKnownBiasEasyGyroscopeCalibrator();
 
         // check initial value
-        assertEquals(16, calibrator.getMinimumRequiredMeasurementsOrSequences());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertTrue(calibrator.isGDependentCrossBiasesEstimated());
+        assertEquals(10, calibrator.getMinimumRequiredMeasurementsOrSequences());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
 
         // set new value
-        calibrator.setGDependentCrossBiasesEstimated(false);
+        calibrator.setCommonAxisUsed(true);
 
         // check
         assertEquals(7, calibrator.getMinimumRequiredMeasurementsOrSequences());
@@ -4980,15 +4980,15 @@ class LMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements RobustKnownBias
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
 
         // set new value
-        calibrator.setCommonAxisUsed(false);
+        calibrator.setGDependentCrossBiasesEstimated(true);
 
         // check
-        assertEquals(10, calibrator.getMinimumRequiredMeasurementsOrSequences());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
+        assertEquals(16, calibrator.getMinimumRequiredMeasurementsOrSequences());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isGDependentCrossBiasesEstimated());
 
         // set new value
-        calibrator.setGDependentCrossBiasesEstimated(true);
+        calibrator.setCommonAxisUsed(false);
 
         // check
         assertEquals(19, calibrator.getMinimumRequiredMeasurementsOrSequences());

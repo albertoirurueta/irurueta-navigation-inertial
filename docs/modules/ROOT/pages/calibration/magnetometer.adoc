@@ -90,9 +90,14 @@ For the norm-based and position-based families the minimum is the number of unkn
 (`MINIMUM_MEASUREMENTS_GENERAL` and `MINIMUM_MEASUREMENTS_COMMON_Z_AXIS`); `isReady()` is false until at
 least that many measurements are present. For the frame families the constant is fixed (4 and 3) because every
 measurement contributes three equations; the linear-system counting argument is in
-xref:calibration/algorithms.adoc#linear-model[linear least squares]. The common z-axis flag defaults to `false`
-in every family, and it restricts stem:[\mathbf{M}_m] to an upper-triangular matrix (the lower off-diagonal
-terms are forced to zero).
+xref:calibration/algorithms.adoc#linear-model[linear least squares]. The common z-axis flag defaults to `true`
+(`DEFAULT_USE_COMMON_Z_AXIS`) in the norm-based and position-and-instant families (including their robust variants),
+and to `false` in the frame-based families. It restricts stem:[\mathbf{M}_m] to an upper-triangular matrix (the lower
+off-diagonal terms are forced to zero). The norm constraint is invariant to a rotation of the sensor frame, so in the
+general (full 3x3) mode of the norm-based families, still available with `setCommonAxisUsed(false)`, the estimated
+stem:[\mathbf{M}_m] is defined *only up to a rotation* and its covariance is singular in those directions; the
+upper-triangular default is the observable model. Code that relied on the previous default (`false`) now needs 10 / 7
+measurements instead of 13 / 10 and obtains an upper-triangular matrix.
 
 NOTE: Javadoc and source links for every class used in the examples below are collected in the
 <<Class Reference>> table at the end of this page.
@@ -142,8 +147,11 @@ h_k(\mathbf{M}) = \left\lVert \mathbf{M}^{-1}\left(\mathbf{b}_{\text{meas},k} - 
 \qquad \chi^2 = \sum_{k=1}^{N}\left(\frac{y_k - h_k}{\sigma_k}\right)^{2}
 ++++
 
-stem:[\sigma_k] is the magnetic flux density standard deviation attached to each
-`StandardDeviationBodyMagneticFluxDensity`. The solver is Levenberg-Marquardt
+stem:[\sigma_k] is the standard deviation of the *squared norm*. Each
+`StandardDeviationBodyMagneticFluxDensity` carries the standard deviation stem:[\sigma_B] of the field itself, and
+for a squared norm of magnitude stem:[B] the calibrator hands the fitter stem:[2B\sigma_B] (stem:[\sigma_B] alone gave a
+chi-square and covariance that were off by a factor of about stem:[(2B)^{2}]). The squared-norm residual is kept
+unchanged. The solver is Levenberg-Marquardt
 (`LevenbergMarquardtMultiDimensionFitter`), and the *Jacobian is not analytical*: each evaluation obtains the
 gradient of stem:[h_k] with respect to the parameters with `GradientEstimator`, i.e. by numerical differences.
 After the fit the code subtracts the identity, so `getEstimatedMm()` returns stem:[\mathbf{M}_m] and not
@@ -182,7 +190,7 @@ and iteration details shared with the accelerometer.
   with stem:[\mathbf{b}_{\text{true}}] known) and solves it directly; the non-linear one minimizes the same
   residual iteratively and, unlike the norm-based solvers, supplies an *analytical* Jacobian.
 * *Robust* wrappers (RANSAC, LMedS, MSAC, PROSAC, PROMedS) fit the inner non-linear calibrator on random subsets
-  (default subset size equals the general minimum: 10 for hard-iron-known, 13 for hard-iron-unknown) and score
+  (default subset size equals the minimum of the configured model: 7 for hard-iron-known and 10 for hard-iron-unknown with the default common z-axis, 10 and 13 in the general mode) and score
   every measurement with the *non-squared* norm discrepancy
   stem:[\left(B - \lVert\mathbf{M}^{-1}(\mathbf{b}_{\text{meas}} - \mathbf{b}_m)\rVert\right)^{2}], which is not
   identical to the squared-norm cost minimized by the inner solver. `DEFAULT_THRESHOLD` of the RANSAC wrapper is

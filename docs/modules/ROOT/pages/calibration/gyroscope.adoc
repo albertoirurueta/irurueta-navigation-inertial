@@ -77,19 +77,19 @@ All counts below are taken from the constants of the classes. A "measurement" is
 |6 (a single `MINIMUM_MEASUREMENTS`)
 |6
 
-|`Turntable` / `Easy`, b and M only
+|`Turntable` / `Easy`, b and M only (the `Easy` default)
 |12
 |9
 |13
 |10
 
-|`Turntable` / `Easy`, b, M and G (defaults)
+|`Turntable` / `Easy`, b, M and G (the `Turntable` default)
 |21
 |18
 |22
 |19
 
-|`KnownBiasTurntable` / `KnownBiasEasy`, M only
+|`KnownBiasTurntable` / `KnownBiasEasy`, M only (the `KnownBiasEasy` default)
 |9
 |6
 |10
@@ -105,9 +105,13 @@ All counts below are taken from the constants of the classes. A "measurement" is
 The `KnownFrame` classes are linear in the unknowns and each measurement gives three equations, so
 stem:[\lceil 21/3 \rceil = 7] and stem:[\lceil 18/3 \rceil = 6] measurements suffice, and the minimum is the same for
 the linear and the non-linear classes and does not depend on the common-axis flag. The turntable and Easy
-calibrators produce one scalar residual per measurement or sequence, so they need one more than the number of
-unknowns. Defaults: `commonAxisUsed = true` and `estimateGDependentCrossBiases = true` for `Turntable`,
-`KnownBiasTurntable`, `Easy` and `KnownBiasEasy`; `commonAxisUsed = false` for the `KnownFrame` classes.
+calibrators keep a minimum of one more than the number of unknowns: the `Turntable` classes produce one scalar
+residual per measurement, and for `Easy` this is a deliberately conservative minimum (each sequence now provides
+three equations, see <<easy>>). Defaults: `commonAxisUsed = true` and `estimateGDependentCrossBiases = true` for
+`Turntable` and `KnownBiasTurntable`; `commonAxisUsed = false` and `estimateGDependentCrossBiases = false` for
+`Easy`, `KnownBiasEasy` and their robust variants (they follow the paper, see <<easy>>); `commonAxisUsed = false`
+for the `KnownFrame` classes. With the `Easy` defaults the minimum is therefore 13 sequences (`Easy`, 12
+unknowns) or 10 sequences (`KnownBiasEasy`, 9 unknowns).
 
 === `KnownFrame` example
 
@@ -302,26 +306,44 @@ the sequence is corrected with the gyroscope model, including its own corrected 
 The corrected rates are integrated with the Runge-Kutta step integrator (this choice is fixed inside the
 calibrator, it is not configurable) starting from the identity attitude, giving the attitude change
 stem:[\mathbf{q}_k] of the body over the motion. Gravity is fixed in the world, so in body axes it turns by the
-inverse rotation, and the residual is the distance between the predicted and the measured final direction:
+inverse rotation, and the residual is the *three-component* difference between the predicted and the measured
+final direction:
 
 [stem]
 ++++
-r_k(\mathbf{b},\mathbf{M},\mathbf{G}) =
-\left\lVert \mathbf{u}^{+}_k - \mathbf{q}_k^{-1}\!\left(\mathbf{u}^{-}_k\right) \right\rVert,
+\mathbf{r}_k(\mathbf{b},\mathbf{M},\mathbf{G}) =
+\mathbf{u}^{+}_k - \mathbf{R}_k^{T}\mathbf{u}^{-}_k,
 \qquad
-\chi^{2} = \sum_k \left(\frac{r_k}{\bar{\sigma}_k}\right)^{2}
+\chi^{2} = \sum_k \left\lVert \frac{\mathbf{r}_k}{\sigma_{u,k}} \right\rVert^{2}
 ++++
 
-where stem:[\mathbf{q}_k^{-1}(\cdot)] rotates a vector by the inverse quaternion and stem:[\bar{\sigma}_k] is the
-average angular-rate standard deviation of the items of the sequence. The observation is zero, the Jacobian is
-estimated numerically (`GradientEstimator`) and Levenberg-Marquardt fits all unknowns at once.
+where stem:[\mathbf{R}_k] is the rotation matrix of stem:[\mathbf{q}_k] (so stem:[\mathbf{R}_k^{T}\mathbf{u}^{-}_k]
+is stem:[\mathbf{q}_k^{-1}] applied to stem:[\mathbf{u}^{-}_k]) and stem:[\sigma_{u,k}] is the standard deviation of
+the gravity direction of the sequence, `BodyKinematicsSequence.getGravityDirectionStandardDeviation()`
+(dimensionless). Each sequence therefore contributes *three equations* instead of one scalar distance. The fit is
+done by `LevenbergMarquardtMultiVariateFitter`: the inputs of each observation are the two normalized static
+directions, which stay fixed, and the model output is stem:[\mathbf{R}_k^{T}\mathbf{u}^{-}_k], compared with
+stem:[\mathbf{u}^{+}_k]. The Jacobian is still numerical, but it is obtained with the `JacobianEstimator` of
+`irurueta-numerical` configured with a relative step and a minimum step of `1e-7`, so the step is
+`1e-7 * max(1, |p|)` (with the default, purely relative step, the step vanishes for parameters near zero, which
+made the fit singular on noiseless data whose true parameters are zero). When a sequence does not carry a gravity-direction standard deviation, it is estimated from
+the items (accelerometer noise and integrated gyroscope noise), and a value of 1 is used if nothing is available.
+The robust variants already scored each sequence with the norm of this three-component residual.
+
+[#easy-defaults]
+*Defaults.* Following the paper, `EasyGyroscopeCalibrator`, `KnownBiasEasyGyroscopeCalibrator` and their robust
+variants now default to `commonAxisUsed = false` (full stem:[\mathbf{M}_g], nine entries) and
+`estimateGDependentCrossBiases = false`. The upper-triangular form is only valid for the sensor that defines the
+body frame, which is the accelerometer, not the gyroscope; and stem:[\mathbf{G}_g] is weakly observable from
+gravity references alone. Both remain available as options (`setCommonAxisUsed(true)`,
+`setEstimateGDependentCrossBiases(true)`). The Turntable calibrators keep their previous defaults.
 
 Differences from the paper (see the Tedaldi notes on the algorithms page): the gyroscope bias is an
 *unknown of this fit* (nothing is subtracted beforehand), the residual is a distance between unit vectors rather
-than between integrated vectors in the paper's own parametrization, and the default is the common z-axis
-(upper-triangular) form with the g-dependent term estimated. The accelerometer must be calibrated first because
+than between integrated vectors in the paper's own parametrization, and the defaults are the general (full)
+matrix without the g-dependent term (see <<easy-defaults>>). The accelerometer must be calibrated first because
 stem:[\mathbf{u}^{\pm}_k] and stem:[\mathbf{f}_{\text{true},j}] depend on it. `KnownBiasEasyGyroscopeCalibrator` is the same
-fit with the bias taken from the caller (6 to 18 unknowns, see <<minimums>>).
+fit with the bias taken from the caller (6 to 18 unknowns, 9 by default, see <<minimums>>).
 
 [mermaid]
 ....
@@ -329,9 +351,9 @@ flowchart LR
     S1["Static bracket before:<br/>mean f, corrected, normalized -> u_minus"] --> R["Rotate u_minus by the inverse of q<br/>-> predicted u_plus"]
     M["Motion samples:<br/>Omega_true = inv(M) Omega_meas - b - G f_true"] --> I["Integrate with Runge-Kutta<br/>-> attitude change q"]
     I --> R
-    R --> C["Residual r = distance(u_plus, predicted)"]
+    R --> C["Residual r = u_plus - predicted (3 components)"]
     S2["Static bracket after:<br/>mean f, corrected, normalized -> u_plus"] --> C
-    C --> LM["Levenberg-Marquardt<br/>(numerical gradient) updates b, M, G"]
+    C --> LM["Levenberg-Marquardt<br/>(numerical Jacobian) updates b, M, G"]
     LM -->|"new parameters"| M
 ....
 

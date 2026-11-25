@@ -73,8 +73,12 @@ public abstract class BaseBiasGravityNormAccelerometerCalibrator<
     /**
      * Indicates whether by default a common z-axis is assumed for both the accelerometer
      * and gyroscope.
+     * Common z-axis is used by default because, with norm-based measurements, the general
+     * model is only observable up to a rotation: the norm constraint is invariant to a left
+     * rotation of the inverse of the scale and misalignment matrix, so the covariance of the
+     * general mode is singular in those directions.
      */
-    public static final boolean DEFAULT_USE_COMMON_Z_AXIS = false;
+    public static final boolean DEFAULT_USE_COMMON_Z_AXIS = true;
 
     /**
      * Number of unknowns when common z-axis is assumed for both the accelerometer
@@ -4572,6 +4576,9 @@ public abstract class BaseBiasGravityNormAccelerometerCalibrator<
      * Indicates whether z-axis is assumed to be common for accelerometer and
      * gyroscope.
      * When enabled, this eliminates 3 variables from Ma matrix.
+     * When disabled (general mode), the scale and misalignment matrix is only estimated up to
+     * a rotation, since the norm constraint is invariant to a left rotation of its inverse,
+     * and the resulting covariance is singular in those directions.
      *
      * @return true if z-axis is assumed to be common for accelerometer and gyroscope,
      * false otherwise.
@@ -4585,6 +4592,9 @@ public abstract class BaseBiasGravityNormAccelerometerCalibrator<
      * Specifies whether z-axis is assumed to be common for accelerometer and
      * gyroscope.
      * When enabled, this eliminates 3 variables from Ma matrix.
+     * When disabled (general mode), the scale and misalignment matrix is only estimated up to
+     * a rotation, since the norm constraint is invariant to a left rotation of its inverse,
+     * and the resulting covariance is singular in those directions.
      *
      * @param commonAxisUsed true if z-axis is assumed to be common for accelerometer
      *                       and gyroscope, false otherwise.
@@ -4953,6 +4963,13 @@ public abstract class BaseBiasGravityNormAccelerometerCalibrator<
 
     /**
      * Sets input data into Levenberg-Marquardt fitter.
+     * The fitted quantity is the squared norm of the specific force, whose expected value is
+     * {@code g^2}. Since {@code d(f^2) = 2 * f * df}, a measurement noise of standard deviation
+     * {@code sigma_f} on the specific force norm propagates (to first order, around
+     * {@code f = g}) to a standard deviation of {@code 2 * g * sigma_f} on the squared norm.
+     * Such value is provided to the fitter so that standard deviations have the same units
+     * as the fitted quantity, and chi square is consistent (about 1 per degree of freedom when
+     * noise is correctly modelled) and the estimated covariance scales with {@code sigma_f^2}.
      *
      * @throws WrongSizeException never happens.
      */
@@ -4979,7 +4996,7 @@ public abstract class BaseBiasGravityNormAccelerometerCalibrator<
 
             y[i] = g2;
 
-            specificForceStandardDeviations[i] = measurement.getSpecificForceStandardDeviation();
+            specificForceStandardDeviations[i] = 2.0 * g * measurement.getSpecificForceStandardDeviation();
 
             i++;
         }

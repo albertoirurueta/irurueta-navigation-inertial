@@ -104,6 +104,13 @@ public class BodyKinematicsSequence<T extends TimedBodyKinematics> implements Se
     private double afterMeanFz;
 
     /**
+     * Standard deviation of each component of the gravity direction (unit vector of mean
+     * specific force) estimated from the static periods that surround this sequence. This
+     * value is dimensionless and is zero when unknown.
+     */
+    private double gravityDirectionStandardDeviation;
+
+    /**
      * Constructor.
      */
     public BodyKinematicsSequence() {
@@ -714,6 +721,35 @@ public class BodyKinematicsSequence<T extends TimedBodyKinematics> implements Se
     }
 
     /**
+     * Gets standard deviation of each component of the gravity direction (unit vector of
+     * mean specific force) estimated from the static periods that surround this sequence.
+     * This value is dimensionless and combines the uncertainty of the mean specific force
+     * of the static periods before and after the sequence (mean noise divided by gravity
+     * norm) with the uncertainty of the gyroscope integration during the sequence.
+     * A value of zero means that it is unknown.
+     *
+     * @return standard deviation of gravity direction components.
+     */
+    public double getGravityDirectionStandardDeviation() {
+        return gravityDirectionStandardDeviation;
+    }
+
+    /**
+     * Sets standard deviation of each component of the gravity direction (unit vector of
+     * mean specific force) estimated from the static periods that surround this sequence.
+     *
+     * @param gravityDirectionStandardDeviation standard deviation of gravity direction
+     *                                          components (dimensionless).
+     * @throws IllegalArgumentException if provided value is negative.
+     */
+    public void setGravityDirectionStandardDeviation(final double gravityDirectionStandardDeviation) {
+        if (gravityDirectionStandardDeviation < 0.0) {
+            throw new IllegalArgumentException();
+        }
+        this.gravityDirectionStandardDeviation = gravityDirectionStandardDeviation;
+    }
+
+    /**
      * Copies data of provided instance into this instance.
      *
      * @param input instance to copy data from.
@@ -737,6 +773,8 @@ public class BodyKinematicsSequence<T extends TimedBodyKinematics> implements Se
         afterMeanFx = input.afterMeanFx;
         afterMeanFy = input.afterMeanFy;
         afterMeanFz = input.afterMeanFz;
+
+        gravityDirectionStandardDeviation = input.gravityDirectionStandardDeviation;
     }
 
     /**
@@ -771,6 +809,7 @@ public class BodyKinematicsSequence<T extends TimedBodyKinematics> implements Se
                 Double.compare(that.afterMeanFx, afterMeanFx) == 0 &&
                 Double.compare(that.afterMeanFy, afterMeanFy) == 0 &&
                 Double.compare(that.afterMeanFz, afterMeanFz) == 0 &&
+                Double.compare(that.gravityDirectionStandardDeviation, gravityDirectionStandardDeviation) == 0 &&
                 Objects.equals(items, that.items) &&
                 Objects.equals(sortedItems, that.sortedItems);
     }
@@ -784,7 +823,7 @@ public class BodyKinematicsSequence<T extends TimedBodyKinematics> implements Se
     @Override
     public int hashCode() {
         return Objects.hash(items, sortedItems, beforeMeanFx, beforeMeanFy, beforeMeanFz,
-                afterMeanFx, afterMeanFy, afterMeanFz);
+                afterMeanFx, afterMeanFy, afterMeanFz, gravityDirectionStandardDeviation);
     }
 
     /**

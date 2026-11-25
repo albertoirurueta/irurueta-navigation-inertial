@@ -43,9 +43,8 @@ public interface TriadStaticIntervalDetectorListener<U extends Enum<?>, M extend
      * detected.
      *
      * @param detector       detector that raised the event.
-     * @param baseNoiseLevel base measurement noise level expressed in meters per squared second (m/s^2) for
-     *                       acceleration, radians per second (rad/s) for angular speed or Teslas (T) for magnetic
-     *                       flux density.
+     * @param baseNoiseLevel variance-based base measurement noise level expressed in (m/s^2)^2 for
+     *                       acceleration, (rad/s)^2 for angular speed or T^2 for magnetic flux density.
      */
     void onInitializationCompleted(final D detector, final double baseNoiseLevel);
 
@@ -54,12 +53,10 @@ public interface TriadStaticIntervalDetectorListener<U extends Enum<?>, M extend
      * excessive movement forces.
      *
      * @param detector                detector that raised the event.
-     * @param accumulatedNoiseLevel   accumulated noise level expressed in meters per squared second (m/s^2) for
-     *                                acceleration, radians per second (rad/s) for angular speed or Teslas (T) for
-     *                                magnetic flux density.
-     * @param instantaneousNoiseLevel instantaneous noise level expressed in meters per squared second (m/s^2) for
-     *                                acceleration, radians per second (rad/s) for angular speed or Teslas (T) for
-     *                                magnetic flux density.
+     * @param accumulatedNoiseLevel   variance-based accumulated noise level expressed in (m/s^2)^2 for
+     *                                acceleration, (rad/s)^2 for angular speed or T^2 for magnetic flux density.
+     * @param instantaneousNoiseLevel variance-based instantaneous noise level expressed in (m/s^2)^2 for
+     *                                acceleration, (rad/s)^2 for angular speed or T^2 for magnetic flux density.
      * @param reason                  reason why error was detected.
      */
     void onError(final D detector, final double accumulatedNoiseLevel, final double instantaneousNoiseLevel,

@@ -1077,6 +1077,35 @@ class BodyKinematicsSequenceTest {
     }
 
     @Test
+    void testGetSetGravityDirectionStandardDeviation() throws CloneNotSupportedException {
+        final var sequence = new BodyKinematicsSequence<TimedBodyKinematics>();
+
+        // default value
+        assertEquals(0.0, sequence.getGravityDirectionStandardDeviation(), 0.0);
+
+        // set new value
+        sequence.setGravityDirectionStandardDeviation(1e-3);
+
+        // check
+        assertEquals(1e-3, sequence.getGravityDirectionStandardDeviation(), 0.0);
+
+        // copy, clone, equals and hash code take the value into account
+        final var copy = new BodyKinematicsSequence<>(sequence);
+        assertEquals(1e-3, copy.getGravityDirectionStandardDeviation(), 0.0);
+        assertEquals(sequence, copy);
+        assertEquals(sequence.hashCode(), copy.hashCode());
+
+        final var cloned = (BodyKinematicsSequence<?>) sequence.clone();
+        assertEquals(1e-3, cloned.getGravityDirectionStandardDeviation(), 0.0);
+
+        copy.setGravityDirectionStandardDeviation(2e-3);
+        assertNotEquals(sequence, copy);
+
+        // negative values are not allowed
+        assertThrows(IllegalArgumentException.class, () -> sequence.setGravityDirectionStandardDeviation(-1.0));
+    }
+
+    @Test
     void testEqualsAndHashCode() {
         final var items = createItems();
 

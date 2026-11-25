@@ -44,11 +44,13 @@ Two noise estimators from the xref:calibration/noise-and-bias.adoc[noise package
 
 * A *windowed* estimator keeps the last stem:[W] samples (`windowSize`, default 101; it must be odd and at least 3).
 For every new sample it recomputes, over the window only, the per-axis mean and the unbiased per-axis variance
-(division by stem:[W-1]). Its standard-deviation norm is
+(division by stem:[n-1], where stem:[n] is the number of samples actually stored in the window, which is stem:[W]
+once the window is full; before that the statistics are computed over the stored samples and a single sample gives a
+variance of 0). The detector uses the *variance norm* of the window, the same statistic as imu_tk:
 +
 [stem]
 ++++
-\sigma_{w} = \sqrt{\sigma_{x}^{2} + \sigma_{y}^{2} + \sigma_{z}^{2}}
+v_{w} = \sqrt{\sigma_{x}^{4} + \sigma_{y}^{4} + \sigma_{z}^{4}} = \sqrt{\operatorname{var}_{x}^{2} + \operatorname{var}_{y}^{2} + \operatorname{var}_{z}^{2}}
 ++++
 +
 The window only counts as valid once it holds stem:[W] samples, so no decision is taken before that.
@@ -59,17 +61,20 @@ and is reset each time a static interval ends.
 === Initialization and base noise level
 
 The first `initialStaticSamples` samples (default 5000, minimum 2; about 50 s at 100 Hz) must be recorded with the
-device motionless. They define the *base noise level* stem:[\sigma_0], the standard-deviation norm of the accumulated
+device motionless. They define the *base noise level* stem:[v_0], the variance norm of the accumulated
 estimator, and from it the classification threshold:
 
 [stem]
 ++++
-\sigma_{0} = \lVert\boldsymbol{\sigma}_{\text{acc}}\rVert,
+v_{0} = \sqrt{\operatorname{var}_{\text{acc},x}^{2} + \operatorname{var}_{\text{acc},y}^{2} + \operatorname{var}_{\text{acc},z}^{2}},
 \qquad
-\tau = \kappa\,\sigma_{0}
+\tau = \kappa\,v_{0}
 ++++
 
-where stem:[\kappa] is `thresholdFactor` (default 2.0). Initialization completes at the first sample for which
+where stem:[\kappa] is `thresholdFactor` (default 4.0, it was 2.0 when the statistic was the standard-deviation norm).
+The base noise level and the threshold accessors keep their names, but their unit is now variance based
+((m/s^2)^2 for the accelerometer; the same holds for `baseNoiseLevelAbsoluteThreshold`). The previous
+standard-deviation based quantity remains available as the base noise standard deviation norm. Initialization completes at the first sample for which
 both stem:[N \ge] `initialStaticSamples` and the window is full. Two checks can instead make it fail:
 
 [cols="2,3,3",options="header"]
@@ -77,14 +82,14 @@ both stem:[N \ge] `initialStaticSamples` and the window is full. Two checks can 
 |`ErrorReason` |Condition |When it is evaluated
 
 |`SUDDEN_EXCESSIVE_MOVEMENT_DETECTED`
-|stem:[\sigma_{w} / \sigma_{\text{acc}} > \rho], where stem:[\rho] is `instantaneousNoiseLevelFactor` (default 2.0)
+|stem:[v_{w} / v_{\text{acc}} > \rho], where stem:[v_{\text{acc}}] is the variance norm of the accumulated estimator and stem:[\rho] is `instantaneousNoiseLevelFactor` (default 9.0, it was 2.0 for standard deviations; it is larger than the square of the old value because the variance norm of a short window is noisier and 4.0 produced false sudden-movement failures on very low noise data)
 |On every sample before `initialStaticSamples` is reached, once the window is full. It catches a bump or a hand
 movement during the baseline period.
 
 |`OVERALL_EXCESSIVE_MOVEMENT_DETECTED`
-|stem:[\sigma_{0} >] `baseNoiseLevelAbsoluteThreshold`
+|stem:[v_{0} >] `baseNoiseLevelAbsoluteThreshold`
 |Once, when initialization would otherwise complete. The default threshold is `Double.MAX_VALUE`, so this check is
-disabled unless you set a limit (in m/s^2 for the accelerometer).
+disabled unless you set a limit (variance based, in (m/s^2)^2 for the accelerometer).
 |===
 
 After a failure the status is `FAILED`, `process(...)` returns `false` and ignores further samples, and the only
@@ -92,16 +97,25 @@ way out is `reset()`, which also clears the counters, base noise level and both 
 
 === Steady-state classification
 
-From then on, every sample is classified by comparing the windowed norm with the threshold:
+From then on, samples are classified by comparing the windowed variance norm with the threshold. The window is
+*centred*: the sample that receives the status is the one at the centre of the window, not the latest one,
 
 [stem]
 ++++
-\text{status}_k =
+\text{status}_{k - D} =
 \begin{cases}
-\text{STATIC\_INTERVAL} & \sigma_{w,k} < \tau \\
+\text{STATIC\_INTERVAL} & v_{w,k} < \tau \\
 \text{DYNAMIC\_INTERVAL} & \text{otherwise}
 \end{cases}
+\qquad D = \lfloor W/2 \rfloor
 ++++
+
+so every status change is reported `getDetectionDelaySamples()` samples (half a window) after the sample where it
+happened. In exchange, boundaries are symmetric: a dynamic interval starts about half a window *before* the
+statistic of a trailing window would exceed the threshold, and a static interval starts about half a window after the
+motion ends, so the static means no longer contain motion samples. Listener callbacks and the accumulated averages
+refer to the classified (delayed) sample, whereas the `getInstantaneous*` values still describe the current window.
+The initialization behaviour (`INITIALIZING`, `INITIALIZATION_COMPLETED`) is unchanged.
 
 While the status is static, the sample is also added to the accumulated estimator, whose mean and standard
 deviation will describe that interval once it ends. Listener callbacks fire only when the status changes (the
@@ -122,19 +136,19 @@ stateDiagram-v2
     INITIALIZING --> FAILED : ratio above instantaneousNoiseLevelFactor
     INITIALIZING --> FAILED : base noise above absolute threshold
     INITIALIZING --> INITIALIZATION_COMPLETED : N reached and window full
-    INITIALIZATION_COMPLETED --> STATIC_INTERVAL : window std norm below threshold
-    INITIALIZATION_COMPLETED --> DYNAMIC_INTERVAL : window std norm not below threshold
-    STATIC_INTERVAL --> DYNAMIC_INTERVAL : window std norm not below threshold
-    DYNAMIC_INTERVAL --> STATIC_INTERVAL : window std norm below threshold
+    INITIALIZATION_COMPLETED --> STATIC_INTERVAL : window variance norm below threshold
+    INITIALIZATION_COMPLETED --> DYNAMIC_INTERVAL : window variance norm not below threshold
+    STATIC_INTERVAL --> DYNAMIC_INTERVAL : window variance norm not below threshold
+    DYNAMIC_INTERVAL --> STATIC_INTERVAL : window variance norm below threshold
     FAILED --> IDLE : reset
     STATIC_INTERVAL --> IDLE : reset
     DYNAMIC_INTERVAL --> IDLE : reset
 ....
 
-Because the decision uses a full window of stem:[W] samples, boundaries are detected with a delay of the order of
-stem:[W] samples: a static interval is only reported once the window has become quiet, and a dynamic one once
-enough of the motion has entered the window. This is why `windowSize` should cover about one to two seconds of
-data and why the generators below discard intervals shorter than a couple of windows.
+Because the decision uses a full window of stem:[W] samples that is centred on the classified sample, boundaries are
+reported with a fixed delay of about stem:[W/2] samples (`getDetectionDelaySamples()`). Generators use it to align
+their items with the classified samples. `windowSize` should still cover about one to two seconds of data, and the
+generators below discard intervals shorter than a couple of windows.
 
 [source,java]
 ----
@@ -158,11 +172,15 @@ detector.process(fx, fy, fz);
 
 === Differences from the paper
 
-* *Standard deviation, not variance.* The library compares the norm of the windowed per-axis *standard deviations*
-with stem:[\kappa] times the norm of the base per-axis standard deviations. The paper compares a magnitude of the
-windowed *variances* with a multiple of the base variances. The two behave alike but are not numerically
-interchangeable: a test on the sum of the per-axis variances would be the same as the library test with
-stem:[\kappa^{2}] in place of stem:[\kappa].
+* *Variance norm, as in imu_tk.* The detector compares the norm of the windowed per-axis *variances* with
+stem:[\kappa] times the same norm of the base period, as the paper/imu_tk does. Earlier versions used the norm of the
+standard deviations, and a factor stem:[k] on standard deviations corresponds to a factor stem:[k_{\text{reference}}
+\approx k^{2}] on the variance norm. *Every* `thresholdFactor`, `instantaneousNoiseLevelFactor` and absolute
+threshold you tuned for a previous version changes meaning: square the former standard-deviation factors (the
+default `thresholdFactor` went from 2.0 to 4.0). The power spectral densities reported by the detectors are still
+derived from the standard deviation based base noise level.
+* *Centred window.* As in imu_tk the classified sample is the one at the centre of the window (see above), which
+delays every status change by half a window.
 * *Fixed factor.* The paper tunes the multiplier automatically inside its calibration loop. Here it is the
 `thresholdFactor` parameter, and the generator Javadoc recommends repeating the gyroscope calibration with several
 values, because the gyroscope result depends on where intervals start and end.
@@ -180,7 +198,7 @@ the objects the calibrators consume. Its constructor-time defaults are:
 
 |`minStaticSamples`
 |202 (2 windows of 101)
-|A static interval with fewer samples is skipped (no measurement). Setter minimum is 3.
+|A static interval with fewer samples is skipped (no measurement) and does not provide a gravity reference. Setter minimum is 3.
 
 |`maxDynamicSamples`
 |3030 (30 windows of 101)
@@ -197,8 +215,14 @@ set them explicitly. The skip rules work on sample counters:
 * While the status is static, the static counter grows and the dynamic counter is set to 0, and vice versa.
 * When a dynamic interval starts, the static interval that just ended is skipped if the static counter is below
 `minStaticSamples`, and `onStaticIntervalSkipped` is raised.
+* The initialization period is static, so its samples are part of the *first* static interval: the average of that
+interval includes the initialization samples (the accumulated estimator is not reset when initialization
+completes), and they also count towards `minStaticSamples`, for every generator.
 * If the dynamic counter exceeds `maxDynamicSamples`, the current dynamic interval is flagged as skipped
-(once, with `onDynamicIntervalSkipped`) until the next static interval begins.
+(once, with `onDynamicIntervalSkipped`) until the next static interval begins. A gyroscope sequence made of joined
+dynamic intervals is discarded in the same way when its total number of items exceeds `maxDynamicSamples`.
+* Noise levels and thresholds are variance-based as plain `double` values; their measurement-typed variants
+(`...AsMeasurement`) are the square root of those values, expressed in the unit of the sensor.
 
 [mermaid]
 ....
@@ -223,12 +247,14 @@ and stem:[\sigma_i] of that interval:
 ++++
 \bar{\mathbf{f}} = \frac{1}{n}\sum_{j=1}^{n}\mathbf{f}_{j},
 \qquad
-\bar{\sigma} = \frac{\sigma_{x}+\sigma_{y}+\sigma_{z}}{3}
+\sigma_{\bar{f}} = \frac{1}{\sqrt{n}}\,\frac{\sigma_{x}+\sigma_{y}+\sigma_{z}}{3}
 ++++
 
 `AccelerometerMeasurementsGenerator` emits a `StandardDeviationBodyKinematics` with specific force stem:[\bar{\mathbf{f}}],
-zero angular rate and specific-force standard deviation stem:[\bar{\sigma}] (the plain average of the three axes,
-not their norm). The averaging is what allows the noise term to be dropped from the model in
+zero angular rate and specific-force standard deviation stem:[\sigma_{\bar{f}}]: the plain average of the three
+axes (not their norm) divided by stem:[\sqrt{n}], because the standard deviation of the mean of stem:[n] samples is
+stem:[\sigma/\sqrt{n}] (previously the undivided average was reported). For the first interval stem:[n] includes the
+initialization samples. The averaging is what allows the noise term to be dropped from the model in
 xref:calibration/algorithms.adoc#tedaldi[the Tedaldi et al. formulation]; the standard deviation is kept so that
 calibrators can weight or filter measurements.
 
@@ -236,33 +262,55 @@ calibrators can weight or filter measurements.
 
 `GyroscopeMeasurementsGenerator` needs the motion *between* two static intervals. It records every sample of a dynamic
 interval as a `StandardDeviationTimedBodyKinematics` (kinematics, timestamp, plus two standard deviations taken from
-the initial static period: the accelerometer base noise level stem:[\sigma_0] and the norm of the gyroscope
-standard deviations). When the next static interval is detected it emits one
-`BodyKinematicsSequence` holding:
+the initial static period). Sequences follow the rules of imu_tk:
 
-* `beforeMeanSpecificForce`: the accumulated mean of the static interval that preceded the motion;
-* the recorded items, in order;
-* `afterMeanSpecificForce`: the *windowed* mean of the new static interval at the moment it was detected.
+* A sequence needs a *valid* static interval (at least `minStaticSamples` samples) on *both* sides. If a static interval
+is too short, it provides no gravity reference and the dynamic intervals on both of its sides are *joined* into a
+single sequence. A sequence whose preceding static interval has no samples is discarded.
+* A sequence is emitted when the static interval that follows it *ends*, so that its `afterMeanSpecificForce` is
+the accumulated average of that *entire* static interval (previously it was the last window at the moment the static
+interval was detected). The same average is the `beforeMeanSpecificForce` of the next sequence. Consequently, when
+a recording ends while the device is at rest, the last sequence is still pending: call `flush()` once no more samples
+are going to be processed to generate it from the static samples classified so far (at least `minStaticSamples`).
+* The initialization period is static: its average (initialization samples included) is the first
+`beforeMeanSpecificForce`, so a motion starting right after initialization never gets a `(0, 0, 0)` reference.
+* The items of the sequence are aligned with the samples classified as dynamic by the centred-window detector,
+taking `getDetectionDelaySamples()` into account.
+* Each sequence carries a *gravity direction standard deviation*
+(`BodyKinematicsSequence.getGravityDirectionStandardDeviation()` / `setGravityDirectionStandardDeviation(...)`,
+dimensionless, default 0, included in `copyFrom`, `equals` and `hashCode`):
 
-These two mean specific forces are the start and end gravity directions of the stem:[k]-th motion, the quantities
+[stem]
+++++
+\sigma_{u} = \sqrt{\frac{\sigma_{a}^{2}}{N_{-}\lVert\bar{\mathbf{f}}^{-}\rVert^{2}} + \frac{\sigma_{a}^{2}}{N_{+}\lVert\bar{\mathbf{f}}^{+}\rVert^{2}} + \rho_{\omega}^{2}\,T}
+++++
+
+where stem:[\sigma_{a}] is the accelerometer noise standard deviation, stem:[N_{\pm}] the number of averaged samples of
+the static intervals before and after, stem:[\rho_{\omega}] the gyroscope noise root PSD (rad/s/sqrt(Hz)) and stem:[T] the
+duration of the sequence, so that the integrated gyroscope noise term stem:[\rho_{\omega}^{2}T] is dimensionless.
+`EasyGyroscopeCalibrator` uses it as the standard deviation
+of its three-component residual, see xref:calibration/gyroscope.adoc[].
+
+The two mean specific forces are the start and end gravity directions of the stem:[k]-th motion, the quantities
 the integration cost of xref:calibration/algorithms.adoc#tedaldi[the Tedaldi et al. method] compares with the
 integrated gyroscope rotation. A dynamic interval flagged as skipped produces no sequence. The gyroscope generator
-does not apply `minStaticSamples`; only the accelerometer and magnetometer generators drop short static intervals.
+applies `minStaticSamples` only to decide which static intervals are valid gravity references (as described above).
+The accelerometer and magnetometer generators drop short static intervals.
 
 [cols="1,2,2",options="header"]
 |===
 |Class |Produces |Consumed by
 
 |`AccelerometerMeasurementsGenerator`
-|One `StandardDeviationBodyKinematics` per kept static interval (accumulated mean specific force, average of the three axis deviations)
+|One `StandardDeviationBodyKinematics` per kept static interval (accumulated mean specific force, average of the three axis deviations divided by the square root of the number of averaged samples)
 |xref:calibration/accelerometer.adoc[Gravity-norm / position accelerometer calibrators]
 
 |`GyroscopeMeasurementsGenerator`
-|One `BodyKinematicsSequence` per kept dynamic interval, bracketed by the mean specific force before and after
+|One `BodyKinematicsSequence` per dynamic interval (or joined dynamic intervals) bracketed by two valid static intervals, with the mean specific force before and after and a gravity direction standard deviation
 |xref:calibration/gyroscope.adoc[`EasyGyroscopeCalibrator` / `KnownBiasEasyGyroscopeCalibrator`]
 
 |`MagnetometerMeasurementsGenerator`
-|One `StandardDeviationBodyMagneticFluxDensity` per kept static interval (mean field, and the norm of the field standard deviation measured in the initial period as its deviation)
+|One `StandardDeviationBodyMagneticFluxDensity` per kept static interval (mean field of the samples classified as static, and the average of the three axis deviations divided by the square root of the number of averaged samples)
 |xref:calibration/magnetometer.adoc[Norm/position magnetometer calibrators]
 
 |`AccelerometerAndGyroscopeMeasurementsGenerator`

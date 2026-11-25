@@ -214,10 +214,10 @@ class RANSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCali
                 calibrator.getMeasurementOrSequenceType());
         assertTrue(calibrator.isOrderedMeasurementsOrSequencesRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertTrue(calibrator.isGDependentCrossBiasesEstimated());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
         assertNull(calibrator.getListener());
-        assertEquals(19, calibrator.getMinimumRequiredMeasurementsOrSequences());
+        assertEquals(13, calibrator.getMinimumRequiredMeasurementsOrSequences());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
 
@@ -435,10 +435,10 @@ class RANSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCali
                 calibrator.getMeasurementOrSequenceType());
         assertTrue(calibrator.isOrderedMeasurementsOrSequencesRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertTrue(calibrator.isGDependentCrossBiasesEstimated());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
         assertNull(calibrator.getListener());
-        assertEquals(19, calibrator.getMinimumRequiredMeasurementsOrSequences());
+        assertEquals(13, calibrator.getMinimumRequiredMeasurementsOrSequences());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
 
@@ -676,10 +676,10 @@ class RANSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCali
                 calibrator.getMeasurementOrSequenceType());
         assertTrue(calibrator.isOrderedMeasurementsOrSequencesRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertTrue(calibrator.isGDependentCrossBiasesEstimated());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
         assertSame(this, calibrator.getListener());
-        assertEquals(19, calibrator.getMinimumRequiredMeasurementsOrSequences());
+        assertEquals(13, calibrator.getMinimumRequiredMeasurementsOrSequences());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
 
@@ -918,10 +918,10 @@ class RANSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCali
                 calibrator.getMeasurementOrSequenceType());
         assertTrue(calibrator.isOrderedMeasurementsOrSequencesRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertTrue(calibrator.isGDependentCrossBiasesEstimated());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
         assertNull(calibrator.getListener());
-        assertEquals(19, calibrator.getMinimumRequiredMeasurementsOrSequences());
+        assertEquals(13, calibrator.getMinimumRequiredMeasurementsOrSequences());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
 
@@ -1157,10 +1157,10 @@ class RANSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCali
                 calibrator.getMeasurementOrSequenceType());
         assertTrue(calibrator.isOrderedMeasurementsOrSequencesRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertTrue(calibrator.isGDependentCrossBiasesEstimated());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
         assertSame(this, calibrator.getListener());
-        assertEquals(19, calibrator.getMinimumRequiredMeasurementsOrSequences());
+        assertEquals(13, calibrator.getMinimumRequiredMeasurementsOrSequences());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
 
@@ -1414,10 +1414,10 @@ class RANSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCali
                 calibrator.getMeasurementOrSequenceType());
         assertTrue(calibrator.isOrderedMeasurementsOrSequencesRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertTrue(calibrator.isGDependentCrossBiasesEstimated());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
         assertNull(calibrator.getListener());
-        assertEquals(19, calibrator.getMinimumRequiredMeasurementsOrSequences());
+        assertEquals(13, calibrator.getMinimumRequiredMeasurementsOrSequences());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
 
@@ -1680,10 +1680,10 @@ class RANSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCali
                 calibrator.getMeasurementOrSequenceType());
         assertTrue(calibrator.isOrderedMeasurementsOrSequencesRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertTrue(calibrator.isGDependentCrossBiasesEstimated());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
         assertSame(this, calibrator.getListener());
-        assertEquals(19, calibrator.getMinimumRequiredMeasurementsOrSequences());
+        assertEquals(13, calibrator.getMinimumRequiredMeasurementsOrSequences());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
 
@@ -1945,10 +1945,10 @@ class RANSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCali
                 calibrator.getMeasurementOrSequenceType());
         assertTrue(calibrator.isOrderedMeasurementsOrSequencesRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertTrue(calibrator.isGDependentCrossBiasesEstimated());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
         assertNull(calibrator.getListener());
-        assertEquals(19, calibrator.getMinimumRequiredMeasurementsOrSequences());
+        assertEquals(13, calibrator.getMinimumRequiredMeasurementsOrSequences());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
 
@@ -2218,10 +2218,10 @@ class RANSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCali
                 calibrator.getMeasurementOrSequenceType());
         assertTrue(calibrator.isOrderedMeasurementsOrSequencesRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertTrue(calibrator.isGDependentCrossBiasesEstimated());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
         assertSame(this, calibrator.getListener());
-        assertEquals(19, calibrator.getMinimumRequiredMeasurementsOrSequences());
+        assertEquals(13, calibrator.getMinimumRequiredMeasurementsOrSequences());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
 
@@ -5554,13 +5554,13 @@ class RANSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCali
         final var calibrator = new RANSACRobustEasyGyroscopeCalibrator();
 
         // check initial value
-        assertTrue(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isCommonAxisUsed());
 
         // set new value
-        calibrator.setCommonAxisUsed(false);
+        calibrator.setCommonAxisUsed(true);
 
         // check
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
     }
 
     @Test
@@ -5568,13 +5568,13 @@ class RANSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCali
         final var calibrator = new RANSACRobustEasyGyroscopeCalibrator();
 
         // check initial value
-        assertTrue(calibrator.isGDependentCrossBiasesEstimated());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
 
         // set new value
-        calibrator.setGDependentCrossBiasesEstimated(false);
+        calibrator.setGDependentCrossBiasesEstimated(true);
 
         // check
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
+        assertTrue(calibrator.isGDependentCrossBiasesEstimated());
     }
 
     @Test
@@ -5596,12 +5596,12 @@ class RANSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCali
         final var calibrator = new RANSACRobustEasyGyroscopeCalibrator();
 
         // check initial value
-        assertEquals(19, calibrator.getMinimumRequiredMeasurementsOrSequences());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertTrue(calibrator.isGDependentCrossBiasesEstimated());
+        assertEquals(13, calibrator.getMinimumRequiredMeasurementsOrSequences());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
 
         // set new value
-        calibrator.setGDependentCrossBiasesEstimated(false);
+        calibrator.setCommonAxisUsed(true);
 
         // check
         assertEquals(10, calibrator.getMinimumRequiredMeasurementsOrSequences());
@@ -5609,15 +5609,15 @@ class RANSACRobustEasyGyroscopeCalibratorTest implements RobustEasyGyroscopeCali
         assertFalse(calibrator.isGDependentCrossBiasesEstimated());
 
         // set new value
-        calibrator.setCommonAxisUsed(false);
+        calibrator.setGDependentCrossBiasesEstimated(true);
 
         // check
-        assertEquals(13, calibrator.getMinimumRequiredMeasurementsOrSequences());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertFalse(calibrator.isGDependentCrossBiasesEstimated());
+        assertEquals(19, calibrator.getMinimumRequiredMeasurementsOrSequences());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isGDependentCrossBiasesEstimated());
 
         // set new value
-        calibrator.setGDependentCrossBiasesEstimated(true);
+        calibrator.setCommonAxisUsed(false);
 
         // check
         assertEquals(22, calibrator.getMinimumRequiredMeasurementsOrSequences());

@@ -29,6 +29,16 @@ import static org.junit.jupiter.api.Assertions.*;
 class RobustKnownBiasEasyGyroscopeCalibratorTest implements
         RobustKnownBiasEasyGyroscopeCalibratorListener {
 
+    /**
+     * Checks that default values follow the reference paper: general (non common)
+     * z-axis and no G-dependent cross biases estimation.
+     */
+    @Test
+    void defaultConstants_whenAccessed_followReferencePaper() {
+        assertFalse(RobustKnownBiasEasyGyroscopeCalibrator.DEFAULT_USE_COMMON_Z_AXIS);
+        assertFalse(RobustKnownBiasEasyGyroscopeCalibrator.DEFAULT_ESTIMATE_G_DEPENDENT_CROSS_BIASES);
+    }
+
     @Test
     void testCreate1() {
         // RANSAC

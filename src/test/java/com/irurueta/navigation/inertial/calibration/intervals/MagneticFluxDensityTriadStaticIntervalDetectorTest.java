@@ -40,8 +40,11 @@ import com.irurueta.units.TimeUnit;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -78,6 +81,81 @@ class MagneticFluxDensityTriadStaticIntervalDetectorTest implements
     private static final double ABSOLUTE_ERROR = 1e-6;
 
     private static final double SMALL_ABSOLUTE_ERROR = 1e-8;
+
+    /**
+     * Test constant.
+     */
+    private static final long CENTRED_SEED = 1234L;
+
+    /**
+     * Test constant.
+     */
+    private static final double CENTRED_NOISE_STD = 0.01;
+
+    /**
+     * Test constant.
+     */
+    private static final int CENTRED_WINDOW_SIZE = 21;
+
+    /**
+     * Test constant.
+     */
+    private static final int CENTRED_INITIAL_STATIC_SAMPLES = 500;
+
+    /**
+     * Test constant.
+     */
+    private static final int CENTRED_STATIC_SAMPLES = 100;
+
+    /**
+     * Test constant.
+     */
+    private static final int CENTRED_RAMP_SAMPLES = 40;
+
+    /**
+     * Test constant.
+     */
+    private static final double CENTRED_RAMP_COEFFICIENT = 0.002;
+
+    /**
+     * Test constant.
+     */
+    private static final double CENTRED_STEP = 2.0;
+
+    /**
+     * Test constant.
+     */
+    private static final int CENTRED_STEP_SAMPLES = 20;
+
+    /**
+     * Test constant.
+     */
+    private static final double CENTRED_AVG_ERROR = 1e-9;
+
+    /**
+     * Test constant.
+     */
+    private static final int VARIANCE_NORM_INITIAL_SAMPLES = 2000;
+
+    /**
+     * Test constant.
+     */
+    private static final int VARIANCE_NORM_STATIC_SAMPLES = 150;
+
+    /**
+     * Test constant.
+     */
+    private static final int VARIANCE_NORM_DYNAMIC_SAMPLES = 300;
+
+    /**
+     * Test constant.
+     */
+    private static final double VARIANCE_NORM_THRESHOLD_FACTOR = 3.0;
+
+    /**
+     * Test constant.
+     */
+    private static final double VARIANCE_NORM_X_NOISE_FACTOR = 3.0;
 
     private static final Calendar START_CALENDAR = Calendar.getInstance();
     private static final Calendar END_CALENDAR = Calendar.getInstance();
@@ -556,7 +634,8 @@ class MagneticFluxDensityTriadStaticIntervalDetectorTest implements
                 detector.getBaseNoiseLevelAbsoluteThreshold(), 0.0);
 
         final var b1 = detector.getBaseNoiseLevelAbsoluteThresholdAsMeasurement();
-        assertEquals(MagneticFluxDensityTriadStaticIntervalDetector.DEFAULT_BASE_NOISE_LEVEL_ABSOLUTE_THRESHOLD,
+        assertEquals(
+                Math.sqrt(MagneticFluxDensityTriadStaticIntervalDetector.DEFAULT_BASE_NOISE_LEVEL_ABSOLUTE_THRESHOLD),
                 b1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, b1.getUnit());
 
@@ -701,21 +780,21 @@ class MagneticFluxDensityTriadStaticIntervalDetectorTest implements
                 detector.getStatus());
         assertTrue(detector.getBaseNoiseLevel() > 0.0);
         b1 = detector.getBaseNoiseLevelAsMeasurement();
-        assertEquals(b1.getValue().doubleValue(), detector.getBaseNoiseLevel(), 0.0);
+        assertEquals(b1.getValue().doubleValue(), Math.sqrt(detector.getBaseNoiseLevel()), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, b1.getUnit());
         detector.getBaseNoiseLevelAsMeasurement(b2);
         assertEquals(b1, b2);
         assertTrue(detector.getBaseNoiseLevelPsd() > 0.0);
         assertTrue(detector.getBaseNoiseLevelRootPsd() > 0.0);
         assertEquals(detector.getBaseNoiseLevelRootPsd(),
-                detector.getBaseNoiseLevel() * Math.sqrt(detector.getTimeInterval()), SMALL_ABSOLUTE_ERROR);
+                initializationStdNorm(detector) * Math.sqrt(detector.getTimeInterval()), SMALL_ABSOLUTE_ERROR);
         assertEquals(detector.getBaseNoiseLevelPsd(), Math.pow(detector.getBaseNoiseLevelRootPsd(), 2.0),
                 SMALL_ABSOLUTE_ERROR);
         assertTrue(detector.getThreshold() > 0.0);
         assertEquals(detector.getThreshold(), detector.getBaseNoiseLevel() * detector.getThresholdFactor(),
                 0.0);
         b1 = detector.getThresholdAsMeasurement();
-        assertEquals(b1.getValue().doubleValue(), detector.getThreshold(), 0.0);
+        assertEquals(b1.getValue().doubleValue(), Math.sqrt(detector.getThreshold()), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, b1.getUnit());
         detector.getThresholdAsMeasurement(b2);
         assertEquals(b1, b2);
@@ -964,13 +1043,13 @@ class MagneticFluxDensityTriadStaticIntervalDetectorTest implements
                 detector.getStatus());
         assertTrue(detector.getBaseNoiseLevel() > 0.0);
         b1 = detector.getBaseNoiseLevelAsMeasurement();
-        assertEquals(b1.getValue().doubleValue(), detector.getBaseNoiseLevel(), 0.0);
+        assertEquals(b1.getValue().doubleValue(), Math.sqrt(detector.getBaseNoiseLevel()), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, b1.getUnit());
         detector.getBaseNoiseLevelAsMeasurement(b2);
         assertEquals(b1, b2);
         assertTrue(detector.getBaseNoiseLevelPsd() > 0.0);
         assertTrue(detector.getBaseNoiseLevelRootPsd() > 0.0);
-        assertEquals(detector.getBaseNoiseLevel() * Math.sqrt(detector.getTimeInterval()),
+        assertEquals(initializationStdNorm(detector) * Math.sqrt(detector.getTimeInterval()),
                 detector.getBaseNoiseLevelRootPsd(), SMALL_ABSOLUTE_ERROR);
         assertEquals(detector.getBaseNoiseLevelPsd(), Math.pow(detector.getBaseNoiseLevelRootPsd(), 2.0),
                 SMALL_ABSOLUTE_ERROR);
@@ -978,7 +1057,7 @@ class MagneticFluxDensityTriadStaticIntervalDetectorTest implements
         assertEquals(detector.getBaseNoiseLevel() * detector.getThresholdFactor(), detector.getThreshold(),
                 0.0);
         b1 = detector.getThresholdAsMeasurement();
-        assertEquals(b1.getValue().doubleValue(), detector.getThreshold(), 0.0);
+        assertEquals(b1.getValue().doubleValue(), Math.sqrt(detector.getThreshold()), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, b1.getUnit());
         detector.getThresholdAsMeasurement(b2);
         assertEquals(b1, b2);
@@ -1232,13 +1311,13 @@ class MagneticFluxDensityTriadStaticIntervalDetectorTest implements
                 detector.getStatus());
         assertTrue(detector.getBaseNoiseLevel() > 0.0);
         b1 = detector.getBaseNoiseLevelAsMeasurement();
-        assertEquals(b1.getValue().doubleValue(), detector.getBaseNoiseLevel(), 0.0);
+        assertEquals(b1.getValue().doubleValue(), Math.sqrt(detector.getBaseNoiseLevel()), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, b1.getUnit());
         detector.getBaseNoiseLevelAsMeasurement(b2);
         assertEquals(b1, b2);
         assertTrue(detector.getBaseNoiseLevelPsd() > 0.0);
         assertTrue(detector.getBaseNoiseLevelRootPsd() > 0.0);
-        assertEquals(detector.getBaseNoiseLevel() * Math.sqrt(detector.getTimeInterval()),
+        assertEquals(initializationStdNorm(detector) * Math.sqrt(detector.getTimeInterval()),
                 detector.getBaseNoiseLevelRootPsd(), SMALL_ABSOLUTE_ERROR);
         assertEquals(Math.pow(detector.getBaseNoiseLevelRootPsd(), 2.0), detector.getBaseNoiseLevelPsd(),
                 SMALL_ABSOLUTE_ERROR);
@@ -1246,7 +1325,7 @@ class MagneticFluxDensityTriadStaticIntervalDetectorTest implements
         assertEquals(detector.getBaseNoiseLevel() * detector.getThresholdFactor(), detector.getThreshold(), 
                 0.0);
         b1 = detector.getThresholdAsMeasurement();
-        assertEquals(b1.getValue().doubleValue(), detector.getThreshold(), 0.0);
+        assertEquals(b1.getValue().doubleValue(), Math.sqrt(detector.getThreshold()), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, b1.getUnit());
         detector.getThresholdAsMeasurement(b2);
         assertEquals(b1, b2);
@@ -1614,6 +1693,197 @@ class MagneticFluxDensityTriadStaticIntervalDetectorTest implements
         assertTrue(detector.process(triad));
     }
 
+    /**
+     * Checks that detection delay is half the window size and follows window size changes.
+     *
+     * @throws LockedException if detector is busy.
+     */
+    @Test
+    void getDetectionDelaySamples_whenWindowSizeChanges_returnsHalfWindowSize() throws LockedException {
+        final var detector = new MagneticFluxDensityTriadStaticIntervalDetector();
+
+        assertEquals(MagneticFluxDensityTriadStaticIntervalDetector.DEFAULT_WINDOW_SIZE / 2,
+                detector.getDetectionDelaySamples());
+
+        detector.setWindowSize(CENTRED_WINDOW_SIZE);
+
+        assertEquals(CENTRED_WINDOW_SIZE / 2, detector.getDetectionDelaySamples());
+    }
+
+    /**
+     * Checks that base noise level and threshold are based on the variance norm of the initialization period
+     * and that a window whose standard deviation norm is below the standard deviation based threshold, but whose
+     * variance norm exceeds the variance based threshold, is detected as dynamic.
+     *
+     * @throws LockedException if detector is busy.
+     */
+    @Test
+    void process_whenStdNormAndVarianceNormDisagree_usesVarianceNorm() throws LockedException {
+        final var detector = new MagneticFluxDensityTriadStaticIntervalDetector();
+        detector.setInitialStaticSamples(VARIANCE_NORM_INITIAL_SAMPLES);
+        detector.setThresholdFactor(VARIANCE_NORM_THRESHOLD_FACTOR);
+
+        final var random = new Random(CENTRED_SEED);
+        for (var i = 0; i < VARIANCE_NORM_INITIAL_SAMPLES; i++) {
+            assertTrue(detector.process(random.nextGaussian() * CENTRED_NOISE_STD,
+                    random.nextGaussian() * CENTRED_NOISE_STD, random.nextGaussian() * CENTRED_NOISE_STD));
+        }
+
+        assertEquals(MagneticFluxDensityTriadStaticIntervalDetector.Status.INITIALIZATION_COMPLETED,
+                detector.getStatus());
+
+        final var stdX = detector.getAccumulatedStdX();
+        final var stdY = detector.getAccumulatedStdY();
+        final var stdZ = detector.getAccumulatedStdZ();
+        final var expectedBaseNoiseLevel = Math.sqrt(Math.pow(stdX, 4.0) + Math.pow(stdY, 4.0)
+                + Math.pow(stdZ, 4.0));
+        final var stdNormThreshold = VARIANCE_NORM_THRESHOLD_FACTOR * Math.sqrt(stdX * stdX + stdY * stdY
+                + stdZ * stdZ);
+
+        assertEquals(expectedBaseNoiseLevel, detector.getBaseNoiseLevel(), CENTRED_AVG_ERROR * CENTRED_AVG_ERROR);
+        assertEquals(VARIANCE_NORM_THRESHOLD_FACTOR * expectedBaseNoiseLevel, detector.getThreshold(),
+                CENTRED_AVG_ERROR * CENTRED_AVG_ERROR);
+
+        // static samples
+        for (var i = 0; i < VARIANCE_NORM_STATIC_SAMPLES; i++) {
+            assertTrue(detector.process(random.nextGaussian() * CENTRED_NOISE_STD,
+                    random.nextGaussian() * CENTRED_NOISE_STD, random.nextGaussian() * CENTRED_NOISE_STD));
+        }
+
+        assertEquals(MagneticFluxDensityTriadStaticIntervalDetector.Status.STATIC_INTERVAL, detector.getStatus());
+
+        // x-coordinate noise is increased
+        for (var i = 0; i < VARIANCE_NORM_DYNAMIC_SAMPLES; i++) {
+            assertTrue(detector.process(random.nextGaussian() * CENTRED_NOISE_STD * VARIANCE_NORM_X_NOISE_FACTOR,
+                    random.nextGaussian() * CENTRED_NOISE_STD, random.nextGaussian() * CENTRED_NOISE_STD));
+        }
+
+        final var windowStdX = detector.getInstantaneousStdX();
+        final var windowStdY = detector.getInstantaneousStdY();
+        final var windowStdZ = detector.getInstantaneousStdZ();
+        final var windowStdNorm = Math.sqrt(windowStdX * windowStdX + windowStdY * windowStdY
+                + windowStdZ * windowStdZ);
+        final var windowVarianceNorm = Math.sqrt(Math.pow(windowStdX, 4.0) + Math.pow(windowStdY, 4.0)
+                + Math.pow(windowStdZ, 4.0));
+
+        // std norm statistic would consider the window as static, whereas variance norm considers it dynamic
+        assertTrue(windowStdNorm < stdNormThreshold);
+        assertTrue(windowVarianceNorm > detector.getThreshold());
+        assertEquals(MagneticFluxDensityTriadStaticIntervalDetector.Status.DYNAMIC_INTERVAL, detector.getStatus());
+    }
+
+    /**
+     * Checks that after initialization the first sample is classified once half a window is available.
+     *
+     * @throws LockedException if detector is busy.
+     */
+    @Test
+    void process_whenInitializationCompletes_firstClassificationIsDelayedHalfWindow() throws LockedException {
+        final var detector = new MagneticFluxDensityTriadStaticIntervalDetector();
+        detector.setWindowSize(CENTRED_WINDOW_SIZE);
+        detector.setInitialStaticSamples(CENTRED_INITIAL_STATIC_SAMPLES);
+        final var delay = detector.getDetectionDelaySamples();
+
+        final var random = new Random(CENTRED_SEED);
+        for (var i = 0; i < CENTRED_INITIAL_STATIC_SAMPLES; i++) {
+            assertTrue(detector.process(centredSample(random, 0.0)[0], 0.0, 0.0));
+        }
+
+        assertEquals(MagneticFluxDensityTriadStaticIntervalDetector.Status.INITIALIZATION_COMPLETED,
+                detector.getStatus());
+
+        for (var i = 0; i < delay; i++) {
+            assertTrue(detector.process(centredSample(random, 0.0)[0], 0.0, 0.0));
+
+            assertEquals(MagneticFluxDensityTriadStaticIntervalDetector.Status.INITIALIZATION_COMPLETED,
+                    detector.getStatus());
+        }
+
+        assertTrue(detector.process(centredSample(random, 0.0)[0], 0.0, 0.0));
+
+        assertEquals(MagneticFluxDensityTriadStaticIntervalDetector.Status.STATIC_INTERVAL, detector.getStatus());
+    }
+
+    /**
+     * Checks that the sample at the centre of the window is the one being classified, so that status changes
+     * refer to samples half a window before the trailing window statistic exceeds the threshold, and static
+     * intervals start half a window after motion ends.
+     *
+     * @throws LockedException if detector is busy.
+     */
+    @Test
+    void process_whenSlowStartingMotion_classifiesSampleAtWindowCentre() throws LockedException {
+        final var detector = new MagneticFluxDensityTriadStaticIntervalDetector();
+        detector.setWindowSize(CENTRED_WINDOW_SIZE);
+        detector.setInitialStaticSamples(CENTRED_INITIAL_STATIC_SAMPLES);
+        final var delay = detector.getDetectionDelaySamples();
+
+        final var random = new Random(CENTRED_SEED);
+        final var samples = new ArrayList<double[]>();
+        for (var i = 0; i < CENTRED_INITIAL_STATIC_SAMPLES + CENTRED_STATIC_SAMPLES; i++) {
+            samples.add(centredSample(random, 0.0));
+        }
+        final var rampStart = samples.size() + 1;
+        for (var j = 1; j <= CENTRED_RAMP_SAMPLES; j++) {
+            samples.add(centredSample(random, CENTRED_RAMP_COEFFICIENT * j * j));
+        }
+        final var motionEnd = samples.size();
+        for (var i = 0; i < CENTRED_STATIC_SAMPLES; i++) {
+            samples.add(centredSample(random, 0.0));
+        }
+        final var stepStart = samples.size() + 1;
+        for (var i = 0; i < CENTRED_STEP_SAMPLES; i++) {
+            samples.add(centredSample(random, CENTRED_STEP));
+        }
+
+        var previousStatus = detector.getStatus();
+        var firstDynamic = 0;
+        var firstDynamicAvgX = 0.0;
+        var staticAgain = 0;
+        var secondDynamic = 0;
+        var secondDynamicAvgX = 0.0;
+        for (var i = 1; i <= samples.size(); i++) {
+            final var sample = samples.get(i - 1);
+            assertTrue(detector.process(sample[0], sample[1], sample[2]));
+
+            final var status = detector.getStatus();
+            if (status != previousStatus) {
+                if (status == MagneticFluxDensityTriadStaticIntervalDetector.Status.DYNAMIC_INTERVAL) {
+                    if (firstDynamic == 0) {
+                        firstDynamic = i;
+                        firstDynamicAvgX = detector.getAccumulatedAvgX();
+                    } else {
+                        secondDynamic = i;
+                        secondDynamicAvgX = detector.getAccumulatedAvgX();
+                    }
+                } else if (status == MagneticFluxDensityTriadStaticIntervalDetector.Status.STATIC_INTERVAL
+                        && firstDynamic > 0) {
+                    staticAgain = i;
+                }
+            }
+            previousStatus = status;
+        }
+
+        // (initialization samples are the beginning of the first static interval)
+        // first dynamic interval is detected when trailing window statistic exceeds threshold, but the
+        // classified sample is half a window earlier, so accumulated static average only contains samples
+        // up to that one
+        assertTrue(firstDynamic > rampStart);
+        assertTrue(firstDynamic <= motionEnd);
+        assertEquals(mean(samples, 1, firstDynamic - delay - 1),
+                firstDynamicAvgX, CENTRED_AVG_ERROR);
+
+        // static interval starts half a window after motion ends (window is free of motion at motionEnd + window
+        // size, and the classified sample is half a window earlier)
+        assertEquals(motionEnd + CENTRED_WINDOW_SIZE, staticAgain);
+        assertEquals(motionEnd + delay + 1, staticAgain - delay);
+
+        // second dynamic interval's static average begins at the first classified static sample
+        assertEquals(stepStart, secondDynamic);
+        assertEquals(mean(samples, staticAgain - delay, secondDynamic - delay - 1), secondDynamicAvgX,
+                CENTRED_AVG_ERROR);
+    }
+
     @Override
     public void onInitializationStarted(final MagneticFluxDensityTriadStaticIntervalDetector detector) {
         initializationStarted++;
@@ -1712,7 +1982,7 @@ class MagneticFluxDensityTriadStaticIntervalDetectorTest implements
         assertEquals(b11, b12);
 
         final var stdTriad1 = detector.getInstantaneousStdTriad();
-        assertTrue(stdTriad1.getNorm() < detector.getThreshold());
+        assertTrue(varianceNorm(stdTriad1) < detector.getThreshold());
         assertEquals(stdTriad1.getValueX(), instantaneousStdX, 0.0);
         assertEquals(stdTriad1.getValueY(), instantaneousStdY, 0.0);
         assertEquals(stdTriad1.getValueZ(), instantaneousStdZ, 0.0);
@@ -1832,7 +2102,7 @@ class MagneticFluxDensityTriadStaticIntervalDetectorTest implements
         assertEquals(b11, b12);
 
         final var stdTriad1 = detector.getInstantaneousStdTriad();
-        assertTrue(stdTriad1.getNorm() >= detector.getThreshold());
+        assertTrue(varianceNorm(stdTriad1) >= detector.getThreshold());
         assertEquals(stdTriad1.getValueX(), instantaneousStdX, 0.0);
         assertEquals(stdTriad1.getValueY(), instantaneousStdY, 0.0);
         assertEquals(stdTriad1.getValueZ(), instantaneousStdZ, 0.0);
@@ -1846,6 +2116,61 @@ class MagneticFluxDensityTriadStaticIntervalDetectorTest implements
     public void onReset(final MagneticFluxDensityTriadStaticIntervalDetector detector) {
         reset++;
         checkLocked(detector);
+    }
+
+    /**
+     * Generates a sample whose x-coordinate has provided offset plus gaussian noise.
+     *
+     * @param random random generator.
+     * @param offsetX offset added to x-coordinate.
+     * @return generated sample.
+     */
+    private static double[] centredSample(final Random random, final double offsetX) {
+        return new double[]{
+                offsetX + random.nextGaussian() * CENTRED_NOISE_STD,
+                random.nextGaussian() * CENTRED_NOISE_STD,
+                random.nextGaussian() * CENTRED_NOISE_STD
+        };
+    }
+
+    /**
+     * Computes mean of x-coordinate of samples between provided 1-based indices (both inclusive).
+     *
+     * @param samples samples.
+     * @param from    first 1-based index.
+     * @param to      last 1-based index.
+     * @return mean x-coordinate.
+     */
+    private static double mean(final List<double[]> samples, final int from, final int to) {
+        var sum = 0.0;
+        for (var i = from; i <= to; i++) {
+            sum += samples.get(i - 1)[0];
+        }
+        return sum / (to - from + 1);
+    }
+
+    /**
+     * Gets standard deviation norm of the initialization period, which is used to compute PSD values.
+     *
+     * @param detector detector right after initialization completes.
+     * @return standard deviation norm.
+     */
+    private static double initializationStdNorm(final MagneticFluxDensityTriadStaticIntervalDetector detector) {
+        final var stdX = detector.getAccumulatedStdX();
+        final var stdY = detector.getAccumulatedStdY();
+        final var stdZ = detector.getAccumulatedStdZ();
+        return Math.sqrt(stdX * stdX + stdY * stdY + stdZ * stdZ);
+    }
+
+    /**
+     * Computes variance norm {@code sqrt(varX^2 + varY^2 + varZ^2)} of a triad containing standard deviations.
+     *
+     * @param stdTriad triad containing standard deviations.
+     * @return variance norm.
+     */
+    private static double varianceNorm(final MagneticFluxDensityTriad stdTriad) {
+        return Math.sqrt(Math.pow(stdTriad.getValueX(), 4.0) + Math.pow(stdTriad.getValueY(), 4.0)
+                + Math.pow(stdTriad.getValueZ(), 4.0));
     }
 
     private void reset() {

@@ -37,6 +37,11 @@ import com.irurueta.navigation.inertial.calibration.StandardDeviationBodyKinemat
  * and all its implementations.
  * - {@link com.irurueta.navigation.inertial.calibration.accelerometer.RobustKnownBiasAndPositionAccelerometerCalibrator}
  * and all its implementations.
+ * <p>
+ * Generated measurements contain the average specific force of each static interval, and its
+ * standard deviation is the one of the average, that is, the mean standard deviation of the three
+ * coordinates divided by the square root of the number of averaged samples. The initialization period is
+ * static, so its samples are part of the first static interval.
  */
 public class AccelerometerMeasurementsGenerator extends
         MeasurementsGenerator<StandardDeviationBodyKinematics, AccelerometerMeasurementsGenerator,
@@ -117,8 +122,10 @@ public class AccelerometerMeasurementsGenerator extends
             final var measurement = new StandardDeviationBodyKinematics();
             measurement.setKinematics(kinematics);
 
+            // the standard deviation of the average of N static samples is sigma / sqrt(N)
             final var avgStd = (accumulatedStdX + accumulatedStdY + accumulatedStdZ) / 3.0;
-            measurement.setSpecificForceStandardDeviation(avgStd);
+            final var n = Math.max(getAccumulatedStaticSamples(), 1);
+            measurement.setSpecificForceStandardDeviation(avgStd / Math.sqrt(n));
 
             if (listener != null) {
                 listener.onGeneratedMeasurement(this, measurement);

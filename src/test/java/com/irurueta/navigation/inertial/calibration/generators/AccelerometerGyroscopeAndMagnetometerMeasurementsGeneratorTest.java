@@ -168,7 +168,8 @@ class AccelerometerGyroscopeAndMagnetometerMeasurementsGeneratorTest implements
         assertEquals(TriadStaticIntervalDetector.DEFAULT_BASE_NOISE_LEVEL_ABSOLUTE_THRESHOLD,
                 generator.getBaseNoiseLevelAbsoluteThreshold(), 0.0);
         final var errorThreshold1 = generator.getBaseNoiseLevelAbsoluteThresholdAsMeasurement();
-        assertEquals(errorThreshold1.getValue().doubleValue(), generator.getBaseNoiseLevelAbsoluteThreshold(),
+        assertEquals(errorThreshold1.getValue().doubleValue(),
+                Math.sqrt(generator.getBaseNoiseLevelAbsoluteThreshold()),
                 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, errorThreshold1.getUnit());
         final var errorThreshold2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
@@ -246,7 +247,8 @@ class AccelerometerGyroscopeAndMagnetometerMeasurementsGeneratorTest implements
         assertEquals(TriadStaticIntervalDetector.DEFAULT_BASE_NOISE_LEVEL_ABSOLUTE_THRESHOLD,
                 generator.getBaseNoiseLevelAbsoluteThreshold(), 0.0);
         final var errorThreshold1 = generator.getBaseNoiseLevelAbsoluteThresholdAsMeasurement();
-        assertEquals(errorThreshold1.getValue().doubleValue(), generator.getBaseNoiseLevelAbsoluteThreshold(),
+        assertEquals(errorThreshold1.getValue().doubleValue(),
+                Math.sqrt(generator.getBaseNoiseLevelAbsoluteThreshold()),
                 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, errorThreshold1.getUnit());
         final var errorThreshold2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
@@ -484,7 +486,7 @@ class AccelerometerGyroscopeAndMagnetometerMeasurementsGeneratorTest implements
                 generator.getBaseNoiseLevelAbsoluteThreshold(), 0.0);
 
         final var a1 = generator.getBaseNoiseLevelAbsoluteThresholdAsMeasurement();
-        assertEquals(AccelerationTriadStaticIntervalDetector.DEFAULT_BASE_NOISE_LEVEL_ABSOLUTE_THRESHOLD,
+        assertEquals(Math.sqrt(AccelerationTriadStaticIntervalDetector.DEFAULT_BASE_NOISE_LEVEL_ABSOLUTE_THRESHOLD),
                 a1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, a1.getUnit());
 
@@ -1490,6 +1492,23 @@ class AccelerometerGyroscopeAndMagnetometerMeasurementsGeneratorTest implements
                 hardIron, mm, wmmEstimator, timestamp, nedPosition, cnb, noiseRandomizer, start, false);
 
         assertEquals(1, dynamicIntervalDetected);
+        // initialization samples are part of the first static interval, which is long enough
+        assertEquals(0, staticIntervalSkipped);
+
+        start += dynamicPeriodLength;
+
+        // generate a second static interval that is too short
+        generateStaticSamples(generator, staticPeriodLength, trueKinematics, errors, hardIron, mm, wmmEstimator, 
+                timestamp, nedPosition, cnb, noiseRandomizer, start);
+        start += staticPeriodLength;
+
+        assertEquals(2, staticIntervalDetected);
+
+        // generate dynamic samples
+        generateDynamicSamples(generator, dynamicPeriodLength, trueKinematics, randomizer, ecefFrame, nedFrame, errors,
+                hardIron, mm, wmmEstimator, timestamp, nedPosition, cnb, noiseRandomizer, start, false);
+
+        assertEquals(2, dynamicIntervalDetected);
         assertEquals(1, staticIntervalSkipped);
     }
 
@@ -1927,20 +1946,24 @@ class AccelerometerGyroscopeAndMagnetometerMeasurementsGeneratorTest implements
         assertTrue(accelerometerBaseNoiseLevel > 0.0);
         assertEquals(accelerometerBaseNoiseLevel, generator.getAccelerometerBaseNoiseLevel(), 0.0);
         final var baseNoiseLevel1 = generator.getAccelerometerBaseNoiseLevelAsMeasurement();
-        assertEquals(baseNoiseLevel1.getValue().doubleValue(), accelerometerBaseNoiseLevel, 0.0);
+        assertEquals(baseNoiseLevel1.getValue().doubleValue(), Math.sqrt(accelerometerBaseNoiseLevel), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, baseNoiseLevel1.getUnit());
         final var baseNoiseLevel2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         generator.getAccelerometerBaseNoiseLevelAsMeasurement(baseNoiseLevel2);
         assertEquals(baseNoiseLevel1, baseNoiseLevel2);
         final var sqrtTimeInterval = Math.sqrt(generator.getTimeInterval());
-        assertEquals(accelerometerBaseNoiseLevel * sqrtTimeInterval,
-                generator.getAccelerometerBaseNoiseLevelRootPsd(), SMALL_ABSOLUTE_ERROR);
+        // base noise level is variance based (N7), whereas the root PSD is derived from the std norm. For isotropic
+        // noise the variance norm is V = sqrt(3) * sigma^2 and the std norm is S = sqrt(3) * sigma, so S = 3^(1/4) *
+        // sqrt(V)
+        final var expectedRootPsd = Math.sqrt(Math.sqrt(3.0) * accelerometerBaseNoiseLevel) * sqrtTimeInterval;
+        assertTrue(generator.getAccelerometerBaseNoiseLevelRootPsd() > 0.0);
+        assertEquals(expectedRootPsd, generator.getAccelerometerBaseNoiseLevelRootPsd(), 0.25 * expectedRootPsd);
         assertEquals(generator.getAccelerometerBaseNoiseLevelPsd(),
                 Math.pow(generator.getAccelerometerBaseNoiseLevelRootPsd(), 2.0), SMALL_ABSOLUTE_ERROR);
 
         assertTrue(generator.getThreshold() > 0.0);
         final var threshold1 = generator.getThresholdAsMeasurement();
-        assertEquals(threshold1.getValue().doubleValue(), generator.getThreshold(), 0.0);
+        assertEquals(threshold1.getValue().doubleValue(), Math.sqrt(generator.getThreshold()), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, threshold1.getUnit());
         final var threshold2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         generator.getThresholdAsMeasurement(threshold2);
@@ -2282,12 +2305,14 @@ class AccelerometerGyroscopeAndMagnetometerMeasurementsGeneratorTest implements
         var oldEcefFrame = new ECEFFrame(ecefFrame);
         var newEcefFrame = new ECEFFrame();
 
-        var oldEcefX = ecefX - deltaX;
-        var oldEcefY = ecefY - deltaY;
-        var oldEcefZ = ecefZ - deltaZ;
-        var oldRoll = roll - deltaRoll;
-        var oldPitch = pitch - deltaPitch;
-        var oldYaw = yaw - deltaYaw;
+        // dynamic period starts at the current static position and orientation (no sudden jump), otherwise
+        // sequences that include static samples next to the motion would be inconsistent with the gravity vectors
+        var oldEcefX = ecefX;
+        var oldEcefY = ecefY;
+        var oldEcefZ = ecefZ;
+        var oldRoll = roll;
+        var oldPitch = pitch;
+        var oldYaw = yaw;
 
         final var random = new Random();
         final var measuredBeforeGravityKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,

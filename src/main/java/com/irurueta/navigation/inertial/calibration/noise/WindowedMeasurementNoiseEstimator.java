@@ -34,8 +34,10 @@ import java.util.Arrays;
  * If not available, accelerometer sampling rate average can be estimated using
  * {@link TimeIntervalEstimator}.
  * Notice that if there are less than {@link #getWindowSize()} processed
- * samples in the window, this estimator will assume that the remaining ones
- * until the window is completed have zero values.
+ * samples in the window, averages and unbiased variances are computed only over
+ * the samples currently in the window (i.e. dividing by the actual number of
+ * samples and by that number minus one respectively). If the window contains a
+ * single sample, its variance is zero.
  *
  * @param <U> a measurement unit type.
  * @param <M> a measurement type.
@@ -280,7 +282,7 @@ public abstract class WindowedMeasurementNoiseEstimator<U extends Enum<?>,
     }
 
     /**
-     * Gets las provided measurement value expressed in its default units.
+     * Gets last provided measurement value expressed in its default units.
      * (m/s^2 for acceleration, rad/s for angular speed or T for magnetic flux density).
      *
      * @return last provided measurement value or null if not available.
@@ -350,6 +352,7 @@ public abstract class WindowedMeasurementNoiseEstimator<U extends Enum<?>,
     /**
      * Gets estimated average of measurement expressed in its default unit
      * (m/s^2 for acceleration, rad/s for angular speed or T for magnetic flux density).
+     * Values are computed over the samples currently in the window.
      *
      * @return average of measurement in current window.
      */
@@ -359,6 +362,7 @@ public abstract class WindowedMeasurementNoiseEstimator<U extends Enum<?>,
 
     /**
      * Gets estimated average of measurement within current window.
+     * Values are computed over the samples currently in the window.
      *
      * @return average of measurement in current window
      */
@@ -368,6 +372,7 @@ public abstract class WindowedMeasurementNoiseEstimator<U extends Enum<?>,
 
     /**
      * Gets estimated average of measurement within current window.
+     * Values are computed over the samples currently in the window.
      *
      * @param result instance where average of measurement will be stored.
      */
@@ -380,6 +385,7 @@ public abstract class WindowedMeasurementNoiseEstimator<U extends Enum<?>,
      * Gets estimated variance of measurement within current window
      * expressed in its default squared unit (m^2/s^4 for acceleration,
      * rad^2/s^2 for angular speed or T^2 for magnetic flux density).
+     * Values are computed over the samples currently in the window.
      *
      * @return estimated variance of measurement within current window.
      */
@@ -391,8 +397,9 @@ public abstract class WindowedMeasurementNoiseEstimator<U extends Enum<?>,
      * Gets estimated standard deviation of measurement within current window
      * and expressed in its default unit (m/s^2 for acceleration, rad/s for
      * angular speed or T for magnetic flux density).
+     * Values are computed over the samples currently in the window.
      *
-     * @return estimated standard of measurement.
+     * @return estimated standard deviation of measurement.
      */
     public double getStandardDeviation() {
         return Math.sqrt(variance);
@@ -400,6 +407,7 @@ public abstract class WindowedMeasurementNoiseEstimator<U extends Enum<?>,
 
     /**
      * Gets estimated standard deviation of measurement within current window.
+     * Values are computed over the samples currently in the window.
      *
      * @return estimated standard deviation of measurement.
      */
@@ -409,6 +417,7 @@ public abstract class WindowedMeasurementNoiseEstimator<U extends Enum<?>,
 
     /**
      * Gets estimated standard deviation of measurement within current window.
+     * Values are computed over the samples currently in the window.
      *
      * @param result instance where estimated standard deviation of measurement
      *               will be stored.
@@ -489,8 +498,8 @@ public abstract class WindowedMeasurementNoiseEstimator<U extends Enum<?>,
      * Adds a measurement value expressed in its default unit (m/s^2 for acceleration, rad/s for
      * angular speed or T for magnetic flux density) and processes current window.
      * Notice that if there are less than {@link #getWindowSize()} processed
-     * samples in the window, the remaining ones are considered to be zero
-     * when average values and standard deviation is estimated.
+     * samples in the window, average values and standard deviation are computed
+     * only over the samples currently in the window.
      *
      * @param value value to be added.
      * @throws LockedException if estimator is currently running.
@@ -502,8 +511,8 @@ public abstract class WindowedMeasurementNoiseEstimator<U extends Enum<?>,
     /**
      * Adds a measurement and processes current window.
      * Notice that if there are less than {@link #getWindowSize()} processed
-     * samples in the window, the remaining ones are considered to be zero
-     * when average values and standard deviation is estimated.
+     * samples in the window, average values and standard deviation are computed
+     * only over the samples currently in the window.
      *
      * @param value value to be added.
      * @throws LockedException if estimator is currently running.
@@ -516,8 +525,8 @@ public abstract class WindowedMeasurementNoiseEstimator<U extends Enum<?>,
      * Adds a measurement value expressed in its default unit (m/s^2 for acceleration, rad/s for
      * angular speed or T for magnetic flux density).
      * Notice that if there are less than {@link #getWindowSize()} processed
-     * samples in the window, the remaining ones are considered to be zero
-     * when average values and standard deviation is estimated.
+     * samples in the window, average values and standard deviation are computed
+     * only over the samples currently in the window.
      *
      * @param value value to be added.
      * @throws LockedException if estimator is currently running.
@@ -529,8 +538,8 @@ public abstract class WindowedMeasurementNoiseEstimator<U extends Enum<?>,
     /**
      * Adds a measurement.
      * Notice that if there are less than {@link #getWindowSize()} processed
-     * samples in the window, the remaining ones are considered to be zero
-     * when average values and standard deviation is estimated.
+     * samples in the window, average values and standard deviation are computed
+     * only over the samples currently in the window.
      *
      * @param value value to be added.
      * @throws LockedException if estimator is currently running
@@ -657,7 +666,7 @@ public abstract class WindowedMeasurementNoiseEstimator<U extends Enum<?>,
             localAverage += value;
         }
 
-        localAverage /= windowSize;
+        localAverage /= n;
 
         // compute variances
         var localVariance = 0.0;
@@ -669,9 +678,12 @@ public abstract class WindowedMeasurementNoiseEstimator<U extends Enum<?>,
             localVariance += diff2;
         }
 
-        final var m = windowSize - 1;
-
-        localVariance /= m;
+        // unbiased variance, which is zero when there is a single sample
+        if (n > 1) {
+            localVariance /= n - 1;
+        } else {
+            localVariance = 0.0;
+        }
 
         this.avg = localAverage;
         this.variance = localVariance;
