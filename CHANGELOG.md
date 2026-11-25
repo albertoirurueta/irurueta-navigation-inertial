@@ -126,6 +126,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
   (issue #41, N6).
 - The easy gyroscope residual is now three-component and weighted by the sequence gravity-direction standard deviation
   (issue #41, N5).
+- Updated internal dependencies: `irurueta-numerical` to 1.7.1, `irurueta-geometry` to 1.6.2 and
+  `irurueta-navigation` to 1.8.3. The easy gyroscope calibrators use the `JacobianEstimator` of `irurueta-numerical`
+  with a minimum step (issue #43).
 
 ## [1.10.2] - 2026-11-16
 

@@ -288,7 +288,7 @@ In this library the fitter is `LevenbergMarquardtMultiDimensionFitter` of `iruru
 norm-based calibrators, whose Jacobian row of each measurement is not coded analytically: the model
 is wrapped in a `GradientEstimator` that obtains the partial derivatives numerically. The "Easy" gyroscope calibrators
 have a three-component residual per sequence and use `LevenbergMarquardtMultiVariateFitter` with a numerical
-Jacobian from a package-private `ModelJacobianEstimator` (see below). The `KnownFrame` non-linear
+Jacobian from a `JacobianEstimator` configured with a minimum step (see below). The `KnownFrame` non-linear
 calibrators are the exception: their model is the linear one above, evaluated by a multivariate fitter that is
 given the analytical Jacobian (the entries of stem:[\mathbf{A}_k]), and therefore converges almost immediately.
 
@@ -554,8 +554,8 @@ following static interval) is one observation:
 The residual is the three-component difference stem:[\mathbf{u}_{a,k} - \mathbf{R}_k^{T}\mathbf{u}_{a,k-1}] (rather than the
 norm of that difference), weighted by the gravity-direction standard deviation of the sequence
 (`BodyKinematicsSequence.getGravityDirectionStandardDeviation()`), and minimized with `LevenbergMarquardtMultiVariateFitter` over
-stem:[\mathbf{b}], stem:[\mathbf{M}_g] (and optionally stem:[\mathbf{G}_g]), using a numerical Jacobian from
-`ModelJacobianEstimator`. Differences from the paper that were kept: the library takes the gyroscope bias as an
+stem:[\mathbf{b}], stem:[\mathbf{M}_g] (and optionally stem:[\mathbf{G}_g]), using a numerical Jacobian from a
+`JacobianEstimator` with a relative and a minimum step of `1e-7`. Differences from the paper that were kept: the library takes the gyroscope bias as an
 unknown of the fit (the paper averages the gyroscope in the initial still period and removes it), and it has an
 optional upper-triangular common z-axis form. Following the paper, the defaults of `EasyGyroscopeCalibrator` are now the
 general (full) matrix and *no* g-dependent term (`commonAxisUsed = false`, `estimateGDependentCrossBiases = false`);

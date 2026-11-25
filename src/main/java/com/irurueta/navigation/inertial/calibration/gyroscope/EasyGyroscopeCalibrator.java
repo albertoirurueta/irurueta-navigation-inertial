@@ -36,6 +36,8 @@ import com.irurueta.navigation.inertial.calibration.GyroscopeBiasUncertaintySour
 import com.irurueta.navigation.inertial.calibration.GyroscopeCalibrationSource;
 import com.irurueta.navigation.inertial.calibration.StandardDeviationTimedBodyKinematics;
 import com.irurueta.numerical.EvaluationException;
+import com.irurueta.numerical.JacobianEstimator;
+import com.irurueta.numerical.MultiVariateFunctionEvaluatorListener;
 import com.irurueta.numerical.fitting.FittingException;
 import com.irurueta.numerical.fitting.LevenbergMarquardtMultiVariateFitter;
 import com.irurueta.numerical.fitting.LevenbergMarquardtMultiVariateFunctionEvaluator;
@@ -173,6 +175,19 @@ public class EasyGyroscopeCalibrator implements
      * G-dependent cross biases are being ignored.
      */
     public static final int MINIMUM_SEQUENCES_GENERAL = GENERAL_UNKNOWNS + 1;
+
+    /**
+     * Relative step used to perturb each parameter when the Jacobian of the model is
+     * numerically estimated.
+     */
+    private static final double JACOBIAN_RELATIVE_STEP = 1e-7;
+
+    /**
+     * Minimum absolute step used to perturb each parameter when the Jacobian of the model is
+     * numerically estimated, so that the Jacobian does not lose precision when a parameter is
+     * close to zero.
+     */
+    private static final double JACOBIAN_MIN_STEP = 1e-7;
 
     /**
      * Levenberg-Marquardt fitter to find a non-linear solution.
@@ -3656,7 +3671,7 @@ public class EasyGyroscopeCalibrator implements
         // Notice that M is upper diagonal because Mg is upper diagonal
         // when common axis is assumed
 
-        final var jacobianEstimator = new ModelJacobianEstimator(
+        final var jacobianEstimator = createJacobianEstimator(
                 (params, estimate) -> evaluateCommonAxisWithGDependentCrossBiases(i, params, estimate));
 
         final var initialM = Matrix.identity(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
@@ -3984,7 +3999,7 @@ public class EasyGyroscopeCalibrator implements
         // Ωmeas - M*b - M*G*ftrue = M*Ωtrue
         // M^-1 * (Ωmeas - M*b - M*G*ftrue) = Ωtrue
 
-        final var jacobianEstimator = new ModelJacobianEstimator(
+        final var jacobianEstimator = createJacobianEstimator(
                 (params, estimate) -> evaluateGeneralWithGDependentCrossBiases(i, params, estimate));
 
         final var initialM = Matrix.identity(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
@@ -4342,7 +4357,7 @@ public class EasyGyroscopeCalibrator implements
         // Notice that M is upper diagonal because Mg is upper diagonal
         // when common axis is assumed
 
-        final var jacobianEstimator = new ModelJacobianEstimator(
+        final var jacobianEstimator = createJacobianEstimator(
                 (params, estimate) -> evaluateCommonAxis(i, params, estimate));
 
         final var initialM = Matrix.identity(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
@@ -4597,7 +4612,7 @@ public class EasyGyroscopeCalibrator implements
 
         // M^-1 * (Ωmeas - M*b) = Ωtrue
 
-        final var jacobianEstimator = new ModelJacobianEstimator(
+        final var jacobianEstimator = createJacobianEstimator(
                 (params, estimate) -> evaluateGeneral(i, params, estimate));
 
         final var initialM = Matrix.identity(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
@@ -5415,5 +5430,42 @@ public class EasyGyroscopeCalibrator implements
         g = null;
         tmp = null;
         point = null;
+    }
+
+    /**
+     * Creates an estimator of the Jacobian of a model function respect to its parameters.
+     * The step used to perturb each parameter is never smaller than a minimum absolute value,
+     * so that the Jacobian does not lose precision when a parameter is close to zero.
+     *
+     * @param function model function.
+     * @return Jacobian estimator.
+     */
+    private static JacobianEstimator createJacobianEstimator(final ModelFunction function) {
+        return new JacobianEstimator(new MultiVariateFunctionEvaluatorListener() {
+            @Override
+            public void evaluate(final double[] point, final double[] result) throws EvaluationException {
+                function.evaluate(point, result);
+            }
+
+            @Override
+            public int getNumberOfVariables() {
+                return BodyKinematics.COMPONENTS;
+            }
+        }, JACOBIAN_RELATIVE_STEP, JACOBIAN_MIN_STEP);
+    }
+
+    /**
+     * Vectorial model function of the parameters.
+     */
+    @FunctionalInterface
+    private interface ModelFunction {
+        /**
+         * Evaluates the model.
+         *
+         * @param params parameters of the model.
+         * @param result array where the evaluation is stored.
+         * @throws EvaluationException if the model cannot be evaluated.
+         */
+        void evaluate(double[] params, double[] result) throws EvaluationException;
     }
 }

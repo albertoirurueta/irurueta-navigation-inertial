@@ -323,10 +323,10 @@ the gravity direction of the sequence, `BodyKinematicsSequence.getGravityDirecti
 (dimensionless). Each sequence therefore contributes *three equations* instead of one scalar distance. The fit is
 done by `LevenbergMarquardtMultiVariateFitter`: the inputs of each observation are the two normalized static
 directions, which stay fixed, and the model output is stem:[\mathbf{R}_k^{T}\mathbf{u}^{-}_k], compared with
-stem:[\mathbf{u}^{+}_k]. The Jacobian is still numerical, but it is obtained with a package-private
-`ModelJacobianEstimator` whose step is proportional to `max(1, |p|)` (the step of the library
-`JacobianEstimator` vanishes for parameters near zero and made the fit singular on noiseless data whose true
-parameters are zero). When a sequence does not carry a gravity-direction standard deviation, it is estimated from
+stem:[\mathbf{u}^{+}_k]. The Jacobian is still numerical, but it is obtained with the `JacobianEstimator` of
+`irurueta-numerical` configured with a relative step and a minimum step of `1e-7`, so the step is
+`1e-7 * max(1, |p|)` (with the default, purely relative step, the step vanishes for parameters near zero, which
+made the fit singular on noiseless data whose true parameters are zero). When a sequence does not carry a gravity-direction standard deviation, it is estimated from
 the items (accelerometer noise and integrated gyroscope noise), and a value of 1 is used if nothing is available.
 The robust variants already scored each sequence with the norm of this three-component residual.
 
