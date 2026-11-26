@@ -61,8 +61,8 @@
 			<property name="ignoreSetter" value="true"/>
 			<property name="setterCanReturnItsClass" value="true"/>
 		</module>
-		<!-- relaxed: numerical library; small literals, hashCode seeds, constant field initializers
-		     and annotation values are not meaningful magic numbers -->
+		<!-- relaxed: numerical library; small literals, hashCode seeds, field initializers
+		     (including non-constant fields) and annotation values are not meaningful magic numbers -->
 		<module name="MagicNumber">
 			<property name="ignoreNumbers" value="-1, 0, 1, 2, 3, 0.5"/>
 			<property name="ignoreHashCodeMethod" value="true"/>

@@ -73,17 +73,18 @@ public class WorldMagneticModel {
     private final double[] snorm = new double[N2];
 
     /**
-     * The sine of (m*spherical coord. longitude).
+     * Legendre recursion coefficients k[m][n] = ((n-1)^2 - m^2) / ((2n-1)(2n-3)) used to compute the
+     * associated Legendre functions and their derivatives.
      */
     private final double[][] k = new double[N][N];
 
     /**
-     * The cosine of (m*spherical coord. longitude).
+     * Multiplier table holding n + 1 for each degree n, used in the radial field component.
      */
     private final double[] fn = new double[N];
 
     /**
-     * The sine of (m*spherical coord. latitude).
+     * Multiplier table holding m for each order m, used in the east (longitude) field component.
      */
     private final double[] fm = new double[N];
 
@@ -133,27 +134,28 @@ public class WorldMagneticModel {
     }
 
     /**
-     * Gets the sine of (m*spherical coord. longitude).
+     * Gets the Legendre recursion coefficients k[m][n] = ((n-1)^2 - m^2) / ((2n-1)(2n-3)) used to compute the
+     * associated Legendre functions and their derivatives.
      *
-     * @return the sine of (m*spherical coord. longitude).
+     * @return the Legendre recursion coefficients.
      */
     double[][] getK() {
         return k;
     }
 
     /**
-     * Gets the cosine of (m*spherical coord. longitude).
+     * Gets the multiplier table holding n + 1 for each degree n, used in the radial field component.
      *
-     * @return the cosine of (m*spherical coord. longitude).
+     * @return the multiplier table holding n + 1 for each degree n.
      */
     double[] getFn() {
         return fn;
     }
 
     /**
-     * Gets the sine of (m*spherical coord. latitude).
+     * Gets the multiplier table holding m for each order m, used in the east (longitude) field component.
      *
-     * @return the sine of (m*spherical coord. latitude).
+     * @return the multiplier table holding m for each order m.
      */
     double[] getFm() {
         return fm;
