@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<ruleset name="irurueta-navigation-inertial"
+         xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
+  <description>
+    Default maven-pmd-plugin rules, with EmptyCatchBlock accepting commented blocks
+    and exceptions named ignore, ignored or expected.
+  </description>
+
+  <!-- keep every rule of the default rule set except EmptyCatchBlock, configured below -->
+  <rule ref="rulesets/java/maven-pmd-plugin-default.xml">
+    <exclude name="EmptyCatchBlock"/>
+  </rule>
+
+  <rule ref="category/java/errorprone.xml/EmptyCatchBlock">
+    <properties>
+      <property name="allowCommentedBlocks" value="true"/>
+      <property name="allowExceptionNameRegex" value="^(ignore|ignored|expected)$"/>
+    </properties>
+  </rule>
+</ruleset>

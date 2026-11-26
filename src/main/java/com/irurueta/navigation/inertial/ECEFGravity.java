@@ -72,9 +72,14 @@ public class ECEFGravity extends GravityOrGravitation<ECEFGravity> {
      * Computes and returns hash code for this instance. Hash codes are almost unique
      * values that are useful for fast classification and storage of objects in collections.
      *
+     * <p>
+     * Kept, delegating to the parent implementation, so that {@link #equals(Object)} and
+     * this method are visibly overridden together (PMD OverrideBothEqualsAndHashcode).
+     *
      * @return Hash code.
      */
     @Override
+    @SuppressWarnings("PMD.UselessOverridingMethod")
     public int hashCode() {
         return super.hashCode();
     }

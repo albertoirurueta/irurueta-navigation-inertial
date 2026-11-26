@@ -1506,7 +1506,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      *
      * @param result instance where estimated ECEF user velocity will be stored.
      */
-    public void getEcefVelocity(final com.irurueta.navigation.frames.ECEFVelocity result) {
+    public void getEcefVelocity(final ECEFVelocity result) {
         result.setCoordinates(vx, vy, vz);
     }
 

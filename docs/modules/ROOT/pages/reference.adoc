@@ -36,6 +36,10 @@ NOTE: The Checkstyle report applies the rule set in the repository's `checkstyle
 `mvn checkstyle:checkstyle` from the command line uses the same file, so a local run reports the same
 findings as the published Maven site report.
 
+NOTE: The PMD report applies the rule set in the repository's `pmd-ruleset.xml`, which extends the default
+rules and accepts documented empty `catch` blocks (commented, or with the exception named `ignore`, `ignored`
+or `expected`). Running `mvn pmd:pmd` from the command line uses the same file.
+
 [#bibliography]
 == Bibliography
 
