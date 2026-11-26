@@ -33,7 +33,6 @@ import com.irurueta.units.AngleUnit;
 import com.irurueta.units.Time;
 import com.irurueta.units.TimeConverter;
 import com.irurueta.units.TimeUnit;
-
 import java.util.Collection;
 
 /**
@@ -543,7 +542,8 @@ public class INSTightlyCoupledKalmanEpochEstimator {
     public static void estimate(
             final Collection<GNSSMeasurement> measurements, final double propagationInterval,
             final INSTightlyCoupledKalmanState previousState, final double fx, final double fy, final double fz,
-            final INSTightlyCoupledKalmanConfig config, final INSTightlyCoupledKalmanState result) throws AlgebraException {
+            final INSTightlyCoupledKalmanConfig config, final INSTightlyCoupledKalmanState result)
+            throws AlgebraException {
 
         final var prevNedPosition = new NEDPosition();
         final var prevNedVelocity = new NEDVelocity();

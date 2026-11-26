@@ -44,7 +44,7 @@ public interface UnknownHardIronMagnetometerCalibrator {
      * @return true if result instance was updated, false otherwise (when
      * estimation is not yet available).
      */
-    boolean getEstimatedHardIron(final double[] result);
+    boolean getEstimatedHardIron(double[] result);
 
     /**
      * Gets column matrix containing x,y,z components of estimated
@@ -63,7 +63,7 @@ public interface UnknownHardIronMagnetometerCalibrator {
      * @return true if result was updated, false otherwise.
      * @throws WrongSizeException if provided result instance has invalid size.
      */
-    boolean getEstimatedHardIronAsMatrix(final Matrix result) throws WrongSizeException;
+    boolean getEstimatedHardIronAsMatrix(Matrix result) throws WrongSizeException;
 
     /**
      * Gets x coordinate of estimated magnetometer bias expressed in
@@ -105,7 +105,7 @@ public interface UnknownHardIronMagnetometerCalibrator {
      * @param result instance where result will be stored.
      * @return true if estimated magnetometer bias is available, false otherwise.
      */
-    boolean getEstimatedHardIronXAsMagneticFluxDensity(final MagneticFluxDensity result);
+    boolean getEstimatedHardIronXAsMagneticFluxDensity(MagneticFluxDensity result);
 
     /**
      * Gets y coordinate of estimated magnetometer bias.
@@ -120,7 +120,7 @@ public interface UnknownHardIronMagnetometerCalibrator {
      * @param result instance where result will be stored.
      * @return true if estimated magnetometer bias is available, false otherwise.
      */
-    boolean getEstimatedHardIronYAsMagneticFluxDensity(final MagneticFluxDensity result);
+    boolean getEstimatedHardIronYAsMagneticFluxDensity(MagneticFluxDensity result);
 
     /**
      * Gets z coordinate of estimated magnetometer bias.
@@ -135,7 +135,7 @@ public interface UnknownHardIronMagnetometerCalibrator {
      * @param result instance where result will be stored.
      * @return true if estimated magnetometer bias is available, false otherwise.
      */
-    boolean getEstimatedHardIronZAsMagneticFluxDensity(final MagneticFluxDensity result);
+    boolean getEstimatedHardIronZAsMagneticFluxDensity(MagneticFluxDensity result);
 
     /**
      * Gets estimated magnetometer bias.
@@ -151,5 +151,5 @@ public interface UnknownHardIronMagnetometerCalibrator {
      * @return true if estimated magnetometer bias is available and result was
      * modified, false otherwise.
      */
-    boolean getEstimatedHardIronAsTriad(final MagneticFluxDensityTriad result);
+    boolean getEstimatedHardIronAsTriad(MagneticFluxDensityTriad result);
 }

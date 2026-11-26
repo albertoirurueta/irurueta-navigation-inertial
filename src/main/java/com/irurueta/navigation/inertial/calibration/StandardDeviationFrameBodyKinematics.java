@@ -25,7 +25,6 @@ import com.irurueta.units.AngularSpeed;
 import com.irurueta.units.AngularSpeedConverter;
 import com.irurueta.units.AngularSpeedUnit;
 import com.irurueta.units.Time;
-
 import java.io.Serial;
 import java.util.Objects;
 

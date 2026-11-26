@@ -9923,8 +9923,8 @@ public class ECEFInertialNavigator {
      * @throws InertialNavigatorException if navigation fails due to numerical instabilities.
      */
     public static void navigateECEF(
-            final double timeInterval, final ECEFFrame oldFrame, final BodyKinematics kinematics, final ECEFFrame result)
-            throws InertialNavigatorException {
+            final double timeInterval, final ECEFFrame oldFrame, final BodyKinematics kinematics,
+            final ECEFFrame result) throws InertialNavigatorException {
         try {
             navigateECEF(timeInterval, oldFrame.getX(), oldFrame.getY(), oldFrame.getZ(),
                     oldFrame.getCoordinateTransformation(), oldFrame.getVx(), oldFrame.getVy(), oldFrame.getVz(),

@@ -41,7 +41,7 @@ public interface UnknownBiasNonLinearGyroscopeCalibrator extends UnknownBiasGyro
      * @param initialBiasX initial x-coordinate of gyroscope bias.
      * @throws LockedException if calibrator is currently running.
      */
-    void setInitialBiasX(final double initialBiasX) throws LockedException;
+    void setInitialBiasX(double initialBiasX) throws LockedException;
 
     /**
      * Gets initial y-coordinate of gyroscope bias to be used to find a solution.
@@ -58,7 +58,7 @@ public interface UnknownBiasNonLinearGyroscopeCalibrator extends UnknownBiasGyro
      * @param initialBiasY initial y-coordinate of gyroscope bias.
      * @throws LockedException if calibrator is currently running.
      */
-    void setInitialBiasY(final double initialBiasY) throws LockedException;
+    void setInitialBiasY(double initialBiasY) throws LockedException;
 
     /**
      * Gets initial z-coordinate of gyroscope bias to be used to find a solution.
@@ -75,7 +75,7 @@ public interface UnknownBiasNonLinearGyroscopeCalibrator extends UnknownBiasGyro
      * @param initialBiasZ initial z-coordinate of gyroscope bias.
      * @throws LockedException if calibrator is currently running.
      */
-    void setInitialBiasZ(final double initialBiasZ) throws LockedException;
+    void setInitialBiasZ(double initialBiasZ) throws LockedException;
 
     /**
      * Gets initial x-coordinate of gyroscope bias to be used to find a solution.
@@ -89,7 +89,7 @@ public interface UnknownBiasNonLinearGyroscopeCalibrator extends UnknownBiasGyro
      *
      * @param result instance where result data will be stored.
      */
-    void getInitialBiasAngularSpeedX(final AngularSpeed result);
+    void getInitialBiasAngularSpeedX(AngularSpeed result);
 
     /**
      * Sets initial x-coordinate of gyroscope bias to be used to find a solution.
@@ -97,7 +97,7 @@ public interface UnknownBiasNonLinearGyroscopeCalibrator extends UnknownBiasGyro
      * @param initialBiasX initial x-coordinate of gyroscope bias.
      * @throws LockedException if calibrator is currently running.
      */
-    void setInitialBiasX(final AngularSpeed initialBiasX) throws LockedException;
+    void setInitialBiasX(AngularSpeed initialBiasX) throws LockedException;
 
     /**
      * Gets initial y-coordinate of gyroscope bias to be used to find a solution.
@@ -111,7 +111,7 @@ public interface UnknownBiasNonLinearGyroscopeCalibrator extends UnknownBiasGyro
      *
      * @param result instance where result data will be stored.
      */
-    void getInitialBiasAngularSpeedY(final AngularSpeed result);
+    void getInitialBiasAngularSpeedY(AngularSpeed result);
 
     /**
      * Sets initial y-coordinate of gyroscope bias to be used to find a solution.
@@ -119,7 +119,7 @@ public interface UnknownBiasNonLinearGyroscopeCalibrator extends UnknownBiasGyro
      * @param initialBiasY initial y-coordinate of gyroscope bias.
      * @throws LockedException if calibrator is currently running.
      */
-    void setInitialBiasY(final AngularSpeed initialBiasY) throws LockedException;
+    void setInitialBiasY(AngularSpeed initialBiasY) throws LockedException;
 
     /**
      * Gets initial z-coordinate of gyroscope bias to be used to find a solution.
@@ -133,7 +133,7 @@ public interface UnknownBiasNonLinearGyroscopeCalibrator extends UnknownBiasGyro
      *
      * @param result instance where result data will be stored.
      */
-    void getInitialBiasAngularSpeedZ(final AngularSpeed result);
+    void getInitialBiasAngularSpeedZ(AngularSpeed result);
 
     /**
      * Sets initial z-coordinate of gyroscope bias to be used to find a solution.
@@ -141,7 +141,7 @@ public interface UnknownBiasNonLinearGyroscopeCalibrator extends UnknownBiasGyro
      * @param initialBiasZ initial z-coordinate of gyroscope bias.
      * @throws LockedException if calibrator is currently running.
      */
-    void setInitialBiasZ(final AngularSpeed initialBiasZ) throws LockedException;
+    void setInitialBiasZ(AngularSpeed initialBiasZ) throws LockedException;
 
     /**
      * Sets initial bias coordinates of gyroscope used to find a solution
@@ -152,7 +152,7 @@ public interface UnknownBiasNonLinearGyroscopeCalibrator extends UnknownBiasGyro
      * @param initialBiasZ initial z-coordinate of gyroscope bias.
      * @throws LockedException if calibrator is currently running.
      */
-    void setInitialBias(final double initialBiasX, final double initialBiasY, final double initialBiasZ)
+    void setInitialBias(double initialBiasX, double initialBiasY, double initialBiasZ)
             throws LockedException;
 
     /**
@@ -163,8 +163,8 @@ public interface UnknownBiasNonLinearGyroscopeCalibrator extends UnknownBiasGyro
      * @param initialBiasZ initial z-coordinate of gyroscope bias.
      * @throws LockedException if calibrator is currently running.
      */
-    void setInitialBias(final AngularSpeed initialBiasX, final AngularSpeed initialBiasY,
-                        final AngularSpeed initialBiasZ) throws LockedException;
+    void setInitialBias(AngularSpeed initialBiasX, AngularSpeed initialBiasY,
+                        AngularSpeed initialBiasZ) throws LockedException;
 
     /**
      * Gets initial bias to be used to find a solution as an array.
@@ -181,7 +181,7 @@ public interface UnknownBiasNonLinearGyroscopeCalibrator extends UnknownBiasGyro
      * @param result instance where result data will be copied to.
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
-    void getInitialBias(final double[] result);
+    void getInitialBias(double[] result);
 
     /**
      * Sets initial bias to be used to find a solution as an array.
@@ -191,7 +191,7 @@ public interface UnknownBiasNonLinearGyroscopeCalibrator extends UnknownBiasGyro
      * @throws LockedException          if calibrator is currently running.
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
-    void setInitialBias(final double[] initialBias) throws LockedException;
+    void setInitialBias(double[] initialBias) throws LockedException;
 
     /**
      * Gets initial bias to be used to find a solution as a column matrix.
@@ -206,7 +206,7 @@ public interface UnknownBiasNonLinearGyroscopeCalibrator extends UnknownBiasGyro
      * @param result instance where result data will be copied to.
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
-    void getInitialBiasAsMatrix(final Matrix result);
+    void getInitialBiasAsMatrix(Matrix result);
 
     /**
      * Sets initial bias to be used to find a solution as an array.
@@ -215,7 +215,7 @@ public interface UnknownBiasNonLinearGyroscopeCalibrator extends UnknownBiasGyro
      * @throws LockedException          if calibrator is currently running.
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
-    void setInitialBias(final Matrix initialBias) throws LockedException;
+    void setInitialBias(Matrix initialBias) throws LockedException;
 
     /**
      * Gets initial bias coordinates of gyroscope used to find a solution.
@@ -229,7 +229,7 @@ public interface UnknownBiasNonLinearGyroscopeCalibrator extends UnknownBiasGyro
      *
      * @param result instance where result will be stored.
      */
-    void getInitialBiasAsTriad(final AngularSpeedTriad result);
+    void getInitialBiasAsTriad(AngularSpeedTriad result);
 
     /**
      * Sets initial bias coordinates of gyroscope used to find a solution.
@@ -237,5 +237,5 @@ public interface UnknownBiasNonLinearGyroscopeCalibrator extends UnknownBiasGyro
      * @param initialBias initial bias coordinates to be set.
      * @throws LockedException if calibrator is currently running.
      */
-    void setInitialBias(final AngularSpeedTriad initialBias) throws LockedException;
+    void setInitialBias(AngularSpeedTriad initialBias) throws LockedException;
 }

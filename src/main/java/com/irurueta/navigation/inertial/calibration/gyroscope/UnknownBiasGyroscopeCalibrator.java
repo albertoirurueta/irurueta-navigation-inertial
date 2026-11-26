@@ -42,7 +42,7 @@ public interface UnknownBiasGyroscopeCalibrator {
      * @return true if result instance was updated, false otherwise (when estimation
      * is not yet available).
      */
-    boolean getEstimatedBiases(final double[] result);
+    boolean getEstimatedBiases(double[] result);
 
     /**
      * Gets column matrix containing x,y,z components of estimated gyroscope biases
@@ -61,7 +61,7 @@ public interface UnknownBiasGyroscopeCalibrator {
      * @return true if result was updated, false otherwise.
      * @throws WrongSizeException if provided result instance has invalid size.
      */
-    boolean getEstimatedBiasesAsMatrix(final Matrix result) throws WrongSizeException;
+    boolean getEstimatedBiasesAsMatrix(Matrix result) throws WrongSizeException;
 
     /**
      * Gets x coordinate of estimated gyroscope bias expressed in radians per second
@@ -100,7 +100,7 @@ public interface UnknownBiasGyroscopeCalibrator {
      * @param result instance where result will be stored.
      * @return true if result was updated, false if estimation is not available.
      */
-    boolean getEstimatedBiasAngularSpeedX(final AngularSpeed result);
+    boolean getEstimatedBiasAngularSpeedX(AngularSpeed result);
 
     /**
      * Gets y coordinate of estimated gyroscope bias.
@@ -115,7 +115,7 @@ public interface UnknownBiasGyroscopeCalibrator {
      * @param result instance where result will be stored.
      * @return true if result was updated, false if estimation is not available.
      */
-    boolean getEstimatedBiasAngularSpeedY(final AngularSpeed result);
+    boolean getEstimatedBiasAngularSpeedY(AngularSpeed result);
 
     /**
      * Gets z coordinate of estimated gyroscope bias.
@@ -130,7 +130,7 @@ public interface UnknownBiasGyroscopeCalibrator {
      * @param result instance where result will be stored.
      * @return true if result was updated, false if estimation is not available.
      */
-    boolean getEstimatedBiasAngularSpeedZ(final AngularSpeed result);
+    boolean getEstimatedBiasAngularSpeedZ(AngularSpeed result);
 
     /**
      * Gets estimated gyroscope bias.
@@ -146,5 +146,5 @@ public interface UnknownBiasGyroscopeCalibrator {
      * @return true if estimated gyroscope bias is available and result was
      * modified, false otherwise.
      */
-    boolean getEstimatedBiasAsTriad(final AngularSpeedTriad result);
+    boolean getEstimatedBiasAsTriad(AngularSpeedTriad result);
 }

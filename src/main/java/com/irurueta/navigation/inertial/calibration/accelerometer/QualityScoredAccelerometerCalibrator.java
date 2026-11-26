@@ -45,5 +45,5 @@ public interface QualityScoredAccelerometerCalibrator extends AccelerometerCalib
      *                                  is smaller than minimum required samples.
      * @throws LockedException          if calibrator is currently running.
      */
-    void setQualityScores(final double[] qualityScores) throws LockedException;
+    void setQualityScores(double[] qualityScores) throws LockedException;
 }

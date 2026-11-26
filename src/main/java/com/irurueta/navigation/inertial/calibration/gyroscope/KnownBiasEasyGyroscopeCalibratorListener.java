@@ -25,12 +25,12 @@ public interface KnownBiasEasyGyroscopeCalibratorListener {
      *
      * @param calibrator calibrator that raised the event.
      */
-    void onCalibrateStart(final KnownBiasEasyGyroscopeCalibrator calibrator);
+    void onCalibrateStart(KnownBiasEasyGyroscopeCalibrator calibrator);
 
     /**
      * Called when calibration ends.
      *
      * @param calibrator calibrator that raised the event.
      */
-    void onCalibrateEnd(final KnownBiasEasyGyroscopeCalibrator calibrator);
+    void onCalibrateEnd(KnownBiasEasyGyroscopeCalibrator calibrator);
 }

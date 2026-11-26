@@ -35,7 +35,6 @@ import com.irurueta.statistics.MaxIterationsExceededException;
 import com.irurueta.units.MagneticFluxDensity;
 import com.irurueta.units.MagneticFluxDensityConverter;
 import com.irurueta.units.MagneticFluxDensityUnit;
-
 import java.util.Collection;
 
 /**
@@ -2430,9 +2429,9 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<
         //     [by]
         //     [bz]
 
-        // M = [m11 	m12 	m13]
-        //     [m21 	m22 	m23]
-        //     [m31 	m32 	m33]
+        // M = [m11     m12     m13]
+        //     [m21     m22     m23]
+        //     [m31     m32     m33]
 
         final var gradientEstimator = new GradientEstimator(this::evaluateGeneral);
 
@@ -2549,9 +2548,9 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<
         //     [by]
         //     [bz]
 
-        // M = [m11 	m12 	m13]
-        //     [0 		m22 	m23]
-        //     [0 	 	0 		m33]
+        // M = [m11     m12     m13]
+        //     [0       m22     m23]
+        //     [0       0       m33]
 
 
         final var gradientEstimator = new GradientEstimator(this::evaluateCommonAxis);

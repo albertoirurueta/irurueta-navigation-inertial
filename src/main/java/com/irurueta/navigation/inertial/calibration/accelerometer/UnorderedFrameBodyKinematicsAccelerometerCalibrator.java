@@ -17,7 +17,6 @@ package com.irurueta.navigation.inertial.calibration.accelerometer;
 
 import com.irurueta.navigation.LockedException;
 import com.irurueta.navigation.inertial.calibration.FrameBodyKinematics;
-
 import java.util.Collection;
 
 /**
@@ -61,5 +60,5 @@ public interface UnorderedFrameBodyKinematicsAccelerometerCalibrator extends Acc
      *                     frames (positions, orientations and velocities).
      * @throws LockedException if estimator is currently running.
      */
-    void setMeasurements(final Collection<? extends FrameBodyKinematics> measurements) throws LockedException;
+    void setMeasurements(Collection<? extends FrameBodyKinematics> measurements) throws LockedException;
 }

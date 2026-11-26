@@ -39,7 +39,7 @@ public interface KnownBiasGyroscopeCalibrator {
      * @param biasX x coordinate of gyroscope bias.
      * @throws LockedException if calibrator is currently running.
      */
-    void setBiasX(final double biasX) throws LockedException;
+    void setBiasX(double biasX) throws LockedException;
 
     /**
      * Gets known y coordinate of gyroscope bias expressed in radians per second
@@ -56,7 +56,7 @@ public interface KnownBiasGyroscopeCalibrator {
      * @param biasY y coordinate of gyroscope bias.
      * @throws LockedException if calibrator is currently running.
      */
-    void setBiasY(final double biasY) throws LockedException;
+    void setBiasY(double biasY) throws LockedException;
 
     /**
      * Gets known z coordinate of gyroscope bias expressed in radians per second
@@ -73,7 +73,7 @@ public interface KnownBiasGyroscopeCalibrator {
      * @param biasZ z coordinate of gyroscope bias.
      * @throws LockedException if calibrator is currently running.
      */
-    void setBiasZ(final double biasZ) throws LockedException;
+    void setBiasZ(double biasZ) throws LockedException;
 
     /**
      * Gets known x coordinate of gyroscope bias.
@@ -87,7 +87,7 @@ public interface KnownBiasGyroscopeCalibrator {
      *
      * @param result instance where result data will be stored.
      */
-    void getBiasAngularSpeedX(final AngularSpeed result);
+    void getBiasAngularSpeedX(AngularSpeed result);
 
     /**
      * Sets known x coordinate of gyroscope bias.
@@ -95,7 +95,7 @@ public interface KnownBiasGyroscopeCalibrator {
      * @param biasX x coordinate of gyroscope bias.
      * @throws LockedException if calibrator is currently running.
      */
-    void setBiasX(final AngularSpeed biasX) throws LockedException;
+    void setBiasX(AngularSpeed biasX) throws LockedException;
 
     /**
      * Gets known y coordinate of gyroscope bias.
@@ -109,7 +109,7 @@ public interface KnownBiasGyroscopeCalibrator {
      *
      * @param result instance where result data will be stored.
      */
-    void getBiasAngularSpeedY(final AngularSpeed result);
+    void getBiasAngularSpeedY(AngularSpeed result);
 
     /**
      * Sets known y coordinate of gyroscope bias.
@@ -117,7 +117,7 @@ public interface KnownBiasGyroscopeCalibrator {
      * @param biasY y coordinate of gyroscope bias.
      * @throws LockedException if calibrator is currently running.
      */
-    void setBiasY(final AngularSpeed biasY) throws LockedException;
+    void setBiasY(AngularSpeed biasY) throws LockedException;
 
     /**
      * Gets known z coordinate of gyroscope bias.
@@ -131,7 +131,7 @@ public interface KnownBiasGyroscopeCalibrator {
      *
      * @param result instance where result data will be stored.
      */
-    void getBiasAngularSpeedZ(final AngularSpeed result);
+    void getBiasAngularSpeedZ(AngularSpeed result);
 
     /**
      * Sets known z coordinate of gyroscope bias.
@@ -139,7 +139,7 @@ public interface KnownBiasGyroscopeCalibrator {
      * @param biasZ z coordinate of gyroscope bias.
      * @throws LockedException if calibrator is currently running.
      */
-    void setBiasZ(final AngularSpeed biasZ) throws LockedException;
+    void setBiasZ(AngularSpeed biasZ) throws LockedException;
 
     /**
      * Sets known gyroscope bias coordinates expressed in radians per second
@@ -150,7 +150,7 @@ public interface KnownBiasGyroscopeCalibrator {
      * @param biasZ z coordinate of gyroscope bias.
      * @throws LockedException if calibrator is currently running.
      */
-    void setBiasCoordinates(final double biasX, final double biasY, final double biasZ) throws LockedException;
+    void setBiasCoordinates(double biasX, double biasY, double biasZ) throws LockedException;
 
     /**
      * Sets known gyroscope bias coordinates.
@@ -160,7 +160,7 @@ public interface KnownBiasGyroscopeCalibrator {
      * @param biasZ z coordinate of gyroscope bias.
      * @throws LockedException if calibrator is currently running.
      */
-    void setBiasCoordinates(final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ)
+    void setBiasCoordinates(AngularSpeed biasX, AngularSpeed biasY, AngularSpeed biasZ)
             throws LockedException;
 
     /**
@@ -178,7 +178,7 @@ public interface KnownBiasGyroscopeCalibrator {
      * @param result instance where result data will be copied to.
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
-    void getBias(final double[] result);
+    void getBias(double[] result);
 
     /**
      * Sets known gyroscope bias as an array.
@@ -188,7 +188,7 @@ public interface KnownBiasGyroscopeCalibrator {
      * @throws LockedException          if calibrator is currently running.
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
-    void setBias(final double[] bias) throws LockedException;
+    void setBias(double[] bias) throws LockedException;
 
     /**
      * Gets known gyroscope bias as a column matrix.
@@ -203,7 +203,7 @@ public interface KnownBiasGyroscopeCalibrator {
      * @param result instance where result data will be copied to.
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
-    void getBiasAsMatrix(final Matrix result);
+    void getBiasAsMatrix(Matrix result);
 
     /**
      * Sets known gyroscope bias as a column matrix.
@@ -212,5 +212,5 @@ public interface KnownBiasGyroscopeCalibrator {
      * @throws LockedException          if calibrator is currently running.
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
-    void setBias(final Matrix bias) throws LockedException;
+    void setBias(Matrix bias) throws LockedException;
 }

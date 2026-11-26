@@ -18,13 +18,13 @@ package com.irurueta.navigation.inertial.calibration;
 import com.irurueta.units.MagneticFluxDensity;
 import com.irurueta.units.MagneticFluxDensityConverter;
 import com.irurueta.units.MagneticFluxDensityUnit;
-
 import java.io.Serial;
 
 /**
  * Contains a triad of magnetic flux density measurements.
  */
-public class MagneticFluxDensityTriad extends Triad<MagneticFluxDensityUnit, MagneticFluxDensity, MagneticFluxDensityTriad>
+public class MagneticFluxDensityTriad
+        extends Triad<MagneticFluxDensityUnit, MagneticFluxDensity, MagneticFluxDensityTriad>
         implements Cloneable {
 
     /**

@@ -41,7 +41,7 @@ public interface KnownHardIronMagnetometerCalibrator {
      * @param hardIronX x coordinate of magnetometer hard-iron.
      * @throws LockedException if calibrator is currently running.
      */
-    void setHardIronX(final double hardIronX) throws LockedException;
+    void setHardIronX(double hardIronX) throws LockedException;
 
     /**
      * Gets known y coordinate of magnetometer hard-iron expressed in
@@ -58,7 +58,7 @@ public interface KnownHardIronMagnetometerCalibrator {
      * @param hardIronY y coordinate of magnetometer hard-iron.
      * @throws LockedException if calibrator is currently running.
      */
-    void setHardIronY(final double hardIronY) throws LockedException;
+    void setHardIronY(double hardIronY) throws LockedException;
 
     /**
      * Gets known z coordinate of magnetometer hard-iron expressed in
@@ -75,7 +75,7 @@ public interface KnownHardIronMagnetometerCalibrator {
      * @param hardIronZ z coordinate of magnetometer hard-iron.
      * @throws LockedException if calibrator is currently running.
      */
-    void setHardIronZ(final double hardIronZ) throws LockedException;
+    void setHardIronZ(double hardIronZ) throws LockedException;
 
     /**
      * Gets known x coordinate of magnetometer hard-iron.
@@ -89,7 +89,7 @@ public interface KnownHardIronMagnetometerCalibrator {
      *
      * @param result instance where result will be stored.
      */
-    void getHardIronXAsMagneticFluxDensity(final MagneticFluxDensity result);
+    void getHardIronXAsMagneticFluxDensity(MagneticFluxDensity result);
 
     /**
      * Sets known x-coordinate of magnetometer hard-iron.
@@ -97,7 +97,7 @@ public interface KnownHardIronMagnetometerCalibrator {
      * @param hardIronX known x-coordinate of magnetometer hard-iron.
      * @throws LockedException if calibrator is currently running.
      */
-    void setHardIronX(final MagneticFluxDensity hardIronX) throws LockedException;
+    void setHardIronX(MagneticFluxDensity hardIronX) throws LockedException;
 
     /**
      * Gets known y coordinate of magnetometer hard-iron.
@@ -111,7 +111,7 @@ public interface KnownHardIronMagnetometerCalibrator {
      *
      * @param result instance where result will be stored.
      */
-    void getHardIronYAsMagneticFluxDensity(final MagneticFluxDensity result);
+    void getHardIronYAsMagneticFluxDensity(MagneticFluxDensity result);
 
     /**
      * Sets known y-coordinate of magnetometer hard-iron.
@@ -119,7 +119,7 @@ public interface KnownHardIronMagnetometerCalibrator {
      * @param hardIronY known y-coordinate of magnetometer hard-iron.
      * @throws LockedException if calibrator is currently running.
      */
-    void setHardIronY(final MagneticFluxDensity hardIronY) throws LockedException;
+    void setHardIronY(MagneticFluxDensity hardIronY) throws LockedException;
 
     /**
      * Gets known z coordinate of magnetometer hard-iron.
@@ -133,7 +133,7 @@ public interface KnownHardIronMagnetometerCalibrator {
      *
      * @param result instance where result will be stored.
      */
-    void getHardIronZAsMagneticFluxDensity(final MagneticFluxDensity result);
+    void getHardIronZAsMagneticFluxDensity(MagneticFluxDensity result);
 
     /**
      * Sets known z-coordinate of magnetometer hard-iron.
@@ -141,7 +141,7 @@ public interface KnownHardIronMagnetometerCalibrator {
      * @param hardIronZ known z-coordinate of magnetometer hard-iron.
      * @throws LockedException if calibrator is currently running.
      */
-    void setHardIronZ(final MagneticFluxDensity hardIronZ) throws LockedException;
+    void setHardIronZ(MagneticFluxDensity hardIronZ) throws LockedException;
 
     /**
      * Sets known hard-iron coordinates expressed in Teslas (T).
@@ -152,7 +152,7 @@ public interface KnownHardIronMagnetometerCalibrator {
      * @throws LockedException if calibrator is currently running.
      */
     void setHardIronCoordinates(
-            final double hardIronX, final double hardIronY, final double hardIronZ) throws LockedException;
+            double hardIronX, double hardIronY, double hardIronZ) throws LockedException;
 
     /**
      * Sets known hard-iron coordinates.
@@ -163,8 +163,8 @@ public interface KnownHardIronMagnetometerCalibrator {
      * @throws LockedException if calibrator is currently running.
      */
     void setHardIronCoordinates(
-            final MagneticFluxDensity hardIronX, final MagneticFluxDensity hardIronY,
-            final MagneticFluxDensity hardIronZ) throws LockedException;
+            MagneticFluxDensity hardIronX, MagneticFluxDensity hardIronY,
+            MagneticFluxDensity hardIronZ) throws LockedException;
 
     /**
      * Gets known hard-iron.
@@ -178,7 +178,7 @@ public interface KnownHardIronMagnetometerCalibrator {
      *
      * @param result instance where result will be stored.
      */
-    void getHardIronAsTriad(final MagneticFluxDensityTriad result);
+    void getHardIronAsTriad(MagneticFluxDensityTriad result);
 
     /**
      * Sets known hard-iron.
@@ -186,7 +186,7 @@ public interface KnownHardIronMagnetometerCalibrator {
      * @param hardIron hard-iron to be set.
      * @throws LockedException if calibrator is currently running.
      */
-    void setHardIron(final MagneticFluxDensityTriad hardIron) throws LockedException;
+    void setHardIron(MagneticFluxDensityTriad hardIron) throws LockedException;
 
     /**
      * Gets known hard-iron bias as an array.
@@ -203,7 +203,7 @@ public interface KnownHardIronMagnetometerCalibrator {
      * @param result instance where result data will be copied to.
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
-    void getHardIron(final double[] result);
+    void getHardIron(double[] result);
 
     /**
      * Sets known hard-iron bias as an array.
@@ -213,7 +213,7 @@ public interface KnownHardIronMagnetometerCalibrator {
      * @throws LockedException          if calibrator is currently running.
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
-    void setHardIron(final double[] hardIron) throws LockedException;
+    void setHardIron(double[] hardIron) throws LockedException;
 
     /**
      * Gets known hard-iron bias as a column matrix.
@@ -228,7 +228,7 @@ public interface KnownHardIronMagnetometerCalibrator {
      * @param result instance where result data will be copied to.
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
-    void getHardIronMatrix(final Matrix result);
+    void getHardIronMatrix(Matrix result);
 
     /**
      * Sets known hard-iron bias as a column matrix.
@@ -237,5 +237,5 @@ public interface KnownHardIronMagnetometerCalibrator {
      * @throws LockedException          if calibrator is currently running.
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
-    void setHardIron(final Matrix hardIron) throws LockedException;
+    void setHardIron(Matrix hardIron) throws LockedException;
 }

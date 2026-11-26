@@ -37,7 +37,6 @@ import com.irurueta.numerical.robust.RobustEstimatorMethod;
 import com.irurueta.units.Acceleration;
 import com.irurueta.units.AccelerationConverter;
 import com.irurueta.units.AccelerationUnit;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -200,6 +199,36 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      * Size of subsets to be checked during robust estimation.
      */
     protected int preliminarySubsetSize = MINIMUM_MEASUREMENTS_GENERAL;
+
+    /**
+     * Contains gravity norm for current position to be reused during calibration.
+     */
+    protected double gravityNorm;
+
+    /**
+     * Contains 3x3 identify to be reused.
+     */
+    protected Matrix identity;
+
+    /**
+     * Contains 3x3 temporary matrix.
+     */
+    protected Matrix tmp1;
+
+    /**
+     * Contains 3x3 temporary matrix.
+     */
+    protected Matrix tmp2;
+
+    /**
+     * Contains 3x1 temporary matrix.
+     */
+    protected Matrix tmp3;
+
+    /**
+     * Contains 3x1 temporary matrix.
+     */
+    protected Matrix tmp4;
 
     /**
      * This flag indicates whether z-axis is assumed to be common for accelerometer
@@ -370,36 +399,6 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      */
     private final KnownBiasAndPositionAccelerometerCalibrator innerCalibrator =
             new KnownBiasAndPositionAccelerometerCalibrator();
-
-    /**
-     * Contains gravity norm for current position to be reused during calibration.
-     */
-    protected double gravityNorm;
-
-    /**
-     * Contains 3x3 identify to be reused.
-     */
-    protected Matrix identity;
-
-    /**
-     * Contains 3x3 temporary matrix.
-     */
-    protected Matrix tmp1;
-
-    /**
-     * Contains 3x3 temporary matrix.
-     */
-    protected Matrix tmp2;
-
-    /**
-     * Contains 3x1 temporary matrix.
-     */
-    protected Matrix tmp3;
-
-    /**
-     * Contains 3x1 temporary matrix.
-     */
-    protected Matrix tmp4;
 
     /**
      * Constructor.
@@ -2640,7 +2639,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
     }
 
     /**
-     * Creates a robust accelerometer calibrator
+     * Creates a robust accelerometer calibrator.
      *
      * @param position     position where body kinematics measures have been taken.
      * @param measurements list of body kinematics measurements taken at a given position with
@@ -3814,7 +3813,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
     }
 
     /**
-     * Creates a robust accelerometer calibrator
+     * Creates a robust accelerometer calibrator.
      *
      * @param qualityScores quality scores corresponding to each provided
      *                      measurement. The larger the score value the better

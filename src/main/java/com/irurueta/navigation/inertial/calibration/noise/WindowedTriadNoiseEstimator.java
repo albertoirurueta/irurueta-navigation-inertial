@@ -22,7 +22,6 @@ import com.irurueta.units.Measurement;
 import com.irurueta.units.Time;
 import com.irurueta.units.TimeConverter;
 import com.irurueta.units.TimeUnit;
-
 import java.util.LinkedList;
 
 /**
@@ -1005,7 +1004,7 @@ public abstract class WindowedTriadNoiseEstimator<U extends Enum<?>,
      * @param input triad to be copied.
      * @return copy of a triad.
      */
-    protected abstract T copyTriad(final T input);
+    protected abstract T copyTriad(T input);
 
     /**
      * Creates a triad with provided values and unit.
@@ -1016,7 +1015,7 @@ public abstract class WindowedTriadNoiseEstimator<U extends Enum<?>,
      * @param unit   unit.
      * @return created triad.
      */
-    protected abstract T createTriad(final double valueX, final double valueY, final double valueZ, final U unit);
+    protected abstract T createTriad(double valueX, double valueY, double valueZ, U unit);
 
     /**
      * Creates a triad with provided values.
@@ -1026,7 +1025,7 @@ public abstract class WindowedTriadNoiseEstimator<U extends Enum<?>,
      * @param valueZ z coordinate value.
      * @return created triad.
      */
-    protected abstract T createTriad(final M valueX, final M valueY, final M valueZ);
+    protected abstract T createTriad(M valueX, M valueY, M valueZ);
 
     /**
      * Gets default unit for a measurement.
@@ -1042,7 +1041,7 @@ public abstract class WindowedTriadNoiseEstimator<U extends Enum<?>,
      * @param unit  unit to be set.
      * @return created measurement.
      */
-    protected abstract M createMeasurement(final double value, final U unit);
+    protected abstract M createMeasurement(double value, U unit);
 
     /**
      * Internally adds a triad of measurement samples and processes current window if indicated.

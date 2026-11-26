@@ -31,7 +31,6 @@ import com.irurueta.numerical.robust.RobustEstimatorMethod;
 import com.irurueta.units.MagneticFluxDensity;
 import com.irurueta.units.MagneticFluxDensityConverter;
 import com.irurueta.units.MagneticFluxDensityUnit;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -202,6 +201,37 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
     protected int preliminarySubsetSize = MINIMUM_MEASUREMENTS_GENERAL;
 
     /**
+     * Ground truth magnetic flux density norm to be expected at location where measurements have been made,
+     * expressed in Teslas (T).
+     */
+    protected Double groundTruthMagneticFluxDensityNorm;
+
+    /**
+     * Contains 3x3 identify to be reused.
+     */
+    protected Matrix identity;
+
+    /**
+     * Contains 3x3 temporary matrix.
+     */
+    protected Matrix tmp1;
+
+    /**
+     * Contains 3x3 temporary matrix.
+     */
+    protected Matrix tmp2;
+
+    /**
+     * Contains 3x1 temporary matrix.
+     */
+    protected Matrix tmp3;
+
+    /**
+     * Contains 3x1 temporary matrix.
+     */
+    protected Matrix tmp4;
+
+    /**
      * This flag indicates whether z-axis is assumed to be common for accelerometer,
      * gyroscope and magnetometer.
      * When enabled, this eliminates 3 variables from soft-iron (Mm) matrix.
@@ -360,42 +390,11 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
     private double initialMzy;
 
     /**
-     * Ground truth magnetic flux density norm to be expected at location where measurements have been made,
-     * expressed in Teslas (T).
-     */
-    protected Double groundTruthMagneticFluxDensityNorm;
-
-    /**
      * Inner calibrator to compute calibration for each subset of data or during
      * final refining.
      */
     private final KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator innerCalibrator =
             new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
-
-    /**
-     * Contains 3x3 identify to be reused.
-     */
-    protected Matrix identity;
-
-    /**
-     * Contains 3x3 temporary matrix.
-     */
-    protected Matrix tmp1;
-
-    /**
-     * Contains 3x3 temporary matrix.
-     */
-    protected Matrix tmp2;
-
-    /**
-     * Contains 3x1 temporary matrix.
-     */
-    protected Matrix tmp3;
-
-    /**
-     * Contains 3x1 temporary matrix.
-     */
-    protected Matrix tmp4;
 
     /**
      * Constructor.

@@ -17,7 +17,6 @@ package com.irurueta.navigation.inertial.calibration.accelerometer;
 
 import com.irurueta.navigation.LockedException;
 import com.irurueta.navigation.inertial.calibration.StandardDeviationBodyKinematics;
-
 import java.util.List;
 
 /**
@@ -43,5 +42,5 @@ public interface OrderedStandardDeviationBodyKinematicsAccelerometerCalibrator e
      * @param measurements list of body kinematics measurements.
      * @throws LockedException if calibrator is currently running.
      */
-    void setMeasurements(final List<StandardDeviationBodyKinematics> measurements) throws LockedException;
+    void setMeasurements(List<StandardDeviationBodyKinematics> measurements) throws LockedException;
 }

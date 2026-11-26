@@ -29,7 +29,6 @@ import com.irurueta.navigation.inertial.estimators.ECEFKinematicsEstimator;
 import com.irurueta.units.AngularSpeed;
 import com.irurueta.units.AngularSpeedConverter;
 import com.irurueta.units.AngularSpeedUnit;
-
 import java.util.Collection;
 
 /**
@@ -1347,21 +1346,25 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator implements
         // Ωmeasy - Ωtruey - by = sy * Ωtruey + myz * Ωtruez + g21 * ftruex * g22 * ftruey + g23 * ftruez
         // Ωmeasz - Ωtruez - bz = sz * Ωtruez + g31 * ftruex + g32 * ftruey + g33 * ftruez
 
-        // [Ωtruex  0       0       Ωtruey  Ωtruez  0       ftruex  ftruey  ftruez  0       0       0       0       0       0     ][sx ] =  [Ωmeasx - Ωtruex - bx]
-        // [0       Ωtruey  0       0       0       Ωtruez  0       0       0       ftruex  ftruey  ftruez  0       0       0     ][sy ]    [Ωmeasy - Ωtruey - by]
-        // [0       0       Ωtruez  0       0       0       0       0       0       0       0       0       ftruex  ftruey  ftruez][sz ]    [Ωmeasz - Ωtruez - bz]
-        //                                                                                                                         [mxy]
-        //                                                                                                                         [mxz]
-        //                                                                                                                         [myz]
-        //                                                                                                                         [g11]
-        //                                                                                                                         [g12]
-        //                                                                                                                         [g13]
-        //                                                                                                                         [g21]
-        //                                                                                                                         [g22]
-        //                                                                                                                         [g23]
-        //                                                                                                                         [g31]
-        //                                                                                                                         [g32]
-        //                                                                                                                         [g33]
+        // [Ωtruex  0       0       Ωtruey  Ωtruez  0       ...
+        // [0       Ωtruey  0       0       0       Ωtruez  ...
+        // [0       0       Ωtruez  0       0       0       ...
+        //
+        //  ... ftruex  ftruey  ftruez  0       0       0       0       0       0     ][sx ] =  [Ωmeasx - Ωtruex - bx]
+        //  ... 0       0       0       ftruex  ftruey  ftruez  0       0       0     ][sy ]    [Ωmeasy - Ωtruey - by]
+        //  ... 0       0       0       0       0       0       ftruex  ftruey  ftruez][sz ]    [Ωmeasz - Ωtruez - bz]
+        //                                                                             [mxy]
+        //                                                                             [mxz]
+        //                                                                             [myz]
+        //                                                                             [g11]
+        //                                                                             [g12]
+        //                                                                             [g13]
+        //                                                                             [g21]
+        //                                                                             [g22]
+        //                                                                             [g23]
+        //                                                                             [g31]
+        //                                                                             [g32]
+        //                                                                             [g33]
 
         final var expectedKinematics = new BodyKinematics();
 
@@ -1475,24 +1478,28 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator implements
         // Ωmeasy - Ωtruey - by = myx * Ωtruex + sy * Ωtruey + myz * Ωtruez + g21 * ftruex * g22 * ftruey + g23 * ftruez
         // Ωmeasz - Ωtruez - bz = mzx * Ωtruex + mzy * Ωtruey + sz * Ωtruez + g31 * ftruex + g32 * ftruey + g33 * ftruez
 
-        // [Ωtruex  0       0       Ωtruey  Ωtruez  0       0       0       0       ftruex  ftruey  ftruez  0       0       0       0       0       0     ][sx ] =  [Ωmeasx - Ωtruex - bx]
-        // [0       Ωtruey  0       0       0       Ωtruex  Ωtruez  0       0       0       0       0       ftruex  ftruey  ftruez  0       0       0     ][sy ]    [Ωmeasy - Ωtruey - by]
-        // [0       0       Ωtruez  0       0       0       0       Ωtruex  Ωtruey  0       0       0       0       0       0       ftruex  ftruey  ftruez][sz ]    [Ωmeasz - Ωtruez - bz]
-        //                                                                                                                                                 [mxy]
-        //                                                                                                                                                 [mxz]
-        //                                                                                                                                                 [myx]
-        //                                                                                                                                                 [myz]
-        //                                                                                                                                                 [mzx]
-        //                                                                                                                                                 [mzy]
-        //                                                                                                                                                 [g11]
-        //                                                                                                                                                 [g12]
-        //                                                                                                                                                 [g13]
-        //                                                                                                                                                 [g21]
-        //                                                                                                                                                 [g22]
-        //                                                                                                                                                 [g23]
-        //                                                                                                                                                 [g31]
-        //                                                                                                                                                 [g32]
-        //                                                                                                                                                 [g33]
+        // [Ωtruex  0       0       Ωtruey  Ωtruez  0       0       0       0       ...
+        // [0       Ωtruey  0       0       0       Ωtruex  Ωtruez  0       0       ...
+        // [0       0       Ωtruez  0       0       0       0       Ωtruex  Ωtruey  ...
+        //
+        //  ... ftruex  ftruey  ftruez  0       0       0       0       0       0     ][sx ] =  [Ωmeasx - Ωtruex - bx]
+        //  ... 0       0       0       ftruex  ftruey  ftruez  0       0       0     ][sy ]    [Ωmeasy - Ωtruey - by]
+        //  ... 0       0       0       0       0       0       ftruex  ftruey  ftruez][sz ]    [Ωmeasz - Ωtruez - bz]
+        //                                                                             [mxy]
+        //                                                                             [mxz]
+        //                                                                             [myx]
+        //                                                                             [myz]
+        //                                                                             [mzx]
+        //                                                                             [mzy]
+        //                                                                             [g11]
+        //                                                                             [g12]
+        //                                                                             [g13]
+        //                                                                             [g21]
+        //                                                                             [g22]
+        //                                                                             [g23]
+        //                                                                             [g31]
+        //                                                                             [g32]
+        //                                                                             [g33]
 
         final var expectedKinematics = new BodyKinematics();
 

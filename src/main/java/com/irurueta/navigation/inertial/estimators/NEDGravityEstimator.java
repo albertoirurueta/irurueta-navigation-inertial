@@ -58,7 +58,7 @@ public class NEDGravityEstimator {
     public static final double EARTH_FLATTENING_WGS84 = 1 / 298.257223563;
 
     /**
-     * WGS84 Earth gravitational constant expressed in m^3 * s^-2
+     * WGS84 Earth gravitational constant expressed in m^3 * s^-2.
      */
     public static final double EARTH_GRAVITATIONAL_CONSTANT = 3.986004418E14;
 

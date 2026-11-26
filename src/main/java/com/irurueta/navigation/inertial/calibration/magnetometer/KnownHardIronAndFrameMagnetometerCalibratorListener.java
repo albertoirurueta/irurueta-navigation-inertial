@@ -30,12 +30,12 @@ public interface KnownHardIronAndFrameMagnetometerCalibratorListener<T
      *
      * @param calibrator calibrator that raised the event.
      */
-    void onCalibrateStart(final T calibrator);
+    void onCalibrateStart(T calibrator);
 
     /**
      * Called when calibration ends.
      *
      * @param calibrator calibrator that raised the event.
      */
-    void onCalibrateEnd(final T calibrator);
+    void onCalibrateEnd(T calibrator);
 }

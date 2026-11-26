@@ -2775,8 +2775,8 @@ public class NEDKinematicsEstimator {
             final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
             final NEDVelocity velocity, final NEDVelocity oldVelocity, final Angle latitude, final Distance height,
             final Angle oldLatitude, final Distance oldHeight, final BodyKinematics result) {
-        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity, convertAngle(latitude), convertDistance(height),
-                convertAngle(oldLatitude), convertDistance(oldHeight), result);
+        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity, convertAngle(latitude),
+                convertDistance(height), convertAngle(oldLatitude), convertDistance(oldHeight), result);
     }
 
     /**

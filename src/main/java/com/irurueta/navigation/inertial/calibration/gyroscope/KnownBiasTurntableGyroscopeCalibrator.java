@@ -54,7 +54,6 @@ import com.irurueta.units.AngularSpeedUnit;
 import com.irurueta.units.Time;
 import com.irurueta.units.TimeConverter;
 import com.irurueta.units.TimeUnit;
-
 import java.util.Collection;
 
 /**
@@ -539,7 +538,7 @@ public class KnownBiasTurntableGyroscopeCalibrator implements GyroscopeNonLinear
     private Matrix ma;
 
     /**
-     * Internally holds angular rate bias due to g-dependent cross biases
+     * Internally holds angular rate bias due to g-dependent cross biases.
      */
     private Matrix tmp;
 
@@ -4427,13 +4426,13 @@ public class KnownBiasTurntableGyroscopeCalibrator implements GyroscopeNonLinear
         //     [by]
         //     [bz]
 
-        // M = [m11 	m12 	m13]
-        //     [0 		m22 	m23]
-        //     [0 	 	0 		m33]
+        // M = [m11     m12     m13]
+        //     [0       m22     m23]
+        //     [0       0       m33]
 
-        // G = [g11 	g12 	g13]
-        //     [g21 	g22 	g23]
-        //     [g31 	g32 	g33]
+        // G = [g11     g12     g13]
+        //     [g21     g22     g23]
+        //     [g31     g32     g33]
 
         // ftrue = [ftruex]
         //         [ftruey]
@@ -4574,7 +4573,7 @@ public class KnownBiasTurntableGyroscopeCalibrator implements GyroscopeNonLinear
         //     [g31  g32  g33]
 
         // Mg = [sx  mxy  mxz] = [m11 - 1    m12         m13     ]
-        //      [myx sy	  myz]   [0          m22 - 1     m23     ]
+        //      [myx sy   myz]   [0          m22 - 1     m23     ]
         //      [mzx mzy  sz ]   [0          0           m33 - 1 ]
 
         // Gg = [gg11  gg12  gg13] = [m11  m12  m13][g11  g12  g13]
@@ -4734,13 +4733,13 @@ public class KnownBiasTurntableGyroscopeCalibrator implements GyroscopeNonLinear
         //     [by]
         //     [bz]
 
-        // M = [m11 	m12 	m13]
-        //     [m21 	m22 	m23]
-        //     [m31 	m32 	m33]
+        // M = [m11     m12     m13]
+        //     [m21     m22     m23]
+        //     [m31     m32     m33]
 
-        // G = [g11 	g12 	g13]
-        //     [g21 	g22 	g23]
-        //     [g31 	g32 	g33]
+        // G = [g11     g12     g13]
+        //     [g21     g22     g23]
+        //     [g31     g32     g33]
 
         // ftrue = [ftruex]
         //         [ftruey]
@@ -4873,7 +4872,7 @@ public class KnownBiasTurntableGyroscopeCalibrator implements GyroscopeNonLinear
         //     [g31  g32  g33]
 
         // Mg = [sx  mxy  mxz] = [m11 - 1    m12         m13     ]
-        //      [myx sy	  myz]   [m21        m22 - 1     m23     ]
+        //      [myx sy   myz]   [m21        m22 - 1     m23     ]
         //      [mzx mzy  sz ]   [m31        m32         m33 - 1 ]
 
         // Gg = [gg11  gg12  gg13] = [m11  m12  m13][g11  g12  g13]
@@ -5059,9 +5058,9 @@ public class KnownBiasTurntableGyroscopeCalibrator implements GyroscopeNonLinear
         //     [by]
         //     [bz]
 
-        // M = [m11 	m12 	m13]
-        //     [0 		m22 	m23]
-        //     [0 	 	0 		m33]
+        // M = [m11     m12     m13]
+        //     [0       m22     m23]
+        //     [0       0       m33]
 
         final var gradientEstimator = new GradientEstimator(this::evaluateCommonAxis);
 
@@ -5158,7 +5157,7 @@ public class KnownBiasTurntableGyroscopeCalibrator implements GyroscopeNonLinear
         //     [g31  g32  g33]
 
         // Mg = [sx  mxy  mxz] = [m11 - 1    m12         m13     ]
-        //      [myx sy	  myz]   [0          m22 - 1     m23     ]
+        //      [myx sy   myz]   [0          m22 - 1     m23     ]
         //      [mzx mzy  sz ]   [0          0           m33 - 1 ]
 
         // Gg = [gg11  gg12  gg13] = [m11  m12  m13][g11  g12  g13]
@@ -5278,9 +5277,9 @@ public class KnownBiasTurntableGyroscopeCalibrator implements GyroscopeNonLinear
         //     [by]
         //     [bz]
 
-        // M = [m11 	m12 	m13]
-        //     [m21 	m22 	m23]
-        //     [m31 	m32 	m33]
+        // M = [m11     m12     m13]
+        //     [m21     m22     m23]
+        //     [m31     m32     m33]
 
         final var gradientEstimator = new GradientEstimator(this::evaluateGeneral);
 
@@ -5362,7 +5361,7 @@ public class KnownBiasTurntableGyroscopeCalibrator implements GyroscopeNonLinear
         //     [g31  g32  g33]
 
         // Mg = [sx  mxy  mxz] = [m11 - 1    m12         m13     ]
-        //      [myx sy	  myz]   [m21        m22 - 1     m23     ]
+        //      [myx sy   myz]   [m21        m22 - 1     m23     ]
         //      [mzx mzy  sz ]   [m31        m32         m33 - 1 ]
 
         // Gg = [gg11  gg12  gg13] = [m11  m12  m13][g11  g12  g13]

@@ -18,7 +18,6 @@ package com.irurueta.navigation.inertial.calibration.gyroscope;
 import com.irurueta.navigation.LockedException;
 import com.irurueta.navigation.inertial.calibration.BodyKinematicsSequence;
 import com.irurueta.navigation.inertial.calibration.StandardDeviationTimedBodyKinematics;
-
 import java.util.List;
 
 /**
@@ -46,6 +45,6 @@ public interface OrderedBodyKinematicsSequenceGyroscopeCalibrator extends Gyrosc
      *                  kinematics measurements.
      * @throws LockedException if calibrator is currently running.
      */
-    void setSequences(final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences)
+    void setSequences(List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences)
             throws LockedException;
 }

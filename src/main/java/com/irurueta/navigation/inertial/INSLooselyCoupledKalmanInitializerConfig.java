@@ -16,7 +16,6 @@
 package com.irurueta.navigation.inertial;
 
 import com.irurueta.units.*;
-
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
@@ -210,7 +209,7 @@ public class INSLooselyCoupledKalmanInitializerConfig implements Serializable, C
     }
 
     /**
-     * Gets initial position uncertainty per axis expressed in meters (m)
+     * Gets initial position uncertainty per axis expressed in meters (m).
      *
      * @return initial position uncertainty per axis expressed in meters (m).
      */
@@ -219,7 +218,7 @@ public class INSLooselyCoupledKalmanInitializerConfig implements Serializable, C
     }
 
     /**
-     * Sets initial position uncertainty per axis expressed in meters (m)
+     * Sets initial position uncertainty per axis expressed in meters (m).
      *
      * @param initialPositionUncertainty initial position uncertainty per axis expressed
      *                                   in meters (m).

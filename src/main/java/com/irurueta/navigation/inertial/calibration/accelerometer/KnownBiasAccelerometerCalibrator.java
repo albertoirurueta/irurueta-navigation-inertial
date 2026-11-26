@@ -40,7 +40,7 @@ public interface KnownBiasAccelerometerCalibrator {
      * @param biasX x coordinate of accelerometer bias.
      * @throws LockedException if calibrator is currently running.
      */
-    void setBiasX(final double biasX) throws LockedException;
+    void setBiasX(double biasX) throws LockedException;
 
     /**
      * Gets known y coordinate of accelerometer bias expressed in meters per squared
@@ -57,7 +57,7 @@ public interface KnownBiasAccelerometerCalibrator {
      * @param biasY y coordinate of accelerometer bias.
      * @throws LockedException if calibrator is currently running.
      */
-    void setBiasY(final double biasY) throws LockedException;
+    void setBiasY(double biasY) throws LockedException;
 
     /**
      * Gets known z coordinate of accelerometer bias expressed in meters per squared
@@ -74,7 +74,7 @@ public interface KnownBiasAccelerometerCalibrator {
      * @param biasZ z coordinate of accelerometer bias.
      * @throws LockedException if calibrator is currently running.
      */
-    void setBiasZ(final double biasZ) throws LockedException;
+    void setBiasZ(double biasZ) throws LockedException;
 
     /**
      * Gets known x coordinate of accelerometer bias.
@@ -88,7 +88,7 @@ public interface KnownBiasAccelerometerCalibrator {
      *
      * @param result instance where result data will be stored.
      */
-    void getBiasXAsAcceleration(final Acceleration result);
+    void getBiasXAsAcceleration(Acceleration result);
 
     /**
      * Sets known x coordinate of accelerometer bias.
@@ -96,7 +96,7 @@ public interface KnownBiasAccelerometerCalibrator {
      * @param biasX x coordinate of accelerometer bias.
      * @throws LockedException if calibrator is currently running.
      */
-    void setBiasX(final Acceleration biasX) throws LockedException;
+    void setBiasX(Acceleration biasX) throws LockedException;
 
     /**
      * Gets known y coordinate of accelerometer bias.
@@ -110,7 +110,7 @@ public interface KnownBiasAccelerometerCalibrator {
      *
      * @param result instance where result data will be stored.
      */
-    void getBiasYAsAcceleration(final Acceleration result);
+    void getBiasYAsAcceleration(Acceleration result);
 
     /**
      * Sets known y coordinate of accelerometer bias.
@@ -118,7 +118,7 @@ public interface KnownBiasAccelerometerCalibrator {
      * @param biasY y coordinate of accelerometer bias.
      * @throws LockedException if estimator is currently running.
      */
-    void setBiasY(final Acceleration biasY) throws LockedException;
+    void setBiasY(Acceleration biasY) throws LockedException;
 
     /**
      * Gets known z coordinate of accelerometer bias.
@@ -132,7 +132,7 @@ public interface KnownBiasAccelerometerCalibrator {
      *
      * @param result instance where result data will be stored.
      */
-    void getBiasZAsAcceleration(final Acceleration result);
+    void getBiasZAsAcceleration(Acceleration result);
 
     /**
      * Sets known z coordinate of accelerometer bias.
@@ -140,7 +140,7 @@ public interface KnownBiasAccelerometerCalibrator {
      * @param biasZ z coordinate of accelerometer bias.
      * @throws LockedException if estimator is currently running.
      */
-    void setBiasZ(final Acceleration biasZ) throws LockedException;
+    void setBiasZ(Acceleration biasZ) throws LockedException;
 
     /**
      * Sets known accelerometer bias coordinates expressed in meters per squared
@@ -151,7 +151,7 @@ public interface KnownBiasAccelerometerCalibrator {
      * @param biasZ z coordinate of accelerometer bias.
      * @throws LockedException if calibrator is currently running.
      */
-    void setBiasCoordinates(final double biasX, final double biasY, final double biasZ)
+    void setBiasCoordinates(double biasX, double biasY, double biasZ)
             throws LockedException;
 
     /**
@@ -162,8 +162,8 @@ public interface KnownBiasAccelerometerCalibrator {
      * @param biasZ z coordinate of accelerometer bias.
      * @throws LockedException if calibrator is currently running.
      */
-    void setBiasCoordinates(final Acceleration biasX, final Acceleration biasY,
-                            final Acceleration biasZ) throws LockedException;
+    void setBiasCoordinates(Acceleration biasX, Acceleration biasY,
+                            Acceleration biasZ) throws LockedException;
 
     /**
      * Gets known accelerometer bias.
@@ -177,7 +177,7 @@ public interface KnownBiasAccelerometerCalibrator {
      *
      * @param result instance where result will be stored.
      */
-    void getBiasAsTriad(final AccelerationTriad result);
+    void getBiasAsTriad(AccelerationTriad result);
 
     /**
      * Sets known accelerometer bias.
@@ -185,7 +185,7 @@ public interface KnownBiasAccelerometerCalibrator {
      * @param bias accelerometer bias to be set.
      * @throws LockedException if calibrator is currently running.
      */
-    void setBias(final AccelerationTriad bias) throws LockedException;
+    void setBias(AccelerationTriad bias) throws LockedException;
 
     /**
      * Gets known accelerometer bias as an array.
@@ -202,7 +202,7 @@ public interface KnownBiasAccelerometerCalibrator {
      * @param result instance where result data will be copied to.
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
-    void getBias(final double[] result);
+    void getBias(double[] result);
 
     /**
      * Sets known accelerometer bias as an array.
@@ -212,7 +212,7 @@ public interface KnownBiasAccelerometerCalibrator {
      * @throws LockedException          if calibrator is currently running.
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
-    void setBias(final double[] bias) throws LockedException;
+    void setBias(double[] bias) throws LockedException;
 
     /**
      * Gets known accelerometer bias as a column matrix.
@@ -227,7 +227,7 @@ public interface KnownBiasAccelerometerCalibrator {
      * @param result instance where result data will be copied to.
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
-    void getBiasAsMatrix(final Matrix result);
+    void getBiasAsMatrix(Matrix result);
 
     /**
      * Sets known accelerometer bias as a column matrix.
@@ -236,5 +236,5 @@ public interface KnownBiasAccelerometerCalibrator {
      * @throws LockedException          if calibrator is currently running.
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
-    void setBias(final Matrix bias) throws LockedException;
+    void setBias(Matrix bias) throws LockedException;
 }

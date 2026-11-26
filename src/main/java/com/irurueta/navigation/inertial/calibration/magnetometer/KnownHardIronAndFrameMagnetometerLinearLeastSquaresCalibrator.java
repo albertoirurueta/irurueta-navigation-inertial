@@ -22,7 +22,6 @@ import com.irurueta.algebra.WrongSizeException;
 import com.irurueta.navigation.LockedException;
 import com.irurueta.navigation.NotReadyException;
 import com.irurueta.navigation.frames.CoordinateTransformation;
-import com.irurueta.navigation.frames.ECEFFrame;
 import com.irurueta.navigation.frames.FrameType;
 import com.irurueta.navigation.frames.NEDFrame;
 import com.irurueta.navigation.frames.converters.ECEFtoNEDFrameConverter;
@@ -37,7 +36,6 @@ import com.irurueta.navigation.inertial.wmm.WorldMagneticModel;
 import com.irurueta.units.MagneticFluxDensity;
 import com.irurueta.units.MagneticFluxDensityConverter;
 import com.irurueta.units.MagneticFluxDensityUnit;
-
 import java.io.IOException;
 import java.util.Collection;
 
@@ -667,7 +665,7 @@ public class KnownHardIronAndFrameMagnetometerLinearLeastSquaresCalibrator imple
     }
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param commonAxisUsed indicates whether z-axis is assumed to be common
      *                       for the accelerometer, gyroscope and magnetometer.
@@ -2249,15 +2247,15 @@ public class KnownHardIronAndFrameMagnetometerLinearLeastSquaresCalibrator imple
         // mBmeasy - mBtruey - by = myx * mBtruex + sy * mBtruey + myz * mBtruez
         // mBmeasz - mBtruez - bz = mzx * mBtruex + mzy * mBtruey + sz * mBtruez
 
-        // [mBtruex  0        0        mBtruey  mBtruez  0        0        0        0      ][sx ] = [mBmeasx - mBtruex - bx]
-        // [0        mBtruey  0        0        0        mBtruex  mBtruez  0        0      ][sy ]   [mBmeasy - mBtruey - by]
-        // [0        0        mBtruez  0        0        0        0        mBtruex  mBtruey][sz ]   [mBmeasz - mBtruez - bz]
-        //                                                                                  [mxy]
-        //                                                                                  [mxz]
-        //                                                                                  [myx]
-        //                                                                                  [myz]
-        //                                                                                  [mzx]
-        //                                                                                  [mzy]
+        // [mBtruex 0       0       mBtruey mBtruez 0       0       0       0      ][sx ] = [mBmeasx - mBtruex - bx]
+        // [0       mBtruey 0       0       0       mBtruex mBtruez 0       0      ][sy ]   [mBmeasy - mBtruey - by]
+        // [0       0       mBtruez 0       0       0       0       mBtruex mBtruey][sz ]   [mBmeasz - mBtruez - bz]
+        //                                                                          [mxy]
+        //                                                                          [mxz]
+        //                                                                          [myx]
+        //                                                                          [myz]
+        //                                                                          [mzx]
+        //                                                                          [mzy]
 
         final WMMEarthMagneticFluxDensityEstimator wmmEstimator;
         if (magneticModel != null) {

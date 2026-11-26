@@ -44,7 +44,6 @@ import com.irurueta.units.AccelerationUnit;
 import com.irurueta.units.AngularSpeed;
 import com.irurueta.units.AngularSpeedConverter;
 import com.irurueta.units.AngularSpeedUnit;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -518,7 +517,7 @@ public class KnownBiasEasyGyroscopeCalibrator implements GyroscopeNonLinearCalib
     private Matrix g;
 
     /**
-     * Internally holds angular rate bias due to g-dependent cross biases
+     * Internally holds angular rate bias due to g-dependent cross biases.
      */
     private Matrix tmp;
 
@@ -3299,7 +3298,7 @@ public class KnownBiasEasyGyroscopeCalibrator implements GyroscopeNonLinearCalib
         //     [g31  g32  g33]
 
         // Mg = [sx  mxy  mxz] = [m11 - 1    m12         m13     ]
-        //      [myx sy	  myz]   [0          m22 - 1     m23     ]
+        //      [myx sy   myz]   [0          m22 - 1     m23     ]
         //      [mzx mzy  sz ]   [0          0           m33 - 1 ]
 
         // Gg = [gg11  gg12  gg13] = [m11  m12  m13][g11  g12  g13]
@@ -3576,7 +3575,7 @@ public class KnownBiasEasyGyroscopeCalibrator implements GyroscopeNonLinearCalib
         //     [g31  g32  g33]
 
         // Mg = [sx  mxy  mxz] = [m11 - 1    m12         m13     ]
-        //      [myx sy	  myz]   [m21        m22 - 1     m23     ]
+        //      [myx sy   myz]   [m21        m22 - 1     m23     ]
         //      [mzx mzy  sz ]   [m31        m32         m33 - 1 ]
 
         // Gg = [gg11  gg12  gg13] = [m11  m12  m13][g11  g12  g13]
@@ -3860,7 +3859,7 @@ public class KnownBiasEasyGyroscopeCalibrator implements GyroscopeNonLinearCalib
         //     [g31  g32  g33]
 
         // Mg = [sx  mxy  mxz] = [m11 - 1    m12         m13     ]
-        //      [myx sy	  myz]   [0          m22 - 1     m23     ]
+        //      [myx sy   myz]   [0          m22 - 1     m23     ]
         //      [mzx mzy  sz ]   [0          0           m33 - 1 ]
 
         // Gg = [gg11  gg12  gg13] = [m11  m12  m13][g11  g12  g13]
@@ -4057,7 +4056,7 @@ public class KnownBiasEasyGyroscopeCalibrator implements GyroscopeNonLinearCalib
         //     [g31  g32  g33]
 
         // Mg = [sx  mxy  mxz] = [m11 - 1    m12         m13     ]
-        //      [myx sy	  myz]   [m21        m22 - 1     m23     ]
+        //      [myx sy   myz]   [m21        m22 - 1     m23     ]
         //      [mzx mzy  sz ]   [m31        m32         m33 - 1 ]
 
         // Gg = [gg11  gg12  gg13] = [m11  m12  m13][g11  g12  g13]

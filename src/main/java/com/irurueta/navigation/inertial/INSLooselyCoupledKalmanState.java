@@ -30,7 +30,6 @@ import com.irurueta.navigation.frames.FrameType;
 import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeException;
 import com.irurueta.navigation.gnss.ECEFPositionAndVelocity;
 import com.irurueta.units.*;
-
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;

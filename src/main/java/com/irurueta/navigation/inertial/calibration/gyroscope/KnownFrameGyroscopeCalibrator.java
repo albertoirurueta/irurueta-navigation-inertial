@@ -17,12 +17,14 @@ package com.irurueta.navigation.inertial.calibration.gyroscope;
 
 import com.irurueta.navigation.LockedException;
 import com.irurueta.navigation.inertial.calibration.FrameBodyKinematics;
-
 import java.util.Collection;
 
 /**
  * Interface defining gyroscope calibrators to estimate biases, cross coupling and
  * scaling factors and g-dependant cross biases.
+ *
+ * @param <T> type of frame body kinematics measurements.
+ * @param <L> type of listener to handle events raised by the calibrator.
  */
 public interface KnownFrameGyroscopeCalibrator<T extends FrameBodyKinematics,
         L extends KnownFrameGyroscopeCalibratorListener<?>>
@@ -63,7 +65,7 @@ public interface KnownFrameGyroscopeCalibrator<T extends FrameBodyKinematics,
      *                     frames (positions, orientations and velocities).
      * @throws LockedException if calibrator is currently running.
      */
-    void setMeasurements(final Collection<? extends T> measurements) throws LockedException;
+    void setMeasurements(Collection<? extends T> measurements) throws LockedException;
 
     /**
      * Gets listener to handle events raised by this calibrator.
@@ -78,5 +80,5 @@ public interface KnownFrameGyroscopeCalibrator<T extends FrameBodyKinematics,
      * @param listener listener to handle events raised by this calibrator.
      * @throws LockedException if calibrator is currently running.
      */
-    void setListener(final L listener) throws LockedException;
+    void setListener(L listener) throws LockedException;
 }

@@ -21,7 +21,6 @@ import com.irurueta.units.Measurement;
 import com.irurueta.units.Time;
 import com.irurueta.units.TimeConverter;
 import com.irurueta.units.TimeUnit;
-
 import java.util.Arrays;
 
 /**
@@ -593,7 +592,7 @@ public abstract class WindowedMeasurementNoiseEstimator<U extends Enum<?>,
      * @param unit  unit to be set.
      * @return created measurement.
      */
-    protected abstract M createMeasurement(final double value, final U unit);
+    protected abstract M createMeasurement(double value, U unit);
 
     /**
      * Converts provided measurement into default unit.

@@ -67,7 +67,7 @@ public interface GyroscopeCalibrator {
      *                       and gyroscope, false otherwise.
      * @throws LockedException if calibrator is currently running.
      */
-    void setCommonAxisUsed(final boolean commonAxisUsed) throws LockedException;
+    void setCommonAxisUsed(boolean commonAxisUsed) throws LockedException;
 
     /**
      * Gets minimum number of required measurements or

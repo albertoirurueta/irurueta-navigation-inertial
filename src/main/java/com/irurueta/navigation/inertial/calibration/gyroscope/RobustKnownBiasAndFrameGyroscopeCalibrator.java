@@ -29,7 +29,6 @@ import com.irurueta.numerical.robust.RobustEstimatorMethod;
 import com.irurueta.units.AngularSpeed;
 import com.irurueta.units.AngularSpeedConverter;
 import com.irurueta.units.AngularSpeedUnit;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -1095,7 +1094,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
 
     /**
      * Sets known y coordinate of gyroscope bias expressed in radians per second
-     * (rad/s).)
+     * (rad/s).
      *
      * @param biasY y coordinate of gyroscope bias.
      * @throws LockedException if estimator is currently running.

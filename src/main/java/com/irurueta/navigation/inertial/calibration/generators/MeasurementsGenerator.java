@@ -710,7 +710,7 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
      * @param sample an input sample.
      * @throws LockedException if generator is busy.
      */
-    protected abstract void postProcess(final I sample) throws LockedException;
+    protected abstract void postProcess(I sample) throws LockedException;
 
     /**
      * Gets corresponding acceleration triad from provided input sample.
@@ -718,7 +718,7 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
      *
      * @param sample input sample.
      */
-    protected abstract void getAccelerationTriadFromInputSample(final I sample);
+    protected abstract void getAccelerationTriadFromInputSample(I sample);
 
     /**
      * Handles a static-to-dynamic interval change.
@@ -743,8 +743,8 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
      *                        squared second (m/s^2).
      */
     protected abstract void handleStaticToDynamicChange(
-            final double accumulatedAvgX, final double accumulatedAvgY, final double accumulatedAvgZ,
-            final double accumulatedStdX, final double accumulatedStdY, final double accumulatedStdZ);
+            double accumulatedAvgX, double accumulatedAvgY, double accumulatedAvgZ,
+            double accumulatedStdX, double accumulatedStdY, double accumulatedStdZ);
 
     /**
      * Handles a dynamic-to-static interval change.
@@ -817,7 +817,8 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
 
                 if (MeasurementsGenerator.this.listener != null) {
                     //noinspection unchecked
-                    MeasurementsGenerator.this.listener.onInitializationCompleted((G) MeasurementsGenerator.this, baseNoiseLevel);
+                    MeasurementsGenerator.this.listener.onInitializationCompleted((G) MeasurementsGenerator.this,
+                            baseNoiseLevel);
                 }
             }
 

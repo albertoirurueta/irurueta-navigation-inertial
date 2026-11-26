@@ -25,7 +25,7 @@ public interface BodyKinematicsBiasEstimatorListener {
      *
      * @param estimator estimator that raised the event.
      */
-    void onStart(final BodyKinematicsBiasEstimator estimator);
+    void onStart(BodyKinematicsBiasEstimator estimator);
 
     /**
      * Called when a body kinematics sample is added containing new
@@ -33,12 +33,12 @@ public interface BodyKinematicsBiasEstimatorListener {
      *
      * @param estimator estimator that raised the event.
      */
-    void onBodyKinematicsAdded(final BodyKinematicsBiasEstimator estimator);
+    void onBodyKinematicsAdded(BodyKinematicsBiasEstimator estimator);
 
     /**
      * Called when estimation is reset.
      *
      * @param estimator estimator that raised the event.
      */
-    void onReset(final BodyKinematicsBiasEstimator estimator);
+    void onReset(BodyKinematicsBiasEstimator estimator);
 }

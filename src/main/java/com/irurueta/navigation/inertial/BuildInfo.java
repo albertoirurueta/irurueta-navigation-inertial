@@ -126,7 +126,7 @@ public class BuildInfo {
      */
     private BuildInfo() {
         // loads properties file data.
-        try (final var stream = BuildInfo.class.getResourceAsStream(BUILD_INFO_PROPERTIES)) {
+        try (var stream = BuildInfo.class.getResourceAsStream(BUILD_INFO_PROPERTIES)) {
             final var props = new Properties();
             props.load(stream);
 

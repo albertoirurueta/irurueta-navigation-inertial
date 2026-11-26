@@ -29,12 +29,12 @@ public interface BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorL
      *
      * @param calibrator calibrator that raised the event.
      */
-    void onCalibrateStart(final C calibrator);
+    void onCalibrateStart(C calibrator);
 
     /**
      * Called when calibration ends.
      *
      * @param calibrator calibrator that raised the event.
      */
-    void onCalibrateEnd(final C calibrator);
+    void onCalibrateEnd(C calibrator);
 }

@@ -27,7 +27,6 @@ import com.irurueta.numerical.robust.LMedSRobustEstimatorListener;
 import com.irurueta.numerical.robust.RobustEstimator;
 import com.irurueta.numerical.robust.RobustEstimatorException;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
-
 import java.util.List;
 
 /**
@@ -310,8 +309,8 @@ public class LMedSRobustKnownBiasEasyGyroscopeCalibrator extends RobustKnownBias
      */
     public LMedSRobustKnownBiasEasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences, final Matrix bias,
-            final Matrix initialMg, final Matrix initialGg, final Matrix accelerometerBias, final Matrix accelerometerMa,
-            final RobustKnownBiasEasyGyroscopeCalibratorListener listener) {
+            final Matrix initialMg, final Matrix initialGg, final Matrix accelerometerBias,
+            final Matrix accelerometerMa, final RobustKnownBiasEasyGyroscopeCalibratorListener listener) {
         super(sequences, bias, initialMg, initialGg, accelerometerBias, accelerometerMa, listener);
     }
 

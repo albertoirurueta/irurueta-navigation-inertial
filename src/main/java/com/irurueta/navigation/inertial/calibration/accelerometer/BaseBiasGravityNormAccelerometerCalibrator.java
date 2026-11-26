@@ -34,7 +34,6 @@ import com.irurueta.statistics.MaxIterationsExceededException;
 import com.irurueta.units.Acceleration;
 import com.irurueta.units.AccelerationConverter;
 import com.irurueta.units.AccelerationUnit;
-
 import java.util.Collection;
 
 /**
@@ -5050,9 +5049,9 @@ public abstract class BaseBiasGravityNormAccelerometerCalibrator<
         //     [by]
         //     [bz]
 
-        // M = [m11 	m12 	m13]
-        //     [m21 	m22 	m23]
-        //     [m31 	m32 	m33]
+        // M = [m11     m12     m13]
+        //     [m21     m22     m23]
+        //     [m31     m32     m33]
 
         // Notice that bias b is known, hence only terms in matrix M need to be estimated
 
@@ -5169,9 +5168,9 @@ public abstract class BaseBiasGravityNormAccelerometerCalibrator<
         //     [by]
         //     [bz]
 
-        // M = [m11 	m12 	m13]
-        //     [0 		m22 	m23]
-        //     [0 	 	0 		m33]
+        // M = [m11     m12     m13]
+        //     [0       m22     m23]
+        //     [0       0       m33]
 
         // Notice that bias b is known, hence only terms in matrix M need to be estimated
 

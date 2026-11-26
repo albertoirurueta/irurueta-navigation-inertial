@@ -33,7 +33,6 @@ import com.irurueta.numerical.robust.RobustEstimatorMethod;
 import com.irurueta.units.AngularSpeed;
 import com.irurueta.units.AngularSpeedConverter;
 import com.irurueta.units.AngularSpeedUnit;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -2956,7 +2955,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
     }
 
     /**
-     * Creates a robust gyroscope calibrator using default robust method
+     * Creates a robust gyroscope calibrator using default robust method.
      *
      * @param qualityScores quality scores corresponding to each provided
      *                      measurement. The larger the score value the better

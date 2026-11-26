@@ -26,7 +26,6 @@ import com.irurueta.navigation.inertial.calibration.intervals.TriadStaticInterva
 import com.irurueta.navigation.inertial.calibration.noise.AccumulatedAngularSpeedTriadNoiseEstimator;
 import com.irurueta.units.AngularSpeed;
 import com.irurueta.units.AngularSpeedUnit;
-
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
@@ -314,7 +313,7 @@ public class GyroscopeMeasurementsGenerator extends
 
     /**
      * Gets gyroscope base noise level root PSD (Power Spectral Density)
-     * expressed in (rad * s^-0.5)
+     * expressed in (rad * s^-0.5).
      *
      * @return gyroscope base noise level root PSD.
      */

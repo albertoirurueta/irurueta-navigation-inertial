@@ -20,15 +20,18 @@ import com.irurueta.algebra.WrongSizeException;
 import com.irurueta.units.Acceleration;
 import com.irurueta.units.AccelerationConverter;
 import com.irurueta.units.AccelerationUnit;
-
 import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * Contains acceleration due to gravity resolved about ECEF or ECI frame, depending
  * on the implementation.
+ *
+ * @param <T> a type of concrete subclass of this class (ECEFGravity or ECIGravitation).
  */
-@SuppressWarnings("CloneableClassWithoutClone")
+// checkstyle:EqualsHashCode is a false positive: equals(Object) is declared abstract here and every concrete
+// subclass (ECEFGravity, ECIGravitation) implements it consistently with the hashCode() defined in this class.
+@SuppressWarnings({"CloneableClassWithoutClone", "checkstyle:EqualsHashCode"})
 public abstract class GravityOrGravitation<T extends GravityOrGravitation<?>> implements Serializable, Cloneable {
     /**
      * Number of components.
@@ -36,19 +39,25 @@ public abstract class GravityOrGravitation<T extends GravityOrGravitation<?>> im
     public static final int COMPONENTS = 3;
 
     /**
+     * Serialization version UID. Pinned to the value previously computed by default so that making the gravity
+     * components private keeps serialized instances compatible.
+     */
+    private static final long serialVersionUID = 778715600548444483L;
+
+    /**
      * Acceleration due to gravity through ECI or ECEF x-axis expressed in meters per squared second (m/s^2).
      */
-    double gx;
+    private double gx;
 
     /**
      * Acceleration due to gravity through ECI or ECEF y-axis expressed in meters per squared second (m/s^2).
      */
-    double gy;
+    private double gy;
 
     /**
      * Acceleration due to gravity through ECI or ECEF z-axis expressed in meters per squared second (m/s^2).
      */
-    double gz;
+    private double gz;
 
     /**
      * Constructor.
@@ -288,9 +297,10 @@ public abstract class GravityOrGravitation<T extends GravityOrGravitation<?>> im
      * @param output destination instance where data will be copied to.
      */
     public void copyTo(final T output) {
-        output.gx = gx;
-        output.gy = gy;
-        output.gz = gz;
+        final GravityOrGravitation<?> out = output;
+        out.gx = gx;
+        out.gy = gy;
+        out.gz = gz;
     }
 
     /**
@@ -299,9 +309,10 @@ public abstract class GravityOrGravitation<T extends GravityOrGravitation<?>> im
      * @param input instance to copy data from.
      */
     public void copyFrom(final T input) {
-        gx = input.gx;
-        gy = input.gy;
-        gz = input.gz;
+        final GravityOrGravitation<?> in = input;
+        gx = in.gx;
+        gy = in.gy;
+        gz = in.gz;
     }
 
     /**
@@ -391,7 +402,7 @@ public abstract class GravityOrGravitation<T extends GravityOrGravitation<?>> im
      * @return true if both objects are considered to be equal, false otherwise.
      */
     @Override
-    public abstract boolean equals(final Object obj);
+    public abstract boolean equals(Object obj);
 
     /**
      * Checks if provided instance has exactly the same contents as this instance.
@@ -417,7 +428,8 @@ public abstract class GravityOrGravitation<T extends GravityOrGravitation<?>> im
             return false;
         }
 
-        return Math.abs(gx - other.gx) <= threshold && Math.abs(gy - other.gy) <= threshold
-                && Math.abs(gz - other.gz) <= threshold;
+        final GravityOrGravitation<?> o = other;
+        return Math.abs(gx - o.gx) <= threshold && Math.abs(gy - o.gy) <= threshold
+                && Math.abs(gz - o.gz) <= threshold;
     }
 }

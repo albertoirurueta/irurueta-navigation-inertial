@@ -26,7 +26,7 @@ public interface BodyMagneticFluxDensityBiasEstimatorListener {
      *
      * @param estimator estimator that raised the event.
      */
-    void onStart(final BodyMagneticFluxDensityBiasEstimator estimator);
+    void onStart(BodyMagneticFluxDensityBiasEstimator estimator);
 
     /**
      * Called when a body magnetic flux density is added containing new
@@ -34,12 +34,12 @@ public interface BodyMagneticFluxDensityBiasEstimatorListener {
      *
      * @param estimator estimator that raised the event.
      */
-    void onBodyMagneticFluxDensityAdded(final BodyMagneticFluxDensityBiasEstimator estimator);
+    void onBodyMagneticFluxDensityAdded(BodyMagneticFluxDensityBiasEstimator estimator);
 
     /**
      * Called when estimation is reset.
      *
      * @param estimator estimator that raised the event.
      */
-    void onReset(final BodyMagneticFluxDensityBiasEstimator estimator);
+    void onReset(BodyMagneticFluxDensityBiasEstimator estimator);
 }

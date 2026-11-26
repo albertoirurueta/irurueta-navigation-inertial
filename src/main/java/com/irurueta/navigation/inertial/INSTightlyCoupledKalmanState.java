@@ -28,7 +28,6 @@ import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeExcept
 import com.irurueta.navigation.gnss.ECEFPositionAndVelocity;
 import com.irurueta.navigation.gnss.GNSSEstimation;
 import com.irurueta.units.*;
-
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;

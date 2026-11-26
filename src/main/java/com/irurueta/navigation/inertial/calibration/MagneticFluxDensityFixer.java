@@ -449,7 +449,7 @@ public class MagneticFluxDensityFixer {
     }
 
     /**
-     * Sets x scaling factor
+     * Sets x scaling factor.
      *
      * @param sx x scaling factor.
      * @throws AlgebraException if provided value makes cross coupling matrix

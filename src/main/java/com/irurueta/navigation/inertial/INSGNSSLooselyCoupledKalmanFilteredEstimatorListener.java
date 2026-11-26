@@ -25,7 +25,7 @@ public interface INSGNSSLooselyCoupledKalmanFilteredEstimatorListener {
      *
      * @param estimator estimator raising the event.
      */
-    void onUpdateGNSSMeasurementsStart(final INSGNSSLooselyCoupledKalmanFilteredEstimator estimator);
+    void onUpdateGNSSMeasurementsStart(INSGNSSLooselyCoupledKalmanFilteredEstimator estimator);
 
     /**
      * Called when GNSS measurements update ends.
@@ -35,40 +35,40 @@ public interface INSGNSSLooselyCoupledKalmanFilteredEstimatorListener {
      *
      * @param estimator estimator raising the event.
      */
-    void onUpdateGNSSMeasurementsEnd(final INSGNSSLooselyCoupledKalmanFilteredEstimator estimator);
+    void onUpdateGNSSMeasurementsEnd(INSGNSSLooselyCoupledKalmanFilteredEstimator estimator);
 
     /**
      * Called when inertial INS measurements update starts.
      *
      * @param estimator estimator raising the event.
      */
-    void onUpdateBodyKinematicsStart(final INSGNSSLooselyCoupledKalmanFilteredEstimator estimator);
+    void onUpdateBodyKinematicsStart(INSGNSSLooselyCoupledKalmanFilteredEstimator estimator);
 
     /**
      * Called when inertial INS measurements update ends.
      *
      * @param estimator estimator raising the event.
      */
-    void onUpdateBodyKinematicsEnd(final INSGNSSLooselyCoupledKalmanFilteredEstimator estimator);
+    void onUpdateBodyKinematicsEnd(INSGNSSLooselyCoupledKalmanFilteredEstimator estimator);
 
     /**
      * Called when Kalman filter propagation starts.
      *
      * @param estimator estimator raising the event.
      */
-    void onPropagateStart(final INSGNSSLooselyCoupledKalmanFilteredEstimator estimator);
+    void onPropagateStart(INSGNSSLooselyCoupledKalmanFilteredEstimator estimator);
 
     /**
      * Called when Kalman filter propagation ends.
      *
      * @param estimator estimator raising the event.
      */
-    void onPropagateEnd(final INSGNSSLooselyCoupledKalmanFilteredEstimator estimator);
+    void onPropagateEnd(INSGNSSLooselyCoupledKalmanFilteredEstimator estimator);
 
     /**
      * Called when estimator is reset.
      *
      * @param estimator estimator raising the event.
      */
-    void onReset(final INSGNSSLooselyCoupledKalmanFilteredEstimator estimator);
+    void onReset(INSGNSSLooselyCoupledKalmanFilteredEstimator estimator);
 }

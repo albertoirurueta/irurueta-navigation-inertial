@@ -40,7 +40,6 @@ import com.irurueta.statistics.MaxIterationsExceededException;
 import com.irurueta.units.MagneticFluxDensity;
 import com.irurueta.units.MagneticFluxDensityConverter;
 import com.irurueta.units.MagneticFluxDensityUnit;
-
 import java.io.IOException;
 import java.util.Collection;
 
@@ -4196,15 +4195,15 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator im
         // mBmeasy - mBtruey - by = myx * mBtruex + sy * mBtruey + myz * mBtruez
         // mBmeasz - mBtruez - bz = mzx * mBtruex + mzy * mBtruey + sz * mBtruez
 
-        // [mBtruex  0        0        mBtruey  mBtruez  0        0        0        0      ][sx ] = [mBmeasx - mBtruex - bx]
-        // [0        mBtruey  0        0        0        mBtruex  mBtruez  0        0      ][sy ]   [mBmeasy - mBtruey - by]
-        // [0        0        mBtruez  0        0        0        0        mBtruex  mBtruey][sz ]   [mBmeasz - mBtruez - bz]
-        //                                                                                  [mxy]
-        //                                                                                  [mxz]
-        //                                                                                  [myx]
-        //                                                                                  [myz]
-        //                                                                                  [mzx]
-        //                                                                                  [mzy]
+        // [mBtruex 0       0       mBtruey mBtruez 0       0       0       0      ][sx ] = [mBmeasx - mBtruex - bx]
+        // [0       mBtruey 0       0       0       mBtruex mBtruez 0       0      ][sy ]   [mBmeasy - mBtruey - by]
+        // [0       0       mBtruez 0       0       0       0       mBtruex mBtruey][sz ]   [mBmeasz - mBtruez - bz]
+        //                                                                          [mxy]
+        //                                                                          [mxz]
+        //                                                                          [myx]
+        //                                                                          [myz]
+        //                                                                          [mzx]
+        //                                                                          [mzy]
 
         fitter.setFunctionEvaluator(new LevenbergMarquardtMultiVariateFunctionEvaluator() {
             @Override

@@ -25,19 +25,19 @@ public interface AccumulatedBodyKinematicsNoiseEstimatorListener {
      *
      * @param estimator estimator that raised the event.
      */
-    void onStart(final AccumulatedBodyKinematicsNoiseEstimator estimator);
+    void onStart(AccumulatedBodyKinematicsNoiseEstimator estimator);
 
     /**
      * Called when a body kinematics samples is added containing new measurement values.
      *
      * @param estimator estimator that raised the event.
      */
-    void onBodyKinematicsAdded(final AccumulatedBodyKinematicsNoiseEstimator estimator);
+    void onBodyKinematicsAdded(AccumulatedBodyKinematicsNoiseEstimator estimator);
 
     /**
      * Called when estimation is reset.
      *
      * @param estimator estimator that raised the event.
      */
-    void onReset(final AccumulatedBodyKinematicsNoiseEstimator estimator);
+    void onReset(AccumulatedBodyKinematicsNoiseEstimator estimator);
 }

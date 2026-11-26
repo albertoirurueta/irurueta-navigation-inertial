@@ -25,14 +25,14 @@ public interface RobustKnownBiasEasyGyroscopeCalibratorListener {
      *
      * @param calibrator calibrator that raised the event.
      */
-    void onCalibrateStart(final RobustKnownBiasEasyGyroscopeCalibrator calibrator);
+    void onCalibrateStart(RobustKnownBiasEasyGyroscopeCalibrator calibrator);
 
     /**
      * Called when calibration ends.
      *
      * @param calibrator calibrator that raised the event.
      */
-    void onCalibrateEnd(final RobustKnownBiasEasyGyroscopeCalibrator calibrator);
+    void onCalibrateEnd(RobustKnownBiasEasyGyroscopeCalibrator calibrator);
 
     /**
      * Called when calibrator iterates to refine a possible solution.
@@ -40,7 +40,7 @@ public interface RobustKnownBiasEasyGyroscopeCalibratorListener {
      * @param calibrator calibrator raising the event.
      * @param iteration  current iteration.
      */
-    void onCalibrateNextIteration(final RobustKnownBiasEasyGyroscopeCalibrator calibrator, final int iteration);
+    void onCalibrateNextIteration(RobustKnownBiasEasyGyroscopeCalibrator calibrator, int iteration);
 
     /**
      * Called when calibration progress changes significantly.
@@ -48,5 +48,5 @@ public interface RobustKnownBiasEasyGyroscopeCalibratorListener {
      * @param calibrator calibrator raising the event.
      * @param progress   progress of calibration expressed as a value between 0.0 and 1.0.
      */
-    void onCalibrateProgressChange(final RobustKnownBiasEasyGyroscopeCalibrator calibrator, final float progress);
+    void onCalibrateProgressChange(RobustKnownBiasEasyGyroscopeCalibrator calibrator, float progress);
 }

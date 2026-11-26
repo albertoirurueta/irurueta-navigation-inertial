@@ -54,7 +54,6 @@ import com.irurueta.units.AngularSpeedUnit;
 import com.irurueta.units.Time;
 import com.irurueta.units.TimeConverter;
 import com.irurueta.units.TimeUnit;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -181,6 +180,34 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * Minimum allowed number of iterations.
      */
     public static final int MIN_ITERATIONS = 1;
+
+    /**
+     * Contains a collection of body kinematics measurements taken at
+     * a given position with different unknown orientations and containing
+     * the standard deviations of accelerometer and gyroscope measurements.
+     */
+    protected List<StandardDeviationBodyKinematics> measurements;
+
+    /**
+     * Listener to be notified of events such as when calibration starts, ends or its
+     * progress significantly changes.
+     */
+    protected RobustTurntableGyroscopeCalibratorListener listener;
+
+    /**
+     * Indicates whether calibrator is running.
+     */
+    protected boolean running;
+
+    /**
+     * Data related to inliers found after calibration.
+     */
+    protected InliersData inliersData;
+
+    /**
+     * Size of subsets to be checked during robust estimation.
+     */
+    protected int preliminarySubsetSize = TurntableGyroscopeCalibrator.MINIMUM_MEASUREMENTS_GENERAL_AND_CROSS_BIASES;
 
     /**
      * Known x-coordinate of accelerometer bias to be used to fix measured
@@ -339,13 +366,6 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
     private double timeInterval = DEFAULT_TIME_INTERVAL;
 
     /**
-     * Contains a collection of body kinematics measurements taken at
-     * a given position with different unknown orientations and containing
-     * the standard deviations of accelerometer and gyroscope measurements.
-     */
-    protected List<StandardDeviationBodyKinematics> measurements;
-
-    /**
      * Position where body kinematics measures have been taken.
      */
     private ECEFPosition position;
@@ -363,12 +383,6 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
      * When enabled, this adds 9 variables from Gg matrix.
      */
     private boolean estimateGDependentCrossBiases = DEFAULT_ESTIMATE_G_DEPENDENT_CROSS_BIASES;
-
-    /**
-     * Listener to be notified of events such as when calibration starts, ends or its
-     * progress significantly changes.
-     */
-    protected RobustTurntableGyroscopeCalibratorListener listener;
 
     /**
      * Estimated angular rate biases for each IMU axis expressed in radians per
@@ -465,11 +479,6 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
     private double estimatedQ;
 
     /**
-     * Indicates whether calibrator is running.
-     */
-    protected boolean running;
-
-    /**
      * Amount of progress variation before notifying a progress change during calibration.
      */
     protected float progressDelta = DEFAULT_PROGRESS_DELTA;
@@ -489,22 +498,12 @@ public abstract class RobustTurntableGyroscopeCalibrator implements GyroscopeNon
     protected int maxIterations = DEFAULT_MAX_ITERATIONS;
 
     /**
-     * Data related to inliers found after calibration.
-     */
-    protected InliersData inliersData;
-
-    /**
      * Indicates whether result must be refined using a non linear calibrator over
      * found inliers.
      * If true, inliers will be computed and kept in any implementation regardless of the
      * settings.
      */
     protected boolean refineResult = DEFAULT_REFINE_RESULT;
-
-    /**
-     * Size of subsets to be checked during robust estimation.
-     */
-    protected int preliminarySubsetSize = TurntableGyroscopeCalibrator.MINIMUM_MEASUREMENTS_GENERAL_AND_CROSS_BIASES;
 
     /**
      * Indicates whether covariance must be kept after refining result.
