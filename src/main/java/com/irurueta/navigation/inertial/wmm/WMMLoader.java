@@ -182,7 +182,7 @@ public class WMMLoader {
                     result.getK()[m][n] = (double) (((n - 1) * (n - 1)) - (m * m))
                             / (double) ((2 * n - 1) * (2 * n - 3));
                     if (m > 0) {
-                        final var flnmj = ((n - m + 1) * j) / (double) (n + m);
+                        final var flnmj = (n - m + 1) * j / (double) (n + m);
                         result.getSnorm()[n + m * N] = result.getSnorm()[n + (m - 1) * N] * Math.sqrt(flnmj);
                         j = 1;
                         result.getC()[n][m - 1] = result.getSnorm()[n + m * N] * result.getC()[n][m - 1];

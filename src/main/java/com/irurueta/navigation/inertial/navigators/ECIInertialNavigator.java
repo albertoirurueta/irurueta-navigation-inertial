@@ -6402,7 +6402,7 @@ public class ECIInertialNavigator {
      * @param time time instance to be converted.
      * @return converted value expressed in seconds.
      */
-    private static double convertTimeToDouble(final com.irurueta.units.Time time) {
+    private static double convertTimeToDouble(final Time time) {
         return TimeConverter.convert(time.getValue().doubleValue(), time.getUnit(), TimeUnit.SECOND);
     }
 

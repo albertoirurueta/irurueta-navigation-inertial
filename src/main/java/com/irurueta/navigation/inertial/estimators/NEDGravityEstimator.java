@@ -171,7 +171,7 @@ public class NEDGravityEstimator {
         final var omegaIe2 = EARTH_ROTATION_RATE * EARTH_ROTATION_RATE;
         final var r02 = EARTH_EQUATORIAL_RADIUS_WGS84 * EARTH_EQUATORIAL_RADIUS_WGS84;
         final var height2 = height * height;
-        final var gd = g0 * (1.0 - (2.0 / EARTH_EQUATORIAL_RADIUS_WGS84) * (1.0 + EARTH_FLATTENING_WGS84 *
+        final var gd = g0 * (1.0 - 2.0 / EARTH_EQUATORIAL_RADIUS_WGS84 * (1.0 + EARTH_FLATTENING_WGS84 *
                 (1.0 - 2.0 * sinsqL) + (omegaIe2 * r02 * EARTH_POLAR_RADIUS_WGS84 / EARTH_GRAVITATIONAL_CONSTANT)) *
                 height + (3.0 * height2 / r02));
 

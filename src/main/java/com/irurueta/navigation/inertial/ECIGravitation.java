@@ -72,9 +72,14 @@ public class ECIGravitation extends GravityOrGravitation<ECIGravitation> {
      * Computes and returns hash code for this instance. Hash codes are almost unique
      * values that are useful for fast classification and storage of objects in collections.
      *
+     * <p>
+     * Kept (delegating to the parent implementation) because this class overrides
+     * {@link #equals(Object)}, so both must be overridden together.
+     *
      * @return Hash code.
      */
     @Override
+    @SuppressWarnings("PMD.UselessOverridingMethod")
     public int hashCode() {
         return super.hashCode();
     }

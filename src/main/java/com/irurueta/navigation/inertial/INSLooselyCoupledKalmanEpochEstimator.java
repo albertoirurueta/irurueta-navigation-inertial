@@ -679,7 +679,7 @@ public class INSLooselyCoupledKalmanEpochEstimator {
 
         final var previousPositionNorm = Math.sqrt(prevX * prevX + prevY * prevY + prevZ * prevZ);
 
-        final var estRebeOld = new Matrix(com.irurueta.navigation.frames.ECEFPosition.COMPONENTS, 1);
+        final var estRebeOld = new Matrix(ECEFPosition.COMPONENTS, 1);
         estRebeOld.setElementAtIndex(0, prevX);
         estRebeOld.setElementAtIndex(1, prevY);
         estRebeOld.setElementAtIndex(2, prevZ);
@@ -694,7 +694,7 @@ public class INSLooselyCoupledKalmanEpochEstimator {
 
         phiMatrix.setSubmatrix(3, 6, 5, 8, tmp1);
 
-        for (var i = 0; i < com.irurueta.navigation.frames.ECEFPosition.COMPONENTS; i++) {
+        for (var i = 0; i < ECEFPosition.COMPONENTS; i++) {
             phiMatrix.setElementAt(6 + i, 3 + i, propagationInterval);
         }
 
@@ -760,13 +760,13 @@ public class INSLooselyCoupledKalmanEpochEstimator {
 
         final var posMeasSD = config.getPositionNoiseSD();
         final var posMeasSD2 = posMeasSD * posMeasSD;
-        for (var i = 0; i < com.irurueta.navigation.frames.ECEFPosition.COMPONENTS; i++) {
+        for (var i = 0; i < ECEFPosition.COMPONENTS; i++) {
             r.setElementAt(i, i, posMeasSD2);
         }
 
         final var velMeasSD = config.getVelocityNoiseSD();
         final var velMeasSD2 = velMeasSD * velMeasSD;
-        for (var i = com.irurueta.navigation.frames.ECEFPosition.COMPONENTS; i < POS_AND_VEL_COMPONENTS; i++) {
+        for (var i = ECEFPosition.COMPONENTS; i < POS_AND_VEL_COMPONENTS; i++) {
             r.setElementAt(i, i, velMeasSD2);
         }
 

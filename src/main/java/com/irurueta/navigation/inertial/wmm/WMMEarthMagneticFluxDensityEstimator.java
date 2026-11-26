@@ -2584,7 +2584,7 @@ public class WMMEarthMagneticFluxDensityEstimator {
             daysInYear = 365.0;
         }
 
-        return year + Math.max(0, (calendar.get(Calendar.DAY_OF_YEAR) - 1)) / daysInYear;
+        return year + Math.max(0, calendar.get(Calendar.DAY_OF_YEAR) - 1) / daysInYear;
     }
 
     /**
@@ -2670,10 +2670,10 @@ public class WMMEarthMagneticFluxDensityEstimator {
         if (oldHeight == null || height != oldHeight || oldLatitude == null || latitude != oldLatitude) {
             final var q = Math.sqrt(a2 - c2 * srlat2);
             final var q1 = height * q;
-            final var q2 = ((q1 + a2) / (q1 + b2)) * ((q1 + a2) / (q1 + b2));
+            final var q2 = (q1 + a2) / (q1 + b2) * ((q1 + a2) / (q1 + b2));
             ct = srlat / Math.sqrt(q2 * crlat2 + srlat2);
             st = Math.sqrt(1.0 - (ct * ct));
-            final var r2 = ((height * height) + 2.0 * q1 + (a4 - c4 * srlat2) / (q * q));
+            final var r2 = height * height + 2.0 * q1 + (a4 - c4 * srlat2) / (q * q);
             r = Math.sqrt(r2);
             final var mD = Math.sqrt(a2 * crlat2 + b2 * srlat2);
             ca = (height + mD) / r;

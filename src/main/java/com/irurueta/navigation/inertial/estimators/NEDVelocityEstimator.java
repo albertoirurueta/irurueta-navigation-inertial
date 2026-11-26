@@ -1187,7 +1187,7 @@ public class NEDVelocityEstimator {
 
         // Derive the current velocity using (5.56)
         final var vn = (oldRn + height) * (2.0 * latRate - oldVn / (oldRn + oldHeight));
-        final var ve = ((re + height) * Math.cos(latitude))
+        final var ve = (re + height) * Math.cos(latitude)
                 * (2.0 * longRate - oldVe / ((oldRe + oldHeight) * Math.cos(oldLatitude)));
         final var vd = -2.0 * heightRate - oldVd;
 

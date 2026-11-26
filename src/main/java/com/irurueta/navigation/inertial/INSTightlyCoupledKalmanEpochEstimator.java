@@ -158,7 +158,7 @@ public class INSTightlyCoupledKalmanEpochEstimator {
 
         final var previousPositionNorm = Math.sqrt(prevX * prevX + prevY * prevY + prevZ * prevZ);
 
-        final var estRebeOld = new Matrix(com.irurueta.navigation.frames.ECEFPosition.COMPONENTS, 1);
+        final var estRebeOld = new Matrix(ECEFPosition.COMPONENTS, 1);
         estRebeOld.setElementAtIndex(0, prevX);
         estRebeOld.setElementAtIndex(1, prevY);
         estRebeOld.setElementAtIndex(2, prevZ);
