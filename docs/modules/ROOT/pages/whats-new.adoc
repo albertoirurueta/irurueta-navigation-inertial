@@ -4,6 +4,10 @@
 
 NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
 
+== Unreleased
+
+* 🐛 Fixed flaky magnetometer calibrator tests (https://github.com/albertoirurueta/irurueta-navigation-inertial/issues/46[#46]): noisy known-position and robust norm/position tests now use the same 2 nT noise as their siblings, a realistic soft-iron range and tolerances tighter than the generated values, and robust retry loops skip attempts without a consensus. No changes to library source.
+
 == 1.12.0
 
 * ⚠️ Changed defaults: gravity-norm accelerometer calibrators (`KnownGravityNorm`, `KnownBiasAndGravityNorm`, `KnownPosition`, `KnownBiasAndPosition` and their robust variants) and norm-based magnetometer calibrators now default to `commonAxisUsed = true` (upper-triangular model, observable from norm constraints). The general mode is still available but is only defined up to a rotation. Easy gyroscope calibrators (`EasyGyroscopeCalibrator`, `KnownBiasEasyGyroscopeCalibrator` and their robust variants) now default to `commonAxisUsed = false` and `estimateGDependentCrossBiases = false`, as in the paper.
