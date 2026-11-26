@@ -85,8 +85,9 @@ Open clarifications: none
   - [x] Task 1.3. Run `mvn compile pmd:pmd` (JDK 21) and confirm the 483 `EmptyCatchBlock` findings drop to 0 except
     those reviewed in Task 3.
 - [x] Task 2. Fix the 15 small findings _(java)_
-  - [x] Task 2.1. Remove the redundant `hashCode()` overrides in `ECEFGravity.java` and `ECIGravitation.java` (keep the
-    `equals` overrides; existing `ECEFGravityTest`/`ECIGravitationTest` `hashCode` assertions must still pass).
+  - [x] Task 2.1. Keep the `hashCode()` overrides in `ECEFGravity.java` and `ECIGravitation.java` and suppress
+    `UselessOverridingMethod` with `@SuppressWarnings("PMD.UselessOverridingMethod")`: removing them triggers PMD
+    `OverrideBothEqualsAndHashcode`, since both classes override `equals` (planned as a removal; changed during implementation).
   - [x] Task 2.2. Replace the fully qualified names with imports (or simple names where already imported) in
     `INSLooselyCoupledKalmanEpochEstimator.java` (682, 697, 763, 769), `INSTightlyCoupledKalmanEpochEstimator.java:161`,
     `INSTightlyCoupledKalmanState.java:1509` and `navigators/ECIInertialNavigator.java:6405`; keep import order per

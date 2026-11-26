@@ -73,8 +73,8 @@ public class ECIGravitation extends GravityOrGravitation<ECIGravitation> {
      * values that are useful for fast classification and storage of objects in collections.
      *
      * <p>
-     * Kept (delegating to the parent implementation) because this class overrides
-     * {@link #equals(Object)}, so both must be overridden together.
+     * Kept, delegating to the parent implementation, so that {@link #equals(Object)} and
+     * this method are visibly overridden together (PMD OverrideBothEqualsAndHashcode).
      *
      * @return Hash code.
      */
