@@ -108,6 +108,13 @@ class LMedSRobustKnownPositionAndInstantMagnetometerCalibratorTest implements
 
     private static final int TIMES = 100;
 
+    /**
+     * Maximum number of attempts in a retry loop that may fail with a {@link CalibrationException} before a valid
+     * result is found. Attempts with a dataset where calibration cannot succeed are skipped, but a calibrator that
+     * fails in most attempts makes the test fail instead of being hidden by the retries.
+     */
+    private static final int MAX_CALIBRATION_FAILURES = 5;
+
     private static final Calendar START_CALENDAR = Calendar.getInstance();
     private static final Calendar END_CALENDAR = Calendar.getInstance();
 
@@ -7905,6 +7912,7 @@ class LMedSRobustKnownPositionAndInstantMagnetometerCalibratorTest implements
             NotReadyException {
 
         var numValid = 0;
+        var numCalibrationFailures = 0;
         for (var t = 0; t < TIMES; t++) {
             final var randomizer = new UniformRandomizer();
             final var wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
@@ -7951,6 +7959,7 @@ class LMedSRobustKnownPositionAndInstantMagnetometerCalibratorTest implements
             try {
                 calibrator.calibrate();
             } catch (final CalibrationException e) {
+                numCalibrationFailures++;
                 continue;
             }
 
@@ -7986,6 +7995,7 @@ class LMedSRobustKnownPositionAndInstantMagnetometerCalibratorTest implements
         }
 
         assertTrue(numValid > 0);
+        assertTrue(numCalibrationFailures <= MAX_CALIBRATION_FAILURES);
     }
 
     @Test
@@ -7993,6 +8003,7 @@ class LMedSRobustKnownPositionAndInstantMagnetometerCalibratorTest implements
             NotReadyException, WrongSizeException {
 
         var numValid = 0;
+        var numCalibrationFailures = 0;
         for (var t = 0; t < TIMES; t++) {
             final var randomizer = new UniformRandomizer();
             final var wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
@@ -8039,6 +8050,7 @@ class LMedSRobustKnownPositionAndInstantMagnetometerCalibratorTest implements
             try {
                 calibrator.calibrate();
             } catch (final CalibrationException e) {
+                numCalibrationFailures++;
                 continue;
             }
 
@@ -8074,6 +8086,7 @@ class LMedSRobustKnownPositionAndInstantMagnetometerCalibratorTest implements
         }
 
         assertTrue(numValid > 0);
+        assertTrue(numCalibrationFailures <= MAX_CALIBRATION_FAILURES);
     }
 
     @Test
@@ -8081,6 +8094,7 @@ class LMedSRobustKnownPositionAndInstantMagnetometerCalibratorTest implements
             WrongSizeException {
 
         var numValid = 0;
+        var numCalibrationFailures = 0;
         for (var t = 0; t < TIMES; t++) {
             final var randomizer = new UniformRandomizer();
             final var wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
@@ -8128,6 +8142,7 @@ class LMedSRobustKnownPositionAndInstantMagnetometerCalibratorTest implements
             try {
                 calibrator.calibrate();
             } catch (final CalibrationException e) {
+                numCalibrationFailures++;
                 continue;
             }
 
@@ -8163,6 +8178,7 @@ class LMedSRobustKnownPositionAndInstantMagnetometerCalibratorTest implements
         }
 
         assertTrue(numValid > 0);
+        assertTrue(numCalibrationFailures <= MAX_CALIBRATION_FAILURES);
     }
 
     @Test
@@ -8170,6 +8186,7 @@ class LMedSRobustKnownPositionAndInstantMagnetometerCalibratorTest implements
             NotReadyException, WrongSizeException {
 
         var numValid = 0;
+        var numCalibrationFailures = 0;
         for (var t = 0; t < TIMES; t++) {
             final var randomizer = new UniformRandomizer();
             final var wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
@@ -8217,6 +8234,7 @@ class LMedSRobustKnownPositionAndInstantMagnetometerCalibratorTest implements
             try {
                 calibrator.calibrate();
             } catch (final CalibrationException e) {
+                numCalibrationFailures++;
                 continue;
             }
 
@@ -8252,6 +8270,7 @@ class LMedSRobustKnownPositionAndInstantMagnetometerCalibratorTest implements
         }
 
         assertTrue(numValid > 0);
+        assertTrue(numCalibrationFailures <= MAX_CALIBRATION_FAILURES);
     }
 
     @Test
@@ -8259,6 +8278,7 @@ class LMedSRobustKnownPositionAndInstantMagnetometerCalibratorTest implements
             NotReadyException, WrongSizeException {
 
         var numValid = 0;
+        var numCalibrationFailures = 0;
         for (var t = 0; t < TIMES; t++) {
             final var randomizer = new UniformRandomizer();
             final var wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
@@ -8306,6 +8326,7 @@ class LMedSRobustKnownPositionAndInstantMagnetometerCalibratorTest implements
             try {
                 calibrator.calibrate();
             } catch (final CalibrationException e) {
+                numCalibrationFailures++;
                 continue;
             }
 
@@ -8341,6 +8362,7 @@ class LMedSRobustKnownPositionAndInstantMagnetometerCalibratorTest implements
         }
 
         assertTrue(numValid > 0);
+        assertTrue(numCalibrationFailures <= MAX_CALIBRATION_FAILURES);
     }
 
     @Override

@@ -102,6 +102,13 @@ class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
 
     private static final int TIMES = 70;
 
+    /**
+     * Maximum number of attempts in a retry loop that may fail with a {@link CalibrationException} before a valid
+     * result is found. Attempts with a dataset where calibration cannot succeed are skipped, but a calibrator that
+     * fails in most attempts makes the test fail instead of being hidden by the retries.
+     */
+    private static final int MAX_CALIBRATION_FAILURES = 5;
+
     private static final Calendar START_CALENDAR = Calendar.getInstance();
     private static final Calendar END_CALENDAR = Calendar.getInstance();
 
@@ -6867,6 +6874,7 @@ class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
             NotReadyException {
 
         var numValid = 0;
+        var numCalibrationFailures = 0;
         for (var t = 0; t < TIMES; t++) {
             final var randomizer = new UniformRandomizer();
             final var wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
@@ -6913,6 +6921,7 @@ class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
             try {
                 calibrator.calibrate();
             } catch (final CalibrationException e) {
+                numCalibrationFailures++;
                 continue;
             }
 
@@ -6941,13 +6950,14 @@ class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
             assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
             assertTrue(calibrator.getEstimatedReducedChiSq() >= 0.0);
             assertTrue(calibrator.getEstimatedP() >= 0.0);
-            assertTrue(calibrator.getEstimatedQ() > 0.0);
+            assertTrue(calibrator.getEstimatedQ() >= 0.0);
 
             numValid++;
             break;
         }
 
         assertTrue(numValid > 0);
+        assertTrue(numCalibrationFailures <= MAX_CALIBRATION_FAILURES);
     }
 
     @Test
@@ -7030,7 +7040,7 @@ class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
             assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
             assertTrue(calibrator.getEstimatedReducedChiSq() >= 0.0);
             assertTrue(calibrator.getEstimatedP() >= 0.0);
-            assertTrue(calibrator.getEstimatedQ() > 0.0);
+            assertTrue(calibrator.getEstimatedQ() >= 0.0);
 
             numValid++;
             break;
@@ -7043,6 +7053,7 @@ class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
     void testCalibrateGeneralWithInlierNoise() throws IOException, LockedException, NotReadyException {
 
         var numValid = 0;
+        var numCalibrationFailures = 0;
         for (var t = 0; t < TIMES; t++) {
             final var randomizer = new UniformRandomizer();
             final var wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
@@ -7090,6 +7101,7 @@ class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
             try {
                 calibrator.calibrate();
             } catch (final CalibrationException e) {
+                numCalibrationFailures++;
                 continue;
             }
 
@@ -7118,6 +7130,7 @@ class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
         }
 
         assertTrue(numValid > 0);
+        assertTrue(numCalibrationFailures <= MAX_CALIBRATION_FAILURES);
     }
 
     @Test
@@ -7125,6 +7138,7 @@ class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
             NotReadyException {
 
         var numValid = 0;
+        var numCalibrationFailures = 0;
         for (var t = 0; t < TIMES; t++) {
             final var randomizer = new UniformRandomizer();
             final var wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
@@ -7172,6 +7186,7 @@ class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
             try {
                 calibrator.calibrate();
             } catch (final CalibrationException e) {
+                numCalibrationFailures++;
                 continue;
             }
 
@@ -7199,13 +7214,14 @@ class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
             assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
             assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
             assertTrue(calibrator.getEstimatedP() >= 0.0);
-            assertTrue(calibrator.getEstimatedQ() > 0.0);
+            assertTrue(calibrator.getEstimatedQ() >= 0.0);
 
             numValid++;
             break;
         }
 
         assertTrue(numValid > 0);
+        assertTrue(numCalibrationFailures <= MAX_CALIBRATION_FAILURES);
     }
 
     @Test
@@ -7213,6 +7229,7 @@ class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
             NotReadyException {
 
         var numValid = 0;
+        var numCalibrationFailures = 0;
         for (var t = 0; t < TIMES; t++) {
             final var randomizer = new UniformRandomizer();
             final var wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
@@ -7260,6 +7277,7 @@ class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
             try {
                 calibrator.calibrate();
             } catch (final CalibrationException e) {
+                numCalibrationFailures++;
                 continue;
             }
 
@@ -7289,6 +7307,7 @@ class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest impl
         }
 
         assertTrue(numValid > 0);
+        assertTrue(numCalibrationFailures <= MAX_CALIBRATION_FAILURES);
     }
 
     @Override

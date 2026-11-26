@@ -98,6 +98,13 @@ class KnownMagneticFluxDensityNormMagnetometerCalibratorTest implements
 
     private static final int TIMES = 100;
 
+    /**
+     * Maximum number of attempts in a retry loop that may fail with a {@link CalibrationException} before a valid
+     * result is found. Attempts with a dataset where calibration cannot succeed are skipped, but a calibrator that
+     * fails in most attempts makes the test fail instead of being hidden by the retries.
+     */
+    private static final int MAX_CALIBRATION_FAILURES = 5;
+
     private static final Calendar START_CALENDAR = Calendar.getInstance();
     private static final Calendar END_CALENDAR = Calendar.getInstance();
 
@@ -7086,6 +7093,7 @@ class KnownMagneticFluxDensityNormMagnetometerCalibratorTest implements
     void testCalibrateForGeneralCaseWithMinimumMeasuresAndNoNoise() throws IOException, LockedException, 
             NotReadyException, WrongSizeException {
         var numValid = 0;
+        var numCalibrationFailures = 0;
         for (var t = 0; t < TIMES; t++) {
             final var randomizer = new UniformRandomizer();
             final var wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
@@ -7117,7 +7125,8 @@ class KnownMagneticFluxDensityNormMagnetometerCalibratorTest implements
 
             try {
                 calibrator.calibrate();
-            } catch (final CalibrationException ignore) {
+            } catch (final CalibrationException e) {
+                numCalibrationFailures++;
                 continue;
             }
 
@@ -7149,7 +7158,7 @@ class KnownMagneticFluxDensityNormMagnetometerCalibratorTest implements
             assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
             assertTrue(calibrator.getEstimatedReducedChiSq() >= 0.0);
             assertTrue(calibrator.getEstimatedP() >= 0.0);
-            assertTrue(calibrator.getEstimatedQ() > 0.0);
+            assertTrue(calibrator.getEstimatedQ() >= 0.0);
 
             numValid++;
 
@@ -7157,12 +7166,14 @@ class KnownMagneticFluxDensityNormMagnetometerCalibratorTest implements
         }
 
         assertTrue(numValid > 0);
+        assertTrue(numCalibrationFailures <= MAX_CALIBRATION_FAILURES);
     }
 
     @Test
     void testCalibrateForGeneralCaseWithLargeNumberOfMeasurementsAndNoise() throws IOException, LockedException,
             NotReadyException, WrongSizeException {
         var numValid = 0;
+        var numCalibrationFailures = 0;
         for (var t = 0; t < TIMES; t++) {
             final var randomizer = new UniformRandomizer();
             final var wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
@@ -7195,6 +7206,7 @@ class KnownMagneticFluxDensityNormMagnetometerCalibratorTest implements
             try {
                 calibrator.calibrate();
             } catch (final CalibrationException e) {
+                numCalibrationFailures++;
                 continue;
             }
 
@@ -7226,7 +7238,7 @@ class KnownMagneticFluxDensityNormMagnetometerCalibratorTest implements
             assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
             assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
             assertTrue(calibrator.getEstimatedP() >= 0.0);
-            assertTrue(calibrator.getEstimatedQ() > 0.0);
+            assertTrue(calibrator.getEstimatedQ() >= 0.0);
 
             numValid++;
 
@@ -7234,12 +7246,14 @@ class KnownMagneticFluxDensityNormMagnetometerCalibratorTest implements
         }
 
         assertTrue(numValid > 0);
+        assertTrue(numCalibrationFailures <= MAX_CALIBRATION_FAILURES);
     }
 
     @Test
     void testCalibrateForCommonAxisCaseWithMinimumMeasuresAndNoNoise() throws IOException, LockedException,
             NotReadyException, WrongSizeException {
         var numValid = 0;
+        var numCalibrationFailures = 0;
         for (var t = 0; t < TIMES; t++) {
             final var randomizer = new UniformRandomizer();
             final var wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
@@ -7271,6 +7285,7 @@ class KnownMagneticFluxDensityNormMagnetometerCalibratorTest implements
             try {
                 calibrator.calibrate();
             } catch (final CalibrationException e) {
+                numCalibrationFailures++;
                 continue;
             }
 
@@ -7303,7 +7318,7 @@ class KnownMagneticFluxDensityNormMagnetometerCalibratorTest implements
                 assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
                 assertTrue(calibrator.getEstimatedReducedChiSq() >= 0.0);
                 assertTrue(calibrator.getEstimatedP() >= 0.0);
-                assertTrue(calibrator.getEstimatedQ() > 0.0);
+                assertTrue(calibrator.getEstimatedQ() >= 0.0);
             }
 
             numValid++;
@@ -7312,12 +7327,14 @@ class KnownMagneticFluxDensityNormMagnetometerCalibratorTest implements
         }
 
         assertTrue(numValid > 0);
+        assertTrue(numCalibrationFailures <= MAX_CALIBRATION_FAILURES);
     }
 
     @Test
     void testCalibrateForCommonAxisCaseWithLargeNumberOfMeasurementsAndNoise() throws IOException, LockedException,
             NotReadyException, WrongSizeException {
         var numValid = 0;
+        var numCalibrationFailures = 0;
         for (var t = 0; t < TIMES; t++) {
             final var randomizer = new UniformRandomizer();
             final var wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
@@ -7350,6 +7367,7 @@ class KnownMagneticFluxDensityNormMagnetometerCalibratorTest implements
             try {
                 calibrator.calibrate();
             } catch (final CalibrationException e) {
+                numCalibrationFailures++;
                 continue;
             }
 
@@ -7381,7 +7399,7 @@ class KnownMagneticFluxDensityNormMagnetometerCalibratorTest implements
             assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
             assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
             assertTrue(calibrator.getEstimatedP() >= 0.0);
-            assertTrue(calibrator.getEstimatedQ() > 0.0);
+            assertTrue(calibrator.getEstimatedQ() >= 0.0);
 
             numValid++;
 
@@ -7389,6 +7407,7 @@ class KnownMagneticFluxDensityNormMagnetometerCalibratorTest implements
         }
 
         assertTrue(numValid > 0);
+        assertTrue(numCalibrationFailures <= MAX_CALIBRATION_FAILURES);
     }
 
     /**

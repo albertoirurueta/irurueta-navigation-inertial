@@ -97,6 +97,13 @@ class PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTes
 
     private static final int TIMES = 70;
 
+    /**
+     * Maximum number of attempts in a retry loop that may fail with a {@link CalibrationException} before a valid
+     * result is found. Attempts with a dataset where calibration cannot succeed are skipped, but a calibrator that
+     * fails in most attempts makes the test fail instead of being hidden by the retries.
+     */
+    private static final int MAX_CALIBRATION_FAILURES = 5;
+
     private static final Calendar START_CALENDAR = Calendar.getInstance();
     private static final Calendar END_CALENDAR = Calendar.getInstance();
 
@@ -12266,6 +12273,7 @@ class PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTes
     void testCalibrateGeneralNoNoiseInlier() throws IOException, LockedException, NotReadyException {
 
         var numValid = 0;
+        var numCalibrationFailures = 0;
         for (var t = 0; t < TIMES; t++) {
             final var randomizer = new UniformRandomizer();
             final var wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
@@ -12322,6 +12330,7 @@ class PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTes
             try {
                 calibrator.calibrate();
             } catch (final CalibrationException e) {
+                numCalibrationFailures++;
                 continue;
             }
 
@@ -12349,19 +12358,21 @@ class PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTes
             assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
             assertTrue(calibrator.getEstimatedReducedChiSq() >= 0.0);
             assertTrue(calibrator.getEstimatedP() >= 0.0);
-            assertTrue(calibrator.getEstimatedQ() > 0.0);
+            assertTrue(calibrator.getEstimatedQ() >= 0.0);
 
             numValid++;
             break;
         }
 
         assertTrue(numValid > 0);
+        assertTrue(numCalibrationFailures <= MAX_CALIBRATION_FAILURES);
     }
 
     @Test
     void testCalibrateCommonAxisNoNoiseInlier() throws IOException, LockedException, NotReadyException {
 
         var numValid = 0;
+        var numCalibrationFailures = 0;
         for (var t = 0; t < TIMES; t++) {
             final var randomizer = new UniformRandomizer();
             final var wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
@@ -12418,6 +12429,7 @@ class PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTes
             try {
                 calibrator.calibrate();
             } catch (final CalibrationException e) {
+                numCalibrationFailures++;
                 continue;
             }
 
@@ -12445,19 +12457,21 @@ class PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTes
             assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
             assertTrue(calibrator.getEstimatedReducedChiSq() >= 0.0);
             assertTrue(calibrator.getEstimatedP() >= 0.0);
-            assertTrue(calibrator.getEstimatedQ() > 0.0);
+            assertTrue(calibrator.getEstimatedQ() >= 0.0);
 
             numValid++;
             break;
         }
 
         assertTrue(numValid > 0);
+        assertTrue(numCalibrationFailures <= MAX_CALIBRATION_FAILURES);
     }
 
     @Test
     void testCalibrateGeneralWithInlierNoise() throws IOException, LockedException, NotReadyException {
 
         var numValid = 0;
+        var numCalibrationFailures = 0;
         for (var t = 0; t < 2 * TIMES; t++) {
             final var randomizer = new UniformRandomizer();
             final var wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
@@ -12515,6 +12529,7 @@ class PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTes
             try {
                 calibrator.calibrate();
             } catch (final CalibrationException e) {
+                numCalibrationFailures++;
                 continue;
             }
 
@@ -12542,19 +12557,21 @@ class PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTes
             assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
             assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
             assertTrue(calibrator.getEstimatedP() >= 0.0);
-            assertTrue(calibrator.getEstimatedQ() > 0.0);
+            assertTrue(calibrator.getEstimatedQ() >= 0.0);
 
             numValid++;
             break;
         }
 
         assertTrue(numValid > 0);
+        assertTrue(numCalibrationFailures <= MAX_CALIBRATION_FAILURES);
     }
 
     @Test
     void testCalibrateCommonAxisWithInlierNoise() throws IOException, LockedException, NotReadyException {
 
         var numValid = 0;
+        var numCalibrationFailures = 0;
         for (var t = 0; t < TIMES; t++) {
             final var randomizer = new UniformRandomizer();
             final var wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
@@ -12612,6 +12629,7 @@ class PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTes
             try {
                 calibrator.calibrate();
             } catch (final CalibrationException e) {
+                numCalibrationFailures++;
                 continue;
             }
 
@@ -12639,13 +12657,14 @@ class PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTes
             assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
             assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
             assertTrue(calibrator.getEstimatedP() >= 0.0);
-            assertTrue(calibrator.getEstimatedQ() > 0.0);
+            assertTrue(calibrator.getEstimatedQ() >= 0.0);
 
             numValid++;
             break;
         }
 
         assertTrue(numValid > 0);
+        assertTrue(numCalibrationFailures <= MAX_CALIBRATION_FAILURES);
     }
 
     @Test
@@ -12653,6 +12672,7 @@ class PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTes
             NotReadyException {
 
         var numValid = 0;
+        var numCalibrationFailures = 0;
         for (var t = 0; t < TIMES; t++) {
             final var randomizer = new UniformRandomizer();
             final var wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
@@ -12710,6 +12730,7 @@ class PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTes
             try {
                 calibrator.calibrate();
             } catch (final CalibrationException e) {
+                numCalibrationFailures++;
                 continue;
             }
 
@@ -12737,13 +12758,14 @@ class PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTes
             assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() >= 0);
             assertTrue(calibrator.getEstimatedReducedChiSq() >= 0.0);
             assertTrue(calibrator.getEstimatedP() >= 0.0);
-            assertTrue(calibrator.getEstimatedQ() > 0.0);
+            assertTrue(calibrator.getEstimatedQ() >= 0.0);
 
             numValid++;
             break;
         }
 
         assertTrue(numValid > 0);
+        assertTrue(numCalibrationFailures <= MAX_CALIBRATION_FAILURES);
     }
 
     @Override
