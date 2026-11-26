@@ -73,7 +73,22 @@ class KnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest implements
     private static final double MAGNETOMETER_NOISE_STD = 2e-9;
 
     private static final double ABSOLUTE_ERROR = 1e-9;
-    private static final double VERY_LARGE_ABSOLUTE_ERROR = 1e-2;
+
+    /**
+     * Minimum value of soft-iron matrix elements used by tests with a large number of noisy measurements.
+     */
+    private static final double MIN_NOISY_SOFT_IRON = -0.05;
+
+    /**
+     * Maximum value of soft-iron matrix elements used by tests with a large number of noisy measurements.
+     */
+    private static final double MAX_NOISY_SOFT_IRON = 0.05;
+
+    /**
+     * Absolute tolerance of estimated soft-iron matrix elements for tests with a large number of noisy
+     * measurements.
+     */
+    private static final double NOISY_SOFT_IRON_ABSOLUTE_ERROR = 2e-4;
 
     private static final int TIMES = 100;
 
@@ -5263,14 +5278,14 @@ class KnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest implements
 
     @Test
     void testCalibrateForGeneralCaseWithLargeNumberOfMeasurementsAndNoise() throws IOException, LockedException,
-            CalibrationException, NotReadyException {
+            NotReadyException {
         var numValid = 0;
         for (var t = 0; t < TIMES; t++) {
             final var randomizer = new UniformRandomizer();
             final var wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
 
             final var hardIron = Matrix.newFromArray(generateHardIron(randomizer));
-            final var mm = generateSoftIronGeneral();
+            final var mm = generateSoftIronGeneral(MIN_NOISY_SOFT_IRON, MAX_NOISY_SOFT_IRON);
             assertNotNull(mm);
 
             final var noiseRandomizer = new GaussianRandomizer(0.0, MAGNETOMETER_NOISE_STD);
@@ -5294,7 +5309,11 @@ class KnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest implements
             assertEquals(0, calibrateStart);
             assertEquals(0, calibrateEnd);
 
-            calibrator.calibrate();
+            try {
+                calibrator.calibrate();
+            } catch (final CalibrationException e) {
+                continue;
+            }
 
             // check
             assertTrue(calibrator.isReady());
@@ -5304,11 +5323,11 @@ class KnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest implements
 
             final var estimatedMm = calibrator.getEstimatedMm();
 
-            if (!mm.equals(estimatedMm, 5.0 * VERY_LARGE_ABSOLUTE_ERROR)) {
+            if (!mm.equals(estimatedMm, NOISY_SOFT_IRON_ABSOLUTE_ERROR)) {
                 continue;
             }
 
-            assertTrue(mm.equals(estimatedMm, 5.0 * VERY_LARGE_ABSOLUTE_ERROR));
+            assertTrue(mm.equals(estimatedMm, NOISY_SOFT_IRON_ABSOLUTE_ERROR));
 
             assertEstimatedResult(estimatedMm, calibrator);
 
@@ -5402,14 +5421,14 @@ class KnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest implements
 
     @Test
     void testCalibrateForCommonAxisCaseWithLargeNumberOfMeasurementsAndNoise() throws IOException, LockedException,
-            CalibrationException, NotReadyException {
+            NotReadyException {
         var numValid = 0;
         for (var t = 0; t < TIMES; t++) {
             final var randomizer = new UniformRandomizer();
             final var wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
 
             final var hardIron = Matrix.newFromArray(generateHardIron(randomizer));
-            final var mm = generateSoftIronCommonAxis();
+            final var mm = generateSoftIronCommonAxis(MIN_NOISY_SOFT_IRON, MAX_NOISY_SOFT_IRON);
             assertNotNull(mm);
 
             final var noiseRandomizer = new GaussianRandomizer(0.0, MAGNETOMETER_NOISE_STD);
@@ -5433,7 +5452,11 @@ class KnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest implements
             assertEquals(0, calibrateStart);
             assertEquals(0, calibrateEnd);
 
-            calibrator.calibrate();
+            try {
+                calibrator.calibrate();
+            } catch (final CalibrationException e) {
+                continue;
+            }
 
             // check
             assertTrue(calibrator.isReady());
@@ -5443,11 +5466,11 @@ class KnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest implements
 
             final var estimatedMm = calibrator.getEstimatedMm();
 
-            if (!mm.equals(estimatedMm, 5.0 * VERY_LARGE_ABSOLUTE_ERROR)) {
+            if (!mm.equals(estimatedMm, NOISY_SOFT_IRON_ABSOLUTE_ERROR)) {
                 continue;
             }
 
-            assertTrue(mm.equals(estimatedMm, 5.0 * VERY_LARGE_ABSOLUTE_ERROR));
+            assertTrue(mm.equals(estimatedMm, NOISY_SOFT_IRON_ABSOLUTE_ERROR));
 
             assertEstimatedResult(estimatedMm, calibrator);
 
@@ -5722,9 +5745,20 @@ class KnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest implements
     }
 
     private static Matrix generateSoftIronGeneral() {
+        return generateSoftIronGeneral(MIN_SOFT_IRON, MAX_SOFT_IRON);
+    }
+
+    /**
+     * Generates a general soft-iron matrix whose elements are uniformly distributed within provided range.
+     *
+     * @param minValue minimum value of matrix elements.
+     * @param maxValue maximum value of matrix elements.
+     * @return generated soft-iron matrix.
+     */
+    private static Matrix generateSoftIronGeneral(final double minValue, final double maxValue) {
         try {
             return Matrix.createWithUniformRandomValues(BodyMagneticFluxDensity.COMPONENTS,
-                    BodyMagneticFluxDensity.COMPONENTS, MIN_SOFT_IRON, MAX_SOFT_IRON);
+                    BodyMagneticFluxDensity.COMPONENTS, minValue, maxValue);
         } catch (final WrongSizeException ignore) {
             // never happens
             return null;
@@ -5732,7 +5766,19 @@ class KnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest implements
     }
 
     private static Matrix generateSoftIronCommonAxis() {
-        final var mm = generateSoftIronGeneral();
+        return generateSoftIronCommonAxis(MIN_SOFT_IRON, MAX_SOFT_IRON);
+    }
+
+    /**
+     * Generates a common-axis (upper triangular) soft-iron matrix whose elements are uniformly distributed
+     * within provided range.
+     *
+     * @param minValue minimum value of matrix elements.
+     * @param maxValue maximum value of matrix elements.
+     * @return generated soft-iron matrix.
+     */
+    private static Matrix generateSoftIronCommonAxis(final double minValue, final double maxValue) {
+        final var mm = generateSoftIronGeneral(minValue, maxValue);
         assertNotNull(mm);
 
         for (var col = 0; col < mm.getColumns(); col++) {

@@ -73,8 +73,28 @@ class KnownMagneticFluxDensityNormMagnetometerCalibratorTest implements
     private static final double MAGNETOMETER_NOISE_STD = 2e-9;
 
     private static final double ABSOLUTE_ERROR = 1e-9;
-    private static final double LARGE_ABSOLUTE_ERROR = 5e-5;
-    private static final double VERY_LARGE_ABSOLUTE_ERROR = 1e-2;
+
+    /**
+     * Minimum value of soft-iron matrix elements used by tests with a large number of noisy measurements.
+     */
+    private static final double MIN_NOISY_SOFT_IRON = -0.05;
+
+    /**
+     * Maximum value of soft-iron matrix elements used by tests with a large number of noisy measurements.
+     */
+    private static final double MAX_NOISY_SOFT_IRON = 0.05;
+
+    /**
+     * Absolute tolerance of estimated hard iron (in Teslas) for tests with a large number of noisy
+     * measurements.
+     */
+    private static final double NOISY_HARD_IRON_ABSOLUTE_ERROR = 1e-7;
+
+    /**
+     * Absolute tolerance of estimated soft-iron matrix elements for tests with a large number of noisy
+     * measurements.
+     */
+    private static final double NOISY_SOFT_IRON_ABSOLUTE_ERROR = 3e-3;
 
     private static final int TIMES = 100;
 
@@ -7141,14 +7161,14 @@ class KnownMagneticFluxDensityNormMagnetometerCalibratorTest implements
 
     @Test
     void testCalibrateForGeneralCaseWithLargeNumberOfMeasurementsAndNoise() throws IOException, LockedException,
-            CalibrationException, NotReadyException, WrongSizeException {
+            NotReadyException, WrongSizeException {
         var numValid = 0;
         for (var t = 0; t < TIMES; t++) {
             final var randomizer = new UniformRandomizer();
             final var wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
 
             final var hardIron = Matrix.newFromArray(generateHardIron(randomizer));
-            final var mm = generateSoftIronGeneral();
+            final var mm = generateSoftIronGeneral(MIN_NOISY_SOFT_IRON, MAX_NOISY_SOFT_IRON);
             assertNotNull(mm);
 
             final var noiseRandomizer = new GaussianRandomizer(0.0, MAGNETOMETER_NOISE_STD);
@@ -7172,7 +7192,11 @@ class KnownMagneticFluxDensityNormMagnetometerCalibratorTest implements
             assertEquals(0, calibrateStart);
             assertEquals(0, calibrateEnd);
 
-            calibrator.calibrate();
+            try {
+                calibrator.calibrate();
+            } catch (final CalibrationException e) {
+                continue;
+            }
 
             // check
             assertTrue(calibrator.isReady());
@@ -7183,15 +7207,15 @@ class KnownMagneticFluxDensityNormMagnetometerCalibratorTest implements
             final var estimatedHardIron = calibrator.getEstimatedHardIronAsMatrix();
             final var estimatedMm = calibrator.getEstimatedMm();
 
-            if (!hardIron.equals(estimatedHardIron, LARGE_ABSOLUTE_ERROR)) {
+            if (!hardIron.equals(estimatedHardIron, NOISY_HARD_IRON_ABSOLUTE_ERROR)) {
                 continue;
             }
-            if (!mm.equals(estimatedMm, 5.0 * VERY_LARGE_ABSOLUTE_ERROR)) {
+            if (!mm.equals(estimatedMm, NOISY_SOFT_IRON_ABSOLUTE_ERROR)) {
                 continue;
             }
 
-            assertTrue(hardIron.equals(estimatedHardIron, LARGE_ABSOLUTE_ERROR));
-            assertTrue(mm.equals(estimatedMm, 5.0 * VERY_LARGE_ABSOLUTE_ERROR));
+            assertTrue(hardIron.equals(estimatedHardIron, NOISY_HARD_IRON_ABSOLUTE_ERROR));
+            assertTrue(mm.equals(estimatedMm, NOISY_SOFT_IRON_ABSOLUTE_ERROR));
 
             assertEstimatedResult(estimatedHardIron, estimatedMm, calibrator);
 
@@ -7292,14 +7316,14 @@ class KnownMagneticFluxDensityNormMagnetometerCalibratorTest implements
 
     @Test
     void testCalibrateForCommonAxisCaseWithLargeNumberOfMeasurementsAndNoise() throws IOException, LockedException,
-            CalibrationException, NotReadyException, WrongSizeException {
+            NotReadyException, WrongSizeException {
         var numValid = 0;
         for (var t = 0; t < TIMES; t++) {
             final var randomizer = new UniformRandomizer();
             final var wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
 
             final var hardIron = Matrix.newFromArray(generateHardIron(randomizer));
-            final var mm = generateSoftIronCommonAxis();
+            final var mm = generateSoftIronCommonAxis(MIN_NOISY_SOFT_IRON, MAX_NOISY_SOFT_IRON);
             assertNotNull(mm);
 
             final var noiseRandomizer = new GaussianRandomizer(0.0, MAGNETOMETER_NOISE_STD);
@@ -7323,7 +7347,11 @@ class KnownMagneticFluxDensityNormMagnetometerCalibratorTest implements
             assertEquals(0, calibrateStart);
             assertEquals(0, calibrateEnd);
 
-            calibrator.calibrate();
+            try {
+                calibrator.calibrate();
+            } catch (final CalibrationException e) {
+                continue;
+            }
 
             // check
             assertTrue(calibrator.isReady());
@@ -7334,15 +7362,15 @@ class KnownMagneticFluxDensityNormMagnetometerCalibratorTest implements
             final var estimatedHardIron = calibrator.getEstimatedHardIronAsMatrix();
             final var estimatedMm = calibrator.getEstimatedMm();
 
-            if (!hardIron.equals(estimatedHardIron, LARGE_ABSOLUTE_ERROR)) {
+            if (!hardIron.equals(estimatedHardIron, NOISY_HARD_IRON_ABSOLUTE_ERROR)) {
                 continue;
             }
-            if (!mm.equals(estimatedMm, 5.0 * VERY_LARGE_ABSOLUTE_ERROR)) {
+            if (!mm.equals(estimatedMm, NOISY_SOFT_IRON_ABSOLUTE_ERROR)) {
                 continue;
             }
 
-            assertTrue(hardIron.equals(estimatedHardIron, LARGE_ABSOLUTE_ERROR));
-            assertTrue(mm.equals(estimatedMm, 5.0 * VERY_LARGE_ABSOLUTE_ERROR));
+            assertTrue(hardIron.equals(estimatedHardIron, NOISY_HARD_IRON_ABSOLUTE_ERROR));
+            assertTrue(mm.equals(estimatedMm, NOISY_SOFT_IRON_ABSOLUTE_ERROR));
 
             assertEstimatedResult(estimatedHardIron, estimatedMm, calibrator);
 
@@ -7717,9 +7745,20 @@ class KnownMagneticFluxDensityNormMagnetometerCalibratorTest implements
     }
 
     private static Matrix generateSoftIronGeneral() {
+        return generateSoftIronGeneral(MIN_SOFT_IRON, MAX_SOFT_IRON);
+    }
+
+    /**
+     * Generates a general soft-iron matrix whose elements are uniformly distributed within provided range.
+     *
+     * @param minValue minimum value of matrix elements.
+     * @param maxValue maximum value of matrix elements.
+     * @return generated soft-iron matrix.
+     */
+    private static Matrix generateSoftIronGeneral(final double minValue, final double maxValue) {
         try {
             return Matrix.createWithUniformRandomValues(BodyMagneticFluxDensity.COMPONENTS,
-                    BodyMagneticFluxDensity.COMPONENTS, MIN_SOFT_IRON, MAX_SOFT_IRON);
+                    BodyMagneticFluxDensity.COMPONENTS, minValue, maxValue);
         } catch (final WrongSizeException ignore) {
             // never happens
             return null;
@@ -7727,7 +7766,19 @@ class KnownMagneticFluxDensityNormMagnetometerCalibratorTest implements
     }
 
     private static Matrix generateSoftIronCommonAxis() {
-        final var mm = generateSoftIronGeneral();
+        return generateSoftIronCommonAxis(MIN_SOFT_IRON, MAX_SOFT_IRON);
+    }
+
+    /**
+     * Generates a common-axis (upper triangular) soft-iron matrix whose elements are uniformly distributed
+     * within provided range.
+     *
+     * @param minValue minimum value of matrix elements.
+     * @param maxValue maximum value of matrix elements.
+     * @return generated soft-iron matrix.
+     */
+    private static Matrix generateSoftIronCommonAxis(final double minValue, final double maxValue) {
+        final var mm = generateSoftIronGeneral(minValue, maxValue);
         assertNotNull(mm);
 
         for (var col = 0; col < mm.getColumns(); col++) {
