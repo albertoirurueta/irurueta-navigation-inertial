@@ -100,6 +100,18 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
     private boolean skipStaticInterval;
 
     /**
+     * Number of samples processed during initialization. Since the initialization period is static,
+     * these samples are the beginning of the first static interval.
+     */
+    private int initialSamples;
+
+    /**
+     * Indicates that the static interval that is currently being processed is the first one, which
+     * started with the initialization period.
+     */
+    private boolean firstStaticInterval;
+
+    /**
      * Indicates whether dynamic interval must be skipped.
      */
     private boolean skipDynamicInterval;
@@ -577,6 +589,39 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
     }
 
     /**
+     * Gets number of samples that detection of static/dynamic periods is delayed.
+     * Detector classifies the sample at the centre of its window, so the interval status
+     * refers to the sample that was processed this number of samples ago.
+     *
+     * @return number of samples that detection is delayed.
+     */
+    public int getDetectionDelaySamples() {
+        return staticIntervalDetector.getDetectionDelaySamples();
+    }
+
+    /**
+     * Gets number of samples that have contributed to the accumulated average and standard deviation
+     * of the static interval being processed.
+     * For the first static interval after initialization, this also includes the samples processed during
+     * initialization (which are static), since the initialization average is the first static average.
+     *
+     * @return number of samples contributing to the accumulated static average.
+     */
+    protected int getAccumulatedStaticSamples() {
+        return processedStaticSamples + (firstStaticInterval ? initialSamples : 0);
+    }
+
+    /**
+     * Indicates whether the static interval that is currently being processed is the first one,
+     * which started with the initialization period.
+     *
+     * @return true if current static interval is the first one after initialization.
+     */
+    protected boolean isFirstStaticInterval() {
+        return firstStaticInterval;
+    }
+
+    /**
      * Indicates whether last static interval must be skipped.
      *
      * @return true if last static interval must be skipped.
@@ -649,6 +694,9 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
 
         skipDynamicInterval = false;
         skipStaticInterval = false;
+
+        initialSamples = 0;
+        firstStaticInterval = false;
 
         if (listener != null) {
             //noinspection unchecked
@@ -762,6 +810,9 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
             public void onInitializationCompleted(
                     final AccelerationTriadStaticIntervalDetector detector, final double baseNoiseLevel) {
 
+                initialSamples = detector.getProcessedSamples();
+                firstStaticInterval = true;
+
                 handleInitializationCompleted();
 
                 if (MeasurementsGenerator.this.listener != null) {
@@ -820,7 +871,8 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
                     final double accumulatedStdY,
                     final double accumulatedStdZ) {
 
-                if (processedStaticSamples < minStaticSamples) {
+                // the initialization period is part of the first static interval
+                if (getAccumulatedStaticSamples() < minStaticSamples) {
                     final var wasSkipped = skipStaticInterval;
                     skipStaticInterval = true;
 
@@ -834,6 +886,7 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
                         accumulatedAvgX, accumulatedAvgY, accumulatedAvgZ,
                         accumulatedStdX, accumulatedStdY, accumulatedStdZ);
                 skipStaticInterval = false;
+                firstStaticInterval = false;
 
                 if (MeasurementsGenerator.this.listener != null) {
                     //noinspection unchecked

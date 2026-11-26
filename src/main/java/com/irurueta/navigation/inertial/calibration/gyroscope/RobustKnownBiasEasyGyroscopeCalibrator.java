@@ -81,14 +81,20 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
     /**
      * Indicates whether by default a common z-axis is assumed for both the accelerometer
      * and gyroscope.
+     * The default is {@code false} (general case), following the reference paper.
+     * Note that the upper-triangular form of the gyroscope scale and misalignment
+     * matrix (common z-axis) is only valid for the sensor that defines the body frame
+     * (the accelerometer), and not for the gyroscope.
      */
-    public static final boolean DEFAULT_USE_COMMON_Z_AXIS = true;
+    public static final boolean DEFAULT_USE_COMMON_Z_AXIS = false;
 
     /**
      * Indicates that by default G-dependent cross biases introduced
-     * by the accelerometer on the gyroscope are estimated.
+     * by the accelerometer on the gyroscope are not estimated, following the reference paper.
+     * Note that the G-dependent cross biases matrix (Gg) is only weakly observable when
+     * gravity is the only available reference.
      */
-    public static final boolean DEFAULT_ESTIMATE_G_DEPENDENT_CROSS_BIASES = true;
+    public static final boolean DEFAULT_ESTIMATE_G_DEPENDENT_CROSS_BIASES = false;
 
     /**
      * Default robust estimator method when none is provided.
@@ -5369,6 +5375,10 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
 
     /**
      * Computes error of a preliminary result respect a given sequence.
+     * The error is the norm of the 3-component residual between the gravity versor after the
+     * sequence and the gravity versor before it rotated by the attitude change integrated using
+     * the preliminary gyroscope parameters, which is the same residual used by the non-robust
+     * calibrator.
      *
      * @param sequence          a sequence.
      * @param preliminaryResult a preliminary result.

@@ -22,6 +22,8 @@ import com.irurueta.navigation.inertial.calibration.StandardDeviationBodyMagneti
 import com.irurueta.navigation.inertial.calibration.intervals.TriadStaticIntervalDetector;
 import com.irurueta.navigation.inertial.calibration.noise.AccumulatedMagneticFluxDensityTriadNoiseEstimator;
 
+import java.util.ArrayDeque;
+
 /**
  * Generates measurements for the calibration of magnetometers by alternating
  * static and dynamic intervals where device is kept static or moved.
@@ -34,6 +36,12 @@ import com.irurueta.navigation.inertial.calibration.noise.AccumulatedMagneticFlu
  * and all its implementations.
  * - {@link com.irurueta.navigation.inertial.calibration.magnetometer.RobustKnownHardIronPositionAndInstantMagnetometerCalibrator}
  * and all its implementations.
+ * <p>
+ * Generated measurements contain the average magnetic flux density of each static interval, computed
+ * only with the samples that the (centred window) detector classified as static, and its standard deviation
+ * is the one of the average, that is, the mean standard deviation of the three coordinates divided by the
+ * square root of the number of averaged samples. The initialization period is static, so its samples are
+ * part of the first static interval.
  */
 public class MagnetometerMeasurementsGenerator extends
         MeasurementsGenerator<StandardDeviationBodyMagneticFluxDensity,
@@ -47,28 +55,16 @@ public class MagnetometerMeasurementsGenerator extends
             new AccumulatedMagneticFluxDensityTriadNoiseEstimator();
 
     /**
-     * Accumulated average x-coordinate of magnetic flux density while body remains in a static interval and
+     * Magnetic flux density samples that have been received but not yet classified by the detector,
+     * which classifies the sample at the centre of its window. Each entry contains x, y, z coordinates
      * expressed in Teslas (T).
      */
-    private double avgBx;
+    private final ArrayDeque<double[]> pendingSamples = new ArrayDeque<>();
 
     /**
-     * Accumulated average y-coordinate of magnetic flux density while body remains in a static interval and
-     * expressed in Teslas (T).
+     * Indicates that the sample that completed initialization has not been processed yet.
      */
-    private double avgBy;
-
-    /**
-     * Accumulated average z-coordinate of magnetic flux density while body remains in a static interval and
-     * expressed in Teslas (T).
-     */
-    private double avgBz;
-
-    /**
-     * Contains standard deviation of magnetic flux density during initialization (i.e. base noise level)
-     * expressed in Teslas (T).
-     */
-    private double stdBNorm;
+    private boolean initializationSamplePending;
 
     /**
      * Constructor.
@@ -96,10 +92,15 @@ public class MagnetometerMeasurementsGenerator extends
         super.reset();
 
         accumulatedEstimator.reset();
+        pendingSamples.clear();
+        initializationSamplePending = false;
     }
 
     /**
      * Post process provided input sample.
+     * Detector classifies the sample at the centre of its window, so samples are buffered until they
+     * are classified, and only samples classified as static contribute to the accumulated average.
+     * The initialization period is static, so its samples are part of the first static interval.
      *
      * @param sample an input sample.
      * @throws LockedException if generator is busy.
@@ -107,16 +108,38 @@ public class MagnetometerMeasurementsGenerator extends
     @Override
     protected void postProcess(final BodyKinematicsAndMagneticFluxDensity sample) throws LockedException {
         final var b = sample.getMagneticFluxDensity();
-        if (staticIntervalDetector.getStatus() == TriadStaticIntervalDetector.Status.STATIC_INTERVAL
-                || staticIntervalDetector.getStatus() == TriadStaticIntervalDetector.Status.INITIALIZING) {
+        final var status = staticIntervalDetector.getStatus();
 
+        if (status == TriadStaticIntervalDetector.Status.INITIALIZING) {
             accumulatedEstimator.addTriad(b.getBx(), b.getBy(), b.getBz());
-            avgBx = accumulatedEstimator.getAvgX();
-            avgBy = accumulatedEstimator.getAvgY();
-            avgBz = accumulatedEstimator.getAvgZ();
+            return;
+        }
 
-        } else {
-            accumulatedEstimator.reset();
+        if (status == TriadStaticIntervalDetector.Status.INITIALIZATION_COMPLETED && initializationSamplePending) {
+            // sample that completed initialization belongs to the initialization period
+            initializationSamplePending = false;
+            accumulatedEstimator.addTriad(b.getBx(), b.getBy(), b.getBz());
+            return;
+        }
+
+        if (status != TriadStaticIntervalDetector.Status.INITIALIZATION_COMPLETED
+                && status != TriadStaticIntervalDetector.Status.STATIC_INTERVAL
+                && status != TriadStaticIntervalDetector.Status.DYNAMIC_INTERVAL) {
+            return;
+        }
+
+        pendingSamples.addLast(new double[]{b.getBx(), b.getBy(), b.getBz()});
+
+        if (status == TriadStaticIntervalDetector.Status.INITIALIZATION_COMPLETED) {
+            // first classified sample has not been reached yet
+            return;
+        }
+
+        // oldest pending sample is the one that has just been classified
+        final var classified = pendingSamples.pollFirst();
+
+        if (status == TriadStaticIntervalDetector.Status.STATIC_INTERVAL) {
+            accumulatedEstimator.addTriad(classified[0], classified[1], classified[2]);
         }
     }
 
@@ -158,14 +181,29 @@ public class MagnetometerMeasurementsGenerator extends
             final double accumulatedAvgX, final double accumulatedAvgY, final double accumulatedAvgZ,
             final double accumulatedStdX, final double accumulatedStdY, final double accumulatedStdZ) {
 
-        if (!isStaticIntervalSkipped()) {
+        // accumulated estimator only contains samples classified as static
+        final var n = accumulatedEstimator.getNumberOfProcessedSamples();
+        if (!isStaticIntervalSkipped() && n > 0) {
+
+            // the standard deviation of the average of N static samples is sigma / sqrt(N), where
+            // sigma is the mean standard deviation of the three coordinates
+            final var avgStd = (accumulatedEstimator.getStandardDeviationX()
+                    + accumulatedEstimator.getStandardDeviationY()
+                    + accumulatedEstimator.getStandardDeviationZ()) / 3.0;
 
             final var measurement = new StandardDeviationBodyMagneticFluxDensity(
-                    new BodyMagneticFluxDensity(avgBx, avgBy, avgBz), stdBNorm);
+                    new BodyMagneticFluxDensity(accumulatedEstimator.getAvgX(), accumulatedEstimator.getAvgY(),
+                            accumulatedEstimator.getAvgZ()), avgStd / Math.sqrt(n));
 
             if (listener != null) {
                 listener.onGeneratedMeasurement(this, measurement);
             }
+        }
+
+        try {
+            accumulatedEstimator.reset();
+        } catch (final LockedException ignore) {
+            // never happens
         }
     }
 
@@ -182,7 +220,8 @@ public class MagnetometerMeasurementsGenerator extends
      */
     @Override
     protected void handleInitializationCompleted() {
-        stdBNorm = accumulatedEstimator.getStandardDeviationNorm();
+        pendingSamples.clear();
+        initializationSamplePending = true;
     }
 
     /**
@@ -190,6 +229,8 @@ public class MagnetometerMeasurementsGenerator extends
      */
     @Override
     protected void handleInitializationFailed() {
+        pendingSamples.clear();
+        initializationSamplePending = false;
         try {
             accumulatedEstimator.reset();
         } catch (final LockedException ignore) {

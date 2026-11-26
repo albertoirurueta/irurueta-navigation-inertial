@@ -468,8 +468,12 @@ class IMUErrorsCreatorTest {
             final var accelerometerNoiseLevel = generator.getAccelerometerBaseNoiseLevel();
             final var gyroNoiseLevel = generator.getGyroscopeBaseNoiseLevel();
             final var sqrtTimeInterval = Math.sqrt(generator.getTimeInterval());
-            assertEquals(accelerometerNoiseLevel * sqrtTimeInterval, estimatedAccelerometerNoiseRootPsd,
-                    SMALL_ABSOLUTE_ERROR);
+            // accelerometer base noise level is variance based (N7), while root PSD is derived from the std norm.
+            // For isotropic noise: std norm = 3^(1/4) * sqrt(variance norm)
+            final var expectedAccelerometerRootPsd = Math.sqrt(Math.sqrt(3.0) * accelerometerNoiseLevel)
+                    * sqrtTimeInterval;
+            assertEquals(expectedAccelerometerRootPsd, estimatedAccelerometerNoiseRootPsd,
+                    0.25 * expectedAccelerometerRootPsd);
             assertEquals(gyroNoiseLevel * sqrtTimeInterval, estimatedGyroNoiseRootPsd, SMALL_ABSOLUTE_ERROR);
 
             assertEquals(SMALL_ROOT_PSD, estimatedAccelerometerNoiseRootPsd, SMALL_ABSOLUTE_ERROR);
@@ -585,12 +589,14 @@ class IMUErrorsCreatorTest {
         var oldEcefFrame = new ECEFFrame(ecefFrame);
         var newEcefFrame = new ECEFFrame();
 
-        var oldEcefX = ecefX - deltaX;
-        var oldEcefY = ecefY - deltaY;
-        var oldEcefZ = ecefZ - deltaZ;
-        var oldRoll = roll - deltaRoll;
-        var oldPitch = pitch - deltaPitch;
-        var oldYaw = yaw - deltaYaw;
+        // dynamic period starts at the current static position and orientation (no sudden jump), otherwise
+        // sequences that include static samples next to the motion would be inconsistent with the gravity vectors
+        var oldEcefX = ecefX;
+        var oldEcefY = ecefY;
+        var oldEcefZ = ecefZ;
+        var oldRoll = roll;
+        var oldPitch = pitch;
+        var oldYaw = yaw;
 
         final var trueSequence = new BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>();
         final var trueTimedKinematicsList = new ArrayList<StandardDeviationTimedBodyKinematics>();

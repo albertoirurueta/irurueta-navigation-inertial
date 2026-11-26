@@ -68,7 +68,7 @@ class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibratorTest impleme
     private static final double MIN_HEIGHT_METERS = -500.0;
     private static final double MAX_HEIGHT_METERS = 10000.0;
 
-    private static final double MAGNETOMETER_NOISE_STD = 200e-9;
+    private static final double MAGNETOMETER_NOISE_STD = 2e-9;
 
     private static final double ABSOLUTE_ERROR = 1e-9;
     private static final double LARGE_ABSOLUTE_ERROR = 5e-5;
@@ -80,7 +80,7 @@ class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibratorTest impleme
 
     private static final double THRESHOLD = 1e-9;
 
-    private static final double OUTLIER_ERROR_FACTOR = 1000.0;
+    private static final double OUTLIER_ERROR_FACTOR = 100000.0;
 
     private static final int TIMES = 100;
 
@@ -102,6 +102,16 @@ class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibratorTest impleme
     private int calibrateEnd;
     private int calibrateNextIteration;
     private int calibrateProgressChange;
+
+    /**
+     * Checks that the common z-axis model is used by default, since it is the only
+     * model that is fully observable with norm-based measurements.
+     */
+    @Test
+    void defaultUseCommonZAxis_whenNewInstance_isTrue() {
+        assertTrue(RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator.DEFAULT_USE_COMMON_Z_AXIS);
+        assertTrue(new RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator().isCommonAxisUsed());
+    }
 
     @Test
     void testConstructor1() throws WrongSizeException {
@@ -172,9 +182,9 @@ class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibratorTest impleme
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(13, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -316,9 +326,9 @@ class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibratorTest impleme
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(13, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -461,9 +471,9 @@ class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibratorTest impleme
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(13, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -756,9 +766,9 @@ class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibratorTest impleme
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(13, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -911,9 +921,9 @@ class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibratorTest impleme
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(13, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -1082,9 +1092,9 @@ class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibratorTest impleme
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(13, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -1242,9 +1252,9 @@ class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibratorTest impleme
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(13, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -1688,9 +1698,9 @@ class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibratorTest impleme
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(13, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -1846,9 +1856,9 @@ class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibratorTest impleme
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(13, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -2322,9 +2332,9 @@ class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibratorTest impleme
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(13, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -2485,9 +2495,9 @@ class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibratorTest impleme
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(13, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -2988,9 +2998,9 @@ class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibratorTest impleme
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(13, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -3168,9 +3178,9 @@ class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibratorTest impleme
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(13, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -3706,9 +3716,9 @@ class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibratorTest impleme
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(13, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -3866,9 +3876,9 @@ class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibratorTest impleme
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(13, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -4027,9 +4037,9 @@ class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibratorTest impleme
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(13, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -4353,9 +4363,9 @@ class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibratorTest impleme
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(13, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -4522,9 +4532,9 @@ class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibratorTest impleme
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(13, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -4708,9 +4718,9 @@ class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibratorTest impleme
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(13, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -4885,9 +4895,9 @@ class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibratorTest impleme
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(13, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -5373,9 +5383,9 @@ class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibratorTest impleme
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(13, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -5543,9 +5553,9 @@ class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibratorTest impleme
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(13, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -6054,9 +6064,9 @@ class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibratorTest impleme
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(13, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -6229,9 +6239,9 @@ class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibratorTest impleme
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(13, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -6766,9 +6776,9 @@ class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibratorTest impleme
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(13, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -6961,9 +6971,9 @@ class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibratorTest impleme
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(13, calibrator.getMinimumRequiredMeasurements());
+        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
@@ -8160,7 +8170,7 @@ class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibratorTest impleme
         final var calibrator = new RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default value
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
 
         // set a new value
         calibrator.setCommonAxisUsed(true);
@@ -8188,8 +8198,8 @@ class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibratorTest impleme
         final var calibrator = new RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default value
-        assertEquals(13, calibrator.getMinimumRequiredMeasurements());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
 
         // set a new value
         calibrator.setCommonAxisUsed(true);

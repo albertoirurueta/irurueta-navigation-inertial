@@ -85,6 +85,16 @@ class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
     private int calibrateNextIteration;
     private int calibrateProgressChange;
 
+    /**
+     * Checks that the common z-axis model is used by default, since it is the only
+     * model that is fully observable with norm-based measurements.
+     */
+    @Test
+    void defaultUseCommonZAxis_whenNewInstance_isTrue() {
+        assertTrue(PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator.DEFAULT_USE_COMMON_Z_AXIS);
+        assertTrue(new PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator().isCommonAxisUsed());
+    }
+
     @Test
     void testConstructor1() throws WrongSizeException {
         final var calibrator = new PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator();
@@ -151,9 +161,9 @@ class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -257,9 +267,9 @@ class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -365,9 +375,9 @@ class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -581,9 +591,9 @@ class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -695,9 +705,9 @@ class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -823,9 +833,9 @@ class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -956,9 +966,9 @@ class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -1083,9 +1093,9 @@ class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -1210,9 +1220,9 @@ class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -1595,9 +1605,9 @@ class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -1730,9 +1740,9 @@ class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -2138,9 +2148,9 @@ class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -2277,9 +2287,9 @@ class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -2710,9 +2720,9 @@ class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -2869,9 +2879,9 @@ class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -3329,9 +3339,9 @@ class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -3456,9 +3466,9 @@ class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -3583,9 +3593,9 @@ class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -3968,9 +3978,9 @@ class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -4104,9 +4114,9 @@ class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -4512,9 +4522,9 @@ class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -4651,9 +4661,9 @@ class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -5084,9 +5094,9 @@ class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -5243,9 +5253,9 @@ class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -5708,9 +5718,9 @@ class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -5754,7 +5764,7 @@ class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class,
-                () -> new PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(new double[9], gravityNorm,
+                () -> new PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(new double[5], gravityNorm,
                         measurements));
     }
 
@@ -5842,9 +5852,9 @@ class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -5888,7 +5898,7 @@ class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class,
-                () -> new PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(new double[9], gravityNorm,
+                () -> new PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(new double[5], gravityNorm,
                         measurements, this));
     }
 
@@ -6248,9 +6258,9 @@ class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -6294,7 +6304,7 @@ class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class,
-                () -> new PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(new double[9], gravityNorm,
+                () -> new PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(new double[5], gravityNorm,
                         measurements, bias));
         assertThrows(IllegalArgumentException.class,
                 () -> new PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(qualityScores, gravityNorm,
@@ -6389,9 +6399,9 @@ class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -6435,7 +6445,7 @@ class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class,
-                () -> new PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(new double[9], gravityNorm,
+                () -> new PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(new double[5], gravityNorm,
                         measurements, bias, this));
         assertThrows(IllegalArgumentException.class,
                 () -> new PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(qualityScores, gravityNorm,
@@ -6812,9 +6822,9 @@ class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -6858,7 +6868,7 @@ class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class,
-                () -> new PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(new double[9], gravityNorm,
+                () -> new PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(new double[5], gravityNorm,
                         measurements, ba));
         final var m1 = new Matrix(1, 1);
         assertThrows(IllegalArgumentException.class,
@@ -6958,9 +6968,9 @@ class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -7004,7 +7014,7 @@ class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class,
-                () -> new PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(new double[9], gravityNorm,
+                () -> new PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(new double[5], gravityNorm,
                         measurements, ba, this));
         final var m1 = new Matrix(1, 1);
         assertThrows(IllegalArgumentException.class,
@@ -7406,9 +7416,9 @@ class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -7452,7 +7462,7 @@ class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class,
-                () -> new PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(new double[9], gravityNorm,
+                () -> new PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(new double[5], gravityNorm,
                         measurements, ba, ma));
         final var m1 = new Matrix(1, 1);
         assertThrows(IllegalArgumentException.class,
@@ -7570,9 +7580,9 @@ class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -7616,7 +7626,7 @@ class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class,
-                () -> new PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(new double[9], gravityNorm,
+                () -> new PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(new double[5], gravityNorm,
                         measurements, ba, ma, this));
         final var m1 = new Matrix(1, 1);
         assertThrows(IllegalArgumentException.class,
@@ -8046,9 +8056,9 @@ class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -8092,7 +8102,7 @@ class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class,
-                () -> new PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(new double[9], gravityNorm));
+                () -> new PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(new double[5], gravityNorm));
     }
 
     @Test
@@ -8179,9 +8189,9 @@ class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -8225,7 +8235,7 @@ class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class,
-                () -> new PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(new double[9], gravityNorm,
+                () -> new PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(new double[5], gravityNorm,
                         measurements));
     }
 
@@ -8313,9 +8323,9 @@ class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -8359,7 +8369,7 @@ class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class,
-                () -> new PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(new double[9], gravityNorm,
+                () -> new PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(new double[5], gravityNorm,
                         measurements, this));
     }
 
@@ -8719,9 +8729,9 @@ class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -8765,7 +8775,7 @@ class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class,
-                () -> new PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(new double[9], gravityNorm,
+                () -> new PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(new double[5], gravityNorm,
                         measurements, bias));
         assertThrows(IllegalArgumentException.class,
                 () -> new PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(qualityScores, gravityNorm,
@@ -8860,9 +8870,9 @@ class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -8906,7 +8916,7 @@ class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class,
-                () -> new PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(new double[9], gravityNorm,
+                () -> new PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(new double[5], gravityNorm,
                         measurements, bias, this));
         assertThrows(IllegalArgumentException.class,
                 () -> new PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(qualityScores, gravityNorm,
@@ -9283,9 +9293,9 @@ class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -9329,7 +9339,7 @@ class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class,
-                () -> new PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(new double[9], gravityNorm,
+                () -> new PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(new double[5], gravityNorm,
                         measurements, ba));
         final var m1 = new Matrix(1, 1);
         assertThrows(IllegalArgumentException.class,
@@ -9429,9 +9439,9 @@ class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -9475,7 +9485,7 @@ class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class,
-                () -> new PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(new double[9], gravityNorm,
+                () -> new PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(new double[5], gravityNorm,
                         measurements, ba, this));
         final var m1 = new Matrix(1, 1);
         assertThrows(IllegalArgumentException.class,
@@ -9877,9 +9887,9 @@ class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -9923,7 +9933,7 @@ class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class,
-                () -> new PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(new double[9], gravityNorm,
+                () -> new PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(new double[5], gravityNorm,
                         measurements, ba, ma));
         final var m1 = new Matrix(1, 1);
         assertThrows(IllegalArgumentException.class,
@@ -10041,9 +10051,9 @@ class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertTrue(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -10087,7 +10097,7 @@ class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
 
         // Force IllegalArgumentException
         assertThrows(IllegalArgumentException.class,
-                () -> new PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(new double[9], gravityNorm,
+                () -> new PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(new double[5], gravityNorm,
                         measurements, ba, ma, this));
         final var m1 = new Matrix(1, 1);
         assertThrows(IllegalArgumentException.class,
@@ -11040,7 +11050,7 @@ class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
         final var calibrator = new PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator();
 
         // check default value
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
 
         // set new value
         calibrator.setCommonAxisUsed(true);
@@ -11298,7 +11308,7 @@ class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
         assertSame(qualityScores, calibrator.getQualityScores());
 
         // Force IllegalArgumentException
-        assertThrows(IllegalArgumentException.class, () -> calibrator.setQualityScores(new double[9]));
+        assertThrows(IllegalArgumentException.class, () -> calibrator.setQualityScores(new double[5]));
     }
 
     @Test
@@ -11316,7 +11326,7 @@ class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
         assertEquals(14, calibrator.getPreliminarySubsetSize());
 
         // Force IllegalArgumentException
-        assertThrows(IllegalArgumentException.class, () -> calibrator.setPreliminarySubsetSize(9));
+        assertThrows(IllegalArgumentException.class, () -> calibrator.setPreliminarySubsetSize(5));
     }
 
     @Test

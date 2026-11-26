@@ -64,8 +64,12 @@ public abstract class RobustKnownBiasAndGravityNormAccelerometerCalibrator imple
     /**
      * Indicates whether by default a common z-axis is assumed for both the accelerometer
      * and gyroscope.
+     * Common z-axis is used by default because, with norm-based measurements, the general
+     * model is only observable up to a rotation: the norm constraint is invariant to a left
+     * rotation of the inverse of the scale and misalignment matrix, so the covariance of the
+     * general mode is singular in those directions.
      */
-    public static final boolean DEFAULT_USE_COMMON_Z_AXIS = false;
+    public static final boolean DEFAULT_USE_COMMON_Z_AXIS = true;
 
     /**
      * Required minimum number of measurements when common z-axis is assumed.
@@ -2008,6 +2012,9 @@ public abstract class RobustKnownBiasAndGravityNormAccelerometerCalibrator imple
      * Indicates whether z-axis is assumed to be common for accelerometer and
      * gyroscope.
      * When enabled, this eliminates 3 variables from Ma matrix.
+     * When disabled (general mode), the scale and misalignment matrix is only estimated up to
+     * a rotation, since the norm constraint is invariant to a left rotation of its inverse,
+     * and the resulting covariance is singular in those directions.
      *
      * @return true if z-axis is assumed to be common for accelerometer and gyroscope,
      * false otherwise.
@@ -2021,6 +2028,9 @@ public abstract class RobustKnownBiasAndGravityNormAccelerometerCalibrator imple
      * Specifies whether z-axis is assumed to be common for accelerometer and
      * gyroscope.
      * When enabled, this eliminates 3 variables from Ma matrix.
+     * When disabled (general mode), the scale and misalignment matrix is only estimated up to
+     * a rotation, since the norm constraint is invariant to a left rotation of its inverse,
+     * and the resulting covariance is singular in those directions.
      *
      * @param commonAxisUsed true if z-axis is assumed to be common for accelerometer
      *                       and gyroscope, false otherwise.

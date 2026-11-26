@@ -31,8 +31,9 @@ import com.irurueta.units.MagneticFluxDensityUnit;
  * If not available, accelerometer sampling rate average can be estimated using
  * {@link TimeIntervalEstimator}.
  * Notice that if there are less than {@link #getWindowSize()} processed
- * samples in the window, this estimator will assume that the remaining ones
- * until the window is completed have zero values.
+ * samples in the window, averages and unbiased variances are computed only over
+ * the samples currently in the window. If the window contains a single sample,
+ * its variance is zero.
  * This estimator does NOT require the knowledge of current location and body
  * orientation.
  * This implementation of noise estimator will use the following units:

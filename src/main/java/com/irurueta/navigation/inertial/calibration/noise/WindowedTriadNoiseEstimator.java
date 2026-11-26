@@ -40,8 +40,10 @@ import java.util.LinkedList;
  * cannot be used to determine biases. Only norm of noise estimations
  * (variance or standard deviation) can be safely used.
  * Notice that if there are less than {@link #getWindowSize()} processed
- * samples in the window, this estimator will assume that the remaining ones
- * until the window is completed have zero values.
+ * samples in the window, averages and unbiased variances are computed only over
+ * the samples currently in the window (i.e. dividing by the actual number of
+ * samples and by that number minus one respectively). If the window contains a
+ * single sample, its variance is zero.
  *
  * @param <U> a measurement unit type.
  * @param <M> a measurement type.
@@ -340,6 +342,7 @@ public abstract class WindowedTriadNoiseEstimator<U extends Enum<?>,
      * unit (m/s^2 for acceleration, rad/s for angular speed or T for magnetic flux density).
      * This value will depend of body location and orientation, hence it should never
      * be used as a calibration bias.
+     * Values are computed over the samples currently in the window.
      *
      * @return average of x coordinate of measurement in current window.
      */
@@ -351,6 +354,7 @@ public abstract class WindowedTriadNoiseEstimator<U extends Enum<?>,
      * Gets estimated average of x coordinate of measurement within current window.
      * This value will depend of body location and orientation, hence it should never
      * be used as a calibration bias.
+     * Values are computed over the samples currently in the window.
      *
      * @return average of x coordinate of measurement in current window.
      */
@@ -362,6 +366,7 @@ public abstract class WindowedTriadNoiseEstimator<U extends Enum<?>,
      * Gets estimated average of x coordinate of measurement within current window.
      * This value will depend of body location and orientation, hence it should never
      * be used as a calibration bias.
+     * Values are computed over the samples currently in the window.
      *
      * @param result instance where average of x coordinate of measurement will be stored.
      */
@@ -375,6 +380,7 @@ public abstract class WindowedTriadNoiseEstimator<U extends Enum<?>,
      * unit (m/s^2 for acceleration, rad/s for angular speed or T for magnetic flux density).
      * This value will depend of body location and orientation, hence it should never
      * be used as a calibration bias.
+     * Values are computed over the samples currently in the window.
      *
      * @return average of y coordinate of measurement in current window.
      */
@@ -386,6 +392,7 @@ public abstract class WindowedTriadNoiseEstimator<U extends Enum<?>,
      * Gets estimated average of y coordinate of measurement within current window.
      * This value will depend of body location and orientation, hence it should never
      * be used as a calibration bias.
+     * Values are computed over the samples currently in the window.
      *
      * @return average of y coordinate of measurement in current window.
      */
@@ -397,6 +404,7 @@ public abstract class WindowedTriadNoiseEstimator<U extends Enum<?>,
      * Gets estimated average of y coordinate of measurement within current window.
      * This value will depend of body location and orientation, hence it should never
      * be used as a calibration bias.
+     * Values are computed over the samples currently in the window.
      *
      * @param result instance where average of y coordinate of measurement will be stored.
      */
@@ -410,6 +418,7 @@ public abstract class WindowedTriadNoiseEstimator<U extends Enum<?>,
      * unit (m/s^2 for acceleration, rad/s for angular speed or T for magnetic flux density).
      * This value will depend of body location and orientation, hence it should never
      * be used as a calibration bias.
+     * Values are computed over the samples currently in the window.
      *
      * @return average of z coordinate of measurement in current window.
      */
@@ -421,6 +430,7 @@ public abstract class WindowedTriadNoiseEstimator<U extends Enum<?>,
      * Gets estimated average of z coordinate of measurement within current window.
      * This value will depend of body location and orientation, hence it should never
      * be used as a calibration bias.
+     * Values are computed over the samples currently in the window.
      *
      * @return average of z coordinate of measurement in current window.
      */
@@ -432,6 +442,7 @@ public abstract class WindowedTriadNoiseEstimator<U extends Enum<?>,
      * Gets estimated average of z coordinate of measurement within current window.
      * This value will depend of body location and orientation, hence it should never
      * be used as a calibration bias.
+     * Values are computed over the samples currently in the window.
      *
      * @param result instance where average of z coordinate of measurement will be stored.
      */
@@ -442,6 +453,7 @@ public abstract class WindowedTriadNoiseEstimator<U extends Enum<?>,
 
     /**
      * Gets estimated average as a measurement triad.
+     * Values are computed over the samples currently in the window.
      *
      * @return average measurement triad.
      */
@@ -451,6 +463,7 @@ public abstract class WindowedTriadNoiseEstimator<U extends Enum<?>,
 
     /**
      * Gets estimated average as a measurement triad.
+     * Values are computed over the samples currently in the window.
      *
      * @param result instance where average values and unit will be stored.
      */
@@ -462,6 +475,7 @@ public abstract class WindowedTriadNoiseEstimator<U extends Enum<?>,
      * Gets norm of estimated average measurement within current window expressed in its default
      * unit (m/s^2 for acceleration, rad/s for angular speed or T for magnetic flux density).
      * This value is independent of body orientation.
+     * Values are computed over the samples currently in the window.
      *
      * @return norm of estimated average specific force.
      */
@@ -471,6 +485,7 @@ public abstract class WindowedTriadNoiseEstimator<U extends Enum<?>,
 
     /**
      * Gets norm of estimated average measurement within current window.
+     * Values are computed over the samples currently in the window.
      *
      * @return norm of estimated average measurement.
      */
@@ -480,6 +495,7 @@ public abstract class WindowedTriadNoiseEstimator<U extends Enum<?>,
 
     /**
      * Gets norm of estimated average measurement within current window.
+     * Values are computed over the samples currently in the window.
      *
      * @param result instance where norm of estimated average measurement will be stored.
      */
@@ -492,6 +508,7 @@ public abstract class WindowedTriadNoiseEstimator<U extends Enum<?>,
      * Gets estimated variance of x coordinate of measurement within current window
      * expressed in its default squared unit (m^2/s^4 for acceleration,
      * rad^2/s^2 for angular speed or T^2 for magnetic flux density).
+     * Values are computed over the samples currently in the window.
      *
      * @return estimated variance of x coordinate of measurement within current
      * window.
@@ -504,6 +521,7 @@ public abstract class WindowedTriadNoiseEstimator<U extends Enum<?>,
      * Gets estimated variance of y coordinate of measurement within current window
      * expressed in its default squared unit (m^2/s^4 for acceleration,
      * rad^2/s^2 for angular speed or T^2 for magnetic flux density).
+     * Values are computed over the samples currently in the window.
      *
      * @return estimated variance of y coordinate of measurement within current
      * window.
@@ -516,6 +534,7 @@ public abstract class WindowedTriadNoiseEstimator<U extends Enum<?>,
      * Gets estimated variance of z coordinate of measurement within current window
      * expressed in its default squared unit (m^2/s^4 for acceleration,
      * rad^2/s^2 for angular speed or T^2 for magnetic flux density).
+     * Values are computed over the samples currently in the window.
      *
      * @return estimated variance of z coordinate of measurement within current
      * window.
@@ -528,6 +547,7 @@ public abstract class WindowedTriadNoiseEstimator<U extends Enum<?>,
      * Gets estimated standard deviation of x coordinate of measurement within current
      * window and expressed in its default unit (m/s^2 for acceleration, rad/s for
      * angular speed or T for magnetic flux density).
+     * Values are computed over the samples currently in the window.
      *
      * @return estimated standard deviation of x coordinate of measurement within
      * current window.
@@ -539,6 +559,7 @@ public abstract class WindowedTriadNoiseEstimator<U extends Enum<?>,
     /**
      * Gets estimated standard deviation of x coordinate of measurement within current
      * window.
+     * Values are computed over the samples currently in the window.
      *
      * @return estimated standard deviation of x coordinate of measurement.
      */
@@ -549,6 +570,7 @@ public abstract class WindowedTriadNoiseEstimator<U extends Enum<?>,
     /**
      * Gets estimated standard deviation of x coordinate of measurement within current
      * window.
+     * Values are computed over the samples currently in the window.
      *
      * @param result instance where estimated standard deviation of x coordinate of
      *               measurement will be stored.
@@ -562,6 +584,7 @@ public abstract class WindowedTriadNoiseEstimator<U extends Enum<?>,
      * Gets estimated standard deviation of y coordinate of measurement within current
      * window and expressed in its default unit (m/s^2 for acceleration, rad/s for
      * angular speed or T for magnetic flux density).
+     * Values are computed over the samples currently in the window.
      *
      * @return estimated standard deviation of y coordinate of measurement within
      * current window.
@@ -573,6 +596,7 @@ public abstract class WindowedTriadNoiseEstimator<U extends Enum<?>,
     /**
      * Gets estimated standard deviation of y coordinate of measurement within current
      * window.
+     * Values are computed over the samples currently in the window.
      *
      * @return estimated standard deviation of y coordinate of measurement.
      */
@@ -583,6 +607,7 @@ public abstract class WindowedTriadNoiseEstimator<U extends Enum<?>,
     /**
      * Gets estimated standard deviation of y coordinate of measurement within current
      * window.
+     * Values are computed over the samples currently in the window.
      *
      * @param result instance where estimated standard deviation of y coordinate of
      *               measurement will be stored.
@@ -596,6 +621,7 @@ public abstract class WindowedTriadNoiseEstimator<U extends Enum<?>,
      * Gets estimated standard deviation of z coordinate of measurement within current
      * window and expressed in its default unit (m/s^2 for acceleration, rad/s for
      * angular speed or T for magnetic flux density).
+     * Values are computed over the samples currently in the window.
      *
      * @return estimated standard deviation of z coordinate of measurement within
      * current window.
@@ -607,6 +633,7 @@ public abstract class WindowedTriadNoiseEstimator<U extends Enum<?>,
     /**
      * Gets estimated standard deviation of z coordinate of measurement within current
      * window.
+     * Values are computed over the samples currently in the window.
      *
      * @return estimated standard deviation of z coordinate of measurement.
      */
@@ -617,6 +644,7 @@ public abstract class WindowedTriadNoiseEstimator<U extends Enum<?>,
     /**
      * Gets estimated standard deviation of z coordinate of measurement within current
      * window.
+     * Values are computed over the samples currently in the window.
      *
      * @param result instance where estimated standard deviation of z coordinate of
      *               measurement will be stored.
@@ -628,6 +656,7 @@ public abstract class WindowedTriadNoiseEstimator<U extends Enum<?>,
 
     /**
      * Gets estimated standard deviation of measurement within current window.
+     * Values are computed over the samples currently in the window.
      *
      * @return estimated standard deviation triad of measurement.
      */
@@ -637,6 +666,7 @@ public abstract class WindowedTriadNoiseEstimator<U extends Enum<?>,
 
     /**
      * Gets estimated standard deviation of measurement within current window.
+     * Values are computed over the samples currently in the window.
      *
      * @param result instance where estimated standard deviation triad of
      *               measurement will be stored.
@@ -650,6 +680,7 @@ public abstract class WindowedTriadNoiseEstimator<U extends Enum<?>,
      * Gets norm of estimated standard deviation of measurement within current
      * window expressed in its default unit (m/s^2 for acceleration, rad/s for
      * angular speed or T for magnetic flux density).
+     * Values are computed over the samples currently in the window.
      *
      * @return norm of estimated standard deviation of measurement.
      */
@@ -662,6 +693,7 @@ public abstract class WindowedTriadNoiseEstimator<U extends Enum<?>,
 
     /**
      * Gets norm of estimated standard deviation of measurement within current window.
+     * Values are computed over the samples currently in the window.
      *
      * @return norm of estimated standard deviation of measurement.
      */
@@ -671,6 +703,7 @@ public abstract class WindowedTriadNoiseEstimator<U extends Enum<?>,
 
     /**
      * Gets norm of estimated standard deviation of measurement within current window.
+     * Values are computed over the samples currently in the window.
      *
      * @param result instance where norm of estimated standard deviation will be stored.
      */
@@ -785,6 +818,7 @@ public abstract class WindowedTriadNoiseEstimator<U extends Enum<?>,
      * Gets average measurement noise PSD (Power Spectral Density) among
      * x,y,z components expressed as (m^2 * s^-3) for accelerometer,
      * (rad^2/s) for gyroscope or (T^2 * s) for magnetometer.
+     * Values are computed over the samples currently in the window.
      *
      * @return average measurement noise PSD.
      */
@@ -842,8 +876,8 @@ public abstract class WindowedTriadNoiseEstimator<U extends Enum<?>,
     /**
      * Adds a triad of measurement samples and processes current window.
      * Notice that if there are less than {@link #getWindowSize()} processed
-     * samples in the window, the remaining ones are considered to be zero
-     * when average values and standard deviation is estimated.
+     * samples in the window, average values and standard deviation are computed
+     * only over the samples currently in the window.
      *
      * @param triad measurement triad to be added and processed.
      * @throws LockedException if estimator is currently running.
@@ -857,8 +891,8 @@ public abstract class WindowedTriadNoiseEstimator<U extends Enum<?>,
      * Values are expressed in measurement default unit (m/s^2 for acceleration, rad/s for
      * angular speed or T for magnetic flux density).
      * Notice that if there are less than {@link #getWindowSize()} processed
-     * samples in the window, the remaining ones are considered to be zero
-     * when average values and standard deviation is estimated.
+     * samples in the window, average values and standard deviation are computed
+     * only over the samples currently in the window.
      *
      * @param valueX x coordinate of measurement to be added and processed.
      * @param valueY y coordinate of measurement to be added and processed.
@@ -873,8 +907,8 @@ public abstract class WindowedTriadNoiseEstimator<U extends Enum<?>,
     /**
      * Adds a triad of measurement samples and processes current window.
      * Notice that if there are less than {@link #getWindowSize()} processed
-     * samples in the window, the remaining ones are considered to be zero
-     * when average values and standard deviation is estimated.
+     * samples in the window, average values and standard deviation are computed
+     * only over the samples currently in the window.
      *
      * @param valueX x coordinate of measurement to be added and processed.
      * @param valueY y coordinate of measurement to be added and processed.
@@ -889,8 +923,8 @@ public abstract class WindowedTriadNoiseEstimator<U extends Enum<?>,
      * Adds a triad of measurement samples without processing current window or updating
      * result values.
      * Notice that if there are less than {@link #getWindowSize()} processed
-     * samples in the window, the remaining ones are considered to be zero
-     * when average values and standard deviation is estimated.
+     * samples in the window, average values and standard deviation are computed
+     * only over the samples currently in the window.
      *
      * @param triad measurement triad to be added.
      * @throws LockedException if estimator is currently running.
@@ -905,8 +939,8 @@ public abstract class WindowedTriadNoiseEstimator<U extends Enum<?>,
      * Values are expressed in measurement default unit (m/s^2 for acceleration, rad/s for
      * angular speed or T for magnetic flux density).
      * Notice that if there are less than {@link #getWindowSize()} processed
-     * samples in the window, the remaining ones are considered to be zero
-     * when average values and standard deviation is estimated.
+     * samples in the window, average values and standard deviation are computed
+     * only over the samples currently in the window.
      *
      * @param valueX x coordinate of measurement to be added.
      * @param valueY y coordinate of measurement to be added.
@@ -921,8 +955,8 @@ public abstract class WindowedTriadNoiseEstimator<U extends Enum<?>,
      * Adds a triad of measurement samples without processing current window or updating
      * result values.
      * Notice that if there are less than {@link #getWindowSize()} processed
-     * samples in the window, the remaining ones are considered to be zero
-     * when average values and standard deviation is estimated.
+     * samples in the window, average values and standard deviation are computed
+     * only over the samples currently in the window.
      *
      * @param valueX x coordinate of measurement to be added.
      * @param valueY y coordinate of measurement to be added.
@@ -1062,6 +1096,9 @@ public abstract class WindowedTriadNoiseEstimator<U extends Enum<?>,
 
         numberOfProcessedSamples++;
 
+        // number of samples actually stored in the window
+        final var n = windowedSamples.size();
+
         // compute averages
         var averageX = 0.0;
         var averageY = 0.0;
@@ -1076,9 +1113,9 @@ public abstract class WindowedTriadNoiseEstimator<U extends Enum<?>,
             averageZ += valueZ;
         }
 
-        averageX /= windowSize;
-        averageY /= windowSize;
-        averageZ /= windowSize;
+        averageX /= n;
+        averageY /= n;
+        averageZ /= n;
 
         // compute variances
         var varX = 0.0;
@@ -1102,11 +1139,18 @@ public abstract class WindowedTriadNoiseEstimator<U extends Enum<?>,
             varZ += diffZ2;
         }
 
-        final var m = windowSize - 1;
+        // unbiased variance, which is zero when there is a single sample
+        if (n > 1) {
+            final var m = n - 1;
 
-        varX /= m;
-        varY /= m;
-        varZ /= m;
+            varX /= m;
+            varY /= m;
+            varZ /= m;
+        } else {
+            varX = 0.0;
+            varY = 0.0;
+            varZ = 0.0;
+        }
 
         this.avgX = averageX;
         this.avgY = averageY;

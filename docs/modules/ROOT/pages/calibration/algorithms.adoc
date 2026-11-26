@@ -259,7 +259,14 @@ stem:[\mathbf{R}^{T}\mathbf{b}']) for any rotation stem:[\mathbf{R}] leaves the 
 constraint alone cannot fix the orientation of the sensor frame. Restricting stem:[\mathbf{M}] to the upper
 triangular form of the common z-axis case removes exactly that freedom, which is why the common-axis problem has
 nine unknowns, a unique minimum and is the better conditioned choice. In the general (twelve-unknown) case the
-solver converges to one of the equivalent solutions, selected by the initial guess.
+solver converges to one of the equivalent solutions, selected by the initial guess. For this reason the common
+z-axis form is now the default of the norm-based accelerometer and magnetometer calibrators, and the general mode is
+only meaningful up to a rotation of the sensor frame.
+
+The weights stem:[\sigma_k] must be expressed in the units of the fitted quantity. The norm-based calibrators fit the
+squared norm, so with a noise standard deviation stem:[\sigma_f] on the measurement they use
+stem:[\sigma_k = 2\,g\,\sigma_f] (stem:[2\lVert\mathbf{B}\rVert\sigma_B] for the magnetometer), the first-order
+propagation of stem:[\sigma_f] through stem:[\lVert\mathbf{f}\rVert^{2}].
 ====
 
 === Jacobian, damping and iteration
@@ -277,9 +284,11 @@ If the step lowers stem:[\chi^2] it is accepted and the damping stem:[\lambda] i
 behaves like Gauss-Newton); otherwise it is rejected and stem:[\lambda] is increased (the step shrinks toward
 gradient descent). The iteration stops when stem:[\chi^2] no longer changes appreciably.
 
-In this library the fitter is `LevenbergMarquardtMultiDimensionFitter` of `irurueta-numerical-computing`. For the
-norm-based and "Easy" calibrators the Jacobian row of each measurement is not coded analytically: the model
-is wrapped in a `GradientEstimator` that obtains the partial derivatives numerically. The `KnownFrame` non-linear
+In this library the fitter is `LevenbergMarquardtMultiDimensionFitter` of `irurueta-numerical-computing` for the
+norm-based calibrators, whose Jacobian row of each measurement is not coded analytically: the model
+is wrapped in a `GradientEstimator` that obtains the partial derivatives numerically. The "Easy" gyroscope calibrators
+have a three-component residual per sequence and use `LevenbergMarquardtMultiVariateFitter` with a numerical
+Jacobian from a `JacobianEstimator` configured with a minimum step (see below). The `KnownFrame` non-linear
 calibrators are the exception: their model is the linear one above, evaluated by a multivariate fitter that is
 given the analytical Jacobian (the entries of stem:[\mathbf{A}_k]), and therefore converges almost immediately.
 
@@ -441,29 +450,34 @@ flowchart LR
 === Static-interval detection
 
 Detection works on the accelerometer stream. After an initial period during which the device must not move
-(`initialStaticSamples`, default 5000 samples), the detector measures the base noise level: the Euclidean norm
-of the per-axis standard deviations accumulated over that period. For every new sample it computes the same norm
-over a sliding window (`windowSize`, default 101 samples) and applies a simple test:
+(`initialStaticSamples`, default 5000 samples), the detector measures the base noise level: the norm of the per-axis
+variances accumulated over that period. For every new sample it computes the same variance norm over a sliding window
+(`windowSize`, default 101 samples) and applies a simple test:
 
 [stem]
 ++++
-\sigma_{w}(t) = \sqrt{\sigma_{x}^{2}(t) + \sigma_{y}^{2}(t) + \sigma_{z}^{2}(t)},
+v_{w}(t) = \sqrt{\operatorname{var}_{x}^{2}(t) + \operatorname{var}_{y}^{2}(t) + \operatorname{var}_{z}^{2}(t)},
 \qquad
 \text{status} =
 \begin{cases}
-\text{static} & \sigma_{w}(t) < \kappa\,\sigma_{0} \\
+\text{static} & v_{w}(t) < \kappa\,v_{0} \\
 \text{dynamic} & \text{otherwise}
 \end{cases}
 ++++
 
-where stem:[\sigma_0] is the base noise level and stem:[\kappa] is `thresholdFactor` (default 2). The library therefore compares the norm of the windowed
-standard deviation with stem:[\kappa\sigma_0]. This is the same idea as the detector of the paper, which instead compares the
-magnitude of the windowed variances with a multiple of the one measured in the initial period. The paper estimates the multiplier automatically inside its calibration
-loop; the library instead exposes it as a parameter, and the generator documentation recommends repeating the calibration with several
-threshold factors, because the gyroscope calibration is very sensitive to where intervals start and end.
-Two safeguards act during initialization: if the windowed noise suddenly exceeds the accumulated one by
-`instantaneousNoiseLevelFactor` (default 2), or the base level is above `baseNoiseLevelAbsoluteThreshold`, the
-detector fails and must be reset, because the initial period was not still.
+where stem:[v_0] is the base noise level and stem:[\kappa] is `thresholdFactor` (default 4.0). This is the detector of the
+paper/imu_tk, which compares the magnitude of the windowed variances with a multiple of the one measured in the initial
+period. Earlier versions of the library used the norm of the standard deviations (default factor 2.0); because the
+statistic is now based on variances, a factor stem:[k] on standard deviations corresponds to stem:[k_{\text{reference}}
+\approx k^{2}] here, and every previously tuned factor changes meaning. As in imu_tk the window is *centred*: the
+status is assigned to the sample at the centre of the window, so every status change is delayed half a window
+(`getDetectionDelaySamples()`), in exchange for symmetric boundaries and static means free of motion samples. The paper
+estimates the multiplier automatically inside its calibration loop; the library instead exposes it as a parameter, and the
+generator documentation recommends repeating the calibration with several threshold factors, because the gyroscope
+calibration is very sensitive to where intervals start and end.
+Two safeguards act during initialization: if the windowed variance norm suddenly exceeds the accumulated one by
+`instantaneousNoiseLevelFactor` (default 9.0, it was 2.0), or the base level is above `baseNoiseLevelAbsoluteThreshold`
+(now a variance), the detector fails and must be reset, because the initial period was not still.
 
 === Measurements for the accelerometer
 
@@ -477,7 +491,8 @@ single input measurement of that interval:
 
 When the interval ends (a transition to dynamic), `AccelerometerMeasurementsGenerator` emits one
 `StandardDeviationBodyKinematics` whose specific force is that mean and whose standard deviation is the average
-of the three per-axis deviations. Intervals shorter than `minStaticSamples` (default two windows) are discarded as unreliable,
+of the three per-axis deviations divided by stem:[\sqrt{n}] (the standard deviation of a mean of stem:[n] samples).
+The initialization period is static, so its samples belong to the first static interval. Intervals shorter than `minStaticSamples` (default two windows) are discarded as unreliable,
 and a dynamic interval longer than `maxDynamicSamples` (default 30 windows) is skipped. Averaging suppresses
 the noise, so the noise term can be dropped from the model, as the paper does.
 
@@ -536,12 +551,17 @@ following static interval) is one observation:
   fixed) and compared with the measured end direction; the residual is the Euclidean distance between the two
   unit vectors.
 
-The residual is weighted by the average angular-rate standard deviation of the sequence and minimized with
-Levenberg-Marquardt over stem:[\mathbf{b}], stem:[\mathbf{M}_g] (and optionally stem:[\mathbf{G}_g]), using the
-numerically estimated gradient. Two differences from the paper are worth knowing: the library takes the gyroscope bias as an
-unknown of the fit (the paper averages the gyroscope in the initial still period and removes it), and it has a general
-(full) matrix option besides the upper-triangular common z-axis form, which is the default for `EasyGyroscopeCalibrator`.
-As with any one-scalar-residual-per-observation fit, the calibrator needs one more sequence than unknowns:
+The residual is the three-component difference stem:[\mathbf{u}_{a,k} - \mathbf{R}_k^{T}\mathbf{u}_{a,k-1}] (rather than the
+norm of that difference), weighted by the gravity-direction standard deviation of the sequence
+(`BodyKinematicsSequence.getGravityDirectionStandardDeviation()`), and minimized with `LevenbergMarquardtMultiVariateFitter` over
+stem:[\mathbf{b}], stem:[\mathbf{M}_g] (and optionally stem:[\mathbf{G}_g]), using a numerical Jacobian from a
+`JacobianEstimator` with a relative and a minimum step of `1e-7`. Differences from the paper that were kept: the library takes the gyroscope bias as an
+unknown of the fit (the paper averages the gyroscope in the initial still period and removes it), and it has an
+optional upper-triangular common z-axis form. Following the paper, the defaults of `EasyGyroscopeCalibrator` are now the
+general (full) matrix and *no* g-dependent term (`commonAxisUsed = false`, `estimateGDependentCrossBiases = false`);
+the upper-triangular form is only valid for the sensor defining the body frame (the accelerometer), and the g-dependent matrix
+is weakly observable from gravity references only. Each sequence provides three equations, but the calibrator keeps a
+conservative minimum of one more sequence than unknowns:
 
 [cols="3,1,1",options="header"]
 |===
@@ -551,7 +571,7 @@ As with any one-scalar-residual-per-observation fit, the calibrator needs one mo
 |9
 |10
 
-|General, no g-dependent term
+|General, no g-dependent term (default)
 |12
 |13
 
@@ -564,7 +584,15 @@ As with any one-scalar-residual-per-observation fit, the calibrator needs one mo
 |22
 |===
 
-Each sequence must also contain a few body kinematics items (the Javadoc asks for at least three).
+Each sequence must also contain a few body kinematics items (the Javadoc asks for at least three). Gyroscope
+sequences are generated only when both neighbouring static intervals are valid, dynamic intervals around a too short
+static interval are joined, and the sequence is emitted when the following static interval ends (see
+xref:calibration/intervals-and-generators.adoc#generators[the generators]).
+
+Deliberate deviations from the paper/imu_tk that were kept: the accelerometer cost is the squared norm residual
+(with standard deviation stem:[2\,g\,\sigma]) instead of the norm, the Turntable calibrators keep their previous
+defaults (common z-axis and g-dependent term), and the minimum number of sequences and measurements stays at the number
+of unknowns plus one.
 
 === Putting it together
 

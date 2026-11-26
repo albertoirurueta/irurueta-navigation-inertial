@@ -71,9 +71,9 @@ class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implements
     private static final double MIN_HEIGHT_METERS = -500.0;
     private static final double MAX_HEIGHT_METERS = 10000.0;
 
-    private static final int LARGE_MEASUREMENT_NUMBER = 100000;
+    private static final int LARGE_MEASUREMENT_NUMBER = 1000;
 
-    private static final double MAGNETOMETER_NOISE_STD = 200e-9;
+    private static final double MAGNETOMETER_NOISE_STD = 2e-9;
 
     private static final double ABSOLUTE_ERROR = 1e-9;
     private static final double LARGE_ABSOLUTE_ERROR = 5e-5;
@@ -161,9 +161,9 @@ class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -254,9 +254,9 @@ class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -348,9 +348,9 @@ class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -535,9 +535,9 @@ class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -635,9 +635,9 @@ class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -739,9 +739,9 @@ class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -860,9 +860,9 @@ class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -975,9 +975,9 @@ class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -1077,9 +1077,9 @@ class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -1180,9 +1180,9 @@ class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -1496,9 +1496,9 @@ class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -1610,9 +1610,9 @@ class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -1952,9 +1952,9 @@ class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -2070,9 +2070,9 @@ class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -2437,9 +2437,9 @@ class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -2574,9 +2574,9 @@ class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -2963,9 +2963,9 @@ class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -3065,9 +3065,9 @@ class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -3168,9 +3168,9 @@ class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -3484,9 +3484,9 @@ class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -3598,9 +3598,9 @@ class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -3940,9 +3940,9 @@ class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -4058,9 +4058,9 @@ class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -4425,9 +4425,9 @@ class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -4562,9 +4562,9 @@ class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implements
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertSame(this, calibrator.getListener());
-        assertEquals(KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+        assertEquals(KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -5619,7 +5619,7 @@ class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implements
         final var calibrator = new KnownHardIronPositionAndInstantMagnetometerCalibrator();
 
         // check default value
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
 
         // set new value
         calibrator.setCommonAxisUsed(true);
@@ -5647,8 +5647,8 @@ class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implements
         final var calibrator = new KnownHardIronPositionAndInstantMagnetometerCalibrator();
 
         // check default value
-        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertEquals(7, calibrator.getMinimumRequiredMeasurements());
+        assertTrue(calibrator.isCommonAxisUsed());
 
         // set new value
         calibrator.setCommonAxisUsed(true);

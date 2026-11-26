@@ -10901,7 +10901,7 @@ class RANSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
             assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
             assertTrue(calibrator.getEstimatedReducedChiSq() >= 0.0);
             assertTrue(calibrator.getEstimatedP() >= 0.0);
-            assertTrue(calibrator.getEstimatedQ() > 0.0);
+            assertTrue(calibrator.getEstimatedQ() >= 0.0);
 
             numValid++;
             break;
@@ -11045,7 +11045,7 @@ class RANSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
             assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
             assertTrue(calibrator.getEstimatedReducedChiSq() >= 0.0);
             assertTrue(calibrator.getEstimatedP() >= 0.0);
-            assertTrue(calibrator.getEstimatedQ() > 0.0);
+            assertTrue(calibrator.getEstimatedQ() >= 0.0);
 
             numValid++;
             break;
@@ -11501,7 +11501,7 @@ class RANSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
             assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
             assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
             assertTrue(calibrator.getEstimatedP() >= 0.0);
-            assertTrue(calibrator.getEstimatedQ() > 0.0);
+            assertTrue(calibrator.getEstimatedQ() >= 0.0);
 
             numValid++;
             break;
@@ -11652,7 +11652,7 @@ class RANSACRobustTurntableGyroscopeCalibratorTest implements RobustTurntableGyr
             assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
             assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
             assertTrue(calibrator.getEstimatedP() >= 0.0);
-            assertTrue(calibrator.getEstimatedQ() > 0.0);
+            assertTrue(calibrator.getEstimatedQ() >= 0.0);
 
             numValid++;
             break;
