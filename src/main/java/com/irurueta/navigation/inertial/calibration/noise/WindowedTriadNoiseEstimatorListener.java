@@ -35,26 +35,26 @@ public interface WindowedTriadNoiseEstimatorListener<U extends Enum<?>, M extend
      *
      * @param estimator estimator that raised the event.
      */
-    void onStart(final E estimator);
+    void onStart(E estimator);
 
     /**
      * Called when a triad sample is added containing new measurement values.
      *
      * @param estimator estimator that raised the event.
      */
-    void onTriadAdded(final E estimator);
+    void onTriadAdded(E estimator);
 
     /**
      * Called when window of samples is filled.
      *
      * @param estimator estimator that raised the event.
      */
-    void onWindowFilled(final E estimator);
+    void onWindowFilled(E estimator);
 
     /**
      * Called when estimation is reset.
      *
      * @param estimator estimator that raised the event.
      */
-    void onReset(final E estimator);
+    void onReset(E estimator);
 }

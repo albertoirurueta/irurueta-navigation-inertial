@@ -35,7 +35,6 @@ import com.irurueta.statistics.MaxIterationsExceededException;
 import com.irurueta.units.MagneticFluxDensity;
 import com.irurueta.units.MagneticFluxDensityConverter;
 import com.irurueta.units.MagneticFluxDensityUnit;
-
 import java.util.Collection;
 
 /**
@@ -3001,9 +3000,9 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
         //     [by]
         //     [bz]
 
-        // M = [m11 	m12 	m13]
-        //     [m21 	m22 	m23]
-        //     [m31 	m32 	m33]
+        // M = [m11     m12     m13]
+        //     [m21     m22     m23]
+        //     [m31     m32     m33]
 
         final var gradientEstimator = new GradientEstimator(this::evaluateGeneral);
 
@@ -3104,9 +3103,9 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
         //     [by]
         //     [bz]
 
-        // M = [m11 	m12 	m13]
-        //     [m21 	m22 	m23]
-        //     [m31 	m32 	m33]
+        // M = [m11     m12     m13]
+        //     [m21     m22     m23]
+        //     [m31     m32     m33]
 
         // and that ba and Ma are expressed as:
         // Mm = M - I
@@ -3116,9 +3115,9 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
         //      [m21        m22 - 1     m23    ]    [myx    sy      myz]
         //      [m31        m32         m33 - 1]    [mzx    mzy     sz ]
 
-        // bm = [m11 * bx + m12 * by + m13 * bz] = 	[bmx]
-        //      [m21 * bx + m22 * by + m23 * bz]	[bmy]
-        //      [m31 * bx + m32 * by + m33 * bz]	[bmz]
+        // bm = [m11 * bx + m12 * by + m13 * bz] =  [bmx]
+        //      [m21 * bx + m22 * by + m23 * bz]    [bmy]
+        //      [m31 * bx + m32 * by + m33 * bz]    [bmz]
 
         // Defining the linear application:
         // F(b, M) = F(bx, by, bz, m11, m21, m31, m12, m22, m32, m13, m23, m33)
@@ -3126,9 +3125,9 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
         // [bmx] = [m11 * bx + m12 * by + m13 * bz]
         // [bmy]   [m21 * bx + m22 * by + m23 * bz]
         // [bmz]   [m31 * bx + m32 * by + m33 * bz]
-        // [sx]	   [m11 - 1]
-        // [sy]	   [m22 - 1]
-        // [sz]	   [m33 -1]
+        // [sx]    [m11 - 1]
+        // [sy]    [m22 - 1]
+        // [sz]    [m33 -1]
         // [mxy]   [m12]
         // [mxz]   [m13]
         // [myx]   [m21]
@@ -3137,18 +3136,18 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
         // [mzy]   [m32]
 
         // Then the Jacobian of F(b, M) is:
-        // J = 	[m11  m12  m13  bx  0   0   by  0   0   bz  0   0 ]
-        //	    [m21  m22  m23  0   bx  0   0   by  0   0   bz  0 ]
-        //	    [m31  m32  m33  0   0   bx  0   0   by  0   0   bz]
-        //	    [0    0    0    1   0   0   0   0   0   0   0   0 ]
-        //	    [0    0    0    0   0   0   0   1   0   0   0   0 ]
-        //	    [0    0    0    0   0   0   0   0   0   0   0   1 ]
-        //	    [0    0    0    0   0   0   1   0   0   0   0   0 ]
-        //	    [0    0    0    0   0   0   0   0   0   1   0   0 ]
-        //	    [0    0    0    0   1   0   0   0   0   0   0   0 ]
-        //	    [0    0    0    0   0   0   0   0   0   0   1   0 ]
-        //	    [0    0    0    0   0   1   0   0   0   0   0   0 ]
-        //	    [0    0    0    0   0   0   0   0   1   0   0   0 ]
+        // J =  [m11  m12  m13  bx  0   0   by  0   0   bz  0   0 ]
+        //      [m21  m22  m23  0   bx  0   0   by  0   0   bz  0 ]
+        //      [m31  m32  m33  0   0   bx  0   0   by  0   0   bz]
+        //      [0    0    0    1   0   0   0   0   0   0   0   0 ]
+        //      [0    0    0    0   0   0   0   1   0   0   0   0 ]
+        //      [0    0    0    0   0   0   0   0   0   0   0   1 ]
+        //      [0    0    0    0   0   0   1   0   0   0   0   0 ]
+        //      [0    0    0    0   0   0   0   0   0   1   0   0 ]
+        //      [0    0    0    0   1   0   0   0   0   0   0   0 ]
+        //      [0    0    0    0   0   0   0   0   0   0   1   0 ]
+        //      [0    0    0    0   0   1   0   0   0   0   0   0 ]
+        //      [0    0    0    0   0   0   0   0   1   0   0   0 ]
 
         // We know that the propagated covariance is J * Cov * J', hence:
         final var jacobian = new Matrix(GENERAL_UNKNOWNS, GENERAL_UNKNOWNS);
@@ -3246,9 +3245,9 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
         //     [by]
         //     [bz]
 
-        // M = [m11 	m12 	m13]
-        //     [0 		m22 	m23]
-        //     [0 	 	0 		m33]
+        // M = [m11     m12     m13]
+        //     [0       m22     m23]
+        //     [0       0       m33]
 
 
         final var gradientEstimator = new GradientEstimator(this::evaluateCommonAxis);
@@ -3357,9 +3356,9 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
         //     [by]
         //     [bz]
 
-        // M = [m11 	m12 	m13]
-        //     [0    	m22 	m23]
-        //     [0    	0    	m33]
+        // M = [m11     m12     m13]
+        //     [0       m22     m23]
+        //     [0       0       m33]
 
         // m21 = m31 = m32 = 0
 
@@ -3371,9 +3370,9 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
         //      [0          m22 - 1     m23    ]    [0      sy      myz]
         //      [0          0           m33 - 1]    [0      0       sz ]
 
-        // ba = [m11 * bx + m12 * by + m13 * bz] = 	[bax]
-        //      [           m22 * by + m23 * bz]	[bay]
-        //      [                      m33 * bz]	[baz]
+        // ba = [m11 * bx + m12 * by + m13 * bz] =  [bax]
+        //      [           m22 * by + m23 * bz]    [bay]
+        //      [                      m33 * bz]    [baz]
 
         // Defining the linear application:
         // F(b, M) = F(bx, by, bz, m11, m12, m22, m13, m23, m33)
@@ -3381,9 +3380,9 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
         // [bax] = [m11 * bx + m12 * by + m13 * bz]
         // [bay]   [m22 * by + m23 * bz]
         // [baz]   [m33 * bz]
-        // [sx]	   [m11 - 1]
-        // [sy]	   [m22 - 1]
-        // [sz]	   [m33 -1]
+        // [sx]    [m11 - 1]
+        // [sy]    [m22 - 1]
+        // [sz]    [m33 -1]
         // [mxy]   [m12]
         // [mxz]   [m13]
         // [myx]   [0]
@@ -3392,18 +3391,18 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
         // [mzy]   [0]
 
         // Then the Jacobian of F(b, M) is:
-        // J = 	[m11  m12  m13  bx  by  0   bz  0   0 ]
-        //	    [0    m22  m23  0   0   by  0   bz  0 ]
-        //	    [0    0    m33  0   0   0   0   0   bz]
-        //	    [0    0    0    1   0   0   0   0   0 ]
-        //	    [0    0    0    0   0   1   0   0   0 ]
-        //	    [0    0    0    0   0   0   0   0   1 ]
-        //	    [0    0    0    0   1   0   0   0   0 ]
-        //	    [0    0    0    0   0   0   1   0   0 ]
-        //	    [0    0    0    0   0   0   0   0   0 ]
-        //	    [0    0    0    0   0   0   0   1   0 ]
-        //	    [0    0    0    0   0   0   0   0   0 ]
-        //	    [0    0    0    0   0   0   0   0   0 ]
+        // J =  [m11  m12  m13  bx  by  0   bz  0   0 ]
+        //      [0    m22  m23  0   0   by  0   bz  0 ]
+        //      [0    0    m33  0   0   0   0   0   bz]
+        //      [0    0    0    1   0   0   0   0   0 ]
+        //      [0    0    0    0   0   1   0   0   0 ]
+        //      [0    0    0    0   0   0   0   0   1 ]
+        //      [0    0    0    0   1   0   0   0   0 ]
+        //      [0    0    0    0   0   0   1   0   0 ]
+        //      [0    0    0    0   0   0   0   0   0 ]
+        //      [0    0    0    0   0   0   0   1   0 ]
+        //      [0    0    0    0   0   0   0   0   0 ]
+        //      [0    0    0    0   0   0   0   0   0 ]
 
         // We know that the propagated covariance is J * Cov * J', hence:
         final var jacobian = new Matrix(GENERAL_UNKNOWNS, COMMON_Z_AXIS_UNKNOWNS);

@@ -21,7 +21,6 @@ import com.irurueta.navigation.inertial.BodyMagneticFluxDensity;
 import com.irurueta.navigation.inertial.calibration.StandardDeviationBodyMagneticFluxDensity;
 import com.irurueta.navigation.inertial.calibration.intervals.TriadStaticIntervalDetector;
 import com.irurueta.navigation.inertial.calibration.noise.AccumulatedMagneticFluxDensityTriadNoiseEstimator;
-
 import java.util.ArrayDeque;
 
 /**

@@ -25,33 +25,33 @@ public interface INSLooselyCoupledKalmanFilteredEstimatorListener {
      *
      * @param estimator estimator raising the event.
      */
-    void onUpdateStart(final INSLooselyCoupledKalmanFilteredEstimator estimator);
+    void onUpdateStart(INSLooselyCoupledKalmanFilteredEstimator estimator);
 
     /**
      * Called when inertial INS measurements update ends.
      *
      * @param estimator estimator raising the event.
      */
-    void onUpdateEnd(final INSLooselyCoupledKalmanFilteredEstimator estimator);
+    void onUpdateEnd(INSLooselyCoupledKalmanFilteredEstimator estimator);
 
     /**
      * Called when Kalman filter propagation starts.
      *
      * @param estimator estimator raising the event.
      */
-    void onPropagateStart(final INSLooselyCoupledKalmanFilteredEstimator estimator);
+    void onPropagateStart(INSLooselyCoupledKalmanFilteredEstimator estimator);
 
     /**
      * Called when Kalman filter propagation ends.
      *
      * @param estimator estimator raising the event.
      */
-    void onPropagateEnd(final INSLooselyCoupledKalmanFilteredEstimator estimator);
+    void onPropagateEnd(INSLooselyCoupledKalmanFilteredEstimator estimator);
 
     /**
      * Called when estimator is reset.
      *
      * @param estimator estimator raising the event.
      */
-    void onReset(final INSLooselyCoupledKalmanFilteredEstimator estimator);
+    void onReset(INSLooselyCoupledKalmanFilteredEstimator estimator);
 }

@@ -17,7 +17,6 @@ package com.irurueta.navigation.inertial.calibration.magnetometer;
 
 import com.irurueta.navigation.LockedException;
 import com.irurueta.navigation.inertial.calibration.StandardDeviationBodyMagneticFluxDensity;
-
 import java.util.List;
 
 /**
@@ -46,5 +45,5 @@ public interface OrderedStandardDeviationBodyMagneticFluxDensityMagnetometerCali
      *                     with unknown orientations.
      * @throws LockedException if calibrator is currently running.
      */
-    void setMeasurements(final List<StandardDeviationBodyMagneticFluxDensity> measurements) throws LockedException;
+    void setMeasurements(List<StandardDeviationBodyMagneticFluxDensity> measurements) throws LockedException;
 }

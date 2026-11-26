@@ -29,7 +29,6 @@ import com.irurueta.navigation.inertial.estimators.ECEFKinematicsEstimator;
 import com.irurueta.units.Acceleration;
 import com.irurueta.units.AccelerationConverter;
 import com.irurueta.units.AccelerationUnit;
-
 import java.util.Collection;
 
 /**

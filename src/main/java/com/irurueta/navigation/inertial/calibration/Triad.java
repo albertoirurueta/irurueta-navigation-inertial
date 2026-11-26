@@ -18,7 +18,6 @@ package com.irurueta.navigation.inertial.calibration;
 import com.irurueta.algebra.Matrix;
 import com.irurueta.algebra.WrongSizeException;
 import com.irurueta.units.Measurement;
-
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -27,6 +26,7 @@ import java.util.Objects;
  *
  * @param <U> type of unit.
  * @param <M> a type of measurement.
+ * @param <T> type of the triad subclass itself.
  */
 public abstract class Triad<U extends Enum<?>, M extends Measurement<U>, T extends Triad<U, M, T>>
         implements Serializable {
@@ -300,14 +300,14 @@ public abstract class Triad<U extends Enum<?>, M extends Measurement<U>, T exten
      * @param result instance where x coordinate of measurement value
      *               will be stored.
      */
-    public abstract void getMeasurementX(final M result);
+    public abstract void getMeasurementX(M result);
 
     /**
      * Sets x coordinate of measurement value.
      *
      * @param measurementX x coordinate of measurement value.
      */
-    public abstract void setMeasurementX(final M measurementX);
+    public abstract void setMeasurementX(M measurementX);
 
     /**
      * Gets y coordinate of measurement value.
@@ -322,14 +322,14 @@ public abstract class Triad<U extends Enum<?>, M extends Measurement<U>, T exten
      * @param result instance where y coordinate of measurement value
      *               will be stored.
      */
-    public abstract void getMeasurementY(final M result);
+    public abstract void getMeasurementY(M result);
 
     /**
      * Sets y coordinate of measurement value.
      *
      * @param measurementY y coordinate of measurement value.
      */
-    public abstract void setMeasurementY(final M measurementY);
+    public abstract void setMeasurementY(M measurementY);
 
     /**
      * Gets z coordinate of measurement value.
@@ -344,14 +344,14 @@ public abstract class Triad<U extends Enum<?>, M extends Measurement<U>, T exten
      * @param result instance where z coordinate of measurement value
      *               will be stored.
      */
-    public abstract void getMeasurementZ(final M result);
+    public abstract void getMeasurementZ(M result);
 
     /**
      * Sets z coordinate of measurement value.
      *
      * @param measurementZ z coordinate of measurement value.
      */
-    public abstract void setMeasurementZ(final M measurementZ);
+    public abstract void setMeasurementZ(M measurementZ);
 
     /**
      * Sets measurement coordinates.
@@ -361,7 +361,7 @@ public abstract class Triad<U extends Enum<?>, M extends Measurement<U>, T exten
      * @param measurementZ z coordinate of measurement value.
      */
     public abstract void setMeasurementCoordinates(
-            final M measurementX, final M measurementY, final M measurementZ);
+            M measurementX, M measurementY, M measurementZ);
 
     /**
      * Gets squared norm expressed in squared current unit.

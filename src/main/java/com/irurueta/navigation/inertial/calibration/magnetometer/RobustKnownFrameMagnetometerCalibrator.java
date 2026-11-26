@@ -35,7 +35,6 @@ import com.irurueta.numerical.robust.RobustEstimatorMethod;
 import com.irurueta.units.MagneticFluxDensity;
 import com.irurueta.units.MagneticFluxDensityConverter;
 import com.irurueta.units.MagneticFluxDensityUnit;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;

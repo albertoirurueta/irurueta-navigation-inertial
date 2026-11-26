@@ -163,6 +163,19 @@
 
   <!-- default profile -->
   <build>
+    <pluginManagement>
+      <plugins>
+        <!-- makes CLI runs of checkstyle:checkstyle use the repository's checkstyle.xml (no lifecycle binding) -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-checkstyle-plugin</artifactId>
+          <version>3.6.0</version>
+          <configuration>
+            <configLocation>checkstyle.xml</configLocation>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
     <plugins>
       <!-- unit tests plugins -->
       <plugin>

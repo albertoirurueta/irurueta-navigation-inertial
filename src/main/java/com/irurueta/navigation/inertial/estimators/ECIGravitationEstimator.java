@@ -39,7 +39,7 @@ public class ECIGravitationEstimator {
     public static final double EARTH_EQUATORIAL_RADIUS_WGS84 = Constants.EARTH_EQUATORIAL_RADIUS_WGS84;
 
     /**
-     * WGS84 Earth gravitational constant expressed in m^3 * s^-2
+     * WGS84 Earth gravitational constant expressed in m^3 * s^-2.
      */
     public static final double EARTH_GRAVITATIONAL_CONSTANT = Constants.EARTH_GRAVITATIONAL_CONSTANT;
 

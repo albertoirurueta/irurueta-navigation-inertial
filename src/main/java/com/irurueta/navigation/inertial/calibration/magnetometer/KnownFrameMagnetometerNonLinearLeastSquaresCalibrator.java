@@ -40,7 +40,6 @@ import com.irurueta.statistics.MaxIterationsExceededException;
 import com.irurueta.units.MagneticFluxDensity;
 import com.irurueta.units.MagneticFluxDensityConverter;
 import com.irurueta.units.MagneticFluxDensityUnit;
-
 import java.io.IOException;
 import java.util.Collection;
 
@@ -302,7 +301,7 @@ public class KnownFrameMagnetometerNonLinearLeastSquaresCalibrator implements
     }
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param listener listener to handle events raised by this calibrator.
      */
@@ -4763,18 +4762,18 @@ public class KnownFrameMagnetometerNonLinearLeastSquaresCalibrator implements
         // mBmeasy - mBtruey = by + myx * mBtruex + sy * mBtruey + myz * mBtruez
         // mBmeasz - mBtruez = bz + mzx * mBtruex + mzy * mBtruey + sz * mBtruez
 
-        // [1   0   0   mBtruex  0        0        mBtruey  mBtruez  0        0        0        0      ][bx ] = [mBmeasx - mBtruex]
-        // [0   1   0   0        mBtruey  0        0        0        mBtruex  mBtruez  0        0      ][by ]   [mBmeasy - mBtruey]
-        // [0   0   1   0        0        mBtruez  0        0        0        0        mBtruex  mBtruey][bz ]   [mBmeasz - mBtruez]
-        //                                                                                              [sx ]
-        //                                                                                              [sy ]
-        //                                                                                              [sz ]
-        //                                                                                              [mxy]
-        //                                                                                              [mxz]
-        //                                                                                              [myx]
-        //                                                                                              [myz]
-        //                                                                                              [mzx]
-        //                                                                                              [mzy]
+        // [1 0 0 mBtruex 0       0       mBtruey mBtruez 0       0       0       0      ][bx ] = [mBmeasx - mBtruex]
+        // [0 1 0 0       mBtruey 0       0       0       mBtruex mBtruez 0       0      ][by ]   [mBmeasy - mBtruey]
+        // [0 0 1 0       0       mBtruez 0       0       0       0       mBtruex mBtruey][bz ]   [mBmeasz - mBtruez]
+        //                                                                                [sx ]
+        //                                                                                [sy ]
+        //                                                                                [sz ]
+        //                                                                                [mxy]
+        //                                                                                [mxz]
+        //                                                                                [myx]
+        //                                                                                [myz]
+        //                                                                                [mzx]
+        //                                                                                [mzy]
 
         fitter.setFunctionEvaluator(new LevenbergMarquardtMultiVariateFunctionEvaluator() {
             @Override

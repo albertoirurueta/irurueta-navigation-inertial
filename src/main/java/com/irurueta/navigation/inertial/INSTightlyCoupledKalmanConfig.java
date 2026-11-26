@@ -21,7 +21,6 @@ import com.irurueta.units.DistanceUnit;
 import com.irurueta.units.Speed;
 import com.irurueta.units.SpeedConverter;
 import com.irurueta.units.SpeedUnit;
-
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
@@ -46,7 +45,7 @@ public class INSTightlyCoupledKalmanConfig implements Serializable, Cloneable {
     private double gyroNoisePSD;
 
     /**
-     * Accelerometer noise PSD (Power Spectral Density) expressed in (m^2 * s^-3)
+     * Accelerometer noise PSD (Power Spectral Density) expressed in (m^2 * s^-3).
      */
     private double accelerometerNoisePSD;
 

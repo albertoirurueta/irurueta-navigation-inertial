@@ -32,6 +32,10 @@ These reports are generated during the build.
 |Github repository
 |===
 
+NOTE: The Checkstyle report applies the rule set in the repository's `checkstyle.xml`. Running
+`mvn checkstyle:checkstyle` from the command line uses the same file, so a local run reports the same
+findings as the published Maven site report.
+
 [#bibliography]
 == Bibliography
 

@@ -53,37 +53,111 @@ public class WorldMagneticModel {
     private static final int N2 = N * N;
 
     /**
-     * The Gauss coefficients of main geomagnetic model (nt)
+     * The Gauss coefficients of main geomagnetic model (nt).
      */
-    final double[][] c = new double[N][N];
+    private final double[][] c = new double[N][N];
 
     /**
      * The Gauss coefficients of secular geomagnetic model (nt/yr).
      */
-    final double[][] cd = new double[N][N];
+    private final double[][] cd = new double[N][N];
 
     /**
-     * The date in years, for the start of the valid time of the fit coefficients
+     * The date in years, for the start of the valid time of the fit coefficients.
      */
-    double epoch;
+    private double epoch;
 
     /**
      * The Schmidt normalization factors.
      */
-    final double[] snorm = new double[N2];
+    private final double[] snorm = new double[N2];
 
     /**
-     * The sine of (m*spherical coord. longitude).
+     * Legendre recursion coefficients k[m][n] = ((n-1)^2 - m^2) / ((2n-1)(2n-3)) used to compute the
+     * associated Legendre functions and their derivatives.
      */
-    final double[][] k = new double[N][N];
+    private final double[][] k = new double[N][N];
 
     /**
-     * The cosine of (m*spherical coord. longitude).
+     * Multiplier table holding n + 1 for each degree n, used in the radial field component.
      */
-    final double[] fn = new double[N];
+    private final double[] fn = new double[N];
 
     /**
-     * The sine of (m*spherical coord. latitude).
+     * Multiplier table holding m for each order m, used in the east (longitude) field component.
      */
-    final double[] fm = new double[N];
+    private final double[] fm = new double[N];
+
+    /**
+     * Gets the Gauss coefficients of main geomagnetic model (nt).
+     *
+     * @return the Gauss coefficients of main geomagnetic model (nt).
+     */
+    double[][] getC() {
+        return c;
+    }
+
+    /**
+     * Gets the Gauss coefficients of secular geomagnetic model (nt/yr).
+     *
+     * @return the Gauss coefficients of secular geomagnetic model (nt/yr).
+     */
+    double[][] getCd() {
+        return cd;
+    }
+
+    /**
+     * Gets the date in years, for the start of the valid time of the fit coefficients.
+     *
+     * @return the date in years, for the start of the valid time of the fit coefficients.
+     */
+    double getEpoch() {
+        return epoch;
+    }
+
+    /**
+     * Updates the date in years, for the start of the valid time of the fit coefficients.
+     *
+     * @param newEpoch the date in years, for the start of the valid time of the fit coefficients.
+     */
+    void updateEpoch(final double newEpoch) {
+        epoch = newEpoch;
+    }
+
+    /**
+     * Gets the Schmidt normalization factors.
+     *
+     * @return the Schmidt normalization factors.
+     */
+    double[] getSnorm() {
+        return snorm;
+    }
+
+    /**
+     * Gets the Legendre recursion coefficients k[m][n] = ((n-1)^2 - m^2) / ((2n-1)(2n-3)) used to compute the
+     * associated Legendre functions and their derivatives.
+     *
+     * @return the Legendre recursion coefficients.
+     */
+    double[][] getK() {
+        return k;
+    }
+
+    /**
+     * Gets the multiplier table holding n + 1 for each degree n, used in the radial field component.
+     *
+     * @return the multiplier table holding n + 1 for each degree n.
+     */
+    double[] getFn() {
+        return fn;
+    }
+
+    /**
+     * Gets the multiplier table holding m for each order m, used in the east (longitude) field component.
+     *
+     * @return the multiplier table holding m for each order m.
+     */
+    double[] getFm() {
+        return fm;
+    }
 }

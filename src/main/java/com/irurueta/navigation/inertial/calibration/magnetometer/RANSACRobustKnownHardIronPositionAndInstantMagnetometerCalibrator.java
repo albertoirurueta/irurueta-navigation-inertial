@@ -28,7 +28,6 @@ import com.irurueta.numerical.robust.RANSACRobustEstimatorListener;
 import com.irurueta.numerical.robust.RobustEstimator;
 import com.irurueta.numerical.robust.RobustEstimatorException;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
-
 import java.io.IOException;
 import java.util.List;
 

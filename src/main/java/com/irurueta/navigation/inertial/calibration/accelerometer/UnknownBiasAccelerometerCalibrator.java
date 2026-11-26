@@ -42,7 +42,7 @@ public interface UnknownBiasAccelerometerCalibrator {
      * @return true if result instance was updated, false otherwise (when estimation
      * is not yet available).
      */
-    boolean getEstimatedBiases(final double[] result);
+    boolean getEstimatedBiases(double[] result);
 
     /**
      * Gets column matrix containing x,y,z components of estimated accelerometer biases
@@ -61,7 +61,7 @@ public interface UnknownBiasAccelerometerCalibrator {
      * @return true if result was updated, false otherwise.
      * @throws WrongSizeException if provided result instance has invalid size.
      */
-    boolean getEstimatedBiasesAsMatrix(final Matrix result) throws WrongSizeException;
+    boolean getEstimatedBiasesAsMatrix(Matrix result) throws WrongSizeException;
 
     /**
      * Gets x coordinate of estimated accelerometer bias expressed in meters per
@@ -100,7 +100,7 @@ public interface UnknownBiasAccelerometerCalibrator {
      * @param result instance where result will be stored.
      * @return true if result was updated, false if estimation is not available.
      */
-    boolean getEstimatedBiasFxAsAcceleration(final Acceleration result);
+    boolean getEstimatedBiasFxAsAcceleration(Acceleration result);
 
     /**
      * Gets y coordinate of estimated accelerometer bias.
@@ -115,7 +115,7 @@ public interface UnknownBiasAccelerometerCalibrator {
      * @param result instance where result will be stored.
      * @return true if result was updated, false if estimation is not available.
      */
-    boolean getEstimatedBiasFyAsAcceleration(final Acceleration result);
+    boolean getEstimatedBiasFyAsAcceleration(Acceleration result);
 
     /**
      * Gets z coordinate of estimated accelerometer bias.
@@ -130,7 +130,7 @@ public interface UnknownBiasAccelerometerCalibrator {
      * @param result instance where result will be stored.
      * @return true if result was updated, false if estimation is not available.
      */
-    boolean getEstimatedBiasFzAsAcceleration(final Acceleration result);
+    boolean getEstimatedBiasFzAsAcceleration(Acceleration result);
 
     /**
      * Gets estimated accelerometer bias.
@@ -146,5 +146,5 @@ public interface UnknownBiasAccelerometerCalibrator {
      * @return true if estimated accelerometer bias is available and result was
      * modified, false otherwise.
      */
-    boolean getEstimatedBiasAsTriad(final AccelerationTriad result);
+    boolean getEstimatedBiasAsTriad(AccelerationTriad result);
 }

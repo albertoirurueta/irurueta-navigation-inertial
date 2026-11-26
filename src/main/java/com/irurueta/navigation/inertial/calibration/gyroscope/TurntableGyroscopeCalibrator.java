@@ -58,7 +58,6 @@ import com.irurueta.units.AngularSpeedUnit;
 import com.irurueta.units.Time;
 import com.irurueta.units.TimeConverter;
 import com.irurueta.units.TimeUnit;
-
 import java.util.Collection;
 
 /**
@@ -548,7 +547,7 @@ public class TurntableGyroscopeCalibrator implements GyroscopeNonLinearCalibrato
     private Matrix ma;
 
     /**
-     * Internally holds angular rate bias due to g-dependent cross biases
+     * Internally holds angular rate bias due to g-dependent cross biases.
      */
     private Matrix tmp;
 
@@ -4957,13 +4956,13 @@ public class TurntableGyroscopeCalibrator implements GyroscopeNonLinearCalibrato
         //     [by]
         //     [bz]
 
-        // M = [m11 	m12 	m13]
-        //     [0 		m22 	m23]
-        //     [0 	 	0 		m33]
+        // M = [m11     m12     m13]
+        //     [0       m22     m23]
+        //     [0       0       m33]
 
-        // G = [g11 	g12 	g13]
-        //     [g21 	g22 	g23]
-        //     [g31 	g32 	g33]
+        // G = [g11     g12     g13]
+        //     [g21     g22     g23]
+        //     [g31     g32     g33]
 
         // ftrue = [ftruex]
         //         [ftruey]
@@ -5129,7 +5128,7 @@ public class TurntableGyroscopeCalibrator implements GyroscopeNonLinearCalibrato
         //      [0    0    m33][bz]   [                      m33 * bz]   [bgz]
 
         // Mg = [sx  mxy  mxz] = [m11 - 1    m12         m13     ]
-        //      [myx sy	  myz]   [0          m22 - 1     m23     ]
+        //      [myx sy   myz]   [0          m22 - 1     m23     ]
         //      [mzx mzy  sz ]   [0          0           m33 - 1 ]
 
         // Gg = [gg11  gg12  gg13] = [m11  m12  m13][g11  g12  g13]
@@ -5310,13 +5309,13 @@ public class TurntableGyroscopeCalibrator implements GyroscopeNonLinearCalibrato
         //     [by]
         //     [bz]
 
-        // M = [m11 	m12 	m13]
-        //     [m21 	m22 	m23]
-        //     [m31 	m32 	m33]
+        // M = [m11     m12     m13]
+        //     [m21     m22     m23]
+        //     [m31     m32     m33]
 
-        // G = [g11 	g12 	g13]
-        //     [g21 	g22 	g23]
-        //     [g31 	g32 	g33]
+        // G = [g11     g12     g13]
+        //     [g21     g22     g23]
+        //     [g31     g32     g33]
 
         // ftrue = [ftruex]
         //         [ftruey]
@@ -5474,7 +5473,7 @@ public class TurntableGyroscopeCalibrator implements GyroscopeNonLinearCalibrato
         //      [m31  m32  m33][bz]   [m31 * bx + m32 * by + m33 * bz]   [bgz]
 
         // Mg = [sx  mxy  mxz] = [m11 - 1    m12         m13     ]
-        //      [myx sy	  myz]   [m21        m22 - 1     m23     ]
+        //      [myx sy   myz]   [m21        m22 - 1     m23     ]
         //      [mzx mzy  sz ]   [m31        m32         m33 - 1 ]
 
         // Gg = [gg11  gg12  gg13] = [m11  m12  m13][g11  g12  g13]
@@ -5482,7 +5481,8 @@ public class TurntableGyroscopeCalibrator implements GyroscopeNonLinearCalibrato
         //      [gg31  gg32  gg33]   [m31  m32  m33][g31  g32  g33]
 
         // Defining the linear application:
-        // F(b, M, G) = F(bx, by, bz, m11, m21, m31, m12, m22, m32, m13, m23, m33, g11, g21, g31, g12, g22, g32, g13, g23, g33)
+        // F(b, M, G) = F(bx, by, bz, m11, m21, m31, m12, m22, m32, m13, m23, m33, g11, g21, g31, g12, g22, g32, g13,
+        //                g23, g33)
         // as:
         // [bgx] =  [m11 * bx + m12 * by + m13 * bz]
         // [bgy]    [m21 * bx + m22 * by + m23 * bz]
@@ -5687,9 +5687,9 @@ public class TurntableGyroscopeCalibrator implements GyroscopeNonLinearCalibrato
         //     [by]
         //     [bz]
 
-        // M = [m11 	m12 	m13]
-        //     [0 		m22 	m23]
-        //     [0 	 	0 		m33]
+        // M = [m11     m12     m13]
+        //     [0       m22     m23]
+        //     [0       0       m33]
 
         final var gradientEstimator = new GradientEstimator(this::evaluateCommonAxis);
 
@@ -5813,7 +5813,7 @@ public class TurntableGyroscopeCalibrator implements GyroscopeNonLinearCalibrato
         //      [0    0    m33][bz]   [                      m33 * bz]   [bgz]
 
         // Mg = [sx  mxy  mxz] = [m11 - 1    m12         m13     ]
-        //      [myx sy	  myz]   [0          m22 - 1     m23     ]
+        //      [myx sy   myz]   [0          m22 - 1     m23     ]
         //      [mzx mzy  sz ]   [0          0           m33 - 1 ]
 
         //Gg = [gg11  gg12  gg13] = 0
@@ -5954,9 +5954,9 @@ public class TurntableGyroscopeCalibrator implements GyroscopeNonLinearCalibrato
         //     [by]
         //     [bz]
 
-        // M = [m11 	m12 	m13]
-        //     [m21 	m22 	m23]
-        //     [m31 	m32 	m33]
+        // M = [m11     m12     m13]
+        //     [m21     m22     m23]
+        //     [m31     m32     m33]
 
         final var gradientEstimator = new GradientEstimator(this::evaluateGeneral);
 
@@ -6073,7 +6073,7 @@ public class TurntableGyroscopeCalibrator implements GyroscopeNonLinearCalibrato
         //      [m31  m32  m33][bz]   [m31 * bx + m32 * by + m33 * bz]   [bgz]
 
         // Mg = [sx  mxy  mxz] = [m11 - 1    m12         m13     ]
-        //      [myx sy	  myz]   [m21        m22 - 1     m23     ]
+        //      [myx sy   myz]   [m21        m22 - 1     m23     ]
         //      [mzx mzy  sz ]   [m31        m32         m33 - 1 ]
 
         // Gg = [gg11  gg12  gg13] = 0

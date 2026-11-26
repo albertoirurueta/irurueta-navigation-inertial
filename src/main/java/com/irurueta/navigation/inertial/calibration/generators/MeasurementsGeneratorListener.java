@@ -35,7 +35,7 @@ public interface MeasurementsGeneratorListener<T, G extends MeasurementsGenerato
      *
      * @param generator generator that raised the event.
      */
-    void onInitializationStarted(final G generator);
+    void onInitializationStarted(G generator);
 
     /**
      * Called when initial static period successfully completes and base
@@ -46,7 +46,7 @@ public interface MeasurementsGeneratorListener<T, G extends MeasurementsGenerato
      * @param baseNoiseLevel estimated base measurement noise level expressed
      *                       in meters per squared second (m/s^2).
      */
-    void onInitializationCompleted(final G generator, final double baseNoiseLevel);
+    void onInitializationCompleted(G generator, double baseNoiseLevel);
 
     /**
      * Called when an error is detected during initialization because there has been
@@ -55,21 +55,21 @@ public interface MeasurementsGeneratorListener<T, G extends MeasurementsGenerato
      * @param generator generator that raised the event.
      * @param reason    reason why error was detected.
      */
-    void onError(final G generator, final TriadStaticIntervalDetector.ErrorReason reason);
+    void onError(G generator, TriadStaticIntervalDetector.ErrorReason reason);
 
     /**
      * Called when a static interval has been detected after initialization.
      *
      * @param generator generator that raised the event.
      */
-    void onStaticIntervalDetected(final G generator);
+    void onStaticIntervalDetected(G generator);
 
     /**
      * Called when a dynamic interval has been detected after initialization.
      *
      * @param generator generator that raised the event.
      */
-    void onDynamicIntervalDetected(final G generator);
+    void onDynamicIntervalDetected(G generator);
 
     /**
      * Called when a detected static interval is skipped because there are not
@@ -77,7 +77,7 @@ public interface MeasurementsGeneratorListener<T, G extends MeasurementsGenerato
      *
      * @param generator generator that raised the event.
      */
-    void onStaticIntervalSkipped(final G generator);
+    void onStaticIntervalSkipped(G generator);
 
     /**
      * Called when a detected static interval is skipped because it has too
@@ -85,7 +85,7 @@ public interface MeasurementsGeneratorListener<T, G extends MeasurementsGenerato
      *
      * @param generator generator that raised the event.
      */
-    void onDynamicIntervalSkipped(final G generator);
+    void onDynamicIntervalSkipped(G generator);
 
     /**
      * Called when a new measurement is generated.
@@ -93,12 +93,12 @@ public interface MeasurementsGeneratorListener<T, G extends MeasurementsGenerato
      * @param generator   generator that raised the event.
      * @param measurement generated measurement.
      */
-    void onGeneratedMeasurement(final G generator, final T measurement);
+    void onGeneratedMeasurement(G generator, T measurement);
 
     /**
      * Called when generator is reset.
      *
      * @param generator generator that raised the event.
      */
-    void onReset(final G generator);
+    void onReset(G generator);
 }

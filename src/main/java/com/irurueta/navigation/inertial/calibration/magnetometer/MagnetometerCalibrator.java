@@ -68,7 +68,7 @@ public interface MagnetometerCalibrator {
      *                       otherwise.
      * @throws LockedException if estimator is currently running.
      */
-    void setCommonAxisUsed(final boolean commonAxisUsed) throws LockedException;
+    void setCommonAxisUsed(boolean commonAxisUsed) throws LockedException;
 
     /**
      * Gets minimum number of required measurements.

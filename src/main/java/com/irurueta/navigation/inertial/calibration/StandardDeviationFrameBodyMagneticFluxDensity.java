@@ -18,7 +18,6 @@ package com.irurueta.navigation.inertial.calibration;
 import com.irurueta.navigation.frames.ECEFFrame;
 import com.irurueta.navigation.frames.NEDFrame;
 import com.irurueta.navigation.inertial.BodyMagneticFluxDensity;
-
 import java.io.Serial;
 import java.util.Date;
 import java.util.GregorianCalendar;

@@ -7,6 +7,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Changed
+
+- Checkstyle now uses the repository's own `checkstyle.xml` when run from the command line (`mvn checkstyle:checkstyle`),
+  not only in the Maven site report, so local runs and the published report measure the same rules (issue #47).
+- The Checkstyle policy in `checkstyle.xml` is relaxed for patterns that are intentional in this numerical library:
+  `HiddenField` ignores constructor and setter parameters (including setters that return their class), `MagicNumber`
+  ignores `-1, 0, 1, 2, 3, 0.5`, `hashCode()` methods, field initializers and annotation values, and
+  `ParameterNumber` allows up to 15 parameters and ignores overridden methods. `@SuppressWarnings("checkstyle:...")`
+  annotations are now honoured (issue #47).
+- Checkstyle findings under `src/main/java` are reduced from 20,088 to 4,370 through policy changes and formatting,
+  import, modifier, declaration order, Javadoc and line length fixes, with no public API changes. The remaining
+  findings (`MagicNumber`, `HiddenField`, `ParameterNumber`, `ThrowsCount`) are numerical constants or public API
+  signatures (issue #47).
+
 ## [1.12.0] - 2026-11-25
 
 ### Fixed

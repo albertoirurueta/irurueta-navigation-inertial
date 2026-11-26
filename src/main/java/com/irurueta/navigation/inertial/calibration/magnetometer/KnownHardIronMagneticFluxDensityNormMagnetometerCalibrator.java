@@ -21,7 +21,6 @@ import com.irurueta.navigation.inertial.calibration.StandardDeviationBodyMagneti
 import com.irurueta.units.MagneticFluxDensity;
 import com.irurueta.units.MagneticFluxDensityConverter;
 import com.irurueta.units.MagneticFluxDensityUnit;
-
 import java.util.Collection;
 
 /**

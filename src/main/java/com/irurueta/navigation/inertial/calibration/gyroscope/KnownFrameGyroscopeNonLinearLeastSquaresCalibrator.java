@@ -36,7 +36,6 @@ import com.irurueta.statistics.MaxIterationsExceededException;
 import com.irurueta.units.AngularSpeed;
 import com.irurueta.units.AngularSpeedConverter;
 import com.irurueta.units.AngularSpeedUnit;
-
 import java.util.Collection;
 
 /**
@@ -4011,24 +4010,28 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
         // Ωmeasy - Ωtruey = by + sy * Ωtruey + myz * Ωtruez + g21 * ftruex * g22 * ftruey + g23 * ftruez
         // Ωmeasz - Ωtruez = bz + sz * Ωtruez + g31 * ftruex + g32 * ftruey + g33 * ftruez
 
-        // [1   0   0   Ωtruex  0       0       Ωtruey  Ωtruez  0       ftruex  ftruey  ftruez  0       0       0       0       0       0     ][bx ] =  [Ωmeasx - Ωtruex]
-        // [0   1   0   0       Ωtruey  0       0       0       Ωtruez  0       0       0       ftruex  ftruey  ftruez  0       0       0     ][by ]    [Ωmeasy - Ωtruey]
-        // [0   0   1   0       0       Ωtruez  0       0       0       0       0       0       0       0       0       ftruex  ftruey  ftruez][bz ]    [Ωmeasz - Ωtruez]
-        //                                                                                                                                              [sx ]
-        //                                                                                                                                              [sy ]
-        //                                                                                                                                              [sz ]
-        //                                                                                                                                              [mxy]
-        //                                                                                                                                              [mxz]
-        //                                                                                                                                              [myz]
-        //                                                                                                                                              [g11]
-        //                                                                                                                                              [g12]
-        //                                                                                                                                              [g13]
-        //                                                                                                                                              [g21]
-        //                                                                                                                                              [g22]
-        //                                                                                                                                              [g23]
-        //                                                                                                                                              [g31]
-        //                                                                                                                                              [g32]
-        //                                                                                                                                              [g33]
+        // [1   0   0   Ωtruex  0       0       Ωtruey  Ωtruez  0       ...
+        // [0   1   0   0       Ωtruey  0       0       0       Ωtruez  ...
+        // [0   0   1   0       0       Ωtruez  0       0       0       ...
+        //
+        //  ... ftruex  ftruey  ftruez  0       0       0       0       0       0     ][bx ] =  [Ωmeasx - Ωtruex]
+        //  ... 0       0       0       ftruex  ftruey  ftruez  0       0       0     ][by ]    [Ωmeasy - Ωtruey]
+        //  ... 0       0       0       0       0       0       ftruex  ftruey  ftruez][bz ]    [Ωmeasz - Ωtruez]
+        //                                                                                      [sx ]
+        //                                                                                      [sy ]
+        //                                                                                      [sz ]
+        //                                                                                      [mxy]
+        //                                                                                      [mxz]
+        //                                                                                      [myz]
+        //                                                                                      [g11]
+        //                                                                                      [g12]
+        //                                                                                      [g13]
+        //                                                                                      [g21]
+        //                                                                                      [g22]
+        //                                                                                      [g23]
+        //                                                                                      [g31]
+        //                                                                                      [g32]
+        //                                                                                      [g33]
 
         fitter.setFunctionEvaluator(new LevenbergMarquardtMultiVariateFunctionEvaluator() {
             @Override
@@ -4070,7 +4073,8 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             public void evaluate(final int i, final double[] point, final double[] result, final double[] params,
                                  final Matrix jacobian) {
                 // We know that:
-                // Ωmeasx = bx + Ωtruex + sx * Ωtruex + mxy * Ωtruey + mxz * Ωtruez + g11 * ftruex + g12 * ftruey + g13 * ftruez
+                // Ωmeasx = bx + Ωtruex + sx * Ωtruex + mxy * Ωtruey + mxz * Ωtruez + g11 * ftruex + g12 * ftruey
+                //          + g13 * ftruez
                 // Ωmeasy = by + Ωtruey + sy * Ωtruey + myz * Ωtruez + g21 * ftruex * g22 * ftruey + g23 * ftruez
                 // Ωmeasz = bz + Ωtruez + sz * Ωtruez + g31 * ftruex + g32 * ftruey + g33 * ftruez
 
@@ -4402,27 +4406,31 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
         // Ωmeasy - Ωtruey = by + myx * Ωtruex + sy * Ωtruey + myz * Ωtruez + g21 * ftruex * g22 * ftruey + g23 * ftruez
         // Ωmeasz - Ωtruez = bz + mzx * Ωtruex + mzy * Ωtruey + sz * Ωtruez + g31 * ftruex + g32 * ftruey + g33 * ftruez
 
-        // [1   0   0   Ωtruex  0       0       Ωtruey  Ωtruez  0       0       0       0       ftruex  ftruey  ftruez  0       0       0       0       0       0     ][bx ] =  [Ωmeasx - Ωtruex]
-        // [0   1   0   0       Ωtruey  0       0       0       Ωtruex  Ωtruez  0       0       0       0       0       ftruex  ftruey  ftruez  0       0       0     ][by ]    [Ωmeasy - Ωtruey]
-        // [0   0   1   0       0       Ωtruez  0       0       0       0       Ωtruex  Ωtruey  0       0       0       0       0       0       ftruex  ftruey  ftruez][bz ]    [Ωmeasz - Ωtruez]
-        //                                                                                                                                                             [sx ]
-        //                                                                                                                                                             [sy ]
-        //                                                                                                                                                             [sz ]
-        //                                                                                                                                                             [mxy]
-        //                                                                                                                                                             [mxz]
-        //                                                                                                                                                             [myx]
-        //                                                                                                                                                             [myz]
-        //                                                                                                                                                             [mzx]
-        //                                                                                                                                                             [mzy]
-        //                                                                                                                                                             [g11]
-        //                                                                                                                                                             [g12]
-        //                                                                                                                                                             [g13]
-        //                                                                                                                                                             [g21]
-        //                                                                                                                                                             [g22]
-        //                                                                                                                                                             [g23]
-        //                                                                                                                                                             [g31]
-        //                                                                                                                                                             [g32]
-        //                                                                                                                                                             [g33]
+        // [1   0   0   Ωtruex  0       0       Ωtruey  Ωtruez  0       0       0       0       ...
+        // [0   1   0   0       Ωtruey  0       0       0       Ωtruex  Ωtruez  0       0       ...
+        // [0   0   1   0       0       Ωtruez  0       0       0       0       Ωtruex  Ωtruey  ...
+        //
+        //  ... ftruex  ftruey  ftruez  0       0       0       0       0       0     ][bx ] =  [Ωmeasx - Ωtruex]
+        //  ... 0       0       0       ftruex  ftruey  ftruez  0       0       0     ][by ]    [Ωmeasy - Ωtruey]
+        //  ... 0       0       0       0       0       0       ftruex  ftruey  ftruez][bz ]    [Ωmeasz - Ωtruez]
+        //                                                                             [sx ]
+        //                                                                             [sy ]
+        //                                                                             [sz ]
+        //                                                                             [mxy]
+        //                                                                             [mxz]
+        //                                                                             [myx]
+        //                                                                             [myz]
+        //                                                                             [mzx]
+        //                                                                             [mzy]
+        //                                                                             [g11]
+        //                                                                             [g12]
+        //                                                                             [g13]
+        //                                                                             [g21]
+        //                                                                             [g22]
+        //                                                                             [g23]
+        //                                                                             [g31]
+        //                                                                             [g32]
+        //                                                                             [g33]
 
         fitter.setFunctionEvaluator(new LevenbergMarquardtMultiVariateFunctionEvaluator() {
             @Override
@@ -4467,9 +4475,12 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
             public void evaluate(final int i, final double[] point, final double[] result, final double[] params,
                                  final Matrix jacobian) {
                 // We know that:
-                // Ωmeasx = bx + Ωtruex + sx * Ωtruex + mxy * Ωtruey + mxz * Ωtruez + g11 * ftruex + g12 * ftruey + g13 * ftruez
-                // Ωmeasy = by + myx * Ωtruex + Ωtruey + sy * Ωtruey + myz * Ωtruez + g21 * ftruex * g22 * ftruey + g23 * ftruez
-                // Ωmeasz = bz + mzx * Ωtruex + mzy * Ωtruey + Ωtruez + sz * Ωtruez + g31 * ftruex + g32 * ftruey + g33 * ftruez
+                // Ωmeasx = bx + Ωtruex + sx * Ωtruex + mxy * Ωtruey + mxz * Ωtruez + g11 * ftruex + g12 * ftruey
+                //          + g13 * ftruez
+                // Ωmeasy = by + myx * Ωtruex + Ωtruey + sy * Ωtruey + myz * Ωtruez + g21 * ftruex * g22 * ftruey
+                //          + g23 * ftruez
+                // Ωmeasz = bz + mzx * Ωtruex + mzy * Ωtruey + Ωtruez + sz * Ωtruez + g31 * ftruex + g32 * ftruey
+                //          + g33 * ftruez
 
                 // Hence, the derivatives respect the parameters bx, by, bz, sx, sy,
                 // sz, mxy, mxz, myx, myz, mzx, mzy, g11, g12, g13, g21, g22, g23,

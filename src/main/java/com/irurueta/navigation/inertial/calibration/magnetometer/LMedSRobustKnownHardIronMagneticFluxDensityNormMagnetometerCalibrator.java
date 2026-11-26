@@ -25,7 +25,6 @@ import com.irurueta.numerical.robust.LMedSRobustEstimatorListener;
 import com.irurueta.numerical.robust.RobustEstimator;
 import com.irurueta.numerical.robust.RobustEstimatorException;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
-
 import java.util.List;
 
 /**

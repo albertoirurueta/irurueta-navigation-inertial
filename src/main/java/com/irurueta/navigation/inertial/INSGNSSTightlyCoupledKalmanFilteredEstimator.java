@@ -33,7 +33,6 @@ import com.irurueta.navigation.inertial.navigators.InertialNavigatorException;
 import com.irurueta.units.Time;
 import com.irurueta.units.TimeConverter;
 import com.irurueta.units.TimeUnit;
-
 import java.util.ArrayList;
 import java.util.Collection;
 

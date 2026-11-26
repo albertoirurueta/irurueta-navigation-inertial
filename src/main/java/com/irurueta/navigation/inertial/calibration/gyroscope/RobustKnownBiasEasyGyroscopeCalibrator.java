@@ -39,7 +39,6 @@ import com.irurueta.units.AccelerationUnit;
 import com.irurueta.units.AngularSpeed;
 import com.irurueta.units.AngularSpeedConverter;
 import com.irurueta.units.AngularSpeedUnit;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -154,6 +153,34 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      * Minimum allowed number of iterations.
      */
     public static final int MIN_ITERATIONS = 1;
+
+    /**
+     * Contains a collection of sequences of timestamped body kinematics
+     * measurements taken at a given position where the device moves freely
+     * with different orientations.
+     */
+    protected List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences;
+
+    /**
+     * Listener to be notified of events such as when calibration starts, ends or its
+     * progress significantly changes.
+     */
+    protected RobustKnownBiasEasyGyroscopeCalibratorListener listener;
+
+    /**
+     * Indicates whether calibrator is running.
+     */
+    protected boolean running;
+
+    /**
+     * Data related to inliers found after calibration.
+     */
+    protected InliersData inliersData;
+
+    /**
+     * Size of subsets to be checked during robust estimation.
+     */
+    protected int preliminarySubsetSize = EasyGyroscopeCalibrator.MINIMUM_SEQUENCES_GENERAL_AND_CROSS_BIASES;
 
     /**
      * Known x-coordinate of accelerometer bias to be used to fix measured
@@ -300,13 +327,6 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
     private Matrix initialGg;
 
     /**
-     * Contains a collection of sequences of timestamped body kinematics
-     * measurements taken at a given position where the device moves freely
-     * with different orientations.
-     */
-    protected List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences;
-
-    /**
      * This flag indicates whether z-axis is assumed to be common for accelerometer
      * and gyroscope.
      * When enabled, this eliminates 3 variables from Mg matrix.
@@ -319,12 +339,6 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      * When enabled, this adds 9 variables from Gg matrix.
      */
     private boolean estimateGDependentCrossBiases = DEFAULT_ESTIMATE_G_DEPENDENT_CROSS_BIASES;
-
-    /**
-     * Listener to be notified of events such as when calibration starts, ends or its
-     * progress significantly changes.
-     */
-    protected RobustKnownBiasEasyGyroscopeCalibratorListener listener;
 
     /**
      * Estimated gyroscope scale factors and cross coupling errors.
@@ -415,11 +429,6 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
     private double estimatedQ;
 
     /**
-     * Indicates whether calibrator is running.
-     */
-    protected boolean running;
-
-    /**
      * Amount of progress variation before notifying a progress change during calibration.
      */
     protected float progressDelta = DEFAULT_PROGRESS_DELTA;
@@ -439,22 +448,12 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
     protected int maxIterations = DEFAULT_MAX_ITERATIONS;
 
     /**
-     * Data related to inliers found after calibration.
-     */
-    protected InliersData inliersData;
-
-    /**
      * Indicates whether result must be refined using a non linear calibrator over
      * found inliers.
      * If true, inliers will be computed and kept in any implementation regardless of the
      * settings.
      */
     protected boolean refineResult = DEFAULT_REFINE_RESULT;
-
-    /**
-     * Size of subsets to be checked during robust estimation.
-     */
-    protected int preliminarySubsetSize = EasyGyroscopeCalibrator.MINIMUM_SEQUENCES_GENERAL_AND_CROSS_BIASES;
 
     /**
      * Indicates whether covariance must be kept after refining result.
@@ -5363,7 +5362,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
     }
 
     /**
-     * Configures acceleration fixer
+     * Configures acceleration fixer.
      *
      * @throws AlgebraException if provided accelerometer parameters
      *                          are numerically unstable.
@@ -5609,7 +5608,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
     }
 
     /**
-     * Fixes a measured kinematics instance using current
+     * Fixes a measured kinematics instance using current calibration parameters.
      *
      * @param measuredKinematics a measured kinematics instance.
      * @param result             instance where fixed values will be stored.

@@ -31,7 +31,7 @@ public interface AccelerometerAndGyroscopeMeasurementsGeneratorListener {
      *
      * @param generator generator that raised the event.
      */
-    void onInitializationStarted(final AccelerometerAndGyroscopeMeasurementsGenerator generator);
+    void onInitializationStarted(AccelerometerAndGyroscopeMeasurementsGenerator generator);
 
     /**
      * Called when initial static period successfully completes and base
@@ -43,7 +43,7 @@ public interface AccelerometerAndGyroscopeMeasurementsGeneratorListener {
      *                                    in meters per squared second (m/s^2).
      */
     void onInitializationCompleted(
-            final AccelerometerAndGyroscopeMeasurementsGenerator generator, final double accelerometerBaseNoiseLevel);
+            AccelerometerAndGyroscopeMeasurementsGenerator generator, double accelerometerBaseNoiseLevel);
 
     /**
      * Called when an error is detected during initialization because there has been
@@ -53,22 +53,22 @@ public interface AccelerometerAndGyroscopeMeasurementsGeneratorListener {
      * @param reason    reason why error was detected.
      */
     void onError(
-            final AccelerometerAndGyroscopeMeasurementsGenerator generator,
-            final TriadStaticIntervalDetector.ErrorReason reason);
+            AccelerometerAndGyroscopeMeasurementsGenerator generator,
+            TriadStaticIntervalDetector.ErrorReason reason);
 
     /**
      * Called when a static interval has been detected after initialization.
      *
      * @param generator generator that raised the event.
      */
-    void onStaticIntervalDetected(final AccelerometerAndGyroscopeMeasurementsGenerator generator);
+    void onStaticIntervalDetected(AccelerometerAndGyroscopeMeasurementsGenerator generator);
 
     /**
      * Called when a dynamic interval has been detected after initialization.
      *
      * @param generator generator that raised the event.
      */
-    void onDynamicIntervalDetected(final AccelerometerAndGyroscopeMeasurementsGenerator generator);
+    void onDynamicIntervalDetected(AccelerometerAndGyroscopeMeasurementsGenerator generator);
 
     /**
      * Called when a detected static interval is skipped because there are not
@@ -76,7 +76,7 @@ public interface AccelerometerAndGyroscopeMeasurementsGeneratorListener {
      *
      * @param generator generator that raised the event.
      */
-    void onStaticIntervalSkipped(final AccelerometerAndGyroscopeMeasurementsGenerator generator);
+    void onStaticIntervalSkipped(AccelerometerAndGyroscopeMeasurementsGenerator generator);
 
     /**
      * Called when a detected static interval is skipped because it has too
@@ -84,7 +84,7 @@ public interface AccelerometerAndGyroscopeMeasurementsGeneratorListener {
      *
      * @param generator generator that raised the event.
      */
-    void onDynamicIntervalSkipped(final AccelerometerAndGyroscopeMeasurementsGenerator generator);
+    void onDynamicIntervalSkipped(AccelerometerAndGyroscopeMeasurementsGenerator generator);
 
     /**
      * Called when a new measurement for accelerometer calibration is generated.
@@ -93,8 +93,8 @@ public interface AccelerometerAndGyroscopeMeasurementsGeneratorListener {
      * @param measurement generated accelerometer measurement.
      */
     void onGeneratedAccelerometerMeasurement(
-            final AccelerometerAndGyroscopeMeasurementsGenerator generator,
-            final StandardDeviationBodyKinematics measurement);
+            AccelerometerAndGyroscopeMeasurementsGenerator generator,
+            StandardDeviationBodyKinematics measurement);
 
     /**
      * Called when a new measurement for gyroscope calibration is generated.
@@ -103,13 +103,13 @@ public interface AccelerometerAndGyroscopeMeasurementsGeneratorListener {
      * @param measurement generated gyroscope measurement.
      */
     void onGeneratedGyroscopeMeasurement(
-            final AccelerometerAndGyroscopeMeasurementsGenerator generator,
-            final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> measurement);
+            AccelerometerAndGyroscopeMeasurementsGenerator generator,
+            BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> measurement);
 
     /**
      * Called when generator is reset.
      *
      * @param generator generator that raised the event.
      */
-    void onReset(final AccelerometerAndGyroscopeMeasurementsGenerator generator);
+    void onReset(AccelerometerAndGyroscopeMeasurementsGenerator generator);
 }

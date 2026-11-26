@@ -30,12 +30,12 @@ class WorldMagneticModelTest {
         assertEquals(5.0, WorldMagneticModel.LIFESPAN, 0.0);
         assertEquals(13, WorldMagneticModel.N);
 
-        assertNotNull(model.c);
-        assertNotNull(model.cd);
-        assertEquals(0.0, model.epoch, 0.0);
-        assertNotNull(model.snorm);
-        assertNotNull(model.k);
-        assertNotNull(model.fn);
-        assertNotNull(model.fm);
+        assertNotNull(model.getC());
+        assertNotNull(model.getCd());
+        assertEquals(0.0, model.getEpoch(), 0.0);
+        assertNotNull(model.getSnorm());
+        assertNotNull(model.getK());
+        assertNotNull(model.getFn());
+        assertNotNull(model.getFm());
     }
 }

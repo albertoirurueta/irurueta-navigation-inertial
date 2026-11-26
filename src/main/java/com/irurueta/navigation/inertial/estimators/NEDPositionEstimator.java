@@ -17,7 +17,18 @@ package com.irurueta.navigation.inertial.estimators;
 
 import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.frames.NEDVelocity;
-import com.irurueta.units.*;
+import com.irurueta.units.Angle;
+import com.irurueta.units.AngleConverter;
+import com.irurueta.units.AngleUnit;
+import com.irurueta.units.Distance;
+import com.irurueta.units.DistanceConverter;
+import com.irurueta.units.DistanceUnit;
+import com.irurueta.units.Speed;
+import com.irurueta.units.SpeedConverter;
+import com.irurueta.units.SpeedUnit;
+import com.irurueta.units.Time;
+import com.irurueta.units.TimeConverter;
+import com.irurueta.units.TimeUnit;
 
 /**
  * Estimates curvilinear position by integrating the velocity.

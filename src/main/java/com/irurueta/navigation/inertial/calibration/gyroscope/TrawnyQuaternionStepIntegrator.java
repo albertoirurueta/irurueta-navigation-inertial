@@ -237,6 +237,7 @@ public class TrawnyQuaternionStepIntegrator extends QuaternionStepIntegrator {
      *                          radians per second (rad/s).
      * @param dt                time step expressed in seconds (t1 - t0).
      * @param result            instance where result of integration will be stored.
+     * @param exponentialMatrixEstimator estimator of matrix exponentials to be reused.
      * @param quat              initial attitude to be reused. Must be 4x1.
      * @param omega0            angular speed at initial timestamp t0 to be reused. Must be 3x1.
      * @param omega1            angular speed at end timestamp t1 to be reused. Must be 3x1.

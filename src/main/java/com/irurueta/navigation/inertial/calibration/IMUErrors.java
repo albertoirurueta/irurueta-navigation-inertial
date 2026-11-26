@@ -23,7 +23,6 @@ import com.irurueta.units.AccelerationUnit;
 import com.irurueta.units.AngularSpeed;
 import com.irurueta.units.AngularSpeedConverter;
 import com.irurueta.units.AngularSpeedUnit;
-
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Arrays;
@@ -1020,7 +1019,7 @@ public class IMUErrors implements Serializable, Cloneable {
     }
 
     /**
-     * Sets accelerometer noise root PSD expressed in (m * s^-1.5)
+     * Sets accelerometer noise root PSD expressed in (m * s^-1.5).
      *
      * @param accelerometerNoiseRootPSD accelerometer noise root PSD to be set.
      */

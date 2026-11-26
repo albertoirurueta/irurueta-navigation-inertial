@@ -22,7 +22,7 @@ public interface GyroscopeNoiseRootPsdSource {
 
     /**
      * Gets gyroscope base noise level root PSD (Power Spectral Density)
-     * expressed in (rad * s^-0.5)
+     * expressed in (rad * s^-0.5).
      *
      * @return gyroscope base noise level root PSD.
      */

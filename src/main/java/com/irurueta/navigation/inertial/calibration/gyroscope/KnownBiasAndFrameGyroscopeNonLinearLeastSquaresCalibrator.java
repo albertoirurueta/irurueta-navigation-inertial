@@ -32,7 +32,6 @@ import com.irurueta.statistics.MaxIterationsExceededException;
 import com.irurueta.units.AngularSpeed;
 import com.irurueta.units.AngularSpeedConverter;
 import com.irurueta.units.AngularSpeedUnit;
-
 import java.util.Collection;
 
 /**
@@ -3391,21 +3390,25 @@ public class KnownBiasAndFrameGyroscopeNonLinearLeastSquaresCalibrator implement
         // Ωmeasy - Ωtruey - by = sy * Ωtruey + myz * Ωtruez + g21 * ftruex * g22 * ftruey + g23 * ftruez
         // Ωmeasz - Ωtruez - bz = sz * Ωtruez + g31 * ftruex + g32 * ftruey + g33 * ftruez
 
-        // [Ωtruex  0       0       Ωtruey  Ωtruez  0       ftruex  ftruey  ftruez  0       0       0       0       0       0     ][sx ] =  [Ωmeasx - Ωtruex - bx]
-        // [0       Ωtruey  0       0       0       Ωtruez  0       0       0       ftruex  ftruey  ftruez  0       0       0     ][sy ]    [Ωmeasy - Ωtruey - by]
-        // [0       0       Ωtruez  0       0       0       0       0       0       0       0       0       ftruex  ftruey  ftruez][sz ]    [Ωmeasz - Ωtruez - bz]
-        //                                                                                                                         [mxy]
-        //                                                                                                                         [mxz]
-        //                                                                                                                         [myz]
-        //                                                                                                                         [g11]
-        //                                                                                                                         [g12]
-        //                                                                                                                         [g13]
-        //                                                                                                                         [g21]
-        //                                                                                                                         [g22]
-        //                                                                                                                         [g23]
-        //                                                                                                                         [g31]
-        //                                                                                                                         [g32]
-        //                                                                                                                         [g33]
+        // [Ωtruex  0       0       Ωtruey  Ωtruez  0       ...
+        // [0       Ωtruey  0       0       0       Ωtruez  ...
+        // [0       0       Ωtruez  0       0       0       ...
+        //
+        //  ... ftruex  ftruey  ftruez  0       0       0       0       0       0     ][sx ] =  [Ωmeasx - Ωtruex - bx]
+        //  ... 0       0       0       ftruex  ftruey  ftruez  0       0       0     ][sy ]    [Ωmeasy - Ωtruey - by]
+        //  ... 0       0       0       0       0       0       ftruex  ftruey  ftruez][sz ]    [Ωmeasz - Ωtruez - bz]
+        //                                                                             [mxy]
+        //                                                                             [mxz]
+        //                                                                             [myz]
+        //                                                                             [g11]
+        //                                                                             [g12]
+        //                                                                             [g13]
+        //                                                                             [g21]
+        //                                                                             [g22]
+        //                                                                             [g23]
+        //                                                                             [g31]
+        //                                                                             [g32]
+        //                                                                             [g33]
 
         fitter.setFunctionEvaluator(new LevenbergMarquardtMultiVariateFunctionEvaluator() {
             @Override
@@ -3444,7 +3447,8 @@ public class KnownBiasAndFrameGyroscopeNonLinearLeastSquaresCalibrator implement
                     final int i, final double[] point, final double[] result, final double[] params,
                     final Matrix jacobian) {
                 // We know that:
-                // Ωmeasx = bx + Ωtruex + sx * Ωtruex + mxy * Ωtruey + mxz * Ωtruez + g11 * ftruex + g12 * ftruey + g13 * ftruez
+                // Ωmeasx = bx + Ωtruex + sx * Ωtruex + mxy * Ωtruey + mxz * Ωtruez + g11 * ftruex + g12 * ftruey
+                //          + g13 * ftruez
                 // Ωmeasy = by + Ωtruey + sy * Ωtruey + myz * Ωtruez + g21 * ftruex * g22 * ftruey + g23 * ftruez
                 // Ωmeasz = bz + Ωtruez + sz * Ωtruez + g31 * ftruex + g32 * ftruey + g33 * ftruez
 
@@ -3739,24 +3743,28 @@ public class KnownBiasAndFrameGyroscopeNonLinearLeastSquaresCalibrator implement
         // Ωmeasy - Ωtruey - by = myx * Ωtruex + sy * Ωtruey + myz * Ωtruez + g21 * ftruex * g22 * ftruey + g23 * ftruez
         // Ωmeasz - Ωtruez - bz = mzx * Ωtruex + mzy * Ωtruey + sz * Ωtruez + g31 * ftruex + g32 * ftruey + g33 * ftruez
 
-        // [Ωtruex  0       0       Ωtruey  Ωtruez  0       0       0       0       ftruex  ftruey  ftruez  0       0       0       0       0       0     ][sx ] =  [Ωmeasx - Ωtruex - bx]
-        // [0       Ωtruey  0       0       0       Ωtruex  Ωtruez  0       0       0       0       0       ftruex  ftruey  ftruez  0       0       0     ][sy ]    [Ωmeasy - Ωtruey - by]
-        // [0       0       Ωtruez  0       0       0       0       Ωtruex  Ωtruey  0       0       0       0       0       0       ftruex  ftruey  ftruez][sz ]    [Ωmeasz - Ωtruez - bz]
-        //                                                                                                                                                 [mxy]
-        //                                                                                                                                                 [mxz]
-        //                                                                                                                                                 [myx]
-        //                                                                                                                                                 [myz]
-        //                                                                                                                                                 [mzx]
-        //                                                                                                                                                 [mzy]
-        //                                                                                                                                                 [g11]
-        //                                                                                                                                                 [g12]
-        //                                                                                                                                                 [g13]
-        //                                                                                                                                                 [g21]
-        //                                                                                                                                                 [g22]
-        //                                                                                                                                                 [g23]
-        //                                                                                                                                                 [g31]
-        //                                                                                                                                                 [g32]
-        //                                                                                                                                                 [g33]
+        // [Ωtruex  0       0       Ωtruey  Ωtruez  0       0       0       0       ...
+        // [0       Ωtruey  0       0       0       Ωtruex  Ωtruez  0       0       ...
+        // [0       0       Ωtruez  0       0       0       0       Ωtruex  Ωtruey  ...
+        //
+        //  ... ftruex  ftruey  ftruez  0       0       0       0       0       0     ][sx ] =  [Ωmeasx - Ωtruex - bx]
+        //  ... 0       0       0       ftruex  ftruey  ftruez  0       0       0     ][sy ]    [Ωmeasy - Ωtruey - by]
+        //  ... 0       0       0       0       0       0       ftruex  ftruey  ftruez][sz ]    [Ωmeasz - Ωtruez - bz]
+        //                                                                             [mxy]
+        //                                                                             [mxz]
+        //                                                                             [myx]
+        //                                                                             [myz]
+        //                                                                             [mzx]
+        //                                                                             [mzy]
+        //                                                                             [g11]
+        //                                                                             [g12]
+        //                                                                             [g13]
+        //                                                                             [g21]
+        //                                                                             [g22]
+        //                                                                             [g23]
+        //                                                                             [g31]
+        //                                                                             [g32]
+        //                                                                             [g33]
 
         fitter.setFunctionEvaluator(new LevenbergMarquardtMultiVariateFunctionEvaluator() {
             @Override
@@ -3797,9 +3805,12 @@ public class KnownBiasAndFrameGyroscopeNonLinearLeastSquaresCalibrator implement
             public void evaluate(final int i, final double[] point, final double[] result, final double[] params,
                                  final Matrix jacobian) {
                 // We know that:
-                // Ωmeasx = bx + Ωtruex + sx * Ωtruex + mxy * Ωtruey + mxz * Ωtruez + g11 * ftruex + g12 * ftruey + g13 * ftruez
-                // Ωmeasy = by + myx * Ωtruex + Ωtruey + sy * Ωtruey + myz * Ωtruez + g21 * ftruex * g22 * ftruey + g23 * ftruez
-                // Ωmeasz = bz + mzx * Ωtruex + mzy * Ωtruey + Ωtruez + sz * Ωtruez + g31 * ftruex + g32 * ftruey + g33 * ftruez
+                // Ωmeasx = bx + Ωtruex + sx * Ωtruex + mxy * Ωtruey + mxz * Ωtruez + g11 * ftruex + g12 * ftruey
+                //          + g13 * ftruez
+                // Ωmeasy = by + myx * Ωtruex + Ωtruey + sy * Ωtruey + myz * Ωtruez + g21 * ftruex * g22 * ftruey
+                //          + g23 * ftruez
+                // Ωmeasz = bz + mzx * Ωtruex + mzy * Ωtruey + Ωtruez + sz * Ωtruez + g31 * ftruex + g32 * ftruey
+                //          + g33 * ftruez
 
                 // Hence, the derivatives respect the parameters sx, sy,
                 // sz, mxy, mxz, myx, myz, mzx, mzy, g11, g12, g13, g21, g22, g23,

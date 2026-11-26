@@ -26,12 +26,12 @@ public interface TurntableGyroscopeCalibratorListener {
      *
      * @param calibrator calibrator that raised the event.
      */
-    void onCalibrateStart(final TurntableGyroscopeCalibrator calibrator);
+    void onCalibrateStart(TurntableGyroscopeCalibrator calibrator);
 
     /**
      * Called when calibration ends.
      *
      * @param calibrator calibrator that raised the event.
      */
-    void onCalibrateEnd(final TurntableGyroscopeCalibrator calibrator);
+    void onCalibrateEnd(TurntableGyroscopeCalibrator calibrator);
 }

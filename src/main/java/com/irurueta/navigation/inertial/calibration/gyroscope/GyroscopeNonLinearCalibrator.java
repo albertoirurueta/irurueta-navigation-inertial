@@ -35,7 +35,7 @@ public interface GyroscopeNonLinearCalibrator extends GyroscopeCalibrator {
      * @param initialSx initial x scaling factor.
      * @throws LockedException if calibrator is currently running.
      */
-    void setInitialSx(final double initialSx) throws LockedException;
+    void setInitialSx(double initialSx) throws LockedException;
 
     /**
      * Gets initial y scaling factor.
@@ -50,7 +50,7 @@ public interface GyroscopeNonLinearCalibrator extends GyroscopeCalibrator {
      * @param initialSy initial y scaling factor.
      * @throws LockedException if calibrator is currently running.
      */
-    void setInitialSy(final double initialSy) throws LockedException;
+    void setInitialSy(double initialSy) throws LockedException;
 
     /**
      * Gets initial z scaling factor.
@@ -65,7 +65,7 @@ public interface GyroscopeNonLinearCalibrator extends GyroscopeCalibrator {
      * @param initialSz initial z scaling factor.
      * @throws LockedException if calibrator is currently running.
      */
-    void setInitialSz(final double initialSz) throws LockedException;
+    void setInitialSz(double initialSz) throws LockedException;
 
     /**
      * Gets initial x-y cross coupling error.
@@ -80,7 +80,7 @@ public interface GyroscopeNonLinearCalibrator extends GyroscopeCalibrator {
      * @param initialMxy initial x-y cross coupling error.
      * @throws LockedException if calibrator is currently running.
      */
-    void setInitialMxy(final double initialMxy) throws LockedException;
+    void setInitialMxy(double initialMxy) throws LockedException;
 
     /**
      * Gets initial x-z cross coupling error.
@@ -95,7 +95,7 @@ public interface GyroscopeNonLinearCalibrator extends GyroscopeCalibrator {
      * @param initialMxz initial x-z cross coupling error.
      * @throws LockedException if calibrator is currently running.
      */
-    void setInitialMxz(final double initialMxz) throws LockedException;
+    void setInitialMxz(double initialMxz) throws LockedException;
 
     /**
      * Gets initial y-x cross coupling error.
@@ -110,7 +110,7 @@ public interface GyroscopeNonLinearCalibrator extends GyroscopeCalibrator {
      * @param initialMyx initial y-x cross coupling error.
      * @throws LockedException if calibrator is currently running.
      */
-    void setInitialMyx(final double initialMyx) throws LockedException;
+    void setInitialMyx(double initialMyx) throws LockedException;
 
     /**
      * Gets initial y-z cross coupling error.
@@ -125,7 +125,7 @@ public interface GyroscopeNonLinearCalibrator extends GyroscopeCalibrator {
      * @param initialMyz initial y-z cross coupling error.
      * @throws LockedException if calibrator is currently running.
      */
-    void setInitialMyz(final double initialMyz) throws LockedException;
+    void setInitialMyz(double initialMyz) throws LockedException;
 
     /**
      * Gets initial z-x cross coupling error.
@@ -140,7 +140,7 @@ public interface GyroscopeNonLinearCalibrator extends GyroscopeCalibrator {
      * @param initialMzx initial z-x cross coupling error.
      * @throws LockedException if calibrator is currently running.
      */
-    void setInitialMzx(final double initialMzx) throws LockedException;
+    void setInitialMzx(double initialMzx) throws LockedException;
 
     /**
      * Gets initial z-y cross coupling error.
@@ -155,7 +155,7 @@ public interface GyroscopeNonLinearCalibrator extends GyroscopeCalibrator {
      * @param initialMzy initial z-y cross coupling error.
      * @throws LockedException if calibrator is currently running.
      */
-    void setInitialMzy(final double initialMzy) throws LockedException;
+    void setInitialMzy(double initialMzy) throws LockedException;
 
     /**
      * Sets initial scaling factors.
@@ -166,7 +166,7 @@ public interface GyroscopeNonLinearCalibrator extends GyroscopeCalibrator {
      * @throws LockedException if calibrator is currently running.
      */
     void setInitialScalingFactors(
-            final double initialSx, final double initialSy, final double initialSz) throws LockedException;
+            double initialSx, double initialSy, double initialSz) throws LockedException;
 
     /**
      * Sets initial cross coupling errors.
@@ -180,8 +180,8 @@ public interface GyroscopeNonLinearCalibrator extends GyroscopeCalibrator {
      * @throws LockedException if calibrator is currently running.
      */
     void setInitialCrossCouplingErrors(
-            final double initialMxy, final double initialMxz, final double initialMyx,
-            final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException;
+            double initialMxy, double initialMxz, double initialMyx,
+            double initialMyz, double initialMzx, double initialMzy) throws LockedException;
 
     /**
      * Sets initial scaling factors and cross coupling errors.
@@ -198,9 +198,9 @@ public interface GyroscopeNonLinearCalibrator extends GyroscopeCalibrator {
      * @throws LockedException if calibrator is currently running.
      */
     void setInitialScalingFactorsAndCrossCouplingErrors(
-            final double initialSx, final double initialSy, final double initialSz,
-            final double initialMxy, final double initialMxz, final double initialMyx,
-            final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException;
+            double initialSx, double initialSy, double initialSz,
+            double initialMxy, double initialMxz, double initialMyx,
+            double initialMyz, double initialMzx, double initialMzy) throws LockedException;
 
     /**
      * Gets initial scale factors and cross coupling errors matrix.
@@ -215,7 +215,7 @@ public interface GyroscopeNonLinearCalibrator extends GyroscopeCalibrator {
      * @param result instance where data will be stored.
      * @throws IllegalArgumentException if provided matrix is not 3x3.
      */
-    void getInitialMg(final Matrix result);
+    void getInitialMg(Matrix result);
 
     /**
      * Sets initial scale factors and cross coupling errors matrix.
@@ -224,7 +224,7 @@ public interface GyroscopeNonLinearCalibrator extends GyroscopeCalibrator {
      * @throws IllegalArgumentException if provided matrix is not 3x3.
      * @throws LockedException          if calibrator is currently running.
      */
-    void setInitialMg(final Matrix initialMg) throws LockedException;
+    void setInitialMg(Matrix initialMg) throws LockedException;
 
     /**
      * Gets initial G-dependent cross biases introduced on the gyroscope by the
@@ -241,7 +241,7 @@ public interface GyroscopeNonLinearCalibrator extends GyroscopeCalibrator {
      * @param result instance where data will be stored.
      * @throws IllegalArgumentException if provided matrix is not 3x3.
      */
-    void getInitialGg(final Matrix result);
+    void getInitialGg(Matrix result);
 
     /**
      * Sets initial G-dependent cross biases introduced on the gyroscope by the
@@ -250,7 +250,7 @@ public interface GyroscopeNonLinearCalibrator extends GyroscopeCalibrator {
      * @param initialGg g-dependent cross biases.
      * @throws LockedException if calibrator is currently running.
      */
-    void setInitialGg(final Matrix initialGg) throws LockedException;
+    void setInitialGg(Matrix initialGg) throws LockedException;
 
     /**
      * Gets estimated covariance matrix for estimated position.

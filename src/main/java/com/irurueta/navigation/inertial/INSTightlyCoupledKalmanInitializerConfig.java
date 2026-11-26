@@ -15,8 +15,21 @@
  */
 package com.irurueta.navigation.inertial;
 
-import com.irurueta.units.*;
-
+import com.irurueta.units.Acceleration;
+import com.irurueta.units.AccelerationConverter;
+import com.irurueta.units.AccelerationUnit;
+import com.irurueta.units.Angle;
+import com.irurueta.units.AngleConverter;
+import com.irurueta.units.AngleUnit;
+import com.irurueta.units.AngularSpeed;
+import com.irurueta.units.AngularSpeedConverter;
+import com.irurueta.units.AngularSpeedUnit;
+import com.irurueta.units.Distance;
+import com.irurueta.units.DistanceConverter;
+import com.irurueta.units.DistanceUnit;
+import com.irurueta.units.Speed;
+import com.irurueta.units.SpeedConverter;
+import com.irurueta.units.SpeedUnit;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
@@ -231,7 +244,7 @@ public class INSTightlyCoupledKalmanInitializerConfig implements Serializable, C
     }
 
     /**
-     * Gets initial position uncertainty per axis expressed in meters (m)
+     * Gets initial position uncertainty per axis expressed in meters (m).
      *
      * @return initial position uncertainty per axis expressed in meters (m).
      */
@@ -240,7 +253,7 @@ public class INSTightlyCoupledKalmanInitializerConfig implements Serializable, C
     }
 
     /**
-     * Sets initial position uncertainty per axis expressed in meters (m)
+     * Sets initial position uncertainty per axis expressed in meters (m).
      *
      * @param initialPositionUncertainty initial position uncertainty per axis expressed
      *                                   in meters (m).

@@ -25,14 +25,14 @@ public interface RobustEasyGyroscopeCalibratorListener {
      *
      * @param calibrator calibrator that raised the event.
      */
-    void onCalibrateStart(final RobustEasyGyroscopeCalibrator calibrator);
+    void onCalibrateStart(RobustEasyGyroscopeCalibrator calibrator);
 
     /**
      * Called when calibration ends.
      *
      * @param calibrator calibrator that raised the event.
      */
-    void onCalibrateEnd(final RobustEasyGyroscopeCalibrator calibrator);
+    void onCalibrateEnd(RobustEasyGyroscopeCalibrator calibrator);
 
     /**
      * Called when calibrator iterates to refine a possible solution.
@@ -40,7 +40,7 @@ public interface RobustEasyGyroscopeCalibratorListener {
      * @param calibrator calibrator raising the event.
      * @param iteration  current iteration.
      */
-    void onCalibrateNextIteration(final RobustEasyGyroscopeCalibrator calibrator, final int iteration);
+    void onCalibrateNextIteration(RobustEasyGyroscopeCalibrator calibrator, int iteration);
 
     /**
      * Called when calibration progress changes significantly.
@@ -48,5 +48,5 @@ public interface RobustEasyGyroscopeCalibratorListener {
      * @param calibrator calibrator raising the event.
      * @param progress   progress of calibration expressed as a value between 0.0 and 1.0.
      */
-    void onCalibrateProgressChange(final RobustEasyGyroscopeCalibrator calibrator, final float progress);
+    void onCalibrateProgressChange(RobustEasyGyroscopeCalibrator calibrator, float progress);
 }

@@ -41,7 +41,7 @@ public interface UnknownBiasNonLinearAccelerometerCalibrator extends UnknownBias
      * @param initialBiasX initial x-coordinate of accelerometer bias.
      * @throws LockedException if calibrator is currently running.
      */
-    void setInitialBiasX(final double initialBiasX) throws LockedException;
+    void setInitialBiasX(double initialBiasX) throws LockedException;
 
     /**
      * Gets initial y-coordinate of accelerometer bias to be used to find a solution.
@@ -58,7 +58,7 @@ public interface UnknownBiasNonLinearAccelerometerCalibrator extends UnknownBias
      * @param initialBiasY initial y-coordinate of accelerometer bias.
      * @throws LockedException if calibrator is currently running.
      */
-    void setInitialBiasY(final double initialBiasY) throws LockedException;
+    void setInitialBiasY(double initialBiasY) throws LockedException;
 
     /**
      * Gets initial z-coordinate of accelerometer bias to be used to find a solution.
@@ -75,7 +75,7 @@ public interface UnknownBiasNonLinearAccelerometerCalibrator extends UnknownBias
      * @param initialBiasZ initial z-coordinate of accelerometer bias.
      * @throws LockedException if calibrator is currently running.
      */
-    void setInitialBiasZ(final double initialBiasZ) throws LockedException;
+    void setInitialBiasZ(double initialBiasZ) throws LockedException;
 
     /**
      * Gets initial x-coordinate of accelerometer bias to be used to find a solution.
@@ -89,7 +89,7 @@ public interface UnknownBiasNonLinearAccelerometerCalibrator extends UnknownBias
      *
      * @param result instance where result data will be stored.
      */
-    void getInitialBiasXAsAcceleration(final Acceleration result);
+    void getInitialBiasXAsAcceleration(Acceleration result);
 
     /**
      * Sets initial x-coordinate of accelerometer bias to be used to find a solution.
@@ -97,7 +97,7 @@ public interface UnknownBiasNonLinearAccelerometerCalibrator extends UnknownBias
      * @param initialBiasX initial x-coordinate of accelerometer bias.
      * @throws LockedException if calibrator is currently running.
      */
-    void setInitialBiasX(final Acceleration initialBiasX) throws LockedException;
+    void setInitialBiasX(Acceleration initialBiasX) throws LockedException;
 
     /**
      * Gets initial y-coordinate of accelerometer bias to be used to find a solution.
@@ -111,7 +111,7 @@ public interface UnknownBiasNonLinearAccelerometerCalibrator extends UnknownBias
      *
      * @param result instance where result data will be stored.
      */
-    void getInitialBiasYAsAcceleration(final Acceleration result);
+    void getInitialBiasYAsAcceleration(Acceleration result);
 
     /**
      * Sets initial y-coordinate of accelerometer bias to be used to find a solution.
@@ -119,7 +119,7 @@ public interface UnknownBiasNonLinearAccelerometerCalibrator extends UnknownBias
      * @param initialBiasY initial y-coordinate of accelerometer bias.
      * @throws LockedException if calibrator is currently running.
      */
-    void setInitialBiasY(final Acceleration initialBiasY) throws LockedException;
+    void setInitialBiasY(Acceleration initialBiasY) throws LockedException;
 
     /**
      * Gets initial z-coordinate of accelerometer bias to be used to find a solution.
@@ -133,7 +133,7 @@ public interface UnknownBiasNonLinearAccelerometerCalibrator extends UnknownBias
      *
      * @param result instance where result data will be stored.
      */
-    void getInitialBiasZAsAcceleration(final Acceleration result);
+    void getInitialBiasZAsAcceleration(Acceleration result);
 
     /**
      * Sets initial z-coordinate of accelerometer bias to be used to find a solution.
@@ -141,7 +141,7 @@ public interface UnknownBiasNonLinearAccelerometerCalibrator extends UnknownBias
      * @param initialBiasZ initial z-coordinate of accelerometer bias.
      * @throws LockedException if calibrator is currently running.
      */
-    void setInitialBiasZ(final Acceleration initialBiasZ) throws LockedException;
+    void setInitialBiasZ(Acceleration initialBiasZ) throws LockedException;
 
     /**
      * Sets initial bias coordinates of accelerometer used to find a solution
@@ -152,7 +152,7 @@ public interface UnknownBiasNonLinearAccelerometerCalibrator extends UnknownBias
      * @param initialBiasZ initial z-coordinate of accelerometer bias.
      * @throws LockedException if calibrator is currently running.
      */
-    void setInitialBias(final double initialBiasX, final double initialBiasY, final double initialBiasZ)
+    void setInitialBias(double initialBiasX, double initialBiasY, double initialBiasZ)
             throws LockedException;
 
     /**
@@ -163,8 +163,8 @@ public interface UnknownBiasNonLinearAccelerometerCalibrator extends UnknownBias
      * @param initialBiasZ initial z-coordinate of accelerometer bias.
      * @throws LockedException if calibrator is currently running.
      */
-    void setInitialBias(final Acceleration initialBiasX, final Acceleration initialBiasY,
-                        final Acceleration initialBiasZ) throws LockedException;
+    void setInitialBias(Acceleration initialBiasX, Acceleration initialBiasY,
+                        Acceleration initialBiasZ) throws LockedException;
 
     /**
      * Gets initial bias to be used to find a solution as an array.
@@ -181,7 +181,7 @@ public interface UnknownBiasNonLinearAccelerometerCalibrator extends UnknownBias
      * @param result instance where result data will be copied to.
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
-    void getInitialBias(final double[] result);
+    void getInitialBias(double[] result);
 
     /**
      * Sets initial bias to be used to find a solution as an array.
@@ -191,7 +191,7 @@ public interface UnknownBiasNonLinearAccelerometerCalibrator extends UnknownBias
      * @throws LockedException          if calibrator is currently running.
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
-    void setInitialBias(final double[] initialBias) throws LockedException;
+    void setInitialBias(double[] initialBias) throws LockedException;
 
     /**
      * Gets initial bias to be used to find a solution as a column matrix.
@@ -206,7 +206,7 @@ public interface UnknownBiasNonLinearAccelerometerCalibrator extends UnknownBias
      * @param result instance where result data will be copied to.
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
-    void getInitialBiasAsMatrix(final Matrix result);
+    void getInitialBiasAsMatrix(Matrix result);
 
     /**
      * Sets initial bias to be used to find a solution as an array.
@@ -215,7 +215,7 @@ public interface UnknownBiasNonLinearAccelerometerCalibrator extends UnknownBias
      * @throws LockedException          if calibrator is currently running.
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
-    void setInitialBias(final Matrix initialBias) throws LockedException;
+    void setInitialBias(Matrix initialBias) throws LockedException;
 
     /**
      * Gets initial bias coordinates of accelerometer used to find a solution.
@@ -229,7 +229,7 @@ public interface UnknownBiasNonLinearAccelerometerCalibrator extends UnknownBias
      *
      * @param result instance where result will be stored.
      */
-    void getInitialBiasAsTriad(final AccelerationTriad result);
+    void getInitialBiasAsTriad(AccelerationTriad result);
 
     /**
      * Sets initial bias coordinates of accelerometer used to find a solution.
@@ -237,5 +237,5 @@ public interface UnknownBiasNonLinearAccelerometerCalibrator extends UnknownBias
      * @param initialBias initial bias coordinates to be set.
      * @throws LockedException if calibrator is currently running.
      */
-    void setInitialBias(final AccelerationTriad initialBias) throws LockedException;
+    void setInitialBias(AccelerationTriad initialBias) throws LockedException;
 }

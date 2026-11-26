@@ -39,7 +39,6 @@ import com.irurueta.numerical.robust.RobustEstimatorMethod;
 import com.irurueta.units.MagneticFluxDensity;
 import com.irurueta.units.MagneticFluxDensityConverter;
 import com.irurueta.units.MagneticFluxDensityUnit;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -212,6 +211,37 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * Size of subsets to be checked during robust estimation.
      */
     protected int preliminarySubsetSize = MINIMUM_MEASUREMENTS_GENERAL;
+
+    /**
+     * Contains magnetic field norm for current position to be reused
+     * during calibration.
+     */
+    protected double magneticDensityNorm;
+
+    /**
+     * Contains 3x3 identify to be reused.
+     */
+    protected Matrix identity;
+
+    /**
+     * Contains 3x3 temporary matrix.
+     */
+    protected Matrix tmp1;
+
+    /**
+     * Contains 3x3 temporary matrix.
+     */
+    protected Matrix tmp2;
+
+    /**
+     * Contains 3x1 temporary matrix.
+     */
+    protected Matrix tmp3;
+
+    /**
+     * Contains 3x1 temporary matrix.
+     */
+    protected Matrix tmp4;
 
     /**
      * This flag indicates whether z-axis is assumed to be common for accelerometer,
@@ -394,37 +424,6 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      */
     private final KnownHardIronPositionAndInstantMagnetometerCalibrator innerCalibrator =
             new KnownHardIronPositionAndInstantMagnetometerCalibrator();
-
-    /**
-     * Contains magnetic field norm for current position to be reused
-     * during calibration.
-     */
-    protected double magneticDensityNorm;
-
-    /**
-     * Contains 3x3 identify to be reused.
-     */
-    protected Matrix identity;
-
-    /**
-     * Contains 3x3 temporary matrix.
-     */
-    protected Matrix tmp1;
-
-    /**
-     * Contains 3x3 temporary matrix.
-     */
-    protected Matrix tmp2;
-
-    /**
-     * Contains 3x1 temporary matrix.
-     */
-    protected Matrix tmp3;
-
-    /**
-     * Contains 3x1 temporary matrix.
-     */
-    protected Matrix tmp4;
 
     /**
      * Constructor.

@@ -29,7 +29,6 @@ import com.irurueta.units.AngularSpeedUnit;
 import com.irurueta.units.Time;
 import com.irurueta.units.TimeConverter;
 import com.irurueta.units.TimeUnit;
-
 import java.util.LinkedList;
 
 /**
@@ -1692,7 +1691,7 @@ public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseR
 
     /**
      * Gets gyroscope base noise level root PSD (Power Spectral Density)
-     * expressed in (rad * s^-0.5)
+     * expressed in (rad * s^-0.5).
      *
      * @return gyroscope base noise level root PSD.
      */

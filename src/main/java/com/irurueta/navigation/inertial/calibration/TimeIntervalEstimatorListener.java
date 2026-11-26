@@ -25,26 +25,26 @@ public interface TimeIntervalEstimatorListener {
      *
      * @param estimator estimator that raised the event.
      */
-    void onStart(final TimeIntervalEstimator estimator);
+    void onStart(TimeIntervalEstimator estimator);
 
     /**
      * Called when a timestamp is added.
      *
      * @param estimator estimator that raised the event.
      */
-    void onTimestampAdded(final TimeIntervalEstimator estimator);
+    void onTimestampAdded(TimeIntervalEstimator estimator);
 
     /**
      * Called when estimation finishes after processing all required samples.
      *
      * @param estimator estimator that raised the event.
      */
-    void onFinish(final TimeIntervalEstimator estimator);
+    void onFinish(TimeIntervalEstimator estimator);
 
     /**
      * Called when estimation is reset.
      *
      * @param estimator estimator that raised the event.
      */
-    void onReset(final TimeIntervalEstimator estimator);
+    void onReset(TimeIntervalEstimator estimator);
 }

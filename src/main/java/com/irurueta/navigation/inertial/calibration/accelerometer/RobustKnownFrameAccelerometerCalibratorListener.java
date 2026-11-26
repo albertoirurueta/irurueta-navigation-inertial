@@ -26,14 +26,14 @@ public interface RobustKnownFrameAccelerometerCalibratorListener {
      *
      * @param calibrator calibrator that raised the event.
      */
-    void onCalibrateStart(final RobustKnownFrameAccelerometerCalibrator calibrator);
+    void onCalibrateStart(RobustKnownFrameAccelerometerCalibrator calibrator);
 
     /**
      * Called when calibration ends.
      *
      * @param calibrator calibrator that raised the event.
      */
-    void onCalibrateEnd(final RobustKnownFrameAccelerometerCalibrator calibrator);
+    void onCalibrateEnd(RobustKnownFrameAccelerometerCalibrator calibrator);
 
     /**
      * Called when calibrator iterates to refine a possible solution.
@@ -41,7 +41,7 @@ public interface RobustKnownFrameAccelerometerCalibratorListener {
      * @param calibrator calibrator raising the event.
      * @param iteration  current iteration.
      */
-    void onCalibrateNextIteration(final RobustKnownFrameAccelerometerCalibrator calibrator, final int iteration);
+    void onCalibrateNextIteration(RobustKnownFrameAccelerometerCalibrator calibrator, int iteration);
 
     /**
      * Called when calibration progress changes significantly.
@@ -49,5 +49,5 @@ public interface RobustKnownFrameAccelerometerCalibratorListener {
      * @param calibrator calibrator raising the event.
      * @param progress   progress of calibration expressed as a value between 0.0 and 1.0.
      */
-    void onCalibrateProgressChange(final RobustKnownFrameAccelerometerCalibrator calibrator, final float progress);
+    void onCalibrateProgressChange(RobustKnownFrameAccelerometerCalibrator calibrator, float progress);
 }

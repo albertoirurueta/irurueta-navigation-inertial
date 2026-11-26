@@ -26,7 +26,6 @@ import com.irurueta.navigation.frames.converters.NEDtoECEFPositionVelocityConver
 import com.irurueta.navigation.inertial.calibration.StandardDeviationBodyKinematics;
 import com.irurueta.navigation.inertial.estimators.ECEFGravityEstimator;
 import com.irurueta.units.Acceleration;
-
 import java.util.Collection;
 
 /**

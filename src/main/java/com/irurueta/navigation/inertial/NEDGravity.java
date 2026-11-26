@@ -20,7 +20,6 @@ import com.irurueta.algebra.WrongSizeException;
 import com.irurueta.units.Acceleration;
 import com.irurueta.units.AccelerationConverter;
 import com.irurueta.units.AccelerationUnit;
-
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;

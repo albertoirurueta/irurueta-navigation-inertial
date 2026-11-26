@@ -36,7 +36,6 @@ import com.irurueta.statistics.MaxIterationsExceededException;
 import com.irurueta.units.Acceleration;
 import com.irurueta.units.AccelerationConverter;
 import com.irurueta.units.AccelerationUnit;
-
 import java.util.Collection;
 
 /**
@@ -1719,7 +1718,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
     }
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param commonAxisUsed indicates whether z-axis is assumed to be common for
      *                       accelerometer and gyroscope.

@@ -31,7 +31,7 @@ import com.irurueta.geometry.RotationException;
 public class SuhQuaternionStepIntegrator extends QuaternionStepIntegrator {
 
     /**
-     * Precomputed 3/4 factor
+     * Precomputed 3/4 factor.
      */
     private static final double THREE_FOURTHS = 3.0 / 4.0;
 

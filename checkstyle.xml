@@ -20,7 +20,13 @@
 		<property name="ignorePattern" value="^( *\* *[^ ]+)|(import)$"/>
 	</module>
 
+	<!-- honour @SuppressWarnings("checkstyle:<CheckName>") annotations collected by SuppressWarningsHolder -->
+	<module name="SuppressWarningsFilter"/>
+
 	<module name="TreeWalker">
+		<!-- makes @SuppressWarnings("checkstyle:<CheckName>") annotations visible to SuppressWarningsFilter -->
+		<module name="SuppressWarningsHolder"/>
+
 		<!-- annotations -->
 		<module name="AnnotationUseStyle"/>
 		<module name="MissingDeprecated"/>
@@ -48,8 +54,21 @@
 		<!-- coding -->
 		<module name="EmptyStatement"/>
 		<module name="EqualsHashCode"/>
-		<module name="HiddenField"/>
-		<module name="MagicNumber"/>
+		<!-- relaxed: constructors and builder-style setters (which may return their class) intentionally
+		     reuse field names for their parameters -->
+		<module name="HiddenField">
+			<property name="ignoreConstructorParameter" value="true"/>
+			<property name="ignoreSetter" value="true"/>
+			<property name="setterCanReturnItsClass" value="true"/>
+		</module>
+		<!-- relaxed: numerical library; small literals, hashCode seeds, field initializers
+		     (including non-constant fields) and annotation values are not meaningful magic numbers -->
+		<module name="MagicNumber">
+			<property name="ignoreNumbers" value="-1, 0, 1, 2, 3, 0.5"/>
+			<property name="ignoreHashCodeMethod" value="true"/>
+			<property name="ignoreFieldDeclaration" value="true"/>
+			<property name="ignoreAnnotation" value="true"/>
+		</module>
 		<module name="MissingSwitchDefault"/>
 		<module name="ModifiedControlVariable"/>
 		<module name="SimplifyBooleanExpression"/>
@@ -90,7 +109,12 @@
 		<module name="RedundantModifier"/>
 		
 		<!-- size violations -->
-		<module name="ParameterNumber"/>
+		<!-- relaxed: estimators and calibrators take many measurement/configuration arguments;
+		     overridden methods cannot change their inherited signature -->
+		<module name="ParameterNumber">
+			<property name="max" value="15"/>
+			<property name="ignoreOverriddenMethods" value="true"/>
+		</module>
 		
 		<!-- whitespace -->
 		<module name="GenericWhitespace"/>

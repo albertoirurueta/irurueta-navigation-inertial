@@ -34,7 +34,6 @@ import com.irurueta.numerical.robust.RobustEstimatorMethod;
 import com.irurueta.units.Acceleration;
 import com.irurueta.units.AccelerationConverter;
 import com.irurueta.units.AccelerationUnit;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -202,6 +201,37 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
     protected int preliminarySubsetSize = MINIMUM_MEASUREMENTS_GENERAL;
 
     /**
+     * Ground truth gravity norm to be expected at location where measurements have been made,
+     * expressed in meters per squared second (m/s^2).
+     */
+    protected Double groundTruthGravityNorm;
+
+    /**
+     * Contains 3x3 identify to be reused.
+     */
+    protected Matrix identity;
+
+    /**
+     * Contains 3x3 temporary matrix.
+     */
+    protected Matrix tmp1;
+
+    /**
+     * Contains 3x3 temporary matrix.
+     */
+    protected Matrix tmp2;
+
+    /**
+     * Contains 3x1 temporary matrix.
+     */
+    protected Matrix tmp3;
+
+    /**
+     * Contains 3x1 temporary matrix.
+     */
+    protected Matrix tmp4;
+
+    /**
      * This flag indicates whether z-axis is assumed to be common for accelerometer
      * and gyroscope.
      * When enabled, this eliminates 3 variables from Ma matrix.
@@ -270,12 +300,6 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      * Initial z-y cross coupling error.
      */
     private double initialMzy;
-
-    /**
-     * Ground truth gravity norm to be expected at location where measurements have been made,
-     * expressed in meters per squared second (m/s^2).
-     */
-    protected Double groundTruthGravityNorm;
 
     /**
      * Estimated accelerometer biases for each IMU axis expressed in meter per squared
@@ -377,31 +401,6 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      */
     private final KnownGravityNormAccelerometerCalibrator innerCalibrator =
             new KnownGravityNormAccelerometerCalibrator();
-
-    /**
-     * Contains 3x3 identify to be reused.
-     */
-    protected Matrix identity;
-
-    /**
-     * Contains 3x3 temporary matrix.
-     */
-    protected Matrix tmp1;
-
-    /**
-     * Contains 3x3 temporary matrix.
-     */
-    protected Matrix tmp2;
-
-    /**
-     * Contains 3x1 temporary matrix.
-     */
-    protected Matrix tmp3;
-
-    /**
-     * Contains 3x1 temporary matrix.
-     */
-    protected Matrix tmp4;
 
     /**
      * Constructor.

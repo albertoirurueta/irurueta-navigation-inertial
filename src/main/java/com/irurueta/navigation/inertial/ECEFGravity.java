@@ -16,7 +16,6 @@
 package com.irurueta.navigation.inertial;
 
 import com.irurueta.units.Acceleration;
-
 import java.io.Serial;
 
 /**

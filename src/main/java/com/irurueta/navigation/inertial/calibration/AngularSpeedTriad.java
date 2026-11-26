@@ -18,7 +18,6 @@ package com.irurueta.navigation.inertial.calibration;
 import com.irurueta.units.AngularSpeed;
 import com.irurueta.units.AngularSpeedConverter;
 import com.irurueta.units.AngularSpeedUnit;
-
 import java.io.Serial;
 
 /**

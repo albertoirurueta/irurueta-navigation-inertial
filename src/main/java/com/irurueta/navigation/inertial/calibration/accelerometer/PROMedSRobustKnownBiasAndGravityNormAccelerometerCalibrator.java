@@ -26,7 +26,6 @@ import com.irurueta.numerical.robust.RobustEstimator;
 import com.irurueta.numerical.robust.RobustEstimatorException;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
 import com.irurueta.units.Acceleration;
-
 import java.util.List;
 
 /**
@@ -1788,71 +1787,72 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
             throw new NotReadyException();
         }
 
-        final var innerEstimator = new PROMedSRobustEstimator<>(new PROMedSRobustEstimatorListener<PreliminaryResult>() {
-            @Override
-            public double[] getQualityScores() {
-                return qualityScores;
-            }
+        final var innerEstimator = new PROMedSRobustEstimator<>(
+                new PROMedSRobustEstimatorListener<PreliminaryResult>() {
+                    @Override
+                    public double[] getQualityScores() {
+                        return qualityScores;
+                    }
 
-            @Override
-            public double getThreshold() {
-                return stopThreshold;
-            }
+                    @Override
+                    public double getThreshold() {
+                        return stopThreshold;
+                    }
 
-            @Override
-            public int getTotalSamples() {
-                return measurements.size();
-            }
+                    @Override
+                    public int getTotalSamples() {
+                        return measurements.size();
+                    }
 
-            @Override
-            public int getSubsetSize() {
-                return preliminarySubsetSize;
-            }
+                    @Override
+                    public int getSubsetSize() {
+                        return preliminarySubsetSize;
+                    }
 
-            @Override
-            public void estimatePreliminarSolutions(
-                    final int[] samplesIndices, final List<PreliminaryResult> solutions) {
-                computePreliminarySolutions(samplesIndices, solutions);
-            }
+                    @Override
+                    public void estimatePreliminarSolutions(
+                            final int[] samplesIndices, final List<PreliminaryResult> solutions) {
+                        computePreliminarySolutions(samplesIndices, solutions);
+                    }
 
-            @Override
-            public double computeResidual(final PreliminaryResult currentEstimation, final int i) {
-                return computeError(measurements.get(i), currentEstimation);
-            }
+                    @Override
+                    public double computeResidual(final PreliminaryResult currentEstimation, final int i) {
+                        return computeError(measurements.get(i), currentEstimation);
+                    }
 
-            @Override
-            public boolean isReady() {
-                return PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator.this.isReady();
-            }
+                    @Override
+                    public boolean isReady() {
+                        return PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator.this.isReady();
+                    }
 
-            @Override
-            public void onEstimateStart(final RobustEstimator<PreliminaryResult> estimator) {
-                // no action needed
-            }
+                    @Override
+                    public void onEstimateStart(final RobustEstimator<PreliminaryResult> estimator) {
+                        // no action needed
+                    }
 
-            @Override
-            public void onEstimateEnd(final RobustEstimator<PreliminaryResult> estimator) {
-                // no action needed
-            }
+                    @Override
+                    public void onEstimateEnd(final RobustEstimator<PreliminaryResult> estimator) {
+                        // no action needed
+                    }
 
-            @Override
-            public void onEstimateNextIteration(
-                    final RobustEstimator<PreliminaryResult> estimator, final int iteration) {
-                if (listener != null) {
-                    listener.onCalibrateNextIteration(
-                            PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator.this, iteration);
-                }
-            }
+                    @Override
+                    public void onEstimateNextIteration(
+                            final RobustEstimator<PreliminaryResult> estimator, final int iteration) {
+                        if (listener != null) {
+                            listener.onCalibrateNextIteration(
+                                    PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator.this, iteration);
+                        }
+                    }
 
-            @Override
-            public void onEstimateProgressChange(
-                    final RobustEstimator<PreliminaryResult> estimator, final float progress) {
-                if (listener != null) {
-                    listener.onCalibrateProgressChange(
-                            PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator.this, progress);
-                }
-            }
-        });
+                    @Override
+                    public void onEstimateProgressChange(
+                            final RobustEstimator<PreliminaryResult> estimator, final float progress) {
+                        if (listener != null) {
+                            listener.onCalibrateProgressChange(
+                                    PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator.this, progress);
+                        }
+                    }
+                });
 
         try {
             running = true;

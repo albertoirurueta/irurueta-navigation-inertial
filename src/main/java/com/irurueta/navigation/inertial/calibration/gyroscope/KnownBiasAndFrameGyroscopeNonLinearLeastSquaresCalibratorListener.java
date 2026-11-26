@@ -17,7 +17,7 @@ package com.irurueta.navigation.inertial.calibration.gyroscope;
 
 /**
  * Contains listener for gyroscope least squares calibrators when
- * frame (position, velocity and orientation) and bias is known for all measurements
+ * frame (position, velocity and orientation) and bias is known for all measurements.
  */
 public interface KnownBiasAndFrameGyroscopeNonLinearLeastSquaresCalibratorListener extends
         KnownBiasAndFrameGyroscopeCalibratorListener<KnownBiasAndFrameGyroscopeNonLinearLeastSquaresCalibrator> {

@@ -19,7 +19,6 @@ import com.irurueta.algebra.Matrix;
 import com.irurueta.navigation.LockedException;
 import com.irurueta.navigation.inertial.calibration.StandardDeviationBodyKinematics;
 import com.irurueta.units.Acceleration;
-
 import java.util.Collection;
 
 /**
