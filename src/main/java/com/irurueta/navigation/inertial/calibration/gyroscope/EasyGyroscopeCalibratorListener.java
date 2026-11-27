@@ -25,12 +25,12 @@ public interface EasyGyroscopeCalibratorListener {
      *
      * @param calibrator calibrator that raised the event.
      */
-    void onCalibrateStart(final EasyGyroscopeCalibrator calibrator);
+    void onCalibrateStart(EasyGyroscopeCalibrator calibrator);
 
     /**
      * Called when calibration ends.
      *
      * @param calibrator calibrator that raised the event.
      */
-    void onCalibrateEnd(final EasyGyroscopeCalibrator calibrator);
+    void onCalibrateEnd(EasyGyroscopeCalibrator calibrator);
 }

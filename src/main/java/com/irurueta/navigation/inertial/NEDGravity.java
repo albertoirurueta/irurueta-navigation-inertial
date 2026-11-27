@@ -20,7 +20,6 @@ import com.irurueta.algebra.WrongSizeException;
 import com.irurueta.units.Acceleration;
 import com.irurueta.units.AccelerationConverter;
 import com.irurueta.units.AccelerationUnit;
-
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
@@ -147,12 +146,12 @@ public class NEDGravity implements Serializable, Cloneable {
     /**
      * Sets gravity coordinates resolved about NED frame and expressed in meters per squared second (m/s^2).
      *
-     * @param gn acceleration due to gravity through north-axis of NED frame.
-     * @param gd acceleration due to gravity through down-axis of NED frame.
+     * @param gnParam acceleration due to gravity through north-axis of NED frame.
+     * @param gdParam acceleration due to gravity through down-axis of NED frame.
      */
-    public void setCoordinates(final double gn, final double gd) {
-        this.gn = gn;
-        this.gd = gd;
+    public void setCoordinates(final double gnParam, final double gdParam) {
+        gn = gnParam;
+        gd = gdParam;
     }
 
     /**
@@ -428,8 +427,6 @@ public class NEDGravity implements Serializable, Cloneable {
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
-        final var result = (NEDGravity) super.clone();
-        copyTo(result);
-        return result;
+        return super.clone();
     }
 }

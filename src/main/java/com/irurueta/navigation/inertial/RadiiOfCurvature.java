@@ -18,7 +18,6 @@ package com.irurueta.navigation.inertial;
 import com.irurueta.units.Distance;
 import com.irurueta.units.DistanceConverter;
 import com.irurueta.units.DistanceUnit;
-
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
@@ -170,12 +169,12 @@ public class RadiiOfCurvature implements Serializable, Cloneable {
     /**
      * Sets radii of curvature.
      *
-     * @param rn meridian radius of curvature expressed in meters (m).
-     * @param re transverse radius of curvature expressed in meters (m).
+     * @param rnParam meridian radius of curvature expressed in meters (m).
+     * @param reParam transverse radius of curvature expressed in meters (m).
      */
-    public void setValues(final double rn, final double re) {
-        this.rn = rn;
-        this.re = re;
+    public void setValues(final double rnParam, final double reParam) {
+        rn = rnParam;
+        re = reParam;
     }
 
     /**
@@ -386,8 +385,6 @@ public class RadiiOfCurvature implements Serializable, Cloneable {
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
-        final var result = (RadiiOfCurvature) super.clone();
-        copyTo(result);
-        return result;
+        return super.clone();
     }
 }

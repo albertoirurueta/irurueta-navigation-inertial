@@ -26,14 +26,14 @@ public interface RobustKnownPositionAccelerometerCalibratorListener {
      *
      * @param calibrator calibrator that raised the event.
      */
-    void onCalibrateStart(final RobustKnownPositionAccelerometerCalibrator calibrator);
+    void onCalibrateStart(RobustKnownPositionAccelerometerCalibrator calibrator);
 
     /**
      * Called when calibration ends.
      *
      * @param calibrator calibrator that raised the event.
      */
-    void onCalibrateEnd(final RobustKnownPositionAccelerometerCalibrator calibrator);
+    void onCalibrateEnd(RobustKnownPositionAccelerometerCalibrator calibrator);
 
     /**
      * Called when calibrator iterates to refine a possible solution.
@@ -41,7 +41,7 @@ public interface RobustKnownPositionAccelerometerCalibratorListener {
      * @param calibrator calibrator raising the event.
      * @param iteration  current iteration.
      */
-    void onCalibrateNextIteration(final RobustKnownPositionAccelerometerCalibrator calibrator, final int iteration);
+    void onCalibrateNextIteration(RobustKnownPositionAccelerometerCalibrator calibrator, int iteration);
 
     /**
      * Called when calibration progress changes significantly.
@@ -49,5 +49,5 @@ public interface RobustKnownPositionAccelerometerCalibratorListener {
      * @param calibrator calibrator raising the event.
      * @param progress   progress of calibration expressed as a value between 0.0 and 1.0.
      */
-    void onCalibrateProgressChange(final RobustKnownPositionAccelerometerCalibrator calibrator, final float progress);
+    void onCalibrateProgressChange(RobustKnownPositionAccelerometerCalibrator calibrator, float progress);
 }

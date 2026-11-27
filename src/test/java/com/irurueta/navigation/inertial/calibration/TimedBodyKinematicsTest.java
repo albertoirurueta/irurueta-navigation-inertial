@@ -339,6 +339,14 @@ class TimedBodyKinematicsTest {
 
         // check
         assertEquals(timedBodyKinematics1, timedBodyKinematics2);
+
+        // check clone is an independent instance holding its own mutable fields
+        final var clone = (TimedBodyKinematics) timedBodyKinematics2;
+        assertNotSame(timedBodyKinematics1, clone);
+        assertNotSame(timedBodyKinematics1.getKinematics(), clone.getKinematics());
+        final var originalFx = timedBodyKinematics1.getKinematics().getFx();
+        clone.getKinematics().setFx(originalFx + 1.0);
+        assertEquals(originalFx, timedBodyKinematics1.getKinematics().getFx(), 0.0);
     }
 
     @Test

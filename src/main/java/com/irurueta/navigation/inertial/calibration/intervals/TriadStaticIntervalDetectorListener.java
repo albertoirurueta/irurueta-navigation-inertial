@@ -35,7 +35,7 @@ public interface TriadStaticIntervalDetectorListener<U extends Enum<?>, M extend
      *
      * @param detector detector that raised the event.
      */
-    void onInitializationStarted(final D detector);
+    void onInitializationStarted(D detector);
 
     /**
      * Called when initial static period successfully completes and base
@@ -46,7 +46,7 @@ public interface TriadStaticIntervalDetectorListener<U extends Enum<?>, M extend
      * @param baseNoiseLevel variance-based base measurement noise level expressed in (m/s^2)^2 for
      *                       acceleration, (rad/s)^2 for angular speed or T^2 for magnetic flux density.
      */
-    void onInitializationCompleted(final D detector, final double baseNoiseLevel);
+    void onInitializationCompleted(D detector, double baseNoiseLevel);
 
     /**
      * Called when an error is detected during initialization because there has been
@@ -59,8 +59,8 @@ public interface TriadStaticIntervalDetectorListener<U extends Enum<?>, M extend
      *                                acceleration, (rad/s)^2 for angular speed or T^2 for magnetic flux density.
      * @param reason                  reason why error was detected.
      */
-    void onError(final D detector, final double accumulatedNoiseLevel, final double instantaneousNoiseLevel,
-                 final TriadStaticIntervalDetector.ErrorReason reason);
+    void onError(D detector, double accumulatedNoiseLevel, double instantaneousNoiseLevel,
+                 TriadStaticIntervalDetector.ErrorReason reason);
 
     /**
      * Called when a static interval has been detected after initialization.
@@ -100,13 +100,13 @@ public interface TriadStaticIntervalDetectorListener<U extends Enum<?>, M extend
      *                          angular speed or Teslas (T) for magnetic flux
      *                          density.
      */
-    void onStaticIntervalDetected(final D detector,
-                                  final double instantaneousAvgX,
-                                  final double instantaneousAvgY,
-                                  final double instantaneousAvgZ,
-                                  final double instantaneousStdX,
-                                  final double instantaneousStdY,
-                                  final double instantaneousStdZ);
+    void onStaticIntervalDetected(D detector,
+                                  double instantaneousAvgX,
+                                  double instantaneousAvgY,
+                                  double instantaneousAvgZ,
+                                  double instantaneousStdX,
+                                  double instantaneousStdY,
+                                  double instantaneousStdZ);
 
     /**
      * Called when a dynamic interval has been detected after initialization.
@@ -176,24 +176,24 @@ public interface TriadStaticIntervalDetectorListener<U extends Enum<?>, M extend
      *                          radians per second (rad/s) for angular speed or
      *                          Teslas (T) for magnetic flux density.
      */
-    void onDynamicIntervalDetected(final D detector,
-                                   final double instantaneousAvgX,
-                                   final double instantaneousAvgY,
-                                   final double instantaneousAvgZ,
-                                   final double instantaneousStdX,
-                                   final double instantaneousStdY,
-                                   final double instantaneousStdZ,
-                                   final double accumulatedAvgX,
-                                   final double accumulatedAvgY,
-                                   final double accumulatedAvgZ,
-                                   final double accumulatedStdX,
-                                   final double accumulatedStdY,
-                                   final double accumulatedStdZ);
+    void onDynamicIntervalDetected(D detector,
+                                   double instantaneousAvgX,
+                                   double instantaneousAvgY,
+                                   double instantaneousAvgZ,
+                                   double instantaneousStdX,
+                                   double instantaneousStdY,
+                                   double instantaneousStdZ,
+                                   double accumulatedAvgX,
+                                   double accumulatedAvgY,
+                                   double accumulatedAvgZ,
+                                   double accumulatedStdX,
+                                   double accumulatedStdY,
+                                   double accumulatedStdZ);
 
     /**
      * Called when detector is reset.
      *
      * @param detector detector that raised the event.
      */
-    void onReset(final D detector);
+    void onReset(D detector);
 }

@@ -53,7 +53,8 @@ double norm = triad.getNorm(); // magnitude of the 3-axis vector
   *per-sample* deviation, not that deviation divided by stem:[\sqrt{N}] (see
   xref:calibration/noise-and-bias.adoc#psd[PSD and root-PSD] for how that relates to root-PSD).
 * *Everything is copyable and serializable.* Containers implement `Serializable` and `Cloneable` and offer
-  copy constructors, `copyFrom` and `copyTo`.
+  copy constructors, `copyFrom` and `copyTo`. Their protected `clone()` returns a copy independent of the original: it gets its own
+  copies of every mutable value (matrices, triads, frames, sequences), so changing one never affects the other.
 
 == Building up a measurement
 

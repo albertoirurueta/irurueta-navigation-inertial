@@ -18,7 +18,6 @@ package com.irurueta.navigation.inertial.calibration;
 import com.irurueta.navigation.frames.ECEFFrame;
 import com.irurueta.navigation.frames.NEDFrame;
 import com.irurueta.navigation.inertial.BodyMagneticFluxDensity;
-
 import java.io.Serial;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -815,8 +814,6 @@ public class StandardDeviationFrameBodyMagneticFluxDensity extends FrameBodyMagn
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
-        final var result = (StandardDeviationFrameBodyMagneticFluxDensity) super.clone();
-        copyTo(result);
-        return result;
+        return super.clone();
     }
 }

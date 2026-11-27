@@ -5,7 +5,7 @@
 
   <groupId>com.irurueta</groupId>
   <artifactId>irurueta-navigation-inertial</artifactId>
-  <version>1.12.0</version>
+  <version>1.12.1</version>
   <packaging>jar</packaging>
 
   <name>${project.groupId}:${project.artifactId}</name>
@@ -163,6 +163,30 @@
 
   <!-- default profile -->
   <build>
+    <pluginManagement>
+      <plugins>
+        <!-- shared PMD configuration so pmd:pmd from CLI and site report agree; not bound to lifecycle -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-pmd-plugin</artifactId>
+          <version>3.27.0</version>
+          <configuration>
+            <rulesets>
+              <ruleset>pmd-ruleset.xml</ruleset>
+            </rulesets>
+          </configuration>
+        </plugin>
+        <!-- makes CLI runs of checkstyle:checkstyle use the repository's checkstyle.xml (no lifecycle binding) -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-checkstyle-plugin</artifactId>
+          <version>3.6.0</version>
+          <configuration>
+            <configLocation>checkstyle.xml</configLocation>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
     <plugins>
       <!-- unit tests plugins -->
       <plugin>
@@ -197,10 +221,14 @@
         </executions>
       </plugin>
       <!-- code quality plugins -->
+      <!-- makes CLI runs of spotbugs:spotbugs use the repository's spotbugs-exclude.xml (no lifecycle binding) -->
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
         <version>4.9.6.0</version>
+        <configuration>
+          <excludeFilterFile>spotbugs-exclude.xml</excludeFilterFile>
+        </configuration>
       </plugin>
       <!-- maven site -->
       <plugin>
@@ -353,15 +381,24 @@
         </reportSets>
       </plugin>
 
+      <!-- makes the site SpotBugs report use the repository's spotbugs-exclude.xml -->
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
         <version>4.9.6.0</version>
+        <configuration>
+          <excludeFilterFile>spotbugs-exclude.xml</excludeFilterFile>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-pmd-plugin</artifactId>
         <version>3.27.0</version>
+        <configuration>
+          <rulesets>
+            <ruleset>pmd-ruleset.xml</ruleset>
+          </rulesets>
+        </configuration>
       </plugin>
       <!--
       adds cross reference into source for easier navigation of source in

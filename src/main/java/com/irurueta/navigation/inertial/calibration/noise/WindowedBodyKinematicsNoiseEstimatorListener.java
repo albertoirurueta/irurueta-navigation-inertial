@@ -25,26 +25,26 @@ public interface WindowedBodyKinematicsNoiseEstimatorListener {
      *
      * @param estimator estimator that raised the event.
      */
-    void onStart(final WindowedBodyKinematicsNoiseEstimator estimator);
+    void onStart(WindowedBodyKinematicsNoiseEstimator estimator);
 
     /**
      * Called when a body kinematics sample is added containing new measures.
      *
      * @param estimator estimator that raised the event.
      */
-    void onBodyKinematicsAdded(final WindowedBodyKinematicsNoiseEstimator estimator);
+    void onBodyKinematicsAdded(WindowedBodyKinematicsNoiseEstimator estimator);
 
     /**
      * Called when window of samples is filled.
      *
      * @param estimator estimator that raised the event.
      */
-    void onWindowFilled(final WindowedBodyKinematicsNoiseEstimator estimator);
+    void onWindowFilled(WindowedBodyKinematicsNoiseEstimator estimator);
 
     /**
      * Called when estimation is reset.
      *
      * @param estimator estimator that raised the event.
      */
-    void onReset(final WindowedBodyKinematicsNoiseEstimator estimator);
+    void onReset(WindowedBodyKinematicsNoiseEstimator estimator);
 }

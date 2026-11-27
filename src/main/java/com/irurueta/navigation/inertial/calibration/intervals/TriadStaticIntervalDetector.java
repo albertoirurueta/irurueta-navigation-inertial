@@ -1690,7 +1690,7 @@ public abstract class TriadStaticIntervalDetector<U extends Enum<?>, M extends M
      * @param unit  unit of value to be converted.
      * @return converted value.
      */
-    protected abstract double convertMeasurement(final double value, final U unit);
+    protected abstract double convertMeasurement(double value, U unit);
 
     /**
      * Creates a measurement instance using provided value and unit.
@@ -1699,7 +1699,7 @@ public abstract class TriadStaticIntervalDetector<U extends Enum<?>, M extends M
      * @param unit  unit of value.
      * @return created measurement
      */
-    protected abstract M createMeasurement(final double value, final U unit);
+    protected abstract M createMeasurement(double value, U unit);
 
     /**
      * Gets default unit for measurements this implementation works with.
@@ -1717,7 +1717,7 @@ public abstract class TriadStaticIntervalDetector<U extends Enum<?>, M extends M
      * @param unit   unit of values.
      * @return created triad.
      */
-    protected abstract T createTriad(final double valueX, final double valueY, final double valueZ, final U unit);
+    protected abstract T createTriad(double valueX, double valueY, double valueZ, U unit);
 
     /**
      * Possible detector status values.

@@ -31,9 +31,19 @@ import com.irurueta.geometry.RotationException;
 public class SuhQuaternionStepIntegrator extends QuaternionStepIntegrator {
 
     /**
-     * Precomputed 3/4 factor
+     * Precomputed 3/4 factor.
      */
     private static final double THREE_FOURTHS = 3.0 / 4.0;
+
+    /**
+     * Divisor of the third-order term (|ω1|²·dt³/48) of the Suh quaternion integration scheme.
+     */
+    private static final double THIRD_ORDER_TERM_DIVISOR = 48.0;
+
+    /**
+     * Divisor of the angular rate product term (Ω1·Ω0·dt²/24) of the Suh quaternion integration scheme.
+     */
+    private static final double RATE_PRODUCT_TERM_DIVISOR = 24.0;
 
     /**
      * Angular speed at initial timestamp t0 to be reused.
@@ -287,7 +297,7 @@ public class SuhQuaternionStepIntegrator extends QuaternionStepIntegrator {
             constant.initialize(sqrNorm1 * dt2 / 6.0);
 
             omegaSkew1.multiply(omegaSkew0, omegaSkew10);
-            omegaSkew10.multiplyByScalar(dt2 / 24.0);
+            omegaSkew10.multiplyByScalar(dt2 / RATE_PRODUCT_TERM_DIVISOR);
 
             omegaSkew1A.copyFrom(omegaSkew1);
             omegaSkew1A.multiplyByScalar(THREE_FOURTHS * dt);
@@ -296,7 +306,7 @@ public class SuhQuaternionStepIntegrator extends QuaternionStepIntegrator {
             omegaSkew0A.multiplyByScalar(dt / 4.0);
 
             omegaSkew1B.copyFrom(omegaSkew1);
-            omegaSkew1B.multiplyByScalar(sqrNorm1 * dt3 / 48.0);
+            omegaSkew1B.multiplyByScalar(sqrNorm1 * dt3 / THIRD_ORDER_TERM_DIVISOR);
 
             tmp.copyFrom(identity);
             tmp.add(omegaSkew1A);

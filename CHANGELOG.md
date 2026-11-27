@@ -7,6 +7,45 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [1.12.1] - 2026-11-27
+
+### Changed
+
+- Checkstyle now uses the repository's own `checkstyle.xml` when run from the command line (`mvn checkstyle:checkstyle`),
+  not only in the Maven site report, so local runs and the published report measure the same rules (issue #47).
+- The Checkstyle policy in `checkstyle.xml` is relaxed for patterns that are intentional in this numerical library:
+  `HiddenField` ignores constructor and setter parameters (including setters that return their class), `MagicNumber`
+  ignores `-1, 0, 1, 2, 3, 0.5`, `hashCode()` methods, field initializers and annotation values, and
+  `ParameterNumber` allows up to 15 parameters and ignores overridden methods. `@SuppressWarnings("checkstyle:...")`
+  annotations are now honoured (issue #47).
+- Checkstyle findings under `src/main/java` are reduced from 20,088 to 4,370 through policy changes and formatting,
+  import, modifier, declaration order, Javadoc and line length fixes, with no public API changes. The remaining
+  findings (`MagicNumber`, `HiddenField`, `ParameterNumber`, `ThrowsCount`) are numerical constants or public API
+  signatures (issue #47).
+- SpotBugs now uses the repository's own `spotbugs-exclude.xml` filter, both from the command line
+  (`mvn spotbugs:spotbugs`) and in the Maven site report. It excludes only `CT_CONSTRUCTOR_THROW` (constructors
+  validate arguments through setters by design) and `EI_EXPOSE_REP`/`EI_EXPOSE_REP2` (numerical APIs share
+  `Matrix`, array and collection instances on purpose), scoped to this library's packages; SpotBugs reports no
+  findings under `src/main/java` (issue #49).
+- The remaining Checkstyle findings under `src/main/java` (4,370) are resolved (issue #53): `MagicNumber` ignores
+  integer literals up to 20 (matrix/array dimensions and indices) and the remaining decimal literals are named
+  constants, `ParameterNumber` allows up to 28 parameters and `ThrowsCount` up to 3 (public API signatures), and
+  parameters/locals that shadowed fields were renamed (`HiddenField`), with no public API changes.
+
+### Fixed
+
+- `WMMLoader` now reads World Magnetic Model coefficient files as UTF-8 instead of depending on the platform default
+  charset (issue #49).
+- `clone()` of state, configuration and measurement classes no longer calls the overridable `copyTo` method, and
+  clones no longer share mutable objects (matrices, arrays, nested values) with the original (issue #49).
+- `StandardDeviationBodyMagneticFluxDensity.clone()` previously returned a shallow copy sharing the magnetic flux
+  density with the original; it now returns a deep copy (issue #49).
+- `getEstimatedCovariance()` of `EasyGyroscopeCalibrator`, `TurntableGyroscopeCalibrator`,
+  `KnownBiasEasyGyroscopeCalibrator` and `KnownBiasTurntableGyroscopeCalibrator` no longer overstates the
+  uncertainty of `mzy` in the general (non common-axis) case. A wrong Jacobian entry (1.9 instead of 1.0) made the
+  `mzy` variance 3.61 times too large and its covariances with every other parameter 1.9 times too large. Parameter
+  estimates were not affected (issue #56).
+
 ## [1.12.0] - 2026-11-25
 
 ### Fixed
@@ -344,7 +383,8 @@ Test-only fix; no functional changes to library source.
 
 - Ensured correct `Serializable` implementation (`serialVersionUID`, etc.) across inertial data classes.
 
-[Unreleased]: https://github.com/albertoirurueta/irurueta-navigation-inertial/compare/1.12.0...HEAD
+[Unreleased]: https://github.com/albertoirurueta/irurueta-navigation-inertial/compare/1.12.1...HEAD
+[1.12.1]: https://github.com/albertoirurueta/irurueta-navigation-inertial/compare/1.12.0...1.12.1
 [1.12.0]: https://github.com/albertoirurueta/irurueta-navigation-inertial/compare/1.11.0...1.12.0
 [1.11.0]: https://github.com/albertoirurueta/irurueta-navigation-inertial/compare/1.10.2...1.11.0
 [1.10.2]: https://github.com/albertoirurueta/irurueta-navigation-inertial/compare/1.10.1...1.10.2

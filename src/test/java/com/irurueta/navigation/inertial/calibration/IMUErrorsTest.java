@@ -1037,6 +1037,29 @@ class IMUErrorsTest {
         final var errors2 = errors1.clone();
 
         assertEquals(errors1, errors2);
+
+        // check clone is an independent instance holding its own arrays and matrices
+        final var clone = (IMUErrors) errors2;
+        assertNotSame(errors1, clone);
+        final var expectedAccelerometerBiases = errors1.getAccelerometerBiases();
+        final var expectedGyroBiases = errors1.getGyroBiases();
+        final var expectedAccelerometerMa = errors1.getAccelerometerScaleFactorAndCrossCouplingErrors();
+        final var expectedGyroMg = errors1.getGyroScaleFactorAndCrossCouplingErrors();
+        final var expectedGyroGg = errors1.getGyroGDependentBiases();
+        final var newBiases = new Matrix(COMPONENTS, 1);
+        Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE, newBiases);
+        final var newMatrix = new Matrix(COMPONENTS, COMPONENTS);
+        Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE, newMatrix);
+        clone.setAccelerometerBiases(newBiases);
+        clone.setGyroBiases(newBiases);
+        clone.setAccelerometerScaleFactorAndCrossCouplingErrors(newMatrix);
+        clone.setGyroScaleFactorAndCrossCouplingErrors(newMatrix);
+        clone.setGyroGDependentBiases(newMatrix);
+        assertArrayEquals(expectedAccelerometerBiases, errors1.getAccelerometerBiases(), 0.0);
+        assertArrayEquals(expectedGyroBiases, errors1.getGyroBiases(), 0.0);
+        assertEquals(expectedAccelerometerMa, errors1.getAccelerometerScaleFactorAndCrossCouplingErrors());
+        assertEquals(expectedGyroMg, errors1.getGyroScaleFactorAndCrossCouplingErrors());
+        assertEquals(expectedGyroGg, errors1.getGyroGDependentBiases());
     }
 
     @Test

@@ -525,6 +525,12 @@ class INSTightlyCoupledKalmanConfigTest {
         final var config2 = config1.clone();
 
         assertEquals(config1, config2);
+
+        // check clone is an independent instance
+        final var clone = (INSTightlyCoupledKalmanConfig) config2;
+        assertNotSame(config1, clone);
+        clone.setGyroNoisePSD(gyroNoisePSD + 1.0);
+        assertEquals(gyroNoisePSD, config1.getGyroNoisePSD(), 0.0);
     }
 
     @Test

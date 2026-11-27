@@ -17,7 +17,6 @@ package com.irurueta.navigation.inertial.calibration.magnetometer;
 
 import com.irurueta.navigation.LockedException;
 import com.irurueta.navigation.inertial.calibration.StandardDeviationFrameBodyMagneticFluxDensity;
-
 import java.util.Collection;
 
 /**
@@ -63,7 +62,7 @@ public interface UnorderedStandardDeviationFrameBodyMagneticFluxDensityMagnetome
      *                     and velocities).
      * @throws LockedException if estimator is currently running.
      */
-    void setMeasurements(final Collection<? extends StandardDeviationFrameBodyMagneticFluxDensity> measurements)
+    void setMeasurements(Collection<? extends StandardDeviationFrameBodyMagneticFluxDensity> measurements)
             throws LockedException;
 
 }

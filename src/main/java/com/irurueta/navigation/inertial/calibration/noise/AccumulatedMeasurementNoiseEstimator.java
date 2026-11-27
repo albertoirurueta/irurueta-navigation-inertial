@@ -431,7 +431,7 @@ public abstract class AccumulatedMeasurementNoiseEstimator<U extends Enum<?>,
      * @param unit  unit to be set.
      * @return created measurement.
      */
-    protected abstract M createMeasurement(final double value, final U unit);
+    protected abstract M createMeasurement(double value, U unit);
 
     /**
      * Converts provided measurement into default unit.

@@ -24,7 +24,6 @@ import com.irurueta.numerical.robust.PROMedSRobustEstimatorListener;
 import com.irurueta.numerical.robust.RobustEstimator;
 import com.irurueta.numerical.robust.RobustEstimatorException;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
-
 import java.io.IOException;
 import java.util.List;
 
@@ -584,15 +583,15 @@ public class PROMedSRobustKnownFrameMagnetometerCalibrator extends RobustKnownFr
      * This method is used internally and does not check whether instance is
      * locked or not.
      *
-     * @param qualityScores quality scores to be set.
+     * @param qualityScoresParam quality scores to be set.
      * @throws IllegalArgumentException if provided quality scores length
      *                                  is smaller than 4 samples.
      */
-    private void internalSetQualityScores(final double[] qualityScores) {
-        if (qualityScores == null || qualityScores.length < MINIMUM_MEASUREMENTS) {
+    private void internalSetQualityScores(final double[] qualityScoresParam) {
+        if (qualityScoresParam == null || qualityScoresParam.length < MINIMUM_MEASUREMENTS) {
             throw new IllegalArgumentException();
         }
 
-        this.qualityScores = qualityScores;
+        qualityScores = qualityScoresParam;
     }
 }

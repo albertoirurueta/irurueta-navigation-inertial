@@ -1146,6 +1146,16 @@ class BodyKinematicsSequenceTest {
         final var sequence2 = sequence1.clone();
 
         assertEquals(sequence1, sequence2);
+
+        // check clone is an independent instance holding its own list of copied items
+        final var clone = (BodyKinematicsSequence<?>) sequence2;
+        assertNotSame(sequence1, clone);
+        final var originalItems = sequence1.getSortedItems();
+        final var cloneItems = clone.getSortedItems();
+        assertNotSame(originalItems.get(0), cloneItems.get(0));
+        final var originalTimestamp = originalItems.get(0).getTimestampSeconds();
+        cloneItems.get(0).setTimestampSeconds(originalTimestamp + 1.0);
+        assertEquals(originalTimestamp, sequence1.getSortedItems().get(0).getTimestampSeconds(), 0.0);
     }
 
     @Test

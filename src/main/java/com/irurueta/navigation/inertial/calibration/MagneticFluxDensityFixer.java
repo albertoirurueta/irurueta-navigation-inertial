@@ -449,7 +449,7 @@ public class MagneticFluxDensityFixer {
     }
 
     /**
-     * Sets x scaling factor
+     * Sets x scaling factor.
      *
      * @param sx x scaling factor.
      * @throws AlgebraException if provided value makes cross coupling matrix
@@ -729,19 +729,19 @@ public class MagneticFluxDensityFixer {
      * magnetic flux density.
      * This method uses last provided bias and cross coupling errors.
      *
-     * @param measuredB measured body magnetic flux.
+     * @param measuredBParam measured body magnetic flux.
      * @param result    instance where restored true magnetic flux density will be
      *                  stored. Must have length 3.
      * @throws AlgebraException         if there are numerical instabilities.
      * @throws IllegalArgumentException if length of provided result array is not
      *                                  3.
      */
-    public void fix(final BodyMagneticFluxDensity measuredB, final double[] result) throws AlgebraException {
+    public void fix(final BodyMagneticFluxDensity measuredBParam, final double[] result) throws AlgebraException {
         if (result.length != BodyMagneticFluxDensity.COMPONENTS) {
             throw new IllegalArgumentException();
         }
 
-        fix(measuredB.getBx(), measuredB.getBy(), measuredB.getBz(), result);
+        fix(measuredBParam.getBx(), measuredBParam.getBy(), measuredBParam.getBz(), result);
     }
 
     /**
@@ -750,21 +750,21 @@ public class MagneticFluxDensityFixer {
      * magnetic flux density.
      * This method uses last provided bias and cross coupling errors.
      *
-     * @param measuredB measured body magnetic flux.
+     * @param measuredBParam measured body magnetic flux.
      * @param result    instance where restored true magnetic flux density will be
      *                  stored. Must have length 3.
      * @throws AlgebraException         if there are numerical instabilities.
      * @throws IllegalArgumentException if length of provided result array is not
      *                                  3.
      */
-    public void fix(final MagneticFluxDensityTriad measuredB, final double[] result) throws AlgebraException {
+    public void fix(final MagneticFluxDensityTriad measuredBParam, final double[] result) throws AlgebraException {
         if (result.length != Triad.COMPONENTS) {
             throw new IllegalArgumentException();
         }
 
-        final var measuredBx = convertMagneticFluxDensity(measuredB.getValueX(), measuredB.getUnit());
-        final var measuredBy = convertMagneticFluxDensity(measuredB.getValueY(), measuredB.getUnit());
-        final var measuredBz = convertMagneticFluxDensity(measuredB.getValueZ(), measuredB.getUnit());
+        final var measuredBx = convertMagneticFluxDensity(measuredBParam.getValueX(), measuredBParam.getUnit());
+        final var measuredBy = convertMagneticFluxDensity(measuredBParam.getValueY(), measuredBParam.getUnit());
+        final var measuredBz = convertMagneticFluxDensity(measuredBParam.getValueZ(), measuredBParam.getUnit());
         fix(measuredBx, measuredBy, measuredBz, result);
     }
 
@@ -774,18 +774,18 @@ public class MagneticFluxDensityFixer {
      * magnetic flux density.
      * This method uses last provided bias and cross coupling errors.
      *
-     * @param measuredB measured body magnetic flux.
+     * @param measuredBParam measured body magnetic flux.
      * @param result    instance where restored true magnetic flux density will be
      *                  stored. Must be 3x1.
      * @throws AlgebraException         if there are numerical instabilities.
      * @throws IllegalArgumentException if provided result matrix is not 3x1.
      */
-    public void fix(final BodyMagneticFluxDensity measuredB, final Matrix result) throws AlgebraException {
+    public void fix(final BodyMagneticFluxDensity measuredBParam, final Matrix result) throws AlgebraException {
         if (result.getRows() != BodyMagneticFluxDensity.COMPONENTS || result.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
-        fix(measuredB.getBx(), measuredB.getBy(), measuredB.getBz(), result);
+        fix(measuredBParam.getBx(), measuredBParam.getBy(), measuredBParam.getBz(), result);
     }
 
     /**
@@ -794,20 +794,20 @@ public class MagneticFluxDensityFixer {
      * magnetic flux density.
      * This method uses last provided bias and cross coupling errors.
      *
-     * @param measuredB measured body magnetic flux.
+     * @param measuredBParam measured body magnetic flux.
      * @param result    instance where restored true magnetic flux density will be
      *                  stored. Must be 3x1.
      * @throws AlgebraException         if there are numerical instabilities.
      * @throws IllegalArgumentException if provided result matrix is not 3x1.
      */
-    public void fix(final MagneticFluxDensityTriad measuredB, final Matrix result) throws AlgebraException {
+    public void fix(final MagneticFluxDensityTriad measuredBParam, final Matrix result) throws AlgebraException {
         if (result.getRows() != BodyMagneticFluxDensity.COMPONENTS || result.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
-        final var measuredBx = convertMagneticFluxDensity(measuredB.getValueX(), measuredB.getUnit());
-        final var measuredBy = convertMagneticFluxDensity(measuredB.getValueY(), measuredB.getUnit());
-        final var measuredBz = convertMagneticFluxDensity(measuredB.getValueZ(), measuredB.getUnit());
+        final var measuredBx = convertMagneticFluxDensity(measuredBParam.getValueX(), measuredBParam.getUnit());
+        final var measuredBy = convertMagneticFluxDensity(measuredBParam.getValueY(), measuredBParam.getUnit());
+        final var measuredBz = convertMagneticFluxDensity(measuredBParam.getValueZ(), measuredBParam.getUnit());
         fix(measuredBx, measuredBy, measuredBz, result);
     }
 
@@ -817,14 +817,14 @@ public class MagneticFluxDensityFixer {
      * magnetic flux density.
      * This method uses last provided bias and cross coupling errors.
      *
-     * @param measuredB measured body magnetic flux.
+     * @param measuredBParam measured body magnetic flux.
      * @param result    instance where restored true magnetic flux density will be
      *                  stored.
      * @throws AlgebraException if there are numerical instabilities.
      */
-    public void fix(final BodyMagneticFluxDensity measuredB, final BodyMagneticFluxDensity result)
+    public void fix(final BodyMagneticFluxDensity measuredBParam, final BodyMagneticFluxDensity result)
             throws AlgebraException {
-        fix(measuredB, this.res);
+        fix(measuredBParam, this.res);
         result.setCoordinates(this.res[0], this.res[1], this.res[2]);
     }
 
@@ -834,14 +834,14 @@ public class MagneticFluxDensityFixer {
      * magnetic flux density.
      * This method uses last provided bias and cross coupling errors.
      *
-     * @param measuredB measured body magnetic flux.
+     * @param measuredBParam measured body magnetic flux.
      * @param result    instance where restored true magnetic flux density will be
      *                  stored.
      * @throws AlgebraException if there are numerical instabilities.
      */
-    public void fix(final MagneticFluxDensityTriad measuredB, final MagneticFluxDensityTriad result)
+    public void fix(final MagneticFluxDensityTriad measuredBParam, final MagneticFluxDensityTriad result)
             throws AlgebraException {
-        fix(measuredB, this.res);
+        fix(measuredBParam, this.res);
         result.setValueCoordinates(this.res);
         result.setUnit(MagneticFluxDensityUnit.TESLA);
     }
@@ -901,7 +901,7 @@ public class MagneticFluxDensityFixer {
      * magnetic flux density.
      * This method uses last provided bias and cross coupling errors.
      *
-     * @param measuredB measured magnetic flux density expressed in Teslas (T).
+     * @param measuredBParam measured magnetic flux density expressed in Teslas (T).
      *                  Must have length 3.
      * @param result    instance where restored true magnetic flux density will be
      *                  stored. Must have length 3.
@@ -909,8 +909,8 @@ public class MagneticFluxDensityFixer {
      * @throws IllegalArgumentException if any of the provided parameters does
      *                                  not have proper size.
      */
-    public void fix(final double[] measuredB, final double[] result) throws AlgebraException {
-        if (measuredB.length != Triad.COMPONENTS) {
+    public void fix(final double[] measuredBParam, final double[] result) throws AlgebraException {
+        if (measuredBParam.length != Triad.COMPONENTS) {
             throw new IllegalArgumentException();
         }
         if (result.length != Triad.COMPONENTS) {
@@ -929,7 +929,7 @@ public class MagneticFluxDensityFixer {
         // Hence:
         // btrue = (I + Mm)^-1 * (bmeas - bm)
         for (var i = 0; i < Triad.COMPONENTS; i++) {
-            diff.setElementAtIndex(i, measuredB[i] - bias.getElementAtIndex(i));
+            diff.setElementAtIndex(i, measuredBParam[i] - bias.getElementAtIndex(i));
         }
 
         tmp2.multiply(diff, tmp3);
@@ -943,7 +943,7 @@ public class MagneticFluxDensityFixer {
      * magnetic flux density.
      * This method uses last provided bias and cross coupling errors.
      *
-     * @param measuredB measured magnetic flux density expressed in Teslas (T).
+     * @param measuredBParam measured magnetic flux density expressed in Teslas (T).
      *                  Must be 3x1.
      * @param result    instance where restored true magnetic flux density will be
      *                  stored. Must have length 3.
@@ -951,13 +951,13 @@ public class MagneticFluxDensityFixer {
      * @throws IllegalArgumentException if any of the provided parameters does
      *                                  not have proper size.
      */
-    public void fix(final Matrix measuredB, final double[] result) throws AlgebraException {
+    public void fix(final Matrix measuredBParam, final double[] result) throws AlgebraException {
 
-        if (measuredB.getRows() != Triad.COMPONENTS || measuredB.getColumns() != 1) {
+        if (measuredBParam.getRows() != Triad.COMPONENTS || measuredBParam.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
-        fix(measuredB.getBuffer(), result);
+        fix(measuredBParam.getBuffer(), result);
     }
 
     /**
@@ -966,7 +966,7 @@ public class MagneticFluxDensityFixer {
      * magnetic flux density.
      * This method uses last provided bias and cross coupling errors.
      *
-     * @param measuredB measured magnetic flux density expressed in Teslas (T).
+     * @param measuredBParam measured magnetic flux density expressed in Teslas (T).
      *                  Must be 3x1.
      * @param result    instance where restored true magnetic flux density will be
      *                  stored. Must be 3x1.
@@ -974,13 +974,13 @@ public class MagneticFluxDensityFixer {
      * @throws IllegalArgumentException if any of the provided parameters does
      *                                  not have proper size.
      */
-    public void fix(final Matrix measuredB, final Matrix result) throws AlgebraException {
+    public void fix(final Matrix measuredBParam, final Matrix result) throws AlgebraException {
 
-        if (measuredB.getRows() != Triad.COMPONENTS || measuredB.getColumns() != 1) {
+        if (measuredBParam.getRows() != Triad.COMPONENTS || measuredBParam.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
-        fix(measuredB, result.getBuffer());
+        fix(measuredBParam, result.getBuffer());
     }
 
     /**
@@ -1044,26 +1044,27 @@ public class MagneticFluxDensityFixer {
      * magnetic flux density.
      * This method uses last provided bias and cross coupling errors.
      *
-     * @param measuredB           measured magnetic flux density expressed in
+     * @param measuredBParam           measured magnetic flux density expressed in
      *                            Teslas (T). Must have length 3.
-     * @param bias                bias values expressed in Teslas (T). Must be
+     * @param biasParam                bias values expressed in Teslas (T). Must be
      *                            3x1.
-     * @param crossCouplingErrors cross coupling errors matrix. Must be 3x3.
+     * @param crossCouplingErrorsParam cross coupling errors matrix. Must be 3x3.
      * @param result              instance where restored true specific force
      *                            will be stored. Must have length 3.
      * @throws AlgebraException         if there are numerical instabilities.
      * @throws IllegalArgumentException if any of the provided parameters does
      *                                  not have proper size.
      */
-    public void fix(final double[] measuredB, final Matrix bias, final Matrix crossCouplingErrors,
+    public void fix(final double[] measuredBParam, final Matrix biasParam, final Matrix crossCouplingErrorsParam,
                     final double[] result) throws AlgebraException {
-        if (measuredB.length != Triad.COMPONENTS) {
+        if (measuredBParam.length != Triad.COMPONENTS) {
             throw new IllegalArgumentException();
         }
-        if (bias.getRows() != Triad.COMPONENTS || bias.getColumns() != 1) {
+        if (biasParam.getRows() != Triad.COMPONENTS || biasParam.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
-        if (crossCouplingErrors.getRows() != Triad.COMPONENTS || crossCouplingErrors.getColumns() != Triad.COMPONENTS) {
+        if (crossCouplingErrorsParam.getRows() != Triad.COMPONENTS || crossCouplingErrorsParam.getColumns(
+                ) != Triad.COMPONENTS) {
             throw new IllegalArgumentException();
         }
         if (result.length != Triad.COMPONENTS) {
@@ -1081,12 +1082,12 @@ public class MagneticFluxDensityFixer {
 
         // Hence:
         // btrue = (I + Mm)^-1 * (bmeas - bm)
-        identity.add(crossCouplingErrors, tmp1);
+        identity.add(crossCouplingErrorsParam, tmp1);
 
         Utils.inverse(tmp1, tmp2);
 
         for (var i = 0; i < Triad.COMPONENTS; i++) {
-            diff.setElementAtIndex(i, measuredB[i] - bias.getElementAtIndex(i));
+            diff.setElementAtIndex(i, measuredBParam[i] - biasParam.getElementAtIndex(i));
         }
 
         tmp2.multiply(diff, tmp3);
@@ -1100,25 +1101,26 @@ public class MagneticFluxDensityFixer {
      * magnetic flux density.
      * This method uses last provided bias and cross coupling errors.
      *
-     * @param measuredB           measured magnetic flux density expressed in
+     * @param measuredBParam           measured magnetic flux density expressed in
      *                            Teslas (T). Must be 3x1.
-     * @param bias                bias values expressed in Teslas (T). Must be
+     * @param biasParam                bias values expressed in Teslas (T). Must be
      *                            3x1.
-     * @param crossCouplingErrors cross coupling errors matrix. Must be 3x3.
+     * @param crossCouplingErrorsParam cross coupling errors matrix. Must be 3x3.
      * @param result              instance where restored true specific force
      *                            will be stored. Must have length 3.
      * @throws AlgebraException         if there are numerical instabilities.
      * @throws IllegalArgumentException if any of the provided parameters does
      *                                  not have proper size.
      */
-    public void fix(final Matrix measuredB, final Matrix bias, final Matrix crossCouplingErrors, final double[] result)
+    public void fix(final Matrix measuredBParam, final Matrix biasParam, final Matrix crossCouplingErrorsParam,
+            final double[] result)
             throws AlgebraException {
 
-        if (measuredB.getRows() != Triad.COMPONENTS || measuredB.getColumns() != 1) {
+        if (measuredBParam.getRows() != Triad.COMPONENTS || measuredBParam.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
-        fix(measuredB.getBuffer(), bias, crossCouplingErrors, result);
+        fix(measuredBParam.getBuffer(), biasParam, crossCouplingErrorsParam, result);
     }
 
     /**
@@ -1127,25 +1129,26 @@ public class MagneticFluxDensityFixer {
      * magnetic flux density.
      * This method uses last provided bias and cross coupling errors.
      *
-     * @param measuredB           measured magnetic flux density expressed in
+     * @param measuredBParam           measured magnetic flux density expressed in
      *                            Teslas (T). Must be 3x1.
-     * @param bias                bias values expressed in Teslas (T). Must be
+     * @param biasParam                bias values expressed in Teslas (T). Must be
      *                            3x1.
-     * @param crossCouplingErrors cross coupling errors matrix. Must be 3x3.
+     * @param crossCouplingErrorsParam cross coupling errors matrix. Must be 3x3.
      * @param result              instance where restored true specific force
      *                            will be stored. Must be 3x1.
      * @throws AlgebraException         if there are numerical instabilities.
      * @throws IllegalArgumentException if any of the provided parameters does
      *                                  not have proper size.
      */
-    public void fix(final Matrix measuredB, final Matrix bias, final Matrix crossCouplingErrors, final Matrix result)
+    public void fix(final Matrix measuredBParam, final Matrix biasParam, final Matrix crossCouplingErrorsParam,
+            final Matrix result)
             throws AlgebraException {
 
         if (result.getRows() != Triad.COMPONENTS || result.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
-        fix(measuredB, bias, crossCouplingErrors, result.getBuffer());
+        fix(measuredBParam, biasParam, crossCouplingErrorsParam, result.getBuffer());
     }
 
     /**
@@ -1163,7 +1166,7 @@ public class MagneticFluxDensityFixer {
      * @param biasX               x-coordinate of bias expressed in Teslas (T).
      * @param biasY               y-coordinate of bias expressed in Teslas (T).
      * @param biasZ               z-coordinate of bias expressed in Teslas (T).
-     * @param crossCouplingErrors cross-coupling errors matrix. Must be 3x3.
+     * @param crossCouplingErrorsParam cross-coupling errors matrix. Must be 3x3.
      * @param result              instance where restored true magnetic flux
      *                            density will be stored. Must have length 3.
      * @throws AlgebraException         if there are numerical instabilities.
@@ -1173,7 +1176,7 @@ public class MagneticFluxDensityFixer {
     public void fix(
             final double measuredBx, final double measuredBy, final double measuredBz,
             final double biasX, final double biasY, final double biasZ,
-            final Matrix crossCouplingErrors, final double[] result) throws AlgebraException {
+            final Matrix crossCouplingErrorsParam, final double[] result) throws AlgebraException {
 
         measuredB[0] = measuredBx;
         measuredB[1] = measuredBy;
@@ -1183,7 +1186,7 @@ public class MagneticFluxDensityFixer {
         bias.setElementAtIndex(1, biasY);
         bias.setElementAtIndex(2, biasZ);
 
-        fix(measuredB, bias, crossCouplingErrors, result);
+        fix(measuredB, bias, crossCouplingErrorsParam, result);
     }
 
     /**
@@ -1201,7 +1204,7 @@ public class MagneticFluxDensityFixer {
      * @param biasX               x-coordinate of bias expressed in Teslas (T).
      * @param biasY               y-coordinate of bias expressed in Teslas (T).
      * @param biasZ               z-coordinate of bias expressed in Teslas (T).
-     * @param crossCouplingErrors cross-coupling errors matrix. Must be 3x3.
+     * @param crossCouplingErrorsParam cross-coupling errors matrix. Must be 3x3.
      * @param result              instance where restored true magnetic flux
      *                            density will be stored. Must be 3x1.
      * @throws AlgebraException         if there are numerical instabilities.
@@ -1210,14 +1213,14 @@ public class MagneticFluxDensityFixer {
      */
     public void fix(
             final double measuredBx, final double measuredBy, final double measuredBz,
-            final double biasX, final double biasY, final double biasZ, final Matrix crossCouplingErrors,
+            final double biasX, final double biasY, final double biasZ, final Matrix crossCouplingErrorsParam,
             final Matrix result) throws AlgebraException {
 
         if (result.getRows() != Triad.COMPONENTS || result.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
-        fix(measuredBx, measuredBy, measuredBz, biasX, biasY, biasZ, crossCouplingErrors, result.getBuffer());
+        fix(measuredBx, measuredBy, measuredBz, biasX, biasY, biasZ, crossCouplingErrorsParam, result.getBuffer());
     }
 
     /**
@@ -1319,13 +1322,14 @@ public class MagneticFluxDensityFixer {
      * magnetic flux density.
      * This method uses last provided bias and cross coupling errors.
      *
-     * @param measuredB measured body magnetic flux density.
+     * @param measuredBParam measured body magnetic flux density.
      * @return restored true magnetic flux density.
      * @throws AlgebraException if there are numerical instabilities.
      */
-    public MagneticFluxDensityTriad fixAndReturnNew(final MagneticFluxDensityTriad measuredB) throws AlgebraException {
+    public MagneticFluxDensityTriad fixAndReturnNew(
+            final MagneticFluxDensityTriad measuredBParam) throws AlgebraException {
         final var result = new MagneticFluxDensityTriad();
-        fix(measuredB, result);
+        fix(measuredBParam, result);
         return result;
     }
 
@@ -1355,16 +1359,16 @@ public class MagneticFluxDensityFixer {
      * magnetic flux density.
      * This method uses last provided bias and cross coupling errors.
      *
-     * @param measuredB measured magnetic flux density expressed in Teslas (T).
+     * @param measuredBParam measured magnetic flux density expressed in Teslas (T).
      *                  Must have length 3.
      * @return restored true magnetic flux density.
      * @throws AlgebraException         if there are numerical instabilities.
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
-    public double[] fixAndReturnNew(final double[] measuredB) throws AlgebraException {
+    public double[] fixAndReturnNew(final double[] measuredBParam) throws AlgebraException {
 
         final var result = new double[Triad.COMPONENTS];
-        fix(measuredB, result);
+        fix(measuredBParam, result);
         return result;
     }
 
@@ -1374,16 +1378,16 @@ public class MagneticFluxDensityFixer {
      * magnetic flux density.
      * This method uses last provided bias and cross coupling errors.
      *
-     * @param measuredB measured magnetic flux density expressed in Teslas (T).
+     * @param measuredBParam measured magnetic flux density expressed in Teslas (T).
      *                  Must be 3x1.
      * @return restored true magnetic flux density.
      * @throws AlgebraException         if there are numerical instabilities.
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
-    public double[] fixAndReturnNew(final Matrix measuredB) throws AlgebraException {
+    public double[] fixAndReturnNew(final Matrix measuredBParam) throws AlgebraException {
 
         final var result = new double[Triad.COMPONENTS];
-        fix(measuredB, result);
+        fix(measuredBParam, result);
         return result;
     }
 
@@ -1393,16 +1397,16 @@ public class MagneticFluxDensityFixer {
      * magnetic flux density.
      * This method uses last provided bias and cross coupling errors.
      *
-     * @param measuredB measured magnetic flux density expressed in Teslas (T).
+     * @param measuredBParam measured magnetic flux density expressed in Teslas (T).
      *                  Must be 3x1.
      * @return restored true magnetic flux density.
      * @throws AlgebraException         if there are numerical instabilities.
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
-    public Matrix fixAndReturnNewMatrix(final Matrix measuredB) throws AlgebraException {
+    public Matrix fixAndReturnNewMatrix(final Matrix measuredBParam) throws AlgebraException {
 
         final var result = new Matrix(Triad.COMPONENTS, 1);
-        fix(measuredB, result);
+        fix(measuredBParam, result);
         return result;
     }
 
@@ -1456,20 +1460,21 @@ public class MagneticFluxDensityFixer {
      * magnetic flux density.
      * This method uses last provided bias and cross coupling errors.
      *
-     * @param measuredB           measured magnetic flux density expressed in
+     * @param measuredBParam           measured magnetic flux density expressed in
      *                            Teslas (T). Must have length 3.
-     * @param bias                bias values expressed in Teslas (T). Must be 3x1.
-     * @param crossCouplingErrors cross coupling errors matrix. Must be 3x3.
+     * @param biasParam                bias values expressed in Teslas (T). Must be 3x1.
+     * @param crossCouplingErrorsParam cross coupling errors matrix. Must be 3x3.
      * @return restored true magnetic flux density expressed in Teslas (T).
      * @throws AlgebraException         if there are numerical instabilities.
      * @throws IllegalArgumentException if any of the provided parameters does
      *                                  not have proper size.
      */
     public double[] fixAndReturnNew(
-            final double[] measuredB, final Matrix bias, final Matrix crossCouplingErrors) throws AlgebraException {
+            final double[] measuredBParam, final Matrix biasParam,
+            final Matrix crossCouplingErrorsParam) throws AlgebraException {
 
         final var result = new double[Triad.COMPONENTS];
-        fix(measuredB, bias, crossCouplingErrors, result);
+        fix(measuredBParam, biasParam, crossCouplingErrorsParam, result);
         return result;
     }
 
@@ -1479,20 +1484,21 @@ public class MagneticFluxDensityFixer {
      * magnetic flux density.
      * This method uses last provided bias and cross coupling errors.
      *
-     * @param measuredB           measured magnetic flux density expressed in
+     * @param measuredBParam           measured magnetic flux density expressed in
      *                            Teslas (T). Must be 3x1.
-     * @param bias                bias values expressed in Teslas (T). Must be 3x1.
-     * @param crossCouplingErrors cross coupling errors matrix. Must be 3x3.
+     * @param biasParam                bias values expressed in Teslas (T). Must be 3x1.
+     * @param crossCouplingErrorsParam cross coupling errors matrix. Must be 3x3.
      * @return restored true magnetic flux density expressed in Teslas (T).
      * @throws AlgebraException         if there are numerical instabilities.
      * @throws IllegalArgumentException if any of the provided parameters does
      *                                  not have proper size.
      */
     public double[] fixAndReturnNew(
-            final Matrix measuredB, final Matrix bias, final Matrix crossCouplingErrors) throws AlgebraException {
+            final Matrix measuredBParam, final Matrix biasParam,
+            final Matrix crossCouplingErrorsParam) throws AlgebraException {
 
         final var result = new double[Triad.COMPONENTS];
-        fix(measuredB, bias, crossCouplingErrors, result);
+        fix(measuredBParam, biasParam, crossCouplingErrorsParam, result);
         return result;
     }
 
@@ -1502,20 +1508,21 @@ public class MagneticFluxDensityFixer {
      * magnetic flux density.
      * This method uses last provided bias and cross coupling errors.
      *
-     * @param measuredB           measured magnetic flux density expressed in
+     * @param measuredBParam           measured magnetic flux density expressed in
      *                            Teslas (T). Must be 3x1.
-     * @param bias                bias values expressed in Teslas (T). Must be 3x1.
-     * @param crossCouplingErrors cross coupling errors matrix. Must be 3x3.
+     * @param biasParam                bias values expressed in Teslas (T). Must be 3x1.
+     * @param crossCouplingErrorsParam cross coupling errors matrix. Must be 3x3.
      * @return restored true magnetic flux density expressed in Teslas (T).
      * @throws AlgebraException         if there are numerical instabilities.
      * @throws IllegalArgumentException if any of the provided parameters does
      *                                  not have proper size.
      */
     public Matrix fixAndReturnNewMatrix(
-            final Matrix measuredB, final Matrix bias, final Matrix crossCouplingErrors) throws AlgebraException {
+            final Matrix measuredBParam, final Matrix biasParam,
+            final Matrix crossCouplingErrorsParam) throws AlgebraException {
 
         final var result = new Matrix(Triad.COMPONENTS, 1);
-        fix(measuredB, bias, crossCouplingErrors, result);
+        fix(measuredBParam, biasParam, crossCouplingErrorsParam, result);
         return result;
     }
 
@@ -1534,7 +1541,7 @@ public class MagneticFluxDensityFixer {
      * @param biasX               x-coordinate of bias expressed in Teslas (T).
      * @param biasY               y-coordinate of bias expressed in Teslas (T).
      * @param biasZ               z-coordinate of bias expressed in Teslas (T).
-     * @param crossCouplingErrors cross coupling errors matrix. Must be 3x3.
+     * @param crossCouplingErrorsParam cross coupling errors matrix. Must be 3x3.
      * @return restored true magnetic flux density expressed in Teslas (T).
      * @throws AlgebraException         if there are numerical instabilities.
      * @throws IllegalArgumentException if any of the provided parameters does
@@ -1542,11 +1549,11 @@ public class MagneticFluxDensityFixer {
      */
     public double[] fixAndReturnNew(
             final double measuredBx, final double measuredBy, final double measuredBz,
-            final double biasX, final double biasY, final double biasZ, final Matrix crossCouplingErrors)
+            final double biasX, final double biasY, final double biasZ, final Matrix crossCouplingErrorsParam)
             throws AlgebraException {
 
         final var result = new double[Triad.COMPONENTS];
-        fix(measuredBx, measuredBy, measuredBz, biasX, biasY, biasZ, crossCouplingErrors, result);
+        fix(measuredBx, measuredBy, measuredBz, biasX, biasY, biasZ, crossCouplingErrorsParam, result);
         return result;
     }
 
@@ -1565,7 +1572,7 @@ public class MagneticFluxDensityFixer {
      * @param biasX               x-coordinate of bias expressed in Teslas (T).
      * @param biasY               y-coordinate of bias expressed in Teslas (T).
      * @param biasZ               z-coordinate of bias expressed in Teslas (T).
-     * @param crossCouplingErrors cross coupling errors matrix. Must be 3x3.
+     * @param crossCouplingErrorsParam cross coupling errors matrix. Must be 3x3.
      * @return restored true magnetic flux density expressed in Teslas (T).
      * @throws AlgebraException         if there are numerical instabilities.
      * @throws IllegalArgumentException if any of the provided parameters does
@@ -1573,11 +1580,11 @@ public class MagneticFluxDensityFixer {
      */
     public Matrix fixAndReturnNewMatrix(
             final double measuredBx, final double measuredBy, final double measuredBz,
-            final double biasX, final double biasY, final double biasZ, final Matrix crossCouplingErrors)
+            final double biasX, final double biasY, final double biasZ, final Matrix crossCouplingErrorsParam)
             throws AlgebraException {
 
         final var result = new Matrix(Triad.COMPONENTS, 1);
-        fix(measuredBx, measuredBy, measuredBz, biasX, biasY, biasZ, crossCouplingErrors, result);
+        fix(measuredBx, measuredBy, measuredBz, biasX, biasY, biasZ, crossCouplingErrorsParam, result);
         return result;
     }
 

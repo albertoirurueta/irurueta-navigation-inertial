@@ -27,7 +27,6 @@ import com.irurueta.numerical.robust.PROMedSRobustEstimatorListener;
 import com.irurueta.numerical.robust.RobustEstimator;
 import com.irurueta.numerical.robust.RobustEstimatorException;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
-
 import java.util.List;
 
 /**
@@ -574,9 +573,9 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator extends
      * @param listener     listener to handle events raised by this calibrator.
      * @throws IllegalArgumentException if provided bias array does not have length 3.
      */
-    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(final NEDPosition position,
-                                                                    final List<StandardDeviationBodyKinematics> measurements, final double[] bias,
-                                                                    final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final NEDPosition position, final List<StandardDeviationBodyKinematics> measurements,
+            final double[] bias, final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, bias, listener);
     }
 
@@ -1691,71 +1690,72 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator extends
 
         gravityNorm = computeGravityNorm();
 
-        final var innerEstimator = new PROMedSRobustEstimator<>(new PROMedSRobustEstimatorListener<PreliminaryResult>() {
-            @Override
-            public double[] getQualityScores() {
-                return qualityScores;
-            }
+        final var innerEstimator = new PROMedSRobustEstimator<>(
+                new PROMedSRobustEstimatorListener<PreliminaryResult>() {
+                    @Override
+                    public double[] getQualityScores() {
+                        return qualityScores;
+                    }
 
-            @Override
-            public double getThreshold() {
-                return stopThreshold;
-            }
+                    @Override
+                    public double getThreshold() {
+                        return stopThreshold;
+                    }
 
-            @Override
-            public int getTotalSamples() {
-                return measurements.size();
-            }
+                    @Override
+                    public int getTotalSamples() {
+                        return measurements.size();
+                    }
 
-            @Override
-            public int getSubsetSize() {
-                return preliminarySubsetSize;
-            }
+                    @Override
+                    public int getSubsetSize() {
+                        return preliminarySubsetSize;
+                    }
 
-            @Override
-            public void estimatePreliminarSolutions(
-                    final int[] samplesIndices, final List<PreliminaryResult> solutions) {
-                computePreliminarySolutions(samplesIndices, solutions);
-            }
+                    @Override
+                    public void estimatePreliminarSolutions(
+                            final int[] samplesIndices, final List<PreliminaryResult> solutions) {
+                        computePreliminarySolutions(samplesIndices, solutions);
+                    }
 
-            @Override
-            public double computeResidual(final PreliminaryResult currentEstimation, final int i) {
-                return computeError(measurements.get(i), currentEstimation);
-            }
+                    @Override
+                    public double computeResidual(final PreliminaryResult currentEstimation, final int i) {
+                        return computeError(measurements.get(i), currentEstimation);
+                    }
 
-            @Override
-            public boolean isReady() {
-                return PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.this.isReady();
-            }
+                    @Override
+                    public boolean isReady() {
+                        return PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.this.isReady();
+                    }
 
-            @Override
-            public void onEstimateStart(final RobustEstimator<PreliminaryResult> estimator) {
-                // no action needed
-            }
+                    @Override
+                    public void onEstimateStart(final RobustEstimator<PreliminaryResult> estimator) {
+                        // no action needed
+                    }
 
-            @Override
-            public void onEstimateEnd(final RobustEstimator<PreliminaryResult> estimator) {
-                // no action needed
-            }
+                    @Override
+                    public void onEstimateEnd(final RobustEstimator<PreliminaryResult> estimator) {
+                        // no action needed
+                    }
 
-            @Override
-            public void onEstimateNextIteration(
-                    final RobustEstimator<PreliminaryResult> estimator, final int iteration) {
-                if (listener != null) {
-                    listener.onCalibrateNextIteration(
-                            PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.this, iteration);
-                }
-            }
+                    @Override
+                    public void onEstimateNextIteration(
+                            final RobustEstimator<PreliminaryResult> estimator, final int iteration) {
+                        if (listener != null) {
+                            listener.onCalibrateNextIteration(
+                                    PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.this, iteration);
+                        }
+                    }
 
-            @Override
-            public void onEstimateProgressChange(
-                    final RobustEstimator<PreliminaryResult> estimator, final float progress) {
-                if (listener != null) {
-                    listener.onCalibrateProgressChange(
-                            PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.this, progress);
-                }
-            }
-        });
+                    @Override
+                    public void onEstimateProgressChange(
+                            final RobustEstimator<PreliminaryResult> estimator, final float progress) {
+                        if (listener != null) {
+                            listener.onCalibrateProgressChange(
+                                    PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.this, progress);
+                        }
+                    }
+                });
 
         try {
             running = true;
@@ -1815,16 +1815,16 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator extends
      * This method is used internally and does not check whether instance is
      * locked or not.
      *
-     * @param qualityScores quality scores to be set.
+     * @param qualityScoresParam quality scores to be set.
      * @throws IllegalArgumentException if provided quality scores length
      *                                  is smaller than the minimum required
      *                                  number of samples (10 or 13).
      */
-    private void internalSetQualityScores(final double[] qualityScores) {
-        if (qualityScores == null || qualityScores.length < getMinimumRequiredMeasurements()) {
+    private void internalSetQualityScores(final double[] qualityScoresParam) {
+        if (qualityScoresParam == null || qualityScoresParam.length < getMinimumRequiredMeasurements()) {
             throw new IllegalArgumentException();
         }
 
-        this.qualityScores = qualityScores;
+        qualityScores = qualityScoresParam;
     }
 }

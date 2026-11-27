@@ -33,7 +33,6 @@ import com.irurueta.units.AngleUnit;
 import com.irurueta.units.Distance;
 import com.irurueta.units.DistanceConverter;
 import com.irurueta.units.DistanceUnit;
-
 import java.io.IOException;
 import java.util.Date;
 import java.util.GregorianCalendar;

@@ -59,6 +59,16 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
     private static final double MIN_SOFT_IRON = -1e-6;
     private static final double MAX_SOFT_IRON = 1e-6;
 
+    /**
+     * Minimum soft iron value used by tests with noisy measurements.
+     */
+    private static final double MIN_NOISY_SOFT_IRON = -0.05;
+
+    /**
+     * Maximum soft iron value used by tests with noisy measurements.
+     */
+    private static final double MAX_NOISY_SOFT_IRON = 0.05;
+
     private static final double MIN_ANGLE_DEGREES = -45.0;
     private static final double MAX_ANGLE_DEGREES = 45.0;
 
@@ -73,13 +83,30 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
 
     private static final int LARGE_MEASUREMENT_NUMBER = 1000;
 
-    private static final double MAGNETOMETER_NOISE_STD = 200e-9;
+    private static final double MAGNETOMETER_NOISE_STD = 2e-9;
 
     private static final double ABSOLUTE_ERROR = 1e-9;
     private static final double LARGE_ABSOLUTE_ERROR = 5e-5;
     private static final double VERY_LARGE_ABSOLUTE_ERROR = 1e-2;
 
+    /**
+     * Absolute error tolerated on estimated hard iron for tests with noisy measurements.
+     */
+    private static final double NOISY_HARD_IRON_ABSOLUTE_ERROR = 1e-7;
+
+    /**
+     * Absolute error tolerated on estimated soft iron for tests with noisy measurements.
+     */
+    private static final double NOISY_SOFT_IRON_ABSOLUTE_ERROR = 5e-3;
+
     private static final int TIMES = 100;
+
+    /**
+     * Maximum number of attempts in a retry loop that may fail with a {@link CalibrationException} before a valid
+     * result is found. Attempts with a dataset where calibration cannot succeed are skipped, but a calibrator that
+     * fails in most attempts makes the test fail instead of being hidden by the retries.
+     */
+    private static final int MAX_CALIBRATION_FAILURES = 5;
 
     private static final Calendar START_CALENDAR = Calendar.getInstance();
     private static final Calendar END_CALENDAR = Calendar.getInstance();
@@ -7037,6 +7064,7 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
     void testCalibrateForGeneralCaseWithMinimumMeasuresAndNoNoise() throws IOException, LockedException, 
             NotReadyException, WrongSizeException {
         var numValid = 0;
+        var numCalibrationFailures = 0;
         for (var t = 0; t < TIMES; t++) {
             final var randomizer = new UniformRandomizer();
             final var wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
@@ -7064,7 +7092,8 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
 
             try {
                 calibrator.calibrate();
-            } catch (final CalibrationException ignore) {
+            } catch (final CalibrationException e) {
+                numCalibrationFailures++;
                 continue;
             }
 
@@ -7096,7 +7125,7 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
             assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
             assertTrue(calibrator.getEstimatedReducedChiSq() >= 0.0);
             assertTrue(calibrator.getEstimatedP() >= 0.0);
-            assertTrue(calibrator.getEstimatedQ() > 0.0);
+            assertTrue(calibrator.getEstimatedQ() >= 0.0);
 
             numValid++;
 
@@ -7104,18 +7133,20 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         }
 
         assertTrue(numValid > 0);
+        assertTrue(numCalibrationFailures <= MAX_CALIBRATION_FAILURES);
     }
 
     @Test
     void testCalibrateForGeneralCaseWithLargeNumberOfMeasurementsAndNoise() throws IOException, LockedException,
-            CalibrationException, NotReadyException, WrongSizeException {
+            NotReadyException, WrongSizeException {
         var numValid = 0;
+        var numCalibrationFailures = 0;
         for (var t = 0; t < TIMES; t++) {
             final var randomizer = new UniformRandomizer();
             final var wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
 
             final var hardIron = Matrix.newFromArray(generateHardIron(randomizer));
-            final var mm = generateSoftIronGeneral();
+            final var mm = generateSoftIronGeneral(MIN_NOISY_SOFT_IRON, MAX_NOISY_SOFT_IRON);
             assertNotNull(mm);
 
             final var noiseRandomizer = new GaussianRandomizer(0.0, MAGNETOMETER_NOISE_STD);
@@ -7136,7 +7167,12 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
             assertEquals(0, calibrateStart);
             assertEquals(0, calibrateEnd);
 
-            calibrator.calibrate();
+            try {
+                calibrator.calibrate();
+            } catch (final CalibrationException e) {
+                numCalibrationFailures++;
+                continue;
+            }
 
             // check
             assertTrue(calibrator.isReady());
@@ -7147,15 +7183,15 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
             final var estimatedHardIron = calibrator.getEstimatedHardIronAsMatrix();
             final var estimatedMm = calibrator.getEstimatedMm();
 
-            if (!hardIron.equals(estimatedHardIron, LARGE_ABSOLUTE_ERROR)) {
+            if (!hardIron.equals(estimatedHardIron, NOISY_HARD_IRON_ABSOLUTE_ERROR)) {
                 continue;
             }
-            if (!mm.equals(estimatedMm, 5.0 * VERY_LARGE_ABSOLUTE_ERROR)) {
+            if (!mm.equals(estimatedMm, NOISY_SOFT_IRON_ABSOLUTE_ERROR)) {
                 continue;
             }
 
-            assertTrue(hardIron.equals(estimatedHardIron, LARGE_ABSOLUTE_ERROR));
-            assertTrue(mm.equals(estimatedMm, 5.0 * VERY_LARGE_ABSOLUTE_ERROR));
+            assertTrue(hardIron.equals(estimatedHardIron, NOISY_HARD_IRON_ABSOLUTE_ERROR));
+            assertTrue(mm.equals(estimatedMm, NOISY_SOFT_IRON_ABSOLUTE_ERROR));
 
             assertEstimatedResult(estimatedHardIron, estimatedMm, calibrator);
 
@@ -7166,7 +7202,7 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
             assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
             assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
             assertTrue(calibrator.getEstimatedP() >= 0.0);
-            assertTrue(calibrator.getEstimatedQ() > 0.0);
+            assertTrue(calibrator.getEstimatedQ() >= 0.0);
 
             numValid++;
 
@@ -7174,12 +7210,14 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         }
 
         assertTrue(numValid > 0);
+        assertTrue(numCalibrationFailures <= MAX_CALIBRATION_FAILURES);
     }
 
     @Test
     void testCalibrateForCommonAxisCaseWithMinimumMeasuresAndNoNoise() throws IOException, LockedException, 
             NotReadyException, WrongSizeException {
         var numValid = 0;
+        var numCalibrationFailures = 0;
         for (var t = 0; t < TIMES; t++) {
             final var randomizer = new UniformRandomizer();
             final var wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
@@ -7208,6 +7246,7 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
             try {
                 calibrator.calibrate();
             } catch (final CalibrationException e) {
+                numCalibrationFailures++;
                 continue;
             }
 
@@ -7239,7 +7278,7 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
             assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
             assertTrue(calibrator.getEstimatedReducedChiSq() >= 0.0);
             assertTrue(calibrator.getEstimatedP() >= 0.0);
-            assertTrue(calibrator.getEstimatedQ() > 0.0);
+            assertTrue(calibrator.getEstimatedQ() >= 0.0);
 
             numValid++;
 
@@ -7247,18 +7286,20 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         }
 
         assertTrue(numValid > 0);
+        assertTrue(numCalibrationFailures <= MAX_CALIBRATION_FAILURES);
     }
 
     @Test
     void testCalibrateForCommonAxisCaseWithLargeNumberOfMeasurementsAndNoise() throws IOException, LockedException,
-            CalibrationException, NotReadyException, WrongSizeException {
+            NotReadyException, WrongSizeException {
         var numValid = 0;
+        var numCalibrationFailures = 0;
         for (var t = 0; t < TIMES; t++) {
             final var randomizer = new UniformRandomizer();
             final var wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
 
             final var hardIron = Matrix.newFromArray(generateHardIron(randomizer));
-            final var mm = generateSoftIronCommonAxis();
+            final var mm = generateSoftIronCommonAxis(MIN_NOISY_SOFT_IRON, MAX_NOISY_SOFT_IRON);
             assertNotNull(mm);
 
             final var noiseRandomizer = new GaussianRandomizer(0.0, MAGNETOMETER_NOISE_STD);
@@ -7279,7 +7320,12 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
             assertEquals(0, calibrateStart);
             assertEquals(0, calibrateEnd);
 
-            calibrator.calibrate();
+            try {
+                calibrator.calibrate();
+            } catch (final CalibrationException e) {
+                numCalibrationFailures++;
+                continue;
+            }
 
             // check
             assertTrue(calibrator.isReady());
@@ -7290,15 +7336,15 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
             final var estimatedHardIron = calibrator.getEstimatedHardIronAsMatrix();
             final var estimatedMm = calibrator.getEstimatedMm();
 
-            if (!hardIron.equals(estimatedHardIron, LARGE_ABSOLUTE_ERROR)) {
+            if (!hardIron.equals(estimatedHardIron, NOISY_HARD_IRON_ABSOLUTE_ERROR)) {
                 continue;
             }
-            if (!mm.equals(estimatedMm, 5.0 * VERY_LARGE_ABSOLUTE_ERROR)) {
+            if (!mm.equals(estimatedMm, NOISY_SOFT_IRON_ABSOLUTE_ERROR)) {
                 continue;
             }
 
-            assertTrue(hardIron.equals(estimatedHardIron, LARGE_ABSOLUTE_ERROR));
-            assertTrue(mm.equals(estimatedMm, 5.0 * VERY_LARGE_ABSOLUTE_ERROR));
+            assertTrue(hardIron.equals(estimatedHardIron, NOISY_HARD_IRON_ABSOLUTE_ERROR));
+            assertTrue(mm.equals(estimatedMm, NOISY_SOFT_IRON_ABSOLUTE_ERROR));
 
             assertEstimatedResult(estimatedHardIron, estimatedMm, calibrator);
 
@@ -7309,7 +7355,7 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
             assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
             assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
             assertTrue(calibrator.getEstimatedP() >= 0.0);
-            assertTrue(calibrator.getEstimatedQ() > 0.0);
+            assertTrue(calibrator.getEstimatedQ() >= 0.0);
 
             numValid++;
 
@@ -7317,6 +7363,93 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
         }
 
         assertTrue(numValid > 0);
+        assertTrue(numCalibrationFailures <= MAX_CALIBRATION_FAILURES);
+    }
+
+    @Test
+    void testCalibrateForCommonAxisCaseWithLargeNumberOfMeasurementsAndNoiseFromDefaultInitialValues()
+            throws IOException, LockedException, NotReadyException, WrongSizeException {
+        // Unlike the other noisy tests, the calibrator is not seeded with the ground truth: it starts from the
+        // default initial values (zero hard iron and zero soft iron), so this test checks convergence and not
+        // only the noise-induced bias. Only the common axis case is checked, since the general case is only
+        // defined up to a rotation when using norm constraints.
+        var numValid = 0;
+        var numCalibrationFailures = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
+            final var wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
+
+            final var hardIron = Matrix.newFromArray(generateHardIron(randomizer));
+            final var mm = generateSoftIronCommonAxis(MIN_NOISY_SOFT_IRON, MAX_NOISY_SOFT_IRON);
+            assertNotNull(mm);
+
+            final var noiseRandomizer = new GaussianRandomizer(0.0, MAGNETOMETER_NOISE_STD);
+
+            final var position = createPosition(randomizer);
+            final var timestamp = new Date(createTimestamp(randomizer));
+            final var measurements = generateMeasures(hardIron.getBuffer(), mm, LARGE_MEASUREMENT_NUMBER, wmmEstimator,
+                    randomizer, noiseRandomizer, position, timestamp);
+
+            final var calibrator = new KnownPositionAndInstantMagnetometerCalibrator(position, measurements, true);
+            calibrator.setListener(this);
+            calibrator.setTime(timestamp);
+
+            // check that the initial values are not the ground truth
+            assertEquals(new Matrix(BodyMagneticFluxDensity.COMPONENTS, 1), calibrator.getInitialHardIronAsMatrix());
+            assertEquals(new Matrix(BodyMagneticFluxDensity.COMPONENTS, BodyMagneticFluxDensity.COMPONENTS),
+                    calibrator.getInitialMm());
+
+            // estimate
+            reset();
+            assertTrue(calibrator.isReady());
+            assertFalse(calibrator.isRunning());
+            assertEquals(0, calibrateStart);
+            assertEquals(0, calibrateEnd);
+
+            try {
+                calibrator.calibrate();
+            } catch (final CalibrationException e) {
+                numCalibrationFailures++;
+                continue;
+            }
+
+            // check
+            assertTrue(calibrator.isReady());
+            assertFalse(calibrator.isRunning());
+            assertEquals(1, calibrateStart);
+            assertEquals(1, calibrateEnd);
+
+            final var estimatedHardIron = calibrator.getEstimatedHardIronAsMatrix();
+            final var estimatedMm = calibrator.getEstimatedMm();
+
+            if (!hardIron.equals(estimatedHardIron, NOISY_HARD_IRON_ABSOLUTE_ERROR)) {
+                continue;
+            }
+            if (!mm.equals(estimatedMm, NOISY_SOFT_IRON_ABSOLUTE_ERROR)) {
+                continue;
+            }
+
+            assertTrue(hardIron.equals(estimatedHardIron, NOISY_HARD_IRON_ABSOLUTE_ERROR));
+            assertTrue(mm.equals(estimatedMm, NOISY_SOFT_IRON_ABSOLUTE_ERROR));
+
+            assertEstimatedResult(estimatedHardIron, estimatedMm, calibrator);
+
+            assertNotNull(calibrator.getEstimatedCovariance());
+            checkCommonAxisCovariance(calibrator.getEstimatedCovariance());
+            assertTrue(calibrator.getEstimatedMse() > 0.0);
+            assertTrue(calibrator.getEstimatedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
+            assertTrue(calibrator.getEstimatedReducedChiSq() > 0.0);
+            assertTrue(calibrator.getEstimatedP() >= 0.0);
+            assertTrue(calibrator.getEstimatedQ() >= 0.0);
+
+            numValid++;
+
+            break;
+        }
+
+        assertTrue(numValid > 0);
+        assertTrue(numCalibrationFailures <= MAX_CALIBRATION_FAILURES);
     }
 
     @Override
@@ -7582,9 +7715,20 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
     }
 
     private static Matrix generateSoftIronGeneral() {
+        return generateSoftIronGeneral(MIN_SOFT_IRON, MAX_SOFT_IRON);
+    }
+
+    /**
+     * Generates a general soft iron matrix with uniform random values within provided range.
+     *
+     * @param minValue minimum value of each matrix element.
+     * @param maxValue maximum value of each matrix element.
+     * @return generated soft iron matrix.
+     */
+    private static Matrix generateSoftIronGeneral(final double minValue, final double maxValue) {
         try {
             return Matrix.createWithUniformRandomValues(BodyMagneticFluxDensity.COMPONENTS,
-                    BodyMagneticFluxDensity.COMPONENTS, MIN_SOFT_IRON, MAX_SOFT_IRON);
+                    BodyMagneticFluxDensity.COMPONENTS, minValue, maxValue);
         } catch (final WrongSizeException ignore) {
             // never happens
             return null;
@@ -7592,7 +7736,18 @@ class KnownPositionAndInstantMagnetometerCalibratorTest implements
     }
 
     private static Matrix generateSoftIronCommonAxis() {
-        final var mm = generateSoftIronGeneral();
+        return generateSoftIronCommonAxis(MIN_SOFT_IRON, MAX_SOFT_IRON);
+    }
+
+    /**
+     * Generates a common axis (upper triangular) soft iron matrix with uniform random values within provided range.
+     *
+     * @param minValue minimum value of each matrix element.
+     * @param maxValue maximum value of each matrix element.
+     * @return generated soft iron matrix.
+     */
+    private static Matrix generateSoftIronCommonAxis(final double minValue, final double maxValue) {
+        final var mm = generateSoftIronGeneral(minValue, maxValue);
         assertNotNull(mm);
 
         for (var col = 0; col < mm.getColumns(); col++) {

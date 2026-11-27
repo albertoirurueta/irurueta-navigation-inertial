@@ -58,9 +58,9 @@ public abstract class QuaternionStepIntegrator {
      * @throws RotationException if a numerical error occurs.
      */
     public abstract void integrate(
-            final Quaternion initialAttitude, final double initialWx, final double initialWy, final double initialWz,
-            final double currentWx, final double currentWy, final double currentWz, final double dt,
-            final Quaternion result) throws RotationException;
+            Quaternion initialAttitude, double initialWx, double initialWy, double initialWz,
+            double currentWx, double currentWy, double currentWz, double dt,
+            Quaternion result) throws RotationException;
 
     /**
      * Creates a quaternion step integrator using provided type.
@@ -121,10 +121,10 @@ public abstract class QuaternionStepIntegrator {
         final var wz = omega.getElementAtIndex(2);
 
         // The skew matrix has the following expression:
-        // W = [0		-wx		-wy		-wz]
-        //     [wx		0		wz		-wy]
-        //     [wy		-wz		0		 wx]
-        //     [wz		wy		-wx		  0]
+        // W = [0       -wx     -wy     -wz]
+        //     [wx      0       wz      -wy]
+        //     [wy      -wz     0        wx]
+        //     [wz      wy      -wx       0]
 
         result.setElementAtIndex(0, 0.0);
         result.setElementAtIndex(1, wx);

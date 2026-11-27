@@ -34,7 +34,6 @@ import com.irurueta.statistics.MaxIterationsExceededException;
 import com.irurueta.units.Acceleration;
 import com.irurueta.units.AccelerationConverter;
 import com.irurueta.units.AccelerationUnit;
-
 import java.util.Collection;
 
 /**
@@ -3974,38 +3973,40 @@ public abstract class BaseBiasGravityNormAccelerometerCalibrator<
      * Sets known bias coordinates of accelerometer expressed in meters
      * per squared second (m/s^2).
      *
-     * @param biasX x-coordinate of known accelerometer bias.
-     * @param biasY y-coordinate of known accelerometer bias.
-     * @param biasZ z-coordinate of known accelerometer bias.
+     * @param biasXParam x-coordinate of known accelerometer bias.
+     * @param biasYParam y-coordinate of known accelerometer bias.
+     * @param biasZParam z-coordinate of known accelerometer bias.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setBiasCoordinates(final double biasX, final double biasY, final double biasZ) throws LockedException {
+    public void setBiasCoordinates(final double biasXParam, final double biasYParam,
+            final double biasZParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        this.biasX = biasX;
-        this.biasY = biasY;
-        this.biasZ = biasZ;
+        biasX = biasXParam;
+        biasY = biasYParam;
+        biasZ = biasZParam;
     }
 
     /**
      * Sets known bias coordinates of accelerometer.
      *
-     * @param biasX x-coordinate of known accelerometer bias.
-     * @param biasY y-coordinate of known accelerometer bias.
-     * @param biasZ z-coordinate of known accelerometer bias.
+     * @param biasXParam x-coordinate of known accelerometer bias.
+     * @param biasYParam y-coordinate of known accelerometer bias.
+     * @param biasZParam z-coordinate of known accelerometer bias.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
     public void setBiasCoordinates(
-            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ) throws LockedException {
+            final Acceleration biasXParam, final Acceleration biasYParam,
+            final Acceleration biasZParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        this.biasX = convertAcceleration(biasX);
-        this.biasY = convertAcceleration(biasY);
-        this.biasZ = convertAcceleration(biasZ);
+        biasX = convertAcceleration(biasXParam);
+        biasY = convertAcceleration(biasYParam);
+        biasZ = convertAcceleration(biasZParam);
     }
 
     /**
@@ -4264,72 +4265,76 @@ public abstract class BaseBiasGravityNormAccelerometerCalibrator<
     /**
      * Sets initial scaling factors.
      *
-     * @param initialSx initial x scaling factor.
-     * @param initialSy initial y scaling factor.
-     * @param initialSz initial z scaling factor.
+     * @param initialSxParam initial x scaling factor.
+     * @param initialSyParam initial y scaling factor.
+     * @param initialSzParam initial z scaling factor.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
     public void setInitialScalingFactors(
-            final double initialSx, final double initialSy, final double initialSz) throws LockedException {
+            final double initialSxParam, final double initialSyParam,
+            final double initialSzParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        this.initialSx = initialSx;
-        this.initialSy = initialSy;
-        this.initialSz = initialSz;
+        initialSx = initialSxParam;
+        initialSy = initialSyParam;
+        initialSz = initialSzParam;
     }
 
     /**
      * Sets initial cross coupling errors.
      *
-     * @param initialMxy initial x-y cross coupling error.
-     * @param initialMxz initial x-z cross coupling error.
-     * @param initialMyx initial y-x cross coupling error.
-     * @param initialMyz initial y-z cross coupling error.
-     * @param initialMzx initial z-x cross coupling error.
-     * @param initialMzy initial z-y cross coupling error.
+     * @param initialMxyParam initial x-y cross coupling error.
+     * @param initialMxzParam initial x-z cross coupling error.
+     * @param initialMyxParam initial y-x cross coupling error.
+     * @param initialMyzParam initial y-z cross coupling error.
+     * @param initialMzxParam initial z-x cross coupling error.
+     * @param initialMzyParam initial z-y cross coupling error.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
     public void setInitialCrossCouplingErrors(
-            final double initialMxy, final double initialMxz, final double initialMyx,
-            final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
+            final double initialMxyParam, final double initialMxzParam, final double initialMyxParam,
+            final double initialMyzParam, final double initialMzxParam,
+            final double initialMzyParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        this.initialMxy = initialMxy;
-        this.initialMxz = initialMxz;
-        this.initialMyx = initialMyx;
-        this.initialMyz = initialMyz;
-        this.initialMzx = initialMzx;
-        this.initialMzy = initialMzy;
+        initialMxy = initialMxyParam;
+        initialMxz = initialMxzParam;
+        initialMyx = initialMyxParam;
+        initialMyz = initialMyzParam;
+        initialMzx = initialMzxParam;
+        initialMzy = initialMzyParam;
     }
 
     /**
      * Sets initial scaling factors and cross coupling errors.
      *
-     * @param initialSx  initial x scaling factor.
-     * @param initialSy  initial y scaling factor.
-     * @param initialSz  initial z scaling factor.
-     * @param initialMxy initial x-y cross coupling error.
-     * @param initialMxz initial x-z cross coupling error.
-     * @param initialMyx initial y-x cross coupling error.
-     * @param initialMyz initial y-z cross coupling error.
-     * @param initialMzx initial z-x cross coupling error.
-     * @param initialMzy initial z-y cross coupling error.
+     * @param initialSxParam  initial x scaling factor.
+     * @param initialSyParam  initial y scaling factor.
+     * @param initialSzParam  initial z scaling factor.
+     * @param initialMxyParam initial x-y cross coupling error.
+     * @param initialMxzParam initial x-z cross coupling error.
+     * @param initialMyxParam initial y-x cross coupling error.
+     * @param initialMyzParam initial y-z cross coupling error.
+     * @param initialMzxParam initial z-x cross coupling error.
+     * @param initialMzyParam initial z-y cross coupling error.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
     public void setInitialScalingFactorsAndCrossCouplingErrors(
-            final double initialSx, final double initialSy, final double initialSz,
-            final double initialMxy, final double initialMxz, final double initialMyx,
-            final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
+            final double initialSxParam, final double initialSyParam, final double initialSzParam,
+            final double initialMxyParam, final double initialMxzParam, final double initialMyxParam,
+            final double initialMyzParam, final double initialMzxParam,
+            final double initialMzyParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        setInitialScalingFactors(initialSx, initialSy, initialSz);
-        setInitialCrossCouplingErrors(initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
+        setInitialScalingFactors(initialSxParam, initialSyParam, initialSzParam);
+        setInitialCrossCouplingErrors(initialMxyParam, initialMxzParam, initialMyxParam, initialMyzParam,
+                initialMzxParam, initialMzyParam);
     }
 
     /**
@@ -4950,15 +4955,15 @@ public abstract class BaseBiasGravityNormAccelerometerCalibrator<
      * measurements have been made, expressed in meters per squared second
      * (m/s^2).
      *
-     * @param groundTruthGravityNorm ground truth gravity norm or null if
+     * @param groundTruthGravityNormParam ground truth gravity norm or null if
      *                               undefined.
      * @throws IllegalArgumentException if provided value is negative.
      */
-    protected void internalSetGroundTruthGravityNorm(final Double groundTruthGravityNorm) {
-        if (groundTruthGravityNorm != null && groundTruthGravityNorm < 0.0) {
+    protected void internalSetGroundTruthGravityNorm(final Double groundTruthGravityNormParam) {
+        if (groundTruthGravityNormParam != null && groundTruthGravityNormParam < 0.0) {
             throw new IllegalArgumentException();
         }
-        this.groundTruthGravityNorm = groundTruthGravityNorm;
+        groundTruthGravityNorm = groundTruthGravityNormParam;
     }
 
     /**
@@ -5050,9 +5055,9 @@ public abstract class BaseBiasGravityNormAccelerometerCalibrator<
         //     [by]
         //     [bz]
 
-        // M = [m11 	m12 	m13]
-        //     [m21 	m22 	m23]
-        //     [m31 	m32 	m33]
+        // M = [m11     m12     m13]
+        //     [m21     m22     m23]
+        //     [m31     m32     m33]
 
         // Notice that bias b is known, hence only terms in matrix M need to be estimated
 
@@ -5169,9 +5174,9 @@ public abstract class BaseBiasGravityNormAccelerometerCalibrator<
         //     [by]
         //     [bz]
 
-        // M = [m11 	m12 	m13]
-        //     [0 		m22 	m23]
-        //     [0 	 	0 		m33]
+        // M = [m11     m12     m13]
+        //     [0       m22     m23]
+        //     [0       0       m33]
 
         // Notice that bias b is known, hence only terms in matrix M need to be estimated
 
@@ -5294,18 +5299,18 @@ public abstract class BaseBiasGravityNormAccelerometerCalibrator<
     /**
      * Makes proper conversion of internal cross-coupling and bias matrices.
      *
-     * @param m internal cross-coupling matrix.
+     * @param mParam internal cross-coupling matrix.
      */
-    private void setResult(final Matrix m) {
+    private void setResult(final Matrix mParam) {
         // Because:
         // M = I + Ma
 
         // Then:
         // Ma = M - I
         if (estimatedMa == null) {
-            estimatedMa = m;
+            estimatedMa = mParam;
         } else {
-            estimatedMa.copyFrom(m);
+            estimatedMa.copyFrom(mParam);
         }
 
         for (var i = 0; i < BodyKinematics.COMPONENTS; i++) {

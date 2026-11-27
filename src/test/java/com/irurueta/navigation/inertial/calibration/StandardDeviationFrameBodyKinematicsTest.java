@@ -2917,6 +2917,29 @@ class StandardDeviationFrameBodyKinematicsTest {
 
         // check
         assertEquals(frameBodyKinematics1, frameBodyKinematics2);
+
+        // check clone is an independent instance holding its own mutable fields
+        assertEquals(StandardDeviationFrameBodyKinematics.class, frameBodyKinematics2.getClass());
+        final var clone = (StandardDeviationFrameBodyKinematics) frameBodyKinematics2;
+        assertNotSame(frameBodyKinematics1, clone);
+        assertNotSame(frameBodyKinematics1.getKinematics(), clone.getKinematics());
+        final var originalFx = frameBodyKinematics1.getKinematics().getFx();
+        clone.getKinematics().setFx(originalFx + 1.0);
+        assertEquals(originalFx, frameBodyKinematics1.getKinematics().getFx(), 0.0);
+        assertNotSame(frameBodyKinematics1.getFrame(), clone.getFrame());
+        final var originalX = frameBodyKinematics1.getFrame().getX();
+        clone.getFrame().setX(originalX + 1.0);
+        assertEquals(originalX, frameBodyKinematics1.getFrame().getX(), 0.0);
+        assertNotSame(frameBodyKinematics1.getPreviousFrame(), clone.getPreviousFrame());
+        final var originalPreviousX = frameBodyKinematics1.getPreviousFrame().getX();
+        clone.getPreviousFrame().setX(originalPreviousX + 1.0);
+        assertEquals(originalPreviousX, frameBodyKinematics1.getPreviousFrame().getX(), 0.0);
+        assertEquals(specificForceStandardDeviation, clone.getSpecificForceStandardDeviation(), 0.0);
+        clone.setSpecificForceStandardDeviation(specificForceStandardDeviation + 1.0);
+        assertEquals(specificForceStandardDeviation, frameBodyKinematics1.getSpecificForceStandardDeviation(), 0.0);
+        assertEquals(angularRateStandardDeviation, clone.getAngularRateStandardDeviation(), 0.0);
+        clone.setAngularRateStandardDeviation(angularRateStandardDeviation + 1.0);
+        assertEquals(angularRateStandardDeviation, frameBodyKinematics1.getAngularRateStandardDeviation(), 0.0);
     }
 
     @Test

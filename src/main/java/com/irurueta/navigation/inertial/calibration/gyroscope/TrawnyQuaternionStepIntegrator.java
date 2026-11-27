@@ -30,6 +30,12 @@ import com.irurueta.numerical.ExponentialMatrixEstimator;
 public class TrawnyQuaternionStepIntegrator extends QuaternionStepIntegrator {
 
     /**
+     * Divisor of the angular rate commutator term ((Ω1·Ω0 - Ω0·Ω1)·dt²/48) of the Trawny quaternion integration
+     * scheme.
+     */
+    private static final double COMMUTATOR_TERM_DIVISOR = 48.0;
+
+    /**
      * Estimates exponential of a square matrix.
      */
     private final ExponentialMatrixEstimator exponentialMatrixEstimator = new ExponentialMatrixEstimator();
@@ -237,6 +243,7 @@ public class TrawnyQuaternionStepIntegrator extends QuaternionStepIntegrator {
      *                          radians per second (rad/s).
      * @param dt                time step expressed in seconds (t1 - t0).
      * @param result            instance where result of integration will be stored.
+     * @param exponentialMatrixEstimator estimator of matrix exponentials to be reused.
      * @param quat              initial attitude to be reused. Must be 4x1.
      * @param omega0            angular speed at initial timestamp t0 to be reused. Must be 3x1.
      * @param omega1            angular speed at end timestamp t1 to be reused. Must be 3x1.
@@ -288,7 +295,7 @@ public class TrawnyQuaternionStepIntegrator extends QuaternionStepIntegrator {
 
             exponentialMatrixEstimator.exponential(a, expA);
 
-            b.multiplyByScalar(dt * dt / 48.0);
+            b.multiplyByScalar(dt * dt / COMMUTATOR_TERM_DIVISOR);
 
             tmp.copyFrom(expA);
             tmp.add(b);

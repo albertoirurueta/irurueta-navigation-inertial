@@ -865,7 +865,7 @@ public abstract class AccumulatedTriadNoiseEstimator<U extends Enum<?>,
      * @param unit   unit.
      * @return created triad.
      */
-    protected abstract T createTriad(final double valueX, final double valueY, final double valueZ, final U unit);
+    protected abstract T createTriad(double valueX, double valueY, double valueZ, U unit);
 
     /**
      * Gets default unit for a measurement.
@@ -881,7 +881,7 @@ public abstract class AccumulatedTriadNoiseEstimator<U extends Enum<?>,
      * @param unit  unit to be set.
      * @return created measurement.
      */
-    protected abstract M createMeasurement(final double value, final U unit);
+    protected abstract M createMeasurement(double value, U unit);
 
     /**
      * Converts provided value and unit into default unit.
@@ -890,5 +890,5 @@ public abstract class AccumulatedTriadNoiseEstimator<U extends Enum<?>,
      * @param unit  unit of measurement value to be converted.
      * @return converted value.
      */
-    protected abstract double convertToDefaultUnit(final double value, final U unit);
+    protected abstract double convertToDefaultUnit(double value, U unit);
 }

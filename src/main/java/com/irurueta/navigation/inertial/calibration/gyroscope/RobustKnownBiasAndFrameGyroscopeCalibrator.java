@@ -29,7 +29,6 @@ import com.irurueta.numerical.robust.RobustEstimatorMethod;
 import com.irurueta.units.AngularSpeed;
 import com.irurueta.units.AngularSpeedConverter;
 import com.irurueta.units.AngularSpeedUnit;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -1095,7 +1094,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
 
     /**
      * Sets known y coordinate of gyroscope bias expressed in radians per second
-     * (rad/s).)
+     * (rad/s).
      *
      * @param biasY y coordinate of gyroscope bias.
      * @throws LockedException if estimator is currently running.
@@ -1244,36 +1243,38 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
     /**
      * Sets known gyroscope bias coordinates expressed in radians per second (rad/s).
      *
-     * @param biasX x coordinate of gyroscope bias.
-     * @param biasY y coordinate of gyroscope bias.
-     * @param biasZ z coordinate of gyroscope bias.
+     * @param biasXParam x coordinate of gyroscope bias.
+     * @param biasYParam y coordinate of gyroscope bias.
+     * @param biasZParam z coordinate of gyroscope bias.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setBiasCoordinates(final double biasX, final double biasY, final double biasZ) throws LockedException {
+    public void setBiasCoordinates(final double biasXParam, final double biasYParam,
+            final double biasZParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
 
-        internalSetBiasCoordinates(biasX, biasY, biasZ);
+        internalSetBiasCoordinates(biasXParam, biasYParam, biasZParam);
     }
 
     /**
      * Sets known gyroscope bias coordinates.
      *
-     * @param biasX x coordinate of gyroscope bias.
-     * @param biasY y coordinate of gyroscope bias.
-     * @param biasZ z coordinate of gyroscope bias.
+     * @param biasXParam x coordinate of gyroscope bias.
+     * @param biasYParam y coordinate of gyroscope bias.
+     * @param biasZParam z coordinate of gyroscope bias.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
     public void setBiasCoordinates(
-            final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ) throws LockedException {
+            final AngularSpeed biasXParam, final AngularSpeed biasYParam,
+            final AngularSpeed biasZParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
 
-        internalSetBiasCoordinates(biasX, biasY, biasZ);
+        internalSetBiasCoordinates(biasXParam, biasYParam, biasZParam);
     }
 
     /**
@@ -1645,74 +1646,78 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      * Sets initial scaling factors.
      * This is only taken into account if non-linear preliminary solutions are used.
      *
-     * @param initialSx initial x scaling factor.
-     * @param initialSy initial y scaling factor.
-     * @param initialSz initial z scaling factor.
+     * @param initialSxParam initial x scaling factor.
+     * @param initialSyParam initial y scaling factor.
+     * @param initialSzParam initial z scaling factor.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
     public void setInitialScalingFactors(
-            final double initialSx, final double initialSy, final double initialSz) throws LockedException {
+            final double initialSxParam, final double initialSyParam,
+            final double initialSzParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        this.initialSx = initialSx;
-        this.initialSy = initialSy;
-        this.initialSz = initialSz;
+        initialSx = initialSxParam;
+        initialSy = initialSyParam;
+        initialSz = initialSzParam;
     }
 
     /**
      * Sets initial cross coupling errors.
      * This is only taken into account if non-linear preliminary solutions are used.
      *
-     * @param initialMxy initial x-y cross coupling error.
-     * @param initialMxz initial x-z cross coupling error.
-     * @param initialMyx initial y-x cross coupling error.
-     * @param initialMyz initial y-z cross coupling error.
-     * @param initialMzx initial z-x cross coupling error.
-     * @param initialMzy initial z-y cross coupling error.
+     * @param initialMxyParam initial x-y cross coupling error.
+     * @param initialMxzParam initial x-z cross coupling error.
+     * @param initialMyxParam initial y-x cross coupling error.
+     * @param initialMyzParam initial y-z cross coupling error.
+     * @param initialMzxParam initial z-x cross coupling error.
+     * @param initialMzyParam initial z-y cross coupling error.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
     public void setInitialCrossCouplingErrors(
-            final double initialMxy, final double initialMxz, final double initialMyx,
-            final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
+            final double initialMxyParam, final double initialMxzParam, final double initialMyxParam,
+            final double initialMyzParam, final double initialMzxParam,
+            final double initialMzyParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        this.initialMxy = initialMxy;
-        this.initialMxz = initialMxz;
-        this.initialMyx = initialMyx;
-        this.initialMyz = initialMyz;
-        this.initialMzx = initialMzx;
-        this.initialMzy = initialMzy;
+        initialMxy = initialMxyParam;
+        initialMxz = initialMxzParam;
+        initialMyx = initialMyxParam;
+        initialMyz = initialMyzParam;
+        initialMzx = initialMzxParam;
+        initialMzy = initialMzyParam;
     }
 
     /**
      * Sets initial scaling factors and cross coupling errors.
      * This is only taken into account if non-linear preliminary solutions are used.
      *
-     * @param initialSx  initial x scaling factor.
-     * @param initialSy  initial y scaling factor.
-     * @param initialSz  initial z scaling factor.
-     * @param initialMxy initial x-y cross coupling error.
-     * @param initialMxz initial x-z cross coupling error.
-     * @param initialMyx initial y-x cross coupling error.
-     * @param initialMyz initial y-z cross coupling error.
-     * @param initialMzx initial z-x cross coupling error.
-     * @param initialMzy initial z-y cross coupling error.
+     * @param initialSxParam  initial x scaling factor.
+     * @param initialSyParam  initial y scaling factor.
+     * @param initialSzParam  initial z scaling factor.
+     * @param initialMxyParam initial x-y cross coupling error.
+     * @param initialMxzParam initial x-z cross coupling error.
+     * @param initialMyxParam initial y-x cross coupling error.
+     * @param initialMyzParam initial y-z cross coupling error.
+     * @param initialMzxParam initial z-x cross coupling error.
+     * @param initialMzyParam initial z-y cross coupling error.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
     public void setInitialScalingFactorsAndCrossCouplingErrors(
-            final double initialSx, final double initialSy, final double initialSz,
-            final double initialMxy, final double initialMxz, final double initialMyx,
-            final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
+            final double initialSxParam, final double initialSyParam, final double initialSzParam,
+            final double initialMxyParam, final double initialMxzParam, final double initialMyxParam,
+            final double initialMyzParam, final double initialMzxParam,
+            final double initialMzyParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        setInitialScalingFactors(initialSx, initialSy, initialSz);
-        setInitialCrossCouplingErrors(initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
+        setInitialScalingFactors(initialSxParam, initialSyParam, initialSzParam);
+        setInitialCrossCouplingErrors(initialMxyParam, initialMxzParam, initialMyxParam, initialMyzParam,
+                initialMzxParam, initialMzyParam);
     }
 
     /**
@@ -2158,15 +2163,15 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
     /**
      * Specifies whether result must be refined using a non-linear solver over found inliers.
      *
-     * @param refineResult true to refine result, false to simply use result found by robust
+     * @param refineResultParam true to refine result, false to simply use result found by robust
      *                     estimator without further refining.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setResultRefined(final boolean refineResult) throws LockedException {
+    public void setResultRefined(final boolean refineResultParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        this.refineResult = refineResult;
+        refineResult = refineResultParam;
     }
 
     /**
@@ -2183,15 +2188,15 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      * Specifies whether covariance must be kept after refining result.
      * This setting is only taken into account if result is refined.
      *
-     * @param keepCovariance true if covariance must be kept after refining result,
+     * @param keepCovarianceParam true if covariance must be kept after refining result,
      *                       false otherwise.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setCovarianceKept(final boolean keepCovariance) throws LockedException {
+    public void setCovarianceKept(final boolean keepCovarianceParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        this.keepCovariance = keepCovariance;
+        keepCovariance = keepCovarianceParam;
     }
 
     /**
@@ -5500,31 +5505,31 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
     /**
      * Internally sets bias coordinates.
      *
-     * @param biasX known x coordinate of gyroscope bias expressed in radians per
+     * @param biasXParam known x coordinate of gyroscope bias expressed in radians per
      *              second (rad/s).
-     * @param biasY known y coordinate of gyroscope bias expressed in radians per
+     * @param biasYParam known y coordinate of gyroscope bias expressed in radians per
      *              second (rad/s).
-     * @param biasZ known z coordinate of gyroscope bias expressed in radians per
+     * @param biasZParam known z coordinate of gyroscope bias expressed in radians per
      *              second (rad/s).
      */
-    private void internalSetBiasCoordinates(final double biasX, final double biasY, final double biasZ) {
-        this.biasX = biasX;
-        this.biasY = biasY;
-        this.biasZ = biasZ;
+    private void internalSetBiasCoordinates(final double biasXParam, final double biasYParam, final double biasZParam) {
+        biasX = biasXParam;
+        biasY = biasYParam;
+        biasZ = biasZParam;
     }
 
     /**
      * Internally sets bias coordinates.
      *
-     * @param biasX known x coordinate of gyroscope bias.
-     * @param biasY known y coordinate of gyroscope bias.
-     * @param biasZ known z coordinate of gyroscope bias.
+     * @param biasXParam known x coordinate of gyroscope bias.
+     * @param biasYParam known y coordinate of gyroscope bias.
+     * @param biasZParam known z coordinate of gyroscope bias.
      */
     private void internalSetBiasCoordinates(
-            final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ) {
-        this.biasX = convertAngularSpeed(biasX);
-        this.biasY = convertAngularSpeed(biasY);
-        this.biasZ = convertAngularSpeed(biasZ);
+            final AngularSpeed biasXParam, final AngularSpeed biasYParam, final AngularSpeed biasZParam) {
+        biasX = convertAngularSpeed(biasXParam);
+        biasY = convertAngularSpeed(biasYParam);
+        biasZ = convertAngularSpeed(biasZParam);
     }
 
     /**

@@ -21,7 +21,6 @@ import com.irurueta.navigation.inertial.BodyMagneticFluxDensity;
 import com.irurueta.units.Time;
 import com.irurueta.units.TimeConverter;
 import com.irurueta.units.TimeUnit;
-
 import java.io.Serial;
 import java.util.Objects;
 
@@ -348,9 +347,7 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
-        final var result = (TimedBodyKinematicsAndMagneticFluxDensity) super.clone();
-        copyTo(result);
-        return result;
+        return super.clone();
     }
 
     /**

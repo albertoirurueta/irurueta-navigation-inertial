@@ -35,7 +35,6 @@ import com.irurueta.statistics.MaxIterationsExceededException;
 import com.irurueta.units.MagneticFluxDensity;
 import com.irurueta.units.MagneticFluxDensityConverter;
 import com.irurueta.units.MagneticFluxDensityUnit;
-
 import java.util.Collection;
 
 /**
@@ -1428,45 +1427,45 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      * Sets initial hard-iron bias coordinates of magnetometer used to find
      * a solution expressed in Teslas (T).
      *
-     * @param initialHardIronX initial x-coordinate of magnetometer
+     * @param initialHardIronXParam initial x-coordinate of magnetometer
      *                         hard-iron bias.
-     * @param initialHardIronY initial y-coordinate of magnetometer
+     * @param initialHardIronYParam initial y-coordinate of magnetometer
      *                         hard-iron bias.
-     * @param initialHardIronZ initial z-coordinate of magnetometer
+     * @param initialHardIronZParam initial z-coordinate of magnetometer
      *                         hard-iron bias.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
     public void setInitialHardIron(
-            final double initialHardIronX, final double initialHardIronY, final double initialHardIronZ)
+            final double initialHardIronXParam, final double initialHardIronYParam, final double initialHardIronZParam)
             throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        this.initialHardIronX = initialHardIronX;
-        this.initialHardIronY = initialHardIronY;
-        this.initialHardIronZ = initialHardIronZ;
+        initialHardIronX = initialHardIronXParam;
+        initialHardIronY = initialHardIronYParam;
+        initialHardIronZ = initialHardIronZParam;
     }
 
     /**
      * Sets initial hard iron coordinates of magnetometer used to find a solution.
      *
-     * @param initialHardIronX initial x-coordinate of magnetometer bias.
-     * @param initialHardIronY initial y-coordinate of magnetometer bias.
-     * @param initialHardIronZ initial z-coordinate of magnetometer bias.
+     * @param initialHardIronXParam initial x-coordinate of magnetometer bias.
+     * @param initialHardIronYParam initial y-coordinate of magnetometer bias.
+     * @param initialHardIronZParam initial z-coordinate of magnetometer bias.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
     public void setInitialHardIron(
-            final MagneticFluxDensity initialHardIronX, final MagneticFluxDensity initialHardIronY,
-            final MagneticFluxDensity initialHardIronZ) throws LockedException {
+            final MagneticFluxDensity initialHardIronXParam, final MagneticFluxDensity initialHardIronYParam,
+            final MagneticFluxDensity initialHardIronZParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
 
-        this.initialHardIronX = convertMagneticFluxDensity(initialHardIronX);
-        this.initialHardIronY = convertMagneticFluxDensity(initialHardIronY);
-        this.initialHardIronZ = convertMagneticFluxDensity(initialHardIronZ);
+        initialHardIronX = convertMagneticFluxDensity(initialHardIronXParam);
+        initialHardIronY = convertMagneticFluxDensity(initialHardIronYParam);
+        initialHardIronZ = convertMagneticFluxDensity(initialHardIronZParam);
     }
 
     /**
@@ -1727,72 +1726,76 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
     /**
      * Sets initial scaling factors.
      *
-     * @param initialSx initial x scaling factor.
-     * @param initialSy initial y scaling factor.
-     * @param initialSz initial z scaling factor.
+     * @param initialSxParam initial x scaling factor.
+     * @param initialSyParam initial y scaling factor.
+     * @param initialSzParam initial z scaling factor.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
     public void setInitialScalingFactors(
-            final double initialSx, final double initialSy, final double initialSz) throws LockedException {
+            final double initialSxParam, final double initialSyParam,
+            final double initialSzParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        this.initialSx = initialSx;
-        this.initialSy = initialSy;
-        this.initialSz = initialSz;
+        initialSx = initialSxParam;
+        initialSy = initialSyParam;
+        initialSz = initialSzParam;
     }
 
     /**
      * Sets initial cross coupling errors.
      *
-     * @param initialMxy initial x-y cross coupling error.
-     * @param initialMxz initial x-z cross coupling error.
-     * @param initialMyx initial y-x cross coupling error.
-     * @param initialMyz initial y-z cross coupling error.
-     * @param initialMzx initial z-x cross coupling error.
-     * @param initialMzy initial z-y cross coupling error.
+     * @param initialMxyParam initial x-y cross coupling error.
+     * @param initialMxzParam initial x-z cross coupling error.
+     * @param initialMyxParam initial y-x cross coupling error.
+     * @param initialMyzParam initial y-z cross coupling error.
+     * @param initialMzxParam initial z-x cross coupling error.
+     * @param initialMzyParam initial z-y cross coupling error.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
     public void setInitialCrossCouplingErrors(
-            final double initialMxy, final double initialMxz, final double initialMyx,
-            final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
+            final double initialMxyParam, final double initialMxzParam, final double initialMyxParam,
+            final double initialMyzParam, final double initialMzxParam,
+            final double initialMzyParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        this.initialMxy = initialMxy;
-        this.initialMxz = initialMxz;
-        this.initialMyx = initialMyx;
-        this.initialMyz = initialMyz;
-        this.initialMzx = initialMzx;
-        this.initialMzy = initialMzy;
+        initialMxy = initialMxyParam;
+        initialMxz = initialMxzParam;
+        initialMyx = initialMyxParam;
+        initialMyz = initialMyzParam;
+        initialMzx = initialMzxParam;
+        initialMzy = initialMzyParam;
     }
 
     /**
      * Sets initial scaling factors and cross coupling errors.
      *
-     * @param initialSx  initial x scaling factor.
-     * @param initialSy  initial y scaling factor.
-     * @param initialSz  initial z scaling factor.
-     * @param initialMxy initial x-y cross coupling error.
-     * @param initialMxz initial x-z cross coupling error.
-     * @param initialMyx initial y-x cross coupling error.
-     * @param initialMyz initial y-z cross coupling error.
-     * @param initialMzx initial z-x cross coupling error.
-     * @param initialMzy initial z-y cross coupling error.
+     * @param initialSxParam  initial x scaling factor.
+     * @param initialSyParam  initial y scaling factor.
+     * @param initialSzParam  initial z scaling factor.
+     * @param initialMxyParam initial x-y cross coupling error.
+     * @param initialMxzParam initial x-z cross coupling error.
+     * @param initialMyxParam initial y-x cross coupling error.
+     * @param initialMyzParam initial y-z cross coupling error.
+     * @param initialMzxParam initial z-x cross coupling error.
+     * @param initialMzyParam initial z-y cross coupling error.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
     public void setInitialScalingFactorsAndCrossCouplingErrors(
-            final double initialSx, final double initialSy, final double initialSz,
-            final double initialMxy, final double initialMxz, final double initialMyx,
-            final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
+            final double initialSxParam, final double initialSyParam, final double initialSzParam,
+            final double initialMxyParam, final double initialMxzParam, final double initialMyxParam,
+            final double initialMyzParam, final double initialMzxParam,
+            final double initialMzyParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        setInitialScalingFactors(initialSx, initialSy, initialSz);
-        setInitialCrossCouplingErrors(initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
+        setInitialScalingFactors(initialSxParam, initialSyParam, initialSzParam);
+        setInitialCrossCouplingErrors(initialMxyParam, initialMxzParam, initialMyxParam, initialMyzParam,
+                initialMzxParam, initialMzyParam);
     }
 
     /**
@@ -2902,14 +2905,14 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
      * Internally sets ground truth magnetic flux density norm to be expected at location where
      * measurements have been made, expressed in Teslas (T).
      *
-     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm or null if undefined.
+     * @param groundTruthMagneticFluxDensityNormParam ground truth magnetic flux density norm or null if undefined.
      * @throws IllegalArgumentException if provided value is negative.
      */
-    protected void internalSetGroundTruthMagneticFluxDensityNorm(final Double groundTruthMagneticFluxDensityNorm) {
-        if (groundTruthMagneticFluxDensityNorm != null && groundTruthMagneticFluxDensityNorm < 0.0) {
+    protected void internalSetGroundTruthMagneticFluxDensityNorm(final Double groundTruthMagneticFluxDensityNormParam) {
+        if (groundTruthMagneticFluxDensityNormParam != null && groundTruthMagneticFluxDensityNormParam < 0.0) {
             throw new IllegalArgumentException();
         }
-        this.groundTruthMagneticFluxDensityNorm = groundTruthMagneticFluxDensityNorm;
+        groundTruthMagneticFluxDensityNorm = groundTruthMagneticFluxDensityNormParam;
     }
 
     /**
@@ -3001,9 +3004,9 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
         //     [by]
         //     [bz]
 
-        // M = [m11 	m12 	m13]
-        //     [m21 	m22 	m23]
-        //     [m31 	m32 	m33]
+        // M = [m11     m12     m13]
+        //     [m21     m22     m23]
+        //     [m31     m32     m33]
 
         final var gradientEstimator = new GradientEstimator(this::evaluateGeneral);
 
@@ -3104,9 +3107,9 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
         //     [by]
         //     [bz]
 
-        // M = [m11 	m12 	m13]
-        //     [m21 	m22 	m23]
-        //     [m31 	m32 	m33]
+        // M = [m11     m12     m13]
+        //     [m21     m22     m23]
+        //     [m31     m32     m33]
 
         // and that ba and Ma are expressed as:
         // Mm = M - I
@@ -3116,9 +3119,9 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
         //      [m21        m22 - 1     m23    ]    [myx    sy      myz]
         //      [m31        m32         m33 - 1]    [mzx    mzy     sz ]
 
-        // bm = [m11 * bx + m12 * by + m13 * bz] = 	[bmx]
-        //      [m21 * bx + m22 * by + m23 * bz]	[bmy]
-        //      [m31 * bx + m32 * by + m33 * bz]	[bmz]
+        // bm = [m11 * bx + m12 * by + m13 * bz] =  [bmx]
+        //      [m21 * bx + m22 * by + m23 * bz]    [bmy]
+        //      [m31 * bx + m32 * by + m33 * bz]    [bmz]
 
         // Defining the linear application:
         // F(b, M) = F(bx, by, bz, m11, m21, m31, m12, m22, m32, m13, m23, m33)
@@ -3126,9 +3129,9 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
         // [bmx] = [m11 * bx + m12 * by + m13 * bz]
         // [bmy]   [m21 * bx + m22 * by + m23 * bz]
         // [bmz]   [m31 * bx + m32 * by + m33 * bz]
-        // [sx]	   [m11 - 1]
-        // [sy]	   [m22 - 1]
-        // [sz]	   [m33 -1]
+        // [sx]    [m11 - 1]
+        // [sy]    [m22 - 1]
+        // [sz]    [m33 -1]
         // [mxy]   [m12]
         // [mxz]   [m13]
         // [myx]   [m21]
@@ -3137,18 +3140,18 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
         // [mzy]   [m32]
 
         // Then the Jacobian of F(b, M) is:
-        // J = 	[m11  m12  m13  bx  0   0   by  0   0   bz  0   0 ]
-        //	    [m21  m22  m23  0   bx  0   0   by  0   0   bz  0 ]
-        //	    [m31  m32  m33  0   0   bx  0   0   by  0   0   bz]
-        //	    [0    0    0    1   0   0   0   0   0   0   0   0 ]
-        //	    [0    0    0    0   0   0   0   1   0   0   0   0 ]
-        //	    [0    0    0    0   0   0   0   0   0   0   0   1 ]
-        //	    [0    0    0    0   0   0   1   0   0   0   0   0 ]
-        //	    [0    0    0    0   0   0   0   0   0   1   0   0 ]
-        //	    [0    0    0    0   1   0   0   0   0   0   0   0 ]
-        //	    [0    0    0    0   0   0   0   0   0   0   1   0 ]
-        //	    [0    0    0    0   0   1   0   0   0   0   0   0 ]
-        //	    [0    0    0    0   0   0   0   0   1   0   0   0 ]
+        // J =  [m11  m12  m13  bx  0   0   by  0   0   bz  0   0 ]
+        //      [m21  m22  m23  0   bx  0   0   by  0   0   bz  0 ]
+        //      [m31  m32  m33  0   0   bx  0   0   by  0   0   bz]
+        //      [0    0    0    1   0   0   0   0   0   0   0   0 ]
+        //      [0    0    0    0   0   0   0   1   0   0   0   0 ]
+        //      [0    0    0    0   0   0   0   0   0   0   0   1 ]
+        //      [0    0    0    0   0   0   1   0   0   0   0   0 ]
+        //      [0    0    0    0   0   0   0   0   0   1   0   0 ]
+        //      [0    0    0    0   1   0   0   0   0   0   0   0 ]
+        //      [0    0    0    0   0   0   0   0   0   0   1   0 ]
+        //      [0    0    0    0   0   1   0   0   0   0   0   0 ]
+        //      [0    0    0    0   0   0   0   0   1   0   0   0 ]
 
         // We know that the propagated covariance is J * Cov * J', hence:
         final var jacobian = new Matrix(GENERAL_UNKNOWNS, GENERAL_UNKNOWNS);
@@ -3246,9 +3249,9 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
         //     [by]
         //     [bz]
 
-        // M = [m11 	m12 	m13]
-        //     [0 		m22 	m23]
-        //     [0 	 	0 		m33]
+        // M = [m11     m12     m13]
+        //     [0       m22     m23]
+        //     [0       0       m33]
 
 
         final var gradientEstimator = new GradientEstimator(this::evaluateCommonAxis);
@@ -3357,9 +3360,9 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
         //     [by]
         //     [bz]
 
-        // M = [m11 	m12 	m13]
-        //     [0    	m22 	m23]
-        //     [0    	0    	m33]
+        // M = [m11     m12     m13]
+        //     [0       m22     m23]
+        //     [0       0       m33]
 
         // m21 = m31 = m32 = 0
 
@@ -3371,9 +3374,9 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
         //      [0          m22 - 1     m23    ]    [0      sy      myz]
         //      [0          0           m33 - 1]    [0      0       sz ]
 
-        // ba = [m11 * bx + m12 * by + m13 * bz] = 	[bax]
-        //      [           m22 * by + m23 * bz]	[bay]
-        //      [                      m33 * bz]	[baz]
+        // ba = [m11 * bx + m12 * by + m13 * bz] =  [bax]
+        //      [           m22 * by + m23 * bz]    [bay]
+        //      [                      m33 * bz]    [baz]
 
         // Defining the linear application:
         // F(b, M) = F(bx, by, bz, m11, m12, m22, m13, m23, m33)
@@ -3381,9 +3384,9 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
         // [bax] = [m11 * bx + m12 * by + m13 * bz]
         // [bay]   [m22 * by + m23 * bz]
         // [baz]   [m33 * bz]
-        // [sx]	   [m11 - 1]
-        // [sy]	   [m22 - 1]
-        // [sz]	   [m33 -1]
+        // [sx]    [m11 - 1]
+        // [sy]    [m22 - 1]
+        // [sz]    [m33 -1]
         // [mxy]   [m12]
         // [mxz]   [m13]
         // [myx]   [0]
@@ -3392,18 +3395,18 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
         // [mzy]   [0]
 
         // Then the Jacobian of F(b, M) is:
-        // J = 	[m11  m12  m13  bx  by  0   bz  0   0 ]
-        //	    [0    m22  m23  0   0   by  0   bz  0 ]
-        //	    [0    0    m33  0   0   0   0   0   bz]
-        //	    [0    0    0    1   0   0   0   0   0 ]
-        //	    [0    0    0    0   0   1   0   0   0 ]
-        //	    [0    0    0    0   0   0   0   0   1 ]
-        //	    [0    0    0    0   1   0   0   0   0 ]
-        //	    [0    0    0    0   0   0   1   0   0 ]
-        //	    [0    0    0    0   0   0   0   0   0 ]
-        //	    [0    0    0    0   0   0   0   1   0 ]
-        //	    [0    0    0    0   0   0   0   0   0 ]
-        //	    [0    0    0    0   0   0   0   0   0 ]
+        // J =  [m11  m12  m13  bx  by  0   bz  0   0 ]
+        //      [0    m22  m23  0   0   by  0   bz  0 ]
+        //      [0    0    m33  0   0   0   0   0   bz]
+        //      [0    0    0    1   0   0   0   0   0 ]
+        //      [0    0    0    0   0   1   0   0   0 ]
+        //      [0    0    0    0   0   0   0   0   1 ]
+        //      [0    0    0    0   1   0   0   0   0 ]
+        //      [0    0    0    0   0   0   1   0   0 ]
+        //      [0    0    0    0   0   0   0   0   0 ]
+        //      [0    0    0    0   0   0   0   1   0 ]
+        //      [0    0    0    0   0   0   0   0   0 ]
+        //      [0    0    0    0   0   0   0   0   0 ]
 
         // We know that the propagated covariance is J * Cov * J', hence:
         final var jacobian = new Matrix(GENERAL_UNKNOWNS, COMMON_Z_AXIS_UNKNOWNS);
@@ -3444,11 +3447,11 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
     /**
      * Makes proper conversion of internal cross-coupling and bias matrices.
      *
-     * @param m internal cross-coupling matrix.
-     * @param b internal bias matrix.
+     * @param mParam internal cross-coupling matrix.
+     * @param bParam internal bias matrix.
      * @throws AlgebraException if a numerical instability occurs.
      */
-    private void setResult(final Matrix m, final Matrix b) throws AlgebraException {
+    private void setResult(final Matrix mParam, final Matrix bParam) throws AlgebraException {
         // Because:
         // M = I + Mm
         // b = M^-1*bm
@@ -3461,13 +3464,13 @@ public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator<
             estimatedHardIron = new double[BodyMagneticFluxDensity.COMPONENTS];
         }
 
-        final var bm = m.multiplyAndReturnNew(b);
+        final var bm = mParam.multiplyAndReturnNew(bParam);
         bm.toArray(estimatedHardIron);
 
         if (estimatedMm == null) {
-            estimatedMm = m;
+            estimatedMm = mParam;
         } else {
-            estimatedMm.copyFrom(m);
+            estimatedMm.copyFrom(mParam);
         }
 
         for (var i = 0; i < BodyMagneticFluxDensity.COMPONENTS; i++) {

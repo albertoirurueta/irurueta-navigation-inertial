@@ -38,7 +38,6 @@ import com.irurueta.statistics.MaxIterationsExceededException;
 import com.irurueta.units.Acceleration;
 import com.irurueta.units.AccelerationConverter;
 import com.irurueta.units.AccelerationUnit;
-
 import java.util.Collection;
 
 /**
@@ -4302,39 +4301,40 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      * Sets initial bias coordinates of accelerometer used to find a solution
      * expressed in meters per squared second (m/s^2).
      *
-     * @param initialBiasX initial x-coordinate of accelerometer bias.
-     * @param initialBiasY initial y-coordinate of accelerometer bias.
-     * @param initialBiasZ initial z-coordinate of accelerometer bias.
+     * @param initialBiasXParam initial x-coordinate of accelerometer bias.
+     * @param initialBiasYParam initial y-coordinate of accelerometer bias.
+     * @param initialBiasZParam initial z-coordinate of accelerometer bias.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialBias(final double initialBiasX, final double initialBiasY, final double initialBiasZ)
+    public void setInitialBias(final double initialBiasXParam, final double initialBiasYParam,
+            final double initialBiasZParam)
             throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        this.initialBiasX = initialBiasX;
-        this.initialBiasY = initialBiasY;
-        this.initialBiasZ = initialBiasZ;
+        initialBiasX = initialBiasXParam;
+        initialBiasY = initialBiasYParam;
+        initialBiasZ = initialBiasZParam;
     }
 
     /**
      * Sets initial bias coordinates of accelerometer used to find a solution.
      *
-     * @param initialBiasX initial x-coordinate of accelerometer bias.
-     * @param initialBiasY initial y-coordinate of accelerometer bias.
-     * @param initialBiasZ initial z-coordinate of accelerometer bias.
+     * @param initialBiasXParam initial x-coordinate of accelerometer bias.
+     * @param initialBiasYParam initial y-coordinate of accelerometer bias.
+     * @param initialBiasZParam initial z-coordinate of accelerometer bias.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialBias(final Acceleration initialBiasX, final Acceleration initialBiasY,
-                               final Acceleration initialBiasZ) throws LockedException {
+    public void setInitialBias(final Acceleration initialBiasXParam, final Acceleration initialBiasYParam,
+                               final Acceleration initialBiasZParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        this.initialBiasX = convertAcceleration(initialBiasX);
-        this.initialBiasY = convertAcceleration(initialBiasY);
-        this.initialBiasZ = convertAcceleration(initialBiasZ);
+        initialBiasX = convertAcceleration(initialBiasXParam);
+        initialBiasY = convertAcceleration(initialBiasYParam);
+        initialBiasZ = convertAcceleration(initialBiasZParam);
     }
 
     /**
@@ -4595,72 +4595,76 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
     /**
      * Sets initial scaling factors.
      *
-     * @param initialSx initial x scaling factor.
-     * @param initialSy initial y scaling factor.
-     * @param initialSz initial z scaling factor.
+     * @param initialSxParam initial x scaling factor.
+     * @param initialSyParam initial y scaling factor.
+     * @param initialSzParam initial z scaling factor.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialScalingFactors(final double initialSx, final double initialSy, final double initialSz)
+    public void setInitialScalingFactors(final double initialSxParam, final double initialSyParam,
+            final double initialSzParam)
             throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        this.initialSx = initialSx;
-        this.initialSy = initialSy;
-        this.initialSz = initialSz;
+        initialSx = initialSxParam;
+        initialSy = initialSyParam;
+        initialSz = initialSzParam;
     }
 
     /**
      * Sets initial cross coupling errors.
      *
-     * @param initialMxy initial x-y cross coupling error.
-     * @param initialMxz initial x-z cross coupling error.
-     * @param initialMyx initial y-x cross coupling error.
-     * @param initialMyz initial y-z cross coupling error.
-     * @param initialMzx initial z-x cross coupling error.
-     * @param initialMzy initial z-y cross coupling error.
+     * @param initialMxyParam initial x-y cross coupling error.
+     * @param initialMxzParam initial x-z cross coupling error.
+     * @param initialMyxParam initial y-x cross coupling error.
+     * @param initialMyzParam initial y-z cross coupling error.
+     * @param initialMzxParam initial z-x cross coupling error.
+     * @param initialMzyParam initial z-y cross coupling error.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
     public void setInitialCrossCouplingErrors(
-            final double initialMxy, final double initialMxz, final double initialMyx,
-            final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
+            final double initialMxyParam, final double initialMxzParam, final double initialMyxParam,
+            final double initialMyzParam, final double initialMzxParam,
+            final double initialMzyParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        this.initialMxy = initialMxy;
-        this.initialMxz = initialMxz;
-        this.initialMyx = initialMyx;
-        this.initialMyz = initialMyz;
-        this.initialMzx = initialMzx;
-        this.initialMzy = initialMzy;
+        initialMxy = initialMxyParam;
+        initialMxz = initialMxzParam;
+        initialMyx = initialMyxParam;
+        initialMyz = initialMyzParam;
+        initialMzx = initialMzxParam;
+        initialMzy = initialMzyParam;
     }
 
     /**
      * Sets initial scaling factors and cross coupling errors.
      *
-     * @param initialSx  initial x scaling factor.
-     * @param initialSy  initial y scaling factor.
-     * @param initialSz  initial z scaling factor.
-     * @param initialMxy initial x-y cross coupling error.
-     * @param initialMxz initial x-z cross coupling error.
-     * @param initialMyx initial y-x cross coupling error.
-     * @param initialMyz initial y-z cross coupling error.
-     * @param initialMzx initial z-x cross coupling error.
-     * @param initialMzy initial z-y cross coupling error.
+     * @param initialSxParam  initial x scaling factor.
+     * @param initialSyParam  initial y scaling factor.
+     * @param initialSzParam  initial z scaling factor.
+     * @param initialMxyParam initial x-y cross coupling error.
+     * @param initialMxzParam initial x-z cross coupling error.
+     * @param initialMyxParam initial y-x cross coupling error.
+     * @param initialMyzParam initial y-z cross coupling error.
+     * @param initialMzxParam initial z-x cross coupling error.
+     * @param initialMzyParam initial z-y cross coupling error.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
     public void setInitialScalingFactorsAndCrossCouplingErrors(
-            final double initialSx, final double initialSy, final double initialSz,
-            final double initialMxy, final double initialMxz, final double initialMyx,
-            final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
+            final double initialSxParam, final double initialSyParam, final double initialSzParam,
+            final double initialMxyParam, final double initialMxzParam, final double initialMyxParam,
+            final double initialMyzParam, final double initialMzxParam,
+            final double initialMzyParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        setInitialScalingFactors(initialSx, initialSy, initialSz);
-        setInitialCrossCouplingErrors(initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
+        setInitialScalingFactors(initialSxParam, initialSyParam, initialSzParam);
+        setInitialCrossCouplingErrors(initialMxyParam, initialMxzParam, initialMyxParam, initialMyzParam,
+                initialMzxParam, initialMzyParam);
     }
 
     /**
@@ -5754,15 +5758,15 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
      * measurements have been made, expressed in meters per squared second
      * (m/s^2).
      *
-     * @param groundTruthGravityNorm ground truth gravity norm or null if
+     * @param groundTruthGravityNormParam ground truth gravity norm or null if
      *                               undefined.
      * @throws IllegalArgumentException if provided value is negative.
      */
-    protected void internalSetGroundTruthGravityNorm(final Double groundTruthGravityNorm) {
-        if (groundTruthGravityNorm != null && groundTruthGravityNorm < 0.0) {
+    protected void internalSetGroundTruthGravityNorm(final Double groundTruthGravityNormParam) {
+        if (groundTruthGravityNormParam != null && groundTruthGravityNormParam < 0.0) {
             throw new IllegalArgumentException();
         }
-        this.groundTruthGravityNorm = groundTruthGravityNorm;
+        groundTruthGravityNorm = groundTruthGravityNormParam;
     }
 
     /**
@@ -5865,9 +5869,9 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
         //     [by]
         //     [bz]
 
-        // M = [m11 	m12 	m13]
-        //     [m21 	m22 	m23]
-        //     [m31 	m32 	m33]
+        // M = [m11     m12     m13]
+        //     [m21     m22     m23]
+        //     [m31     m32     m33]
 
         final var gradientEstimator = new GradientEstimator(this::evaluateGeneral);
 
@@ -5968,9 +5972,9 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
         //     [by]
         //     [bz]
 
-        // M = [m11 	m12 	m13]
-        //     [m21 	m22 	m23]
-        //     [m31 	m32 	m33]
+        // M = [m11     m12     m13]
+        //     [m21     m22     m23]
+        //     [m31     m32     m33]
 
         // and that ba and Ma are expressed as:
         // Ma = M - I
@@ -5980,19 +5984,19 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
         //      [m21        m22 - 1     m23    ]    [myx    sy      myz]
         //      [m31        m32         m33 - 1]    [mzx    mzy     sz ]
 
-        // ba = [m11 * bx + m12 * by + m13 * bz] = 	[bax]
-        //      [m21 * bx + m22 * by + m23 * bz]	[bay]
-        //      [m31 * bx + m32 * by + m33 * bz]	[baz]
+        // ba = [m11 * bx + m12 * by + m13 * bz] =  [bax]
+        //      [m21 * bx + m22 * by + m23 * bz]    [bay]
+        //      [m31 * bx + m32 * by + m33 * bz]    [baz]
 
         // Defining the linear application:
         // F(b, M) = F(bx, by, bz, m11, m21, m31, m12, m22, m32, m13, m23, m33)
         // as:
-        // [bax] = 	[m11 * bx + m12 * by + m13 * bz]
-        // [bay]	[m21 * bx + m22 * by + m23 * bz]
-        // [baz]	[m31 * bx + m32 * by + m33 * bz]
-        // [sx]		[m11 - 1]
-        // [sy]		[m22 - 1]
-        // [sz]		[m33 - 1]
+        // [bax] =  [m11 * bx + m12 * by + m13 * bz]
+        // [bay]    [m21 * bx + m22 * by + m23 * bz]
+        // [baz]    [m31 * bx + m32 * by + m33 * bz]
+        // [sx]     [m11 - 1]
+        // [sy]     [m22 - 1]
+        // [sz]     [m33 - 1]
         // [mxy]    [m12]
         // [mxz]    [m13]
         // [myx]    [m21]
@@ -6001,18 +6005,18 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
         // [mzy]    [m32]
 
         // Then the Jacobian of F(b, M) is:
-        // J = 	[m11  m12  m13  bx  0   0   by  0   0   bz  0   0 ]
-        //	    [m21  m22  m23  0   bx  0   0   by  0   0   bz  0 ]
-        //	    [m31  m32  m33  0   0   bx  0   0   by  0   0   bz]
-        //	    [0    0    0    1   0   0   0   0   0   0   0   0 ]
-        //	    [0    0    0    0   0   0   0   1   0   0   0   0 ]
-        //	    [0    0    0    0   0   0   0   0   0   0   0   1 ]
-        //	    [0    0    0    0   0   0   1   0   0   0   0   0 ]
-        //	    [0    0    0    0   0   0   0   0   0   1   0   0 ]
-        //	    [0    0    0    0   1   0   0   0   0   0   0   0 ]
-        //	    [0    0    0    0   0   0   0   0   0   0   1   0 ]
-        //	    [0    0    0    0   0   1   0   0   0   0   0   0 ]
-        //	    [0    0    0    0   0   0   0   0   1   0   0   0 ]
+        // J =  [m11  m12  m13  bx  0   0   by  0   0   bz  0   0 ]
+        //      [m21  m22  m23  0   bx  0   0   by  0   0   bz  0 ]
+        //      [m31  m32  m33  0   0   bx  0   0   by  0   0   bz]
+        //      [0    0    0    1   0   0   0   0   0   0   0   0 ]
+        //      [0    0    0    0   0   0   0   1   0   0   0   0 ]
+        //      [0    0    0    0   0   0   0   0   0   0   0   1 ]
+        //      [0    0    0    0   0   0   1   0   0   0   0   0 ]
+        //      [0    0    0    0   0   0   0   0   0   1   0   0 ]
+        //      [0    0    0    0   1   0   0   0   0   0   0   0 ]
+        //      [0    0    0    0   0   0   0   0   0   0   1   0 ]
+        //      [0    0    0    0   0   1   0   0   0   0   0   0 ]
+        //      [0    0    0    0   0   0   0   0   1   0   0   0 ]
 
         // We know that the propagated covariance is J * Cov * J', hence:
         final var jacobian = new Matrix(GENERAL_UNKNOWNS, GENERAL_UNKNOWNS);
@@ -6109,9 +6113,9 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
         //     [by]
         //     [bz]
 
-        // M = [m11 	m12 	m13]
-        //     [0 		m22 	m23]
-        //     [0 	 	0 		m33]
+        // M = [m11     m12     m13]
+        //     [0       m22     m23]
+        //     [0       0       m33]
 
 
         final var gradientEstimator = new GradientEstimator(this::evaluateCommonAxis);
@@ -6220,9 +6224,9 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
         //     [by]
         //     [bz]
 
-        // M = [m11 	m12 	m13]
-        //     [0    	m22 	m23]
-        //     [0    	0    	m33]
+        // M = [m11     m12     m13]
+        //     [0       m22     m23]
+        //     [0       0       m33]
 
         // m21 = m31 = m32 = 0
 
@@ -6234,19 +6238,19 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
         //      [0          m22 - 1     m23    ]    [0      sy      myz]
         //      [0          0           m33 - 1]    [0      0       sz ]
 
-        // ba = [m11 * bx + m12 * by + m13 * bz] = 	[bax]
-        //      [           m22 * by + m23 * bz]	[bay]
-        //      [                      m33 * bz]	[baz]
+        // ba = [m11 * bx + m12 * by + m13 * bz] =  [bax]
+        //      [           m22 * by + m23 * bz]    [bay]
+        //      [                      m33 * bz]    [baz]
 
         // Defining the linear application:
         // F(b, M) = F(bx, by, bz, m11, m12, m22, m13, m23, m33)
         // as:
-        // [bax] = 	[m11 * bx + m12 * by + m13 * bz]
-        // [bay]	[m22 * by + m23 * bz]
-        // [baz]	[m33 * bz]
-        // [sx]		[m11 - 1]
-        // [sy]		[m22 - 1]
-        // [sz]		[m33 -1]
+        // [bax] =  [m11 * bx + m12 * by + m13 * bz]
+        // [bay]    [m22 * by + m23 * bz]
+        // [baz]    [m33 * bz]
+        // [sx]     [m11 - 1]
+        // [sy]     [m22 - 1]
+        // [sz]     [m33 -1]
         // [mxy]    [m12]
         // [mxz]    [m13]
         // [myx]    [0]
@@ -6255,18 +6259,18 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
         // [mzy]    [0]
 
         // Then the Jacobian of F(b, M) is:
-        // J = 	[m11  m12  m13  bx  by  0   bz  0   0 ]
-        //	    [0    m22  m23  0   0   by  0   bz  0 ]
-        //	    [0    0    m33  0   0   0   0   0   bz]
-        //	    [0    0    0    1   0   0   0   0   0 ]
-        //	    [0    0    0    0   0   1   0   0   0 ]
-        //	    [0    0    0    0   0   0   0   0   1 ]
-        //	    [0    0    0    0   1   0   0   0   0 ]
-        //	    [0    0    0    0   0   0   1   0   0 ]
-        //	    [0    0    0    0   0   0   0   0   0 ]
-        //	    [0    0    0    0   0   0   0   1   0 ]
-        //	    [0    0    0    0   0   0   0   0   0 ]
-        //	    [0    0    0    0   0   0   0   0   0 ]
+        // J =  [m11  m12  m13  bx  by  0   bz  0   0 ]
+        //      [0    m22  m23  0   0   by  0   bz  0 ]
+        //      [0    0    m33  0   0   0   0   0   bz]
+        //      [0    0    0    1   0   0   0   0   0 ]
+        //      [0    0    0    0   0   1   0   0   0 ]
+        //      [0    0    0    0   0   0   0   0   1 ]
+        //      [0    0    0    0   1   0   0   0   0 ]
+        //      [0    0    0    0   0   0   1   0   0 ]
+        //      [0    0    0    0   0   0   0   0   0 ]
+        //      [0    0    0    0   0   0   0   1   0 ]
+        //      [0    0    0    0   0   0   0   0   0 ]
+        //      [0    0    0    0   0   0   0   0   0 ]
 
         // We know that the propagated covariance is J * Cov * J', hence:
         final var jacobian = new Matrix(GENERAL_UNKNOWNS, COMMON_Z_AXIS_UNKNOWNS);
@@ -6307,11 +6311,11 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
     /**
      * Makes proper conversion of internal cross-coupling and bias matrices.
      *
-     * @param m internal cross-coupling matrix.
-     * @param b internal bias matrix.
+     * @param mParam internal cross-coupling matrix.
+     * @param bParam internal bias matrix.
      * @throws AlgebraException if a numerical instability occurs.
      */
-    private void setResult(final Matrix m, final Matrix b) throws AlgebraException {
+    private void setResult(final Matrix mParam, final Matrix bParam) throws AlgebraException {
         // Because:
         // M = I + Ma
         // b = M^-1*ba
@@ -6324,13 +6328,13 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
             estimatedBiases = new double[BodyKinematics.COMPONENTS];
         }
 
-        final var ba = m.multiplyAndReturnNew(b);
+        final var ba = mParam.multiplyAndReturnNew(bParam);
         ba.toArray(estimatedBiases);
 
         if (estimatedMa == null) {
-            estimatedMa = m;
+            estimatedMa = mParam;
         } else {
-            estimatedMa.copyFrom(m);
+            estimatedMa.copyFrom(mParam);
         }
 
         for (var i = 0; i < BodyKinematics.COMPONENTS; i++) {

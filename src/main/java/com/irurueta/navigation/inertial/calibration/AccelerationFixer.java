@@ -433,7 +433,7 @@ public class AccelerationFixer {
     }
 
     /**
-     * Sets x scaling factor
+     * Sets x scaling factor.
      *
      * @param sx x scaling factor.
      * @throws AlgebraException if provided value makes cross coupling matrix
@@ -713,21 +713,21 @@ public class AccelerationFixer {
      * force.
      * This method uses last provided bias and cross coupling errors.
      *
-     * @param measuredF measured specific force.
+     * @param measuredFParam measured specific force.
      * @param result    instance where restored true specific force will be stored.
      *                  Mut have length 3.
      * @throws AlgebraException         if there are numerical instabilities.
      * @throws IllegalArgumentException if length of provided result array is
      *                                  not 3.
      */
-    public void fix(final AccelerationTriad measuredF, final double[] result) throws AlgebraException {
+    public void fix(final AccelerationTriad measuredFParam, final double[] result) throws AlgebraException {
         if (result.length != Triad.COMPONENTS) {
             throw new IllegalArgumentException();
         }
 
-        final var measuredFx = convertAcceleration(measuredF.getValueX(), measuredF.getUnit());
-        final var measuredFy = convertAcceleration(measuredF.getValueY(), measuredF.getUnit());
-        final var measuredFz = convertAcceleration(measuredF.getValueZ(), measuredF.getUnit());
+        final var measuredFx = convertAcceleration(measuredFParam.getValueX(), measuredFParam.getUnit());
+        final var measuredFy = convertAcceleration(measuredFParam.getValueY(), measuredFParam.getUnit());
+        final var measuredFz = convertAcceleration(measuredFParam.getValueZ(), measuredFParam.getUnit());
         fix(measuredFx, measuredFy, measuredFz, result);
     }
 
@@ -737,18 +737,18 @@ public class AccelerationFixer {
      * force.
      * This method uses last provided bias and cross coupling errors.
      *
-     * @param measuredF measured specific force.
+     * @param measuredFParam measured specific force.
      * @param result    instance where restored true specific force will be stored.
      *                  Mut be 3x1.
      * @throws AlgebraException         if there are numerical instabilities.
      * @throws IllegalArgumentException if result matrix is not 3x1.
      */
-    public void fix(final AccelerationTriad measuredF, final Matrix result) throws AlgebraException {
+    public void fix(final AccelerationTriad measuredFParam, final Matrix result) throws AlgebraException {
         if (result.getRows() != Triad.COMPONENTS || result.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
-        fix(measuredF, result.getBuffer());
+        fix(measuredFParam, result.getBuffer());
     }
 
     /**
@@ -757,12 +757,12 @@ public class AccelerationFixer {
      * force.
      * This method uses last provided bias and cross coupling errors.
      *
-     * @param measuredF measured specific force.
+     * @param measuredFParam measured specific force.
      * @param result    instance where restored true specific force will be stored.
      * @throws AlgebraException if there are numerical instabilities.
      */
-    public void fix(final AccelerationTriad measuredF, final AccelerationTriad result) throws AlgebraException {
-        fix(measuredF, this.res);
+    public void fix(final AccelerationTriad measuredFParam, final AccelerationTriad result) throws AlgebraException {
+        fix(measuredFParam, this.res);
         result.setValueCoordinates(this.res);
         result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
@@ -796,7 +796,7 @@ public class AccelerationFixer {
      * force.
      * This method uses last provided bias and cross coupling errors.
      *
-     * @param measuredF measured specific force expressed in meters
+     * @param measuredFParam measured specific force expressed in meters
      *                  per squared second (m/s^2). Must have length 3.
      * @param result    instance where restored true specific force will be
      *                  stored. Must have length 3.
@@ -804,8 +804,8 @@ public class AccelerationFixer {
      * @throws IllegalArgumentException if any of the provided parameters does
      *                                  not have proper size.
      */
-    public void fix(final double[] measuredF, final double[] result) throws AlgebraException {
-        if (measuredF.length != BodyKinematics.COMPONENTS) {
+    public void fix(final double[] measuredFParam, final double[] result) throws AlgebraException {
+        if (measuredFParam.length != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
         if (result.length != BodyKinematics.COMPONENTS) {
@@ -824,7 +824,7 @@ public class AccelerationFixer {
         // Hence:
         // ftrue = (I + Ma)^-1 * (fmeas - ba)
         for (var i = 0; i < BodyKinematics.COMPONENTS; i++) {
-            diff.setElementAtIndex(i, measuredF[i] - bias.getElementAtIndex(i));
+            diff.setElementAtIndex(i, measuredFParam[i] - bias.getElementAtIndex(i));
         }
 
         tmp2.multiply(diff, tmp3);
@@ -838,7 +838,7 @@ public class AccelerationFixer {
      * force.
      * This method uses last provided bias and cross coupling errors.
      *
-     * @param measuredF measured specific force expressed in meters
+     * @param measuredFParam measured specific force expressed in meters
      *                  per squared second (m/s^2). Must be 3x1.
      * @param result    instance where restored true specific force will be
      *                  stored. Must have length 3.
@@ -846,13 +846,13 @@ public class AccelerationFixer {
      * @throws IllegalArgumentException if any of the provided parameters does
      *                                  not have proper size.
      */
-    public void fix(final Matrix measuredF, final double[] result) throws AlgebraException {
+    public void fix(final Matrix measuredFParam, final double[] result) throws AlgebraException {
 
-        if (measuredF.getRows() != BodyKinematics.COMPONENTS || measuredF.getColumns() != 1) {
+        if (measuredFParam.getRows() != BodyKinematics.COMPONENTS || measuredFParam.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
-        fix(measuredF.getBuffer(), result);
+        fix(measuredFParam.getBuffer(), result);
     }
 
     /**
@@ -861,7 +861,7 @@ public class AccelerationFixer {
      * force.
      * This method uses last provided bias and cross coupling errors.
      *
-     * @param measuredF measured specific force expressed in meters
+     * @param measuredFParam measured specific force expressed in meters
      *                  per squared second (m/s^2). Must be 3x1.
      * @param result    instance where restored true specific force will be
      *                  stored. Must be 3x1.
@@ -869,13 +869,13 @@ public class AccelerationFixer {
      * @throws IllegalArgumentException if any of the provided parameters does
      *                                  not have proper size.
      */
-    public void fix(final Matrix measuredF, final Matrix result) throws AlgebraException {
+    public void fix(final Matrix measuredFParam, final Matrix result) throws AlgebraException {
 
         if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
-        fix(measuredF, result.getBuffer());
+        fix(measuredFParam, result.getBuffer());
     }
 
     /**
@@ -945,12 +945,12 @@ public class AccelerationFixer {
      * introduced by the accelerometer model to restore the true specific
      * force.
      *
-     * @param measuredF           measured specific force expressed in meters
+     * @param measuredFParam           measured specific force expressed in meters
      *                            per squared second (m/s^2). Must have
      *                            length 3.
-     * @param bias                bias values expressed in meters per squared
+     * @param biasParam                bias values expressed in meters per squared
      *                            second (m/s^2). Must be 3x1.
-     * @param crossCouplingErrors cross coupling errors matrix. Must be 3x3.
+     * @param crossCouplingErrorsParam cross coupling errors matrix. Must be 3x3.
      * @param result              instance where restored true specific force
      *                            will be stored. Must have length 3.
      * @throws AlgebraException         if there are numerical instabilities.
@@ -958,16 +958,17 @@ public class AccelerationFixer {
      *                                  not have proper size.
      */
     public void fix(
-            final double[] measuredF, final Matrix bias, final Matrix crossCouplingErrors, final double[] result)
+            final double[] measuredFParam, final Matrix biasParam, final Matrix crossCouplingErrorsParam,
+            final double[] result)
             throws AlgebraException {
-        if (measuredF.length != BodyKinematics.COMPONENTS) {
+        if (measuredFParam.length != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
-        if (bias.getRows() != BodyKinematics.COMPONENTS || bias.getColumns() != 1) {
+        if (biasParam.getRows() != BodyKinematics.COMPONENTS || biasParam.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
-        if (crossCouplingErrors.getRows() != BodyKinematics.COMPONENTS
-                || crossCouplingErrors.getColumns() != BodyKinematics.COMPONENTS) {
+        if (crossCouplingErrorsParam.getRows() != BodyKinematics.COMPONENTS
+                || crossCouplingErrorsParam.getColumns() != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
         if (result.length != BodyKinematics.COMPONENTS) {
@@ -985,12 +986,12 @@ public class AccelerationFixer {
 
         // Hence:
         // ftrue = (I + Ma)^-1 * (fmeas - ba)
-        identity.add(crossCouplingErrors, tmp1);
+        identity.add(crossCouplingErrorsParam, tmp1);
 
         Utils.inverse(tmp1, tmp2);
 
         for (var i = 0; i < BodyKinematics.COMPONENTS; i++) {
-            diff.setElementAtIndex(i, measuredF[i] - bias.getElementAtIndex(i));
+            diff.setElementAtIndex(i, measuredFParam[i] - biasParam.getElementAtIndex(i));
         }
 
         tmp2.multiply(diff, tmp3);
@@ -1003,25 +1004,26 @@ public class AccelerationFixer {
      * introduced by the accelerometer model to restore the true specific
      * force.
      *
-     * @param measuredF           measured specific force expressed in meters
+     * @param measuredFParam           measured specific force expressed in meters
      *                            per squared second (m/s^2). Must be 3x1.
-     * @param bias                bias values expressed in meters per squared
+     * @param biasParam                bias values expressed in meters per squared
      *                            second (m/s^2). Must be 3x1.
-     * @param crossCouplingErrors cross coupling errors matrix. Must be 3x3.
+     * @param crossCouplingErrorsParam cross coupling errors matrix. Must be 3x3.
      * @param result              instance where restored true specific force
      *                            will be stored. Must have length 3.
      * @throws AlgebraException         if there are numerical instabilities.
      * @throws IllegalArgumentException if any of the provided parameters does
      *                                  not have proper size.
      */
-    public void fix(final Matrix measuredF, final Matrix bias, final Matrix crossCouplingErrors, final double[] result)
+    public void fix(final Matrix measuredFParam, final Matrix biasParam, final Matrix crossCouplingErrorsParam,
+            final double[] result)
             throws AlgebraException {
 
-        if (measuredF.getRows() != BodyKinematics.COMPONENTS || measuredF.getColumns() != 1) {
+        if (measuredFParam.getRows() != BodyKinematics.COMPONENTS || measuredFParam.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
-        fix(measuredF.getBuffer(), bias, crossCouplingErrors, result);
+        fix(measuredFParam.getBuffer(), biasParam, crossCouplingErrorsParam, result);
     }
 
     /**
@@ -1029,26 +1031,27 @@ public class AccelerationFixer {
      * introduced by the accelerometer model to restore the true specific
      * force.
      *
-     * @param measuredF           measured specific force expressed in meters
+     * @param measuredFParam           measured specific force expressed in meters
      *                            per squared second (m/s^2). Must have
      *                            length 3.
-     * @param bias                bias values expressed in meters per squared
+     * @param biasParam                bias values expressed in meters per squared
      *                            second (m/s^2). Must be 3x1.
-     * @param crossCouplingErrors cross coupling errors matrix. Must be 3x3.
+     * @param crossCouplingErrorsParam cross coupling errors matrix. Must be 3x3.
      * @param result              instance where restored true specific force
      *                            will be stored. Must be 3x1.
      * @throws AlgebraException         if there are numerical instabilities.
      * @throws IllegalArgumentException if any of the provided parameters does
      *                                  not have proper size.
      */
-    public void fix(final Matrix measuredF, final Matrix bias, final Matrix crossCouplingErrors, final Matrix result)
+    public void fix(final Matrix measuredFParam, final Matrix biasParam, final Matrix crossCouplingErrorsParam,
+            final Matrix result)
             throws AlgebraException {
 
         if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
-        fix(measuredF, bias, crossCouplingErrors, result.getBuffer());
+        fix(measuredFParam, biasParam, crossCouplingErrorsParam, result.getBuffer());
     }
 
     /**
@@ -1071,7 +1074,7 @@ public class AccelerationFixer {
      *                            meters per squared second (m/s^2).
      * @param biasZ               z-coordinate of bias expressed in
      *                            meters per squared second (m/s^2).
-     * @param crossCouplingErrors cross coupling errors matrix. Must be 3x3.
+     * @param crossCouplingErrorsParam cross coupling errors matrix. Must be 3x3.
      * @param result              instance where restored true specific force
      *                            will be stored. Must have length 3.
      * @throws AlgebraException         if there are numerical instabilities.
@@ -1080,7 +1083,7 @@ public class AccelerationFixer {
      */
     public void fix(
             final double measuredFx, final double measuredFy, final double measuredFz,
-            final double biasX, final double biasY, final double biasZ, final Matrix crossCouplingErrors,
+            final double biasX, final double biasY, final double biasZ, final Matrix crossCouplingErrorsParam,
             final double[] result) throws AlgebraException {
 
         measuredF[0] = measuredFx;
@@ -1091,7 +1094,7 @@ public class AccelerationFixer {
         bias.setElementAtIndex(1, biasY);
         bias.setElementAtIndex(2, biasZ);
 
-        fix(measuredF, bias, crossCouplingErrors, result);
+        fix(measuredF, bias, crossCouplingErrorsParam, result);
     }
 
     /**
@@ -1114,7 +1117,7 @@ public class AccelerationFixer {
      *                            meters per squared second (m/s^2).
      * @param biasZ               z-coordinate of bias expressed in
      *                            meters per squared second (m/s^2).
-     * @param crossCouplingErrors cross coupling errors matrix. Must be 3x3.
+     * @param crossCouplingErrorsParam cross coupling errors matrix. Must be 3x3.
      * @param result              instance where restored true specific force
      *                            will be stored. Must be 3x1.
      * @throws AlgebraException         if there are numerical instabilities.
@@ -1123,14 +1126,14 @@ public class AccelerationFixer {
      */
     public void fix(
             final double measuredFx, final double measuredFy, final double measuredFz,
-            final double biasX, final double biasY, final double biasZ, final Matrix crossCouplingErrors,
+            final double biasX, final double biasY, final double biasZ, final Matrix crossCouplingErrorsParam,
             final Matrix result) throws AlgebraException {
 
         if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
-        fix(measuredFx, measuredFy, measuredFz, biasX, biasY, biasZ, crossCouplingErrors, result.getBuffer());
+        fix(measuredFx, measuredFy, measuredFz, biasX, biasY, biasZ, crossCouplingErrorsParam, result.getBuffer());
     }
 
     /**
@@ -1240,13 +1243,13 @@ public class AccelerationFixer {
      * introduced by the accelerometer model to restore the true specific force.
      * This method uses last provided bias and cross coupling errors.
      *
-     * @param measuredF measured specific force.
+     * @param measuredFParam measured specific force.
      * @return restored true specific force.
      * @throws AlgebraException if there are numerical instabilities.
      */
-    public AccelerationTriad fixAndReturnNew(final AccelerationTriad measuredF) throws AlgebraException {
+    public AccelerationTriad fixAndReturnNew(final AccelerationTriad measuredFParam) throws AlgebraException {
         final var result = new AccelerationTriad();
-        fix(measuredF, result);
+        fix(measuredFParam, result);
         return result;
     }
 
@@ -1276,16 +1279,16 @@ public class AccelerationFixer {
      * force.
      * This method uses last provided bias and cross coupling errors.
      *
-     * @param measuredF measured specific force expressed in meters
+     * @param measuredFParam measured specific force expressed in meters
      *                  per squared second (m/s^2). Must have length 3.
      * @return restored true specific force.
      * @throws AlgebraException         if there are numerical instabilities.
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
-    public double[] fixAndReturnNew(final double[] measuredF) throws AlgebraException {
+    public double[] fixAndReturnNew(final double[] measuredFParam) throws AlgebraException {
 
         final var result = new double[BodyKinematics.COMPONENTS];
-        fix(measuredF, result);
+        fix(measuredFParam, result);
         return result;
     }
 
@@ -1295,17 +1298,17 @@ public class AccelerationFixer {
      * force.
      * This method uses last provided bias and cross coupling errors.
      *
-     * @param measuredF measured specific force expressed in meters
+     * @param measuredFParam measured specific force expressed in meters
      *                  per squared second (m/s^2). Must be 3x1.
      * @return restored true specific force.
      * @throws AlgebraException         if there are numerical instabilities.
      * @throws IllegalArgumentException if any of the provided parameters does
      *                                  not have proper size.
      */
-    public double[] fixAndReturnNew(final Matrix measuredF) throws AlgebraException {
+    public double[] fixAndReturnNew(final Matrix measuredFParam) throws AlgebraException {
 
         final var result = new double[BodyKinematics.COMPONENTS];
-        fix(measuredF, result);
+        fix(measuredFParam, result);
         return result;
     }
 
@@ -1315,17 +1318,17 @@ public class AccelerationFixer {
      * force.
      * This method uses last provided bias and cross coupling errors.
      *
-     * @param measuredF measured specific force expressed in meters
+     * @param measuredFParam measured specific force expressed in meters
      *                  per squared second (m/s^2). Must be 3x1.
      * @return restored true specific force.
      * @throws AlgebraException         if there are numerical instabilities.
      * @throws IllegalArgumentException if any of the provided parameters does
      *                                  not have proper size.
      */
-    public Matrix fixAndReturnNewMatrix(final Matrix measuredF) throws AlgebraException {
+    public Matrix fixAndReturnNewMatrix(final Matrix measuredFParam) throws AlgebraException {
 
         final var result = new Matrix(BodyKinematics.COMPONENTS, 1);
-        fix(measuredF, result);
+        fix(measuredFParam, result);
         return result;
     }
 
@@ -1384,12 +1387,12 @@ public class AccelerationFixer {
      * introduced by the accelerometer model to restore the true specific
      * force.
      *
-     * @param measuredF           measured specific force expressed in meters
+     * @param measuredFParam           measured specific force expressed in meters
      *                            per squared second (m/s^2). Must have
      *                            length 3.
-     * @param bias                bias values expressed in meters per squared
+     * @param biasParam                bias values expressed in meters per squared
      *                            second (m/s^2). Must be 3x1.
-     * @param crossCouplingErrors cross coupling errors matrix. Must be 3x3.
+     * @param crossCouplingErrorsParam cross coupling errors matrix. Must be 3x3.
      * @return restored true specific force expressed in meters per squared
      * second (m/s^2).
      * @throws AlgebraException         if there are numerical instabilities.
@@ -1397,10 +1400,11 @@ public class AccelerationFixer {
      *                                  not have proper size.
      */
     public double[] fixAndReturnNew(
-            final double[] measuredF, final Matrix bias, final Matrix crossCouplingErrors) throws AlgebraException {
+            final double[] measuredFParam, final Matrix biasParam,
+            final Matrix crossCouplingErrorsParam) throws AlgebraException {
 
         final var result = new double[BodyKinematics.COMPONENTS];
-        fix(measuredF, bias, crossCouplingErrors, result);
+        fix(measuredFParam, biasParam, crossCouplingErrorsParam, result);
         return result;
     }
 
@@ -1410,11 +1414,11 @@ public class AccelerationFixer {
      * introduced by the accelerometer model to restore the true specific
      * force.
      *
-     * @param measuredF           measured specific force expressed in meters
+     * @param measuredFParam           measured specific force expressed in meters
      *                            per squared second (m/s^2). Must be 3x1.
-     * @param bias                bias values expressed in meters per squared
+     * @param biasParam                bias values expressed in meters per squared
      *                            second (m/s^2). Must be 3x1.
-     * @param crossCouplingErrors cross coupling errors matrix. Must be 3x3.
+     * @param crossCouplingErrorsParam cross coupling errors matrix. Must be 3x3.
      * @return restored true specific force expressed in meters per squared
      * second (m/s^2).
      * @throws AlgebraException         if there are numerical instabilities.
@@ -1422,10 +1426,11 @@ public class AccelerationFixer {
      *                                  not have proper size.
      */
     public double[] fixAndReturnNew(
-            final Matrix measuredF, final Matrix bias, final Matrix crossCouplingErrors) throws AlgebraException {
+            final Matrix measuredFParam, final Matrix biasParam,
+            final Matrix crossCouplingErrorsParam) throws AlgebraException {
 
         final var result = new double[BodyKinematics.COMPONENTS];
-        fix(measuredF, bias, crossCouplingErrors, result);
+        fix(measuredFParam, biasParam, crossCouplingErrorsParam, result);
         return result;
     }
 
@@ -1435,12 +1440,12 @@ public class AccelerationFixer {
      * introduced by the accelerometer model to restore the true specific
      * force.
      *
-     * @param measuredF           measured specific force expressed in meters
+     * @param measuredFParam           measured specific force expressed in meters
      *                            per squared second (m/s^2). Must have
      *                            length 3.
-     * @param bias                bias values expressed in meters per squared
+     * @param biasParam                bias values expressed in meters per squared
      *                            second (m/s^2). Must be 3x1.
-     * @param crossCouplingErrors cross coupling errors matrix. Must be 3x3.
+     * @param crossCouplingErrorsParam cross coupling errors matrix. Must be 3x3.
      * @return restored true specific force expressed in meters per squared
      * second (m/s^2).
      * @throws AlgebraException         if there are numerical instabilities.
@@ -1448,10 +1453,11 @@ public class AccelerationFixer {
      *                                  not have proper size.
      */
     public Matrix fixAndReturnNewMatrix(
-            final Matrix measuredF, final Matrix bias, final Matrix crossCouplingErrors) throws AlgebraException {
+            final Matrix measuredFParam, final Matrix biasParam,
+            final Matrix crossCouplingErrorsParam) throws AlgebraException {
 
         final var result = new Matrix(BodyKinematics.COMPONENTS, 1);
-        fix(measuredF, bias, crossCouplingErrors, result);
+        fix(measuredFParam, biasParam, crossCouplingErrorsParam, result);
         return result;
     }
 
@@ -1475,7 +1481,7 @@ public class AccelerationFixer {
      *                            meters per squared second (m/s^2).
      * @param biasZ               z-coordinate of bias expressed in
      *                            meters per squared second (m/s^2).
-     * @param crossCouplingErrors cross coupling errors matrix. Must be 3x3.
+     * @param crossCouplingErrorsParam cross coupling errors matrix. Must be 3x3.
      * @return restored true specific force expressed in meters per squared
      * second (m/s^2).
      * @throws AlgebraException         if there are numerical instabilities.
@@ -1484,11 +1490,11 @@ public class AccelerationFixer {
      */
     public double[] fixAndReturnNew(
             final double measuredFx, final double measuredFy, final double measuredFz,
-            final double biasX, final double biasY, final double biasZ, final Matrix crossCouplingErrors)
+            final double biasX, final double biasY, final double biasZ, final Matrix crossCouplingErrorsParam)
             throws AlgebraException {
 
         final var result = new double[BodyKinematics.COMPONENTS];
-        fix(measuredFx, measuredFy, measuredFz, biasX, biasY, biasZ, crossCouplingErrors, result);
+        fix(measuredFx, measuredFy, measuredFz, biasX, biasY, biasZ, crossCouplingErrorsParam, result);
         return result;
     }
 
@@ -1513,7 +1519,7 @@ public class AccelerationFixer {
      *                            meters per squared second (m/s^2).
      * @param biasZ               z-coordinate of bias expressed in
      *                            meters per squared second (m/s^2).
-     * @param crossCouplingErrors cross coupling errors matrix. Must be 3x3.
+     * @param crossCouplingErrorsParam cross coupling errors matrix. Must be 3x3.
      * @return restored true specific force expressed in meters per squared
      * second (m/s^2).
      * @throws AlgebraException         if there are numerical instabilities.
@@ -1522,11 +1528,11 @@ public class AccelerationFixer {
      */
     public Matrix fixAndReturnNewMatrix(
             final double measuredFx, final double measuredFy, final double measuredFz,
-            final double biasX, final double biasY, final double biasZ, final Matrix crossCouplingErrors)
+            final double biasX, final double biasY, final double biasZ, final Matrix crossCouplingErrorsParam)
             throws AlgebraException {
 
         final var result = new Matrix(BodyKinematics.COMPONENTS, 1);
-        fix(measuredFx, measuredFy, measuredFz, biasX, biasY, biasZ, crossCouplingErrors, result);
+        fix(measuredFx, measuredFy, measuredFz, biasX, biasY, biasZ, crossCouplingErrorsParam, result);
         return result;
     }
 

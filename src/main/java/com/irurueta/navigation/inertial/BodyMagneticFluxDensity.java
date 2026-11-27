@@ -21,7 +21,6 @@ import com.irurueta.navigation.inertial.calibration.MagneticFluxDensityTriad;
 import com.irurueta.units.MagneticFluxDensity;
 import com.irurueta.units.MagneticFluxDensityConverter;
 import com.irurueta.units.MagneticFluxDensityUnit;
-
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
@@ -249,26 +248,27 @@ public class BodyMagneticFluxDensity implements Serializable, Cloneable {
     /**
      * Sets body coordinates of magnetic flux density expressed in Teslas (T).
      *
-     * @param bx x component of magnetic flux density.
-     * @param by y component of magnetic flux density.
-     * @param bz z component of magnetic flux density.
+     * @param bxParam x component of magnetic flux density.
+     * @param byParam y component of magnetic flux density.
+     * @param bzParam z component of magnetic flux density.
      */
-    public void setCoordinates(final double bx, final double by, final double bz) {
-        this.bx = bx;
-        this.by = by;
-        this.bz = bz;
+    public void setCoordinates(final double bxParam, final double byParam, final double bzParam) {
+        bx = bxParam;
+        by = byParam;
+        bz = bzParam;
     }
 
     /**
      * Sets body coordinates of magnetic flux density.
      *
-     * @param bx x component of magnetic flux density.
-     * @param by y component of magnetic flux density.
-     * @param bz z component of magnetic flux density.
+     * @param bxParam x component of magnetic flux density.
+     * @param byParam y component of magnetic flux density.
+     * @param bzParam z component of magnetic flux density.
      */
     public void setCoordinates(
-            final MagneticFluxDensity bx, final MagneticFluxDensity by, final MagneticFluxDensity bz) {
-        setCoordinates(convertMagneticFluxDensity(bx), convertMagneticFluxDensity(by), convertMagneticFluxDensity(bz));
+            final MagneticFluxDensity bxParam, final MagneticFluxDensity byParam, final MagneticFluxDensity bzParam) {
+        setCoordinates(convertMagneticFluxDensity(bxParam), convertMagneticFluxDensity(byParam),
+                convertMagneticFluxDensity(bzParam));
     }
 
     /**
@@ -495,9 +495,7 @@ public class BodyMagneticFluxDensity implements Serializable, Cloneable {
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
-        final var result = (BodyMagneticFluxDensity) super.clone();
-        copyTo(result);
-        return result;
+        return super.clone();
     }
 
     /**

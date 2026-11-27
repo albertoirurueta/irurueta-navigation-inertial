@@ -66,6 +66,11 @@ public class INSLooselyCoupledKalmanEpochEstimator {
     private static final int POS_AND_VEL_COMPONENTS = 6;
 
     /**
+     * Factor applied to gravity when propagating the state (-2 / geocentric radius).
+     */
+    private static final double GRAVITY_PROPAGATION_FACTOR = -2.0;
+
+    /**
      * Constructor.
      * Prevents instantiation of helper class.
      */
@@ -679,13 +684,13 @@ public class INSLooselyCoupledKalmanEpochEstimator {
 
         final var previousPositionNorm = Math.sqrt(prevX * prevX + prevY * prevY + prevZ * prevZ);
 
-        final var estRebeOld = new Matrix(com.irurueta.navigation.frames.ECEFPosition.COMPONENTS, 1);
+        final var estRebeOld = new Matrix(ECEFPosition.COMPONENTS, 1);
         estRebeOld.setElementAtIndex(0, prevX);
         estRebeOld.setElementAtIndex(1, prevY);
         estRebeOld.setElementAtIndex(2, prevZ);
 
         final var g = gravity.asMatrix();
-        g.multiplyByScalar(-2.0 * propagationInterval / geocentricRadius);
+        g.multiplyByScalar(GRAVITY_PROPAGATION_FACTOR * propagationInterval / geocentricRadius);
 
         final var estRebeOldTrans = estRebeOld.transposeAndReturnNew();
         estRebeOldTrans.multiplyByScalar(1.0 / previousPositionNorm);
@@ -694,7 +699,7 @@ public class INSLooselyCoupledKalmanEpochEstimator {
 
         phiMatrix.setSubmatrix(3, 6, 5, 8, tmp1);
 
-        for (var i = 0; i < com.irurueta.navigation.frames.ECEFPosition.COMPONENTS; i++) {
+        for (var i = 0; i < ECEFPosition.COMPONENTS; i++) {
             phiMatrix.setElementAt(6 + i, 3 + i, propagationInterval);
         }
 
@@ -760,13 +765,13 @@ public class INSLooselyCoupledKalmanEpochEstimator {
 
         final var posMeasSD = config.getPositionNoiseSD();
         final var posMeasSD2 = posMeasSD * posMeasSD;
-        for (var i = 0; i < com.irurueta.navigation.frames.ECEFPosition.COMPONENTS; i++) {
+        for (var i = 0; i < ECEFPosition.COMPONENTS; i++) {
             r.setElementAt(i, i, posMeasSD2);
         }
 
         final var velMeasSD = config.getVelocityNoiseSD();
         final var velMeasSD2 = velMeasSD * velMeasSD;
-        for (var i = com.irurueta.navigation.frames.ECEFPosition.COMPONENTS; i < POS_AND_VEL_COMPONENTS; i++) {
+        for (var i = ECEFPosition.COMPONENTS; i < POS_AND_VEL_COMPONENTS; i++) {
             r.setElementAt(i, i, velMeasSD2);
         }
 

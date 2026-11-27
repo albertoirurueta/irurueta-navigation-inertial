@@ -1143,20 +1143,20 @@ public class BodyKinematicsFixer {
      * cross coupling errors.
      *
      * @param measuredSpecificForce measured specific force to be fixed.
-     * @param measuredAngularSpeed  measured angular speed to be fixed.
+     * @param measuredAngularSpeedParam  measured angular speed to be fixed.
      * @param fixedSpecificForce    instance where fixed specific force will be
      *                              stored.
-     * @param fixedAngularSpeed     instance where fixed angular speed will be
+     * @param fixedAngularSpeedParam     instance where fixed angular speed will be
      *                              stored.
      * @throws AlgebraException if there are numerical instabilities.
      */
     public void fix(
-            final AccelerationTriad measuredSpecificForce, final AngularSpeedTriad measuredAngularSpeed,
-            final AccelerationTriad fixedSpecificForce, final AngularSpeedTriad fixedAngularSpeed)
+            final AccelerationTriad measuredSpecificForce, final AngularSpeedTriad measuredAngularSpeedParam,
+            final AccelerationTriad fixedSpecificForce, final AngularSpeedTriad fixedAngularSpeedParam)
             throws AlgebraException {
 
         accelerationFixer.fix(measuredSpecificForce, fixedSpecificForce);
-        angularRateFixer.fix(measuredAngularSpeed, fixedSpecificForce, fixedAngularSpeed);
+        angularRateFixer.fix(measuredAngularSpeedParam, fixedSpecificForce, fixedAngularSpeedParam);
     }
 
     /**
@@ -1169,16 +1169,16 @@ public class BodyKinematicsFixer {
      * @param measuredKinematics measured body kinematics to be fixed.
      * @param fixedSpecificForce instance where fixed specific force will be
      *                           stored.
-     * @param fixedAngularSpeed  instance where fixed angular speed will be
+     * @param fixedAngularSpeedParam  instance where fixed angular speed will be
      *                           stored.
      * @throws AlgebraException if there are numerical instabilities.
      */
     public void fix(final BodyKinematics measuredKinematics, final AccelerationTriad fixedSpecificForce,
-                    final AngularSpeedTriad fixedAngularSpeed) throws AlgebraException {
+                    final AngularSpeedTriad fixedAngularSpeedParam) throws AlgebraException {
         measuredKinematics.getSpecificForceTriad(measuredAcceleration);
         measuredKinematics.getAngularRateTriad(measuredAngularSpeed);
 
-        fix(measuredAcceleration, measuredAngularSpeed, fixedSpecificForce, fixedAngularSpeed);
+        fix(measuredAcceleration, measuredAngularSpeed, fixedSpecificForce, fixedAngularSpeedParam);
     }
 
     /**
@@ -1189,14 +1189,14 @@ public class BodyKinematicsFixer {
      * cross coupling errors.
      *
      * @param measuredSpecificForce measured specific force to be fixed.
-     * @param measuredAngularSpeed  measured angular speed to be fixed.
+     * @param measuredAngularSpeedParam  measured angular speed to be fixed.
      * @param result                instance where fixed body kinematics will be
      *                              stored.
      * @throws AlgebraException if there are numerical instabilities.
      */
-    public void fix(final AccelerationTriad measuredSpecificForce, final AngularSpeedTriad measuredAngularSpeed,
+    public void fix(final AccelerationTriad measuredSpecificForce, final AngularSpeedTriad measuredAngularSpeedParam,
                     final BodyKinematics result) throws AlgebraException {
-        fix(measuredSpecificForce, measuredAngularSpeed, fixedAcceleration, fixedAngularSpeed);
+        fix(measuredSpecificForce, measuredAngularSpeedParam, fixedAcceleration, fixedAngularSpeed);
 
         result.setSpecificForceTriad(fixedAcceleration);
         result.setAngularRateTriad(fixedAngularSpeed);
@@ -1227,15 +1227,15 @@ public class BodyKinematicsFixer {
      * cross coupling errors.
      *
      * @param measuredSpecificForce measured specific force to be fixed.
-     * @param measuredAngularSpeed  measured angular speed to be fixed.
+     * @param measuredAngularSpeedParam  measured angular speed to be fixed.
      * @return restored true body kinematics.
      * @throws AlgebraException if there are numerical instabilities.
      */
     public BodyKinematics fixAndReturnNew(
-            final AccelerationTriad measuredSpecificForce, final AngularSpeedTriad measuredAngularSpeed)
+            final AccelerationTriad measuredSpecificForce, final AngularSpeedTriad measuredAngularSpeedParam)
             throws AlgebraException {
         final var result = new BodyKinematics();
-        fix(measuredSpecificForce, measuredAngularSpeed, result);
+        fix(measuredSpecificForce, measuredAngularSpeedParam, result);
         return result;
     }
 }

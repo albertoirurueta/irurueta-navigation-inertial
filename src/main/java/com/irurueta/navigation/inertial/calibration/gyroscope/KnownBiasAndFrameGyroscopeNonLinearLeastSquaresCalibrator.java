@@ -32,7 +32,6 @@ import com.irurueta.statistics.MaxIterationsExceededException;
 import com.irurueta.units.AngularSpeed;
 import com.irurueta.units.AngularSpeedConverter;
 import com.irurueta.units.AngularSpeedUnit;
-
 import java.util.Collection;
 
 /**
@@ -2358,73 +2357,76 @@ public class KnownBiasAndFrameGyroscopeNonLinearLeastSquaresCalibrator implement
     /**
      * Sets initial scaling factors.
      *
-     * @param initialSx initial x scaling factor.
-     * @param initialSy initial y scaling factor.
-     * @param initialSz initial z scaling factor.
+     * @param initialSxParam initial x scaling factor.
+     * @param initialSyParam initial y scaling factor.
+     * @param initialSzParam initial z scaling factor.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
     public void setInitialScalingFactors(
-            final double initialSx, final double initialSy, final double initialSz) throws LockedException {
+            final double initialSxParam, final double initialSyParam,
+            final double initialSzParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        this.initialSx = initialSx;
-        this.initialSy = initialSy;
-        this.initialSz = initialSz;
+        initialSx = initialSxParam;
+        initialSy = initialSyParam;
+        initialSz = initialSzParam;
     }
 
     /**
      * Sets initial cross coupling errors.
      *
-     * @param initialMxy initial x-y cross coupling error.
-     * @param initialMxz initial x-z cross coupling error.
-     * @param initialMyx initial y-x cross coupling error.
-     * @param initialMyz initial y-z cross coupling error.
-     * @param initialMzx initial z-x cross coupling error.
-     * @param initialMzy initial z-y cross coupling error.
+     * @param initialMxyParam initial x-y cross coupling error.
+     * @param initialMxzParam initial x-z cross coupling error.
+     * @param initialMyxParam initial y-x cross coupling error.
+     * @param initialMyzParam initial y-z cross coupling error.
+     * @param initialMzxParam initial z-x cross coupling error.
+     * @param initialMzyParam initial z-y cross coupling error.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
     public void setInitialCrossCouplingErrors(
-            final double initialMxy, final double initialMxz,
-            final double initialMyx, final double initialMyz,
-            final double initialMzx, final double initialMzy) throws LockedException {
+            final double initialMxyParam, final double initialMxzParam,
+            final double initialMyxParam, final double initialMyzParam,
+            final double initialMzxParam, final double initialMzyParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        this.initialMxy = initialMxy;
-        this.initialMxz = initialMxz;
-        this.initialMyx = initialMyx;
-        this.initialMyz = initialMyz;
-        this.initialMzx = initialMzx;
-        this.initialMzy = initialMzy;
+        initialMxy = initialMxyParam;
+        initialMxz = initialMxzParam;
+        initialMyx = initialMyxParam;
+        initialMyz = initialMyzParam;
+        initialMzx = initialMzxParam;
+        initialMzy = initialMzyParam;
     }
 
     /**
      * Sets initial scaling factors and cross coupling errors.
      *
-     * @param initialSx  initial x scaling factor.
-     * @param initialSy  initial y scaling factor.
-     * @param initialSz  initial z scaling factor.
-     * @param initialMxy initial x-y cross coupling error.
-     * @param initialMxz initial x-z cross coupling error.
-     * @param initialMyx initial y-x cross coupling error.
-     * @param initialMyz initial y-z cross coupling error.
-     * @param initialMzx initial z-x cross coupling error.
-     * @param initialMzy initial z-y cross coupling error.
+     * @param initialSxParam  initial x scaling factor.
+     * @param initialSyParam  initial y scaling factor.
+     * @param initialSzParam  initial z scaling factor.
+     * @param initialMxyParam initial x-y cross coupling error.
+     * @param initialMxzParam initial x-z cross coupling error.
+     * @param initialMyxParam initial y-x cross coupling error.
+     * @param initialMyzParam initial y-z cross coupling error.
+     * @param initialMzxParam initial z-x cross coupling error.
+     * @param initialMzyParam initial z-y cross coupling error.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
     public void setInitialScalingFactorsAndCrossCouplingErrors(
-            final double initialSx, final double initialSy, final double initialSz,
-            final double initialMxy, final double initialMxz, final double initialMyx,
-            final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
+            final double initialSxParam, final double initialSyParam, final double initialSzParam,
+            final double initialMxyParam, final double initialMxzParam, final double initialMyxParam,
+            final double initialMyzParam, final double initialMzxParam,
+            final double initialMzyParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        setInitialScalingFactors(initialSx, initialSy, initialSz);
-        setInitialCrossCouplingErrors(initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
+        setInitialScalingFactors(initialSxParam, initialSyParam, initialSzParam);
+        setInitialCrossCouplingErrors(initialMxyParam, initialMxzParam, initialMyxParam, initialMyzParam,
+                initialMzxParam, initialMzyParam);
     }
 
     /**
@@ -2873,40 +2875,42 @@ public class KnownBiasAndFrameGyroscopeNonLinearLeastSquaresCalibrator implement
      * Sets known gyroscope bias coordinates expressed in radians per second
      * (rad/s).
      *
-     * @param biasX x coordinate of gyroscope bias.
-     * @param biasY y coordinate of gyroscope bias.
-     * @param biasZ z coordinate of gyroscope bias.
+     * @param biasXParam x coordinate of gyroscope bias.
+     * @param biasYParam y coordinate of gyroscope bias.
+     * @param biasZParam z coordinate of gyroscope bias.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setBiasCoordinates(final double biasX, final double biasY, final double biasZ) throws LockedException {
+    public void setBiasCoordinates(final double biasXParam, final double biasYParam,
+            final double biasZParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
 
-        this.biasX = biasX;
-        this.biasY = biasY;
-        this.biasZ = biasZ;
+        biasX = biasXParam;
+        biasY = biasYParam;
+        biasZ = biasZParam;
     }
 
     /**
      * Sets known gyroscope bias coordinates.
      *
-     * @param biasX x coordinate of gyroscope bias.
-     * @param biasY y coordinate of gyroscope bias.
-     * @param biasZ z coordinate of gyroscope bias.
+     * @param biasXParam x coordinate of gyroscope bias.
+     * @param biasYParam y coordinate of gyroscope bias.
+     * @param biasZParam z coordinate of gyroscope bias.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
     public void setBiasCoordinates(
-            final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ) throws LockedException {
+            final AngularSpeed biasXParam, final AngularSpeed biasYParam,
+            final AngularSpeed biasZParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
 
-        this.biasX = convertAngularSpeed(biasX);
-        this.biasY = convertAngularSpeed(biasY);
-        this.biasZ = convertAngularSpeed(biasZ);
+        biasX = convertAngularSpeed(biasXParam);
+        biasY = convertAngularSpeed(biasYParam);
+        biasZ = convertAngularSpeed(biasZParam);
     }
 
     /**
@@ -3391,21 +3395,25 @@ public class KnownBiasAndFrameGyroscopeNonLinearLeastSquaresCalibrator implement
         // Ωmeasy - Ωtruey - by = sy * Ωtruey + myz * Ωtruez + g21 * ftruex * g22 * ftruey + g23 * ftruez
         // Ωmeasz - Ωtruez - bz = sz * Ωtruez + g31 * ftruex + g32 * ftruey + g33 * ftruez
 
-        // [Ωtruex  0       0       Ωtruey  Ωtruez  0       ftruex  ftruey  ftruez  0       0       0       0       0       0     ][sx ] =  [Ωmeasx - Ωtruex - bx]
-        // [0       Ωtruey  0       0       0       Ωtruez  0       0       0       ftruex  ftruey  ftruez  0       0       0     ][sy ]    [Ωmeasy - Ωtruey - by]
-        // [0       0       Ωtruez  0       0       0       0       0       0       0       0       0       ftruex  ftruey  ftruez][sz ]    [Ωmeasz - Ωtruez - bz]
-        //                                                                                                                         [mxy]
-        //                                                                                                                         [mxz]
-        //                                                                                                                         [myz]
-        //                                                                                                                         [g11]
-        //                                                                                                                         [g12]
-        //                                                                                                                         [g13]
-        //                                                                                                                         [g21]
-        //                                                                                                                         [g22]
-        //                                                                                                                         [g23]
-        //                                                                                                                         [g31]
-        //                                                                                                                         [g32]
-        //                                                                                                                         [g33]
+        // [Ωtruex  0       0       Ωtruey  Ωtruez  0       ...
+        // [0       Ωtruey  0       0       0       Ωtruez  ...
+        // [0       0       Ωtruez  0       0       0       ...
+        //
+        //  ... ftruex  ftruey  ftruez  0       0       0       0       0       0     ][sx ] =  [Ωmeasx - Ωtruex - bx]
+        //  ... 0       0       0       ftruex  ftruey  ftruez  0       0       0     ][sy ]    [Ωmeasy - Ωtruey - by]
+        //  ... 0       0       0       0       0       0       ftruex  ftruey  ftruez][sz ]    [Ωmeasz - Ωtruez - bz]
+        //                                                                             [mxy]
+        //                                                                             [mxz]
+        //                                                                             [myz]
+        //                                                                             [g11]
+        //                                                                             [g12]
+        //                                                                             [g13]
+        //                                                                             [g21]
+        //                                                                             [g22]
+        //                                                                             [g23]
+        //                                                                             [g31]
+        //                                                                             [g32]
+        //                                                                             [g33]
 
         fitter.setFunctionEvaluator(new LevenbergMarquardtMultiVariateFunctionEvaluator() {
             @Override
@@ -3444,7 +3452,8 @@ public class KnownBiasAndFrameGyroscopeNonLinearLeastSquaresCalibrator implement
                     final int i, final double[] point, final double[] result, final double[] params,
                     final Matrix jacobian) {
                 // We know that:
-                // Ωmeasx = bx + Ωtruex + sx * Ωtruex + mxy * Ωtruey + mxz * Ωtruez + g11 * ftruex + g12 * ftruey + g13 * ftruez
+                // Ωmeasx = bx + Ωtruex + sx * Ωtruex + mxy * Ωtruey + mxz * Ωtruez + g11 * ftruex + g12 * ftruey
+                //          + g13 * ftruez
                 // Ωmeasy = by + Ωtruey + sy * Ωtruey + myz * Ωtruez + g21 * ftruex * g22 * ftruey + g23 * ftruez
                 // Ωmeasz = bz + Ωtruez + sz * Ωtruez + g31 * ftruex + g32 * ftruey + g33 * ftruez
 
@@ -3739,24 +3748,28 @@ public class KnownBiasAndFrameGyroscopeNonLinearLeastSquaresCalibrator implement
         // Ωmeasy - Ωtruey - by = myx * Ωtruex + sy * Ωtruey + myz * Ωtruez + g21 * ftruex * g22 * ftruey + g23 * ftruez
         // Ωmeasz - Ωtruez - bz = mzx * Ωtruex + mzy * Ωtruey + sz * Ωtruez + g31 * ftruex + g32 * ftruey + g33 * ftruez
 
-        // [Ωtruex  0       0       Ωtruey  Ωtruez  0       0       0       0       ftruex  ftruey  ftruez  0       0       0       0       0       0     ][sx ] =  [Ωmeasx - Ωtruex - bx]
-        // [0       Ωtruey  0       0       0       Ωtruex  Ωtruez  0       0       0       0       0       ftruex  ftruey  ftruez  0       0       0     ][sy ]    [Ωmeasy - Ωtruey - by]
-        // [0       0       Ωtruez  0       0       0       0       Ωtruex  Ωtruey  0       0       0       0       0       0       ftruex  ftruey  ftruez][sz ]    [Ωmeasz - Ωtruez - bz]
-        //                                                                                                                                                 [mxy]
-        //                                                                                                                                                 [mxz]
-        //                                                                                                                                                 [myx]
-        //                                                                                                                                                 [myz]
-        //                                                                                                                                                 [mzx]
-        //                                                                                                                                                 [mzy]
-        //                                                                                                                                                 [g11]
-        //                                                                                                                                                 [g12]
-        //                                                                                                                                                 [g13]
-        //                                                                                                                                                 [g21]
-        //                                                                                                                                                 [g22]
-        //                                                                                                                                                 [g23]
-        //                                                                                                                                                 [g31]
-        //                                                                                                                                                 [g32]
-        //                                                                                                                                                 [g33]
+        // [Ωtruex  0       0       Ωtruey  Ωtruez  0       0       0       0       ...
+        // [0       Ωtruey  0       0       0       Ωtruex  Ωtruez  0       0       ...
+        // [0       0       Ωtruez  0       0       0       0       Ωtruex  Ωtruey  ...
+        //
+        //  ... ftruex  ftruey  ftruez  0       0       0       0       0       0     ][sx ] =  [Ωmeasx - Ωtruex - bx]
+        //  ... 0       0       0       ftruex  ftruey  ftruez  0       0       0     ][sy ]    [Ωmeasy - Ωtruey - by]
+        //  ... 0       0       0       0       0       0       ftruex  ftruey  ftruez][sz ]    [Ωmeasz - Ωtruez - bz]
+        //                                                                             [mxy]
+        //                                                                             [mxz]
+        //                                                                             [myx]
+        //                                                                             [myz]
+        //                                                                             [mzx]
+        //                                                                             [mzy]
+        //                                                                             [g11]
+        //                                                                             [g12]
+        //                                                                             [g13]
+        //                                                                             [g21]
+        //                                                                             [g22]
+        //                                                                             [g23]
+        //                                                                             [g31]
+        //                                                                             [g32]
+        //                                                                             [g33]
 
         fitter.setFunctionEvaluator(new LevenbergMarquardtMultiVariateFunctionEvaluator() {
             @Override
@@ -3797,9 +3810,12 @@ public class KnownBiasAndFrameGyroscopeNonLinearLeastSquaresCalibrator implement
             public void evaluate(final int i, final double[] point, final double[] result, final double[] params,
                                  final Matrix jacobian) {
                 // We know that:
-                // Ωmeasx = bx + Ωtruex + sx * Ωtruex + mxy * Ωtruey + mxz * Ωtruez + g11 * ftruex + g12 * ftruey + g13 * ftruez
-                // Ωmeasy = by + myx * Ωtruex + Ωtruey + sy * Ωtruey + myz * Ωtruez + g21 * ftruex * g22 * ftruey + g23 * ftruez
-                // Ωmeasz = bz + mzx * Ωtruex + mzy * Ωtruey + Ωtruez + sz * Ωtruez + g31 * ftruex + g32 * ftruey + g33 * ftruez
+                // Ωmeasx = bx + Ωtruex + sx * Ωtruex + mxy * Ωtruey + mxz * Ωtruez + g11 * ftruex + g12 * ftruey
+                //          + g13 * ftruez
+                // Ωmeasy = by + myx * Ωtruex + Ωtruey + sy * Ωtruey + myz * Ωtruez + g21 * ftruex * g22 * ftruey
+                //          + g23 * ftruez
+                // Ωmeasz = bz + mzx * Ωtruex + mzy * Ωtruey + Ωtruez + sz * Ωtruez + g31 * ftruex + g32 * ftruey
+                //          + g33 * ftruez
 
                 // Hence, the derivatives respect the parameters sx, sy,
                 // sz, mxy, mxz, myx, myz, mzx, mzy, g11, g12, g13, g21, g22, g23,

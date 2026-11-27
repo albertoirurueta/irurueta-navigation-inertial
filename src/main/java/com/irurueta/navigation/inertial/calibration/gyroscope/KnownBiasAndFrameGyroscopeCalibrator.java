@@ -1,8 +1,23 @@
+/*
+ * Copyright (C) 2021 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.irurueta.navigation.inertial.calibration.gyroscope;
 
 import com.irurueta.navigation.LockedException;
 import com.irurueta.navigation.inertial.calibration.FrameBodyKinematics;
-
 import java.util.Collection;
 
 /**
@@ -50,7 +65,7 @@ public interface KnownBiasAndFrameGyroscopeCalibrator<T extends FrameBodyKinemat
      *                     frames (positions, orientations and velocities).
      * @throws LockedException if calibrator is currently running.
      */
-    void setMeasurements(final Collection<? extends T> measurements) throws LockedException;
+    void setMeasurements(Collection<? extends T> measurements) throws LockedException;
 
     /**
      * Gets listener to handle events raised by this calibrator.
@@ -65,5 +80,5 @@ public interface KnownBiasAndFrameGyroscopeCalibrator<T extends FrameBodyKinemat
      * @param listener listener to handle events raised by this calibrator.
      * @throws LockedException if calibrator is currently running.
      */
-    void setListener(final L listener) throws LockedException;
+    void setListener(L listener) throws LockedException;
 }

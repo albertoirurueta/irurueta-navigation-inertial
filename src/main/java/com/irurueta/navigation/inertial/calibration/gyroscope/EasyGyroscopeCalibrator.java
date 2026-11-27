@@ -48,7 +48,6 @@ import com.irurueta.units.AccelerationUnit;
 import com.irurueta.units.AngularSpeed;
 import com.irurueta.units.AngularSpeedConverter;
 import com.irurueta.units.AngularSpeedUnit;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -529,7 +528,7 @@ public class EasyGyroscopeCalibrator implements
     private Matrix g;
 
     /**
-     * Internally holds angular rate bias due to g-dependent cross biases
+     * Internally holds angular rate bias due to g-dependent cross biases.
      */
     private Matrix tmp;
 
@@ -1313,45 +1312,46 @@ public class EasyGyroscopeCalibrator implements
      * force and find cross biases introduced by the accelerometer.
      * This is expressed in meters per squared second (m/s^2).
      *
-     * @param accelerometerBiasX x-coordinate of accelerometer bias.
-     * @param accelerometerBiasY y-coordinate of accelerometer bias.
-     * @param accelerometerBiasZ z-coordinate of accelerometer bias.
+     * @param accelerometerBiasXParam x-coordinate of accelerometer bias.
+     * @param accelerometerBiasYParam y-coordinate of accelerometer bias.
+     * @param accelerometerBiasZParam z-coordinate of accelerometer bias.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
     public void setAccelerometerBias(
-            final double accelerometerBiasX, final double accelerometerBiasY, final double accelerometerBiasZ)
+            final double accelerometerBiasXParam, final double accelerometerBiasYParam,
+            final double accelerometerBiasZParam)
             throws LockedException {
         if (running) {
             throw new LockedException();
         }
 
-        this.accelerometerBiasX = accelerometerBiasX;
-        this.accelerometerBiasY = accelerometerBiasY;
-        this.accelerometerBiasZ = accelerometerBiasZ;
+        accelerometerBiasX = accelerometerBiasXParam;
+        accelerometerBiasY = accelerometerBiasYParam;
+        accelerometerBiasZ = accelerometerBiasZParam;
     }
 
     /**
      * Sets known accelerometer bias to be used to fix measured specific
      * force and find cross biases introduced by the accelerometer.
      *
-     * @param accelerometerBiasX x-coordinate of accelerometer bias.
-     * @param accelerometerBiasY y-coordinate of accelerometer bias.
-     * @param accelerometerBiasZ z-coordinate of accelerometer bias.
+     * @param accelerometerBiasXParam x-coordinate of accelerometer bias.
+     * @param accelerometerBiasYParam y-coordinate of accelerometer bias.
+     * @param accelerometerBiasZParam z-coordinate of accelerometer bias.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
     public void setAccelerometerBias(
-            final Acceleration accelerometerBiasX,
-            final Acceleration accelerometerBiasY,
-            final Acceleration accelerometerBiasZ) throws LockedException {
+            final Acceleration accelerometerBiasXParam,
+            final Acceleration accelerometerBiasYParam,
+            final Acceleration accelerometerBiasZParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
 
-        this.accelerometerBiasX = convertAcceleration(accelerometerBiasX);
-        this.accelerometerBiasY = convertAcceleration(accelerometerBiasY);
-        this.accelerometerBiasZ = convertAcceleration(accelerometerBiasZ);
+        accelerometerBiasX = convertAcceleration(accelerometerBiasXParam);
+        accelerometerBiasY = convertAcceleration(accelerometerBiasYParam);
+        accelerometerBiasZ = convertAcceleration(accelerometerBiasZParam);
     }
 
     /**
@@ -1729,21 +1729,21 @@ public class EasyGyroscopeCalibrator implements
      * specific force and find cross biases introduced by the
      * accelerometer.
      *
-     * @param accelerometerSx known accelerometer x scaling factor.
-     * @param accelerometerSy known accelerometer y scaling factor.
-     * @param accelerometerSz known accelerometer z scaling factor.
+     * @param accelerometerSxParam known accelerometer x scaling factor.
+     * @param accelerometerSyParam known accelerometer y scaling factor.
+     * @param accelerometerSzParam known accelerometer z scaling factor.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
     public void setAccelerometerScalingFactors(
-            final double accelerometerSx, final double accelerometerSy, final double accelerometerSz)
+            final double accelerometerSxParam, final double accelerometerSyParam, final double accelerometerSzParam)
             throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        this.accelerometerSx = accelerometerSx;
-        this.accelerometerSy = accelerometerSy;
-        this.accelerometerSz = accelerometerSz;
+        accelerometerSx = accelerometerSxParam;
+        accelerometerSy = accelerometerSyParam;
+        accelerometerSz = accelerometerSzParam;
     }
 
     /**
@@ -1751,34 +1751,34 @@ public class EasyGyroscopeCalibrator implements
      * measured specific force and find cross biases introduced by the
      * accelerometer.
      *
-     * @param accelerometerMxy known accelerometer x-y cross coupling
+     * @param accelerometerMxyParam known accelerometer x-y cross coupling
      *                         error.
-     * @param accelerometerMxz known accelerometer x-z cross coupling
+     * @param accelerometerMxzParam known accelerometer x-z cross coupling
      *                         error.
-     * @param accelerometerMyx known accelerometer y-x cross coupling
+     * @param accelerometerMyxParam known accelerometer y-x cross coupling
      *                         error.
-     * @param accelerometerMyz known accelerometer y-z cross coupling
+     * @param accelerometerMyzParam known accelerometer y-z cross coupling
      *                         error.
-     * @param accelerometerMzx known accelerometer z-x cross coupling
+     * @param accelerometerMzxParam known accelerometer z-x cross coupling
      *                         error.
-     * @param accelerometerMzy known accelerometer z-y cross coupling
+     * @param accelerometerMzyParam known accelerometer z-y cross coupling
      *                         error.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
     public void setAccelerometerCrossCouplingErrors(
-            final double accelerometerMxy, final double accelerometerMxz,
-            final double accelerometerMyx, final double accelerometerMyz,
-            final double accelerometerMzx, final double accelerometerMzy) throws LockedException {
+            final double accelerometerMxyParam, final double accelerometerMxzParam,
+            final double accelerometerMyxParam, final double accelerometerMyzParam,
+            final double accelerometerMzxParam, final double accelerometerMzyParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        this.accelerometerMxy = accelerometerMxy;
-        this.accelerometerMxz = accelerometerMxz;
-        this.accelerometerMyx = accelerometerMyx;
-        this.accelerometerMyz = accelerometerMyz;
-        this.accelerometerMzx = accelerometerMzx;
-        this.accelerometerMzy = accelerometerMzy;
+        accelerometerMxy = accelerometerMxyParam;
+        accelerometerMxz = accelerometerMxzParam;
+        accelerometerMyx = accelerometerMyxParam;
+        accelerometerMyz = accelerometerMyzParam;
+        accelerometerMzx = accelerometerMzxParam;
+        accelerometerMzy = accelerometerMzyParam;
     }
 
     /**
@@ -1786,36 +1786,36 @@ public class EasyGyroscopeCalibrator implements
      * to be used to fix measured specific force and find cross biases
      * introduced by the accelerometer.
      *
-     * @param accelerometerSx  known accelerometer x scaling factor.
-     * @param accelerometerSy  known accelerometer y scaling factor.
-     * @param accelerometerSz  known accelerometer z scaling factor.
-     * @param accelerometerMxy known accelerometer x-y cross coupling
+     * @param accelerometerSxParam  known accelerometer x scaling factor.
+     * @param accelerometerSyParam  known accelerometer y scaling factor.
+     * @param accelerometerSzParam  known accelerometer z scaling factor.
+     * @param accelerometerMxyParam known accelerometer x-y cross coupling
      *                         error.
-     * @param accelerometerMxz known accelerometer x-z cross coupling
+     * @param accelerometerMxzParam known accelerometer x-z cross coupling
      *                         error.
-     * @param accelerometerMyx known accelerometer y-x cross coupling
+     * @param accelerometerMyxParam known accelerometer y-x cross coupling
      *                         error.
-     * @param accelerometerMyz known accelerometer y-z cross coupling
+     * @param accelerometerMyzParam known accelerometer y-z cross coupling
      *                         error.
-     * @param accelerometerMzx known accelerometer z-x cross coupling
+     * @param accelerometerMzxParam known accelerometer z-x cross coupling
      *                         error.
-     * @param accelerometerMzy known accelerometer z-y cross coupling
+     * @param accelerometerMzyParam known accelerometer z-y cross coupling
      *                         error.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
     public void setAccelerometerScalingFactorsAndCrossCouplingErrors(
-            final double accelerometerSx, final double accelerometerSy,
-            final double accelerometerSz, final double accelerometerMxy,
-            final double accelerometerMxz, final double accelerometerMyx,
-            final double accelerometerMyz, final double accelerometerMzx,
-            final double accelerometerMzy) throws LockedException {
+            final double accelerometerSxParam, final double accelerometerSyParam,
+            final double accelerometerSzParam, final double accelerometerMxyParam,
+            final double accelerometerMxzParam, final double accelerometerMyxParam,
+            final double accelerometerMyzParam, final double accelerometerMzxParam,
+            final double accelerometerMzyParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        setAccelerometerScalingFactors(accelerometerSx, accelerometerSy, accelerometerSz);
-        setAccelerometerCrossCouplingErrors(accelerometerMxy, accelerometerMxz, accelerometerMyx,
-                accelerometerMyz, accelerometerMzx, accelerometerMzy);
+        setAccelerometerScalingFactors(accelerometerSxParam, accelerometerSyParam, accelerometerSzParam);
+        setAccelerometerCrossCouplingErrors(accelerometerMxyParam, accelerometerMxzParam, accelerometerMyxParam,
+                accelerometerMyzParam, accelerometerMzxParam, accelerometerMzyParam);
     }
 
     /**
@@ -2082,38 +2082,40 @@ public class EasyGyroscopeCalibrator implements
      * Sets initial bias coordinates of gyroscope used to find a solution
      * expressed in radians per second (rad/s).
      *
-     * @param initialBiasX initial x-coordinate of gyroscope bias.
-     * @param initialBiasY initial y-coordinate of gyroscope bias.
-     * @param initialBiasZ initial z-coordinate of gyroscope bias.
+     * @param initialBiasXParam initial x-coordinate of gyroscope bias.
+     * @param initialBiasYParam initial y-coordinate of gyroscope bias.
+     * @param initialBiasZParam initial z-coordinate of gyroscope bias.
      * @throws LockedException if calibrator is currently running.
      */
     public void setInitialBias(
-            final double initialBiasX, final double initialBiasY, final double initialBiasZ) throws LockedException {
+            final double initialBiasXParam, final double initialBiasYParam,
+            final double initialBiasZParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        this.initialBiasX = initialBiasX;
-        this.initialBiasY = initialBiasY;
-        this.initialBiasZ = initialBiasZ;
+        initialBiasX = initialBiasXParam;
+        initialBiasY = initialBiasYParam;
+        initialBiasZ = initialBiasZParam;
     }
 
     /**
      * Sets initial bias coordinates of gyroscope used to find a solution.
      *
-     * @param initialBiasX initial x-coordinate of gyroscope bias.
-     * @param initialBiasY initial y-coordinate of gyroscope bias.
-     * @param initialBiasZ initial z-coordinate of gyroscope bias.
+     * @param initialBiasXParam initial x-coordinate of gyroscope bias.
+     * @param initialBiasYParam initial y-coordinate of gyroscope bias.
+     * @param initialBiasZParam initial z-coordinate of gyroscope bias.
      * @throws LockedException if calibrator is currently running.
      */
     public void setInitialBias(
-            final AngularSpeed initialBiasX, final AngularSpeed initialBiasY, final AngularSpeed initialBiasZ)
+            final AngularSpeed initialBiasXParam, final AngularSpeed initialBiasYParam,
+            final AngularSpeed initialBiasZParam)
             throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        this.initialBiasX = convertAngularSpeed(initialBiasX);
-        this.initialBiasY = convertAngularSpeed(initialBiasY);
-        this.initialBiasZ = convertAngularSpeed(initialBiasZ);
+        initialBiasX = convertAngularSpeed(initialBiasXParam);
+        initialBiasY = convertAngularSpeed(initialBiasYParam);
+        initialBiasZ = convertAngularSpeed(initialBiasZParam);
     }
 
     /**
@@ -2335,73 +2337,77 @@ public class EasyGyroscopeCalibrator implements
     /**
      * Sets initial scaling factors of gyroscope.
      *
-     * @param initialSx initial x scaling factor of gyroscope.
-     * @param initialSy initial y scaling factor of gyroscope.
-     * @param initialSz initial z scaling factor of gyroscope.
+     * @param initialSxParam initial x scaling factor of gyroscope.
+     * @param initialSyParam initial y scaling factor of gyroscope.
+     * @param initialSzParam initial z scaling factor of gyroscope.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
     public void setInitialScalingFactors(
-            final double initialSx, final double initialSy, final double initialSz) throws LockedException {
+            final double initialSxParam, final double initialSyParam,
+            final double initialSzParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        this.initialSx = initialSx;
-        this.initialSy = initialSy;
-        this.initialSz = initialSz;
+        initialSx = initialSxParam;
+        initialSy = initialSyParam;
+        initialSz = initialSzParam;
     }
 
     /**
      * Sets initial cross coupling errors of gyroscope.
      *
-     * @param initialMxy initial x-y cross coupling error of gyroscope.
-     * @param initialMxz initial x-z cross coupling error of gyroscope.
-     * @param initialMyx initial y-x cross coupling error of gyroscope.
-     * @param initialMyz initial y-z cross coupling error of gyroscope.
-     * @param initialMzx initial z-x cross coupling error of gyroscope.
-     * @param initialMzy initial z-y cross coupling error of gyroscope.
+     * @param initialMxyParam initial x-y cross coupling error of gyroscope.
+     * @param initialMxzParam initial x-z cross coupling error of gyroscope.
+     * @param initialMyxParam initial y-x cross coupling error of gyroscope.
+     * @param initialMyzParam initial y-z cross coupling error of gyroscope.
+     * @param initialMzxParam initial z-x cross coupling error of gyroscope.
+     * @param initialMzyParam initial z-y cross coupling error of gyroscope.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
     public void setInitialCrossCouplingErrors(
-            final double initialMxy, final double initialMxz, final double initialMyx,
-            final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
+            final double initialMxyParam, final double initialMxzParam, final double initialMyxParam,
+            final double initialMyzParam, final double initialMzxParam,
+            final double initialMzyParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        this.initialMxy = initialMxy;
-        this.initialMxz = initialMxz;
-        this.initialMyx = initialMyx;
-        this.initialMyz = initialMyz;
-        this.initialMzx = initialMzx;
-        this.initialMzy = initialMzy;
+        initialMxy = initialMxyParam;
+        initialMxz = initialMxzParam;
+        initialMyx = initialMyxParam;
+        initialMyz = initialMyzParam;
+        initialMzx = initialMzxParam;
+        initialMzy = initialMzyParam;
     }
 
     /**
      * Sets initial scaling factors and cross coupling errors of
      * gyroscope.
      *
-     * @param initialSx  initial x scaling factor of gyroscope.
-     * @param initialSy  initial y scaling factor of gyroscope.
-     * @param initialSz  initial z scaling factor of gyroscope.
-     * @param initialMxy initial x-y cross coupling error of gyroscope.
-     * @param initialMxz initial x-z cross coupling error of gyroscope.
-     * @param initialMyx initial y-x cross coupling error of gyroscope.
-     * @param initialMyz initial y-z cross coupling error of gyroscope.
-     * @param initialMzx initial z-x cross coupling error of gyroscope.
-     * @param initialMzy initial z-y cross coupling error of gyroscope.
+     * @param initialSxParam  initial x scaling factor of gyroscope.
+     * @param initialSyParam  initial y scaling factor of gyroscope.
+     * @param initialSzParam  initial z scaling factor of gyroscope.
+     * @param initialMxyParam initial x-y cross coupling error of gyroscope.
+     * @param initialMxzParam initial x-z cross coupling error of gyroscope.
+     * @param initialMyxParam initial y-x cross coupling error of gyroscope.
+     * @param initialMyzParam initial y-z cross coupling error of gyroscope.
+     * @param initialMzxParam initial z-x cross coupling error of gyroscope.
+     * @param initialMzyParam initial z-y cross coupling error of gyroscope.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
     public void setInitialScalingFactorsAndCrossCouplingErrors(
-            final double initialSx, final double initialSy, final double initialSz,
-            final double initialMxy, final double initialMxz, final double initialMyx,
-            final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
+            final double initialSxParam, final double initialSyParam, final double initialSzParam,
+            final double initialMxyParam, final double initialMxzParam, final double initialMyxParam,
+            final double initialMyzParam, final double initialMzxParam,
+            final double initialMzyParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        setInitialScalingFactors(initialSx, initialSy, initialSz);
-        setInitialCrossCouplingErrors(initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
+        setInitialScalingFactors(initialSxParam, initialSyParam, initialSzParam);
+        setInitialCrossCouplingErrors(initialMxyParam, initialMxzParam, initialMyxParam, initialMyzParam,
+                initialMzxParam, initialMzyParam);
     }
 
     /**
@@ -2783,17 +2789,18 @@ public class EasyGyroscopeCalibrator implements
      * or not.
      * When enabled, this adds 9 variables from Gg matrix.
      *
-     * @param estimateGDependentCrossBiases true if G-dependent cross
+     * @param estimateGDependentCrossBiasesParam true if G-dependent cross
      *                                      biases will be estimated,
      *                                      false otherwise.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setGDependentCrossBiasesEstimated(final boolean estimateGDependentCrossBiases) throws LockedException {
+    public void setGDependentCrossBiasesEstimated(
+            final boolean estimateGDependentCrossBiasesParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
 
-        this.estimateGDependentCrossBiases = estimateGDependentCrossBiases;
+        estimateGDependentCrossBiases = estimateGDependentCrossBiasesParam;
     }
 
     /**
@@ -3685,8 +3692,8 @@ public class EasyGyroscopeCalibrator implements
         final var invInitialM = Utils.inverse(initialM);
         final var initialBg = getInitialBiasAsMatrix();
         final var initialB = invInitialM.multiplyAndReturnNew(initialBg);
-        final var initialGg = getInitialGg();
-        final var initialG = invInitialM.multiplyAndReturnNew(initialGg);
+        final var initialGgLocal = getInitialGg();
+        final var initialG = invInitialM.multiplyAndReturnNew(initialGgLocal);
 
         fitter.setFunctionEvaluator(new LevenbergMarquardtMultiVariateFunctionEvaluator() {
             @Override
@@ -3706,16 +3713,16 @@ public class EasyGyroscopeCalibrator implements
                 final var initial = new double[COMMON_Z_AXIS_UNKNOWNS_AND_CROSS_BIASES];
 
                 // biases b
-                for (var i = 0; i < BodyKinematics.COMPONENTS; i++) {
-                    initial[i] = initialB.getElementAtIndex(i);
+                for (var iParam = 0; iParam < BodyKinematics.COMPONENTS; iParam++) {
+                    initial[iParam] = initialB.getElementAtIndex(iParam);
                 }
 
                 // upper diagonal cross coupling errors M
                 var k = BodyKinematics.COMPONENTS;
                 for (var j = 0; j < BodyKinematics.COMPONENTS; j++) {
-                    for (var i = 0; i < BodyKinematics.COMPONENTS; i++) {
-                        if (i <= j) {
-                            initial[k] = initialM.getElementAt(i, j);
+                    for (var iParam = 0; iParam < BodyKinematics.COMPONENTS; iParam++) {
+                        if (iParam <= j) {
+                            initial[k] = initialM.getElementAt(iParam, j);
                             k++;
                         }
                     }
@@ -3723,8 +3730,8 @@ public class EasyGyroscopeCalibrator implements
 
                 // g-dependent cross biases G
                 final var num = BodyKinematics.COMPONENTS * BodyKinematics.COMPONENTS;
-                for (int i = 0, j = k; i < num; i++, j++) {
-                    initial[j] = initialG.getElementAtIndex(i);
+                for (int iParam = 0, j = k; iParam < num; iParam++, j++) {
+                    initial[j] = initialG.getElementAtIndex(iParam);
                 }
 
                 return initial;
@@ -3732,17 +3739,17 @@ public class EasyGyroscopeCalibrator implements
 
             @Override
             public void evaluate(
-                    final int i, final double[] point, final double[] result, final double[] params,
+                    final int iParam, final double[] pointParam, final double[] result, final double[] params,
                     final Matrix jacobian) throws EvaluationException {
-                EasyGyroscopeCalibrator.this.i = i;
+                EasyGyroscopeCalibrator.this.i = iParam;
 
                 // point contains the fixed gravity versor before the current
                 // sequence
-                EasyGyroscopeCalibrator.this.point = point;
+                EasyGyroscopeCalibrator.this.point = pointParam;
 
                 jacobianEstimator.jacobian(params, jacobian);
 
-                evaluateCommonAxisWithGDependentCrossBiases(i, params, result);
+                evaluateCommonAxisWithGDependentCrossBiases(iParam, params, result);
             }
         });
 
@@ -3777,38 +3784,38 @@ public class EasyGyroscopeCalibrator implements
         final var g23 = result[16];
         final var g33 = result[17];
 
-        final var b = new Matrix(BodyKinematics.COMPONENTS, 1);
-        b.setElementAtIndex(0, bx);
-        b.setElementAtIndex(1, by);
-        b.setElementAtIndex(2, bz);
+        final var bLocal = new Matrix(BodyKinematics.COMPONENTS, 1);
+        bLocal.setElementAtIndex(0, bx);
+        bLocal.setElementAtIndex(1, by);
+        bLocal.setElementAtIndex(2, bz);
 
-        final var m = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
-        m.setElementAtIndex(0, m11);
-        m.setElementAtIndex(1, 0.0);
-        m.setElementAtIndex(2, 0.0);
+        final var mLocal = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
+        mLocal.setElementAtIndex(0, m11);
+        mLocal.setElementAtIndex(1, 0.0);
+        mLocal.setElementAtIndex(2, 0.0);
 
-        m.setElementAtIndex(3, m12);
-        m.setElementAtIndex(4, m22);
-        m.setElementAtIndex(5, 0.0);
+        mLocal.setElementAtIndex(3, m12);
+        mLocal.setElementAtIndex(4, m22);
+        mLocal.setElementAtIndex(5, 0.0);
 
-        m.setElementAtIndex(6, m13);
-        m.setElementAtIndex(7, m23);
-        m.setElementAtIndex(8, m33);
+        mLocal.setElementAtIndex(6, m13);
+        mLocal.setElementAtIndex(7, m23);
+        mLocal.setElementAtIndex(8, m33);
 
-        final var g = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
-        g.setElementAtIndex(0, g11);
-        g.setElementAtIndex(1, g21);
-        g.setElementAtIndex(2, g31);
+        final var gLocal = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
+        gLocal.setElementAtIndex(0, g11);
+        gLocal.setElementAtIndex(1, g21);
+        gLocal.setElementAtIndex(2, g31);
 
-        g.setElementAtIndex(3, g12);
-        g.setElementAtIndex(4, g22);
-        g.setElementAtIndex(5, g32);
+        gLocal.setElementAtIndex(3, g12);
+        gLocal.setElementAtIndex(4, g22);
+        gLocal.setElementAtIndex(5, g32);
 
-        g.setElementAtIndex(6, g13);
-        g.setElementAtIndex(7, g23);
-        g.setElementAtIndex(8, g33);
+        gLocal.setElementAtIndex(6, g13);
+        gLocal.setElementAtIndex(7, g23);
+        gLocal.setElementAtIndex(8, g33);
 
-        setResult(m, b, g);
+        setResult(mLocal, bLocal, gLocal);
 
         // at this point covariance is expressed in terms of b, M and G, and must
         // be expressed in terms of bg, Mg and Gg.
@@ -3834,7 +3841,7 @@ public class EasyGyroscopeCalibrator implements
         //      [0    0    m33][bz]   [                      m33 * bz]   [bgz]
 
         // Mg = [sx  mxy  mxz] = [m11 - 1    m12         m13     ]
-        //      [myx sy	  myz]   [0          m22 - 1     m23     ]
+        //      [myx sy   myz]   [0          m22 - 1     m23     ]
         //      [mzx mzy  sz ]   [0          0           m33 - 1 ]
 
         // Gg = [gg11  gg12  gg13] = [m11  m12  m13][g11  g12  g13]
@@ -4008,8 +4015,8 @@ public class EasyGyroscopeCalibrator implements
         final var invInitialM = Utils.inverse(initialM);
         final var initialBg = getInitialBiasAsMatrix();
         final var initialB = invInitialM.multiplyAndReturnNew(initialBg);
-        final var initialGg = getInitialGg();
-        final var initialG = invInitialM.multiplyAndReturnNew(initialGg);
+        final var initialGgLocal = getInitialGg();
+        final var initialG = invInitialM.multiplyAndReturnNew(initialGgLocal);
 
         fitter.setFunctionEvaluator(new LevenbergMarquardtMultiVariateFunctionEvaluator() {
             @Override
@@ -4029,19 +4036,19 @@ public class EasyGyroscopeCalibrator implements
                 final var initial = new double[GENERAL_UNKNOWNS_AND_CROSS_BIASES];
 
                 // biases b
-                for (var i = 0; i < BodyKinematics.COMPONENTS; i++) {
-                    initial[i] = initialB.getElementAtIndex(i);
+                for (var iParam = 0; iParam < BodyKinematics.COMPONENTS; iParam++) {
+                    initial[iParam] = initialB.getElementAtIndex(iParam);
                 }
 
                 // cross coupling errors M
                 final var num = BodyKinematics.COMPONENTS * BodyKinematics.COMPONENTS;
-                for (int i = 0, j = BodyKinematics.COMPONENTS; i < num; i++, j++) {
-                    initial[j] = initialM.getElementAtIndex(i);
+                for (int iParam = 0, j = BodyKinematics.COMPONENTS; iParam < num; iParam++, j++) {
+                    initial[j] = initialM.getElementAtIndex(iParam);
                 }
 
                 // g-dependent cross biases G
-                for (int i = 0, j = BodyKinematics.COMPONENTS + num; i < num; i++, j++) {
-                    initial[j] = initialG.getElementAtIndex(i);
+                for (int iParam = 0, j = BodyKinematics.COMPONENTS + num; iParam < num; iParam++, j++) {
+                    initial[j] = initialG.getElementAtIndex(iParam);
                 }
 
                 return initial;
@@ -4049,17 +4056,17 @@ public class EasyGyroscopeCalibrator implements
 
             @Override
             public void evaluate(
-                    final int i, final double[] point, final double[] result, final double[] params,
+                    final int iParam, final double[] pointParam, final double[] result, final double[] params,
                     final Matrix jacobian) throws EvaluationException {
-                EasyGyroscopeCalibrator.this.i = i;
+                EasyGyroscopeCalibrator.this.i = iParam;
 
                 // point contains the fixed gravity versor before the current
                 // sequence
-                EasyGyroscopeCalibrator.this.point = point;
+                EasyGyroscopeCalibrator.this.point = pointParam;
 
                 jacobianEstimator.jacobian(params, jacobian);
 
-                evaluateGeneralWithGDependentCrossBiases(i, params, result);
+                evaluateGeneralWithGDependentCrossBiases(iParam, params, result);
             }
         });
 
@@ -4097,38 +4104,38 @@ public class EasyGyroscopeCalibrator implements
         final var g23 = result[19];
         final var g33 = result[20];
 
-        final var b = new Matrix(BodyKinematics.COMPONENTS, 1);
-        b.setElementAtIndex(0, bx);
-        b.setElementAtIndex(1, by);
-        b.setElementAtIndex(2, bz);
+        final var bLocal = new Matrix(BodyKinematics.COMPONENTS, 1);
+        bLocal.setElementAtIndex(0, bx);
+        bLocal.setElementAtIndex(1, by);
+        bLocal.setElementAtIndex(2, bz);
 
-        final var m = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
-        m.setElementAtIndex(0, m11);
-        m.setElementAtIndex(1, m21);
-        m.setElementAtIndex(2, m31);
+        final var mLocal = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
+        mLocal.setElementAtIndex(0, m11);
+        mLocal.setElementAtIndex(1, m21);
+        mLocal.setElementAtIndex(2, m31);
 
-        m.setElementAtIndex(3, m12);
-        m.setElementAtIndex(4, m22);
-        m.setElementAtIndex(5, m32);
+        mLocal.setElementAtIndex(3, m12);
+        mLocal.setElementAtIndex(4, m22);
+        mLocal.setElementAtIndex(5, m32);
 
-        m.setElementAtIndex(6, m13);
-        m.setElementAtIndex(7, m23);
-        m.setElementAtIndex(8, m33);
+        mLocal.setElementAtIndex(6, m13);
+        mLocal.setElementAtIndex(7, m23);
+        mLocal.setElementAtIndex(8, m33);
 
-        final var g = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
-        g.setElementAtIndex(0, g11);
-        g.setElementAtIndex(1, g21);
-        g.setElementAtIndex(2, g31);
+        final var gLocal = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
+        gLocal.setElementAtIndex(0, g11);
+        gLocal.setElementAtIndex(1, g21);
+        gLocal.setElementAtIndex(2, g31);
 
-        g.setElementAtIndex(3, g12);
-        g.setElementAtIndex(4, g22);
-        g.setElementAtIndex(5, g32);
+        gLocal.setElementAtIndex(3, g12);
+        gLocal.setElementAtIndex(4, g22);
+        gLocal.setElementAtIndex(5, g32);
 
-        g.setElementAtIndex(6, g13);
-        g.setElementAtIndex(7, g23);
-        g.setElementAtIndex(8, g33);
+        gLocal.setElementAtIndex(6, g13);
+        gLocal.setElementAtIndex(7, g23);
+        gLocal.setElementAtIndex(8, g33);
 
-        setResult(m, b, g);
+        setResult(mLocal, bLocal, gLocal);
 
         // at this point covariance is expressed in terms of b, M and G, and must
         // be expressed in terms of bg, Mg and Gg.
@@ -4154,15 +4161,16 @@ public class EasyGyroscopeCalibrator implements
         //      [m31  m32  m33][bz]   [m31 * bx + m32 * by + m33 * bz]   [bgz]
 
         // Mg = [sx  mxy  mxz] = [m11 - 1    m12         m13     ]
-        //      [myx	sy	 myz]   [m21        m22 - 1     m23     ]
-        //      [mzx	mzy  sz ]   [m31        m32         m33 - 1 ]
+        //      [myx    sy   myz]   [m21        m22 - 1     m23     ]
+        //      [mzx    mzy  sz ]   [m31        m32         m33 - 1 ]
 
         // Gg = [gg11  gg12  gg13] = [m11  m12  m13][g11  g12  g13]
         //      [gg21  gg22  gg23]   [m21  m22  m23][g21  g22  g23]
         //      [gg31  gg32  gg33]   [m31  m32  m33][g31  g32  g33]
 
         // Defining the linear application:
-        // F(b, M, G) = F(bx, by, bz, m11, m21, m31, m12, m22, m32, m13, m23, m33, g11, g21, g31, g12, g22, g32, g13, g23, g33)
+        // F(b, M, G) = F(bx, by, bz, m11, m21, m31, m12, m22, m32, m13, m23, m33, g11, g21, g31, g12, g22, g32,
+        //                g13, g23, g33)
         // as:
         // [bgx] =  [m11 * bx + m12 * by + m13 * bz]
         // [bgy]    [m21 * bx + m22 * by + m23 * bz]
@@ -4243,7 +4251,7 @@ public class EasyGyroscopeCalibrator implements
 
         jacobian.setElementAt(9, 10, 1.0);
         jacobian.setElementAt(10, 5, 1.0);
-        jacobian.setElementAt(11, 8, 1.9);
+        jacobian.setElementAt(11, 8, 1.0);
 
         jacobian.setElementAt(12, 3, g11);
         jacobian.setElementAt(12, 6, g21);
@@ -4390,16 +4398,16 @@ public class EasyGyroscopeCalibrator implements
                 final var initial = new double[COMMON_Z_AXIS_UNKNOWNS];
 
                 // biases b
-                for (var i = 0; i < BodyKinematics.COMPONENTS; i++) {
-                    initial[i] = initialB.getElementAtIndex(i);
+                for (var iParam = 0; iParam < BodyKinematics.COMPONENTS; iParam++) {
+                    initial[iParam] = initialB.getElementAtIndex(iParam);
                 }
 
                 // upper diagonal cross coupling errors M
                 var k = BodyKinematics.COMPONENTS;
                 for (var j = 0; j < BodyKinematics.COMPONENTS; j++) {
-                    for (var i = 0; i < BodyKinematics.COMPONENTS; i++) {
-                        if (i <= j) {
-                            initial[k] = initialM.getElementAt(i, j);
+                    for (var iParam = 0; iParam < BodyKinematics.COMPONENTS; iParam++) {
+                        if (iParam <= j) {
+                            initial[k] = initialM.getElementAt(iParam, j);
                             k++;
                         }
                     }
@@ -4410,17 +4418,17 @@ public class EasyGyroscopeCalibrator implements
 
             @Override
             public void evaluate(
-                    final int i, final double[] point, final double[] result, final double[] params,
+                    final int iParam, final double[] pointParam, final double[] result, final double[] params,
                     final Matrix jacobian) throws EvaluationException {
-                EasyGyroscopeCalibrator.this.i = i;
+                EasyGyroscopeCalibrator.this.i = iParam;
 
                 // point contains the fixed gravity versor before the current
                 // sequence
-                EasyGyroscopeCalibrator.this.point = point;
+                EasyGyroscopeCalibrator.this.point = pointParam;
 
                 jacobianEstimator.jacobian(params, jacobian);
 
-                evaluateCommonAxis(i, params, result);
+                evaluateCommonAxis(iParam, params, result);
             }
         });
 
@@ -4443,25 +4451,25 @@ public class EasyGyroscopeCalibrator implements
         final var m23 = result[7];
         final var m33 = result[8];
 
-        final var b = new Matrix(BodyKinematics.COMPONENTS, 1);
-        b.setElementAtIndex(0, bx);
-        b.setElementAtIndex(1, by);
-        b.setElementAtIndex(2, bz);
+        final var bLocal = new Matrix(BodyKinematics.COMPONENTS, 1);
+        bLocal.setElementAtIndex(0, bx);
+        bLocal.setElementAtIndex(1, by);
+        bLocal.setElementAtIndex(2, bz);
 
-        final var m = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
-        m.setElementAtIndex(0, m11);
-        m.setElementAtIndex(1, 0.0);
-        m.setElementAtIndex(2, 0.0);
+        final var mLocal = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
+        mLocal.setElementAtIndex(0, m11);
+        mLocal.setElementAtIndex(1, 0.0);
+        mLocal.setElementAtIndex(2, 0.0);
 
-        m.setElementAtIndex(3, m12);
-        m.setElementAtIndex(4, m22);
-        m.setElementAtIndex(5, 0.0);
+        mLocal.setElementAtIndex(3, m12);
+        mLocal.setElementAtIndex(4, m22);
+        mLocal.setElementAtIndex(5, 0.0);
 
-        m.setElementAtIndex(6, m13);
-        m.setElementAtIndex(7, m23);
-        m.setElementAtIndex(8, m33);
+        mLocal.setElementAtIndex(6, m13);
+        mLocal.setElementAtIndex(7, m23);
+        mLocal.setElementAtIndex(8, m33);
 
-        setResult(m, b);
+        setResult(mLocal, bLocal);
 
         // at this point covariance is expressed in terms of b, M and G, and must
         // be expressed in terms of bg, Mg and Gg.
@@ -4487,7 +4495,7 @@ public class EasyGyroscopeCalibrator implements
         //      [0    0    m33][bz]   [                      m33 * bz]   [bgz]
 
         // Mg = [sx  mxy  mxz] = [m11 - 1    m12         m13     ]
-        //      [myx sy	  myz]   [0          m22 - 1     m23     ]
+        //      [myx sy   myz]   [0          m22 - 1     m23     ]
         //      [mzx mzy  sz ]   [0          0           m33 - 1 ]
 
         // Gg = [gg11  gg12  gg13] = 0
@@ -4640,14 +4648,14 @@ public class EasyGyroscopeCalibrator implements
                 final var initial = new double[GENERAL_UNKNOWNS];
 
                 // biases b
-                for (var i = 0; i < BodyKinematics.COMPONENTS; i++) {
-                    initial[i] = initialB.getElementAtIndex(i);
+                for (var iParam = 0; iParam < BodyKinematics.COMPONENTS; iParam++) {
+                    initial[iParam] = initialB.getElementAtIndex(iParam);
                 }
 
                 // cross coupling errors M
                 final var num = BodyKinematics.COMPONENTS * BodyKinematics.COMPONENTS;
-                for (int i = 0, j = BodyKinematics.COMPONENTS; i < num; i++, j++) {
-                    initial[j] = initialM.getElementAtIndex(i);
+                for (int iParam = 0, j = BodyKinematics.COMPONENTS; iParam < num; iParam++, j++) {
+                    initial[j] = initialM.getElementAtIndex(iParam);
                 }
 
                 return initial;
@@ -4655,17 +4663,17 @@ public class EasyGyroscopeCalibrator implements
 
             @Override
             public void evaluate(
-                    final int i, final double[] point, final double[] result, final double[] params,
+                    final int iParam, final double[] pointParam, final double[] result, final double[] params,
                     final Matrix jacobian) throws EvaluationException {
-                EasyGyroscopeCalibrator.this.i = i;
+                EasyGyroscopeCalibrator.this.i = iParam;
 
                 // point contains the fixed gravity versor before the current
                 // sequence
-                EasyGyroscopeCalibrator.this.point = point;
+                EasyGyroscopeCalibrator.this.point = pointParam;
 
                 jacobianEstimator.jacobian(params, jacobian);
 
-                evaluateGeneral(i, params, result);
+                evaluateGeneral(iParam, params, result);
             }
         });
 
@@ -4691,25 +4699,25 @@ public class EasyGyroscopeCalibrator implements
         final var m23 = result[10];
         final var m33 = result[11];
 
-        final var b = new Matrix(BodyKinematics.COMPONENTS, 1);
-        b.setElementAtIndex(0, bx);
-        b.setElementAtIndex(1, by);
-        b.setElementAtIndex(2, bz);
+        final var bLocal = new Matrix(BodyKinematics.COMPONENTS, 1);
+        bLocal.setElementAtIndex(0, bx);
+        bLocal.setElementAtIndex(1, by);
+        bLocal.setElementAtIndex(2, bz);
 
-        final var m = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
-        m.setElementAtIndex(0, m11);
-        m.setElementAtIndex(1, m21);
-        m.setElementAtIndex(2, m31);
+        final var mLocal = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
+        mLocal.setElementAtIndex(0, m11);
+        mLocal.setElementAtIndex(1, m21);
+        mLocal.setElementAtIndex(2, m31);
 
-        m.setElementAtIndex(3, m12);
-        m.setElementAtIndex(4, m22);
-        m.setElementAtIndex(5, m32);
+        mLocal.setElementAtIndex(3, m12);
+        mLocal.setElementAtIndex(4, m22);
+        mLocal.setElementAtIndex(5, m32);
 
-        m.setElementAtIndex(6, m13);
-        m.setElementAtIndex(7, m23);
-        m.setElementAtIndex(8, m33);
+        mLocal.setElementAtIndex(6, m13);
+        mLocal.setElementAtIndex(7, m23);
+        mLocal.setElementAtIndex(8, m33);
 
-        setResult(m, b);
+        setResult(mLocal, bLocal);
 
         // at this point covariance is expressed in terms of b, M and G, and must
         // be expressed in terms of bg, Mg and Gg.
@@ -4735,7 +4743,7 @@ public class EasyGyroscopeCalibrator implements
         //      [m31  m32  m33][bz]   [m31 * bx + m32 * by + m33 * bz]   [bgz]
 
         // Mg = [sx  mxy  mxz] = [m11 - 1    m12         m13     ]
-        //      [myx sy	  myz]   [m21        m22 - 1     m23     ]
+        //      [myx sy   myz]   [m21        m22 - 1     m23     ]
         //      [mzx mzy  sz ]   [m31        m32         m33 - 1 ]
 
         // Gg = [gg11  gg12  gg13] = 0
@@ -4824,7 +4832,7 @@ public class EasyGyroscopeCalibrator implements
 
         jacobian.setElementAt(9, 10, 1.0);
         jacobian.setElementAt(10, 5, 1.0);
-        jacobian.setElementAt(11, 8, 1.9);
+        jacobian.setElementAt(11, 8, 1.0);
 
         final var jacobianTrans = jacobian.transposeAndReturnNew();
         jacobian.multiply(estimatedCovariance);
@@ -4864,7 +4872,7 @@ public class EasyGyroscopeCalibrator implements
         accelerationFixer.setBias(ba);
         accelerationFixer.setCrossCouplingErrors(ma);
 
-        var i = 0;
+        var iLocal = 0;
         for (final var sequence : sequences) {
             // sequence mean accelerometer samples of previous static
             // period will need to be fixed using accelerometer calibration
@@ -4885,11 +4893,11 @@ public class EasyGyroscopeCalibrator implements
             ArrayUtils.normalize(fixedBeforeF);
             ArrayUtils.normalize(fixedAfterF);
 
-            x.setSubmatrix(i, 0, i, 2, fixedBeforeF);
-            y.setSubmatrix(i, 0, i, 2, fixedAfterF);
+            x.setSubmatrix(iLocal, 0, iLocal, 2, fixedBeforeF);
+            y.setSubmatrix(iLocal, 0, iLocal, 2, fixedAfterF);
 
-            standardDeviations[i] = computeGravityDirectionStandardDeviation(sequence);
-            i++;
+            standardDeviations[iLocal] = computeGravityDirectionStandardDeviation(sequence);
+            iLocal++;
         }
 
         fitter.setInputData(x, y, standardDeviations);
@@ -4991,26 +4999,26 @@ public class EasyGyroscopeCalibrator implements
      * Makes proper conversion of internal cross-coupling, bias and g-dependent
      * cross bias matrices.
      *
-     * @param m internal scaling and cross-coupling matrix.
-     * @param b internal bias matrix.
-     * @param g internal g-dependent cross bias matrix.
+     * @param mParam internal scaling and cross-coupling matrix.
+     * @param bParam internal bias matrix.
+     * @param gParam internal g-dependent cross bias matrix.
      * @throws AlgebraException if a numerical instability occurs.
      */
-    private void setResult(final Matrix m, final Matrix b, final Matrix g) throws AlgebraException {
-        setResult(m, b);
+    private void setResult(final Matrix mParam, final Matrix bParam, final Matrix gParam) throws AlgebraException {
+        setResult(mParam, bParam);
 
         // Gg = M*G
-        m.multiply(g, estimatedGg);
+        mParam.multiply(gParam, estimatedGg);
     }
 
     /**
      * Makes proper conversion of internal cross-coupling and bias matrices.
      *
-     * @param m internal scaling and cross-coupling matrix.
-     * @param b internal bias matrix.
+     * @param mParam internal scaling and cross-coupling matrix.
+     * @param bParam internal bias matrix.
      * @throws AlgebraException if a numerical instability occurs.
      */
-    private void setResult(final Matrix m, final Matrix b) throws AlgebraException {
+    private void setResult(final Matrix mParam, final Matrix bParam) throws AlgebraException {
         // Because:
         // M = I + Mg
         // b = M^-1*bg
@@ -5023,17 +5031,17 @@ public class EasyGyroscopeCalibrator implements
             estimatedBiases = new double[BodyKinematics.COMPONENTS];
         }
 
-        final var bg = m.multiplyAndReturnNew(b);
+        final var bg = mParam.multiplyAndReturnNew(bParam);
         bg.toArray(estimatedBiases);
 
         if (estimatedMg == null) {
-            estimatedMg = m;
+            estimatedMg = mParam;
         } else {
-            estimatedMg.copyFrom(m);
+            estimatedMg.copyFrom(mParam);
         }
 
-        for (var i = 0; i < BodyKinematics.COMPONENTS; i++) {
-            estimatedMg.setElementAt(i, i, estimatedMg.getElementAt(i, i) - 1.0);
+        for (var iParam = 0; iParam < BodyKinematics.COMPONENTS; iParam++) {
+            estimatedMg.setElementAt(iParam, iParam, estimatedMg.getElementAt(iParam, iParam) - 1.0);
         }
 
         if (estimatedGg == null) {
@@ -5065,7 +5073,7 @@ public class EasyGyroscopeCalibrator implements
      * This method is internally executed during gradient estimation and
      * Levenberg-Marquardt fitting needed for calibration computation.
      *
-     * @param i      row position.
+     * @param iParam      row position.
      * @param params array containing parameters for the general purpose case
      *               when G-dependent cross biases are taken into account. Must
      *               have length 18.
@@ -5073,7 +5081,8 @@ public class EasyGyroscopeCalibrator implements
      *               have length 3.
      * @throws EvaluationException if there are numerical instabilities.
      */
-    private void evaluateGeneralWithGDependentCrossBiases(final int i, final double[] params, final double[] result)
+    private void evaluateGeneralWithGDependentCrossBiases(final int iParam, final double[] params,
+            final double[] result)
             throws EvaluationException {
 
         final var bx = params[0];
@@ -5104,7 +5113,7 @@ public class EasyGyroscopeCalibrator implements
         final var g23 = params[19];
         final var g33 = params[20];
 
-        evaluate(i, bx, by, bz, m11, m21, m31, m12, m22, m32, m13, m23, m33,
+        evaluate(iParam, bx, by, bz, m11, m21, m31, m12, m22, m32, m13, m23, m33,
                 g11, g21, g31, g12, g22, g32, g13, g23, g33, result);
     }
 
@@ -5114,7 +5123,7 @@ public class EasyGyroscopeCalibrator implements
      * This method is internally executed during gradient estimation and
      * Levenberg-Marquardt fitting needed for calibration computation.
      *
-     * @param i      row position.
+     * @param iParam      row position.
      * @param params array containing parameters for the general purpose case
      *               when G-dependent cross biases are taken into account. Must
      *               have length 15.
@@ -5122,7 +5131,8 @@ public class EasyGyroscopeCalibrator implements
      *               have length 3.
      * @throws EvaluationException if there are numerical instabilities.
      */
-    private void evaluateCommonAxisWithGDependentCrossBiases(final int i, final double[] params, final double[] result)
+    private void evaluateCommonAxisWithGDependentCrossBiases(final int iParam, final double[] params,
+            final double[] result)
             throws EvaluationException {
 
         final var bx = params[0];
@@ -5150,7 +5160,7 @@ public class EasyGyroscopeCalibrator implements
         final var g23 = params[16];
         final var g33 = params[17];
 
-        evaluate(i, bx, by, bz, m11, 0.0, 0.0, m12, m22, 0.0, m13, m23, m33,
+        evaluate(iParam, bx, by, bz, m11, 0.0, 0.0, m12, m22, 0.0, m13, m23, m33,
                 g11, g21, g31, g12, g22, g32, g13, g23, g33, result);
     }
 
@@ -5160,14 +5170,15 @@ public class EasyGyroscopeCalibrator implements
      * This method is internally executed during gradient estimation and
      * Levenberg-Marquardt fitting needed for calibration computation.
      *
-     * @param i      row position.
+     * @param iParam      row position.
      * @param params array containing current parameters for the general purpose case
      *               when G-dependent cross biases are ignored. Must have length 9.
      * @param result array where the estimated gravity versor at the end of the sequence is stored. Must
      *               have length 3.
      * @throws EvaluationException if there are numerical instabilities.
      */
-    private void evaluateGeneral(final int i, final double[] params, final double[] result) throws EvaluationException {
+    private void evaluateGeneral(final int iParam, final double[] params,
+            final double[] result) throws EvaluationException {
 
         final var bx = params[0];
         final var by = params[1];
@@ -5185,7 +5196,7 @@ public class EasyGyroscopeCalibrator implements
         final var m23 = params[10];
         final var m33 = params[11];
 
-        evaluate(i, bx, by, bz, m11, m21, m31, m12, m22, m32, m13, m23, m33,
+        evaluate(iParam, bx, by, bz, m11, m21, m31, m12, m22, m32, m13, m23, m33,
                 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, result);
     }
 
@@ -5195,14 +5206,14 @@ public class EasyGyroscopeCalibrator implements
      * This method is internally executed during gradient estimation and
      * Levenberg-Marquardt fitting needed for calibration computation.
      *
-     * @param i      row position.
+     * @param iParam      row position.
      * @param params array containing current parameters for the common z-axis case
      *               when G-dependent cross biases are ignored. Must have length 9.
      * @param result array where the estimated gravity versor at the end of the sequence is stored. Must
      *               have length 3.
      * @throws EvaluationException if there are numerical instabilities.
      */
-    private void evaluateCommonAxis(final int i, final double[] params, final double[] result)
+    private void evaluateCommonAxis(final int iParam, final double[] params, final double[] result)
             throws EvaluationException {
         final var bx = params[0];
         final var by = params[1];
@@ -5217,7 +5228,7 @@ public class EasyGyroscopeCalibrator implements
         final var m23 = params[7];
         final var m33 = params[8];
 
-        evaluate(i, bx, by, bz, m11, 0.0, 0.0, m12, m22, 0.0, m13, m23, m33,
+        evaluate(iParam, bx, by, bz, m11, 0.0, 0.0, m12, m22, 0.0, m13, m23, m33,
                 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, result);
     }
 
@@ -5227,7 +5238,7 @@ public class EasyGyroscopeCalibrator implements
      * This method is internally executed during gradient estimation and
      * Levenberg-Marquardt fitting needed for calibration computation.
      *
-     * @param i   row position.
+     * @param iParam   row position.
      * @param bx  x coordinate of bias.
      * @param by  y coordinate of bias.
      * @param bz  z coordinate of bias.
@@ -5254,7 +5265,7 @@ public class EasyGyroscopeCalibrator implements
      * @throws EvaluationException if there are numerical instabilities.
      */
     private void evaluate(
-            final int i, final double bx, final double by, final double bz,
+            final int iParam, final double bx, final double by, final double bz,
             final double m11, final double m21, final double m31,
             final double m12, final double m22, final double m32,
             final double m13, final double m23, final double m33,
@@ -5263,8 +5274,8 @@ public class EasyGyroscopeCalibrator implements
             final double g13, final double g23, final double g33, final double[] result) throws EvaluationException {
 
         try {
-            final var measuredSequence = sequences.get(i);
-            final var fixedSequence = fixedSequences.get(i);
+            final var measuredSequence = sequences.get(iParam);
+            final var fixedSequence = fixedSequences.get(iParam);
 
             // generate new sequence using current parameters to fix angular rate measurements
             if (measuredSpecificForce == null) {

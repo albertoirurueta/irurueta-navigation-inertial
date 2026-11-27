@@ -27,14 +27,14 @@ public interface RobustKnownGravityNormAccelerometerCalibratorListener {
      *
      * @param calibrator calibrator that raised the event.
      */
-    void onCalibrateStart(final RobustKnownGravityNormAccelerometerCalibrator calibrator);
+    void onCalibrateStart(RobustKnownGravityNormAccelerometerCalibrator calibrator);
 
     /**
      * Called when calibration ends.
      *
      * @param calibrator calibrator that raised the event.
      */
-    void onCalibrateEnd(final RobustKnownGravityNormAccelerometerCalibrator calibrator);
+    void onCalibrateEnd(RobustKnownGravityNormAccelerometerCalibrator calibrator);
 
     /**
      * Called when calibrator iterates to refine a possible solution.
@@ -43,7 +43,7 @@ public interface RobustKnownGravityNormAccelerometerCalibratorListener {
      * @param iteration  current iteration.
      */
     void onCalibrateNextIteration(
-            final RobustKnownGravityNormAccelerometerCalibrator calibrator, final int iteration);
+            RobustKnownGravityNormAccelerometerCalibrator calibrator, int iteration);
 
     /**
      * Called when calibration progress changes significantly.
@@ -52,5 +52,5 @@ public interface RobustKnownGravityNormAccelerometerCalibratorListener {
      * @param progress   progress of calibration expressed as a value between 0.0 and 1.0.
      */
     void onCalibrateProgressChange(
-            final RobustKnownGravityNormAccelerometerCalibrator calibrator, final float progress);
+            RobustKnownGravityNormAccelerometerCalibrator calibrator, float progress);
 }

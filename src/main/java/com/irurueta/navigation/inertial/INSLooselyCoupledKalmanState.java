@@ -29,8 +29,18 @@ import com.irurueta.navigation.frames.ECEFVelocity;
 import com.irurueta.navigation.frames.FrameType;
 import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeException;
 import com.irurueta.navigation.gnss.ECEFPositionAndVelocity;
-import com.irurueta.units.*;
-
+import com.irurueta.units.Acceleration;
+import com.irurueta.units.AccelerationConverter;
+import com.irurueta.units.AccelerationUnit;
+import com.irurueta.units.AngularSpeed;
+import com.irurueta.units.AngularSpeedConverter;
+import com.irurueta.units.AngularSpeedUnit;
+import com.irurueta.units.Distance;
+import com.irurueta.units.DistanceConverter;
+import com.irurueta.units.DistanceUnit;
+import com.irurueta.units.Speed;
+import com.irurueta.units.SpeedConverter;
+import com.irurueta.units.SpeedUnit;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
@@ -846,14 +856,14 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
     /**
      * Sets estimated ECEF user velocity coordinates.
      *
-     * @param vx estimated ECEF user velocity resolved around x axis and expressed in meters per second (m/s).
-     * @param vy estimated ECEF user velocity resolved around y axis and expressed in meters per second (m/s).
-     * @param vz estimated ECEF user velocity resolved around z axis and expressed in meters per second (m/s).
+     * @param vxParam estimated ECEF user velocity resolved around x axis and expressed in meters per second (m/s).
+     * @param vyParam estimated ECEF user velocity resolved around y axis and expressed in meters per second (m/s).
+     * @param vzParam estimated ECEF user velocity resolved around z axis and expressed in meters per second (m/s).
      */
-    public void setVelocityCoordinates(final double vx, final double vy, final double vz) {
-        this.vx = vx;
-        this.vy = vy;
-        this.vz = vz;
+    public void setVelocityCoordinates(final double vxParam, final double vyParam, final double vzParam) {
+        vx = vxParam;
+        vy = vyParam;
+        vz = vzParam;
     }
 
     /**
@@ -913,14 +923,14 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
     /**
      * Sets estimated ECEF user position coordinates.
      *
-     * @param x x coordinate of estimated ECEF user position expressed in meters (m).
-     * @param y y coordinate of estimated ECEF user position expressed in meters (m).
-     * @param z z coordinate of estimated ECEF user position expressed in meters (m).
+     * @param xParam x coordinate of estimated ECEF user position expressed in meters (m).
+     * @param yParam y coordinate of estimated ECEF user position expressed in meters (m).
+     * @param zParam z coordinate of estimated ECEF user position expressed in meters (m).
      */
-    public void setPositionCoordinates(final double x, final double y, final double z) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
+    public void setPositionCoordinates(final double xParam, final double yParam, final double zParam) {
+        x = xParam;
+        y = yParam;
+        z = zParam;
     }
 
     /**
@@ -992,18 +1002,19 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
     /**
      * Sets estimated accelerometer bias expressed in meters per squared second (m/s^2).
      *
-     * @param accelerationBiasX estimated accelerometer bias resolved around x axis and
+     * @param accelerationBiasXParam estimated accelerometer bias resolved around x axis and
      *                          expressed in meters per squared second (m/s^2).
-     * @param accelerationBiasY estimated accelerometer bias resolved around y axis and
+     * @param accelerationBiasYParam estimated accelerometer bias resolved around y axis and
      *                          expressed in meters per squared second (m/s^2).
-     * @param accelerationBiasZ estimated accelerometer bias resolved around z axis and
+     * @param accelerationBiasZParam estimated accelerometer bias resolved around z axis and
      *                          expressed in meters per squared second (m/s^2).
      */
     public void setAccelerationBiasCoordinates(
-            final double accelerationBiasX, final double accelerationBiasY, final double accelerationBiasZ) {
-        this.accelerationBiasX = accelerationBiasX;
-        this.accelerationBiasY = accelerationBiasY;
-        this.accelerationBiasZ = accelerationBiasZ;
+            final double accelerationBiasXParam, final double accelerationBiasYParam,
+            final double accelerationBiasZParam) {
+        accelerationBiasX = accelerationBiasXParam;
+        accelerationBiasY = accelerationBiasYParam;
+        accelerationBiasZ = accelerationBiasZParam;
     }
 
     /**
@@ -1076,17 +1087,18 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * Sets estimated gyroscope bias coordinates expressed in radians
      * per second (rad/s).
      *
-     * @param gyroBiasX estimated gyroscope bias resolved around x axis and
+     * @param gyroBiasXParam estimated gyroscope bias resolved around x axis and
      *                  expressed in radians per second (rad/s).
-     * @param gyroBiasY estimated gyroscope bias resolved around y axis and
+     * @param gyroBiasYParam estimated gyroscope bias resolved around y axis and
      *                  expressed in radians per second (rad/s).
-     * @param gyroBiasZ estimated gyroscope bias resolved around z axis and
+     * @param gyroBiasZParam estimated gyroscope bias resolved around z axis and
      *                  expressed in radians per second (rad/s).
      */
-    public void setGyroBiasCoordinates(final double gyroBiasX, final double gyroBiasY, final double gyroBiasZ) {
-        this.gyroBiasX = gyroBiasX;
-        this.gyroBiasY = gyroBiasY;
-        this.gyroBiasZ = gyroBiasZ;
+    public void setGyroBiasCoordinates(final double gyroBiasXParam, final double gyroBiasYParam,
+            final double gyroBiasZParam) {
+        gyroBiasX = gyroBiasXParam;
+        gyroBiasY = gyroBiasYParam;
+        gyroBiasZ = gyroBiasZParam;
     }
 
     /**
@@ -1271,10 +1283,11 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
     /**
      * Sets estimated ECEF user velocity resolved around x axis.
      *
-     * @param vx estimated ECEF user velocity resolved around x axis.
+     * @param vxParam estimated ECEF user velocity resolved around x axis.
      */
-    public void setSpeedX(final Speed vx) {
-        this.vx = SpeedConverter.convert(vx.getValue().doubleValue(), vx.getUnit(), SpeedUnit.METERS_PER_SECOND);
+    public void setSpeedX(final Speed vxParam) {
+        vx = SpeedConverter.convert(vxParam.getValue().doubleValue(), vxParam.getUnit(),
+                SpeedUnit.METERS_PER_SECOND);
     }
 
     /**
@@ -1299,10 +1312,11 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
     /**
      * Sets estimated ECEF user velocity resolved around y axis.
      *
-     * @param vy estimated ECEF user velocity resolved around y axis.
+     * @param vyParam estimated ECEF user velocity resolved around y axis.
      */
-    public void setSpeedY(final Speed vy) {
-        this.vy = SpeedConverter.convert(vy.getValue().doubleValue(), vy.getUnit(), SpeedUnit.METERS_PER_SECOND);
+    public void setSpeedY(final Speed vyParam) {
+        vy = SpeedConverter.convert(vyParam.getValue().doubleValue(), vyParam.getUnit(),
+                SpeedUnit.METERS_PER_SECOND);
     }
 
     /**
@@ -1327,23 +1341,24 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
     /**
      * Sets estimated ECEF user velocity resolved around z axis.
      *
-     * @param vz estimated ECEF velocity resolved around z axis.
+     * @param vzParam estimated ECEF velocity resolved around z axis.
      */
-    public void setSpeedZ(final Speed vz) {
-        this.vz = SpeedConverter.convert(vz.getValue().doubleValue(), vz.getUnit(), SpeedUnit.METERS_PER_SECOND);
+    public void setSpeedZ(final Speed vzParam) {
+        vz = SpeedConverter.convert(vzParam.getValue().doubleValue(), vzParam.getUnit(),
+                SpeedUnit.METERS_PER_SECOND);
     }
 
     /**
      * Sets estimated ECEF user velocity.
      *
-     * @param vx estimated ECEF velocity resolved around x axis.
-     * @param vy estimated ECEF velocity resolved around y axis.
-     * @param vz estimated ECEF velocity resolved around z axis.
+     * @param vxParam estimated ECEF velocity resolved around x axis.
+     * @param vyParam estimated ECEF velocity resolved around y axis.
+     * @param vzParam estimated ECEF velocity resolved around z axis.
      */
-    public void setVelocityCoordinates(final Speed vx, final Speed vy, final Speed vz) {
-        setSpeedX(vx);
-        setSpeedY(vy);
-        setSpeedZ(vz);
+    public void setVelocityCoordinates(final Speed vxParam, final Speed vyParam, final Speed vzParam) {
+        setSpeedX(vxParam);
+        setSpeedY(vyParam);
+        setSpeedZ(vzParam);
     }
 
     /**
@@ -1398,10 +1413,10 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
     /**
      * Sets x coordinate of estimated ECEF user position.
      *
-     * @param x x coordinate of estimated ECEF user position.
+     * @param xParam x coordinate of estimated ECEF user position.
      */
-    public void setDistanceX(final Distance x) {
-        this.x = DistanceConverter.convert(x.getValue().doubleValue(), x.getUnit(), DistanceUnit.METER);
+    public void setDistanceX(final Distance xParam) {
+        x = DistanceConverter.convert(xParam.getValue().doubleValue(), xParam.getUnit(), DistanceUnit.METER);
     }
 
     /**
@@ -1427,10 +1442,10 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
     /**
      * Sets y coordinate of estimated ECEF user position.
      *
-     * @param y y coordinate of estimated ECEF user position.
+     * @param yParam y coordinate of estimated ECEF user position.
      */
-    public void setDistanceY(final Distance y) {
-        this.y = DistanceConverter.convert(y.getValue().doubleValue(), y.getUnit(), DistanceUnit.METER);
+    public void setDistanceY(final Distance yParam) {
+        y = DistanceConverter.convert(yParam.getValue().doubleValue(), yParam.getUnit(), DistanceUnit.METER);
     }
 
     /**
@@ -1456,23 +1471,23 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
     /**
      * Sets z coordinate of estimated ECEF user position.
      *
-     * @param z z coordinate of estimated ECEF user position.
+     * @param zParam z coordinate of estimated ECEF user position.
      */
-    public void setDistanceZ(final Distance z) {
-        this.z = DistanceConverter.convert(z.getValue().doubleValue(), z.getUnit(), DistanceUnit.METER);
+    public void setDistanceZ(final Distance zParam) {
+        z = DistanceConverter.convert(zParam.getValue().doubleValue(), zParam.getUnit(), DistanceUnit.METER);
     }
 
     /**
      * Sets coordinates of estimated ECEF user position.
      *
-     * @param x x coordinate of estimated ECEF user position.
-     * @param y y coordinate of estimated ECEF user position.
-     * @param z z coordinate of estimated ECEF user position.
+     * @param xParam x coordinate of estimated ECEF user position.
+     * @param yParam y coordinate of estimated ECEF user position.
+     * @param zParam z coordinate of estimated ECEF user position.
      */
-    public void setPositionCoordinates(final Distance x, final Distance y, final Distance z) {
-        setDistanceX(x);
-        setDistanceY(y);
-        setDistanceZ(z);
+    public void setPositionCoordinates(final Distance xParam, final Distance yParam, final Distance zParam) {
+        setDistanceX(xParam);
+        setDistanceY(yParam);
+        setDistanceZ(zParam);
     }
 
     /**
@@ -1728,16 +1743,16 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
     /**
      * Sets estimated accelerometer bias coordinates.
      *
-     * @param accelerationBiasX estimated accelerometer bias resolved around x axis.
-     * @param accelerationBiasY estimated accelerometer bias resolved around y axis.
-     * @param accelerationBiasZ estimated accelerometer bias resolved around z axis.
+     * @param accelerationBiasXParam estimated accelerometer bias resolved around x axis.
+     * @param accelerationBiasYParam estimated accelerometer bias resolved around y axis.
+     * @param accelerationBiasZParam estimated accelerometer bias resolved around z axis.
      */
     public void setAccelerationBiasCoordinates(
-            final Acceleration accelerationBiasX, final Acceleration accelerationBiasY,
-            final Acceleration accelerationBiasZ) {
-        setAccelerationBiasX(accelerationBiasX);
-        setAccelerationBiasY(accelerationBiasY);
-        setAccelerationBiasZ(accelerationBiasZ);
+            final Acceleration accelerationBiasXParam, final Acceleration accelerationBiasYParam,
+            final Acceleration accelerationBiasZParam) {
+        setAccelerationBiasX(accelerationBiasXParam);
+        setAccelerationBiasY(accelerationBiasYParam);
+        setAccelerationBiasZ(accelerationBiasZParam);
     }
 
     /**
@@ -1833,15 +1848,15 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
     /**
      * Sets estimated gyroscope bias coordinates.
      *
-     * @param gyroBiasX estimated gyroscope bias resolved around x axis.
-     * @param gyroBiasY estimated gyroscope bias resolved around y axis.
-     * @param gyroBiasZ estimated gyroscope bias resolved around z axis.
+     * @param gyroBiasXParam estimated gyroscope bias resolved around x axis.
+     * @param gyroBiasYParam estimated gyroscope bias resolved around y axis.
+     * @param gyroBiasZParam estimated gyroscope bias resolved around z axis.
      */
     public void setGyroBiasCoordinates(
-            final AngularSpeed gyroBiasX, final AngularSpeed gyroBiasY, final AngularSpeed gyroBiasZ) {
-        setGyroBiasX(gyroBiasX);
-        setGyroBiasY(gyroBiasY);
-        setGyroBiasZ(gyroBiasZ);
+            final AngularSpeed gyroBiasXParam, final AngularSpeed gyroBiasYParam, final AngularSpeed gyroBiasZParam) {
+        setGyroBiasX(gyroBiasXParam);
+        setGyroBiasY(gyroBiasYParam);
+        setGyroBiasZ(gyroBiasZParam);
     }
 
     /**
@@ -1980,8 +1995,23 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
     @Override
     protected Object clone() throws CloneNotSupportedException {
         final var result = (INSLooselyCoupledKalmanState) super.clone();
-        copyTo(result);
+        copyFieldsTo(result);
         return result;
+    }
+
+    /**
+     * Copies the mutable reference fields of this instance into provided output instance,
+     * allocating new instances so that output never shares them with this instance.
+     * Primitive fields are not copied here because {@link Object#clone()} already copies them.
+     * This method is private so that it cannot be overridden and can be safely called from
+     * {@link #clone()}.
+     *
+     * @param output instance where reference fields will be copied to.
+     */
+    private void copyFieldsTo(final INSLooselyCoupledKalmanState output) {
+        output.bodyToEcefCoordinateTransformationMatrix = bodyToEcefCoordinateTransformationMatrix != null
+                ? new Matrix(bodyToEcefCoordinateTransformationMatrix) : null;
+        output.covariance = covariance != null ? new Matrix(covariance) : null;
     }
 
     /**

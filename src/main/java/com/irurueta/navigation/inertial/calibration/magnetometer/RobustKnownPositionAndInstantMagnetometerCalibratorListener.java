@@ -27,14 +27,14 @@ public interface RobustKnownPositionAndInstantMagnetometerCalibratorListener {
      *
      * @param calibrator calibrator that raised the event.
      */
-    void onCalibrateStart(final RobustKnownPositionAndInstantMagnetometerCalibrator calibrator);
+    void onCalibrateStart(RobustKnownPositionAndInstantMagnetometerCalibrator calibrator);
 
     /**
      * Called when calibration ends.
      *
      * @param calibrator calibrator that raised the event.
      */
-    void onCalibrateEnd(final RobustKnownPositionAndInstantMagnetometerCalibrator calibrator);
+    void onCalibrateEnd(RobustKnownPositionAndInstantMagnetometerCalibrator calibrator);
 
     /**
      * Called when calibrator iterates to refine a possible solution.
@@ -43,7 +43,7 @@ public interface RobustKnownPositionAndInstantMagnetometerCalibratorListener {
      * @param iteration  current iteration.
      */
     void onCalibrateNextIteration(
-            final RobustKnownPositionAndInstantMagnetometerCalibrator calibrator, final int iteration);
+            RobustKnownPositionAndInstantMagnetometerCalibrator calibrator, int iteration);
 
     /**
      * Called when calibration progress changes significantly.
@@ -52,5 +52,5 @@ public interface RobustKnownPositionAndInstantMagnetometerCalibratorListener {
      * @param progress   progress of calibration expressed as a value between 0.0 and 1.0.
      */
     void onCalibrateProgressChange(
-            final RobustKnownPositionAndInstantMagnetometerCalibrator calibrator, final float progress);
+            RobustKnownPositionAndInstantMagnetometerCalibrator calibrator, float progress);
 }

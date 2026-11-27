@@ -288,6 +288,14 @@ class StandardDeviationBodyMagneticFluxDensityTest {
 
         // check
         assertEquals(stdMagnetic1, stdMagnetic2);
+
+        // check clone is an independent instance holding its own mutable fields
+        final var clone = (StandardDeviationBodyMagneticFluxDensity) stdMagnetic2;
+        assertNotSame(stdMagnetic1, clone);
+        assertNotSame(stdMagnetic1.getMagneticFluxDensity(), clone.getMagneticFluxDensity());
+        final var originalBx = stdMagnetic1.getMagneticFluxDensity().getBx();
+        clone.getMagneticFluxDensity().setBx(originalBx + 1.0);
+        assertEquals(originalBx, stdMagnetic1.getMagneticFluxDensity().getBx(), 0.0);
     }
 
     @Test

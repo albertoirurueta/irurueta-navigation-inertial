@@ -15,8 +15,21 @@
  */
 package com.irurueta.navigation.inertial;
 
-import com.irurueta.units.*;
-
+import com.irurueta.units.Acceleration;
+import com.irurueta.units.AccelerationConverter;
+import com.irurueta.units.AccelerationUnit;
+import com.irurueta.units.Angle;
+import com.irurueta.units.AngleConverter;
+import com.irurueta.units.AngleUnit;
+import com.irurueta.units.AngularSpeed;
+import com.irurueta.units.AngularSpeedConverter;
+import com.irurueta.units.AngularSpeedUnit;
+import com.irurueta.units.Distance;
+import com.irurueta.units.DistanceConverter;
+import com.irurueta.units.DistanceUnit;
+import com.irurueta.units.Speed;
+import com.irurueta.units.SpeedConverter;
+import com.irurueta.units.SpeedUnit;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
@@ -231,7 +244,7 @@ public class INSTightlyCoupledKalmanInitializerConfig implements Serializable, C
     }
 
     /**
-     * Gets initial position uncertainty per axis expressed in meters (m)
+     * Gets initial position uncertainty per axis expressed in meters (m).
      *
      * @return initial position uncertainty per axis expressed in meters (m).
      */
@@ -240,7 +253,7 @@ public class INSTightlyCoupledKalmanInitializerConfig implements Serializable, C
     }
 
     /**
-     * Sets initial position uncertainty per axis expressed in meters (m)
+     * Sets initial position uncertainty per axis expressed in meters (m).
      *
      * @param initialPositionUncertainty initial position uncertainty per axis expressed
      *                                   in meters (m).
@@ -478,58 +491,58 @@ public class INSTightlyCoupledKalmanInitializerConfig implements Serializable, C
     /**
      * Sets configuration parameters.
      *
-     * @param initialAttitudeUncertainty         initial attitude uncertainty per axis
+     * @param initialAttitudeUncertaintyParam         initial attitude uncertainty per axis
      *                                           expressed in radians (rad).
-     * @param initialVelocityUncertainty         initial velocity uncertainty per axis
+     * @param initialVelocityUncertaintyParam         initial velocity uncertainty per axis
      *                                           expressed in meters per second (m/s).
-     * @param initialPositionUncertainty         initial position uncertainty per axis
+     * @param initialPositionUncertaintyParam         initial position uncertainty per axis
      *                                           expressed in meters (m).
-     * @param initialAccelerationBiasUncertainty initial acceleration bias uncertainty
+     * @param initialAccelerationBiasUncertaintyParam initial acceleration bias uncertainty
      *                                           expressed in meters per squared second (m/s^2).
-     * @param initialGyroscopeBiasUncertainty    initial gyroscope bias uncertainty
+     * @param initialGyroscopeBiasUncertaintyParam    initial gyroscope bias uncertainty
      *                                           expressed in radians per second (rad/s).
-     * @param initialClockOffsetUncertainty      initial clock offset uncertainty per axis
+     * @param initialClockOffsetUncertaintyParam      initial clock offset uncertainty per axis
      *                                           expressed in meters (m).
-     * @param initialClockDriftUncertainty       initial clock drift uncertainty per axis
+     * @param initialClockDriftUncertaintyParam       initial clock drift uncertainty per axis
      *                                           expressed in meters per second (m/s).
      */
     public void setValues(
-            final double initialAttitudeUncertainty, final double initialVelocityUncertainty,
-            final double initialPositionUncertainty, final double initialAccelerationBiasUncertainty,
-            final double initialGyroscopeBiasUncertainty, final double initialClockOffsetUncertainty,
-            final double initialClockDriftUncertainty) {
-        this.initialAttitudeUncertainty = initialAttitudeUncertainty;
-        this.initialVelocityUncertainty = initialVelocityUncertainty;
-        this.initialPositionUncertainty = initialPositionUncertainty;
-        this.initialAccelerationBiasUncertainty = initialAccelerationBiasUncertainty;
-        this.initialGyroscopeBiasUncertainty = initialGyroscopeBiasUncertainty;
-        this.initialClockOffsetUncertainty = initialClockOffsetUncertainty;
-        this.initialClockDriftUncertainty = initialClockDriftUncertainty;
+            final double initialAttitudeUncertaintyParam, final double initialVelocityUncertaintyParam,
+            final double initialPositionUncertaintyParam, final double initialAccelerationBiasUncertaintyParam,
+            final double initialGyroscopeBiasUncertaintyParam, final double initialClockOffsetUncertaintyParam,
+            final double initialClockDriftUncertaintyParam) {
+        initialAttitudeUncertainty = initialAttitudeUncertaintyParam;
+        initialVelocityUncertainty = initialVelocityUncertaintyParam;
+        initialPositionUncertainty = initialPositionUncertaintyParam;
+        initialAccelerationBiasUncertainty = initialAccelerationBiasUncertaintyParam;
+        initialGyroscopeBiasUncertainty = initialGyroscopeBiasUncertaintyParam;
+        initialClockOffsetUncertainty = initialClockOffsetUncertaintyParam;
+        initialClockDriftUncertainty = initialClockDriftUncertaintyParam;
     }
 
     /**
      * Sets configuration parameters.
      *
-     * @param initialAttitudeUncertainty         initial attitude uncertainty per axis.
-     * @param initialVelocityUncertainty         initial velocity uncertainty per axis.
-     * @param initialPositionUncertainty         initial position uncertainty per axis.
-     * @param initialAccelerationBiasUncertainty initial acceleration bias uncertainty.
-     * @param initialGyroscopeBiasUncertainty    initial gyroscope bias uncertainty.
-     * @param initialClockOffsetUncertainty      initial clock offset uncertainty per axis.
-     * @param initialClockDriftUncertainty       initial clock drift uncertainty per axis.
+     * @param initialAttitudeUncertaintyParam         initial attitude uncertainty per axis.
+     * @param initialVelocityUncertaintyParam         initial velocity uncertainty per axis.
+     * @param initialPositionUncertaintyParam         initial position uncertainty per axis.
+     * @param initialAccelerationBiasUncertaintyParam initial acceleration bias uncertainty.
+     * @param initialGyroscopeBiasUncertaintyParam    initial gyroscope bias uncertainty.
+     * @param initialClockOffsetUncertaintyParam      initial clock offset uncertainty per axis.
+     * @param initialClockDriftUncertaintyParam       initial clock drift uncertainty per axis.
      */
     public void setValues(
-            final Angle initialAttitudeUncertainty, final Speed initialVelocityUncertainty,
-            final Distance initialPositionUncertainty, final Acceleration initialAccelerationBiasUncertainty,
-            final AngularSpeed initialGyroscopeBiasUncertainty, final Distance initialClockOffsetUncertainty,
-            final Speed initialClockDriftUncertainty) {
-        setInitialAttitudeUncertainty(initialAttitudeUncertainty);
-        setInitialVelocityUncertainty(initialVelocityUncertainty);
-        setInitialPositionUncertainty(initialPositionUncertainty);
-        setInitialAccelerationBiasUncertainty(initialAccelerationBiasUncertainty);
-        setInitialGyroscopeBiasUncertainty(initialGyroscopeBiasUncertainty);
-        setInitialClockOffsetUncertainty(initialClockOffsetUncertainty);
-        setInitialClockDriftUncertainty(initialClockDriftUncertainty);
+            final Angle initialAttitudeUncertaintyParam, final Speed initialVelocityUncertaintyParam,
+            final Distance initialPositionUncertaintyParam, final Acceleration initialAccelerationBiasUncertaintyParam,
+            final AngularSpeed initialGyroscopeBiasUncertaintyParam, final Distance initialClockOffsetUncertaintyParam,
+            final Speed initialClockDriftUncertaintyParam) {
+        setInitialAttitudeUncertainty(initialAttitudeUncertaintyParam);
+        setInitialVelocityUncertainty(initialVelocityUncertaintyParam);
+        setInitialPositionUncertainty(initialPositionUncertaintyParam);
+        setInitialAccelerationBiasUncertainty(initialAccelerationBiasUncertaintyParam);
+        setInitialGyroscopeBiasUncertainty(initialGyroscopeBiasUncertaintyParam);
+        setInitialClockOffsetUncertainty(initialClockOffsetUncertaintyParam);
+        setInitialClockDriftUncertainty(initialClockDriftUncertaintyParam);
     }
 
     /**
@@ -635,8 +648,6 @@ public class INSTightlyCoupledKalmanInitializerConfig implements Serializable, C
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
-        final var result = (INSTightlyCoupledKalmanInitializerConfig) super.clone();
-        copyTo(result);
-        return result;
+        return super.clone();
     }
 }

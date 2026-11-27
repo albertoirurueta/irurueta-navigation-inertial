@@ -18,7 +18,6 @@ package com.irurueta.navigation.inertial.calibration;
 import com.irurueta.units.Acceleration;
 import com.irurueta.units.AccelerationConverter;
 import com.irurueta.units.AccelerationUnit;
-
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -409,15 +408,15 @@ public class BodyKinematicsSequence<T extends TimedBodyKinematics> implements Se
      * happening right before this sequence was measured. Expressed in
      * meters per squared second (m/s^2).
      *
-     * @param beforeMeanFx x-coordinate of mean specific force.
-     * @param beforeMeanFy y-coordinate of mean specific force.
-     * @param beforeMeanFz z-coordinate of mean specific force.
+     * @param beforeMeanFxParam x-coordinate of mean specific force.
+     * @param beforeMeanFyParam y-coordinate of mean specific force.
+     * @param beforeMeanFzParam z-coordinate of mean specific force.
      */
     public void setBeforeMeanSpecificForceCoordinates(
-            final double beforeMeanFx, final double beforeMeanFy, final double beforeMeanFz) {
-        this.beforeMeanFx = beforeMeanFx;
-        this.beforeMeanFy = beforeMeanFy;
-        this.beforeMeanFz = beforeMeanFz;
+            final double beforeMeanFxParam, final double beforeMeanFyParam, final double beforeMeanFzParam) {
+        beforeMeanFx = beforeMeanFxParam;
+        beforeMeanFy = beforeMeanFyParam;
+        beforeMeanFz = beforeMeanFzParam;
     }
 
     /**
@@ -600,15 +599,15 @@ public class BodyKinematicsSequence<T extends TimedBodyKinematics> implements Se
      * happening right after this sequence was measured. Expressed in
      * meters per squared second (m/s^2).
      *
-     * @param afterMeanFx x-coordinate of mean specific force.
-     * @param afterMeanFy y-coordinate of mean specific force.
-     * @param afterMeanFz z-coordinate of mean specific force.
+     * @param afterMeanFxParam x-coordinate of mean specific force.
+     * @param afterMeanFyParam y-coordinate of mean specific force.
+     * @param afterMeanFzParam z-coordinate of mean specific force.
      */
     public void setAfterMeanSpecificForceCoordinates(
-            final double afterMeanFx, final double afterMeanFy, final double afterMeanFz) {
-        this.afterMeanFx = afterMeanFx;
-        this.afterMeanFy = afterMeanFy;
-        this.afterMeanFz = afterMeanFz;
+            final double afterMeanFxParam, final double afterMeanFyParam, final double afterMeanFzParam) {
+        afterMeanFx = afterMeanFxParam;
+        afterMeanFy = afterMeanFyParam;
+        afterMeanFz = afterMeanFzParam;
     }
 
     /**
@@ -836,8 +835,22 @@ public class BodyKinematicsSequence<T extends TimedBodyKinematics> implements Se
     protected Object clone() throws CloneNotSupportedException {
         //noinspection unchecked
         final var result = (BodyKinematicsSequence<T>) super.clone();
-        copyTo(result);
+        copyFieldsTo(result);
         return result;
+    }
+
+    /**
+     * Copies the mutable reference fields of this instance into provided output instance,
+     * allocating new instances so that output never shares them with this instance.
+     * Primitive fields are not copied here because {@link Object#clone()} already copies them.
+     * This method is private so that it cannot be overridden and can be safely called from
+     * {@link #clone()}.
+     *
+     * @param output instance where reference fields will be copied to.
+     */
+    private void copyFieldsTo(final BodyKinematicsSequence<T> output) {
+        output.items = items != null ? cloneList(items) : null;
+        output.sortedItems = sortedItems != null ? cloneList(sortedItems) : null;
     }
 
     /**

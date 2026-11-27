@@ -29,7 +29,6 @@ import com.irurueta.navigation.gnss.GNSSMeasurement;
 import com.irurueta.units.Time;
 import com.irurueta.units.TimeConverter;
 import com.irurueta.units.TimeUnit;
-
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -1603,7 +1602,7 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimator {
      * than the epoch interval. Measurements arriving exactly one epoch interval after
      * the previous epoch are accepted.
      *
-     * @param measurements GNSS measurements to be updated.
+     * @param measurementsParam GNSS measurements to be updated.
      * @param timestamp    timestamp since epoch time when GNSS measurements were
      *                     updated.
      * @return true if measurements were updated, false otherwise.
@@ -1611,9 +1610,9 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimator {
      * @throws NotReadyException if estimator is not ready for measurements updates.
      * @throws INSGNSSException  if estimation fails due to numerical instabilities.
      */
-    public boolean updateMeasurements(final Collection<GNSSMeasurement> measurements, final Time timestamp)
+    public boolean updateMeasurements(final Collection<GNSSMeasurement> measurementsParam, final Time timestamp)
             throws LockedException, NotReadyException, INSGNSSException {
-        return updateMeasurements(measurements, TimeConverter.convert(timestamp.getValue().doubleValue(),
+        return updateMeasurements(measurementsParam, TimeConverter.convert(timestamp.getValue().doubleValue(),
                 timestamp.getUnit(), TimeUnit.SECOND));
     }
 
@@ -1638,7 +1637,7 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimator {
      * than the epoch interval. Measurements arriving exactly one epoch interval after
      * the previous epoch are accepted.
      *
-     * @param measurements GNSS measurements to be updated.
+     * @param measurementsParam GNSS measurements to be updated.
      * @param timestamp    timestamp expressed in seconds since epoch time when
      *                     GNSS measurements were updated.
      * @return true if measurements were updated, false otherwise.
@@ -1646,14 +1645,14 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimator {
      * @throws NotReadyException if estimator is not ready for measurements updates.
      * @throws INSGNSSException  if estimation fails due to numerical instabilities.
      */
-    public boolean updateMeasurements(final Collection<GNSSMeasurement> measurements, final double timestamp)
+    public boolean updateMeasurements(final Collection<GNSSMeasurement> measurementsParam, final double timestamp)
             throws LockedException, NotReadyException, INSGNSSException {
 
         if (running) {
             throw new LockedException();
         }
 
-        if (!isUpdateMeasurementsReady(measurements)) {
+        if (!isUpdateMeasurementsReady(measurementsParam)) {
             throw new NotReadyException();
         }
 
@@ -1670,9 +1669,9 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimator {
                 listener.onUpdateGNSSMeasurementsStart(this);
             }
 
-            this.measurements = new ArrayList<>(measurements);
+            measurements = new ArrayList<>(measurementsParam);
 
-            lsEstimator.setMeasurements(this.measurements);
+            lsEstimator.setMeasurements(measurements);
             estimatePositionAndVelocity();
 
             if (insEstimator.isPropagateReady()) {
@@ -1711,7 +1710,7 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimator {
      * This method does not run any Kalman filter epoch: epochs are run when GNSS
      * measurements are provided.
      *
-     * @param kinematics kinematics applied to body (specific force and angular rate)
+     * @param kinematicsParam kinematics applied to body (specific force and angular rate)
      *                   during last period of time. These measures are obtained from
      *                   an inertial unit (IMU).
      * @param timestamp  timestamp since epoch time when specific force and
@@ -1722,9 +1721,10 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimator {
      * @throws LockedException  if this estimator is already running.
      * @throws INSGNSSException if estimation fails due to numerical instabilities.
      */
-    public boolean updateBodyKinematics(final BodyKinematics kinematics, final Time timestamp) throws LockedException,
+    public boolean updateBodyKinematics(final BodyKinematics kinematicsParam,
+            final Time timestamp) throws LockedException,
             INSGNSSException {
-        return updateBodyKinematics(kinematics, TimeConverter.convert(timestamp.getValue().doubleValue(),
+        return updateBodyKinematics(kinematicsParam, TimeConverter.convert(timestamp.getValue().doubleValue(),
                 timestamp.getUnit(), TimeUnit.SECOND));
     }
 
@@ -1741,7 +1741,7 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimator {
      * This method does not run any Kalman filter epoch: epochs are run when GNSS
      * measurements are provided.
      *
-     * @param kinematics kinematics applied to body (specific force and angular rate)
+     * @param kinematicsParam kinematics applied to body (specific force and angular rate)
      *                   during last period of time. These measures are obtained from
      *                   an inertial unit (IMU).
      * @param timestamp  timestamp expressed in seconds since epoch time when specific
@@ -1752,7 +1752,8 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimator {
      * @throws LockedException  if this estimator is already running.
      * @throws INSGNSSException if estimation fails due to numerical instabilities.
      */
-    public boolean updateBodyKinematics(final BodyKinematics kinematics, final double timestamp) throws LockedException,
+    public boolean updateBodyKinematics(final BodyKinematics kinematicsParam,
+            final double timestamp) throws LockedException,
             INSGNSSException {
 
         if (running) {
@@ -1767,12 +1768,12 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimator {
             }
 
             // every sample is integrated, starting from the last corrected INS solution
-            final var result = insEstimator.update(kinematics, timestamp);
+            final var result = insEstimator.update(kinematicsParam, timestamp);
             if (result) {
-                if (this.kinematics == null) {
-                    this.kinematics = insEstimator.getKinematics();
+                if (kinematics == null) {
+                    kinematics = insEstimator.getKinematics();
                 } else {
-                    insEstimator.getKinematics(this.kinematics);
+                    insEstimator.getKinematics(kinematics);
                 }
 
                 if (estimation != null) {
@@ -1780,8 +1781,8 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimator {
                 }
             }
 
-            if (kinematics != null) {
-                correctKinematics(kinematics);
+            if (kinematicsParam != null) {
+                correctKinematics(kinematicsParam);
             }
 
             return result;
@@ -1996,9 +1997,9 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimator {
      * This method stores the result into the variable member containing corrected
      * kinematics values.
      *
-     * @param kinematics kinematics instance to be corrected.
+     * @param kinematicsParam kinematics instance to be corrected.
      */
-    private void correctKinematics(final BodyKinematics kinematics) {
+    private void correctKinematics(final BodyKinematics kinematicsParam) {
         if (correctedKinematics == null) {
             correctedKinematics = new BodyKinematics();
         }
@@ -2025,12 +2026,12 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimator {
             gyroBiasZ = 0.0;
         }
 
-        final var fx = kinematics.getFx();
-        final var fy = kinematics.getFy();
-        final var fz = kinematics.getFz();
-        final var angularRateX = kinematics.getAngularRateX();
-        final var angularRateY = kinematics.getAngularRateY();
-        final var angularRateZ = kinematics.getAngularRateZ();
+        final var fx = kinematicsParam.getFx();
+        final var fy = kinematicsParam.getFy();
+        final var fz = kinematicsParam.getFz();
+        final var angularRateX = kinematicsParam.getAngularRateX();
+        final var angularRateY = kinematicsParam.getAngularRateY();
+        final var angularRateZ = kinematicsParam.getAngularRateZ();
 
         correctedKinematics.setSpecificForceCoordinates(fx - accelBiasX, fy - accelBiasY, fz - accelBiasZ);
         correctedKinematics.setAngularRateCoordinates(

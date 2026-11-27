@@ -21,7 +21,6 @@ import com.irurueta.navigation.inertial.calibration.MagneticFluxDensityTriad;
 import com.irurueta.units.MagneticFluxDensity;
 import com.irurueta.units.MagneticFluxDensityConverter;
 import com.irurueta.units.MagneticFluxDensityUnit;
-
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
@@ -256,26 +255,27 @@ public class NEDMagneticFluxDensity implements Serializable, Cloneable {
     /**
      * Sets NED coordinates of magnetic flux density expressed in Teslas (T).
      *
-     * @param bn north component of magnetic flux density.
-     * @param be east component of magnetic flux density.
-     * @param bd down component of magnetic flux density.
+     * @param bnParam north component of magnetic flux density.
+     * @param beParam east component of magnetic flux density.
+     * @param bdParam down component of magnetic flux density.
      */
-    public void setCoordinates(final double bn, final double be, final double bd) {
-        this.bn = bn;
-        this.be = be;
-        this.bd = bd;
+    public void setCoordinates(final double bnParam, final double beParam, final double bdParam) {
+        bn = bnParam;
+        be = beParam;
+        bd = bdParam;
     }
 
     /**
      * Sets NED coordinates of magnetic flux density.
      *
-     * @param bn north component of magnetic flux density.
-     * @param be east component of magnetic flux density.
-     * @param bd down component of magnetic flux density.
+     * @param bnParam north component of magnetic flux density.
+     * @param beParam east component of magnetic flux density.
+     * @param bdParam down component of magnetic flux density.
      */
     public void setCoordinates(
-            final MagneticFluxDensity bn, final MagneticFluxDensity be, final MagneticFluxDensity bd) {
-        setCoordinates(convertMagneticFluxDensity(bn), convertMagneticFluxDensity(be), convertMagneticFluxDensity(bd));
+            final MagneticFluxDensity bnParam, final MagneticFluxDensity beParam, final MagneticFluxDensity bdParam) {
+        setCoordinates(convertMagneticFluxDensity(bnParam), convertMagneticFluxDensity(beParam),
+                convertMagneticFluxDensity(bdParam));
     }
 
     /**
@@ -505,9 +505,7 @@ public class NEDMagneticFluxDensity implements Serializable, Cloneable {
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
-        final var result = (NEDMagneticFluxDensity) super.clone();
-        copyTo(result);
-        return result;
+        return super.clone();
     }
 
     /**

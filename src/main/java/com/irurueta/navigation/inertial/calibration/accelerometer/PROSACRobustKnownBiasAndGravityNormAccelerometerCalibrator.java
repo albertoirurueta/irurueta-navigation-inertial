@@ -26,7 +26,6 @@ import com.irurueta.numerical.robust.RobustEstimator;
 import com.irurueta.numerical.robust.RobustEstimatorException;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
 import com.irurueta.units.Acceleration;
-
 import java.util.List;
 
 /**
@@ -1753,15 +1752,15 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
     /**
      * Specifies whether inliers must be computed and kept.
      *
-     * @param computeAndKeepInliers true if inliers must be computed and kept,
+     * @param computeAndKeepInliersParam true if inliers must be computed and kept,
      *                              false if inliers only need to be computed but not kept.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setComputeAndKeepInliersEnabled(final boolean computeAndKeepInliers) throws LockedException {
+    public void setComputeAndKeepInliersEnabled(final boolean computeAndKeepInliersParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        this.computeAndKeepInliers = computeAndKeepInliers;
+        computeAndKeepInliers = computeAndKeepInliersParam;
     }
 
     /**
@@ -1777,15 +1776,15 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
     /**
      * Specifies whether residuals must be computed and kept.
      *
-     * @param computeAndKeepResiduals true if residuals must be computed and kept,
+     * @param computeAndKeepResidualsParam true if residuals must be computed and kept,
      *                                false if residuals only need to be computed but not kept.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setComputeAndKeepResidualsEnabled(final boolean computeAndKeepResiduals) throws LockedException {
+    public void setComputeAndKeepResidualsEnabled(final boolean computeAndKeepResidualsParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        this.computeAndKeepResiduals = computeAndKeepResiduals;
+        computeAndKeepResiduals = computeAndKeepResidualsParam;
     }
 
     /**
@@ -1930,16 +1929,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      * This method is used internally and does not check whether instance is
      * locked or not.
      *
-     * @param qualityScores quality scores to be set.
+     * @param qualityScoresParam quality scores to be set.
      * @throws IllegalArgumentException if provided quality scores length
      *                                  is smaller than the minimum required
      *                                  number of samples (10 or 13).
      */
-    private void internalSetQualityScores(final double[] qualityScores) {
-        if (qualityScores == null || qualityScores.length < getMinimumRequiredMeasurements()) {
+    private void internalSetQualityScores(final double[] qualityScoresParam) {
+        if (qualityScoresParam == null || qualityScoresParam.length < getMinimumRequiredMeasurements()) {
             throw new IllegalArgumentException();
         }
 
-        this.qualityScores = qualityScores;
+        qualityScores = qualityScoresParam;
     }
 }

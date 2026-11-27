@@ -23,7 +23,6 @@ import com.irurueta.units.AccelerationUnit;
 import com.irurueta.units.AngularSpeed;
 import com.irurueta.units.AngularSpeedConverter;
 import com.irurueta.units.AngularSpeedUnit;
-
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Arrays;
@@ -1020,7 +1019,7 @@ public class IMUErrors implements Serializable, Cloneable {
     }
 
     /**
-     * Sets accelerometer noise root PSD expressed in (m * s^-1.5)
+     * Sets accelerometer noise root PSD expressed in (m * s^-1.5).
      *
      * @param accelerometerNoiseRootPSD accelerometer noise root PSD to be set.
      */
@@ -1274,8 +1273,26 @@ public class IMUErrors implements Serializable, Cloneable {
     @Override
     protected Object clone() throws CloneNotSupportedException {
         final var result = (IMUErrors) super.clone();
-        copyTo(result);
+        copyFieldsTo(result);
         return result;
+    }
+
+    /**
+     * Copies the mutable reference fields of this instance into provided output instance,
+     * allocating new instances so that output never shares them with this instance.
+     * Primitive fields are not copied here because {@link Object#clone()} already copies them.
+     * This method is private so that it cannot be overridden and can be safely called from
+     * {@link #clone()}.
+     *
+     * @param output instance where reference fields will be copied to.
+     */
+    private void copyFieldsTo(final IMUErrors output) {
+        output.accelerometerBiases = accelerometerBiases.clone();
+        output.gyroBiases = gyroBiases.clone();
+        output.accelerometerScaleFactorAndCrossCouplingErrors =
+                new Matrix(accelerometerScaleFactorAndCrossCouplingErrors);
+        output.gyroScaleFactorAndCrossCouplingErrors = new Matrix(gyroScaleFactorAndCrossCouplingErrors);
+        output.gyroGDependentBiases = new Matrix(gyroGDependentBiases);
     }
 
     /**

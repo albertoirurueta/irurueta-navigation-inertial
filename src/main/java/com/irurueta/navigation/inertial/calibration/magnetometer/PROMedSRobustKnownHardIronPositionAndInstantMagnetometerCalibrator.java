@@ -28,7 +28,6 @@ import com.irurueta.numerical.robust.PROMedSRobustEstimatorListener;
 import com.irurueta.numerical.robust.RobustEstimator;
 import com.irurueta.numerical.robust.RobustEstimatorException;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
-
 import java.io.IOException;
 import java.util.List;
 
@@ -2067,70 +2066,70 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
         }
 
         final var innerEstimator = new PROMedSRobustEstimator<>(new PROMedSRobustEstimatorListener<Matrix>() {
-                    @Override
-                    public double[] getQualityScores() {
-                        return qualityScores;
-                    }
+            @Override
+            public double[] getQualityScores() {
+                return qualityScores;
+            }
 
-                    @Override
-                    public double getThreshold() {
-                        return stopThreshold;
-                    }
+            @Override
+            public double getThreshold() {
+                return stopThreshold;
+            }
 
-                    @Override
-                    public int getTotalSamples() {
-                        return measurements.size();
-                    }
+            @Override
+            public int getTotalSamples() {
+                return measurements.size();
+            }
 
-                    @Override
-                    public int getSubsetSize() {
-                        return preliminarySubsetSize;
-                    }
+            @Override
+            public int getSubsetSize() {
+                return preliminarySubsetSize;
+            }
 
-                    @Override
-                    public void estimatePreliminarSolutions(final int[] samplesIndices, final List<Matrix> solutions) {
-                        computePreliminarySolutions(samplesIndices, solutions);
-                    }
+            @Override
+            public void estimatePreliminarSolutions(final int[] samplesIndices, final List<Matrix> solutions) {
+                computePreliminarySolutions(samplesIndices, solutions);
+            }
 
-                    @Override
-                    public double computeResidual(final Matrix currentEstimation, final int i) {
-                        return computeError(measurements.get(i), currentEstimation);
-                    }
+            @Override
+            public double computeResidual(final Matrix currentEstimation, final int i) {
+                return computeError(measurements.get(i), currentEstimation);
+            }
 
-                    @Override
-                    public boolean isReady() {
-                        return PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator.this.isReady();
-                    }
+            @Override
+            public boolean isReady() {
+                return PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator.this.isReady();
+            }
 
-                    @Override
-                    public void onEstimateStart(final RobustEstimator<Matrix> estimator) {
-                        // no action needed
-                    }
+            @Override
+            public void onEstimateStart(final RobustEstimator<Matrix> estimator) {
+                // no action needed
+            }
 
-                    @Override
-                    public void onEstimateEnd(final RobustEstimator<Matrix> estimator) {
-                        // no action needed
-                    }
+            @Override
+            public void onEstimateEnd(final RobustEstimator<Matrix> estimator) {
+                // no action needed
+            }
 
-                    @Override
-                    public void onEstimateNextIteration(final RobustEstimator<Matrix> estimator, int iteration) {
-                        if (listener != null) {
-                            listener.onCalibrateNextIteration(
-                                    PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator.this,
-                                    iteration);
-                        }
-                    }
+            @Override
+            public void onEstimateNextIteration(final RobustEstimator<Matrix> estimator, int iteration) {
+                if (listener != null) {
+                    listener.onCalibrateNextIteration(
+                            PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator.this,
+                            iteration);
+                }
+            }
 
-                    @Override
-                    public void onEstimateProgressChange(
-                            final RobustEstimator<Matrix> estimator, final float progress) {
-                        if (listener != null) {
-                            listener.onCalibrateProgressChange(
-                                    PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator.this,
-                                    progress);
-                        }
-                    }
-                });
+            @Override
+            public void onEstimateProgressChange(
+                    final RobustEstimator<Matrix> estimator, final float progress) {
+                if (listener != null) {
+                    listener.onCalibrateProgressChange(
+                            PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator.this,
+                            progress);
+                }
+            }
+        });
 
         try {
             running = true;
@@ -2193,15 +2192,15 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      * This method is used internally and does not check whether instance is
      * locked or not.
      *
-     * @param qualityScores quality scores to be set.
+     * @param qualityScoresParam quality scores to be set.
      * @throws IllegalArgumentException if provided quality scores length
      *                                  is smaller than 4 samples.
      */
-    private void internalSetQualityScores(final double[] qualityScores) {
-        if (qualityScores == null || qualityScores.length < MINIMUM_MEASUREMENTS_COMMON_Z_AXIS) {
+    private void internalSetQualityScores(final double[] qualityScoresParam) {
+        if (qualityScoresParam == null || qualityScoresParam.length < MINIMUM_MEASUREMENTS_COMMON_Z_AXIS) {
             throw new IllegalArgumentException();
         }
 
-        this.qualityScores = qualityScores;
+        qualityScores = qualityScoresParam;
     }
 }

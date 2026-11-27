@@ -44,7 +44,7 @@ public interface UnknownHardIronNonLinearMagnetometerCalibrator extends UnknownH
      *                         hard-iron bias.
      * @throws LockedException if calibrator is currently running.
      */
-    void setInitialHardIronX(final double initialHardIronX) throws LockedException;
+    void setInitialHardIronX(double initialHardIronX) throws LockedException;
 
     /**
      * Gets initial y-coordinate of magnetometer hard-iron bias to be used
@@ -64,7 +64,7 @@ public interface UnknownHardIronNonLinearMagnetometerCalibrator extends UnknownH
      *                         hard-iron bias.
      * @throws LockedException if calibrator is currently running.
      */
-    void setInitialHardIronY(final double initialHardIronY) throws LockedException;
+    void setInitialHardIronY(double initialHardIronY) throws LockedException;
 
     /**
      * Gets initial z-coordinate of magnetometer hard-iron bias to be used
@@ -84,7 +84,7 @@ public interface UnknownHardIronNonLinearMagnetometerCalibrator extends UnknownH
      *                         hard-iron bias.
      * @throws LockedException if calibrator is currently running.
      */
-    void setInitialHardIronZ(final double initialHardIronZ) throws LockedException;
+    void setInitialHardIronZ(double initialHardIronZ) throws LockedException;
 
     /**
      * Gets initial x-coordinate of magnetometer hard iron bias to be used
@@ -100,7 +100,7 @@ public interface UnknownHardIronNonLinearMagnetometerCalibrator extends UnknownH
      *
      * @param result instance where result will be stored.
      */
-    void getInitialHardIronXAsMagneticFluxDensity(final MagneticFluxDensity result);
+    void getInitialHardIronXAsMagneticFluxDensity(MagneticFluxDensity result);
 
     /**
      * Sets initial x-coordinate of magnetometer hard iron bias to be used
@@ -109,7 +109,7 @@ public interface UnknownHardIronNonLinearMagnetometerCalibrator extends UnknownH
      * @param initialHardIronX initial x-coordinate of magnetometer bias.
      * @throws LockedException if calibrator is currently running.
      */
-    void setInitialHardIronX(final MagneticFluxDensity initialHardIronX) throws LockedException;
+    void setInitialHardIronX(MagneticFluxDensity initialHardIronX) throws LockedException;
 
     /**
      * Gets initial y-coordinate of magnetometer hard iron bias to be used
@@ -125,7 +125,7 @@ public interface UnknownHardIronNonLinearMagnetometerCalibrator extends UnknownH
      *
      * @param result instance where result will be stored.
      */
-    void getInitialHardIronYAsMagneticFluxDensity(final MagneticFluxDensity result);
+    void getInitialHardIronYAsMagneticFluxDensity(MagneticFluxDensity result);
 
     /**
      * Sets initial y-coordinate of magnetometer hard iron bias to be used
@@ -134,7 +134,7 @@ public interface UnknownHardIronNonLinearMagnetometerCalibrator extends UnknownH
      * @param initialHardIronY initial y-coordinate of magnetometer bias.
      * @throws LockedException if calibrator is currently running.
      */
-    void setInitialHardIronY(final MagneticFluxDensity initialHardIronY) throws LockedException;
+    void setInitialHardIronY(MagneticFluxDensity initialHardIronY) throws LockedException;
 
     /**
      * Gets initial z-coordinate of magnetometer hard iron bias to be used
@@ -150,7 +150,7 @@ public interface UnknownHardIronNonLinearMagnetometerCalibrator extends UnknownH
      *
      * @param result instance where result will be stored.
      */
-    void getInitialHardIronZAsMagneticFluxDensity(final MagneticFluxDensity result);
+    void getInitialHardIronZAsMagneticFluxDensity(MagneticFluxDensity result);
 
     /**
      * Sets initial z-coordinate of magnetometer hard iron bias to be used
@@ -159,7 +159,7 @@ public interface UnknownHardIronNonLinearMagnetometerCalibrator extends UnknownH
      * @param initialHardIronZ initial z-coordinate of magnetometer bias.
      * @throws LockedException if calibrator is currently running.
      */
-    void setInitialHardIronZ(final MagneticFluxDensity initialHardIronZ) throws LockedException;
+    void setInitialHardIronZ(MagneticFluxDensity initialHardIronZ) throws LockedException;
 
     /**
      * Sets initial hard-iron bias coordinates of magnetometer used to find
@@ -174,7 +174,7 @@ public interface UnknownHardIronNonLinearMagnetometerCalibrator extends UnknownH
      * @throws LockedException if calibrator is currently running.
      */
     void setInitialHardIron(
-            final double initialHardIronX, final double initialHardIronY, final double initialHardIronZ)
+            double initialHardIronX, double initialHardIronY, double initialHardIronZ)
             throws LockedException;
 
     /**
@@ -186,8 +186,8 @@ public interface UnknownHardIronNonLinearMagnetometerCalibrator extends UnknownH
      * @throws LockedException if calibrator is currently running.
      */
     void setInitialHardIron(
-            final MagneticFluxDensity initialHardIronX, final MagneticFluxDensity initialHardIronY,
-            final MagneticFluxDensity initialHardIronZ) throws LockedException;
+            MagneticFluxDensity initialHardIronX, MagneticFluxDensity initialHardIronY,
+            MagneticFluxDensity initialHardIronZ) throws LockedException;
 
     /**
      * Gets initial hard-iron used to find a solution.
@@ -201,7 +201,7 @@ public interface UnknownHardIronNonLinearMagnetometerCalibrator extends UnknownH
      *
      * @param result instance where result will be stored.
      */
-    void getInitialHardIronAsTriad(final MagneticFluxDensityTriad result);
+    void getInitialHardIronAsTriad(MagneticFluxDensityTriad result);
 
     /**
      * Sets initial hard-iron used to find a solution.
@@ -209,7 +209,7 @@ public interface UnknownHardIronNonLinearMagnetometerCalibrator extends UnknownH
      * @param initialHardIron initial hard-iron to be set.
      * @throws LockedException if calibrator is currently running.
      */
-    void setInitialHardIron(final MagneticFluxDensityTriad initialHardIron) throws LockedException;
+    void setInitialHardIron(MagneticFluxDensityTriad initialHardIron) throws LockedException;
 
     /**
      * Gets initial hard-iron bias to be used to find a solution as an array.
@@ -227,7 +227,7 @@ public interface UnknownHardIronNonLinearMagnetometerCalibrator extends UnknownH
      * @throws IllegalArgumentException if provided array does not have
      *                                  length 3.
      */
-    void getInitialHardIron(final double[] result);
+    void getInitialHardIron(double[] result);
 
     /**
      * Sets initial hard-iron bias to be used to find a solution as an array.
@@ -237,7 +237,7 @@ public interface UnknownHardIronNonLinearMagnetometerCalibrator extends UnknownH
      * @throws LockedException          if calibrator is currently running.
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
-    void setInitialHardIron(final double[] initialHardIron) throws LockedException;
+    void setInitialHardIron(double[] initialHardIron) throws LockedException;
 
     /**
      * Gets initial hard-iron bias to be used to find a solution as a
@@ -255,7 +255,7 @@ public interface UnknownHardIronNonLinearMagnetometerCalibrator extends UnknownH
      * @param result instance where result data will be copied to.
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
-    void getInitialHardIronAsMatrix(final Matrix result);
+    void getInitialHardIronAsMatrix(Matrix result);
 
     /**
      * Sets initial hard-iron bias to be used to find a solution as an array.
@@ -264,5 +264,5 @@ public interface UnknownHardIronNonLinearMagnetometerCalibrator extends UnknownH
      * @throws LockedException          if calibrator is currently running.
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
-    void setInitialHardIron(final Matrix initialHardIron) throws LockedException;
+    void setInitialHardIron(Matrix initialHardIron) throws LockedException;
 }

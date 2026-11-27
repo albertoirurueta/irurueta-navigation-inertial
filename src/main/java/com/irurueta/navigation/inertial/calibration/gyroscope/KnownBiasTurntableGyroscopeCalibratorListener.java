@@ -27,12 +27,12 @@ public interface KnownBiasTurntableGyroscopeCalibratorListener {
      *
      * @param calibrator calibrator that raised the event.
      */
-    void onCalibrateStart(final KnownBiasTurntableGyroscopeCalibrator calibrator);
+    void onCalibrateStart(KnownBiasTurntableGyroscopeCalibrator calibrator);
 
     /**
      * Called when calibration ends.
      *
      * @param calibrator calibrator that raised the event.
      */
-    void onCalibrateEnd(final KnownBiasTurntableGyroscopeCalibrator calibrator);
+    void onCalibrateEnd(KnownBiasTurntableGyroscopeCalibrator calibrator);
 }

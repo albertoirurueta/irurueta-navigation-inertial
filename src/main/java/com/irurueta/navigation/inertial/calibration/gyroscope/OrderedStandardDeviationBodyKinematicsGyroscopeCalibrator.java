@@ -17,7 +17,6 @@ package com.irurueta.navigation.inertial.calibration.gyroscope;
 
 import com.irurueta.navigation.LockedException;
 import com.irurueta.navigation.inertial.calibration.StandardDeviationBodyKinematics;
-
 import java.util.List;
 
 /**
@@ -45,5 +44,5 @@ public interface OrderedStandardDeviationBodyKinematicsGyroscopeCalibrator exten
      *                     known position with unknown orientations.
      * @throws LockedException if calibrator is currently running.
      */
-    void setMeasurements(final List<StandardDeviationBodyKinematics> measurements) throws LockedException;
+    void setMeasurements(List<StandardDeviationBodyKinematics> measurements) throws LockedException;
 }

@@ -33,7 +33,6 @@ import com.irurueta.units.AngleUnit;
 import com.irurueta.units.Time;
 import com.irurueta.units.TimeConverter;
 import com.irurueta.units.TimeUnit;
-
 import java.util.Collection;
 
 /**
@@ -66,6 +65,11 @@ public class INSTightlyCoupledKalmanEpochEstimator {
      * Earth eccentricity as defined on the WGS84 ellipsoid.
      */
     public static final double EARTH_ECCENTRICITY = Constants.EARTH_ECCENTRICITY;
+
+    /**
+     * Factor applied to gravity when propagating the state (-2 / geocentric radius).
+     */
+    private static final double GRAVITY_PROPAGATION_FACTOR = -2.0;
 
     /**
      * Constructor.
@@ -159,13 +163,13 @@ public class INSTightlyCoupledKalmanEpochEstimator {
 
         final var previousPositionNorm = Math.sqrt(prevX * prevX + prevY * prevY + prevZ * prevZ);
 
-        final var estRebeOld = new Matrix(com.irurueta.navigation.frames.ECEFPosition.COMPONENTS, 1);
+        final var estRebeOld = new Matrix(ECEFPosition.COMPONENTS, 1);
         estRebeOld.setElementAtIndex(0, prevX);
         estRebeOld.setElementAtIndex(1, prevY);
         estRebeOld.setElementAtIndex(2, prevZ);
 
         final var g = gravity.asMatrix();
-        g.multiplyByScalar(-2.0 * propagationInterval / geocentricRadius);
+        g.multiplyByScalar(GRAVITY_PROPAGATION_FACTOR * propagationInterval / geocentricRadius);
 
         final var estRebeOldTrans = estRebeOld.transposeAndReturnNew();
         estRebeOldTrans.multiplyByScalar(1.0 / previousPositionNorm);
@@ -543,7 +547,8 @@ public class INSTightlyCoupledKalmanEpochEstimator {
     public static void estimate(
             final Collection<GNSSMeasurement> measurements, final double propagationInterval,
             final INSTightlyCoupledKalmanState previousState, final double fx, final double fy, final double fz,
-            final INSTightlyCoupledKalmanConfig config, final INSTightlyCoupledKalmanState result) throws AlgebraException {
+            final INSTightlyCoupledKalmanConfig config, final INSTightlyCoupledKalmanState result)
+            throws AlgebraException {
 
         final var prevNedPosition = new NEDPosition();
         final var prevNedVelocity = new NEDVelocity();

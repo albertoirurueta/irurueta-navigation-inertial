@@ -23,6 +23,7 @@ import java.io.InputStreamReader;
 import java.io.StreamTokenizer;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Loads a WWM from a file of coefficients.
@@ -59,7 +60,7 @@ public class WMMLoader {
      * @throws IOException if an I/O error occurs.
      */
     public static WorldMagneticModel loadFromResource(final String resource) throws IOException {
-        try (final var stream = WMMLoader.class.getResourceAsStream(resource)) {
+        try (var stream = WMMLoader.class.getResourceAsStream(resource)) {
             return load(stream);
         }
     }
@@ -84,7 +85,7 @@ public class WMMLoader {
      * @throws IOException if an I/O error occurs.
      */
     public static WorldMagneticModel loadFromFile(final String filePath) throws IOException {
-        try (final var stream = new FileInputStream(filePath)) {
+        try (var stream = new FileInputStream(filePath)) {
             return load(stream);
         }
     }
@@ -100,7 +101,7 @@ public class WMMLoader {
     public static WorldMagneticModel load(final URL url) throws IOException {
         final var connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
-        try (final var stream = connection.getInputStream()) {
+        try (var stream = connection.getInputStream()) {
             return load(stream);
         }
     }
@@ -113,30 +114,31 @@ public class WMMLoader {
      * @throws IOException if an I/O error occurs.
      */
     public static WorldMagneticModel load(final File file) throws IOException {
-        try (final var stream = new FileInputStream(file)) {
+        try (var stream = new FileInputStream(file)) {
             return load(stream);
         }
     }
 
     /**
      * Loads World Magnetic Model from provided stream of data.
+     * The stream is decoded as UTF-8 regardless of the platform default charset.
      *
      * @param stream a stream of data.
      * @return a World Magnetic Model containing all required coefficients.
      * @throws IOException if an I/O error occurs.
      */
     public static WorldMagneticModel load(final InputStream stream) throws IOException {
-        try (final var reader = new InputStreamReader(stream)) {
+        try (var reader = new InputStreamReader(stream, StandardCharsets.UTF_8)) {
             final var result = new WorldMagneticModel();
             final var tokenizer = new StreamTokenizer(reader);
 
             // Read World Magnetic Model spherical harmonic coefficients
-            result.snorm[0] = 1.0;
-            result.c[0][0] = 0.0;
-            result.cd[0][0] = 0.0;
+            result.getSnorm()[0] = 1.0;
+            result.getC()[0][0] = 0.0;
+            result.getCd()[0][0] = 0.0;
 
             tokenizer.nextToken();
-            result.epoch = tokenizer.nval;
+            result.updateEpoch(tokenizer.nval);
             tokenizer.nextToken();
             tokenizer.nextToken();
 
@@ -161,41 +163,42 @@ public class WMMLoader {
                 final var dhnm = tokenizer.nval;
 
                 if (m <= n) {
-                    result.c[m][n] = gnm;
-                    result.cd[m][n] = dgnm;
+                    result.getC()[m][n] = gnm;
+                    result.getCd()[m][n] = dgnm;
 
                     if (m != 0) {
-                        result.c[n][m - 1] = hnm;
-                        result.cd[n][m - 1] = dhnm;
+                        result.getC()[n][m - 1] = hnm;
+                        result.getCd()[n][m - 1] = dhnm;
                     }
                 }
             }
 
             // convert Schmidt normalized Gauss coefficients to un-normalized
-            result.snorm[0] = 1.0;
+            result.getSnorm()[0] = 1.0;
             for (var n = 1; n <= WorldMagneticModel.MAX_ORDER; n++) {
 
-                result.snorm[n] = result.snorm[n - 1] * (2 * n - 1) / n;
+                result.getSnorm()[n] = result.getSnorm()[n - 1] * (2 * n - 1) / n;
                 var j = 2;
 
                 for (int m = 0, D1 = 1, D2 = (n - m + D1) / D1; D2 > 0; D2--, m += D1) {
-                    result.k[m][n] = (double) (((n - 1) * (n - 1)) - (m * m)) / (double) ((2 * n - 1) * (2 * n - 3));
+                    result.getK()[m][n] = (double) (((n - 1) * (n - 1)) - (m * m))
+                            / (double) ((2 * n - 1) * (2 * n - 3));
                     if (m > 0) {
-                        final var flnmj = ((n - m + 1) * j) / (double) (n + m);
-                        result.snorm[n + m * N] = result.snorm[n + (m - 1) * N] * Math.sqrt(flnmj);
+                        final var flnmj = (n - m + 1) * j / (double) (n + m);
+                        result.getSnorm()[n + m * N] = result.getSnorm()[n + (m - 1) * N] * Math.sqrt(flnmj);
                         j = 1;
-                        result.c[n][m - 1] = result.snorm[n + m * N] * result.c[n][m - 1];
-                        result.cd[n][m - 1] = result.snorm[n + m * N] * result.cd[n][m - 1];
+                        result.getC()[n][m - 1] = result.getSnorm()[n + m * N] * result.getC()[n][m - 1];
+                        result.getCd()[n][m - 1] = result.getSnorm()[n + m * N] * result.getCd()[n][m - 1];
                     }
-                    result.c[m][n] = result.snorm[n + m * N] * result.c[m][n];
-                    result.cd[m][n] = result.snorm[n + m * N] * result.cd[m][n];
+                    result.getC()[m][n] = result.getSnorm()[n + m * N] * result.getC()[m][n];
+                    result.getCd()[m][n] = result.getSnorm()[n + m * N] * result.getCd()[m][n];
                 }
 
-                result.fn[n] = (n + 1);
-                result.fm[n] = n;
+                result.getFn()[n] = (n + 1);
+                result.getFm()[n] = n;
             }
 
-            result.k[1][1] = 0.0;
+            result.getK()[1][1] = 0.0;
 
             return result;
         }

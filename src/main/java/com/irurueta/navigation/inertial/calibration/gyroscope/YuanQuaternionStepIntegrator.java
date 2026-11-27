@@ -27,6 +27,9 @@ import com.irurueta.geometry.RotationException;
  */
 public class YuanQuaternionStepIntegrator extends QuaternionStepIntegrator {
 
+    /**
+     * Threshold below which the rotation angle is considered zero, so that sinc is approximated by 1.
+     */
     private static final double EPSILON = 1e-15;
 
     /**
