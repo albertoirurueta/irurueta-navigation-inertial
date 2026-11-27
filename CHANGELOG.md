@@ -20,6 +20,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
   import, modifier, declaration order, Javadoc and line length fixes, with no public API changes. The remaining
   findings (`MagicNumber`, `HiddenField`, `ParameterNumber`, `ThrowsCount`) are numerical constants or public API
   signatures (issue #47).
+- SpotBugs now uses the repository's own `spotbugs-exclude.xml` filter, both from the command line
+  (`mvn spotbugs:spotbugs`) and in the Maven site report. It excludes only `CT_CONSTRUCTOR_THROW` (constructors
+  validate arguments through setters by design) and `EI_EXPOSE_REP`/`EI_EXPOSE_REP2` (numerical APIs share
+  `Matrix`, array and collection instances on purpose), scoped to this library's packages; SpotBugs reports no
+  findings under `src/main/java` (issue #49).
+
+### Fixed
+
+- `WMMLoader` now reads World Magnetic Model coefficient files as UTF-8 instead of depending on the platform default
+  charset (issue #49).
+- `clone()` of state, configuration and measurement classes no longer calls the overridable `copyTo` method, and
+  clones no longer share mutable objects (matrices, arrays, nested values) with the original (issue #49).
+- `StandardDeviationBodyMagneticFluxDensity.clone()` previously returned a shallow copy sharing the magnetic flux
+  density with the original; it now returns a deep copy (issue #49).
 
 ## [1.12.0] - 2026-11-25
 

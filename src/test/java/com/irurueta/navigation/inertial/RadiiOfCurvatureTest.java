@@ -295,6 +295,12 @@ class RadiiOfCurvatureTest {
 
         // check
         assertEquals(radii1, radii2);
+
+        // check clone is an independent instance
+        final var clone = (RadiiOfCurvature) radii2;
+        assertNotSame(radii1, clone);
+        clone.setRn(rn + 1.0);
+        assertEquals(rn, radii1.getRn(), 0.0);
     }
 
     @Test

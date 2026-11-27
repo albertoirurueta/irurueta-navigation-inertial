@@ -509,8 +509,6 @@ public class INSLooselyCoupledKalmanInitializerConfig implements Serializable, C
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
-        final var result = (INSLooselyCoupledKalmanInitializerConfig) super.clone();
-        copyTo(result);
-        return result;
+        return super.clone();
     }
 }

@@ -577,6 +577,22 @@ class TimedBodyKinematicsAndMagneticFluxDensityTest {
 
         // check
         assertEquals(tkb1, tkb2);
+
+        // check clone is an independent instance holding its own mutable fields
+        assertEquals(TimedBodyKinematicsAndMagneticFluxDensity.class, tkb2.getClass());
+        final var clone = (TimedBodyKinematicsAndMagneticFluxDensity) tkb2;
+        assertNotSame(tkb1, clone);
+        assertNotSame(tkb1.getKinematics(), clone.getKinematics());
+        final var originalFx = tkb1.getKinematics().getFx();
+        clone.getKinematics().setFx(originalFx + 1.0);
+        assertEquals(originalFx, tkb1.getKinematics().getFx(), 0.0);
+        assertNotSame(tkb1.getMagneticFluxDensity(), clone.getMagneticFluxDensity());
+        final var originalBx = tkb1.getMagneticFluxDensity().getBx();
+        clone.getMagneticFluxDensity().setBx(originalBx + 1.0);
+        assertEquals(originalBx, tkb1.getMagneticFluxDensity().getBx(), 0.0);
+        assertEquals(timestampSeconds, clone.getTimestampSeconds(), 0.0);
+        clone.setTimestampSeconds(timestampSeconds + 1.0);
+        assertEquals(timestampSeconds, tkb1.getTimestampSeconds(), 0.0);
     }
 
     @Test

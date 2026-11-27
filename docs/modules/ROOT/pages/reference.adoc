@@ -40,6 +40,14 @@ NOTE: The PMD report applies the rule set in the repository's `pmd-ruleset.xml`,
 rules and accepts documented empty `catch` blocks (commented, or with the exception named `ignore`, `ignored`
 or `expected`). Running `mvn pmd:pmd` from the command line uses the same file.
 
+NOTE: The SpotBugs report applies the exclusion filter in the repository's `spotbugs-exclude.xml`, which is
+used both by command-line runs of `mvn spotbugs:spotbugs` and by the Maven site report, so a local run
+reports the same findings as the published report. The filter only excludes patterns that flag intentional,
+documented design decisions of this library, scoped to its own packages: `CT_CONSTRUCTOR_THROW`, because
+constructors validate their arguments through setters by design, and `EI_EXPOSE_REP` / `EI_EXPOSE_REP2`,
+because the numerical APIs share `Matrix`, array and collection instances on purpose to avoid copies. Every
+other pattern is fixed in code instead of being excluded.
+
 [#bibliography]
 == Bibliography
 

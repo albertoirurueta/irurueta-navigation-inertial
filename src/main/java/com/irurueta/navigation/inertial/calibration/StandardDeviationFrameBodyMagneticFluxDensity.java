@@ -814,8 +814,6 @@ public class StandardDeviationFrameBodyMagneticFluxDensity extends FrameBodyMagn
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
-        final var result = (StandardDeviationFrameBodyMagneticFluxDensity) super.clone();
-        copyTo(result);
-        return result;
+        return super.clone();
     }
 }

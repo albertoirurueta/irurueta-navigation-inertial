@@ -347,9 +347,7 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
-        final var result = (TimedBodyKinematicsAndMagneticFluxDensity) super.clone();
-        copyTo(result);
-        return result;
+        return super.clone();
     }
 
     /**

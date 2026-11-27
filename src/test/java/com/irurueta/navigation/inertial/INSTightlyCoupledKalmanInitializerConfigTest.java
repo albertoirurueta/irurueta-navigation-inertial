@@ -641,6 +641,12 @@ class INSTightlyCoupledKalmanInitializerConfigTest {
         final var config2 = config1.clone();
 
         assertEquals(config1, config2);
+
+        // check clone is an independent instance
+        final var clone = (INSTightlyCoupledKalmanInitializerConfig) config2;
+        assertNotSame(config1, clone);
+        clone.setInitialAttitudeUncertainty(initialAttitudeUncertainty + 1.0);
+        assertEquals(initialAttitudeUncertainty, config1.getInitialAttitudeUncertainty(), 0.0);
     }
 
     @Test

@@ -17,11 +17,15 @@ package com.irurueta.navigation.inertial.wmm;
 
 import org.junit.jupiter.api.Test;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class WMMLoaderTest {
@@ -71,5 +75,31 @@ class WMMLoaderTest {
         stream.close();
 
         assertNotNull(model);
+    }
+
+    /**
+     * Checks that loading the bundled model from an in-memory stream of its raw bytes yields
+     * the same coefficients as loading it from the file, so decoding does not depend on the
+     * platform default charset.
+     *
+     * @throws IOException if the model file cannot be read.
+     */
+    @Test
+    void load_whenStreamOfModelFileBytes_returnsModelEqualToFileModel() throws IOException {
+        final var file = new File(FILE_PATH);
+        final var bytes = Files.readAllBytes(file.toPath());
+
+        final var expected = WMMLoader.load(file);
+        final WorldMagneticModel actual;
+        try (var stream = new ByteArrayInputStream(bytes)) {
+            actual = WMMLoader.load(stream);
+        }
+
+        assertEquals(expected.getEpoch(), actual.getEpoch(), 0.0);
+        assertArrayEquals(expected.getC(), actual.getC());
+        assertArrayEquals(expected.getCd(), actual.getCd());
+        assertArrayEquals(expected.getSnorm(), actual.getSnorm(), 0.0);
+        assertEquals(expected.getC()[1][0], actual.getC()[1][0], 0.0);
+        assertEquals(expected.getCd()[1][0], actual.getCd()[1][0], 0.0);
     }
 }

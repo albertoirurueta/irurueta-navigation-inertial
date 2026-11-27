@@ -1198,6 +1198,23 @@ class StandardDeviationTimedBodyKinematicsTest {
 
         // check
         assertEquals(standardDeviationTimedBodyKinematics1, standardDeviationTimedBodyKinematics2);
+
+        // check clone is an independent instance holding its own mutable fields
+        assertEquals(StandardDeviationTimedBodyKinematics.class, standardDeviationTimedBodyKinematics2.getClass());
+        final var clone = (StandardDeviationTimedBodyKinematics) standardDeviationTimedBodyKinematics2;
+        assertNotSame(standardDeviationTimedBodyKinematics1, clone);
+        assertNotSame(standardDeviationTimedBodyKinematics1.getKinematics(), clone.getKinematics());
+        final var originalFx = standardDeviationTimedBodyKinematics1.getKinematics().getFx();
+        clone.getKinematics().setFx(originalFx + 1.0);
+        assertEquals(originalFx, standardDeviationTimedBodyKinematics1.getKinematics().getFx(), 0.0);
+        assertEquals(specificForceStandardDeviation, clone.getSpecificForceStandardDeviation(), 0.0);
+        clone.setSpecificForceStandardDeviation(specificForceStandardDeviation + 1.0);
+        assertEquals(specificForceStandardDeviation,
+                standardDeviationTimedBodyKinematics1.getSpecificForceStandardDeviation(), 0.0);
+        assertEquals(angularRateStandardDeviation, clone.getAngularRateStandardDeviation(), 0.0);
+        clone.setAngularRateStandardDeviation(angularRateStandardDeviation + 1.0);
+        assertEquals(angularRateStandardDeviation,
+                standardDeviationTimedBodyKinematics1.getAngularRateStandardDeviation(), 0.0);
     }
 
     @Test

@@ -1476,9 +1476,7 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
-        final var result = (StandardDeviationFrameBodyKinematics) super.clone();
-        copyTo(result);
-        return result;
+        return super.clone();
     }
 
     /**

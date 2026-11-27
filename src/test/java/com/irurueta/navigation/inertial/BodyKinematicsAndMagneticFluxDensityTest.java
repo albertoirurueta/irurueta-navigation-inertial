@@ -301,6 +301,18 @@ class BodyKinematicsAndMagneticFluxDensityTest {
 
         // check
         assertEquals(kb1, kb2);
+
+        // check clone is an independent instance holding its own mutable fields
+        final var clone = (BodyKinematicsAndMagneticFluxDensity) kb2;
+        assertNotSame(kb1, clone);
+        assertNotSame(kb1.getKinematics(), clone.getKinematics());
+        final var originalFx = kb1.getKinematics().getFx();
+        clone.getKinematics().setFx(originalFx + 1.0);
+        assertEquals(originalFx, kb1.getKinematics().getFx(), 0.0);
+        assertNotSame(kb1.getMagneticFluxDensity(), clone.getMagneticFluxDensity());
+        final var originalBx = kb1.getMagneticFluxDensity().getBx();
+        clone.getMagneticFluxDensity().setBx(originalBx + 1.0);
+        assertEquals(originalBx, kb1.getMagneticFluxDensity().getBx(), 0.0);
     }
 
     @Test

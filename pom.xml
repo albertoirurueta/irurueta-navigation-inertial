@@ -221,10 +221,14 @@
         </executions>
       </plugin>
       <!-- code quality plugins -->
+      <!-- makes CLI runs of spotbugs:spotbugs use the repository's spotbugs-exclude.xml (no lifecycle binding) -->
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
         <version>4.9.6.0</version>
+        <configuration>
+          <excludeFilterFile>spotbugs-exclude.xml</excludeFilterFile>
+        </configuration>
       </plugin>
       <!-- maven site -->
       <plugin>
@@ -377,10 +381,14 @@
         </reportSets>
       </plugin>
 
+      <!-- makes the site SpotBugs report use the repository's spotbugs-exclude.xml -->
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
         <version>4.9.6.0</version>
+        <configuration>
+          <excludeFilterFile>spotbugs-exclude.xml</excludeFilterFile>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

@@ -1157,6 +1157,23 @@ class StandardDeviationFrameBodyMagneticFluxDensityTest {
 
         // check
         assertEquals(frameBodyMagneticFluxDensity1, frameBodyMagneticFluxDensity2);
+
+        // check clone is an independent instance holding its own mutable fields
+        assertEquals(StandardDeviationFrameBodyMagneticFluxDensity.class, frameBodyMagneticFluxDensity2.getClass());
+        final var clone = (StandardDeviationFrameBodyMagneticFluxDensity) frameBodyMagneticFluxDensity2;
+        assertNotSame(frameBodyMagneticFluxDensity1, clone);
+        assertNotSame(frameBodyMagneticFluxDensity1.getMagneticFluxDensity(), clone.getMagneticFluxDensity());
+        final var originalBx = frameBodyMagneticFluxDensity1.getMagneticFluxDensity().getBx();
+        clone.getMagneticFluxDensity().setBx(originalBx + 1.0);
+        assertEquals(originalBx, frameBodyMagneticFluxDensity1.getMagneticFluxDensity().getBx(), 0.0);
+        assertNotSame(frameBodyMagneticFluxDensity1.getFrame(), clone.getFrame());
+        final var originalX = frameBodyMagneticFluxDensity1.getFrame().getX();
+        clone.getFrame().setX(originalX + 1.0);
+        assertEquals(originalX, frameBodyMagneticFluxDensity1.getFrame().getX(), 0.0);
+        assertEquals(magneticFluxDensityStandardDeviation, clone.getMagneticFluxDensityStandardDeviation(), 0.0);
+        clone.setMagneticFluxDensityStandardDeviation(magneticFluxDensityStandardDeviation + 1.0);
+        assertEquals(magneticFluxDensityStandardDeviation,
+                frameBodyMagneticFluxDensity1.getMagneticFluxDensityStandardDeviation(), 0.0);
     }
 
     @Test

@@ -2117,6 +2117,20 @@ class INSLooselyCoupledKalmanStateTest {
         final var state2 = state1.clone();
 
         assertEquals(state1, state2);
+
+        // check clone is an independent instance holding its own matrices
+        final var clone = (INSLooselyCoupledKalmanState) state2;
+        assertNotSame(state1, clone);
+        assertNotSame(state1.getBodyToEcefCoordinateTransformationMatrix(),
+                clone.getBodyToEcefCoordinateTransformationMatrix());
+        assertNotSame(state1.getCovariance(), clone.getCovariance());
+        final var originalMatrixValue = state1.getBodyToEcefCoordinateTransformationMatrix().getElementAt(0, 0);
+        final var originalCovarianceValue = state1.getCovariance().getElementAt(0, 0);
+        clone.getBodyToEcefCoordinateTransformationMatrix().setElementAt(0, 0, 42.0);
+        clone.getCovariance().setElementAt(0, 0, 42.0);
+        assertEquals(originalMatrixValue, state1.getBodyToEcefCoordinateTransformationMatrix().getElementAt(0, 0),
+                0.0);
+        assertEquals(originalCovarianceValue, state1.getCovariance().getElementAt(0, 0), 0.0);
     }
 
     @Test

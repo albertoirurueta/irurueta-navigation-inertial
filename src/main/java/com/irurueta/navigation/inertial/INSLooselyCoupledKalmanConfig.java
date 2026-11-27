@@ -461,8 +461,6 @@ public class INSLooselyCoupledKalmanConfig implements Serializable, Cloneable {
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
-        final var result = (INSLooselyCoupledKalmanConfig) super.clone();
-        copyTo(result);
-        return result;
+        return super.clone();
     }
 }
