@@ -87,6 +87,9 @@ WorldMagneticModel model = WMMLoader.loadFromFile("/path/to/WMM.COF");
 // WMMLoader.loadFromUrl("https://example.org/WMM.COF");
 ----
 
+Every loader decodes the coefficient file as UTF-8, regardless of the platform default charset, so the
+same file parses identically on every JVM.
+
 == WMMEarthMagneticFluxDensityEstimator: evaluating the model
 
 Given a geodetic position and a decimal year, the estimator:

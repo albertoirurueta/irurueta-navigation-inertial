@@ -622,6 +622,12 @@ class NEDMagneticFluxDensityTest {
 
         // check
         assertEquals(b1, b2);
+
+        // check clone is an independent instance
+        final var clone = (NEDMagneticFluxDensity) b2;
+        assertNotSame(b1, clone);
+        clone.setBn(bn + 1.0);
+        assertEquals(bn, b1.getBn(), 0.0);
     }
 
     @Test

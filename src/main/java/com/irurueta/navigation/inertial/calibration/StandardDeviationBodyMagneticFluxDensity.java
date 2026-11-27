@@ -242,7 +242,21 @@ public class StandardDeviationBodyMagneticFluxDensity implements Serializable, C
     @Override
     protected Object clone() throws CloneNotSupportedException {
         final var result = (StandardDeviationBodyMagneticFluxDensity) super.clone();
-        copyTo(result);
-        return super.clone();
+        copyFieldsTo(result);
+        return result;
+    }
+
+    /**
+     * Copies the mutable reference fields of this instance into provided output instance,
+     * allocating new instances so that output never shares them with this instance.
+     * Primitive fields are not copied here because {@link Object#clone()} already copies them.
+     * This method is private so that it cannot be overridden and can be safely called from
+     * {@link #clone()}.
+     *
+     * @param output instance where reference fields will be copied to.
+     */
+    private void copyFieldsTo(final StandardDeviationBodyMagneticFluxDensity output) {
+        output.magneticFluxDensity = magneticFluxDensity != null
+                ? new BodyMagneticFluxDensity(magneticFluxDensity) : null;
     }
 }

@@ -432,6 +432,14 @@ class StandardDeviationBodyKinematicsTest {
 
         // check
         assertEquals(stdKinematics1, stdKinematics2);
+
+        // check clone is an independent instance holding its own mutable fields
+        final var clone = (StandardDeviationBodyKinematics) stdKinematics2;
+        assertNotSame(stdKinematics1, clone);
+        assertNotSame(stdKinematics1.getKinematics(), clone.getKinematics());
+        final var originalFx = stdKinematics1.getKinematics().getFx();
+        clone.getKinematics().setFx(originalFx + 1.0);
+        assertEquals(originalFx, stdKinematics1.getKinematics().getFx(), 0.0);
     }
 
     @Test

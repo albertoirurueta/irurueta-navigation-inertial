@@ -550,8 +550,6 @@ public class INSTightlyCoupledKalmanConfig implements Serializable, Cloneable {
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
-        final var result = (INSTightlyCoupledKalmanConfig) super.clone();
-        copyTo(result);
-        return result;
+        return super.clone();
     }
 }

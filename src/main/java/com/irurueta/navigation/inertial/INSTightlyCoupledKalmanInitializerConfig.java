@@ -648,8 +648,6 @@ public class INSTightlyCoupledKalmanInitializerConfig implements Serializable, C
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
-        final var result = (INSTightlyCoupledKalmanInitializerConfig) super.clone();
-        copyTo(result);
-        return result;
+        return super.clone();
     }
 }

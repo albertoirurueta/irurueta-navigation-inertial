@@ -385,8 +385,6 @@ public class RadiiOfCurvature implements Serializable, Cloneable {
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
-        final var result = (RadiiOfCurvature) super.clone();
-        copyTo(result);
-        return result;
+        return super.clone();
     }
 }

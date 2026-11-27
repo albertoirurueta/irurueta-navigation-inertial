@@ -402,6 +402,12 @@ class NEDGravityTest {
 
         // check
         assertEquals(gravity1, gravity2);
+
+        // check clone is an independent instance
+        final var clone = (NEDGravity) gravity2;
+        assertNotSame(gravity1, clone);
+        clone.setGn(gn + 1.0);
+        assertEquals(gn, gravity1.getGn(), 0.0);
     }
 
     @Test

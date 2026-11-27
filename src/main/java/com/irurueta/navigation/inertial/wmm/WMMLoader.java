@@ -23,6 +23,7 @@ import java.io.InputStreamReader;
 import java.io.StreamTokenizer;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Loads a WWM from a file of coefficients.
@@ -120,13 +121,14 @@ public class WMMLoader {
 
     /**
      * Loads World Magnetic Model from provided stream of data.
+     * The stream is decoded as UTF-8 regardless of the platform default charset.
      *
      * @param stream a stream of data.
      * @return a World Magnetic Model containing all required coefficients.
      * @throws IOException if an I/O error occurs.
      */
     public static WorldMagneticModel load(final InputStream stream) throws IOException {
-        try (var reader = new InputStreamReader(stream)) {
+        try (var reader = new InputStreamReader(stream, StandardCharsets.UTF_8)) {
             final var result = new WorldMagneticModel();
             final var tokenizer = new StreamTokenizer(reader);
 

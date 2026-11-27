@@ -518,9 +518,7 @@ public class StandardDeviationTimedBodyKinematics extends TimedBodyKinematics {
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
-        final var result = (StandardDeviationTimedBodyKinematics) super.clone();
-        copyTo(result);
-        return result;
+        return super.clone();
     }
 
     /**

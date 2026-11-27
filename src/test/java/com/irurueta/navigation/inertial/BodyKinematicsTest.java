@@ -1022,6 +1022,12 @@ class BodyKinematicsTest {
 
         // check
         assertEquals(k1, k2);
+
+        // check clone is an independent instance
+        final var clone = (BodyKinematics) k2;
+        assertNotSame(k1, clone);
+        clone.setFx(fx + 1.0);
+        assertEquals(fx, k1.getFx(), 0.0);
     }
 
     @Test

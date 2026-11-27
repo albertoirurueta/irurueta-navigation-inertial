@@ -504,9 +504,7 @@ public class NEDMagneticFluxDensity implements Serializable, Cloneable {
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
-        final var result = (NEDMagneticFluxDensity) super.clone();
-        copyTo(result);
-        return result;
+        return super.clone();
     }
 
     /**

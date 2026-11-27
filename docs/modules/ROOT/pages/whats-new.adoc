@@ -6,6 +6,9 @@ NOTE: This documentation was generated with the assistance of AI. Please report 
 
 == Unreleased
 
+* 🐛 `WMMLoader` now reads World Magnetic Model coefficient files as UTF-8 instead of the platform default charset (https://github.com/albertoirurueta/irurueta-navigation-inertial/issues/49[#49]).
+* 🐛 `clone()` of state, configuration and measurement classes no longer calls the overridable `copyTo` method, and clones no longer share mutable objects (matrices, arrays, nested values) with the original; `StandardDeviationBodyMagneticFluxDensity.clone()` now returns a deep copy instead of a shallow one (https://github.com/albertoirurueta/irurueta-navigation-inertial/issues/49[#49]).
+* ♻️ SpotBugs now applies the repository's `spotbugs-exclude.xml` filter (only `CT_CONSTRUCTOR_THROW`, `EI_EXPOSE_REP` and `EI_EXPOSE_REP2`, see xref:reference.adoc[Reference]) and reports no findings in the library source (https://github.com/albertoirurueta/irurueta-navigation-inertial/issues/49[#49]).
 * 🐛 Fixed flaky magnetometer calibrator tests (https://github.com/albertoirurueta/irurueta-navigation-inertial/issues/46[#46]): noisy known-position and robust norm/position tests now use the same 2 nT noise as their siblings, a realistic soft-iron range and tolerances tighter than the generated values, and robust retry loops skip attempts without a consensus. No changes to library source.
 
 == 1.12.0

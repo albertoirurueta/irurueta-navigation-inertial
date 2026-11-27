@@ -960,8 +960,6 @@ public class BodyKinematics implements Serializable, Cloneable {
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
-        final var result = (BodyKinematics) super.clone();
-        copyTo(result);
-        return result;
+        return super.clone();
     }
 }

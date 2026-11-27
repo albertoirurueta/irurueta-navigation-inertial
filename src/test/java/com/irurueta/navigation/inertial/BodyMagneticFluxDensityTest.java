@@ -621,6 +621,12 @@ class BodyMagneticFluxDensityTest {
 
         // check
         assertEquals(b1, b2);
+
+        // check clone is an independent instance
+        final var clone = (BodyMagneticFluxDensity) b2;
+        assertNotSame(b1, clone);
+        clone.setBx(bx + 1.0);
+        assertEquals(bx, b1.getBx(), 0.0);
     }
 
     @Test
