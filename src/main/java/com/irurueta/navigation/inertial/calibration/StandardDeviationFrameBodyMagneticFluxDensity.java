@@ -808,6 +808,10 @@ public class StandardDeviationFrameBodyMagneticFluxDensity extends FrameBodyMagn
 
     /**
      * Makes a copy of this instance.
+     * Relies on {@link FrameBodyMagneticFluxDensity#clone()}, which already gives the copy its own instances of the
+     * inherited mutable fields (magnetic flux density and frame). Fields declared in this class are primitives, so the
+     * shallow copy made by {@link Object#clone()} is enough for them. If a mutable reference field is
+     * ever added to this class, this method must copy it as well so that it is not shared with the copy.
      *
      * @return a copy of this instance.
      * @throws CloneNotSupportedException if clone fails for some reason.
