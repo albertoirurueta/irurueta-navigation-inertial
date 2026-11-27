@@ -796,7 +796,7 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
      * @throws LockedException if static interval detector is busy.
      */
     private void setupListener() throws LockedException {
-        final var listener = new AccelerationTriadStaticIntervalDetectorListener() {
+        final var listenerLocal = new AccelerationTriadStaticIntervalDetectorListener() {
             @Override
             public void onInitializationStarted(final AccelerationTriadStaticIntervalDetector detector) {
 
@@ -900,6 +900,6 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
                 // no action needed
             }
         };
-        staticIntervalDetector.setListener(listener);
+        staticIntervalDetector.setListener(listenerLocal);
     }
 }

@@ -1516,43 +1516,44 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      * Sets known hard-iron bias coordinates of magnetometer expressed in
      * Teslas (T).
      *
-     * @param hardIronX x-coordinate of magnetometer
+     * @param hardIronXParam x-coordinate of magnetometer
      *                  known hard-iron bias.
-     * @param hardIronY y-coordinate of magnetometer
+     * @param hardIronYParam y-coordinate of magnetometer
      *                  known hard-iron bias.
-     * @param hardIronZ z-coordinate of magnetometer
+     * @param hardIronZParam z-coordinate of magnetometer
      *                  known hard-iron bias.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
     public void setHardIronCoordinates(
-            final double hardIronX, final double hardIronY, final double hardIronZ) throws LockedException {
+            final double hardIronXParam, final double hardIronYParam,
+            final double hardIronZParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        this.hardIronX = hardIronX;
-        this.hardIronY = hardIronY;
-        this.hardIronZ = hardIronZ;
+        this.hardIronX = hardIronXParam;
+        this.hardIronY = hardIronYParam;
+        this.hardIronZ = hardIronZParam;
     }
 
     /**
      * Sets known hard-iron coordinates.
      *
-     * @param hardIronX x-coordinate of magnetometer hard-iron.
-     * @param hardIronY y-coordinate of magnetometer hard-iron.
-     * @param hardIronZ z-coordinate of magnetometer hard-iron.
+     * @param hardIronXParam x-coordinate of magnetometer hard-iron.
+     * @param hardIronYParam y-coordinate of magnetometer hard-iron.
+     * @param hardIronZParam z-coordinate of magnetometer hard-iron.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
     public void setHardIronCoordinates(
-            final MagneticFluxDensity hardIronX, final MagneticFluxDensity hardIronY,
-            final MagneticFluxDensity hardIronZ) throws LockedException {
+            final MagneticFluxDensity hardIronXParam, final MagneticFluxDensity hardIronYParam,
+            final MagneticFluxDensity hardIronZParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        this.hardIronX = convertMagneticFluxDensity(hardIronX);
-        this.hardIronY = convertMagneticFluxDensity(hardIronY);
-        this.hardIronZ = convertMagneticFluxDensity(hardIronZ);
+        this.hardIronX = convertMagneticFluxDensity(hardIronXParam);
+        this.hardIronY = convertMagneticFluxDensity(hardIronYParam);
+        this.hardIronZ = convertMagneticFluxDensity(hardIronZParam);
     }
 
     /**
@@ -1811,72 +1812,76 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
     /**
      * Sets initial scaling factors.
      *
-     * @param initialSx initial x scaling factor.
-     * @param initialSy initial y scaling factor.
-     * @param initialSz initial z scaling factor.
+     * @param initialSxParam initial x scaling factor.
+     * @param initialSyParam initial y scaling factor.
+     * @param initialSzParam initial z scaling factor.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
     public void setInitialScalingFactors(
-            final double initialSx, final double initialSy, final double initialSz) throws LockedException {
+            final double initialSxParam, final double initialSyParam,
+            final double initialSzParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        this.initialSx = initialSx;
-        this.initialSy = initialSy;
-        this.initialSz = initialSz;
+        this.initialSx = initialSxParam;
+        this.initialSy = initialSyParam;
+        this.initialSz = initialSzParam;
     }
 
     /**
      * Sets initial cross coupling errors.
      *
-     * @param initialMxy initial x-y cross coupling error.
-     * @param initialMxz initial x-z cross coupling error.
-     * @param initialMyx initial y-x cross coupling error.
-     * @param initialMyz initial y-z cross coupling error.
-     * @param initialMzx initial z-x cross coupling error.
-     * @param initialMzy initial z-y cross coupling error.
+     * @param initialMxyParam initial x-y cross coupling error.
+     * @param initialMxzParam initial x-z cross coupling error.
+     * @param initialMyxParam initial y-x cross coupling error.
+     * @param initialMyzParam initial y-z cross coupling error.
+     * @param initialMzxParam initial z-x cross coupling error.
+     * @param initialMzyParam initial z-y cross coupling error.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
     public void setInitialCrossCouplingErrors(
-            final double initialMxy, final double initialMxz, final double initialMyx,
-            final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
+            final double initialMxyParam, final double initialMxzParam, final double initialMyxParam,
+            final double initialMyzParam, final double initialMzxParam,
+            final double initialMzyParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        this.initialMxy = initialMxy;
-        this.initialMxz = initialMxz;
-        this.initialMyx = initialMyx;
-        this.initialMyz = initialMyz;
-        this.initialMzx = initialMzx;
-        this.initialMzy = initialMzy;
+        this.initialMxy = initialMxyParam;
+        this.initialMxz = initialMxzParam;
+        this.initialMyx = initialMyxParam;
+        this.initialMyz = initialMyzParam;
+        this.initialMzx = initialMzxParam;
+        this.initialMzy = initialMzyParam;
     }
 
     /**
      * Sets initial scaling factors and cross coupling errors.
      *
-     * @param initialSx  initial x scaling factor.
-     * @param initialSy  initial y scaling factor.
-     * @param initialSz  initial z scaling factor.
-     * @param initialMxy initial x-y cross coupling error.
-     * @param initialMxz initial x-z cross coupling error.
-     * @param initialMyx initial y-x cross coupling error.
-     * @param initialMyz initial y-z cross coupling error.
-     * @param initialMzx initial z-x cross coupling error.
-     * @param initialMzy initial z-y cross coupling error.
+     * @param initialSxParam  initial x scaling factor.
+     * @param initialSyParam  initial y scaling factor.
+     * @param initialSzParam  initial z scaling factor.
+     * @param initialMxyParam initial x-y cross coupling error.
+     * @param initialMxzParam initial x-z cross coupling error.
+     * @param initialMyxParam initial y-x cross coupling error.
+     * @param initialMyzParam initial y-z cross coupling error.
+     * @param initialMzxParam initial z-x cross coupling error.
+     * @param initialMzyParam initial z-y cross coupling error.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
     public void setInitialScalingFactorsAndCrossCouplingErrors(
-            final double initialSx, final double initialSy, final double initialSz,
-            final double initialMxy, final double initialMxz, final double initialMyx,
-            final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
+            final double initialSxParam, final double initialSyParam, final double initialSzParam,
+            final double initialMxyParam, final double initialMxzParam, final double initialMyxParam,
+            final double initialMyzParam, final double initialMzxParam,
+            final double initialMzyParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        setInitialScalingFactors(initialSx, initialSy, initialSz);
-        setInitialCrossCouplingErrors(initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
+        setInitialScalingFactors(initialSxParam, initialSyParam, initialSzParam);
+        setInitialCrossCouplingErrors(initialMxyParam, initialMxzParam, initialMyxParam, initialMyzParam,
+                initialMzxParam, initialMzyParam);
     }
 
     /**
@@ -2318,15 +2323,15 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
     /**
      * Specifies whether result must be refined using a non-linear solver over found inliers.
      *
-     * @param refineResult true to refine result, false to simply use result found by robust
+     * @param refineResultParam true to refine result, false to simply use result found by robust
      *                     estimator without further refining.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setResultRefined(final boolean refineResult) throws LockedException {
+    public void setResultRefined(final boolean refineResultParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        this.refineResult = refineResult;
+        this.refineResult = refineResultParam;
     }
 
     /**
@@ -2343,15 +2348,15 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      * Specifies whether covariance must be kept after refining result.
      * This setting is only taken into account if result is refined.
      *
-     * @param keepCovariance true if covariance must be kept after refining result,
+     * @param keepCovarianceParam true if covariance must be kept after refining result,
      *                       false otherwise.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setCovarianceKept(final boolean keepCovariance) throws LockedException {
+    public void setCovarianceKept(final boolean keepCovarianceParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        this.keepCovariance = keepCovariance;
+        this.keepCovariance = keepCovarianceParam;
     }
 
     /**
@@ -7666,14 +7671,14 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      * Internally sets ground truth magnetic flux density norm to be expected at location where
      * measurements have been made, expressed in Teslas (T).
      *
-     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm or null if undefined.
+     * @param groundTruthMagneticFluxDensityNormParam ground truth magnetic flux density norm or null if undefined.
      * @throws IllegalArgumentException if provided value is negative.
      */
-    private void internalSetGroundTruthMagneticFluxDensityNorm(final Double groundTruthMagneticFluxDensityNorm) {
-        if (groundTruthMagneticFluxDensityNorm != null && groundTruthMagneticFluxDensityNorm < 0.0) {
+    private void internalSetGroundTruthMagneticFluxDensityNorm(final Double groundTruthMagneticFluxDensityNormParam) {
+        if (groundTruthMagneticFluxDensityNormParam != null && groundTruthMagneticFluxDensityNormParam < 0.0) {
             throw new IllegalArgumentException();
         }
-        this.groundTruthMagneticFluxDensityNorm = groundTruthMagneticFluxDensityNorm;
+        this.groundTruthMagneticFluxDensityNorm = groundTruthMagneticFluxDensityNormParam;
     }
 
     /**

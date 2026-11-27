@@ -697,40 +697,41 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * expressed in meters per squared second (m/s^2).
      * This is only taken into account if non-linear preliminary solutions are used.
      *
-     * @param initialBiasX initial x-coordinate of accelerometer bias.
-     * @param initialBiasY initial y-coordinate of accelerometer bias.
-     * @param initialBiasZ initial z-coordinate of accelerometer bias.
+     * @param initialBiasXParam initial x-coordinate of accelerometer bias.
+     * @param initialBiasYParam initial y-coordinate of accelerometer bias.
+     * @param initialBiasZParam initial z-coordinate of accelerometer bias.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialBias(final double initialBiasX, final double initialBiasY, final double initialBiasZ)
+    public void setInitialBias(final double initialBiasXParam, final double initialBiasYParam,
+            final double initialBiasZParam)
             throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        this.initialBiasX = initialBiasX;
-        this.initialBiasY = initialBiasY;
-        this.initialBiasZ = initialBiasZ;
+        this.initialBiasX = initialBiasXParam;
+        this.initialBiasY = initialBiasYParam;
+        this.initialBiasZ = initialBiasZParam;
     }
 
     /**
      * Sets initial bias coordinates of accelerometer used to find a solution.
      * This is only taken into account if non-linear preliminary solutions are used.
      *
-     * @param initialBiasX initial x-coordinate of accelerometer bias.
-     * @param initialBiasY initial y-coordinate of accelerometer bias.
-     * @param initialBiasZ initial z-coordinate of accelerometer bias.
+     * @param initialBiasXParam initial x-coordinate of accelerometer bias.
+     * @param initialBiasYParam initial y-coordinate of accelerometer bias.
+     * @param initialBiasZParam initial z-coordinate of accelerometer bias.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialBias(final Acceleration initialBiasX, final Acceleration initialBiasY,
-                               final Acceleration initialBiasZ) throws LockedException {
+    public void setInitialBias(final Acceleration initialBiasXParam, final Acceleration initialBiasYParam,
+                               final Acceleration initialBiasZParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        this.initialBiasX = convertAcceleration(initialBiasX);
-        this.initialBiasY = convertAcceleration(initialBiasY);
-        this.initialBiasZ = convertAcceleration(initialBiasZ);
+        this.initialBiasX = convertAcceleration(initialBiasXParam);
+        this.initialBiasY = convertAcceleration(initialBiasYParam);
+        this.initialBiasZ = convertAcceleration(initialBiasZParam);
     }
 
     /**
@@ -1005,74 +1006,78 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * Sets initial scaling factors.
      * This is only taken into account if non-linear preliminary solutions are used.
      *
-     * @param initialSx initial x scaling factor.
-     * @param initialSy initial y scaling factor.
-     * @param initialSz initial z scaling factor.
+     * @param initialSxParam initial x scaling factor.
+     * @param initialSyParam initial y scaling factor.
+     * @param initialSzParam initial z scaling factor.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
     public void setInitialScalingFactors(
-            final double initialSx, final double initialSy, final double initialSz) throws LockedException {
+            final double initialSxParam, final double initialSyParam,
+            final double initialSzParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        this.initialSx = initialSx;
-        this.initialSy = initialSy;
-        this.initialSz = initialSz;
+        this.initialSx = initialSxParam;
+        this.initialSy = initialSyParam;
+        this.initialSz = initialSzParam;
     }
 
     /**
      * Sets initial cross coupling errors.
      * This is only taken into account if non-linear preliminary solutions are used.
      *
-     * @param initialMxy initial x-y cross coupling error.
-     * @param initialMxz initial x-z cross coupling error.
-     * @param initialMyx initial y-x cross coupling error.
-     * @param initialMyz initial y-z cross coupling error.
-     * @param initialMzx initial z-x cross coupling error.
-     * @param initialMzy initial z-y cross coupling error.
+     * @param initialMxyParam initial x-y cross coupling error.
+     * @param initialMxzParam initial x-z cross coupling error.
+     * @param initialMyxParam initial y-x cross coupling error.
+     * @param initialMyzParam initial y-z cross coupling error.
+     * @param initialMzxParam initial z-x cross coupling error.
+     * @param initialMzyParam initial z-y cross coupling error.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
     public void setInitialCrossCouplingErrors(
-            final double initialMxy, final double initialMxz, final double initialMyx,
-            final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
+            final double initialMxyParam, final double initialMxzParam, final double initialMyxParam,
+            final double initialMyzParam, final double initialMzxParam,
+            final double initialMzyParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        this.initialMxy = initialMxy;
-        this.initialMxz = initialMxz;
-        this.initialMyx = initialMyx;
-        this.initialMyz = initialMyz;
-        this.initialMzx = initialMzx;
-        this.initialMzy = initialMzy;
+        this.initialMxy = initialMxyParam;
+        this.initialMxz = initialMxzParam;
+        this.initialMyx = initialMyxParam;
+        this.initialMyz = initialMyzParam;
+        this.initialMzx = initialMzxParam;
+        this.initialMzy = initialMzyParam;
     }
 
     /**
      * Sets initial scaling factors and cross coupling errors.
      * This is only taken into account if non-linear preliminary solutions are used.
      *
-     * @param initialSx  initial x scaling factor.
-     * @param initialSy  initial y scaling factor.
-     * @param initialSz  initial z scaling factor.
-     * @param initialMxy initial x-y cross coupling error.
-     * @param initialMxz initial x-z cross coupling error.
-     * @param initialMyx initial y-x cross coupling error.
-     * @param initialMyz initial y-z cross coupling error.
-     * @param initialMzx initial z-x cross coupling error.
-     * @param initialMzy initial z-y cross coupling error.
+     * @param initialSxParam  initial x scaling factor.
+     * @param initialSyParam  initial y scaling factor.
+     * @param initialSzParam  initial z scaling factor.
+     * @param initialMxyParam initial x-y cross coupling error.
+     * @param initialMxzParam initial x-z cross coupling error.
+     * @param initialMyxParam initial y-x cross coupling error.
+     * @param initialMyzParam initial y-z cross coupling error.
+     * @param initialMzxParam initial z-x cross coupling error.
+     * @param initialMzyParam initial z-y cross coupling error.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
     public void setInitialScalingFactorsAndCrossCouplingErrors(
-            final double initialSx, final double initialSy, final double initialSz,
-            final double initialMxy, final double initialMxz, final double initialMyx,
-            final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
+            final double initialSxParam, final double initialSyParam, final double initialSzParam,
+            final double initialMxyParam, final double initialMxzParam, final double initialMyxParam,
+            final double initialMyzParam, final double initialMzxParam,
+            final double initialMzyParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        setInitialScalingFactors(initialSx, initialSy, initialSz);
-        setInitialCrossCouplingErrors(initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
+        setInitialScalingFactors(initialSxParam, initialSyParam, initialSzParam);
+        setInitialCrossCouplingErrors(initialMxyParam, initialMxzParam, initialMyxParam, initialMyzParam,
+                initialMzxParam, initialMzyParam);
     }
 
     /**
@@ -1590,15 +1595,15 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
     /**
      * Specifies whether result must be refined using a non-linear solver over found inliers.
      *
-     * @param refineResult true to refine result, false to simply use result found by robust
+     * @param refineResultParam true to refine result, false to simply use result found by robust
      *                     estimator without further refining.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setResultRefined(final boolean refineResult) throws LockedException {
+    public void setResultRefined(final boolean refineResultParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        this.refineResult = refineResult;
+        this.refineResult = refineResultParam;
     }
 
     /**
@@ -1615,15 +1620,15 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * Specifies whether covariance must be kept after refining result.
      * This setting is only taken into account if result is refined.
      *
-     * @param keepCovariance true if covariance must be kept after refining result,
+     * @param keepCovarianceParam true if covariance must be kept after refining result,
      *                       false otherwise.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setCovarianceKept(final boolean keepCovariance) throws LockedException {
+    public void setCovarianceKept(final boolean keepCovarianceParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        this.keepCovariance = keepCovariance;
+        this.keepCovariance = keepCovarianceParam;
     }
 
     /**

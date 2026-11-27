@@ -30,6 +30,11 @@ import com.irurueta.numerical.ExponentialMatrixEstimator;
 public class TrawnyQuaternionStepIntegrator extends QuaternionStepIntegrator {
 
     /**
+     * Divisor used in the Trawny quaternion integration scheme.
+     */
+    private static final double FORTY_EIGHT = 48.0;
+
+    /**
      * Estimates exponential of a square matrix.
      */
     private final ExponentialMatrixEstimator exponentialMatrixEstimator = new ExponentialMatrixEstimator();
@@ -289,7 +294,7 @@ public class TrawnyQuaternionStepIntegrator extends QuaternionStepIntegrator {
 
             exponentialMatrixEstimator.exponential(a, expA);
 
-            b.multiplyByScalar(dt * dt / 48.0);
+            b.multiplyByScalar(dt * dt / FORTY_EIGHT);
 
             tmp.copyFrom(expA);
             tmp.add(b);

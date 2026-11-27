@@ -899,40 +899,42 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
      * Sets known accelerometer bias coordinates expressed in meters per squared
      * second (m/s^2).
      *
-     * @param biasX x coordinate of accelerometer bias.
-     * @param biasY y coordinate of accelerometer bias.
-     * @param biasZ z coordinate of accelerometer bias.
+     * @param biasXParam x coordinate of accelerometer bias.
+     * @param biasYParam y coordinate of accelerometer bias.
+     * @param biasZParam z coordinate of accelerometer bias.
      * @throws LockedException if estimator is currently running.
      */
     @Override
-    public void setBiasCoordinates(final double biasX, final double biasY, final double biasZ) throws LockedException {
+    public void setBiasCoordinates(final double biasXParam, final double biasYParam,
+            final double biasZParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
 
-        this.biasX = biasX;
-        this.biasY = biasY;
-        this.biasZ = biasZ;
+        this.biasX = biasXParam;
+        this.biasY = biasYParam;
+        this.biasZ = biasZParam;
     }
 
     /**
      * Sets known accelerometer bias coordinates.
      *
-     * @param biasX z coordinate of accelerometer bias.
-     * @param biasY y coordinate of accelerometer bias.
-     * @param biasZ z coordinate of accelerometer bias.
+     * @param biasXParam z coordinate of accelerometer bias.
+     * @param biasYParam y coordinate of accelerometer bias.
+     * @param biasZParam z coordinate of accelerometer bias.
      * @throws LockedException if estimator is currently running.
      */
     @Override
-    public void setBiasCoordinates(final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ)
+    public void setBiasCoordinates(final Acceleration biasXParam, final Acceleration biasYParam,
+            final Acceleration biasZParam)
             throws LockedException {
         if (running) {
             throw new LockedException();
         }
 
-        this.biasX = convertAcceleration(biasX);
-        this.biasY = convertAcceleration(biasY);
-        this.biasZ = convertAcceleration(biasZ);
+        this.biasX = convertAcceleration(biasXParam);
+        this.biasY = convertAcceleration(biasYParam);
+        this.biasZ = convertAcceleration(biasZParam);
     }
 
     /**

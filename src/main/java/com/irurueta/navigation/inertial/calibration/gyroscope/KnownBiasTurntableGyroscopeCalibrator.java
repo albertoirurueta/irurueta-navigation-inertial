@@ -170,6 +170,11 @@ public class KnownBiasTurntableGyroscopeCalibrator implements GyroscopeNonLinear
     public static final double DEFAULT_TIME_INTERVAL = 0.02;
 
     /**
+     * Constant value of the Jacobian element relating the angular rate scale to the measurement (kept as originally defined).
+     */
+    private static final double JACOBIAN_GYRO_SCALE_ENTRY = 1.9;
+
+    /**
      * Levenberg-Marquardt fitter to find a non-linear solution.
      */
     private final LevenbergMarquardtMultiDimensionFitter fitter = new LevenbergMarquardtMultiDimensionFitter();
@@ -2345,44 +2350,45 @@ public class KnownBiasTurntableGyroscopeCalibrator implements GyroscopeNonLinear
      * force and find cross biases introduced by the accelerometer.
      * This is expressed in meters per squared second (m/s^2).
      *
-     * @param accelerometerBiasX x-coordinate of accelerometer bias.
-     * @param accelerometerBiasY y-coordinate of accelerometer bias.
-     * @param accelerometerBiasZ z-coordinate of accelerometer bias.
+     * @param accelerometerBiasXParam x-coordinate of accelerometer bias.
+     * @param accelerometerBiasYParam y-coordinate of accelerometer bias.
+     * @param accelerometerBiasZParam z-coordinate of accelerometer bias.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
     public void setAccelerometerBias(
-            final double accelerometerBiasX, final double accelerometerBiasY, final double accelerometerBiasZ)
+            final double accelerometerBiasXParam, final double accelerometerBiasYParam,
+            final double accelerometerBiasZParam)
             throws LockedException {
         if (running) {
             throw new LockedException();
         }
 
-        this.accelerometerBiasX = accelerometerBiasX;
-        this.accelerometerBiasY = accelerometerBiasY;
-        this.accelerometerBiasZ = accelerometerBiasZ;
+        this.accelerometerBiasX = accelerometerBiasXParam;
+        this.accelerometerBiasY = accelerometerBiasYParam;
+        this.accelerometerBiasZ = accelerometerBiasZParam;
     }
 
     /**
      * Sets known accelerometer bias to be used to fix measured specific
      * force and find cross biases introduced by the accelerometer.
      *
-     * @param accelerometerBiasX x-coordinate of accelerometer bias.
-     * @param accelerometerBiasY y-coordinate of accelerometer bias.
-     * @param accelerometerBiasZ z-coordinate of accelerometer bias.
+     * @param accelerometerBiasXParam x-coordinate of accelerometer bias.
+     * @param accelerometerBiasYParam y-coordinate of accelerometer bias.
+     * @param accelerometerBiasZParam z-coordinate of accelerometer bias.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
     public void setAccelerometerBias(
-            final Acceleration accelerometerBiasX, final Acceleration accelerometerBiasY,
-            final Acceleration accelerometerBiasZ) throws LockedException {
+            final Acceleration accelerometerBiasXParam, final Acceleration accelerometerBiasYParam,
+            final Acceleration accelerometerBiasZParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
 
-        this.accelerometerBiasX = convertAcceleration(accelerometerBiasX);
-        this.accelerometerBiasY = convertAcceleration(accelerometerBiasY);
-        this.accelerometerBiasZ = convertAcceleration(accelerometerBiasZ);
+        this.accelerometerBiasX = convertAcceleration(accelerometerBiasXParam);
+        this.accelerometerBiasY = convertAcceleration(accelerometerBiasYParam);
+        this.accelerometerBiasZ = convertAcceleration(accelerometerBiasZParam);
     }
 
     /**
@@ -2760,21 +2766,21 @@ public class KnownBiasTurntableGyroscopeCalibrator implements GyroscopeNonLinear
      * specific force and find cross biases introduced by the
      * accelerometer.
      *
-     * @param accelerometerSx known accelerometer x scaling factor.
-     * @param accelerometerSy known accelerometer y scaling factor.
-     * @param accelerometerSz known accelerometer z scaling factor.
+     * @param accelerometerSxParam known accelerometer x scaling factor.
+     * @param accelerometerSyParam known accelerometer y scaling factor.
+     * @param accelerometerSzParam known accelerometer z scaling factor.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
     public void setAccelerometerScalingFactors(
-            final double accelerometerSx, final double accelerometerSy, final double accelerometerSz)
+            final double accelerometerSxParam, final double accelerometerSyParam, final double accelerometerSzParam)
             throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        this.accelerometerSx = accelerometerSx;
-        this.accelerometerSy = accelerometerSy;
-        this.accelerometerSz = accelerometerSz;
+        this.accelerometerSx = accelerometerSxParam;
+        this.accelerometerSy = accelerometerSyParam;
+        this.accelerometerSz = accelerometerSzParam;
     }
 
     /**
@@ -2782,34 +2788,34 @@ public class KnownBiasTurntableGyroscopeCalibrator implements GyroscopeNonLinear
      * measured specific force and find cross biases introduced by the
      * accelerometer.
      *
-     * @param accelerometerMxy known accelerometer x-y cross coupling
+     * @param accelerometerMxyParam known accelerometer x-y cross coupling
      *                         error.
-     * @param accelerometerMxz known accelerometer x-z cross coupling
+     * @param accelerometerMxzParam known accelerometer x-z cross coupling
      *                         error.
-     * @param accelerometerMyx known accelerometer y-x cross coupling
+     * @param accelerometerMyxParam known accelerometer y-x cross coupling
      *                         error.
-     * @param accelerometerMyz known accelerometer y-z cross coupling
+     * @param accelerometerMyzParam known accelerometer y-z cross coupling
      *                         error.
-     * @param accelerometerMzx known accelerometer z-x cross coupling
+     * @param accelerometerMzxParam known accelerometer z-x cross coupling
      *                         error.
-     * @param accelerometerMzy known accelerometer z-y cross coupling
+     * @param accelerometerMzyParam known accelerometer z-y cross coupling
      *                         error.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
     public void setAccelerometerCrossCouplingErrors(
-            final double accelerometerMxy, final double accelerometerMxz,
-            final double accelerometerMyx, final double accelerometerMyz,
-            final double accelerometerMzx, final double accelerometerMzy) throws LockedException {
+            final double accelerometerMxyParam, final double accelerometerMxzParam,
+            final double accelerometerMyxParam, final double accelerometerMyzParam,
+            final double accelerometerMzxParam, final double accelerometerMzyParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        this.accelerometerMxy = accelerometerMxy;
-        this.accelerometerMxz = accelerometerMxz;
-        this.accelerometerMyx = accelerometerMyx;
-        this.accelerometerMyz = accelerometerMyz;
-        this.accelerometerMzx = accelerometerMzx;
-        this.accelerometerMzy = accelerometerMzy;
+        this.accelerometerMxy = accelerometerMxyParam;
+        this.accelerometerMxz = accelerometerMxzParam;
+        this.accelerometerMyx = accelerometerMyxParam;
+        this.accelerometerMyz = accelerometerMyzParam;
+        this.accelerometerMzx = accelerometerMzxParam;
+        this.accelerometerMzy = accelerometerMzyParam;
     }
 
     /**
@@ -2817,35 +2823,35 @@ public class KnownBiasTurntableGyroscopeCalibrator implements GyroscopeNonLinear
      * to be used to fix measured specific force and find cross biases
      * introduced by the accelerometer.
      *
-     * @param accelerometerSx  known accelerometer x scaling factor.
-     * @param accelerometerSy  known accelerometer y scaling factor.
-     * @param accelerometerSz  known accelerometer z scaling factor.
-     * @param accelerometerMxy known accelerometer x-y cross coupling
+     * @param accelerometerSxParam  known accelerometer x scaling factor.
+     * @param accelerometerSyParam  known accelerometer y scaling factor.
+     * @param accelerometerSzParam  known accelerometer z scaling factor.
+     * @param accelerometerMxyParam known accelerometer x-y cross coupling
      *                         error.
-     * @param accelerometerMxz known accelerometer x-z cross coupling
+     * @param accelerometerMxzParam known accelerometer x-z cross coupling
      *                         error.
-     * @param accelerometerMyx known accelerometer y-x cross coupling
+     * @param accelerometerMyxParam known accelerometer y-x cross coupling
      *                         error.
-     * @param accelerometerMyz known accelerometer y-z cross coupling
+     * @param accelerometerMyzParam known accelerometer y-z cross coupling
      *                         error.
-     * @param accelerometerMzx known accelerometer z-x cross coupling
+     * @param accelerometerMzxParam known accelerometer z-x cross coupling
      *                         error.
-     * @param accelerometerMzy known accelerometer z-y cross coupling
+     * @param accelerometerMzyParam known accelerometer z-y cross coupling
      *                         error.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
     public void setAccelerometerScalingFactorsAndCrossCouplingErrors(
-            final double accelerometerSx, final double accelerometerSy, final double accelerometerSz,
-            final double accelerometerMxy, final double accelerometerMxz, final double accelerometerMyx,
-            final double accelerometerMyz, final double accelerometerMzx, final double accelerometerMzy)
+            final double accelerometerSxParam, final double accelerometerSyParam, final double accelerometerSzParam,
+            final double accelerometerMxyParam, final double accelerometerMxzParam, final double accelerometerMyxParam,
+            final double accelerometerMyzParam, final double accelerometerMzxParam, final double accelerometerMzyParam)
             throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        setAccelerometerScalingFactors(accelerometerSx, accelerometerSy, accelerometerSz);
-        setAccelerometerCrossCouplingErrors(accelerometerMxy, accelerometerMxz, accelerometerMyx,
-                accelerometerMyz, accelerometerMzx, accelerometerMzy);
+        setAccelerometerScalingFactors(accelerometerSxParam, accelerometerSyParam, accelerometerSzParam);
+        setAccelerometerCrossCouplingErrors(accelerometerMxyParam, accelerometerMxzParam, accelerometerMyxParam,
+                accelerometerMyzParam, accelerometerMzxParam, accelerometerMzyParam);
     }
 
     /**
@@ -3114,39 +3120,40 @@ public class KnownBiasTurntableGyroscopeCalibrator implements GyroscopeNonLinear
      * Sets known bias coordinates of gyroscope expressed in radians
      * per second (rad/s).
      *
-     * @param biasX known x-coordinate of gyroscope bias.
-     * @param biasY known y-coordinate of gyroscope bias.
-     * @param biasZ known z-coordinate of gyroscope bias.
+     * @param biasXParam known x-coordinate of gyroscope bias.
+     * @param biasYParam known y-coordinate of gyroscope bias.
+     * @param biasZParam known z-coordinate of gyroscope bias.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
     public void setBiasCoordinates(
-            final double biasX, final double biasY, final double biasZ) throws LockedException {
+            final double biasXParam, final double biasYParam, final double biasZParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        this.biasX = biasX;
-        this.biasY = biasY;
-        this.biasZ = biasZ;
+        this.biasX = biasXParam;
+        this.biasY = biasYParam;
+        this.biasZ = biasZParam;
     }
 
     /**
      * Sets known bias coordinates of gyroscope.
      *
-     * @param biasX known x-coordinate of gyroscope bias.
-     * @param biasY known y-coordinate of gyroscope bias.
-     * @param biasZ known z-coordinate of gyroscope bias.
+     * @param biasXParam known x-coordinate of gyroscope bias.
+     * @param biasYParam known y-coordinate of gyroscope bias.
+     * @param biasZParam known z-coordinate of gyroscope bias.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
     public void setBiasCoordinates(
-            final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ) throws LockedException {
+            final AngularSpeed biasXParam, final AngularSpeed biasYParam,
+            final AngularSpeed biasZParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        this.biasX = convertAngularSpeed(biasX);
-        this.biasY = convertAngularSpeed(biasY);
-        this.biasZ = convertAngularSpeed(biasZ);
+        this.biasX = convertAngularSpeed(biasXParam);
+        this.biasY = convertAngularSpeed(biasYParam);
+        this.biasZ = convertAngularSpeed(biasZParam);
     }
 
     /**
@@ -3402,73 +3409,77 @@ public class KnownBiasTurntableGyroscopeCalibrator implements GyroscopeNonLinear
     /**
      * Sets initial scaling factors of gyroscope.
      *
-     * @param initialSx initial x scaling factor of gyroscope.
-     * @param initialSy initial y scaling factor of gyroscope.
-     * @param initialSz initial z scaling factor of gyroscope.
+     * @param initialSxParam initial x scaling factor of gyroscope.
+     * @param initialSyParam initial y scaling factor of gyroscope.
+     * @param initialSzParam initial z scaling factor of gyroscope.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
     public void setInitialScalingFactors(
-            final double initialSx, final double initialSy, final double initialSz) throws LockedException {
+            final double initialSxParam, final double initialSyParam,
+            final double initialSzParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        this.initialSx = initialSx;
-        this.initialSy = initialSy;
-        this.initialSz = initialSz;
+        this.initialSx = initialSxParam;
+        this.initialSy = initialSyParam;
+        this.initialSz = initialSzParam;
     }
 
     /**
      * Sets initial cross coupling errors of gyroscope.
      *
-     * @param initialMxy initial x-y cross coupling error of gyroscope.
-     * @param initialMxz initial x-z cross coupling error of gyroscope.
-     * @param initialMyx initial y-x cross coupling error of gyroscope.
-     * @param initialMyz initial y-z cross coupling error of gyroscope.
-     * @param initialMzx initial z-x cross coupling error of gyroscope.
-     * @param initialMzy initial z-y cross coupling error of gyroscope.
+     * @param initialMxyParam initial x-y cross coupling error of gyroscope.
+     * @param initialMxzParam initial x-z cross coupling error of gyroscope.
+     * @param initialMyxParam initial y-x cross coupling error of gyroscope.
+     * @param initialMyzParam initial y-z cross coupling error of gyroscope.
+     * @param initialMzxParam initial z-x cross coupling error of gyroscope.
+     * @param initialMzyParam initial z-y cross coupling error of gyroscope.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
     public void setInitialCrossCouplingErrors(
-            final double initialMxy, final double initialMxz, final double initialMyx,
-            final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
+            final double initialMxyParam, final double initialMxzParam, final double initialMyxParam,
+            final double initialMyzParam, final double initialMzxParam,
+            final double initialMzyParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        this.initialMxy = initialMxy;
-        this.initialMxz = initialMxz;
-        this.initialMyx = initialMyx;
-        this.initialMyz = initialMyz;
-        this.initialMzx = initialMzx;
-        this.initialMzy = initialMzy;
+        this.initialMxy = initialMxyParam;
+        this.initialMxz = initialMxzParam;
+        this.initialMyx = initialMyxParam;
+        this.initialMyz = initialMyzParam;
+        this.initialMzx = initialMzxParam;
+        this.initialMzy = initialMzyParam;
     }
 
     /**
      * Sets initial scaling factors and cross coupling errors of
      * gyroscope.
      *
-     * @param initialSx  initial x scaling factor of gyroscope.
-     * @param initialSy  initial y scaling factor of gyroscope.
-     * @param initialSz  initial z scaling factor of gyroscope.
-     * @param initialMxy initial x-y cross coupling error of gyroscope.
-     * @param initialMxz initial x-z cross coupling error of gyroscope.
-     * @param initialMyx initial y-x cross coupling error of gyroscope.
-     * @param initialMyz initial y-z cross coupling error of gyroscope.
-     * @param initialMzx initial z-x cross coupling error of gyroscope.
-     * @param initialMzy initial z-y cross coupling error of gyroscope.
+     * @param initialSxParam  initial x scaling factor of gyroscope.
+     * @param initialSyParam  initial y scaling factor of gyroscope.
+     * @param initialSzParam  initial z scaling factor of gyroscope.
+     * @param initialMxyParam initial x-y cross coupling error of gyroscope.
+     * @param initialMxzParam initial x-z cross coupling error of gyroscope.
+     * @param initialMyxParam initial y-x cross coupling error of gyroscope.
+     * @param initialMyzParam initial y-z cross coupling error of gyroscope.
+     * @param initialMzxParam initial z-x cross coupling error of gyroscope.
+     * @param initialMzyParam initial z-y cross coupling error of gyroscope.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
     public void setInitialScalingFactorsAndCrossCouplingErrors(
-            final double initialSx, final double initialSy, final double initialSz,
-            final double initialMxy, final double initialMxz, final double initialMyx,
-            final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
+            final double initialSxParam, final double initialSyParam, final double initialSzParam,
+            final double initialMxyParam, final double initialMxzParam, final double initialMyxParam,
+            final double initialMyzParam, final double initialMzxParam,
+            final double initialMzyParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        setInitialScalingFactors(initialSx, initialSy, initialSz);
-        setInitialCrossCouplingErrors(initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
+        setInitialScalingFactors(initialSxParam, initialSyParam, initialSzParam);
+        setInitialCrossCouplingErrors(initialMxyParam, initialMxzParam, initialMyxParam, initialMyzParam,
+                initialMzxParam, initialMzyParam);
     }
 
     /**
@@ -4009,17 +4020,18 @@ public class KnownBiasTurntableGyroscopeCalibrator implements GyroscopeNonLinear
      * or not.
      * When enabled, this adds 9 variables from Gg matrix.
      *
-     * @param estimateGDependentCrossBiases true if G-dependent cross
+     * @param estimateGDependentCrossBiasesParam true if G-dependent cross
      *                                      biases will be estimated,
      *                                      false otherwise.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setGDependentCrossBiasesEstimated(final boolean estimateGDependentCrossBiases) throws LockedException {
+    public void setGDependentCrossBiasesEstimated(
+            final boolean estimateGDependentCrossBiasesParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
 
-        this.estimateGDependentCrossBiases = estimateGDependentCrossBiases;
+        this.estimateGDependentCrossBiases = estimateGDependentCrossBiasesParam;
     }
 
     /**
@@ -4934,7 +4946,7 @@ public class KnownBiasTurntableGyroscopeCalibrator implements GyroscopeNonLinear
 
         jacobian.setElementAt(6, 7, 1.0);
         jacobian.setElementAt(7, 2, 1.0);
-        jacobian.setElementAt(8, 5, 1.9);
+        jacobian.setElementAt(8, 5, JACOBIAN_GYRO_SCALE_ENTRY);
 
         jacobian.setElementAt(9, 0, g11);
         jacobian.setElementAt(9, 3, g21);
@@ -5423,7 +5435,7 @@ public class KnownBiasTurntableGyroscopeCalibrator implements GyroscopeNonLinear
 
         jacobian.setElementAt(6, 7, 1.0);
         jacobian.setElementAt(7, 2, 1.0);
-        jacobian.setElementAt(8, 5, 1.9);
+        jacobian.setElementAt(8, 5, JACOBIAN_GYRO_SCALE_ENTRY);
 
         final var jacobianTrans = jacobian.transposeAndReturnNew();
         jacobian.multiply(estimatedCovariance);
@@ -5611,24 +5623,24 @@ public class KnownBiasTurntableGyroscopeCalibrator implements GyroscopeNonLinear
      * Makes proper conversion of internal cross-coupling and g-dependent
      * cross bias matrices.
      *
-     * @param m internal scaling and cross-coupling matrix.
-     * @param g internal g-dependent cross bias matrix.
+     * @param mParam internal scaling and cross-coupling matrix.
+     * @param gParam internal g-dependent cross bias matrix.
      * @throws AlgebraException if a numerical instability occurs.
      */
-    private void setResult(final Matrix m, final Matrix g) throws AlgebraException {
-        setResult(m);
+    private void setResult(final Matrix mParam, final Matrix gParam) throws AlgebraException {
+        setResult(mParam);
 
         // Gg = M*G
-        m.multiply(g, estimatedGg);
+        mParam.multiply(gParam, estimatedGg);
     }
 
     /**
      * Makes proper conversion of internal cross-coupling matrix.
      *
-     * @param m internal scaling and cross-coupling matrix.
+     * @param mParam internal scaling and cross-coupling matrix.
      * @throws AlgebraException if a numerical instability occurs.
      */
-    private void setResult(final Matrix m) throws AlgebraException {
+    private void setResult(final Matrix mParam) throws AlgebraException {
         // Because:
         // M = I + Mg
 
@@ -5636,9 +5648,9 @@ public class KnownBiasTurntableGyroscopeCalibrator implements GyroscopeNonLinear
         // Mg = M - I
 
         if (estimatedMg == null) {
-            estimatedMg = m;
+            estimatedMg = mParam;
         } else {
-            estimatedMg.copyFrom(m);
+            estimatedMg.copyFrom(mParam);
         }
 
         for (var i = 0; i < BodyKinematics.COMPONENTS; i++) {

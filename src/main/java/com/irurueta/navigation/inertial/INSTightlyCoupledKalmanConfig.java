@@ -319,36 +319,37 @@ public class INSTightlyCoupledKalmanConfig implements Serializable, Cloneable {
     /**
      * Sets configuration parameters.
      *
-     * @param gyroNoisePSD          gyro noise PSD (Power Spectral Density) expressed
+     * @param gyroNoisePSDParam          gyro noise PSD (Power Spectral Density) expressed
      *                              in squared radians per second (rad^2/s).
-     * @param accelerometerNoisePSD accelerometer noise PSD (Power Spectral Density)
+     * @param accelerometerNoisePSDParam accelerometer noise PSD (Power Spectral Density)
      *                              expressed in (m^2 * s^-3).
-     * @param accelerometerBiasPSD  accelerometer bias random walk PSD (Power Spectral
+     * @param accelerometerBiasPSDParam  accelerometer bias random walk PSD (Power Spectral
      *                              Density) expressed in (m^2 * s^-5).
-     * @param gyroBiasPSD           gyro bias random walk PSD (Power Spectral Density)
+     * @param gyroBiasPSDParam           gyro bias random walk PSD (Power Spectral Density)
      *                              expressed in (rad^2 * s^-3).
-     * @param clockFrequencyPSD     receiver clock frequency-drift PSD (Power Spectral
+     * @param clockFrequencyPSDParam     receiver clock frequency-drift PSD (Power Spectral
      *                              Density) expressed in (m^2/s^3).
-     * @param clockPhasePSD         receiver clock phase-drift PSD (Power Spectral
+     * @param clockPhasePSDParam         receiver clock phase-drift PSD (Power Spectral
      *                              Density) expressed in squared meters per second
      *                              (m^2/s).
-     * @param pseudoRangeSD         pseudo-range measurement noise SD (Standard
+     * @param pseudoRangeSDParam         pseudo-range measurement noise SD (Standard
      *                              Deviation) expressed in meters (m).
-     * @param rangeRateSD           pseudo-range rate measurement noise SD (Standard
+     * @param rangeRateSDParam           pseudo-range rate measurement noise SD (Standard
      *                              Deviation) expressed in meters per second (m/s).
      */
     public void setValues(
-            final double gyroNoisePSD, final double accelerometerNoisePSD, final double accelerometerBiasPSD,
-            final double gyroBiasPSD, final double clockFrequencyPSD, final double clockPhasePSD,
-            final double pseudoRangeSD, final double rangeRateSD) {
-        this.gyroNoisePSD = gyroNoisePSD;
-        this.accelerometerNoisePSD = accelerometerNoisePSD;
-        this.accelerometerBiasPSD = accelerometerBiasPSD;
-        this.gyroBiasPSD = gyroBiasPSD;
-        this.clockFrequencyPSD = clockFrequencyPSD;
-        this.clockPhasePSD = clockPhasePSD;
-        this.pseudoRangeSD = pseudoRangeSD;
-        this.rangeRateSD = rangeRateSD;
+            final double gyroNoisePSDParam, final double accelerometerNoisePSDParam,
+            final double accelerometerBiasPSDParam,
+            final double gyroBiasPSDParam, final double clockFrequencyPSDParam, final double clockPhasePSDParam,
+            final double pseudoRangeSDParam, final double rangeRateSDParam) {
+        this.gyroNoisePSD = gyroNoisePSDParam;
+        this.accelerometerNoisePSD = accelerometerNoisePSDParam;
+        this.accelerometerBiasPSD = accelerometerBiasPSDParam;
+        this.gyroBiasPSD = gyroBiasPSDParam;
+        this.clockFrequencyPSD = clockFrequencyPSDParam;
+        this.clockPhasePSD = clockPhasePSDParam;
+        this.pseudoRangeSD = pseudoRangeSDParam;
+        this.rangeRateSD = rangeRateSDParam;
     }
 
     /**
@@ -413,36 +414,37 @@ public class INSTightlyCoupledKalmanConfig implements Serializable, Cloneable {
     /**
      * Sets configuration parameters.
      *
-     * @param gyroNoisePSD          gyro noise PSD (Power Spectral Density) expressed
+     * @param gyroNoisePSDParam          gyro noise PSD (Power Spectral Density) expressed
      *                              in squared radians per second (rad^2/s).
-     * @param accelerometerNoisePSD accelerometer noise PSD (Power Spectral Density)
+     * @param accelerometerNoisePSDParam accelerometer noise PSD (Power Spectral Density)
      *                              expressed in (m^2 * s^-3).
-     * @param accelerometerBiasPSD  accelerometer bias random walk PSD (Power Spectral
+     * @param accelerometerBiasPSDParam  accelerometer bias random walk PSD (Power Spectral
      *                              Density) expressed in (m^2 * s^-5).
-     * @param gyroBiasPSD           gyro bias random walk PSD (Power Spectral Density)
+     * @param gyroBiasPSDParam           gyro bias random walk PSD (Power Spectral Density)
      *                              expressed in (rad^2 * s^-3).
-     * @param clockFrequencyPSD     receiver clock frequency-drift PSD (Power Spectral
+     * @param clockFrequencyPSDParam     receiver clock frequency-drift PSD (Power Spectral
      *                              Density) expressed in (m^2/s^3).
-     * @param clockPhasePSD         receiver clock phase-drift PSD (Power Spectral
+     * @param clockPhasePSDParam         receiver clock phase-drift PSD (Power Spectral
      *                              Density) expressed in squared meters per second
      *                              (m^2/s).
-     * @param pseudoRangeSD         pseudo-range measurement noise SD (Standard
+     * @param pseudoRangeSDParam         pseudo-range measurement noise SD (Standard
      *                              Deviation) expressed in meters (m).
-     * @param rangeRateSD           pseudo-range rate measurement noise SD (Standard
+     * @param rangeRateSDParam           pseudo-range rate measurement noise SD (Standard
      *                              Deviation) expressed in meters per second (m/s).
      */
     public void setValues(
-            final double gyroNoisePSD, final double accelerometerNoisePSD, final double accelerometerBiasPSD,
-            final double gyroBiasPSD, final double clockFrequencyPSD, final double clockPhasePSD,
-            final Distance pseudoRangeSD, final Speed rangeRateSD) {
-        this.gyroNoisePSD = gyroNoisePSD;
-        this.accelerometerNoisePSD = accelerometerNoisePSD;
-        this.accelerometerBiasPSD = accelerometerBiasPSD;
-        this.gyroBiasPSD = gyroBiasPSD;
-        this.clockFrequencyPSD = clockFrequencyPSD;
-        this.clockPhasePSD = clockPhasePSD;
-        setPseudoRangeSD(pseudoRangeSD);
-        setRangeRateSD(rangeRateSD);
+            final double gyroNoisePSDParam, final double accelerometerNoisePSDParam,
+            final double accelerometerBiasPSDParam,
+            final double gyroBiasPSDParam, final double clockFrequencyPSDParam, final double clockPhasePSDParam,
+            final Distance pseudoRangeSDParam, final Speed rangeRateSDParam) {
+        this.gyroNoisePSD = gyroNoisePSDParam;
+        this.accelerometerNoisePSD = accelerometerNoisePSDParam;
+        this.accelerometerBiasPSD = accelerometerBiasPSDParam;
+        this.gyroBiasPSD = gyroBiasPSDParam;
+        this.clockFrequencyPSD = clockFrequencyPSDParam;
+        this.clockPhasePSD = clockPhasePSDParam;
+        setPseudoRangeSD(pseudoRangeSDParam);
+        setRangeRateSD(rangeRateSDParam);
     }
 
     /**

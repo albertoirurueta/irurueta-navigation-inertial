@@ -371,46 +371,46 @@ public class INSLooselyCoupledKalmanInitializerConfig implements Serializable, C
     /**
      * Sets configuration parameters.
      *
-     * @param initialAttitudeUncertainty         initial attitude uncertainty per axis
+     * @param initialAttitudeUncertaintyParam         initial attitude uncertainty per axis
      *                                           expressed in radians (rad).
-     * @param initialVelocityUncertainty         initial velocity uncertainty per axis
+     * @param initialVelocityUncertaintyParam         initial velocity uncertainty per axis
      *                                           expressed in meters per second (m/s).
-     * @param initialPositionUncertainty         initial position uncertainty per axis
+     * @param initialPositionUncertaintyParam         initial position uncertainty per axis
      *                                           expressed in meters (m).
-     * @param initialAccelerationBiasUncertainty initial acceleration bias uncertainty
+     * @param initialAccelerationBiasUncertaintyParam initial acceleration bias uncertainty
      *                                           expressed in meters per squared second (m/s^2).
-     * @param initialGyroscopeBiasUncertainty    initial gyroscope bias uncertainty
+     * @param initialGyroscopeBiasUncertaintyParam    initial gyroscope bias uncertainty
      *                                           expressed in radians per second (rad/s).
      */
     public void setValues(
-            final double initialAttitudeUncertainty, final double initialVelocityUncertainty,
-            final double initialPositionUncertainty, final double initialAccelerationBiasUncertainty,
-            final double initialGyroscopeBiasUncertainty) {
-        this.initialAttitudeUncertainty = initialAttitudeUncertainty;
-        this.initialVelocityUncertainty = initialVelocityUncertainty;
-        this.initialPositionUncertainty = initialPositionUncertainty;
-        this.initialAccelerationBiasUncertainty = initialAccelerationBiasUncertainty;
-        this.initialGyroscopeBiasUncertainty = initialGyroscopeBiasUncertainty;
+            final double initialAttitudeUncertaintyParam, final double initialVelocityUncertaintyParam,
+            final double initialPositionUncertaintyParam, final double initialAccelerationBiasUncertaintyParam,
+            final double initialGyroscopeBiasUncertaintyParam) {
+        this.initialAttitudeUncertainty = initialAttitudeUncertaintyParam;
+        this.initialVelocityUncertainty = initialVelocityUncertaintyParam;
+        this.initialPositionUncertainty = initialPositionUncertaintyParam;
+        this.initialAccelerationBiasUncertainty = initialAccelerationBiasUncertaintyParam;
+        this.initialGyroscopeBiasUncertainty = initialGyroscopeBiasUncertaintyParam;
     }
 
     /**
      * Sets configuration parameters.
      *
-     * @param initialAttitudeUncertainty         initial attitude uncertainty per axis.
-     * @param initialVelocityUncertainty         initial velocity uncertainty per axis.
-     * @param initialPositionUncertainty         initial position uncertainty per axis.
-     * @param initialAccelerationBiasUncertainty initial acceleration bias uncertainty.
-     * @param initialGyroscopeBiasUncertainty    initial gyroscope bias uncertainty.
+     * @param initialAttitudeUncertaintyParam         initial attitude uncertainty per axis.
+     * @param initialVelocityUncertaintyParam         initial velocity uncertainty per axis.
+     * @param initialPositionUncertaintyParam         initial position uncertainty per axis.
+     * @param initialAccelerationBiasUncertaintyParam initial acceleration bias uncertainty.
+     * @param initialGyroscopeBiasUncertaintyParam    initial gyroscope bias uncertainty.
      */
     public void setValues(
-            final Angle initialAttitudeUncertainty, final Speed initialVelocityUncertainty,
-            final Distance initialPositionUncertainty, final Acceleration initialAccelerationBiasUncertainty,
-            final AngularSpeed initialGyroscopeBiasUncertainty) {
-        setInitialAttitudeUncertainty(initialAttitudeUncertainty);
-        setInitialVelocityUncertainty(initialVelocityUncertainty);
-        setInitialPositionUncertainty(initialPositionUncertainty);
-        setInitialAccelerationBiasUncertainty(initialAccelerationBiasUncertainty);
-        setInitialGyroscopeBiasUncertainty(initialGyroscopeBiasUncertainty);
+            final Angle initialAttitudeUncertaintyParam, final Speed initialVelocityUncertaintyParam,
+            final Distance initialPositionUncertaintyParam, final Acceleration initialAccelerationBiasUncertaintyParam,
+            final AngularSpeed initialGyroscopeBiasUncertaintyParam) {
+        setInitialAttitudeUncertainty(initialAttitudeUncertaintyParam);
+        setInitialVelocityUncertainty(initialVelocityUncertaintyParam);
+        setInitialPositionUncertainty(initialPositionUncertaintyParam);
+        setInitialAccelerationBiasUncertainty(initialAccelerationBiasUncertaintyParam);
+        setInitialGyroscopeBiasUncertainty(initialGyroscopeBiasUncertaintyParam);
     }
 
     /**

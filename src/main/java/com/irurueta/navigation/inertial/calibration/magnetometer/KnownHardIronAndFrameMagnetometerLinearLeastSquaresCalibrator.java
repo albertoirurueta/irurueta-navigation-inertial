@@ -1514,40 +1514,41 @@ public class KnownHardIronAndFrameMagnetometerLinearLeastSquaresCalibrator imple
      * Sets known hard-iron bias coordinates of magnetometer expressed
      * in Teslas (T).
      *
-     * @param hardIronX x-coordinate of magnetometer hard-iron.
-     * @param hardIronY y-coordinate of magnetometer hard-iron.
-     * @param hardIronZ z-coordinate of magnetometer hard-iron.
+     * @param hardIronXParam x-coordinate of magnetometer hard-iron.
+     * @param hardIronYParam y-coordinate of magnetometer hard-iron.
+     * @param hardIronZParam z-coordinate of magnetometer hard-iron.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
     public void setHardIronCoordinates(
-            final double hardIronX, final double hardIronY, final double hardIronZ) throws LockedException {
+            final double hardIronXParam, final double hardIronYParam,
+            final double hardIronZParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        this.hardIronX = hardIronX;
-        this.hardIronY = hardIronY;
-        this.hardIronZ = hardIronZ;
+        this.hardIronX = hardIronXParam;
+        this.hardIronY = hardIronYParam;
+        this.hardIronZ = hardIronZParam;
     }
 
     /**
      * Sets known hard-iron coordinates.
      *
-     * @param hardIronX x-coordinate of magnetometer hard-iron.
-     * @param hardIronY y-coordinate of magnetometer hard-iron.
-     * @param hardIronZ z-coordinate of magnetometer hard-iron.
+     * @param hardIronXParam x-coordinate of magnetometer hard-iron.
+     * @param hardIronYParam y-coordinate of magnetometer hard-iron.
+     * @param hardIronZParam z-coordinate of magnetometer hard-iron.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
     public void setHardIronCoordinates(
-            final MagneticFluxDensity hardIronX, final MagneticFluxDensity hardIronY,
-            final MagneticFluxDensity hardIronZ) throws LockedException {
+            final MagneticFluxDensity hardIronXParam, final MagneticFluxDensity hardIronYParam,
+            final MagneticFluxDensity hardIronZParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        this.hardIronX = convertMagneticFluxDensity(hardIronX);
-        this.hardIronY = convertMagneticFluxDensity(hardIronY);
-        this.hardIronZ = convertMagneticFluxDensity(hardIronZ);
+        this.hardIronX = convertMagneticFluxDensity(hardIronXParam);
+        this.hardIronY = convertMagneticFluxDensity(hardIronYParam);
+        this.hardIronZ = convertMagneticFluxDensity(hardIronZParam);
     }
 
     /**

@@ -25,6 +25,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
   validate arguments through setters by design) and `EI_EXPOSE_REP`/`EI_EXPOSE_REP2` (numerical APIs share
   `Matrix`, array and collection instances on purpose), scoped to this library's packages; SpotBugs reports no
   findings under `src/main/java` (issue #49).
+- The remaining Checkstyle findings under `src/main/java` (4,370) are resolved (issue #53): `MagicNumber` ignores
+  integer literals up to 20 (matrix/array dimensions and indices) and the remaining decimal literals are named
+  constants, `ParameterNumber` allows up to 28 parameters and `ThrowsCount` up to 3 (public API signatures), and
+  parameters/locals that shadowed fields were renamed (`HiddenField`), with no public API changes.
 
 ### Fixed
 

@@ -146,12 +146,12 @@ public class NEDGravity implements Serializable, Cloneable {
     /**
      * Sets gravity coordinates resolved about NED frame and expressed in meters per squared second (m/s^2).
      *
-     * @param gn acceleration due to gravity through north-axis of NED frame.
-     * @param gd acceleration due to gravity through down-axis of NED frame.
+     * @param gnParam acceleration due to gravity through north-axis of NED frame.
+     * @param gdParam acceleration due to gravity through down-axis of NED frame.
      */
-    public void setCoordinates(final double gn, final double gd) {
-        this.gn = gn;
-        this.gd = gd;
+    public void setCoordinates(final double gnParam, final double gdParam) {
+        this.gn = gnParam;
+        this.gd = gdParam;
     }
 
     /**

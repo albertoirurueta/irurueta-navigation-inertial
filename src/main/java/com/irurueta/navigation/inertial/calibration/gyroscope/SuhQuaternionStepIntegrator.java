@@ -36,6 +36,16 @@ public class SuhQuaternionStepIntegrator extends QuaternionStepIntegrator {
     private static final double THREE_FOURTHS = 3.0 / 4.0;
 
     /**
+     * Divisor used in the Suh quaternion integration scheme.
+     */
+    private static final double FORTY_EIGHT = 48.0;
+
+    /**
+     * Divisor used in the Suh quaternion integration scheme.
+     */
+    private static final double TWENTY_FOUR = 24.0;
+
+    /**
      * Angular speed at initial timestamp t0 to be reused.
      */
     private Matrix omega0;
@@ -287,7 +297,7 @@ public class SuhQuaternionStepIntegrator extends QuaternionStepIntegrator {
             constant.initialize(sqrNorm1 * dt2 / 6.0);
 
             omegaSkew1.multiply(omegaSkew0, omegaSkew10);
-            omegaSkew10.multiplyByScalar(dt2 / 24.0);
+            omegaSkew10.multiplyByScalar(dt2 / TWENTY_FOUR);
 
             omegaSkew1A.copyFrom(omegaSkew1);
             omegaSkew1A.multiplyByScalar(THREE_FOURTHS * dt);
@@ -296,7 +306,7 @@ public class SuhQuaternionStepIntegrator extends QuaternionStepIntegrator {
             omegaSkew0A.multiplyByScalar(dt / 4.0);
 
             omegaSkew1B.copyFrom(omegaSkew1);
-            omegaSkew1B.multiplyByScalar(sqrNorm1 * dt3 / 48.0);
+            omegaSkew1B.multiplyByScalar(sqrNorm1 * dt3 / FORTY_EIGHT);
 
             tmp.copyFrom(identity);
             tmp.add(omegaSkew1A);

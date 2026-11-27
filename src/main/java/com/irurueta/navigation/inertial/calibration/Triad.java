@@ -150,14 +150,14 @@ public abstract class Triad<U extends Enum<?>, M extends Measurement<U>, T exten
     /**
      * Sets coordinates of measurement using current unit.
      *
-     * @param valueX x coordinate of measurement.
-     * @param valueY y coordinate of measurement.
-     * @param valueZ z coordinate of measurement.
+     * @param valueXParam x coordinate of measurement.
+     * @param valueYParam y coordinate of measurement.
+     * @param valueZParam z coordinate of measurement.
      */
-    public void setValueCoordinates(final double valueX, final double valueY, final double valueZ) {
-        this.valueX = valueX;
-        this.valueY = valueY;
-        this.valueZ = valueZ;
+    public void setValueCoordinates(final double valueXParam, final double valueYParam, final double valueZParam) {
+        this.valueX = valueXParam;
+        this.valueY = valueYParam;
+        this.valueZ = valueZParam;
     }
 
     /**
@@ -185,16 +185,16 @@ public abstract class Triad<U extends Enum<?>, M extends Measurement<U>, T exten
     /**
      * Sets value coordinates and unit.
      *
-     * @param valueX x coordinate of measurement.
-     * @param valueY y coordinate of measurement.
-     * @param valueZ z coordinate of measurement.
-     * @param unit   unit of measurement.
+     * @param valueXParam x coordinate of measurement.
+     * @param valueYParam y coordinate of measurement.
+     * @param valueZParam z coordinate of measurement.
+     * @param unitParam   unit of measurement.
      * @throws IllegalArgumentException if provided unit is null.
      */
     public void setValueCoordinatesAndUnit(
-            final double valueX, final double valueY, final double valueZ, final U unit) {
-        setValueCoordinates(valueX, valueY, valueZ);
-        setUnit(unit);
+            final double valueXParam, final double valueYParam, final double valueZParam, final U unitParam) {
+        setValueCoordinates(valueXParam, valueYParam, valueZParam);
+        setUnit(unitParam);
     }
 
     /**

@@ -1460,7 +1460,7 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      * {@link #updatePositionAndVelocity(ECEFPosition, ECEFVelocity, double)} to provide
      * a position and velocity fix.
      *
-     * @param kinematics kinematics applied to body (specific force and angular rate)
+     * @param kinematicsParam kinematics applied to body (specific force and angular rate)
      *                   during last period of time. These measures are obtained from
      *                   an inertial unit (IMU). If null, no navigation is performed and
      *                   only the time reference is updated.
@@ -1472,9 +1472,9 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      * @throws NotReadyException if this estimator is not ready to be updated.
      * @throws INSException      if estimation fails due to numerical instabilities.
      */
-    public boolean update(final BodyKinematics kinematics, final Time timestamp) throws LockedException,
+    public boolean update(final BodyKinematics kinematicsParam, final Time timestamp) throws LockedException,
             NotReadyException, INSException {
-        return update(kinematics, TimeConverter.convert(timestamp.getValue().doubleValue(), timestamp.getUnit(),
+        return update(kinematicsParam, TimeConverter.convert(timestamp.getValue().doubleValue(), timestamp.getUnit(),
                 TimeUnit.SECOND));
     }
 
@@ -1493,7 +1493,7 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      * {@link #updatePositionAndVelocity(ECEFPosition, ECEFVelocity, double)} to provide
      * a position and velocity fix.
      *
-     * @param kinematics kinematics applied to body (specific force and angular rate)
+     * @param kinematicsParam kinematics applied to body (specific force and angular rate)
      *                   during last period of time. These measures are obtained from
      *                   an inertial unit (IMU). If null, no navigation is performed and
      *                   only the time reference is updated.
@@ -1505,7 +1505,7 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      * @throws NotReadyException if this estimator is not ready to be updated.
      * @throws INSException      if estimation fails due to numerical instabilities.
      */
-    public boolean update(final BodyKinematics kinematics, final double timestamp) throws LockedException,
+    public boolean update(final BodyKinematics kinematicsParam, final double timestamp) throws LockedException,
             NotReadyException, INSException {
 
         if (running) {
@@ -1529,8 +1529,8 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
 
             initState();
 
-            if (kinematics != null) {
-                correctKinematics(kinematics);
+            if (kinematicsParam != null) {
+                correctKinematics(kinematicsParam);
 
                 if (lastKinematicsTimestamp != null) {
                     // integrate sample over the interval elapsed since previous sample
@@ -1542,7 +1542,7 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
             // state always holds the INS-propagated solution
             state.setFrame(frame);
 
-            this.kinematics = kinematics;
+            this.kinematics = kinematicsParam;
             lastKinematicsTimestamp = timestamp;
             if (firstKinematicsTimestamp == null) {
                 firstKinematicsTimestamp = timestamp;
@@ -1898,9 +1898,9 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      * This method stores the result into the variable member containing corrected
      * kinematics values.
      *
-     * @param kinematics kinematics instance to be corrected.
+     * @param kinematicsParam kinematics instance to be corrected.
      */
-    private void correctKinematics(final BodyKinematics kinematics) {
+    private void correctKinematics(final BodyKinematics kinematicsParam) {
         if (correctedKinematics == null) {
             correctedKinematics = new BodyKinematics();
         }
@@ -1927,12 +1927,12 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
             gyroBiasZ = 0.0;
         }
 
-        final var fx = kinematics.getFx();
-        final var fy = kinematics.getFy();
-        final var fz = kinematics.getFz();
-        final var angularRateX = kinematics.getAngularRateX();
-        final var angularRateY = kinematics.getAngularRateY();
-        final var angularRateZ = kinematics.getAngularRateZ();
+        final var fx = kinematicsParam.getFx();
+        final var fy = kinematicsParam.getFy();
+        final var fz = kinematicsParam.getFz();
+        final var angularRateX = kinematicsParam.getAngularRateX();
+        final var angularRateY = kinematicsParam.getAngularRateY();
+        final var angularRateZ = kinematicsParam.getAngularRateZ();
 
         correctedKinematics.setSpecificForceCoordinates(fx - accelBiasX, fy - accelBiasY, fz - accelBiasZ);
         correctedKinematics.setAngularRateCoordinates(
