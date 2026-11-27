@@ -170,9 +170,11 @@ public class KnownBiasTurntableGyroscopeCalibrator implements GyroscopeNonLinear
     public static final double DEFAULT_TIME_INTERVAL = 0.02;
 
     /**
-     * Constant value of the Jacobian element relating the angular rate scale to the measurement (kept as originally defined).
+     * Value currently used for the Jacobian element d(mzy)/d(m32) when propagating the fitter covariance.
+     * Since mzy = m32, the correct value is 1.0; the 1.9 kept here is a known pre-existing error that is
+     * corrected by issue #56 (this class keeps it unchanged so that this refactoring is behaviour-neutral).
      */
-    private static final double JACOBIAN_GYRO_SCALE_ENTRY = 1.9;
+    private static final double MZY_M32_JACOBIAN_ENTRY = 1.9;
 
     /**
      * Levenberg-Marquardt fitter to find a non-linear solution.
@@ -4946,7 +4948,7 @@ public class KnownBiasTurntableGyroscopeCalibrator implements GyroscopeNonLinear
 
         jacobian.setElementAt(6, 7, 1.0);
         jacobian.setElementAt(7, 2, 1.0);
-        jacobian.setElementAt(8, 5, JACOBIAN_GYRO_SCALE_ENTRY);
+        jacobian.setElementAt(8, 5, MZY_M32_JACOBIAN_ENTRY);
 
         jacobian.setElementAt(9, 0, g11);
         jacobian.setElementAt(9, 3, g21);
@@ -5435,7 +5437,7 @@ public class KnownBiasTurntableGyroscopeCalibrator implements GyroscopeNonLinear
 
         jacobian.setElementAt(6, 7, 1.0);
         jacobian.setElementAt(7, 2, 1.0);
-        jacobian.setElementAt(8, 5, JACOBIAN_GYRO_SCALE_ENTRY);
+        jacobian.setElementAt(8, 5, MZY_M32_JACOBIAN_ENTRY);
 
         final var jacobianTrans = jacobian.transposeAndReturnNew();
         jacobian.multiply(estimatedCovariance);
