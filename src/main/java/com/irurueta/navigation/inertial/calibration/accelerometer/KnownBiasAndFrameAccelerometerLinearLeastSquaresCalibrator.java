@@ -911,9 +911,9 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
             throw new LockedException();
         }
 
-        this.biasX = biasXParam;
-        this.biasY = biasYParam;
-        this.biasZ = biasZParam;
+        biasX = biasXParam;
+        biasY = biasYParam;
+        biasZ = biasZParam;
     }
 
     /**
@@ -932,9 +932,9 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
             throw new LockedException();
         }
 
-        this.biasX = convertAcceleration(biasXParam);
-        this.biasY = convertAcceleration(biasYParam);
-        this.biasZ = convertAcceleration(biasZParam);
+        biasX = convertAcceleration(biasXParam);
+        biasY = convertAcceleration(biasYParam);
+        biasZ = convertAcceleration(biasZParam);
     }
 
     /**

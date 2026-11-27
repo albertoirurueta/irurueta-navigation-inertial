@@ -2190,6 +2190,6 @@ public class PROMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator ext
             throw new IllegalArgumentException();
         }
 
-        this.qualityScores = qualityScoresParam;
+        qualityScores = qualityScoresParam;
     }
 }

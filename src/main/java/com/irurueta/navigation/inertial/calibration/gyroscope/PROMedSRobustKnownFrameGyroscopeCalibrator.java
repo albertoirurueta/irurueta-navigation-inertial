@@ -589,6 +589,6 @@ public class PROMedSRobustKnownFrameGyroscopeCalibrator extends RobustKnownFrame
             throw new IllegalArgumentException();
         }
 
-        this.qualityScores = qualityScoresParam;
+        qualityScores = qualityScoresParam;
     }
 }

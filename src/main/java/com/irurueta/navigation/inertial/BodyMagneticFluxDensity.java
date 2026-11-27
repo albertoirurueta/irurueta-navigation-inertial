@@ -253,9 +253,9 @@ public class BodyMagneticFluxDensity implements Serializable, Cloneable {
      * @param bzParam z component of magnetic flux density.
      */
     public void setCoordinates(final double bxParam, final double byParam, final double bzParam) {
-        this.bx = bxParam;
-        this.by = byParam;
-        this.bz = bzParam;
+        bx = bxParam;
+        by = byParam;
+        bz = bzParam;
     }
 
     /**

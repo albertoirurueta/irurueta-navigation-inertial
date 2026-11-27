@@ -1301,9 +1301,9 @@ public class KnownBiasEasyGyroscopeCalibrator implements GyroscopeNonLinearCalib
             throw new LockedException();
         }
 
-        this.accelerometerBiasX = accelerometerBiasXParam;
-        this.accelerometerBiasY = accelerometerBiasYParam;
-        this.accelerometerBiasZ = accelerometerBiasZParam;
+        accelerometerBiasX = accelerometerBiasXParam;
+        accelerometerBiasY = accelerometerBiasYParam;
+        accelerometerBiasZ = accelerometerBiasZParam;
     }
 
     /**
@@ -1323,9 +1323,9 @@ public class KnownBiasEasyGyroscopeCalibrator implements GyroscopeNonLinearCalib
             throw new LockedException();
         }
 
-        this.accelerometerBiasX = convertAcceleration(accelerometerBiasXParam);
-        this.accelerometerBiasY = convertAcceleration(accelerometerBiasYParam);
-        this.accelerometerBiasZ = convertAcceleration(accelerometerBiasZParam);
+        accelerometerBiasX = convertAcceleration(accelerometerBiasXParam);
+        accelerometerBiasY = convertAcceleration(accelerometerBiasYParam);
+        accelerometerBiasZ = convertAcceleration(accelerometerBiasZParam);
     }
 
     /**
@@ -1715,9 +1715,9 @@ public class KnownBiasEasyGyroscopeCalibrator implements GyroscopeNonLinearCalib
         if (running) {
             throw new LockedException();
         }
-        this.accelerometerSx = accelerometerSxParam;
-        this.accelerometerSy = accelerometerSyParam;
-        this.accelerometerSz = accelerometerSzParam;
+        accelerometerSx = accelerometerSxParam;
+        accelerometerSy = accelerometerSyParam;
+        accelerometerSz = accelerometerSzParam;
     }
 
     /**
@@ -1747,12 +1747,12 @@ public class KnownBiasEasyGyroscopeCalibrator implements GyroscopeNonLinearCalib
         if (running) {
             throw new LockedException();
         }
-        this.accelerometerMxy = accelerometerMxyParam;
-        this.accelerometerMxz = accelerometerMxzParam;
-        this.accelerometerMyx = accelerometerMyxParam;
-        this.accelerometerMyz = accelerometerMyzParam;
-        this.accelerometerMzx = accelerometerMzxParam;
-        this.accelerometerMzy = accelerometerMzyParam;
+        accelerometerMxy = accelerometerMxyParam;
+        accelerometerMxz = accelerometerMxzParam;
+        accelerometerMyx = accelerometerMyxParam;
+        accelerometerMyz = accelerometerMyzParam;
+        accelerometerMzx = accelerometerMzxParam;
+        accelerometerMzy = accelerometerMzyParam;
     }
 
     /**
@@ -2067,9 +2067,9 @@ public class KnownBiasEasyGyroscopeCalibrator implements GyroscopeNonLinearCalib
         if (running) {
             throw new LockedException();
         }
-        this.biasX = biasXParam;
-        this.biasY = biasYParam;
-        this.biasZ = biasZParam;
+        biasX = biasXParam;
+        biasY = biasYParam;
+        biasZ = biasZParam;
     }
 
     /**
@@ -2087,9 +2087,9 @@ public class KnownBiasEasyGyroscopeCalibrator implements GyroscopeNonLinearCalib
         if (running) {
             throw new LockedException();
         }
-        this.biasX = convertAngularSpeed(biasXParam);
-        this.biasY = convertAngularSpeed(biasYParam);
-        this.biasZ = convertAngularSpeed(biasZParam);
+        biasX = convertAngularSpeed(biasXParam);
+        biasY = convertAngularSpeed(biasYParam);
+        biasZ = convertAngularSpeed(biasZParam);
     }
 
     /**
@@ -2357,9 +2357,9 @@ public class KnownBiasEasyGyroscopeCalibrator implements GyroscopeNonLinearCalib
         if (running) {
             throw new LockedException();
         }
-        this.initialSx = initialSxParam;
-        this.initialSy = initialSyParam;
-        this.initialSz = initialSzParam;
+        initialSx = initialSxParam;
+        initialSy = initialSyParam;
+        initialSz = initialSzParam;
     }
 
     /**
@@ -2381,12 +2381,12 @@ public class KnownBiasEasyGyroscopeCalibrator implements GyroscopeNonLinearCalib
         if (running) {
             throw new LockedException();
         }
-        this.initialMxy = initialMxyParam;
-        this.initialMxz = initialMxzParam;
-        this.initialMyx = initialMyxParam;
-        this.initialMyz = initialMyzParam;
-        this.initialMzx = initialMzxParam;
-        this.initialMzy = initialMzyParam;
+        initialMxy = initialMxyParam;
+        initialMxz = initialMxzParam;
+        initialMyx = initialMyxParam;
+        initialMyz = initialMyzParam;
+        initialMzx = initialMzxParam;
+        initialMzy = initialMzyParam;
     }
 
     /**
@@ -2774,7 +2774,7 @@ public class KnownBiasEasyGyroscopeCalibrator implements GyroscopeNonLinearCalib
             throw new LockedException();
         }
 
-        this.estimateGDependentCrossBiases = estimateGDependentCrossBiasesParam;
+        estimateGDependentCrossBiases = estimateGDependentCrossBiasesParam;
     }
 
     /**

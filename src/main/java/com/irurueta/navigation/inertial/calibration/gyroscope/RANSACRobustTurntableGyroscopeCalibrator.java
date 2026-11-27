@@ -1724,7 +1724,7 @@ public class RANSACRobustTurntableGyroscopeCalibrator extends RobustTurntableGyr
         if (running) {
             throw new LockedException();
         }
-        this.computeAndKeepInliers = computeAndKeepInliersParam;
+        computeAndKeepInliers = computeAndKeepInliersParam;
     }
 
     /**
@@ -1748,7 +1748,7 @@ public class RANSACRobustTurntableGyroscopeCalibrator extends RobustTurntableGyr
         if (running) {
             throw new LockedException();
         }
-        this.computeAndKeepResiduals = computeAndKeepResidualsParam;
+        computeAndKeepResiduals = computeAndKeepResidualsParam;
     }
 
     /**

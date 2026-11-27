@@ -3486,7 +3486,7 @@ public class PROSACRobustKnownBiasTurntableGyroscopeCalibrator extends RobustKno
         if (running) {
             throw new LockedException();
         }
-        this.computeAndKeepInliers = computeAndKeepInliersParam;
+        computeAndKeepInliers = computeAndKeepInliersParam;
     }
 
     /**
@@ -3510,7 +3510,7 @@ public class PROSACRobustKnownBiasTurntableGyroscopeCalibrator extends RobustKno
         if (running) {
             throw new LockedException();
         }
-        this.computeAndKeepResiduals = computeAndKeepResidualsParam;
+        computeAndKeepResiduals = computeAndKeepResidualsParam;
     }
 
     /**
@@ -3665,6 +3665,6 @@ public class PROSACRobustKnownBiasTurntableGyroscopeCalibrator extends RobustKno
             throw new IllegalArgumentException();
         }
 
-        this.qualityScores = qualityScoresParam;
+        qualityScores = qualityScoresParam;
     }
 }

@@ -2197,6 +2197,6 @@ public class PROMedSRobustKnownPositionAndInstantMagnetometerCalibrator extends
             throw new IllegalArgumentException();
         }
 
-        this.qualityScores = qualityScoresParam;
+        qualityScores = qualityScoresParam;
     }
 }

@@ -2033,7 +2033,7 @@ public class PROSACRobustKnownPositionAndInstantMagnetometerCalibrator extends
         if (running) {
             throw new LockedException();
         }
-        this.computeAndKeepInliers = computeAndKeepInliersParam;
+        computeAndKeepInliers = computeAndKeepInliersParam;
     }
 
     /**
@@ -2057,7 +2057,7 @@ public class PROSACRobustKnownPositionAndInstantMagnetometerCalibrator extends
         if (running) {
             throw new LockedException();
         }
-        this.computeAndKeepResiduals = computeAndKeepResidualsParam;
+        computeAndKeepResiduals = computeAndKeepResidualsParam;
     }
 
     /**
@@ -2214,6 +2214,6 @@ public class PROSACRobustKnownPositionAndInstantMagnetometerCalibrator extends
             throw new IllegalArgumentException();
         }
 
-        this.qualityScores = qualityScoresParam;
+        qualityScores = qualityScoresParam;
     }
 }

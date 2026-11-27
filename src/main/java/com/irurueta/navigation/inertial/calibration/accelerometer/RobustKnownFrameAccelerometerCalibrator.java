@@ -709,9 +709,9 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
         if (running) {
             throw new LockedException();
         }
-        this.initialBiasX = initialBiasXParam;
-        this.initialBiasY = initialBiasYParam;
-        this.initialBiasZ = initialBiasZParam;
+        initialBiasX = initialBiasXParam;
+        initialBiasY = initialBiasYParam;
+        initialBiasZ = initialBiasZParam;
     }
 
     /**
@@ -729,9 +729,9 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
         if (running) {
             throw new LockedException();
         }
-        this.initialBiasX = convertAcceleration(initialBiasXParam);
-        this.initialBiasY = convertAcceleration(initialBiasYParam);
-        this.initialBiasZ = convertAcceleration(initialBiasZParam);
+        initialBiasX = convertAcceleration(initialBiasXParam);
+        initialBiasY = convertAcceleration(initialBiasYParam);
+        initialBiasZ = convertAcceleration(initialBiasZParam);
     }
 
     /**
@@ -1018,9 +1018,9 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
         if (running) {
             throw new LockedException();
         }
-        this.initialSx = initialSxParam;
-        this.initialSy = initialSyParam;
-        this.initialSz = initialSzParam;
+        initialSx = initialSxParam;
+        initialSy = initialSyParam;
+        initialSz = initialSzParam;
     }
 
     /**
@@ -1043,12 +1043,12 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
         if (running) {
             throw new LockedException();
         }
-        this.initialMxy = initialMxyParam;
-        this.initialMxz = initialMxzParam;
-        this.initialMyx = initialMyxParam;
-        this.initialMyz = initialMyzParam;
-        this.initialMzx = initialMzxParam;
-        this.initialMzy = initialMzyParam;
+        initialMxy = initialMxyParam;
+        initialMxz = initialMxzParam;
+        initialMyx = initialMyxParam;
+        initialMyz = initialMyzParam;
+        initialMzx = initialMzxParam;
+        initialMzy = initialMzyParam;
     }
 
     /**
@@ -1603,7 +1603,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
         if (running) {
             throw new LockedException();
         }
-        this.refineResult = refineResultParam;
+        refineResult = refineResultParam;
     }
 
     /**
@@ -1628,7 +1628,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
         if (running) {
             throw new LockedException();
         }
-        this.keepCovariance = keepCovarianceParam;
+        keepCovariance = keepCovarianceParam;
     }
 
     /**

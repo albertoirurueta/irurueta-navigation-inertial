@@ -342,14 +342,14 @@ public class INSTightlyCoupledKalmanConfig implements Serializable, Cloneable {
             final double accelerometerBiasPSDParam,
             final double gyroBiasPSDParam, final double clockFrequencyPSDParam, final double clockPhasePSDParam,
             final double pseudoRangeSDParam, final double rangeRateSDParam) {
-        this.gyroNoisePSD = gyroNoisePSDParam;
-        this.accelerometerNoisePSD = accelerometerNoisePSDParam;
-        this.accelerometerBiasPSD = accelerometerBiasPSDParam;
-        this.gyroBiasPSD = gyroBiasPSDParam;
-        this.clockFrequencyPSD = clockFrequencyPSDParam;
-        this.clockPhasePSD = clockPhasePSDParam;
-        this.pseudoRangeSD = pseudoRangeSDParam;
-        this.rangeRateSD = rangeRateSDParam;
+        gyroNoisePSD = gyroNoisePSDParam;
+        accelerometerNoisePSD = accelerometerNoisePSDParam;
+        accelerometerBiasPSD = accelerometerBiasPSDParam;
+        gyroBiasPSD = gyroBiasPSDParam;
+        clockFrequencyPSD = clockFrequencyPSDParam;
+        clockPhasePSD = clockPhasePSDParam;
+        pseudoRangeSD = pseudoRangeSDParam;
+        rangeRateSD = rangeRateSDParam;
     }
 
     /**
@@ -437,12 +437,12 @@ public class INSTightlyCoupledKalmanConfig implements Serializable, Cloneable {
             final double accelerometerBiasPSDParam,
             final double gyroBiasPSDParam, final double clockFrequencyPSDParam, final double clockPhasePSDParam,
             final Distance pseudoRangeSDParam, final Speed rangeRateSDParam) {
-        this.gyroNoisePSD = gyroNoisePSDParam;
-        this.accelerometerNoisePSD = accelerometerNoisePSDParam;
-        this.accelerometerBiasPSD = accelerometerBiasPSDParam;
-        this.gyroBiasPSD = gyroBiasPSDParam;
-        this.clockFrequencyPSD = clockFrequencyPSDParam;
-        this.clockPhasePSD = clockPhasePSDParam;
+        gyroNoisePSD = gyroNoisePSDParam;
+        accelerometerNoisePSD = accelerometerNoisePSDParam;
+        accelerometerBiasPSD = accelerometerBiasPSDParam;
+        gyroBiasPSD = gyroBiasPSDParam;
+        clockFrequencyPSD = clockFrequencyPSDParam;
+        clockPhasePSD = clockPhasePSDParam;
         setPseudoRangeSD(pseudoRangeSDParam);
         setRangeRateSD(rangeRateSDParam);
     }

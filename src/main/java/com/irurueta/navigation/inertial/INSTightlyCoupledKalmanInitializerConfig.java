@@ -511,13 +511,13 @@ public class INSTightlyCoupledKalmanInitializerConfig implements Serializable, C
             final double initialPositionUncertaintyParam, final double initialAccelerationBiasUncertaintyParam,
             final double initialGyroscopeBiasUncertaintyParam, final double initialClockOffsetUncertaintyParam,
             final double initialClockDriftUncertaintyParam) {
-        this.initialAttitudeUncertainty = initialAttitudeUncertaintyParam;
-        this.initialVelocityUncertainty = initialVelocityUncertaintyParam;
-        this.initialPositionUncertainty = initialPositionUncertaintyParam;
-        this.initialAccelerationBiasUncertainty = initialAccelerationBiasUncertaintyParam;
-        this.initialGyroscopeBiasUncertainty = initialGyroscopeBiasUncertaintyParam;
-        this.initialClockOffsetUncertainty = initialClockOffsetUncertaintyParam;
-        this.initialClockDriftUncertainty = initialClockDriftUncertaintyParam;
+        initialAttitudeUncertainty = initialAttitudeUncertaintyParam;
+        initialVelocityUncertainty = initialVelocityUncertaintyParam;
+        initialPositionUncertainty = initialPositionUncertaintyParam;
+        initialAccelerationBiasUncertainty = initialAccelerationBiasUncertaintyParam;
+        initialGyroscopeBiasUncertainty = initialGyroscopeBiasUncertaintyParam;
+        initialClockOffsetUncertainty = initialClockOffsetUncertaintyParam;
+        initialClockDriftUncertainty = initialClockDriftUncertaintyParam;
     }
 
     /**

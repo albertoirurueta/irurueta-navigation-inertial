@@ -1542,7 +1542,7 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
             // state always holds the INS-propagated solution
             state.setFrame(frame);
 
-            this.kinematics = kinematicsParam;
+            kinematics = kinematicsParam;
             lastKinematicsTimestamp = timestamp;
             if (firstKinematicsTimestamp == null) {
                 firstKinematicsTimestamp = timestamp;

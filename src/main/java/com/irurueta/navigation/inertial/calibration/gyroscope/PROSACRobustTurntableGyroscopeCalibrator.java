@@ -3549,7 +3549,7 @@ public class PROSACRobustTurntableGyroscopeCalibrator extends RobustTurntableGyr
         if (running) {
             throw new LockedException();
         }
-        this.computeAndKeepInliers = computeAndKeepInliersParam;
+        computeAndKeepInliers = computeAndKeepInliersParam;
     }
 
     /**
@@ -3573,7 +3573,7 @@ public class PROSACRobustTurntableGyroscopeCalibrator extends RobustTurntableGyr
         if (running) {
             throw new LockedException();
         }
-        this.computeAndKeepResiduals = computeAndKeepResidualsParam;
+        computeAndKeepResiduals = computeAndKeepResidualsParam;
     }
 
     /**
@@ -3728,6 +3728,6 @@ public class PROSACRobustTurntableGyroscopeCalibrator extends RobustTurntableGyr
             throw new IllegalArgumentException();
         }
 
-        this.qualityScores = qualityScoresParam;
+        qualityScores = qualityScoresParam;
     }
 }

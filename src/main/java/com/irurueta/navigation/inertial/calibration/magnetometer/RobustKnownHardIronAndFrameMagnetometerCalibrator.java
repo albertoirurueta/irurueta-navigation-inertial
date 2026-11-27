@@ -704,9 +704,9 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
         if (running) {
             throw new LockedException();
         }
-        this.hardIronX = hardIronXParam;
-        this.hardIronY = hardIronYParam;
-        this.hardIronZ = hardIronZParam;
+        hardIronX = hardIronXParam;
+        hardIronY = hardIronYParam;
+        hardIronZ = hardIronZParam;
     }
 
     /**
@@ -724,9 +724,9 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
         if (running) {
             throw new LockedException();
         }
-        this.hardIronX = convertMagneticFluxDensity(hardIronXParam);
-        this.hardIronY = convertMagneticFluxDensity(hardIronYParam);
-        this.hardIronZ = convertMagneticFluxDensity(hardIronZParam);
+        hardIronX = convertMagneticFluxDensity(hardIronXParam);
+        hardIronY = convertMagneticFluxDensity(hardIronYParam);
+        hardIronZ = convertMagneticFluxDensity(hardIronZParam);
     }
 
     /**
@@ -997,9 +997,9 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
         if (running) {
             throw new LockedException();
         }
-        this.initialSx = initialSxParam;
-        this.initialSy = initialSyParam;
-        this.initialSz = initialSzParam;
+        initialSx = initialSxParam;
+        initialSy = initialSyParam;
+        initialSz = initialSzParam;
     }
 
     /**
@@ -1021,12 +1021,12 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
         if (running) {
             throw new LockedException();
         }
-        this.initialMxy = initialMxyParam;
-        this.initialMxz = initialMxzParam;
-        this.initialMyx = initialMyxParam;
-        this.initialMyz = initialMyzParam;
-        this.initialMzx = initialMzxParam;
-        this.initialMzy = initialMzyParam;
+        initialMxy = initialMxyParam;
+        initialMxz = initialMxzParam;
+        initialMyx = initialMyxParam;
+        initialMyz = initialMyzParam;
+        initialMzx = initialMzxParam;
+        initialMzy = initialMzyParam;
     }
 
     /**
@@ -1593,7 +1593,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
         if (running) {
             throw new LockedException();
         }
-        this.refineResult = refineResultParam;
+        refineResult = refineResultParam;
     }
 
     /**
@@ -1618,7 +1618,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
         if (running) {
             throw new LockedException();
         }
-        this.keepCovariance = keepCovarianceParam;
+        keepCovariance = keepCovarianceParam;
     }
 
     /**

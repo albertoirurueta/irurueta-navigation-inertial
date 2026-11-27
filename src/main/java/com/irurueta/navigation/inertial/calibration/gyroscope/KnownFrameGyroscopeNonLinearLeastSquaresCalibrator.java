@@ -2464,9 +2464,9 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
         if (running) {
             throw new LockedException();
         }
-        this.initialBiasX = initialBiasXParam;
-        this.initialBiasY = initialBiasYParam;
-        this.initialBiasZ = initialBiasZParam;
+        initialBiasX = initialBiasXParam;
+        initialBiasY = initialBiasYParam;
+        initialBiasZ = initialBiasZParam;
     }
 
     /**
@@ -2486,9 +2486,9 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
         if (running) {
             throw new LockedException();
         }
-        this.initialBiasX = convertAngularSpeed(initialBiasXParam);
-        this.initialBiasY = convertAngularSpeed(initialBiasYParam);
-        this.initialBiasZ = convertAngularSpeed(initialBiasZParam);
+        initialBiasX = convertAngularSpeed(initialBiasXParam);
+        initialBiasY = convertAngularSpeed(initialBiasYParam);
+        initialBiasZ = convertAngularSpeed(initialBiasZParam);
     }
 
     /**
@@ -2722,9 +2722,9 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
         if (running) {
             throw new LockedException();
         }
-        this.initialSx = initialSxParam;
-        this.initialSy = initialSyParam;
-        this.initialSz = initialSzParam;
+        initialSx = initialSxParam;
+        initialSy = initialSyParam;
+        initialSz = initialSzParam;
     }
 
     /**
@@ -2746,12 +2746,12 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
         if (running) {
             throw new LockedException();
         }
-        this.initialMxy = initialMxyParam;
-        this.initialMxz = initialMxzParam;
-        this.initialMyx = initialMyxParam;
-        this.initialMyz = initialMyzParam;
-        this.initialMzx = initialMzxParam;
-        this.initialMzy = initialMzyParam;
+        initialMxy = initialMxyParam;
+        initialMxz = initialMxzParam;
+        initialMyx = initialMyxParam;
+        initialMyz = initialMyzParam;
+        initialMzx = initialMzxParam;
+        initialMzy = initialMzyParam;
     }
 
     /**

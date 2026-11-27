@@ -975,9 +975,9 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @param vzParam estimated ECEF user velocity resolved around z axis and expressed in meters per second (m/s).
      */
     public void setVelocityCoordinates(final double vxParam, final double vyParam, final double vzParam) {
-        this.vx = vxParam;
-        this.vy = vyParam;
-        this.vz = vzParam;
+        vx = vxParam;
+        vy = vyParam;
+        vz = vzParam;
     }
 
     /**
@@ -1042,9 +1042,9 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @param zParam z coordinate of estimated ECEF user position expressed in meters (m).
      */
     public void setPositionCoordinates(final double xParam, final double yParam, final double zParam) {
-        this.x = xParam;
-        this.y = yParam;
-        this.z = zParam;
+        x = xParam;
+        y = yParam;
+        z = zParam;
     }
 
     /**
@@ -1126,9 +1126,9 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
     public void setAccelerationBiasCoordinates(
             final double accelerationBiasXParam, final double accelerationBiasYParam,
             final double accelerationBiasZParam) {
-        this.accelerationBiasX = accelerationBiasXParam;
-        this.accelerationBiasY = accelerationBiasYParam;
-        this.accelerationBiasZ = accelerationBiasZParam;
+        accelerationBiasX = accelerationBiasXParam;
+        accelerationBiasY = accelerationBiasYParam;
+        accelerationBiasZ = accelerationBiasZParam;
     }
 
     /**
@@ -1210,9 +1210,9 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      */
     public void setGyroBiasCoordinates(final double gyroBiasXParam, final double gyroBiasYParam,
             final double gyroBiasZParam) {
-        this.gyroBiasX = gyroBiasXParam;
-        this.gyroBiasY = gyroBiasYParam;
-        this.gyroBiasZ = gyroBiasZParam;
+        gyroBiasX = gyroBiasXParam;
+        gyroBiasY = gyroBiasYParam;
+        gyroBiasZ = gyroBiasZParam;
     }
 
     /**
@@ -1431,7 +1431,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @param vxParam estimated ECEF user velocity resolved around x axis.
      */
     public void setSpeedX(final Speed vxParam) {
-        this.vx = SpeedConverter.convert(vxParam.getValue().doubleValue(), vxParam.getUnit(),
+        vx = SpeedConverter.convert(vxParam.getValue().doubleValue(), vxParam.getUnit(),
                 SpeedUnit.METERS_PER_SECOND);
     }
 
@@ -1460,7 +1460,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @param vyParam estimated ECEF user velocity resolved around y axis.
      */
     public void setSpeedY(final Speed vyParam) {
-        this.vy = SpeedConverter.convert(vyParam.getValue().doubleValue(), vyParam.getUnit(),
+        vy = SpeedConverter.convert(vyParam.getValue().doubleValue(), vyParam.getUnit(),
                 SpeedUnit.METERS_PER_SECOND);
     }
 
@@ -1489,7 +1489,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @param vzParam estimated ECEF velocity resolved around z axis.
      */
     public void setSpeedZ(final Speed vzParam) {
-        this.vz = SpeedConverter.convert(vzParam.getValue().doubleValue(), vzParam.getUnit(),
+        vz = SpeedConverter.convert(vzParam.getValue().doubleValue(), vzParam.getUnit(),
                 SpeedUnit.METERS_PER_SECOND);
     }
 
@@ -1561,7 +1561,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @param xParam x coordinate of estimated ECEF user position.
      */
     public void setDistanceX(final Distance xParam) {
-        this.x = DistanceConverter.convert(xParam.getValue().doubleValue(), xParam.getUnit(), DistanceUnit.METER);
+        x = DistanceConverter.convert(xParam.getValue().doubleValue(), xParam.getUnit(), DistanceUnit.METER);
     }
 
     /**
@@ -1590,7 +1590,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @param yParam y coordinate of estimated ECEF user position.
      */
     public void setDistanceY(final Distance yParam) {
-        this.y = DistanceConverter.convert(yParam.getValue().doubleValue(), yParam.getUnit(), DistanceUnit.METER);
+        y = DistanceConverter.convert(yParam.getValue().doubleValue(), yParam.getUnit(), DistanceUnit.METER);
     }
 
     /**
@@ -1619,7 +1619,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @param zParam z coordinate of estimated ECEF user position.
      */
     public void setDistanceZ(final Distance zParam) {
-        this.z = DistanceConverter.convert(zParam.getValue().doubleValue(), zParam.getUnit(), DistanceUnit.METER);
+        z = DistanceConverter.convert(zParam.getValue().doubleValue(), zParam.getUnit(), DistanceUnit.METER);
     }
 
     /**

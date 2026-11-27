@@ -1639,9 +1639,9 @@ public abstract class RobustKnownBiasAndFrameAccelerometerCalibrator implements
         if (running) {
             throw new LockedException();
         }
-        this.initialSx = initialSxParam;
-        this.initialSy = initialSyParam;
-        this.initialSz = initialSzParam;
+        initialSx = initialSxParam;
+        initialSy = initialSyParam;
+        initialSz = initialSzParam;
     }
 
     /**
@@ -1664,12 +1664,12 @@ public abstract class RobustKnownBiasAndFrameAccelerometerCalibrator implements
         if (running) {
             throw new LockedException();
         }
-        this.initialMxy = initialMxyParam;
-        this.initialMxz = initialMxzParam;
-        this.initialMyx = initialMyxParam;
-        this.initialMyz = initialMyzParam;
-        this.initialMzx = initialMzxParam;
-        this.initialMzy = initialMzyParam;
+        initialMxy = initialMxyParam;
+        initialMxz = initialMxzParam;
+        initialMyx = initialMyxParam;
+        initialMyz = initialMyzParam;
+        initialMzx = initialMzxParam;
+        initialMzy = initialMzyParam;
     }
 
     /**
@@ -2108,7 +2108,7 @@ public abstract class RobustKnownBiasAndFrameAccelerometerCalibrator implements
         if (running) {
             throw new LockedException();
         }
-        this.refineResult = refineResultParam;
+        refineResult = refineResultParam;
     }
 
     /**
@@ -2133,7 +2133,7 @@ public abstract class RobustKnownBiasAndFrameAccelerometerCalibrator implements
         if (running) {
             throw new LockedException();
         }
-        this.keepCovariance = keepCovarianceParam;
+        keepCovariance = keepCovarianceParam;
     }
 
     /**
@@ -5419,9 +5419,9 @@ public abstract class RobustKnownBiasAndFrameAccelerometerCalibrator implements
      *              squared second (m/s^2).
      */
     private void internalSetBiasCoordinates(final double biasXParam, final double biasYParam, final double biasZParam) {
-        this.biasX = biasXParam;
-        this.biasY = biasYParam;
-        this.biasZ = biasZParam;
+        biasX = biasXParam;
+        biasY = biasYParam;
+        biasZ = biasZParam;
     }
 
     /**
@@ -5433,9 +5433,9 @@ public abstract class RobustKnownBiasAndFrameAccelerometerCalibrator implements
      */
     private void internalSetBiasCoordinates(
             final Acceleration biasXParam, final Acceleration biasYParam, final Acceleration biasZParam) {
-        this.biasX = convertAcceleration(biasXParam);
-        this.biasY = convertAcceleration(biasYParam);
-        this.biasZ = convertAcceleration(biasZParam);
+        biasX = convertAcceleration(biasXParam);
+        biasY = convertAcceleration(biasYParam);
+        biasZ = convertAcceleration(biasZParam);
     }
 
     /**

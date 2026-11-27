@@ -1762,6 +1762,6 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends RobustKno
             throw new IllegalArgumentException();
         }
 
-        this.qualityScores = qualityScoresParam;
+        qualityScores = qualityScoresParam;
     }
 }

@@ -1600,7 +1600,7 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends RobustKnow
         if (running) {
             throw new LockedException();
         }
-        this.computeAndKeepInliers = computeAndKeepInliersParam;
+        computeAndKeepInliers = computeAndKeepInliersParam;
     }
 
     /**
@@ -1624,7 +1624,7 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends RobustKnow
         if (running) {
             throw new LockedException();
         }
-        this.computeAndKeepResiduals = computeAndKeepResidualsParam;
+        computeAndKeepResiduals = computeAndKeepResidualsParam;
     }
 
     /**
@@ -1779,6 +1779,6 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends RobustKnow
             throw new IllegalArgumentException();
         }
 
-        this.qualityScores = qualityScoresParam;
+        qualityScores = qualityScoresParam;
     }
 }

@@ -414,9 +414,9 @@ public class BodyKinematicsSequence<T extends TimedBodyKinematics> implements Se
      */
     public void setBeforeMeanSpecificForceCoordinates(
             final double beforeMeanFxParam, final double beforeMeanFyParam, final double beforeMeanFzParam) {
-        this.beforeMeanFx = beforeMeanFxParam;
-        this.beforeMeanFy = beforeMeanFyParam;
-        this.beforeMeanFz = beforeMeanFzParam;
+        beforeMeanFx = beforeMeanFxParam;
+        beforeMeanFy = beforeMeanFyParam;
+        beforeMeanFz = beforeMeanFzParam;
     }
 
     /**
@@ -605,9 +605,9 @@ public class BodyKinematicsSequence<T extends TimedBodyKinematics> implements Se
      */
     public void setAfterMeanSpecificForceCoordinates(
             final double afterMeanFxParam, final double afterMeanFyParam, final double afterMeanFzParam) {
-        this.afterMeanFx = afterMeanFxParam;
-        this.afterMeanFy = afterMeanFyParam;
-        this.afterMeanFz = afterMeanFzParam;
+        afterMeanFx = afterMeanFxParam;
+        afterMeanFy = afterMeanFyParam;
+        afterMeanFz = afterMeanFzParam;
     }
 
     /**

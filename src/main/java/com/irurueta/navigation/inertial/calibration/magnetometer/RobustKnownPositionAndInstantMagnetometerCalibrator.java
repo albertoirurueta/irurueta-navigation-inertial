@@ -1514,9 +1514,9 @@ public abstract class RobustKnownPositionAndInstantMagnetometerCalibrator implem
         if (running) {
             throw new LockedException();
         }
-        this.initialHardIronX = initialHardIronXParam;
-        this.initialHardIronY = initialHardIronYParam;
-        this.initialHardIronZ = initialHardIronZParam;
+        initialHardIronX = initialHardIronXParam;
+        initialHardIronY = initialHardIronYParam;
+        initialHardIronZ = initialHardIronZParam;
     }
 
     /**
@@ -1535,9 +1535,9 @@ public abstract class RobustKnownPositionAndInstantMagnetometerCalibrator implem
             throw new LockedException();
         }
 
-        this.initialHardIronX = convertMagneticFluxDensity(initialHardIronXParam);
-        this.initialHardIronY = convertMagneticFluxDensity(initialHardIronYParam);
-        this.initialHardIronZ = convertMagneticFluxDensity(initialHardIronZParam);
+        initialHardIronX = convertMagneticFluxDensity(initialHardIronXParam);
+        initialHardIronY = convertMagneticFluxDensity(initialHardIronYParam);
+        initialHardIronZ = convertMagneticFluxDensity(initialHardIronZParam);
     }
 
     /**
@@ -1810,9 +1810,9 @@ public abstract class RobustKnownPositionAndInstantMagnetometerCalibrator implem
         if (running) {
             throw new LockedException();
         }
-        this.initialSx = initialSxParam;
-        this.initialSy = initialSyParam;
-        this.initialSz = initialSzParam;
+        initialSx = initialSxParam;
+        initialSy = initialSyParam;
+        initialSz = initialSzParam;
     }
 
     /**
@@ -1834,12 +1834,12 @@ public abstract class RobustKnownPositionAndInstantMagnetometerCalibrator implem
         if (running) {
             throw new LockedException();
         }
-        this.initialMxy = initialMxyParam;
-        this.initialMxz = initialMxzParam;
-        this.initialMyx = initialMyxParam;
-        this.initialMyz = initialMyzParam;
-        this.initialMzx = initialMzxParam;
-        this.initialMzy = initialMzyParam;
+        initialMxy = initialMxyParam;
+        initialMxz = initialMxzParam;
+        initialMyx = initialMyxParam;
+        initialMyz = initialMyzParam;
+        initialMzx = initialMzxParam;
+        initialMzy = initialMzyParam;
     }
 
     /**
@@ -2486,7 +2486,7 @@ public abstract class RobustKnownPositionAndInstantMagnetometerCalibrator implem
         if (running) {
             throw new LockedException();
         }
-        this.refineResult = refineResultParam;
+        refineResult = refineResultParam;
     }
 
     /**
@@ -2511,7 +2511,7 @@ public abstract class RobustKnownPositionAndInstantMagnetometerCalibrator implem
         if (running) {
             throw new LockedException();
         }
-        this.keepCovariance = keepCovarianceParam;
+        keepCovariance = keepCovarianceParam;
     }
 
     /**

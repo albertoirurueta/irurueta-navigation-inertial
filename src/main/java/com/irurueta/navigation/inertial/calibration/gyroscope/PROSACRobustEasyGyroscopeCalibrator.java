@@ -1305,7 +1305,7 @@ public class PROSACRobustEasyGyroscopeCalibrator extends RobustEasyGyroscopeCali
         if (running) {
             throw new LockedException();
         }
-        this.computeAndKeepInliers = computeAndKeepInliersParam;
+        computeAndKeepInliers = computeAndKeepInliersParam;
     }
 
     /**
@@ -1329,7 +1329,7 @@ public class PROSACRobustEasyGyroscopeCalibrator extends RobustEasyGyroscopeCali
         if (running) {
             throw new LockedException();
         }
-        this.computeAndKeepResiduals = computeAndKeepResidualsParam;
+        computeAndKeepResiduals = computeAndKeepResidualsParam;
     }
 
     /**
@@ -1486,6 +1486,6 @@ public class PROSACRobustEasyGyroscopeCalibrator extends RobustEasyGyroscopeCali
             throw new IllegalArgumentException();
         }
 
-        this.qualityScores = qualityScoresParam;
+        qualityScores = qualityScoresParam;
     }
 }

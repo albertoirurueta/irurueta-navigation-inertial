@@ -239,7 +239,7 @@ public class RANSACRobustKnownHardIronAndFrameMagnetometerCalibrator extends
         if (running) {
             throw new LockedException();
         }
-        this.computeAndKeepInliers = computeAndKeepInliersParam;
+        computeAndKeepInliers = computeAndKeepInliersParam;
     }
 
     /**
@@ -263,7 +263,7 @@ public class RANSACRobustKnownHardIronAndFrameMagnetometerCalibrator extends
         if (running) {
             throw new LockedException();
         }
-        this.computeAndKeepResiduals = computeAndKeepResidualsParam;
+        computeAndKeepResiduals = computeAndKeepResidualsParam;
     }
 
     /**

@@ -2201,6 +2201,6 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
             throw new IllegalArgumentException();
         }
 
-        this.qualityScores = qualityScoresParam;
+        qualityScores = qualityScoresParam;
     }
 }

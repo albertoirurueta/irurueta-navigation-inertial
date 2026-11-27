@@ -585,6 +585,6 @@ public class PROMedSRobustKnownFrameAccelerometerCalibrator extends RobustKnownF
             throw new IllegalArgumentException();
         }
 
-        this.qualityScores = qualityScoresParam;
+        qualityScores = qualityScoresParam;
     }
 }

@@ -150,8 +150,8 @@ public class NEDGravity implements Serializable, Cloneable {
      * @param gdParam acceleration due to gravity through down-axis of NED frame.
      */
     public void setCoordinates(final double gnParam, final double gdParam) {
-        this.gn = gnParam;
-        this.gd = gdParam;
+        gn = gnParam;
+        gd = gdParam;
     }
 
     /**

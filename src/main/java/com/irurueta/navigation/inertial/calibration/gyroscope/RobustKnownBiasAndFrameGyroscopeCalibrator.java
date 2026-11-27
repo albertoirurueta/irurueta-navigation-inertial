@@ -1658,9 +1658,9 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
         if (running) {
             throw new LockedException();
         }
-        this.initialSx = initialSxParam;
-        this.initialSy = initialSyParam;
-        this.initialSz = initialSzParam;
+        initialSx = initialSxParam;
+        initialSy = initialSyParam;
+        initialSz = initialSzParam;
     }
 
     /**
@@ -1683,12 +1683,12 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
         if (running) {
             throw new LockedException();
         }
-        this.initialMxy = initialMxyParam;
-        this.initialMxz = initialMxzParam;
-        this.initialMyx = initialMyxParam;
-        this.initialMyz = initialMyzParam;
-        this.initialMzx = initialMzxParam;
-        this.initialMzy = initialMzyParam;
+        initialMxy = initialMxyParam;
+        initialMxz = initialMxzParam;
+        initialMyx = initialMyxParam;
+        initialMyz = initialMyzParam;
+        initialMzx = initialMzxParam;
+        initialMzy = initialMzyParam;
     }
 
     /**
@@ -2171,7 +2171,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
         if (running) {
             throw new LockedException();
         }
-        this.refineResult = refineResultParam;
+        refineResult = refineResultParam;
     }
 
     /**
@@ -2196,7 +2196,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
         if (running) {
             throw new LockedException();
         }
-        this.keepCovariance = keepCovarianceParam;
+        keepCovariance = keepCovarianceParam;
     }
 
     /**
@@ -5513,9 +5513,9 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      *              second (rad/s).
      */
     private void internalSetBiasCoordinates(final double biasXParam, final double biasYParam, final double biasZParam) {
-        this.biasX = biasXParam;
-        this.biasY = biasYParam;
-        this.biasZ = biasZParam;
+        biasX = biasXParam;
+        biasY = biasYParam;
+        biasZ = biasZParam;
     }
 
     /**
@@ -5527,9 +5527,9 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements Gyro
      */
     private void internalSetBiasCoordinates(
             final AngularSpeed biasXParam, final AngularSpeed biasYParam, final AngularSpeed biasZParam) {
-        this.biasX = convertAngularSpeed(biasXParam);
-        this.biasY = convertAngularSpeed(biasYParam);
-        this.biasZ = convertAngularSpeed(biasZParam);
+        biasX = convertAngularSpeed(biasXParam);
+        biasY = convertAngularSpeed(biasYParam);
+        biasZ = convertAngularSpeed(biasZParam);
     }
 
     /**

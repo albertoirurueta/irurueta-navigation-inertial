@@ -271,12 +271,12 @@ public class INSLooselyCoupledKalmanConfig implements Serializable, Cloneable {
             final double gyroNoisePSDParam, final double accelerometerNoisePSDParam,
             final double accelerometerBiasPSDParam,
             final double gyroBiasPSDParam, final double positionNoiseSDParam, final double velocityNoiseSDParam) {
-        this.gyroNoisePSD = gyroNoisePSDParam;
-        this.accelerometerNoisePSD = accelerometerNoisePSDParam;
-        this.accelerometerBiasPSD = accelerometerBiasPSDParam;
-        this.gyroBiasPSD = gyroBiasPSDParam;
-        this.positionNoiseSD = positionNoiseSDParam;
-        this.velocityNoiseSD = velocityNoiseSDParam;
+        gyroNoisePSD = gyroNoisePSDParam;
+        accelerometerNoisePSD = accelerometerNoisePSDParam;
+        accelerometerBiasPSD = accelerometerBiasPSDParam;
+        gyroBiasPSD = gyroBiasPSDParam;
+        positionNoiseSD = positionNoiseSDParam;
+        velocityNoiseSD = velocityNoiseSDParam;
     }
 
     /**

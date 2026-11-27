@@ -2369,9 +2369,9 @@ public class KnownBiasAndFrameGyroscopeNonLinearLeastSquaresCalibrator implement
         if (running) {
             throw new LockedException();
         }
-        this.initialSx = initialSxParam;
-        this.initialSy = initialSyParam;
-        this.initialSz = initialSzParam;
+        initialSx = initialSxParam;
+        initialSy = initialSyParam;
+        initialSz = initialSzParam;
     }
 
     /**
@@ -2393,12 +2393,12 @@ public class KnownBiasAndFrameGyroscopeNonLinearLeastSquaresCalibrator implement
         if (running) {
             throw new LockedException();
         }
-        this.initialMxy = initialMxyParam;
-        this.initialMxz = initialMxzParam;
-        this.initialMyx = initialMyxParam;
-        this.initialMyz = initialMyzParam;
-        this.initialMzx = initialMzxParam;
-        this.initialMzy = initialMzyParam;
+        initialMxy = initialMxyParam;
+        initialMxz = initialMxzParam;
+        initialMyx = initialMyxParam;
+        initialMyz = initialMyzParam;
+        initialMzx = initialMzxParam;
+        initialMzy = initialMzyParam;
     }
 
     /**
@@ -2887,9 +2887,9 @@ public class KnownBiasAndFrameGyroscopeNonLinearLeastSquaresCalibrator implement
             throw new LockedException();
         }
 
-        this.biasX = biasXParam;
-        this.biasY = biasYParam;
-        this.biasZ = biasZParam;
+        biasX = biasXParam;
+        biasY = biasYParam;
+        biasZ = biasZParam;
     }
 
     /**
@@ -2908,9 +2908,9 @@ public class KnownBiasAndFrameGyroscopeNonLinearLeastSquaresCalibrator implement
             throw new LockedException();
         }
 
-        this.biasX = convertAngularSpeed(biasXParam);
-        this.biasY = convertAngularSpeed(biasYParam);
-        this.biasZ = convertAngularSpeed(biasZParam);
+        biasX = convertAngularSpeed(biasXParam);
+        biasY = convertAngularSpeed(biasYParam);
+        biasZ = convertAngularSpeed(biasZParam);
     }
 
     /**

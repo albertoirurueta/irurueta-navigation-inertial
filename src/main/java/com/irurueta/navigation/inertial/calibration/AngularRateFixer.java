@@ -754,7 +754,7 @@ public class AngularRateFixer {
             throw new IllegalArgumentException();
         }
 
-        this.gDependantCrossBias = gDependantCrossBiasParam;
+        gDependantCrossBias = gDependantCrossBiasParam;
     }
 
     /**

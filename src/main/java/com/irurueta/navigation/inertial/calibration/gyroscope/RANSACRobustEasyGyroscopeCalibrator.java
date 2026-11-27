@@ -647,7 +647,7 @@ public class RANSACRobustEasyGyroscopeCalibrator extends RobustEasyGyroscopeCali
         if (running) {
             throw new LockedException();
         }
-        this.computeAndKeepInliers = computeAndKeepInliersParam;
+        computeAndKeepInliers = computeAndKeepInliersParam;
     }
 
     /**
@@ -671,7 +671,7 @@ public class RANSACRobustEasyGyroscopeCalibrator extends RobustEasyGyroscopeCali
         if (running) {
             throw new LockedException();
         }
-        this.computeAndKeepResiduals = computeAndKeepResidualsParam;
+        computeAndKeepResiduals = computeAndKeepResidualsParam;
     }
 
     /**

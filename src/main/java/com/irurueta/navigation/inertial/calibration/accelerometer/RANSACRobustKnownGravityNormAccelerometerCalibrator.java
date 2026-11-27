@@ -873,7 +873,7 @@ public class RANSACRobustKnownGravityNormAccelerometerCalibrator extends RobustK
         if (running) {
             throw new LockedException();
         }
-        this.computeAndKeepInliers = computeAndKeepInliersParam;
+        computeAndKeepInliers = computeAndKeepInliersParam;
     }
 
     /**
@@ -897,7 +897,7 @@ public class RANSACRobustKnownGravityNormAccelerometerCalibrator extends RobustK
         if (running) {
             throw new LockedException();
         }
-        this.computeAndKeepResiduals = computeAndKeepResidualsParam;
+        computeAndKeepResiduals = computeAndKeepResidualsParam;
     }
 
     /**

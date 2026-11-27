@@ -425,7 +425,7 @@ public class PROSACRobustKnownFrameAccelerometerCalibrator extends RobustKnownFr
         if (running) {
             throw new LockedException();
         }
-        this.computeAndKeepInliers = computeAndKeepInliersParam;
+        computeAndKeepInliers = computeAndKeepInliersParam;
     }
 
     /**
@@ -449,7 +449,7 @@ public class PROSACRobustKnownFrameAccelerometerCalibrator extends RobustKnownFr
         if (running) {
             throw new LockedException();
         }
-        this.computeAndKeepResiduals = computeAndKeepResidualsParam;
+        computeAndKeepResiduals = computeAndKeepResidualsParam;
     }
 
     /**
@@ -604,6 +604,6 @@ public class PROSACRobustKnownFrameAccelerometerCalibrator extends RobustKnownFr
             throw new IllegalArgumentException();
         }
 
-        this.qualityScores = qualityScoresParam;
+        qualityScores = qualityScoresParam;
     }
 }

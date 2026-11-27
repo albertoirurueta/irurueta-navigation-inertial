@@ -1676,13 +1676,13 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
                 listener.onUpdateGNSSMeasurementsStart(this);
             }
 
-            this.measurements = new ArrayList<>(measurementsParam);
+            measurements = new ArrayList<>(measurementsParam);
             measurementsPending = true;
 
             if (state == null) {
                 // least squares solution is only used to initialize position, velocity
                 // and clock until the Kalman filter state exists
-                lsEstimator.setMeasurements(this.measurements);
+                lsEstimator.setMeasurements(measurements);
                 lsEstimator.setPriorPositionAndVelocityFromEstimation(estimation);
                 if (estimation != null) {
                     lsEstimator.estimate(estimation);
@@ -1820,7 +1820,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
                 }
             }
 
-            this.kinematics = kinematicsParam;
+            kinematics = kinematicsParam;
             lastKinematicsTimestamp = timestamp;
             if (firstKinematicsTimestamp == null) {
                 firstKinematicsTimestamp = timestamp;

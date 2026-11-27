@@ -281,9 +281,9 @@ public class BodyKinematics implements Serializable, Cloneable {
      *           averaged over time interval and expressed in meters per squared second (m/s^2).
      */
     public void setSpecificForceCoordinates(final double fxParam, final double fyParam, final double fzParam) {
-        this.fx = fxParam;
-        this.fy = fyParam;
-        this.fz = fzParam;
+        fx = fxParam;
+        fy = fyParam;
+        fz = fzParam;
     }
 
     /**
@@ -515,9 +515,9 @@ public class BodyKinematics implements Serializable, Cloneable {
      */
     public void setAngularRateCoordinates(
             final double angularRateXParam, final double angularRateYParam, final double angularRateZParam) {
-        this.angularRateX = angularRateXParam;
-        this.angularRateY = angularRateYParam;
-        this.angularRateZ = angularRateZParam;
+        angularRateX = angularRateXParam;
+        angularRateY = angularRateYParam;
+        angularRateZ = angularRateZParam;
     }
 
     /**

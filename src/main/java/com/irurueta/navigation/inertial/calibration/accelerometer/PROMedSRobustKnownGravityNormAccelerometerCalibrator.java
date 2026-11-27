@@ -1941,6 +1941,6 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             throw new IllegalArgumentException();
         }
 
-        this.qualityScores = qualityScoresParam;
+        qualityScores = qualityScoresParam;
     }
 }

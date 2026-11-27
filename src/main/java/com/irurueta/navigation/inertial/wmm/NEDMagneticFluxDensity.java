@@ -260,9 +260,9 @@ public class NEDMagneticFluxDensity implements Serializable, Cloneable {
      * @param bdParam down component of magnetic flux density.
      */
     public void setCoordinates(final double bnParam, final double beParam, final double bdParam) {
-        this.bn = bnParam;
-        this.be = beParam;
-        this.bd = bdParam;
+        bn = bnParam;
+        be = beParam;
+        bd = bdParam;
     }
 
     /**

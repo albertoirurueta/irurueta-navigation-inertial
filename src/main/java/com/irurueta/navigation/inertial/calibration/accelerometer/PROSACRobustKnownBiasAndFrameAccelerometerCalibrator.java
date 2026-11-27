@@ -1596,7 +1596,7 @@ public class PROSACRobustKnownBiasAndFrameAccelerometerCalibrator extends
         if (running) {
             throw new LockedException();
         }
-        this.computeAndKeepInliers = computeAndKeepInliersParam;
+        computeAndKeepInliers = computeAndKeepInliersParam;
     }
 
     /**
@@ -1620,7 +1620,7 @@ public class PROSACRobustKnownBiasAndFrameAccelerometerCalibrator extends
         if (running) {
             throw new LockedException();
         }
-        this.computeAndKeepResiduals = computeAndKeepResidualsParam;
+        computeAndKeepResiduals = computeAndKeepResidualsParam;
     }
 
     /**
@@ -1773,6 +1773,6 @@ public class PROSACRobustKnownBiasAndFrameAccelerometerCalibrator extends
             throw new IllegalArgumentException();
         }
 
-        this.qualityScores = qualityScoresParam;
+        qualityScores = qualityScoresParam;
     }
 }

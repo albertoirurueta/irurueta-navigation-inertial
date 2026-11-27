@@ -181,7 +181,7 @@ public class IMUErrorsCreator {
      *                                    root PSD.
      */
     public void sstGyroscopeNoiseRootPsdSource(final GyroscopeNoiseRootPsdSource gyroscopeNoiseRootPsdSourceParam) {
-        this.gyroscopeNoiseRootPsdSource = gyroscopeNoiseRootPsdSourceParam;
+        gyroscopeNoiseRootPsdSource = gyroscopeNoiseRootPsdSourceParam;
     }
 
     /**

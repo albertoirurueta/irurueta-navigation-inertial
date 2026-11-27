@@ -3710,6 +3710,6 @@ public class PROMedSRobustTurntableGyroscopeCalibrator extends RobustTurntableGy
             throw new IllegalArgumentException();
         }
 
-        this.qualityScores = qualityScoresParam;
+        qualityScores = qualityScoresParam;
     }
 }

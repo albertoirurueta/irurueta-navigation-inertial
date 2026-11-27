@@ -1843,6 +1843,6 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends RobustKno
             throw new IllegalArgumentException();
         }
 
-        this.qualityScores = qualityScoresParam;
+        qualityScores = qualityScoresParam;
     }
 }

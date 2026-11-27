@@ -918,9 +918,9 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator implements
             throw new LockedException();
         }
 
-        this.biasX = biasXParam;
-        this.biasY = biasYParam;
-        this.biasZ = biasZParam;
+        biasX = biasXParam;
+        biasY = biasYParam;
+        biasZ = biasZParam;
     }
 
     /**
@@ -939,9 +939,9 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator implements
             throw new LockedException();
         }
 
-        this.biasX = convertAngularSpeed(biasXParam);
-        this.biasY = convertAngularSpeed(biasYParam);
-        this.biasZ = convertAngularSpeed(biasZParam);
+        biasX = convertAngularSpeed(biasXParam);
+        biasY = convertAngularSpeed(biasYParam);
+        biasZ = convertAngularSpeed(biasZParam);
     }
 
     /**

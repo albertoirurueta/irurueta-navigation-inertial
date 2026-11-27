@@ -1669,9 +1669,9 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimator {
                 listener.onUpdateGNSSMeasurementsStart(this);
             }
 
-            this.measurements = new ArrayList<>(measurementsParam);
+            measurements = new ArrayList<>(measurementsParam);
 
-            lsEstimator.setMeasurements(this.measurements);
+            lsEstimator.setMeasurements(measurements);
             estimatePositionAndVelocity();
 
             if (insEstimator.isPropagateReady()) {
@@ -1770,10 +1770,10 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimator {
             // every sample is integrated, starting from the last corrected INS solution
             final var result = insEstimator.update(kinematicsParam, timestamp);
             if (result) {
-                if (this.kinematics == null) {
-                    this.kinematics = insEstimator.getKinematics();
+                if (kinematics == null) {
+                    kinematics = insEstimator.getKinematics();
                 } else {
-                    insEstimator.getKinematics(this.kinematics);
+                    insEstimator.getKinematics(kinematics);
                 }
 
                 if (estimation != null) {

@@ -631,7 +631,7 @@ public class RANSACRobustKnownBiasEasyGyroscopeCalibrator extends RobustKnownBia
         if (running) {
             throw new LockedException();
         }
-        this.computeAndKeepInliers = computeAndKeepInliersParam;
+        computeAndKeepInliers = computeAndKeepInliersParam;
     }
 
     /**
@@ -655,7 +655,7 @@ public class RANSACRobustKnownBiasEasyGyroscopeCalibrator extends RobustKnownBia
         if (running) {
             throw new LockedException();
         }
-        this.computeAndKeepResiduals = computeAndKeepResidualsParam;
+        computeAndKeepResiduals = computeAndKeepResidualsParam;
     }
 
     /**

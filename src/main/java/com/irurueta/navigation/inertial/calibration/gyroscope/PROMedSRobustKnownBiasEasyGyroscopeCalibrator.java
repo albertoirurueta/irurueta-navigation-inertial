@@ -1438,6 +1438,6 @@ public class PROMedSRobustKnownBiasEasyGyroscopeCalibrator extends RobustKnownBi
             throw new IllegalArgumentException();
         }
 
-        this.qualityScores = qualityScoresParam;
+        qualityScores = qualityScoresParam;
     }
 }

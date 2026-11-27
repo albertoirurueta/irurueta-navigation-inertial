@@ -2047,9 +2047,9 @@ public class KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator imple
             throw new LockedException();
         }
 
-        this.biasX = biasXParam;
-        this.biasY = biasYParam;
-        this.biasZ = biasZParam;
+        biasX = biasXParam;
+        biasY = biasYParam;
+        biasZ = biasZParam;
     }
 
     /**
@@ -2068,9 +2068,9 @@ public class KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator imple
             throw new LockedException();
         }
 
-        this.biasX = convertAcceleration(biasXParam);
-        this.biasY = convertAcceleration(biasYParam);
-        this.biasZ = convertAcceleration(biasZParam);
+        biasX = convertAcceleration(biasXParam);
+        biasY = convertAcceleration(biasYParam);
+        biasZ = convertAcceleration(biasZParam);
     }
 
     /**
@@ -2341,9 +2341,9 @@ public class KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator imple
         if (running) {
             throw new LockedException();
         }
-        this.initialSx = initialSxParam;
-        this.initialSy = initialSyParam;
-        this.initialSz = initialSzParam;
+        initialSx = initialSxParam;
+        initialSy = initialSyParam;
+        initialSz = initialSzParam;
     }
 
     /**
@@ -2365,12 +2365,12 @@ public class KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator imple
         if (running) {
             throw new LockedException();
         }
-        this.initialMxy = initialMxyParam;
-        this.initialMxz = initialMxzParam;
-        this.initialMyx = initialMyxParam;
-        this.initialMyz = initialMyzParam;
-        this.initialMzx = initialMzxParam;
-        this.initialMzy = initialMzyParam;
+        initialMxy = initialMxyParam;
+        initialMxz = initialMxzParam;
+        initialMyx = initialMyxParam;
+        initialMyz = initialMyzParam;
+        initialMzx = initialMzxParam;
+        initialMzy = initialMzyParam;
     }
 
     /**

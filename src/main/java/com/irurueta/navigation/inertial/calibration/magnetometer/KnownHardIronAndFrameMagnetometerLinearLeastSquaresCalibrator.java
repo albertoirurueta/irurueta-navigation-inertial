@@ -1526,9 +1526,9 @@ public class KnownHardIronAndFrameMagnetometerLinearLeastSquaresCalibrator imple
         if (running) {
             throw new LockedException();
         }
-        this.hardIronX = hardIronXParam;
-        this.hardIronY = hardIronYParam;
-        this.hardIronZ = hardIronZParam;
+        hardIronX = hardIronXParam;
+        hardIronY = hardIronYParam;
+        hardIronZ = hardIronZParam;
     }
 
     /**
@@ -1546,9 +1546,9 @@ public class KnownHardIronAndFrameMagnetometerLinearLeastSquaresCalibrator imple
         if (running) {
             throw new LockedException();
         }
-        this.hardIronX = convertMagneticFluxDensity(hardIronXParam);
-        this.hardIronY = convertMagneticFluxDensity(hardIronYParam);
-        this.hardIronZ = convertMagneticFluxDensity(hardIronZParam);
+        hardIronX = convertMagneticFluxDensity(hardIronXParam);
+        hardIronY = convertMagneticFluxDensity(hardIronYParam);
+        hardIronZ = convertMagneticFluxDensity(hardIronZParam);
     }
 
     /**

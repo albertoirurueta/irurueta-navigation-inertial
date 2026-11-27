@@ -158,9 +158,9 @@ public abstract class GravityOrGravitation<T extends GravityOrGravitation<?>> im
      * @param gzParam acceleration due to gravity through ECI or ECEF z-axis expressed in meters per squared second (m/s^2).
      */
     public void setCoordinates(final double gxParam, final double gyParam, final double gzParam) {
-        this.gx = gxParam;
-        this.gy = gyParam;
-        this.gz = gzParam;
+        gx = gxParam;
+        gy = gyParam;
+        gz = gzParam;
     }
 
     /**

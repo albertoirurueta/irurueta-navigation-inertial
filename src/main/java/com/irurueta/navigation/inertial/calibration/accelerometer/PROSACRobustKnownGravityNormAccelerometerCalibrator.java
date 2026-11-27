@@ -1780,7 +1780,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibrator extends RobustK
         if (running) {
             throw new LockedException();
         }
-        this.computeAndKeepInliers = computeAndKeepInliersParam;
+        computeAndKeepInliers = computeAndKeepInliersParam;
     }
 
     /**
@@ -1804,7 +1804,7 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibrator extends RobustK
         if (running) {
             throw new LockedException();
         }
-        this.computeAndKeepResiduals = computeAndKeepResidualsParam;
+        computeAndKeepResiduals = computeAndKeepResidualsParam;
     }
 
     /**
@@ -1959,6 +1959,6 @@ public class PROSACRobustKnownGravityNormAccelerometerCalibrator extends RobustK
             throw new IllegalArgumentException();
         }
 
-        this.qualityScores = qualityScoresParam;
+        qualityScores = qualityScoresParam;
     }
 }

@@ -155,9 +155,9 @@ public abstract class Triad<U extends Enum<?>, M extends Measurement<U>, T exten
      * @param valueZParam z coordinate of measurement.
      */
     public void setValueCoordinates(final double valueXParam, final double valueYParam, final double valueZParam) {
-        this.valueX = valueXParam;
-        this.valueY = valueYParam;
-        this.valueZ = valueZParam;
+        valueX = valueXParam;
+        valueY = valueYParam;
+        valueZ = valueZParam;
     }
 
     /**

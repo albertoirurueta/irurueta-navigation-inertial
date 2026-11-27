@@ -592,6 +592,6 @@ public class PROMedSRobustKnownFrameMagnetometerCalibrator extends RobustKnownFr
             throw new IllegalArgumentException();
         }
 
-        this.qualityScores = qualityScoresParam;
+        qualityScores = qualityScoresParam;
     }
 }

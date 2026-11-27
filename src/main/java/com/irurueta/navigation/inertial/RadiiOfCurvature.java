@@ -173,8 +173,8 @@ public class RadiiOfCurvature implements Serializable, Cloneable {
      * @param reParam transverse radius of curvature expressed in meters (m).
      */
     public void setValues(final double rnParam, final double reParam) {
-        this.rn = rnParam;
-        this.re = reParam;
+        rn = rnParam;
+        re = reParam;
     }
 
     /**

@@ -429,7 +429,7 @@ public class PROSACRobustKnownFrameGyroscopeCalibrator extends RobustKnownFrameG
         if (running) {
             throw new LockedException();
         }
-        this.computeAndKeepInliers = computeAndKeepInliersParam;
+        computeAndKeepInliers = computeAndKeepInliersParam;
     }
 
     /**
@@ -453,7 +453,7 @@ public class PROSACRobustKnownFrameGyroscopeCalibrator extends RobustKnownFrameG
         if (running) {
             throw new LockedException();
         }
-        this.computeAndKeepResiduals = computeAndKeepResidualsParam;
+        computeAndKeepResiduals = computeAndKeepResidualsParam;
     }
 
     /**
@@ -608,6 +608,6 @@ public class PROSACRobustKnownFrameGyroscopeCalibrator extends RobustKnownFrameG
             throw new IllegalArgumentException();
         }
 
-        this.qualityScores = qualityScoresParam;
+        qualityScores = qualityScoresParam;
     }
 }

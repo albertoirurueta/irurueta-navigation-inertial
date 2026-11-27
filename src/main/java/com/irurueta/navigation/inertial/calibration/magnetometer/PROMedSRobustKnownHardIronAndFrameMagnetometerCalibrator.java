@@ -590,6 +590,6 @@ public class PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator extends
             throw new IllegalArgumentException();
         }
 
-        this.qualityScores = qualityScoresParam;
+        qualityScores = qualityScoresParam;
     }
 }

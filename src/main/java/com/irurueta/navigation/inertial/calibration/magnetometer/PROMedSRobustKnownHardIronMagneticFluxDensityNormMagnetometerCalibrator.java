@@ -2193,6 +2193,6 @@ public class PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibr
             throw new IllegalArgumentException();
         }
 
-        this.qualityScores = qualityScoresParam;
+        qualityScores = qualityScoresParam;
     }
 }

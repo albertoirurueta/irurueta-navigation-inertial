@@ -386,11 +386,11 @@ public class INSLooselyCoupledKalmanInitializerConfig implements Serializable, C
             final double initialAttitudeUncertaintyParam, final double initialVelocityUncertaintyParam,
             final double initialPositionUncertaintyParam, final double initialAccelerationBiasUncertaintyParam,
             final double initialGyroscopeBiasUncertaintyParam) {
-        this.initialAttitudeUncertainty = initialAttitudeUncertaintyParam;
-        this.initialVelocityUncertainty = initialVelocityUncertaintyParam;
-        this.initialPositionUncertainty = initialPositionUncertaintyParam;
-        this.initialAccelerationBiasUncertainty = initialAccelerationBiasUncertaintyParam;
-        this.initialGyroscopeBiasUncertainty = initialGyroscopeBiasUncertaintyParam;
+        initialAttitudeUncertainty = initialAttitudeUncertaintyParam;
+        initialVelocityUncertainty = initialVelocityUncertaintyParam;
+        initialPositionUncertainty = initialPositionUncertaintyParam;
+        initialAccelerationBiasUncertainty = initialAccelerationBiasUncertaintyParam;
+        initialGyroscopeBiasUncertainty = initialGyroscopeBiasUncertaintyParam;
     }
 
     /**

@@ -1922,6 +1922,6 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
             throw new IllegalArgumentException();
         }
 
-        this.qualityScores = qualityScoresParam;
+        qualityScores = qualityScoresParam;
     }
 }

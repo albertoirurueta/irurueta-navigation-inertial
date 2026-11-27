@@ -431,7 +431,7 @@ public class PROSACRobustKnownHardIronAndFrameMagnetometerCalibrator extends
         if (running) {
             throw new LockedException();
         }
-        this.computeAndKeepInliers = computeAndKeepInliersParam;
+        computeAndKeepInliers = computeAndKeepInliersParam;
     }
 
     /**
@@ -455,7 +455,7 @@ public class PROSACRobustKnownHardIronAndFrameMagnetometerCalibrator extends
         if (running) {
             throw new LockedException();
         }
-        this.computeAndKeepResiduals = computeAndKeepResidualsParam;
+        computeAndKeepResiduals = computeAndKeepResidualsParam;
     }
 
     /**
@@ -610,6 +610,6 @@ public class PROSACRobustKnownHardIronAndFrameMagnetometerCalibrator extends
             throw new IllegalArgumentException();
         }
 
-        this.qualityScores = qualityScoresParam;
+        qualityScores = qualityScoresParam;
     }
 }

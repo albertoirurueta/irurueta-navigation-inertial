@@ -1468,6 +1468,6 @@ public class PROMedSRobustEasyGyroscopeCalibrator extends RobustEasyGyroscopeCal
             throw new IllegalArgumentException();
         }
 
-        this.qualityScores = qualityScoresParam;
+        qualityScores = qualityScoresParam;
     }
 }
