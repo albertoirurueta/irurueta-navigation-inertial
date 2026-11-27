@@ -6101,6 +6101,8 @@ class EasyGyroscopeCalibratorTest implements EasyGyroscopeCalibratorListener {
 
             assertNotNull(calibrator.getEstimatedCovariance());
             checkGeneralCovariance(calibrator.getEstimatedCovariance());
+            GyroscopeCovariancePropagationAssert.assertCovariancePropagated(calibrator,
+                    calibrator.getEstimatedCovariance(), true, false);
             assertTrue(calibrator.getEstimatedMse() >= 0.0);
             assertTrue(calibrator.getEstimatedChiSq() >= 0.0);
             assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
@@ -6308,6 +6310,8 @@ class EasyGyroscopeCalibratorTest implements EasyGyroscopeCalibratorListener {
 
             assertNotNull(calibrator.getEstimatedCovariance());
             checkGeneralCovariance(calibrator.getEstimatedCovariance());
+            GyroscopeCovariancePropagationAssert.assertCovariancePropagated(calibrator,
+                    calibrator.getEstimatedCovariance(), true, false);
             assertTrue(calibrator.getEstimatedMse() >= 0.0);
             assertTrue(calibrator.getEstimatedChiSq() >= 0.0);
             assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
@@ -6912,6 +6916,8 @@ class EasyGyroscopeCalibratorTest implements EasyGyroscopeCalibratorListener {
 
             assertNotNull(calibrator.getEstimatedCovariance());
             checkGeneralAndGDependantCrossBiasesCovariance(calibrator.getEstimatedCovariance());
+            GyroscopeCovariancePropagationAssert.assertCovariancePropagated(calibrator,
+                    calibrator.getEstimatedCovariance(), true, true);
             assertTrue(calibrator.getEstimatedMse() >= 0.0);
             assertTrue(calibrator.getEstimatedChiSq() >= 0.0);
             assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
@@ -7122,6 +7128,8 @@ class EasyGyroscopeCalibratorTest implements EasyGyroscopeCalibratorListener {
 
             assertNotNull(calibrator.getEstimatedCovariance());
             checkGeneralAndGDependantCrossBiasesCovariance(calibrator.getEstimatedCovariance());
+            GyroscopeCovariancePropagationAssert.assertCovariancePropagated(calibrator,
+                    calibrator.getEstimatedCovariance(), true, true);
             assertTrue(calibrator.getEstimatedMse() >= 0.0);
             assertTrue(calibrator.getEstimatedChiSq() >= 0.0);
             assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);

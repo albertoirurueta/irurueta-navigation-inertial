@@ -13331,7 +13331,10 @@ class KnownFrameGyroscopeNonLinearLeastSquaresCalibratorTest implements
 
             assertNotNull(calibrator.getEstimatedCovariance());
             checkGeneralCovariance(calibrator.getEstimatedCovariance());
-            assertTrue(calibrator.getEstimatedChiSq() < 0.0);
+            // with minimum measurements there are fewer samples than unknowns, so the fitter
+            // divides chi square by negative degrees of freedom; a noise-free fit can also
+            // reproduce every sample exactly, giving a chi square of exactly zero
+            assertTrue(calibrator.getEstimatedChiSq() <= 0.0);
             assertTrue(calibrator.getEstimatedMse() >= 0.0);
 
             numValid++;
@@ -13543,7 +13546,10 @@ class KnownFrameGyroscopeNonLinearLeastSquaresCalibratorTest implements
 
             assertNotNull(calibrator.getEstimatedCovariance());
             checkGeneralCovariance(calibrator.getEstimatedCovariance());
-            assertTrue(calibrator.getEstimatedChiSq() < 0.0);
+            // with minimum measurements there are fewer samples than unknowns, so the fitter
+            // divides chi square by negative degrees of freedom; a noise-free fit can also
+            // reproduce every sample exactly, giving a chi square of exactly zero
+            assertTrue(calibrator.getEstimatedChiSq() <= 0.0);
             assertTrue(calibrator.getEstimatedMse() >= 0.0);
 
             numValid++;
@@ -13647,7 +13653,10 @@ class KnownFrameGyroscopeNonLinearLeastSquaresCalibratorTest implements
 
             assertNotNull(calibrator.getEstimatedCovariance());
             checkCommonAxisCovariance(calibrator.getEstimatedCovariance());
-            assertTrue(calibrator.getEstimatedChiSq() < 0.0);
+            // with minimum measurements there are fewer samples than unknowns, so the fitter
+            // divides chi square by negative degrees of freedom; a noise-free fit can also
+            // reproduce every sample exactly, giving a chi square of exactly zero
+            assertTrue(calibrator.getEstimatedChiSq() <= 0.0);
             assertTrue(calibrator.getEstimatedMse() >= 0.0);
 
             numValid++;
@@ -13860,7 +13869,10 @@ class KnownFrameGyroscopeNonLinearLeastSquaresCalibratorTest implements
 
             assertNotNull(calibrator.getEstimatedCovariance());
             checkCommonAxisCovariance(calibrator.getEstimatedCovariance());
-            assertTrue(calibrator.getEstimatedChiSq() < 0.0);
+            // with minimum measurements there are fewer samples than unknowns, so the fitter
+            // divides chi square by negative degrees of freedom; a noise-free fit can also
+            // reproduce every sample exactly, giving a chi square of exactly zero
+            assertTrue(calibrator.getEstimatedChiSq() <= 0.0);
             assertTrue(calibrator.getEstimatedMse() >= 0.0);
 
             numValid++;

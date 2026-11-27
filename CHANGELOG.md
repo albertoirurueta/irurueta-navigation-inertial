@@ -38,6 +38,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
   clones no longer share mutable objects (matrices, arrays, nested values) with the original (issue #49).
 - `StandardDeviationBodyMagneticFluxDensity.clone()` previously returned a shallow copy sharing the magnetic flux
   density with the original; it now returns a deep copy (issue #49).
+- `getEstimatedCovariance()` of `EasyGyroscopeCalibrator`, `TurntableGyroscopeCalibrator`,
+  `KnownBiasEasyGyroscopeCalibrator` and `KnownBiasTurntableGyroscopeCalibrator` no longer overstates the
+  uncertainty of `mzy` in the general (non common-axis) case. A wrong Jacobian entry (1.9 instead of 1.0) made the
+  `mzy` variance 3.61 times too large and its covariances with every other parameter 1.9 times too large. Parameter
+  estimates were not affected (issue #56).
 
 ## [1.12.0] - 2026-11-25
 
