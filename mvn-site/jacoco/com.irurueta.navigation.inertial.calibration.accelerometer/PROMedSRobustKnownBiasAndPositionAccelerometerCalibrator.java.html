@@ -1,0 +1,1831 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-inertial</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.inertial.calibration.accelerometer</a> &gt; <span class="el_source">PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.java</span></div><h1>PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2020 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.inertial.calibration.accelerometer;
+
+import com.irurueta.algebra.Matrix;
+import com.irurueta.navigation.LockedException;
+import com.irurueta.navigation.NotReadyException;
+import com.irurueta.navigation.frames.ECEFPosition;
+import com.irurueta.navigation.frames.NEDPosition;
+import com.irurueta.navigation.inertial.calibration.CalibrationException;
+import com.irurueta.navigation.inertial.calibration.StandardDeviationBodyKinematics;
+import com.irurueta.numerical.robust.PROMedSRobustEstimator;
+import com.irurueta.numerical.robust.PROMedSRobustEstimatorListener;
+import com.irurueta.numerical.robust.RobustEstimator;
+import com.irurueta.numerical.robust.RobustEstimatorException;
+import com.irurueta.numerical.robust.RobustEstimatorMethod;
+import java.util.List;
+
+/**
+ * Robustly estimates accelerometer cross couplings and scaling factors
+ * using a PROMedS algorithm to discard outliers.
+ * &lt;p&gt;
+ * To use this calibrator at least 10 measurements taken at a single known position must
+ * be taken at 10 different unknown orientations and zero velocity when common z-axis
+ * is assumed, otherwise at least 13 measurements are required.
+ * &lt;p&gt;
+ * Measured specific force is assumed to follow the model shown below:
+ * &lt;pre&gt;
+ *     fmeas = ba + (I + Ma) * ftrue + w
+ * &lt;/pre&gt;
+ * Where:
+ * - fmeas is the measured specific force. This is a 3x1 vector.
+ * - ba is accelerometer bias. Ideally, on a perfect accelerometer, this should be a
+ * 3x1 zero vector.
+ * - I is the 3x3 identity matrix.
+ * - Ma is the 3x3 matrix containing cross-couplings and scaling factors. Ideally, on
+ * a perfect accelerometer, this should be a 3x3 zero matrix.
+ * - ftrue is ground-truth specific force.
+ * - w is measurement noise.
+ */
+public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator extends
+        RobustKnownBiasAndPositionAccelerometerCalibrator {
+
+    /**
+     * Default value to be used for stop threshold. Stop threshold can be used to
+     * avoid keeping the algorithm unnecessarily iterating in case that best
+     * estimated threshold using median of residuals is not small enough. Once a
+     * solution is found that generates a threshold below this value, the
+     * algorithm will stop.
+     * The stop threshold can be used to prevent the LMedS algorithm iterating
+     * too many times in cases where samples have a very similar accuracy.
+     * For instance, in cases where proportion of outliers is very small (close
+     * to 0%), and samples are very accurate (i.e. 1e-6), the algorithm would
+     * iterate for a long time trying to find the best solution when indeed
+     * there is no need to do that if a reasonable threshold has already been
+     * reached.
+     * Because of this behaviour the stop threshold can be set to a value much
+     * lower than the one typically used in RANSAC, and yet the algorithm could
+     * still produce even smaller thresholds in estimated results.
+     */
+    public static final double DEFAULT_STOP_THRESHOLD = 1e-4;
+
+    /**
+     * Minimum allowed stop threshold value.
+     */
+    public static final double MIN_STOP_THRESHOLD = 0.0;
+
+    /**
+     * Threshold to be used to keep the algorithm iterating in case that best
+     * estimated threshold using median of residuals is not small enough. Once
+     * a solution is found that generates a threshold below this value, the
+     * algorithm will stop.
+     * The stop threshold can be used to prevent the LMedS algorithm iterating
+     * too many times in cases where samples have a very similar accuracy.
+     * For instance, in cases where proportion of outliers is very small (close
+     * to 0%), and samples are very accurate (i.e. 1e-6), the algorithm would
+     * iterate for a long time trying to find the best solution when indeed
+     * there is no need to do that if a reasonable threshold has already been
+     * reached.
+     * Because of this behaviour the stop threshold can be set to a value much
+     * lower than the one typically used in RANSAC, and yet the algorithm could
+     * still produce even smaller thresholds in estimated results.
+     */
+<span class="fc" id="L97">    private double stopThreshold = DEFAULT_STOP_THRESHOLD;</span>
+
+    /**
+     * Quality scores corresponding to each provided sample.
+     * The larger the score value the better the quality of the sample.
+     */
+    private double[] qualityScores;
+
+    /**
+     * Constructor.
+     */
+<span class="fc" id="L108">    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator() {</span>
+<span class="fc" id="L109">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param listener listener to be notified of events such as when estimation
+     *                 starts, ends or its progress significantly changes.
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
+<span class="fc" id="L119">        super(listener);</span>
+<span class="fc" id="L120">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements collection of body kinematics measurements with standard
+     *                     deviations taken at the same position with zero velocity
+     *                     and unknown different orientations.
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements) {
+<span class="fc" id="L131">        super(measurements);</span>
+<span class="fc" id="L132">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(final boolean commonAxisUsed) {
+<span class="fc" id="L141">        super(commonAxisUsed);</span>
+<span class="fc" id="L142">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param bias known accelerometer bias. This must have length 3 and is expressed
+     *             in meters per squared second (m/s^2).
+     * @throws IllegalArgumentException if provided bias array does not have length 3.
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(final double[] bias) {
+<span class="fc" id="L152">        super(bias);</span>
+<span class="fc" id="L153">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param bias known accelerometer bias.
+     * @throws IllegalArgumentException if provided bias matrix is not 3x1.
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(final Matrix bias) {
+<span class="fc" id="L162">        super(bias);</span>
+<span class="fc" id="L163">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param bias      known accelerometer bias.
+     * @param initialMa initial scale factors and cross coupling errors matrix.
+     * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
+     *                                  scaling and coupling error matrix is not 3x3.
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(final Matrix bias, final Matrix initialMa) {
+<span class="fc" id="L174">        super(bias, initialMa);</span>
+<span class="fc" id="L175">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position position where body kinematics measures have been taken.
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(final ECEFPosition position) {
+<span class="fc" id="L183">        super(position);</span>
+<span class="fc" id="L184">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position     position where body kinematics measures have been taken.
+     * @param measurements list of body kinematics measurements taken at a given position with
+     *                     different unknown orientations and containing the standard deviations
+     *                     of accelerometer and gyroscope measurements.
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final ECEFPosition position, final List&lt;StandardDeviationBodyKinematics&gt; measurements) {
+<span class="fc" id="L196">        super(position, measurements);</span>
+<span class="fc" id="L197">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position     position where body kinematics measures have been taken.
+     * @param measurements list of body kinematics measurements taken at a given position with
+     *                     different unknown orientations and containing the standard deviations
+     *                     of accelerometer and gyroscope measurements.
+     * @param listener     listener to be notified of events such as when estimation
+     *                     starts, ends or its progress significantly changes.
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final ECEFPosition position, final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
+<span class="fc" id="L212">        super(position, measurements, listener);</span>
+<span class="fc" id="L213">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position       position where body kinematics measures have been taken.
+     * @param measurements   list of body kinematics measurements taken at a given position with
+     *                       different unknown orientations and containing the standard deviations
+     *                       of accelerometer and gyroscope measurements.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final ECEFPosition position, final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed) {
+<span class="fc" id="L228">        super(position, measurements, commonAxisUsed);</span>
+<span class="fc" id="L229">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position       position where body kinematics measures have been taken.
+     * @param measurements   list of body kinematics measurements taken at a given position with
+     *                       different unknown orientations and containing the standard deviations
+     *                       of accelerometer and gyroscope measurements.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param listener       listener to be notified of events such as when estimation
+     *                       starts, ends or its progress significantly changes.
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final ECEFPosition position, final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed, final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
+<span class="fc" id="L246">        super(position, measurements, commonAxisUsed, listener);</span>
+<span class="fc" id="L247">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position     position where body kinematics measures have been taken.
+     * @param measurements collection of body kinematics measurements with standard
+     *                     deviations taken at the same position with zero velocity
+     *                     and unknown different orientations.
+     * @param bias         known accelerometer bias. This must have length 3 and is expressed
+     *                     in meters per squared second (m/s^2).
+     * @throws IllegalArgumentException if provided bias array does not have length 3.
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final ECEFPosition position, final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final double[] bias) {
+<span class="fc" id="L263">        super(position, measurements, bias);</span>
+<span class="fc" id="L264">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position     position where body kinematics measures have been taken.
+     * @param measurements collection of body kinematics measurements with standard
+     *                     deviations taken at the same position with zero velocity
+     *                     and unknown different orientations.
+     * @param bias         known accelerometer bias. This must have length 3 and is expressed
+     *                     in meters per squared second (m/s^2).
+     * @param listener     listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided bias array does not have length 3.
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final ECEFPosition position, final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final double[] bias, final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
+<span class="fc" id="L281">        super(position, measurements, bias, listener);</span>
+<span class="fc" id="L282">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position       position where body kinematics measures have been taken.
+     * @param measurements   collection of body kinematics measurements with standard
+     *                       deviations taken at the same position with zero velocity
+     *                       and unknown different orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param bias           known accelerometer bias. This must have length 3 and is expressed
+     *                       in meters per squared second (m/s^2).
+     * @throws IllegalArgumentException if provided bias array does not have length 3.
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final ECEFPosition position, final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed, final double[] bias) {
+<span class="fc" id="L300">        super(position, measurements, commonAxisUsed, bias);</span>
+<span class="fc" id="L301">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position       position where body kinematics measures have been taken.
+     * @param measurements   collection of body kinematics measurements with standard
+     *                       deviations taken at the same position with zero velocity
+     *                       and unknown different orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param initialBias    initial accelerometer bias to be used to find a solution.
+     *                       This must have length 3 and is expressed in meters per
+     *                       squared second (m/s^2).
+     * @param listener       listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided bias array does not have length 3.
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final ECEFPosition position, final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed, final double[] initialBias,
+            final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
+<span class="fc" id="L322">        super(position, measurements, commonAxisUsed, initialBias, listener);</span>
+<span class="fc" id="L323">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position     position where body kinematics measures have been taken.
+     * @param measurements collection of body kinematics measurements with standard
+     *                     deviations taken at the same position with zero velocity
+     *                     and unknown different orientations.
+     * @param bias         known accelerometer bias.
+     * @throws IllegalArgumentException if provided bias matrix is not 3x1.
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final ECEFPosition position, final List&lt;StandardDeviationBodyKinematics&gt; measurements, final Matrix bias) {
+<span class="fc" id="L337">        super(position, measurements, bias);</span>
+<span class="fc" id="L338">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position     position where body kinematics measures have been taken.
+     * @param measurements collection of body kinematics measurements with standard
+     *                     deviations taken at the same position with zero velocity
+     *                     and unknown different orientations.
+     * @param bias         known accelerometer bias.
+     * @param listener     listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided bias matrix is not 3x1.
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final ECEFPosition position, final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final Matrix bias, final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
+<span class="fc" id="L354">        super(position, measurements, bias, listener);</span>
+<span class="fc" id="L355">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position       position where body kinematics measures have been taken.
+     * @param measurements   collection of body kinematics measurements with standard
+     *                       deviations taken at the same position with zero velocity
+     *                       and unknown different orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param bias           known accelerometer bias.
+     * @throws IllegalArgumentException if provided bias matrix is not 3x1.
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final ECEFPosition position, final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed, final Matrix bias) {
+<span class="fc" id="L372">        super(position, measurements, commonAxisUsed, bias);</span>
+<span class="fc" id="L373">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position       position where body kinematics measures have been taken.
+     * @param measurements   collection of body kinematics measurements with standard
+     *                       deviations taken at the same position with zero velocity
+     *                       and unknown different orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param bias           known accelerometer bias.
+     * @param listener       listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided bias matrix is not 3x1.
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final ECEFPosition position, final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed, final Matrix bias,
+            final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
+<span class="fc" id="L392">        super(position, measurements, commonAxisUsed, bias, listener);</span>
+<span class="fc" id="L393">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position     position where body kinematics measures have been taken.
+     * @param measurements collection of body kinematics measurements with standard
+     *                     deviations taken at the same position with zero velocity
+     *                     and unknown different orientations.
+     * @param bias         known accelerometer bias.
+     * @param initialMa    initial scale factors and cross coupling errors matrix.
+     * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
+     *                                  scaling and coupling error matrix is not 3x3.
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final ECEFPosition position, final List&lt;StandardDeviationBodyKinematics&gt; measurements, final Matrix bias,
+            final Matrix initialMa) {
+<span class="fc" id="L410">        super(position, measurements, bias, initialMa);</span>
+<span class="fc" id="L411">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position     position where body kinematics measures have been taken.
+     * @param measurements collection of body kinematics measurements with standard
+     *                     deviations taken at the same position with zero velocity
+     *                     and unknown different orientations.
+     * @param bias         known accelerometer bias.
+     * @param initialMa    initial scale factors and cross coupling errors matrix.
+     * @param listener     listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
+     *                                  scaling and coupling error matrix is not 3x3.
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final ECEFPosition position, final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final Matrix bias, final Matrix initialMa,
+            final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
+<span class="fc" id="L430">        super(position, measurements, bias, initialMa, listener);</span>
+<span class="fc" id="L431">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position       position where body kinematics measures have been taken.
+     * @param measurements   collection of body kinematics measurements with standard
+     *                       deviations taken at the same position with zero velocity
+     *                       and unknown different orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param bias           known accelerometer bias.
+     * @param initialMa      initial scale factors and cross coupling errors matrix.
+     * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
+     *                                  scaling and coupling error matrix is not 3x3.
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final ECEFPosition position, final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed, final Matrix bias, final Matrix initialMa) {
+<span class="fc" id="L450">        super(position, measurements, commonAxisUsed, bias, initialMa);</span>
+<span class="fc" id="L451">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position       position where body kinematics measures have been taken.
+     * @param measurements   collection of body kinematics measurements with standard
+     *                       deviations taken at the same position with zero velocity
+     *                       and unknown different orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param bias           known accelerometer bias.
+     * @param initialMa      initial scale factors and cross coupling errors matrix.
+     * @param listener       listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
+     *                                  scaling and coupling error matrix is not 3x3.
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final ECEFPosition position, final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed, final Matrix bias, final Matrix initialMa,
+            final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
+<span class="fc" id="L472">        super(position, measurements, commonAxisUsed, bias, initialMa, listener);</span>
+<span class="fc" id="L473">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position position where body kinematics measures have been taken.
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(final NEDPosition position) {
+<span class="fc" id="L481">        super(position);</span>
+<span class="fc" id="L482">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position     position where body kinematics measures have been taken.
+     * @param measurements list of body kinematics measurements taken at a given position with
+     *                     different unknown orientations and containing the standard deviations
+     *                     of accelerometer and gyroscope measurements.
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final NEDPosition position, final List&lt;StandardDeviationBodyKinematics&gt; measurements) {
+<span class="fc" id="L494">        super(position, measurements);</span>
+<span class="fc" id="L495">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position     position where body kinematics measures have been taken.
+     * @param measurements list of body kinematics measurements taken at a given position with
+     *                     different unknown orientations and containing the standard deviations
+     *                     of accelerometer and gyroscope measurements.
+     * @param listener     listener to be notified of events such as when estimation
+     *                     starts, ends or its progress significantly changes.
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final NEDPosition position, final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
+<span class="fc" id="L510">        super(position, measurements, listener);</span>
+<span class="fc" id="L511">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position       position where body kinematics measures have been taken.
+     * @param measurements   list of body kinematics measurements taken at a given position with
+     *                       different unknown orientations and containing the standard deviations
+     *                       of accelerometer and gyroscope measurements.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final NEDPosition position, final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed) {
+<span class="fc" id="L526">        super(position, measurements, commonAxisUsed);</span>
+<span class="fc" id="L527">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position       position where body kinematics measures have been taken.
+     * @param measurements   list of body kinematics measurements taken at a given position with
+     *                       different unknown orientations and containing the standard deviations
+     *                       of accelerometer and gyroscope measurements.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param listener       listener to be notified of events such as when estimation
+     *                       starts, ends or its progress significantly changes.
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final NEDPosition position, final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed, final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
+<span class="fc" id="L544">        super(position, measurements, commonAxisUsed, listener);</span>
+<span class="fc" id="L545">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position     position where body kinematics measures have been taken.
+     * @param measurements collection of body kinematics measurements with standard
+     *                     deviations taken at the same position with zero velocity
+     *                     and unknown different orientations.
+     * @param bias         known accelerometer bias. This must have length 3 and is expressed
+     *                     in meters per squared second (m/s^2).
+     * @throws IllegalArgumentException if provided bias array does not have length 3.
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final NEDPosition position, final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final double[] bias) {
+<span class="fc" id="L561">        super(position, measurements, bias);</span>
+<span class="fc" id="L562">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position     position where body kinematics measures have been taken.
+     * @param measurements collection of body kinematics measurements with standard
+     *                     deviations taken at the same position with zero velocity
+     *                     and unknown different orientations.
+     * @param bias         known accelerometer bias. This must have length 3 and is expressed
+     *                     in meters per squared second (m/s^2).
+     * @param listener     listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided bias array does not have length 3.
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final NEDPosition position, final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final double[] bias, final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
+<span class="fc" id="L579">        super(position, measurements, bias, listener);</span>
+<span class="fc" id="L580">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position       position where body kinematics measures have been taken.
+     * @param measurements   collection of body kinematics measurements with standard
+     *                       deviations taken at the same position with zero velocity
+     *                       and unknown different orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param bias           known accelerometer bias. This must have length 3 and is expressed
+     *                       in meters per squared second (m/s^2).
+     * @throws IllegalArgumentException if provided bias array does not have length 3.
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final NEDPosition position, final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed, final double[] bias) {
+<span class="fc" id="L598">        super(position, measurements, commonAxisUsed, bias);</span>
+<span class="fc" id="L599">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position       position where body kinematics measures have been taken.
+     * @param measurements   collection of body kinematics measurements with standard
+     *                       deviations taken at the same position with zero velocity
+     *                       and unknown different orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param bias           known accelerometer bias. This must have length 3 and is expressed
+     *                       in meters per squared second (m/s^2).
+     * @param listener       listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided bias array does not have length 3.
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final NEDPosition position, final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed, final double[] bias,
+            final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
+<span class="fc" id="L619">        super(position, measurements, commonAxisUsed, bias, listener);</span>
+<span class="fc" id="L620">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position     position where body kinematics measures have been taken.
+     * @param measurements collection of body kinematics measurements with standard
+     *                     deviations taken at the same position with zero velocity
+     *                     and unknown different orientations.
+     * @param bias         known accelerometer bias.
+     * @throws IllegalArgumentException if provided bias matrix is not 3x1.
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final NEDPosition position, final List&lt;StandardDeviationBodyKinematics&gt; measurements, final Matrix bias) {
+<span class="fc" id="L634">        super(position, measurements, bias);</span>
+<span class="fc" id="L635">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position     position where body kinematics measures have been taken.
+     * @param measurements collection of body kinematics measurements with standard
+     *                     deviations taken at the same position with zero velocity
+     *                     and unknown different orientations.
+     * @param bias         known accelerometer bias.
+     * @param listener     listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided bias matrix is not 3x1.
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final NEDPosition position, final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final Matrix bias, final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
+<span class="fc" id="L651">        super(position, measurements, bias, listener);</span>
+<span class="fc" id="L652">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position       position where body kinematics measures have been taken.
+     * @param measurements   collection of body kinematics measurements with standard
+     *                       deviations taken at the same position with zero velocity
+     *                       and unknown different orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param bias           known accelerometer bias.
+     * @throws IllegalArgumentException if provided bias matrix is not 3x1.
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final NEDPosition position, final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed, final Matrix bias) {
+<span class="fc" id="L669">        super(position, measurements, commonAxisUsed, bias);</span>
+<span class="fc" id="L670">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position       position where body kinematics measures have been taken.
+     * @param measurements   collection of body kinematics measurements with standard
+     *                       deviations taken at the same position with zero velocity
+     *                       and unknown different orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param bias           known accelerometer bias.
+     * @param listener       listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided bias matrix is not 3x1.
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final NEDPosition position, final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed, final Matrix bias,
+            final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
+<span class="fc" id="L689">        super(position, measurements, commonAxisUsed, bias, listener);</span>
+<span class="fc" id="L690">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position     position where body kinematics measures have been taken.
+     * @param measurements collection of body kinematics measurements with standard
+     *                     deviations taken at the same position with zero velocity
+     *                     and unknown different orientations.
+     * @param bias         known accelerometer bias.
+     * @param initialMa    initial scale factors and cross coupling errors matrix.
+     * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
+     *                                  scaling and coupling error matrix is not 3x3.
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final NEDPosition position, final List&lt;StandardDeviationBodyKinematics&gt; measurements, final Matrix bias,
+            final Matrix initialMa) {
+<span class="fc" id="L707">        super(position, measurements, bias, initialMa);</span>
+<span class="fc" id="L708">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position     position where body kinematics measures have been taken.
+     * @param measurements collection of body kinematics measurements with standard
+     *                     deviations taken at the same position with zero velocity
+     *                     and unknown different orientations.
+     * @param bias         known accelerometer bias.
+     * @param initialMa    initial scale factors and cross coupling errors matrix.
+     * @param listener     listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
+     *                                  scaling and coupling error matrix is not 3x3.
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final NEDPosition position, final List&lt;StandardDeviationBodyKinematics&gt; measurements, final Matrix bias,
+            final Matrix initialMa, final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
+<span class="fc" id="L726">        super(position, measurements, bias, initialMa, listener);</span>
+<span class="fc" id="L727">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position       position where body kinematics measures have been taken.
+     * @param measurements   collection of body kinematics measurements with standard
+     *                       deviations taken at the same position with zero velocity
+     *                       and unknown different orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param bias           known accelerometer bias.
+     * @param initialMa      initial scale factors and cross coupling errors matrix.
+     * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
+     *                                  scaling and coupling error matrix is not 3x3.
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final NEDPosition position, final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed, final Matrix bias, final Matrix initialMa) {
+<span class="fc" id="L746">        super(position, measurements, commonAxisUsed, bias, initialMa);</span>
+<span class="fc" id="L747">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position       position where body kinematics measures have been taken.
+     * @param measurements   collection of body kinematics measurements with standard
+     *                       deviations taken at the same position with zero velocity
+     *                       and unknown different orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param bias           known accelerometer bias.
+     * @param initialMa      initial scale factors and cross coupling errors matrix.
+     * @param listener       listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
+     *                                  scaling and coupling error matrix is not 3x3.
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final NEDPosition position, final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed, final Matrix bias, final Matrix initialMa,
+            final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
+<span class="fc" id="L768">        super(position, measurements, commonAxisUsed, bias, initialMa, listener);</span>
+<span class="fc" id="L769">    }</span>
+
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param position      position where body kinematics measures have been taken.
+     * @param measurements  list of body kinematics measurements taken at a given position with
+     *                      different unknown orientations and containing the standard deviations
+     *                      of accelerometer and gyroscope measurements.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 10 samples.
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final double[] qualityScores, final ECEFPosition position,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements) {
+<span class="fc" id="L788">        super(position, measurements);</span>
+<span class="fc" id="L789">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L790">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param position      position where body kinematics measures have been taken.
+     * @param measurements  list of body kinematics measurements taken at a given position with
+     *                      different unknown orientations and containing the standard deviations
+     *                      of accelerometer and gyroscope measurements.
+     * @param listener      listener to be notified of events such as when estimation
+     *                      starts, ends or its progress significantly changes.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 10 samples.
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final double[] qualityScores, final ECEFPosition position,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
+<span class="fc" id="L811">        super(position, measurements, listener);</span>
+<span class="fc" id="L812">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L813">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param position       position where body kinematics measures have been taken.
+     * @param measurements   list of body kinematics measurements taken at a given position with
+     *                       different unknown orientations and containing the standard deviations
+     *                       of accelerometer and gyroscope measurements.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope. If true 7 samples are
+     *                       required, otherwise 10.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than the minimum number of
+     *                                  required samples (7 or 10).
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final double[] qualityScores, final ECEFPosition position,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements, final boolean commonAxisUsed) {
+<span class="fc" id="L835">        super(position, measurements, commonAxisUsed);</span>
+<span class="fc" id="L836">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L837">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param position       position where body kinematics measures have been taken.
+     * @param measurements   list of body kinematics measurements taken at a given position with
+     *                       different unknown orientations and containing the standard deviations
+     *                       of accelerometer and gyroscope measurements.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope. If true 7 samples are
+     *                       required, otherwise 10.
+     * @param listener       listener to be notified of events such as when estimation
+     *                       starts, ends or its progress significantly changes.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than the minimum number of
+     *                                  required samples (7 or 10).
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final double[] qualityScores, final ECEFPosition position,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements, final boolean commonAxisUsed,
+            final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
+<span class="fc" id="L862">        super(position, measurements, commonAxisUsed, listener);</span>
+<span class="fc" id="L863">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L864">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param position      position where body kinematics measures have been taken.
+     * @param measurements  collection of body kinematics measurements with standard
+     *                      deviations taken at the same position with zero velocity
+     *                      and unknown different orientations.
+     * @param bias          known accelerometer bias. This must have length 3 and is expressed
+     *                      in meters per squared second (m/s^2).
+     * @throws IllegalArgumentException if provided bias array does not have length 3
+     *                                  or quality scores array is smaller than 10
+     *                                  samples.
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final double[] qualityScores, final ECEFPosition position,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements, final double[] bias) {
+<span class="fc" id="L885">        super(position, measurements, bias);</span>
+<span class="fc" id="L886">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L887">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param position      position where body kinematics measures have been taken.
+     * @param measurements  collection of body kinematics measurements with standard
+     *                      deviations taken at the same position with zero velocity
+     *                      and unknown different orientations.
+     * @param bias          known accelerometer bias. This must have length 3 and is expressed
+     *                      in meters per squared second (m/s^2).
+     * @param listener      listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided bias array does not have length 3
+     *                                  or if quality scores array is smaller than 10
+     *                                  samples.
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final double[] qualityScores, final ECEFPosition position,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements, final double[] bias,
+            final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
+<span class="fc" id="L910">        super(position, measurements, bias, listener);</span>
+<span class="fc" id="L911">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L912">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param position       position where body kinematics measures have been taken.
+     * @param measurements   collection of body kinematics measurements with standard
+     *                       deviations taken at the same position with zero velocity
+     *                       and unknown different orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param bias           known accelerometer bias. This must have length 3 and is expressed
+     *                       in meters per squared second (m/s^2).
+     * @throws IllegalArgumentException if provided bias array does not have length 3
+     *                                  or if provided quality scores length is
+     *                                  smaller than the minimum number of required
+     *                                  samples (7 or 10).
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final double[] qualityScores, final ECEFPosition position,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements, final boolean commonAxisUsed,
+            final double[] bias) {
+<span class="fc" id="L937">        super(position, measurements, commonAxisUsed, bias);</span>
+<span class="fc" id="L938">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L939">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param position       position where body kinematics measures have been taken.
+     * @param measurements   collection of body kinematics measurements with standard
+     *                       deviations taken at the same position with zero velocity
+     *                       and unknown different orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param initialBias    initial accelerometer bias to be used to find a solution.
+     *                       This must have length 3 and is expressed in meters per
+     *                       squared second (m/s^2).
+     * @param listener       listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided bias array does not have length 3
+     *                                  or if provided quality scores length is
+     *                                  smaller than the minimum number of required
+     *                                  samples (7 or 10).
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final double[] qualityScores, final ECEFPosition position,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements, final boolean commonAxisUsed,
+            final double[] initialBias, final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
+<span class="fc" id="L966">        super(position, measurements, commonAxisUsed, initialBias, listener);</span>
+<span class="fc" id="L967">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L968">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param position      position where body kinematics measures have been taken.
+     * @param measurements  collection of body kinematics measurements with standard
+     *                      deviations taken at the same position with zero velocity
+     *                      and unknown different orientations.
+     * @param bias          known accelerometer bias.
+     * @throws IllegalArgumentException if provided bias matrix is not 3x1 or if
+     *                                  quality scores array is smaller than 10
+     *                                  samples.
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final double[] qualityScores, final ECEFPosition position,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements, final Matrix bias) {
+<span class="fc" id="L988">        super(position, measurements, bias);</span>
+<span class="fc" id="L989">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L990">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param position      position where body kinematics measures have been taken.
+     * @param measurements  collection of body kinematics measurements with standard
+     *                      deviations taken at the same position with zero velocity
+     *                      and unknown different orientations.
+     * @param bias          known accelerometer bias.
+     * @param listener      listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided bias matrix is not 3x1 or if
+     *                                  quality scores array is smaller than 13
+     *                                  samples.
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final double[] qualityScores, final ECEFPosition position,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements, final Matrix bias,
+            final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
+<span class="fc" id="L1012">        super(position, measurements, bias, listener);</span>
+<span class="fc" id="L1013">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1014">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param position       position where body kinematics measures have been taken.
+     * @param measurements   collection of body kinematics measurements with standard
+     *                       deviations taken at the same position with zero velocity
+     *                       and unknown different orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param bias           known accelerometer bias.
+     * @throws IllegalArgumentException if provided bias matrix is not 3x1
+     *                                  or if provided quality scores length is
+     *                                  smaller than the minimum number of required
+     *                                  samples (7 or 10).
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final double[] qualityScores, final ECEFPosition position,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements, final boolean commonAxisUsed,
+            final Matrix bias) {
+<span class="fc" id="L1038">        super(position, measurements, commonAxisUsed, bias);</span>
+<span class="fc" id="L1039">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1040">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param position       position where body kinematics measures have been taken.
+     * @param measurements   collection of body kinematics measurements with standard
+     *                       deviations taken at the same position with zero velocity
+     *                       and unknown different orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param bias           known accelerometer bias.
+     * @param listener       listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided bias matrix is not 3x1
+     *                                  or if provided quality scores length is
+     *                                  smaller than the minimum number of required
+     *                                  samples (7 or 10).
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final double[] qualityScores, final ECEFPosition position,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements, final boolean commonAxisUsed, final Matrix bias,
+            final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
+<span class="fc" id="L1065">        super(position, measurements, commonAxisUsed, bias, listener);</span>
+<span class="fc" id="L1066">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1067">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param position      position where body kinematics measures have been taken.
+     * @param measurements  collection of body kinematics measurements with standard
+     *                      deviations taken at the same position with zero velocity
+     *                      and unknown different orientations.
+     * @param bias          known accelerometer bias.
+     * @param initialMa     initial scale factors and cross coupling errors matrix.
+     * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
+     *                                  scaling and coupling error matrix is not 3x3
+     *                                  or if quality scores array is smaller than 10
+     *                                  samples.
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final double[] qualityScores, final ECEFPosition position,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements, final Matrix bias, final Matrix initialMa) {
+<span class="fc" id="L1089">        super(position, measurements, bias, initialMa);</span>
+<span class="fc" id="L1090">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1091">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param position      position where body kinematics measures have been taken.
+     * @param measurements  collection of body kinematics measurements with standard
+     *                      deviations taken at the same position with zero velocity
+     *                      and unknown different orientations.
+     * @param bias          known accelerometer bias.
+     * @param initialMa     initial scale factors and cross coupling errors matrix.
+     * @param listener      listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
+     *                                  scaling and coupling error matrix is not 3x3
+     *                                  or if quality scores array is smaller than 13
+     *                                  samples.
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final double[] qualityScores, final ECEFPosition position,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements, final Matrix bias, final Matrix initialMa,
+            final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
+<span class="fc" id="L1115">        super(position, measurements, bias, initialMa, listener);</span>
+<span class="fc" id="L1116">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1117">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param position       position where body kinematics measures have been taken.
+     * @param measurements   collection of body kinematics measurements with standard
+     *                       deviations taken at the same position with zero velocity
+     *                       and unknown different orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param bias           known accelerometer bias.
+     * @param initialMa      initial scale factors and cross coupling errors matrix.
+     * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
+     *                                  scaling and coupling error matrix is not 3x3
+     *                                  or if provided quality scores length is
+     *                                  smaller than the minimum number of required
+     *                                  samples (7 or 10).
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final double[] qualityScores, final ECEFPosition position,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements, final boolean commonAxisUsed, final Matrix bias,
+            final Matrix initialMa) {
+<span class="fc" id="L1143">        super(position, measurements, commonAxisUsed, bias, initialMa);</span>
+<span class="fc" id="L1144">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1145">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param position       position where body kinematics measures have been taken.
+     * @param measurements   collection of body kinematics measurements with standard
+     *                       deviations taken at the same position with zero velocity
+     *                       and unknown different orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param bias           known accelerometer bias.
+     * @param initialMa      initial scale factors and cross coupling errors matrix.
+     * @param listener       listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
+     *                                  scaling and coupling error matrix is not 3x3
+     *                                  or if provided quality scores length is
+     *                                  smaller than the minimum number of required
+     *                                  samples (10 or 13).
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final double[] qualityScores, final ECEFPosition position,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements, final boolean commonAxisUsed, final Matrix bias,
+            final Matrix initialMa, final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
+<span class="fc" id="L1172">        super(position, measurements, commonAxisUsed, bias, initialMa, listener);</span>
+<span class="fc" id="L1173">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1174">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param position      position where body kinematics measures have been taken.
+     * @param measurements  list of body kinematics measurements taken at a given position with
+     *                      different unknown orientations and containing the standard deviations
+     *                      of accelerometer and gyroscope measurements.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 10 samples.
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final double[] qualityScores, final NEDPosition position,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements) {
+<span class="fc" id="L1192">        super(position, measurements);</span>
+<span class="fc" id="L1193">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1194">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param position      position where body kinematics measures have been taken.
+     * @param measurements  list of body kinematics measurements taken at a given position with
+     *                      different unknown orientations and containing the standard deviations
+     *                      of accelerometer and gyroscope measurements.
+     * @param listener      listener to be notified of events such as when estimation
+     *                      starts, ends or its progress significantly changes.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 10 samples.
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final double[] qualityScores, final NEDPosition position,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
+<span class="fc" id="L1215">        super(position, measurements, listener);</span>
+<span class="fc" id="L1216">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1217">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param position       position where body kinematics measures have been taken.
+     * @param measurements   list of body kinematics measurements taken at a given position with
+     *                       different unknown orientations and containing the standard deviations
+     *                       of accelerometer and gyroscope measurements.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope. If true 7 samples are
+     *                       required, otherwise 10.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than the minimum number of
+     *                                  required samples (7 or 10).
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final double[] qualityScores, final NEDPosition position,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements, final boolean commonAxisUsed) {
+<span class="fc" id="L1239">        super(position, measurements, commonAxisUsed);</span>
+<span class="fc" id="L1240">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1241">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param position       position where body kinematics measures have been taken.
+     * @param measurements   list of body kinematics measurements taken at a given position with
+     *                       different unknown orientations and containing the standard deviations
+     *                       of accelerometer and gyroscope measurements.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param listener       listener to be notified of events such as when estimation
+     *                       starts, ends or its progress significantly changes.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than the minimum number of
+     *                                  required samples (7 or 10).
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final double[] qualityScores, final NEDPosition position,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements, final boolean commonAxisUsed,
+            final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
+<span class="fc" id="L1265">        super(position, measurements, commonAxisUsed, listener);</span>
+<span class="fc" id="L1266">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1267">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param position      position where body kinematics measures have been taken.
+     * @param measurements  collection of body kinematics measurements with standard
+     *                      deviations taken at the same position with zero velocity
+     *                      and unknown different orientations.
+     * @param bias          known accelerometer bias. This must have length 3 and is expressed
+     *                      in meters per squared second (m/s^2).
+     * @throws IllegalArgumentException if provided bias array does not have length 3
+     *                                  or quality scores array is smaller than 10
+     *                                  samples.
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final double[] qualityScores, final NEDPosition position,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements, final double[] bias) {
+<span class="fc" id="L1288">        super(position, measurements, bias);</span>
+<span class="fc" id="L1289">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1290">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param position      position where body kinematics measures have been taken.
+     * @param measurements  collection of body kinematics measurements with standard
+     *                      deviations taken at the same position with zero velocity
+     *                      and unknown different orientations.
+     * @param bias          known accelerometer bias. This must have length 3 and is expressed
+     *                      in meters per squared second (m/s^2).
+     * @param listener      listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided bias array does not have length 3
+     *                                  or if quality scores array is smaller than 10
+     *                                  samples.
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final double[] qualityScores, final NEDPosition position,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements, final double[] bias,
+            final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
+<span class="fc" id="L1313">        super(position, measurements, bias, listener);</span>
+<span class="fc" id="L1314">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1315">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param position       position where body kinematics measures have been taken.
+     * @param measurements   collection of body kinematics measurements with standard
+     *                       deviations taken at the same position with zero velocity
+     *                       and unknown different orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param bias           known accelerometer bias. This must have length 3 and is expressed
+     *                       in meters per squared second (m/s^2).
+     * @throws IllegalArgumentException if provided bias array does not have length 3
+     *                                  or if provided quality scores length is
+     *                                  smaller than the minimum number of required
+     *                                  samples (7 or 10).
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final double[] qualityScores, final NEDPosition position,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements, final boolean commonAxisUsed,
+            final double[] bias) {
+<span class="fc" id="L1340">        super(position, measurements, commonAxisUsed, bias);</span>
+<span class="fc" id="L1341">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1342">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param position       position where body kinematics measures have been taken.
+     * @param measurements   collection of body kinematics measurements with standard
+     *                       deviations taken at the same position with zero velocity
+     *                       and unknown different orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param bias           known accelerometer bias. This must have length 3 and is expressed
+     *                       in meters per squared second (m/s^2).
+     * @param listener       listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided bias array does not have length 3
+     *                                  or if provided quality scores length is
+     *                                  smaller than the minimum number of required
+     *                                  samples (7 or 10).
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final double[] qualityScores, final NEDPosition position,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed, final double[] bias,
+            final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
+<span class="fc" id="L1369">        super(position, measurements, commonAxisUsed, bias, listener);</span>
+<span class="fc" id="L1370">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1371">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param position      position where body kinematics measures have been taken.
+     * @param measurements  collection of body kinematics measurements with standard
+     *                      deviations taken at the same position with zero velocity
+     *                      and unknown different orientations.
+     * @param bias          known accelerometer bias.
+     * @throws IllegalArgumentException if provided bias matrix is not 3x1 or if
+     *                                  quality scores array is smaller than 10
+     *                                  samples.
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final double[] qualityScores, final NEDPosition position,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements, final Matrix bias) {
+<span class="fc" id="L1391">        super(position, measurements, bias);</span>
+<span class="fc" id="L1392">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1393">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param position      position where body kinematics measures have been taken.
+     * @param measurements  collection of body kinematics measurements with standard
+     *                      deviations taken at the same position with zero velocity
+     *                      and unknown different orientations.
+     * @param bias          known accelerometer bias.
+     * @param listener      listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided bias matrix is not 3x1 or if
+     *                                  quality scores array is smaller than 10
+     *                                  samples.
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final double[] qualityScores, final NEDPosition position,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final Matrix bias, final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
+<span class="fc" id="L1415">        super(position, measurements, bias, listener);</span>
+<span class="fc" id="L1416">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1417">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param position       position where body kinematics measures have been taken.
+     * @param measurements   collection of body kinematics measurements with standard
+     *                       deviations taken at the same position with zero velocity
+     *                       and unknown different orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param bias           known accelerometer bias.
+     * @throws IllegalArgumentException if provided bias matrix is not 3x1
+     *                                  or if provided quality scores length is
+     *                                  smaller than the minimum number of required
+     *                                  samples (7 or 10).
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final double[] qualityScores, final NEDPosition position,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements, final boolean commonAxisUsed,
+            final Matrix bias) {
+<span class="fc" id="L1441">        super(position, measurements, commonAxisUsed, bias);</span>
+<span class="fc" id="L1442">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1443">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param position       position where body kinematics measures have been taken.
+     * @param measurements   collection of body kinematics measurements with standard
+     *                       deviations taken at the same position with zero velocity
+     *                       and unknown different orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param bias           known accelerometer bias.
+     * @param listener       listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided bias matrix is not 3x1
+     *                                  or if provided quality scores length is
+     *                                  smaller than the minimum number of required
+     *                                  samples (7 or 10).
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final double[] qualityScores, final NEDPosition position,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements, final boolean commonAxisUsed, final Matrix bias,
+            final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
+<span class="fc" id="L1468">        super(position, measurements, commonAxisUsed, bias, listener);</span>
+<span class="fc" id="L1469">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1470">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param position      position where body kinematics measures have been taken.
+     * @param measurements  collection of body kinematics measurements with standard
+     *                      deviations taken at the same position with zero velocity
+     *                      and unknown different orientations.
+     * @param bias          known accelerometer bias.
+     * @param initialMa     initial scale factors and cross coupling errors matrix.
+     * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
+     *                                  scaling and coupling error matrix is not 3x3
+     *                                  or if quality scores array is smaller than 10
+     *                                  samples.
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final double[] qualityScores, final NEDPosition position,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements, final Matrix bias, final Matrix initialMa) {
+<span class="fc" id="L1492">        super(position, measurements, bias, initialMa);</span>
+<span class="fc" id="L1493">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1494">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param position      position where body kinematics measures have been taken.
+     * @param measurements  collection of body kinematics measurements with standard
+     *                      deviations taken at the same position with zero velocity
+     *                      and unknown different orientations.
+     * @param bias          known accelerometer bias.
+     * @param initialMa     initial scale factors and cross coupling errors matrix.
+     * @param listener      listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
+     *                                  scaling and coupling error matrix is not 3x3
+     *                                  or if quality scores array is smaller than 10
+     *                                  samples.
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final double[] qualityScores, final NEDPosition position,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements, final Matrix bias, final Matrix initialMa,
+            final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
+<span class="fc" id="L1518">        super(position, measurements, bias, initialMa, listener);</span>
+<span class="fc" id="L1519">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1520">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param position       position where body kinematics measures have been taken.
+     * @param measurements   collection of body kinematics measurements with standard
+     *                       deviations taken at the same position with zero velocity
+     *                       and unknown different orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param bias           known accelerometer bias.
+     * @param initialMa      initial scale factors and cross coupling errors matrix.
+     * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
+     *                                  scaling and coupling error matrix is not 3x3
+     *                                  or if provided quality scores length is
+     *                                  smaller than the minimum number of required
+     *                                  samples (7 or 10).
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final double[] qualityScores, final NEDPosition position,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements, final boolean commonAxisUsed, final Matrix bias,
+            final Matrix initialMa) {
+<span class="fc" id="L1546">        super(position, measurements, commonAxisUsed, bias, initialMa);</span>
+<span class="fc" id="L1547">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1548">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param position       position where body kinematics measures have been taken.
+     * @param measurements   collection of body kinematics measurements with standard
+     *                       deviations taken at the same position with zero velocity
+     *                       and unknown different orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param bias           known accelerometer bias.
+     * @param initialMa      initial scale factors and cross coupling errors matrix.
+     * @param listener       listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
+     *                                  scaling and coupling error matrix is not 3x3
+     *                                  or if provided quality scores length is
+     *                                  smaller than the minimum number of required
+     *                                  samples (7 or 10).
+     */
+    public PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator(
+            final double[] qualityScores, final NEDPosition position,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements, final boolean commonAxisUsed, final Matrix bias,
+            final Matrix initialMa, final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
+<span class="fc" id="L1575">        super(position, measurements, commonAxisUsed, bias, initialMa, listener);</span>
+<span class="fc" id="L1576">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1577">    }</span>
+
+    /**
+     * Returns threshold to be used to keep the algorithm iterating in case that
+     * best estimated threshold using median of residuals is not small enough.
+     * Once a solution is found that generates a threshold below this value, the
+     * algorithm will stop.
+     * The stop threshold can be used to prevent the LMedS algorithm to iterate
+     * too many times in cases where samples have a very similar accuracy.
+     * For instance, in cases where proportion of outliers is very small (close
+     * to 0%), and samples are very accurate (i.e. 1e-6), the algorithm would
+     * iterate for a long time trying to find the best solution when indeed
+     * there is no need to do that if a reasonable threshold has already been
+     * reached.
+     * Because of this behaviour the stop threshold can be set to a value much
+     * lower than the one typically used in RANSAC, and yet the algorithm could
+     * still produce even smaller thresholds in estimated results.
+     *
+     * @return stop threshold to stop the algorithm prematurely when a certain
+     * accuracy has been reached.
+     */
+    public double getStopThreshold() {
+<span class="fc" id="L1599">        return stopThreshold;</span>
+    }
+
+    /**
+     * Sets threshold to be used to keep the algorithm iterating in case that
+     * best estimated threshold using median of residuals is not small enough.
+     * Once a solution is found that generates a threshold below this value,
+     * the algorithm will stop.
+     * The stop threshold can be used to prevent the LMedS algorithm to iterate
+     * too many times in cases where samples have a very similar accuracy.
+     * For instance, in cases where proportion of outliers is very small (close
+     * to 0%), and samples are very accurate (i.e. 1e-6), the algorithm would
+     * iterate for a long time trying to find the best solution when indeed
+     * there is no need to do that if a reasonable threshold has already been
+     * reached.
+     * Because of this behaviour the stop threshold can be set to a value much
+     * lower than the one typically used in RANSAC, and yet the algorithm could
+     * still produce even smaller thresholds in estimated results.
+     *
+     * @param stopThreshold stop threshold to stop the algorithm prematurely
+     *                      when a certain accuracy has been reached.
+     * @throws IllegalArgumentException if provided value is zero or negative.
+     * @throws LockedException          if calibrator is currently running.
+     */
+    public void setStopThreshold(final double stopThreshold) throws LockedException {
+<span class="fc bfc" id="L1624" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1625">            throw new LockedException();</span>
+        }
+<span class="fc bfc" id="L1627" title="All 2 branches covered.">        if (stopThreshold &lt;= MIN_STOP_THRESHOLD) {</span>
+<span class="fc" id="L1628">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L1631">        this.stopThreshold = stopThreshold;</span>
+<span class="fc" id="L1632">    }</span>
+
+    /**
+     * Returns quality scores corresponding to each provided sample.
+     * The larger the score value the better the quality of the sample.
+     *
+     * @return quality scores corresponding to each sample.
+     */
+    @Override
+    public double[] getQualityScores() {
+<span class="fc" id="L1642">        return qualityScores;</span>
+    }
+
+    /**
+     * Sets quality scores corresponding to each provided sample.
+     * The larger the score value the better the quality of the sample.
+     *
+     * @param qualityScores quality scores corresponding to each sample.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than minimum required samples
+     *                                  (10 or 13).
+     * @throws LockedException          if calibrator is currently running.
+     */
+    @Override
+    public void setQualityScores(final double[] qualityScores) throws LockedException {
+<span class="fc bfc" id="L1657" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1658">            throw new LockedException();</span>
+        }
+<span class="fc" id="L1660">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1661">    }</span>
+
+    /**
+     * Indicates whether solver is ready to find a solution.
+     *
+     * @return true if solver is ready, false otherwise.
+     */
+    @Override
+    public boolean isReady() {
+<span class="fc bfc" id="L1670" title="All 6 branches covered.">        return super.isReady() &amp;&amp; qualityScores != null &amp;&amp; qualityScores.length == measurements.size();</span>
+    }
+
+    /**
+     * Estimates accelerometer calibration parameters containing scale factors
+     * and cross-coupling errors.
+     *
+     * @throws LockedException      if calibrator is currently running.
+     * @throws NotReadyException    if calibrator is not ready.
+     * @throws CalibrationException if estimation fails for numerical reasons.
+     */
+    @SuppressWarnings(&quot;DuplicatedCode&quot;)
+    @Override
+    public void calibrate() throws LockedException, NotReadyException, CalibrationException {
+<span class="fc bfc" id="L1684" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1685">            throw new LockedException();</span>
+        }
+<span class="pc bpc" id="L1687" title="1 of 2 branches missed.">        if (!isReady()) {</span>
+<span class="nc" id="L1688">            throw new NotReadyException();</span>
+        }
+
+<span class="fc" id="L1691">        gravityNorm = computeGravityNorm();</span>
+
+<span class="fc" id="L1693">        final var innerEstimator = new PROMedSRobustEstimator&lt;&gt;(</span>
+<span class="fc" id="L1694">                new PROMedSRobustEstimatorListener&lt;PreliminaryResult&gt;() {</span>
+                    @Override
+                    public double[] getQualityScores() {
+<span class="fc" id="L1697">                        return qualityScores;</span>
+                    }
+
+                    @Override
+                    public double getThreshold() {
+<span class="fc" id="L1702">                        return stopThreshold;</span>
+                    }
+
+                    @Override
+                    public int getTotalSamples() {
+<span class="fc" id="L1707">                        return measurements.size();</span>
+                    }
+
+                    @Override
+                    public int getSubsetSize() {
+<span class="fc" id="L1712">                        return preliminarySubsetSize;</span>
+                    }
+
+                    @Override
+                    public void estimatePreliminarSolutions(
+                            final int[] samplesIndices, final List&lt;PreliminaryResult&gt; solutions) {
+<span class="fc" id="L1718">                        computePreliminarySolutions(samplesIndices, solutions);</span>
+<span class="fc" id="L1719">                    }</span>
+
+                    @Override
+                    public double computeResidual(final PreliminaryResult currentEstimation, final int i) {
+<span class="fc" id="L1723">                        return computeError(measurements.get(i), currentEstimation);</span>
+                    }
+
+                    @Override
+                    public boolean isReady() {
+<span class="fc" id="L1728">                        return PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.this.isReady();</span>
+                    }
+
+                    @Override
+                    public void onEstimateStart(final RobustEstimator&lt;PreliminaryResult&gt; estimator) {
+                        // no action needed
+<span class="fc" id="L1734">                    }</span>
+
+                    @Override
+                    public void onEstimateEnd(final RobustEstimator&lt;PreliminaryResult&gt; estimator) {
+                        // no action needed
+<span class="fc" id="L1739">                    }</span>
+
+                    @Override
+                    public void onEstimateNextIteration(
+                            final RobustEstimator&lt;PreliminaryResult&gt; estimator, final int iteration) {
+<span class="pc bpc" id="L1744" title="1 of 2 branches missed.">                        if (listener != null) {</span>
+<span class="fc" id="L1745">                            listener.onCalibrateNextIteration(</span>
+                                    PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.this, iteration);
+                        }
+<span class="fc" id="L1748">                    }</span>
+
+                    @Override
+                    public void onEstimateProgressChange(
+                            final RobustEstimator&lt;PreliminaryResult&gt; estimator, final float progress) {
+<span class="pc bpc" id="L1753" title="1 of 2 branches missed.">                        if (listener != null) {</span>
+<span class="fc" id="L1754">                            listener.onCalibrateProgressChange(</span>
+                                    PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.this, progress);
+                        }
+<span class="fc" id="L1757">                    }</span>
+                });
+
+        try {
+<span class="fc" id="L1761">            running = true;</span>
+
+<span class="pc bpc" id="L1763" title="1 of 2 branches missed.">            if (listener != null) {</span>
+<span class="fc" id="L1764">                listener.onCalibrateStart(this);</span>
+            }
+
+<span class="fc" id="L1767">            inliersData = null;</span>
+<span class="fc" id="L1768">            innerEstimator.setUseInlierThresholds(true);</span>
+<span class="fc" id="L1769">            innerEstimator.setConfidence(confidence);</span>
+<span class="fc" id="L1770">            innerEstimator.setMaxIterations(maxIterations);</span>
+<span class="fc" id="L1771">            innerEstimator.setProgressDelta(progressDelta);</span>
+<span class="fc" id="L1772">            final var preliminaryResult = innerEstimator.estimate();</span>
+<span class="fc" id="L1773">            inliersData = innerEstimator.getInliersData();</span>
+
+<span class="fc" id="L1775">            attemptRefine(preliminaryResult);</span>
+
+<span class="pc bpc" id="L1777" title="1 of 2 branches missed.">            if (listener != null) {</span>
+<span class="fc" id="L1778">                listener.onCalibrateEnd(this);</span>
+            }
+
+<span class="nc" id="L1781">        } catch (final com.irurueta.numerical.LockedException e) {</span>
+<span class="nc" id="L1782">            throw new LockedException(e);</span>
+<span class="nc" id="L1783">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
+<span class="nc" id="L1784">            throw new NotReadyException(e);</span>
+<span class="nc" id="L1785">        } catch (final RobustEstimatorException e) {</span>
+<span class="nc" id="L1786">            throw new CalibrationException(e);</span>
+        } finally {
+<span class="fc" id="L1788">            running = false;</span>
+        }
+<span class="fc" id="L1790">    }</span>
+
+    /**
+     * Returns method being used for robust estimation.
+     *
+     * @return method being used for robust estimation.
+     */
+    @Override
+    public RobustEstimatorMethod getMethod() {
+<span class="fc" id="L1799">        return RobustEstimatorMethod.PROMEDS;</span>
+    }
+
+    /**
+     * Indicates whether this calibrator requires quality scores for each
+     * measurement or not.
+     *
+     * @return true if quality scores are required, false otherwise.
+     */
+    @Override
+    public boolean isQualityScoresRequired() {
+<span class="fc" id="L1810">        return true;</span>
+    }
+
+    /**
+     * Sets quality scores corresponding to each provided sample.
+     * This method is used internally and does not check whether instance is
+     * locked or not.
+     *
+     * @param qualityScoresParam quality scores to be set.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than the minimum required
+     *                                  number of samples (10 or 13).
+     */
+    private void internalSetQualityScores(final double[] qualityScoresParam) {
+<span class="pc bpc" id="L1824" title="1 of 4 branches missed.">        if (qualityScoresParam == null || qualityScoresParam.length &lt; getMinimumRequiredMeasurements()) {</span>
+<span class="fc" id="L1825">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L1828">        qualityScores = qualityScoresParam;</span>
+<span class="fc" id="L1829">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

@@ -1,0 +1,2064 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NEDPositionEstimator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-inertial</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.inertial.estimators</a> &gt; <span class="el_source">NEDPositionEstimator.java</span></div><h1>NEDPositionEstimator.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2019 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.inertial.estimators;
+
+import com.irurueta.navigation.frames.NEDPosition;
+import com.irurueta.navigation.frames.NEDVelocity;
+import com.irurueta.units.Angle;
+import com.irurueta.units.AngleConverter;
+import com.irurueta.units.AngleUnit;
+import com.irurueta.units.Distance;
+import com.irurueta.units.DistanceConverter;
+import com.irurueta.units.DistanceUnit;
+import com.irurueta.units.Speed;
+import com.irurueta.units.SpeedConverter;
+import com.irurueta.units.SpeedUnit;
+import com.irurueta.units.Time;
+import com.irurueta.units.TimeConverter;
+import com.irurueta.units.TimeUnit;
+
+/**
+ * Estimates curvilinear position by integrating the velocity.
+ * This implementation is based on the equations defined in &quot;Principles of GNSS, Inertial, and Multisensor
+ * Integrated Navigation Systems, Second Edition&quot; and on the companion software available at:
+ * &lt;a href=&quot;https://github.com/ymjdz/MATLAB-Codes/blob/master/Update_curvilinear_position.m&quot;&gt;
+ *     https://github.com/ymjdz/MATLAB-Codes/blob/master/Update_curvilinear_position.m
+ * &lt;/a&gt;
+ */
+<span class="fc" id="L41">public class NEDPositionEstimator {</span>
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldLatitude  previous latitude expressed in radians (rad).
+     * @param oldLongitude previous longitude expressed in radians (rad).
+     * @param oldHeight    previous height expressed in meters (m).
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @param vn           current velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param ve           current velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param vd           current velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @param result       instance where updated curvilinear position will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public void estimate(
+            final double timeInterval, final double oldLatitude, final double oldLongitude, final double oldHeight,
+            final double oldVn, final double oldVe, final double oldVd,
+            final double vn, final double ve, final double vd, final NEDPosition result) {
+<span class="fc" id="L69">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd, vn, ve, vd, result);</span>
+<span class="fc" id="L70">    }</span>
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldLatitude  previous latitude expressed in radians (rad).
+     * @param oldLongitude previous longitude expressed in radians (rad).
+     * @param oldHeight    previous height expressed in meters (m).
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @param vn           current velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param ve           current velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param vd           current velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @param result       instance where updated curvilinear position will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public void estimate(
+            final Time timeInterval, final double oldLatitude, final double oldLongitude, final double oldHeight,
+            final double oldVn, final double oldVe, final double oldVd,
+            final double vn, final double ve, final double vd, final NEDPosition result) {
+<span class="fc" id="L98">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd, vn, ve, vd, result);</span>
+<span class="fc" id="L99">    }</span>
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldLatitude  previous latitude.
+     * @param oldLongitude previous longitude.
+     * @param oldHeight    previous height.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @param vn           current velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param ve           current velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param vd           current velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @param result       instance where updated curvilinear position will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public void estimate(
+            final double timeInterval, final Angle oldLatitude, final Angle oldLongitude, final Distance oldHeight,
+            final Speed oldVn, final Speed oldVe, final Speed oldVd, final Speed vn, final Speed ve, final Speed vd,
+            final NEDPosition result) {
+<span class="fc" id="L127">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd, vn, ve, vd, result);</span>
+<span class="fc" id="L128">    }</span>
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldLatitude  previous latitude.
+     * @param oldLongitude previous longitude.
+     * @param oldHeight    previous height.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @param vn           current velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param ve           current velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param vd           current velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @param result       instance where updated curvilinear position will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public void estimate(
+            final Time timeInterval, final Angle oldLatitude, final Angle oldLongitude, final Distance oldHeight,
+            final Speed oldVn, final Speed oldVe, final Speed oldVd, final Speed vn, final Speed ve, final Speed vd,
+            final NEDPosition result) {
+<span class="fc" id="L156">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd, vn, ve, vd, result);</span>
+<span class="fc" id="L157">    }</span>
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldLatitude  previous latitude.
+     * @param oldLongitude previous longitude.
+     * @param oldHeight    previous height.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @param vn           current velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param ve           current velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param vd           current velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @param result       instance where updated curvilinear position will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public void estimate(
+            final double timeInterval, final Angle oldLatitude, final Angle oldLongitude, final Distance oldHeight,
+            final double oldVn, final double oldVe, final double oldVd,
+            final double vn, final double ve, final double vd, final NEDPosition result) {
+<span class="fc" id="L185">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd, vn, ve, vd, result);</span>
+<span class="fc" id="L186">    }</span>
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldLatitude  previous latitude.
+     * @param oldLongitude previous longitude.
+     * @param oldHeight    previous height.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @param vn           current velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param ve           current velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param vd           current velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @param result       instance where updated curvilinear position will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public void estimate(
+            final Time timeInterval, final Angle oldLatitude, final Angle oldLongitude, final Distance oldHeight,
+            final double oldVn, final double oldVe, final double oldVd,
+            final double vn, final double ve, final double vd, final NEDPosition result) {
+<span class="fc" id="L214">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd, vn, ve, vd, result);</span>
+<span class="fc" id="L215">    }</span>
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldLatitude  previous latitude expressed in radians (rad).
+     * @param oldLongitude previous longitude expressed in radians (rad).
+     * @param oldHeight    previous height expressed in meters (m).
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @param vn           current velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param ve           current velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param vd           current velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @param result       instance where updated curvilinear position will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public void estimate(
+            final double timeInterval, final double oldLatitude, final double oldLongitude, final double oldHeight,
+            final Speed oldVn, final Speed oldVe, final Speed oldVd, final Speed vn, final Speed ve, final Speed vd,
+            final NEDPosition result) {
+<span class="fc" id="L243">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd, vn, ve, vd, result);</span>
+<span class="fc" id="L244">    }</span>
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldLatitude  previous latitude expressed in radians (rad).
+     * @param oldLongitude previous longitude expressed in radians (rad).
+     * @param oldHeight    previous height expressed in meters (m).
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @param vn           current velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param ve           current velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param vd           current velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @param result       instance where updated curvilinear position will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public void estimate(
+            final Time timeInterval, final double oldLatitude, final double oldLongitude, final double oldHeight,
+            final Speed oldVn, final Speed oldVe, final Speed oldVd, final Speed vn, final Speed ve, final Speed vd,
+            final NEDPosition result) {
+<span class="fc" id="L272">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd, vn, ve, vd, result);</span>
+<span class="fc" id="L273">    }</span>
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldPosition  previous body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @param vn           current velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param ve           current velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param vd           current velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @param result       instance where updated curvilinear position will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public void estimate(
+            final double timeInterval, final NEDPosition oldPosition,
+            final double oldVn, final double oldVe, final double oldVd,
+            final double vn, final double ve, final double vd, final NEDPosition result) {
+<span class="fc" id="L300">        estimatePosition(timeInterval, oldPosition, oldVn, oldVe, oldVd, vn, ve, vd, result);</span>
+<span class="fc" id="L301">    }</span>
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldPosition  previous body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @param vn           current velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param ve           current velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param vd           current velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @param result       instance where updated curvilinear position will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public void estimate(
+            final Time timeInterval, final NEDPosition oldPosition,
+            final double oldVn, final double oldVe, final double oldVd,
+            final double vn, final double ve, final double vd, final NEDPosition result) {
+<span class="fc" id="L328">        estimatePosition(timeInterval, oldPosition, oldVn, oldVe, oldVd, vn, ve, vd, result);</span>
+<span class="fc" id="L329">    }</span>
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldPosition  previous body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @param vn           current velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param ve           current velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param vd           current velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @param result       instance where updated curvilinear position will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public void estimate(
+            final double timeInterval, final NEDPosition oldPosition,
+            final Speed oldVn, final Speed oldVe, final Speed oldVd, final Speed vn, final Speed ve, final Speed vd,
+            final NEDPosition result) {
+<span class="fc" id="L356">        estimatePosition(timeInterval, oldPosition, oldVn, oldVe, oldVd, vn, ve, vd, result);</span>
+<span class="fc" id="L357">    }</span>
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldPosition  previous body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @param vn           current velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param ve           current velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param vd           current velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @param result       instance where updated curvilinear position will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public void estimate(
+            final Time timeInterval, final NEDPosition oldPosition,
+            final Speed oldVn, final Speed oldVe, final Speed oldVd, final Speed vn, final Speed ve, final Speed vd,
+            final NEDPosition result) {
+<span class="fc" id="L384">        estimatePosition(timeInterval, oldPosition, oldVn, oldVe, oldVd, vn, ve, vd, result);</span>
+<span class="fc" id="L385">    }</span>
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldLatitude  previous latitude expressed in radians (rad).
+     * @param oldLongitude previous longitude expressed in radians (rad).
+     * @param oldHeight    previous height expressed in meters (m).
+     * @param oldVelocity  previous velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @param velocity     current velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @param result       instance where updated curvilinear position will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public void estimate(
+            final double timeInterval, final double oldLatitude, final double oldLongitude, final double oldHeight,
+            final NEDVelocity oldVelocity, final NEDVelocity velocity, final NEDPosition result) {
+<span class="fc" id="L406">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVelocity, velocity, result);</span>
+<span class="fc" id="L407">    }</span>
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldLatitude  previous latitude expressed in radians (rad).
+     * @param oldLongitude previous longitude expressed in radians (rad).
+     * @param oldHeight    previous height expressed in meters (m).
+     * @param oldVelocity  previous velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @param velocity     current velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @param result       instance where updated curvilinear position will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public void estimate(
+            final Time timeInterval, final double oldLatitude, final double oldLongitude, final double oldHeight,
+            final NEDVelocity oldVelocity, final NEDVelocity velocity, final NEDPosition result) {
+<span class="fc" id="L428">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVelocity, velocity, result);</span>
+<span class="fc" id="L429">    }</span>
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldLatitude  previous latitude.
+     * @param oldLongitude previous longitude.
+     * @param oldHeight    previous height.
+     * @param oldVelocity  previous velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @param velocity     current velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @param result       instance where updated curvilinear position will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public void estimate(
+            final double timeInterval, final Angle oldLatitude, final Angle oldLongitude, final Distance oldHeight,
+            final NEDVelocity oldVelocity, final NEDVelocity velocity, final NEDPosition result) {
+<span class="fc" id="L451">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVelocity, velocity, result);</span>
+<span class="fc" id="L452">    }</span>
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldLatitude  previous latitude.
+     * @param oldLongitude previous longitude.
+     * @param oldHeight    previous height.
+     * @param oldVelocity  previous velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @param velocity     current velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @param result       instance where updated curvilinear position will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public void estimate(
+            final Time timeInterval, final Angle oldLatitude, final Angle oldLongitude, final Distance oldHeight,
+            final NEDVelocity oldVelocity, final NEDVelocity velocity, final NEDPosition result) {
+<span class="fc" id="L474">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVelocity, velocity, result);</span>
+<span class="fc" id="L475">    }</span>
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldPosition  previous body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param oldVelocity  previous velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @param velocity     current velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @param result       instance where updated curvilinear position will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public void estimate(
+            final double timeInterval, final NEDPosition oldPosition, final NEDVelocity oldVelocity,
+            final NEDVelocity velocity, final NEDPosition result) {
+<span class="fc" id="L495">        estimatePosition(timeInterval, oldPosition, oldVelocity, velocity, result);</span>
+<span class="fc" id="L496">    }</span>
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldPosition  previous body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param oldVelocity  previous velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @param velocity     current velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @param result       instance where updated curvilinear position will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public void estimate(
+            final Time timeInterval, final NEDPosition oldPosition, final NEDVelocity oldVelocity,
+            final NEDVelocity velocity, final NEDPosition result) {
+<span class="fc" id="L516">        estimatePosition(timeInterval, oldPosition, oldVelocity, velocity, result);</span>
+<span class="fc" id="L517">    }</span>
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldLatitude  previous latitude expressed in radians (rad).
+     * @param oldLongitude previous longitude expressed in radians (rad).
+     * @param oldHeight    previous height expressed in meters (m).
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @param vn           current velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param ve           current velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param vd           current velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @return new updated curvilinear position.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public NEDPosition estimateAndReturnNew(
+            final double timeInterval, final double oldLatitude, final double oldLongitude, final double oldHeight,
+            final double oldVn, final double oldVe, final double oldVd,
+            final double vn, final double ve, final double vd) {
+<span class="fc" id="L545">        return estimatePositionAndReturnNew(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd,</span>
+                vn, ve, vd);
+    }
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldLatitude  previous latitude expressed in radians (rad).
+     * @param oldLongitude previous longitude expressed in radians (rad).
+     * @param oldHeight    previous height expressed in meters (m).
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @param vn           current velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param ve           current velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param vd           current velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @return new updated curvilinear position.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public NEDPosition estimateAndReturnNew(
+            final Time timeInterval, final double oldLatitude, final double oldLongitude, final double oldHeight,
+            final double oldVn, final double oldVe, final double oldVd,
+            final double vn, final double ve, final double vd) {
+<span class="fc" id="L575">        return estimatePositionAndReturnNew(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd,</span>
+                vn, ve, vd);
+    }
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldLatitude  previous latitude.
+     * @param oldLongitude previous longitude.
+     * @param oldHeight    previous height.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @param vn           current velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param ve           current velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param vd           current velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @return new updated curvilinear position.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public NEDPosition estimateAndReturnNew(
+            final double timeInterval, final Angle oldLatitude, final Angle oldLongitude, final Distance oldHeight,
+            final Speed oldVn, final Speed oldVe, final Speed oldVd, final Speed vn, final Speed ve, final Speed vd) {
+<span class="fc" id="L604">        return estimatePositionAndReturnNew(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd,</span>
+                vn, ve, vd);
+    }
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldLatitude  previous latitude.
+     * @param oldLongitude previous longitude.
+     * @param oldHeight    previous height.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @param vn           current velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param ve           current velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param vd           current velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @return new updated curvilinear position.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public NEDPosition estimateAndReturnNew(
+            final Time timeInterval, final Angle oldLatitude, final Angle oldLongitude, final Distance oldHeight,
+            final Speed oldVn, final Speed oldVe, final Speed oldVd, final Speed vn, final Speed ve, final Speed vd) {
+<span class="fc" id="L633">        return estimatePositionAndReturnNew(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd,</span>
+                vn, ve, vd);
+    }
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldLatitude  previous latitude.
+     * @param oldLongitude previous longitude.
+     * @param oldHeight    previous height.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @param vn           current velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param ve           current velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param vd           current velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @return new updated curvilinear position.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public NEDPosition estimateAndReturnNew(
+            final double timeInterval, final Angle oldLatitude, final Angle oldLongitude, final Distance oldHeight,
+            final double oldVn, final double oldVe, final double oldVd,
+            final double vn, final double ve, final double vd) {
+<span class="fc" id="L663">        return estimatePositionAndReturnNew(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd,</span>
+                vn, ve, vd);
+    }
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldLatitude  previous latitude.
+     * @param oldLongitude previous longitude.
+     * @param oldHeight    previous height.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @param vn           current velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param ve           current velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param vd           current velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @return new updated curvilinear position.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public NEDPosition estimateAndReturnNew(
+            final Time timeInterval, final Angle oldLatitude, final Angle oldLongitude, final Distance oldHeight,
+            final double oldVn, final double oldVe, final double oldVd,
+            final double vn, final double ve, final double vd) {
+<span class="fc" id="L693">        return estimatePositionAndReturnNew(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd,</span>
+                vn, ve, vd);
+    }
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldLatitude  previous latitude expressed in radians (rad).
+     * @param oldLongitude previous longitude expressed in radians (rad).
+     * @param oldHeight    previous height expressed in meters (m).
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @param vn           current velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param ve           current velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param vd           current velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @return new updated curvilinear position.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public NEDPosition estimateAndReturnNew(
+            final double timeInterval, final double oldLatitude, final double oldLongitude, final double oldHeight,
+            final Speed oldVn, final Speed oldVe, final Speed oldVd, final Speed vn, final Speed ve, final Speed vd) {
+<span class="fc" id="L722">        return estimatePositionAndReturnNew(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd,</span>
+                vn, ve, vd);
+    }
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldLatitude  previous latitude expressed in radians (rad).
+     * @param oldLongitude previous longitude expressed in radians (rad).
+     * @param oldHeight    previous height expressed in meters (m).
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @param vn           current velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param ve           current velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param vd           current velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @return new updated curvilinear position.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public NEDPosition estimateAndReturnNew(
+            final Time timeInterval, final double oldLatitude, final double oldLongitude, final double oldHeight,
+            final Speed oldVn, final Speed oldVe, final Speed oldVd, final Speed vn, final Speed ve, final Speed vd) {
+<span class="fc" id="L751">        return estimatePositionAndReturnNew(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd,</span>
+                vn, ve, vd);
+    }
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldPosition  previous body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @param vn           current velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param ve           current velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param vd           current velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @return new updated curvilinear position.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public NEDPosition estimateAndReturnNew(
+            final double timeInterval, final NEDPosition oldPosition,
+            final double oldVn, final double oldVe, final double oldVd,
+            final double vn, final double ve, final double vd) {
+<span class="fc" id="L780">        return estimatePositionAndReturnNew(timeInterval, oldPosition, oldVn, oldVe, oldVd, vn, ve, vd);</span>
+    }
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldPosition  previous body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @param vn           current velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param ve           current velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param vd           current velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @return new updated curvilinear position.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public NEDPosition estimateAndReturnNew(
+            final Time timeInterval, final NEDPosition oldPosition,
+            final double oldVn, final double oldVe, final double oldVd,
+            final double vn, final double ve, final double vd) {
+<span class="fc" id="L808">        return estimatePositionAndReturnNew(timeInterval, oldPosition, oldVn, oldVe, oldVd, vn, ve, vd);</span>
+    }
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldPosition  previous body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @param vn           current velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param ve           current velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param vd           current velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @return new updated curvilinear position.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public NEDPosition estimateAndReturnNew(
+            final double timeInterval, final NEDPosition oldPosition,
+            final Speed oldVn, final Speed oldVe, final Speed oldVd, final Speed vn, final Speed ve, final Speed vd) {
+<span class="fc" id="L835">        return estimatePositionAndReturnNew(timeInterval, oldPosition, oldVn, oldVe, oldVd, vn, ve, vd);</span>
+    }
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldPosition  previous body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @param vn           current velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param ve           current velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param vd           current velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @return new updated curvilinear position.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public NEDPosition estimateAndReturnNew(
+            final Time timeInterval, final NEDPosition oldPosition,
+            final Speed oldVn, final Speed oldVe, final Speed oldVd, final Speed vn, final Speed ve, final Speed vd) {
+<span class="fc" id="L862">        return estimatePositionAndReturnNew(timeInterval, oldPosition, oldVn, oldVe, oldVd, vn, ve, vd);</span>
+    }
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldLatitude  previous latitude expressed in radians (rad).
+     * @param oldLongitude previous longitude expressed in radians (rad).
+     * @param oldHeight    previous height expressed in meters (m).
+     * @param oldVelocity  previous velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @param velocity     current velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @return new updated curvilinear position.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public NEDPosition estimateAndReturnNew(
+            final double timeInterval, final double oldLatitude, final double oldLongitude, final double oldHeight,
+            final NEDVelocity oldVelocity, final NEDVelocity velocity) {
+<span class="fc" id="L884">        return estimatePositionAndReturnNew(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVelocity, velocity);</span>
+    }
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldLatitude  previous latitude expressed in radians (rad).
+     * @param oldLongitude previous longitude expressed in radians (rad).
+     * @param oldHeight    previous height expressed in meters (m).
+     * @param oldVelocity  previous velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @param velocity     current velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @return new updated curvilinear position.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public NEDPosition estimateAndReturnNew(
+            final Time timeInterval, final double oldLatitude, final double oldLongitude, final double oldHeight,
+            final NEDVelocity oldVelocity, final NEDVelocity velocity) {
+<span class="fc" id="L906">        return estimatePositionAndReturnNew(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVelocity, velocity);</span>
+    }
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldLatitude  previous latitude.
+     * @param oldLongitude previous longitude.
+     * @param oldHeight    previous height.
+     * @param oldVelocity  previous velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @param velocity     current velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @return new updated curvilinear position.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public NEDPosition estimateAndReturnNew(
+            final double timeInterval, final Angle oldLatitude, final Angle oldLongitude, final Distance oldHeight,
+            final NEDVelocity oldVelocity, final NEDVelocity velocity) {
+<span class="fc" id="L929">        return estimatePositionAndReturnNew(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVelocity, velocity);</span>
+    }
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldLatitude  previous latitude.
+     * @param oldLongitude previous longitude.
+     * @param oldHeight    previous height.
+     * @param oldVelocity  previous velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @param velocity     current velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @return new updated curvilinear position.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public NEDPosition estimateAndReturnNew(
+            final Time timeInterval, final Angle oldLatitude, final Angle oldLongitude, final Distance oldHeight,
+            final NEDVelocity oldVelocity, final NEDVelocity velocity) {
+<span class="fc" id="L952">        return estimatePositionAndReturnNew(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVelocity, velocity);</span>
+    }
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldPosition  previous body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param oldVelocity  previous velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @param velocity     current velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @return new updated curvilinear position.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public NEDPosition estimateAndReturnNew(
+            final double timeInterval, final NEDPosition oldPosition, final NEDVelocity oldVelocity,
+            final NEDVelocity velocity) {
+<span class="fc" id="L973">        return estimatePositionAndReturnNew(timeInterval, oldPosition, oldVelocity, velocity);</span>
+    }
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldPosition  previous body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param oldVelocity  previous velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @param velocity     current velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @return new updated curvilinear position.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public NEDPosition estimateAndReturnNew(
+            final Time timeInterval, final NEDPosition oldPosition, final NEDVelocity oldVelocity,
+            final NEDVelocity velocity) {
+<span class="fc" id="L994">        return estimatePositionAndReturnNew(timeInterval, oldPosition, oldVelocity, velocity);</span>
+    }
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldLatitude  previous latitude expressed in radians (rad).
+     * @param oldLongitude previous longitude expressed in radians (rad).
+     * @param oldHeight    previous height expressed in meters (m).
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @param vn           current velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param ve           current velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param vd           current velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @param result       instance where updated curvilinear position will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public static void estimatePosition(
+            final double timeInterval, final double oldLatitude, final double oldLongitude, final double oldHeight,
+            final double oldVn, final double oldVe, final double oldVd,
+            final double vn, final double ve, final double vd, final NEDPosition result) {
+
+<span class="fc bfc" id="L1024" title="All 2 branches covered.">        if (timeInterval &lt; 0.0) {</span>
+<span class="fc" id="L1025">            throw new IllegalArgumentException();</span>
+        }
+
+        // Calculate meridian and transverse radii of curvature
+<span class="fc" id="L1029">        final var oldRadii = RadiiOfCurvatureEstimator.estimateRadiiOfCurvatureAndReturnNew(oldLatitude);</span>
+<span class="fc" id="L1030">        final var oldRn = oldRadii.getRn();</span>
+<span class="fc" id="L1031">        final var oldRe = oldRadii.getRe();</span>
+
+        // Update height using (5.56)
+<span class="fc" id="L1034">        final var height = oldHeight - 0.5 * timeInterval * (oldVd + vd);</span>
+
+        // Update latitude using (5.56)
+<span class="fc" id="L1037">        final var latitude = oldLatitude + 0.5 * timeInterval * (oldVn / (oldRn + oldHeight)</span>
+                + vn / (oldRn + height));
+
+        // Calculate meridian and transverse radii of curvature
+<span class="fc" id="L1041">        final var radii = RadiiOfCurvatureEstimator.estimateRadiiOfCurvatureAndReturnNew(latitude);</span>
+<span class="fc" id="L1042">        final var re = radii.getRe();</span>
+
+        // Update longitude using (5.56)
+<span class="fc" id="L1045">        final var longitude = oldLongitude</span>
+<span class="fc" id="L1046">                + 0.5 * timeInterval * (oldVe / ((oldRe + oldHeight) * Math.cos(oldLatitude))</span>
+<span class="fc" id="L1047">                + ve / ((re + height) * Math.cos(latitude)));</span>
+
+<span class="fc" id="L1049">        result.setCoordinates(latitude, longitude, height);</span>
+<span class="fc" id="L1050">    }</span>
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldLatitude  previous latitude expressed in radians (rad).
+     * @param oldLongitude previous longitude expressed in radians (rad).
+     * @param oldHeight    previous height expressed in meters (m).
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @param vn           current velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param ve           current velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param vd           current velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @param result       instance where updated curvilinear position will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public static void estimatePosition(
+            final Time timeInterval, final double oldLatitude, final double oldLongitude, final double oldHeight,
+            final double oldVn, final double oldVe, final double oldVd,
+            final double vn, final double ve, final double vd, final NEDPosition result) {
+<span class="fc" id="L1078">        estimatePosition(convertTimeToDouble(timeInterval), oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd,</span>
+                vn, ve, vd, result);
+<span class="fc" id="L1080">    }</span>
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldLatitude  previous latitude.
+     * @param oldLongitude previous longitude.
+     * @param oldHeight    previous height.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @param vn           current velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param ve           current velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param vd           current velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @param result       instance where updated curvilinear position will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public static void estimatePosition(
+            final double timeInterval, final Angle oldLatitude, final Angle oldLongitude, final Distance oldHeight,
+            final Speed oldVn, final Speed oldVe, final Speed oldVd, final Speed vn, final Speed ve, final Speed vd,
+            final NEDPosition result) {
+<span class="fc" id="L1108">        estimatePosition(timeInterval, convertAngleToDouble(oldLatitude), convertAngleToDouble(oldLongitude),</span>
+<span class="fc" id="L1109">                convertDistanceToDouble(oldHeight), convertSpeedToDouble(oldVn), convertSpeedToDouble(oldVe),</span>
+<span class="fc" id="L1110">                convertSpeedToDouble(oldVd), convertSpeedToDouble(vn), convertSpeedToDouble(ve),</span>
+<span class="fc" id="L1111">                convertSpeedToDouble(vd), result);</span>
+<span class="fc" id="L1112">    }</span>
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldLatitude  previous latitude.
+     * @param oldLongitude previous longitude.
+     * @param oldHeight    previous height.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @param vn           current velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param ve           current velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param vd           current velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @param result       instance where updated curvilinear position will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public static void estimatePosition(
+            final Time timeInterval, final Angle oldLatitude, final Angle oldLongitude, final Distance oldHeight,
+            final Speed oldVn, final Speed oldVe, final Speed oldVd, final Speed vn, final Speed ve, final Speed vd,
+            final NEDPosition result) {
+<span class="fc" id="L1140">        estimatePosition(convertTimeToDouble(timeInterval), oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd,</span>
+                vn, ve, vd, result);
+<span class="fc" id="L1142">    }</span>
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldLatitude  previous latitude.
+     * @param oldLongitude previous longitude.
+     * @param oldHeight    previous height.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @param vn           current velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param ve           current velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param vd           current velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @param result       instance where updated curvilinear position will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public static void estimatePosition(
+            final double timeInterval, final Angle oldLatitude, final Angle oldLongitude, final Distance oldHeight,
+            final double oldVn, final double oldVe, final double oldVd,
+            final double vn, final double ve, final double vd, final NEDPosition result) {
+<span class="fc" id="L1170">        estimatePosition(timeInterval, convertAngleToDouble(oldLatitude), convertAngleToDouble(oldLongitude),</span>
+<span class="fc" id="L1171">                convertDistanceToDouble(oldHeight), oldVn, oldVe, oldVd, vn, ve, vd, result);</span>
+<span class="fc" id="L1172">    }</span>
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldLatitude  previous latitude.
+     * @param oldLongitude previous longitude.
+     * @param oldHeight    previous height.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @param vn           current velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param ve           current velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param vd           current velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @param result       instance where updated curvilinear position will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public static void estimatePosition(
+            final Time timeInterval, final Angle oldLatitude, final Angle oldLongitude, final Distance oldHeight,
+            final double oldVn, final double oldVe, final double oldVd,
+            final double vn, final double ve, final double vd, final NEDPosition result) {
+<span class="fc" id="L1200">        estimatePosition(convertTimeToDouble(timeInterval), oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd,</span>
+                vn, ve, vd, result);
+<span class="fc" id="L1202">    }</span>
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldLatitude  previous latitude expressed in radians (rad).
+     * @param oldLongitude previous longitude expressed in radians (rad).
+     * @param oldHeight    previous height expressed in meters (m).
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @param vn           current velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param ve           current velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param vd           current velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @param result       instance where updated curvilinear position will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public static void estimatePosition(
+            final double timeInterval, final double oldLatitude, final double oldLongitude, final double oldHeight,
+            final Speed oldVn, final Speed oldVe, final Speed oldVd, final Speed vn, final Speed ve, final Speed vd,
+            final NEDPosition result) {
+<span class="fc" id="L1230">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
+<span class="fc" id="L1231">                convertSpeedToDouble(oldVn), convertSpeedToDouble(oldVe), convertSpeedToDouble(oldVd),</span>
+<span class="fc" id="L1232">                convertSpeedToDouble(vn), convertSpeedToDouble(ve), convertSpeedToDouble(vd), result);</span>
+<span class="fc" id="L1233">    }</span>
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldLatitude  previous latitude expressed in radians (rad).
+     * @param oldLongitude previous longitude expressed in radians (rad).
+     * @param oldHeight    previous height expressed in meters (m).
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @param vn           current velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param ve           current velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param vd           current velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @param result       instance where updated curvilinear position will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public static void estimatePosition(
+            final Time timeInterval, final double oldLatitude, final double oldLongitude, final double oldHeight,
+            final Speed oldVn, final Speed oldVe, final Speed oldVd, final Speed vn, final Speed ve, final Speed vd,
+            final NEDPosition result) {
+<span class="fc" id="L1261">        estimatePosition(convertTimeToDouble(timeInterval), oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd,</span>
+                vn, ve, vd, result);
+<span class="fc" id="L1263">    }</span>
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldPosition  previous body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @param vn           current velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param ve           current velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param vd           current velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @param result       instance where updated curvilinear position will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public static void estimatePosition(
+            final double timeInterval, final NEDPosition oldPosition,
+            final double oldVn, final double oldVe, final double oldVd,
+            final double vn, final double ve, final double vd, final NEDPosition result) {
+<span class="fc" id="L1290">        estimatePosition(timeInterval, oldPosition.getLatitude(), oldPosition.getLongitude(), oldPosition.getHeight(),</span>
+                oldVn, oldVe, oldVd, vn, ve, vd, result);
+<span class="fc" id="L1292">    }</span>
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldPosition  previous body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @param vn           current velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param ve           current velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param vd           current velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @param result       instance where updated curvilinear position will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public static void estimatePosition(
+            final Time timeInterval, final NEDPosition oldPosition,
+            final double oldVn, final double oldVe, final double oldVd,
+            final double vn, final double ve, final double vd, final NEDPosition result) {
+<span class="fc" id="L1319">        estimatePosition(convertTimeToDouble(timeInterval), oldPosition, oldVn, oldVe, oldVd, vn, ve, vd, result);</span>
+<span class="fc" id="L1320">    }</span>
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldPosition  previous body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @param vn           current velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param ve           current velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param vd           current velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @param result       instance where updated curvilinear position will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public static void estimatePosition(
+            final double timeInterval, final NEDPosition oldPosition,
+            final Speed oldVn, final Speed oldVe, final Speed oldVd, final Speed vn, final Speed ve, final Speed vd,
+            final NEDPosition result) {
+<span class="fc" id="L1347">        estimatePosition(timeInterval, oldPosition,</span>
+<span class="fc" id="L1348">                convertSpeedToDouble(oldVn), convertSpeedToDouble(oldVe), convertSpeedToDouble(oldVd),</span>
+<span class="fc" id="L1349">                convertSpeedToDouble(vn), convertSpeedToDouble(ve), convertSpeedToDouble(vd), result);</span>
+<span class="fc" id="L1350">    }</span>
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldPosition  previous body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @param vn           current velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param ve           current velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param vd           current velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @param result       instance where updated curvilinear position will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public static void estimatePosition(
+            final Time timeInterval, final NEDPosition oldPosition,
+            final Speed oldVn, final Speed oldVe, final Speed oldVd,
+            final Speed vn, final Speed ve, final Speed vd, final NEDPosition result) {
+<span class="fc" id="L1377">        estimatePosition(convertTimeToDouble(timeInterval), oldPosition, oldVn, oldVe, oldVd, vn, ve, vd, result);</span>
+<span class="fc" id="L1378">    }</span>
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldLatitude  previous latitude expressed in radians (rad).
+     * @param oldLongitude previous longitude expressed in radians (rad).
+     * @param oldHeight    previous height expressed in meters (m).
+     * @param oldVelocity  previous velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @param velocity     current velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @param result       instance where updated curvilinear position will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public static void estimatePosition(
+            final double timeInterval, final double oldLatitude, final double oldLongitude, final double oldHeight,
+            final NEDVelocity oldVelocity, final NEDVelocity velocity, final NEDPosition result) {
+<span class="fc" id="L1399">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
+<span class="fc" id="L1400">                oldVelocity.getVn(), oldVelocity.getVe(), oldVelocity.getVd(),</span>
+<span class="fc" id="L1401">                velocity.getVn(), velocity.getVe(), velocity.getVd(), result);</span>
+<span class="fc" id="L1402">    }</span>
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldLatitude  previous latitude expressed in radians (rad).
+     * @param oldLongitude previous longitude expressed in radians (rad).
+     * @param oldHeight    previous height expressed in meters (m).
+     * @param oldVelocity  previous velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @param velocity     current velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @param result       instance where updated curvilinear position will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public static void estimatePosition(
+            final Time timeInterval, final double oldLatitude, final double oldLongitude, final double oldHeight,
+            final NEDVelocity oldVelocity, final NEDVelocity velocity, final NEDPosition result) {
+<span class="fc" id="L1423">        estimatePosition(convertTimeToDouble(timeInterval), oldLatitude, oldLongitude, oldHeight, oldVelocity, velocity,</span>
+                result);
+<span class="fc" id="L1425">    }</span>
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldLatitude  previous latitude.
+     * @param oldLongitude previous longitude.
+     * @param oldHeight    previous height.
+     * @param oldVelocity  previous velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @param velocity     current velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @param result       instance where updated curvilinear position will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public static void estimatePosition(
+            final double timeInterval, final Angle oldLatitude, final Angle oldLongitude, final Distance oldHeight,
+            final NEDVelocity oldVelocity, final NEDVelocity velocity, final NEDPosition result) {
+<span class="fc" id="L1447">        estimatePosition(timeInterval, convertAngleToDouble(oldLatitude), convertAngleToDouble(oldLongitude),</span>
+<span class="fc" id="L1448">                convertDistanceToDouble(oldHeight), oldVelocity, velocity, result);</span>
+<span class="fc" id="L1449">    }</span>
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldLatitude  previous latitude.
+     * @param oldLongitude previous longitude.
+     * @param oldHeight    previous height.
+     * @param oldVelocity  previous velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @param velocity     current velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @param result       instance where updated curvilinear position will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public static void estimatePosition(
+            final Time timeInterval, final Angle oldLatitude, final Angle oldLongitude, final Distance oldHeight,
+            final NEDVelocity oldVelocity, final NEDVelocity velocity, final NEDPosition result) {
+<span class="fc" id="L1471">        estimatePosition(convertTimeToDouble(timeInterval), oldLatitude, oldLongitude, oldHeight, oldVelocity, velocity,</span>
+                result);
+<span class="fc" id="L1473">    }</span>
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldPosition  previous body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param oldVelocity  previous velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @param velocity     current velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @param result       instance where updated curvilinear position will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public static void estimatePosition(
+            final double timeInterval, final NEDPosition oldPosition, final NEDVelocity oldVelocity,
+            final NEDVelocity velocity, final NEDPosition result) {
+<span class="fc" id="L1493">        estimatePosition(timeInterval, oldPosition.getLatitude(), oldPosition.getLongitude(), oldPosition.getHeight(),</span>
+                oldVelocity, velocity, result);
+<span class="fc" id="L1495">    }</span>
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldPosition  previous body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param oldVelocity  previous velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @param velocity     current velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @param result       instance where updated curvilinear position will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public static void estimatePosition(
+            final Time timeInterval, final NEDPosition oldPosition, final NEDVelocity oldVelocity,
+            final NEDVelocity velocity, final NEDPosition result) {
+<span class="fc" id="L1515">        estimatePosition(convertTimeToDouble(timeInterval), oldPosition, oldVelocity, velocity, result);</span>
+<span class="fc" id="L1516">    }</span>
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldLatitude  previous latitude expressed in radians (rad).
+     * @param oldLongitude previous longitude expressed in radians (rad).
+     * @param oldHeight    previous height expressed in meters (m).
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @param vn           current velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param ve           current velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param vd           current velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @return new updated curvilinear position.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public static NEDPosition estimatePositionAndReturnNew(
+            final double timeInterval, final double oldLatitude, final double oldLongitude, final double oldHeight,
+            final double oldVn, final double oldVe, final double oldVd,
+            final double vn, final double ve, final double vd) {
+<span class="fc" id="L1544">        final var result = new NEDPosition();</span>
+<span class="fc" id="L1545">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd, vn, ve, vd, result);</span>
+<span class="fc" id="L1546">        return result;</span>
+    }
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldLatitude  previous latitude expressed in radians (rad).
+     * @param oldLongitude previous longitude expressed in radians (rad).
+     * @param oldHeight    previous height expressed in meters (m).
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @param vn           current velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param ve           current velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param vd           current velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @return new updated curvilinear position.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public static NEDPosition estimatePositionAndReturnNew(
+            final Time timeInterval, final double oldLatitude, final double oldLongitude, final double oldHeight,
+            final double oldVn, final double oldVe, final double oldVd,
+            final double vn, final double ve, final double vd) {
+<span class="fc" id="L1575">        final var result = new NEDPosition();</span>
+<span class="fc" id="L1576">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd, vn, ve, vd, result);</span>
+<span class="fc" id="L1577">        return result;</span>
+    }
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldLatitude  previous latitude.
+     * @param oldLongitude previous longitude.
+     * @param oldHeight    previous height.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @param vn           current velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param ve           current velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param vd           current velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @return new updated curvilinear position.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public static NEDPosition estimatePositionAndReturnNew(
+            final double timeInterval, final Angle oldLatitude, final Angle oldLongitude, final Distance oldHeight,
+            final Speed oldVn, final Speed oldVe, final Speed oldVd, final Speed vn, final Speed ve, final Speed vd) {
+<span class="fc" id="L1605">        final var result = new NEDPosition();</span>
+<span class="fc" id="L1606">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd, vn, ve, vd, result);</span>
+<span class="fc" id="L1607">        return result;</span>
+    }
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldLatitude  previous latitude.
+     * @param oldLongitude previous longitude.
+     * @param oldHeight    previous height.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @param vn           current velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param ve           current velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param vd           current velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @return new updated curvilinear position.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public static NEDPosition estimatePositionAndReturnNew(
+            final Time timeInterval, final Angle oldLatitude, final Angle oldLongitude, final Distance oldHeight,
+            final Speed oldVn, final Speed oldVe, final Speed oldVd, final Speed vn, final Speed ve, final Speed vd) {
+<span class="fc" id="L1635">        final var result = new NEDPosition();</span>
+<span class="fc" id="L1636">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd, vn, ve, vd, result);</span>
+<span class="fc" id="L1637">        return result;</span>
+    }
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldLatitude  previous latitude.
+     * @param oldLongitude previous longitude.
+     * @param oldHeight    previous height.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @param vn           current velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param ve           current velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param vd           current velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @return new updated curvilinear position.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public static NEDPosition estimatePositionAndReturnNew(
+            final double timeInterval, final Angle oldLatitude, final Angle oldLongitude, final Distance oldHeight,
+            final double oldVn, final double oldVe, final double oldVd,
+            final double vn, final double ve, final double vd) {
+<span class="fc" id="L1666">        final var result = new NEDPosition();</span>
+<span class="fc" id="L1667">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd, vn, ve, vd, result);</span>
+<span class="fc" id="L1668">        return result;</span>
+    }
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldLatitude  previous latitude.
+     * @param oldLongitude previous longitude.
+     * @param oldHeight    previous height.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @param vn           current velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param ve           current velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param vd           current velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @return new updated curvilinear position.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public static NEDPosition estimatePositionAndReturnNew(
+            final Time timeInterval, final Angle oldLatitude, final Angle oldLongitude, final Distance oldHeight,
+            final double oldVn, final double oldVe, final double oldVd,
+            final double vn, final double ve, final double vd) {
+<span class="fc" id="L1697">        final var result = new NEDPosition();</span>
+<span class="fc" id="L1698">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd, vn, ve, vd, result);</span>
+<span class="fc" id="L1699">        return result;</span>
+    }
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldLatitude  previous latitude expressed in radians (rad).
+     * @param oldLongitude previous longitude expressed in radians (rad).
+     * @param oldHeight    previous height expressed in meters (m).
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @param vn           current velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param ve           current velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param vd           current velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @return new updated curvilinear position.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public static NEDPosition estimatePositionAndReturnNew(
+            final double timeInterval, final double oldLatitude, final double oldLongitude, final double oldHeight,
+            final Speed oldVn, final Speed oldVe, final Speed oldVd, final Speed vn, final Speed ve, final Speed vd) {
+<span class="fc" id="L1727">        final var result = new NEDPosition();</span>
+<span class="fc" id="L1728">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd, vn, ve, vd, result);</span>
+<span class="fc" id="L1729">        return result;</span>
+    }
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldLatitude  previous latitude expressed in radians (rad).
+     * @param oldLongitude previous longitude expressed in radians (rad).
+     * @param oldHeight    previous height expressed in meters (m).
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @param vn           current velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param ve           current velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param vd           current velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @return new updated curvilinear position.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public static NEDPosition estimatePositionAndReturnNew(
+            final Time timeInterval, final double oldLatitude, final double oldLongitude, final double oldHeight,
+            final Speed oldVn, final Speed oldVe, final Speed oldVd, final Speed vn, final Speed ve, final Speed vd) {
+<span class="fc" id="L1757">        final var result = new NEDPosition();</span>
+<span class="fc" id="L1758">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd, vn, ve, vd, result);</span>
+<span class="fc" id="L1759">        return result;</span>
+    }
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldPosition  previous body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @param vn           current velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param ve           current velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param vd           current velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @return new updated curvilinear position.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public static NEDPosition estimatePositionAndReturnNew(
+            final double timeInterval, final NEDPosition oldPosition,
+            final double oldVn, final double oldVe, final double oldVd,
+            final double vn, final double ve, final double vd) {
+<span class="fc" id="L1787">        final var result = new NEDPosition();</span>
+<span class="fc" id="L1788">        estimatePosition(timeInterval, oldPosition, oldVn, oldVe, oldVd, vn, ve, vd, result);</span>
+<span class="fc" id="L1789">        return result;</span>
+    }
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldPosition  previous body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @param vn           current velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param ve           current velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param vd           current velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @return new updated curvilinear position.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public static NEDPosition estimatePositionAndReturnNew(
+            final Time timeInterval, final NEDPosition oldPosition,
+            final double oldVn, final double oldVe, final double oldVd,
+            final double vn, final double ve, final double vd) {
+<span class="fc" id="L1817">        final var result = new NEDPosition();</span>
+<span class="fc" id="L1818">        estimatePosition(timeInterval, oldPosition, oldVn, oldVe, oldVd, vn, ve, vd, result);</span>
+<span class="fc" id="L1819">        return result;</span>
+    }
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldPosition  previous body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @param vn           current velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param ve           current velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param vd           current velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @return new updated curvilinear position.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public static NEDPosition estimatePositionAndReturnNew(
+            final double timeInterval, final NEDPosition oldPosition,
+            final Speed oldVn, final Speed oldVe, final Speed oldVd, final Speed vn, final Speed ve, final Speed vd) {
+<span class="fc" id="L1846">        final var result = new NEDPosition();</span>
+<span class="fc" id="L1847">        estimatePosition(timeInterval, oldPosition, oldVn, oldVe, oldVd, vn, ve, vd, result);</span>
+<span class="fc" id="L1848">        return result;</span>
+    }
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldPosition  previous body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @param vn           current velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param ve           current velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param vd           current velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @return new updated curvilinear position.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public static NEDPosition estimatePositionAndReturnNew(
+            final Time timeInterval, final NEDPosition oldPosition,
+            final Speed oldVn, final Speed oldVe, final Speed oldVd, final Speed vn, final Speed ve, final Speed vd) {
+<span class="fc" id="L1875">        final var result = new NEDPosition();</span>
+<span class="fc" id="L1876">        estimatePosition(timeInterval, oldPosition, oldVn, oldVe, oldVd, vn, ve, vd, result);</span>
+<span class="fc" id="L1877">        return result;</span>
+    }
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldLatitude  previous latitude expressed in radians (rad).
+     * @param oldLongitude previous longitude expressed in radians (rad).
+     * @param oldHeight    previous height expressed in meters (m).
+     * @param oldVelocity  previous velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @param velocity     current velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @return new updated curvilinear position.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public static NEDPosition estimatePositionAndReturnNew(
+            final double timeInterval, final double oldLatitude, final double oldLongitude, final double oldHeight,
+            final NEDVelocity oldVelocity, final NEDVelocity velocity) {
+<span class="fc" id="L1899">        final var result = new NEDPosition();</span>
+<span class="fc" id="L1900">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVelocity, velocity, result);</span>
+<span class="fc" id="L1901">        return result;</span>
+    }
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldLatitude  previous latitude expressed in radians (rad).
+     * @param oldLongitude previous longitude expressed in radians (rad).
+     * @param oldHeight    previous height expressed in meters (m).
+     * @param oldVelocity  previous velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @param velocity     current velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @return new updated curvilinear position.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public static NEDPosition estimatePositionAndReturnNew(
+            final Time timeInterval, final double oldLatitude, final double oldLongitude, final double oldHeight,
+            final NEDVelocity oldVelocity, final NEDVelocity velocity) {
+<span class="fc" id="L1923">        final var result = new NEDPosition();</span>
+<span class="fc" id="L1924">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVelocity, velocity, result);</span>
+<span class="fc" id="L1925">        return result;</span>
+    }
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldLatitude  previous latitude.
+     * @param oldLongitude previous longitude.
+     * @param oldHeight    previous height.
+     * @param oldVelocity  previous velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @param velocity     current velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @return new updated curvilinear position.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public static NEDPosition estimatePositionAndReturnNew(
+            final double timeInterval, final Angle oldLatitude, final Angle oldLongitude, final Distance oldHeight,
+            final NEDVelocity oldVelocity, final NEDVelocity velocity) {
+<span class="fc" id="L1948">        final var result = new NEDPosition();</span>
+<span class="fc" id="L1949">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVelocity, velocity, result);</span>
+<span class="fc" id="L1950">        return result;</span>
+    }
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldLatitude  previous latitude.
+     * @param oldLongitude previous longitude.
+     * @param oldHeight    previous height.
+     * @param oldVelocity  previous velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @param velocity     current velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @return new updated curvilinear position.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public static NEDPosition estimatePositionAndReturnNew(
+            final Time timeInterval, final Angle oldLatitude, final Angle oldLongitude, final Distance oldHeight,
+            final NEDVelocity oldVelocity, final NEDVelocity velocity) {
+<span class="fc" id="L1973">        final var result = new NEDPosition();</span>
+<span class="fc" id="L1974">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVelocity, velocity, result);</span>
+<span class="fc" id="L1975">        return result;</span>
+    }
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldPosition  previous body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param oldVelocity  previous velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @param velocity     current velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @return new updated curvilinear position.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public static NEDPosition estimatePositionAndReturnNew(
+            final double timeInterval, final NEDPosition oldPosition, final NEDVelocity oldVelocity,
+            final NEDVelocity velocity) {
+<span class="fc" id="L1996">        final var result = new NEDPosition();</span>
+<span class="fc" id="L1997">        estimatePosition(timeInterval, oldPosition, oldVelocity, velocity, result);</span>
+<span class="fc" id="L1998">        return result;</span>
+    }
+
+    /**
+     * Estimates curvilinear position by integrating the velocity.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldPosition  previous body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param oldVelocity  previous velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @param velocity     current velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @return new updated curvilinear position.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public static NEDPosition estimatePositionAndReturnNew(
+            final Time timeInterval, final NEDPosition oldPosition, final NEDVelocity oldVelocity,
+            final NEDVelocity velocity) {
+<span class="fc" id="L2019">        final var result = new NEDPosition();</span>
+<span class="fc" id="L2020">        estimatePosition(timeInterval, oldPosition, oldVelocity, velocity, result);</span>
+<span class="fc" id="L2021">        return result;</span>
+    }
+
+    /**
+     * Converts provided time instance to seconds (s).
+     *
+     * @param time time instance to be converted.
+     * @return provided time value expressed in seconds.
+     */
+    private static double convertTimeToDouble(final Time time) {
+<span class="fc" id="L2031">        return TimeConverter.convert(time.getValue().doubleValue(), time.getUnit(), TimeUnit.SECOND);</span>
+    }
+
+    /**
+     * Converts provided angle instance to radians (rad).
+     *
+     * @param angle angle instance to be converted.
+     * @return provided angle value expressed in radians.
+     */
+    private static double convertAngleToDouble(final Angle angle) {
+<span class="fc" id="L2041">        return AngleConverter.convert(angle.getValue().doubleValue(), angle.getUnit(), AngleUnit.RADIANS);</span>
+    }
+
+    /**
+     * Converts provided distance instance to meters (m).
+     *
+     * @param distance distance instance to be converted.
+     * @return provided distance value expressed in meters.
+     */
+    private static double convertDistanceToDouble(final Distance distance) {
+<span class="fc" id="L2051">        return DistanceConverter.convert(distance.getValue().doubleValue(), distance.getUnit(), DistanceUnit.METER);</span>
+    }
+
+    /**
+     * Converts provided speed instance to meters per second (m/s).
+     *
+     * @param speed speed instance to be converted.
+     * @return provided speed value expressed in meters per second.
+     */
+    private static double convertSpeedToDouble(final Speed speed) {
+<span class="fc" id="L2061">        return SpeedConverter.convert(speed.getValue().doubleValue(), speed.getUnit(), SpeedUnit.METERS_PER_SECOND);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

@@ -1,0 +1,2098 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ECIKinematicsEstimator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-inertial</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.inertial.estimators</a> &gt; <span class="el_source">ECIKinematicsEstimator.java</span></div><h1>ECIKinematicsEstimator.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2019 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.inertial.estimators;
+
+import com.irurueta.algebra.AlgebraException;
+import com.irurueta.algebra.Matrix;
+import com.irurueta.algebra.Utils;
+import com.irurueta.geometry.Point3D;
+import com.irurueta.navigation.frames.CoordinateTransformation;
+import com.irurueta.navigation.frames.ECIFrame;
+import com.irurueta.navigation.inertial.BodyKinematics;
+import com.irurueta.units.Speed;
+import com.irurueta.units.SpeedConverter;
+import com.irurueta.units.SpeedUnit;
+import com.irurueta.units.Time;
+import com.irurueta.units.TimeConverter;
+import com.irurueta.units.TimeUnit;
+
+/**
+ * Estimates body kinematics (specific force applied to a body and its angular rates) with respect and resolved
+ * along ECI-frame axes.
+ * This implementation is based on the equations defined in &quot;Principles of GNSS, Inertial, and Multisensor
+ * Integrated Navigation Systems, Second Edition&quot; and on the companion software available at:
+ * &lt;a href=&quot;https://github.com/ymjdz/MATLAB-Codes/blob/master/Kinematics_ECI.m&quot;&gt;
+ *     https://github.com/ymjdz/MATLAB-Codes/blob/master/Kinematics_ECI.m
+ * &lt;/a&gt;
+ */
+<span class="fc" id="L41">public class ECIKinematicsEstimator {</span>
+
+    /**
+     * Scaling threshold.
+     */
+    private static final double SCALING_THRESHOLD = 2e-5;
+
+    /**
+     * Alpha threshold.
+     */
+    private static final double ALPHA_THRESHOLD = 1e-8;
+
+    /**
+     * Number of rows.
+     */
+    private static final int ROWS = 3;
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates)..
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param c            body-to-ECI-frame coordinate transformation.
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param vx           x coordinate of velocity of body frame expressed in meters per second (m/s) and resolved
+     *                     along ECI-frame axes.
+     * @param vy           y coordinate of velocity of body frame expressed in meters per second (m/s) and resolved
+     *                     along ECI-frame axes.
+     * @param vz           z coordinate of velocity of body frame expressed in meters per second (m/s) and resolved
+     *                     along ECI-frame axes.
+     * @param oldVx        x coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param oldVy        y coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param oldVz        z coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param x            cartesian x coordinate of body position expressed in meters (m) and resolved along
+     *                     ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @param y            cartesian y coordinate of body position expressed in meters (m) and resolved along
+     *                     ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @param z            cartesian z coordinate of body position expressed in meters (m) and resolved along
+     *                     ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @param result       instance where estimated body kinematics will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinates transformation matrices
+     *                                  are not ECI frame valid.
+     */
+    public void estimate(
+            final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final double vx, final double vy, final double vz,
+            final double oldVx, final double oldVy, final double oldVz,
+            final double x, final double y, final double z, final BodyKinematics result) {
+<span class="fc" id="L100">        estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz, x, y, z, result);</span>
+<span class="fc" id="L101">    }</span>
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates)..
+     *
+     * @param timeInterval time interval between epochs.
+     * @param c            body-to-ECI-frame coordinate transformation.
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param vx           x coordinate of velocity of body frame expressed in meters per second (m/s) and resolved
+     *                     along ECI-frame axes.
+     * @param vy           y coordinate of velocity of body frame expressed in meters per second (m/s) and resolved
+     *                     along ECI-frame axes.
+     * @param vz           z coordinate of velocity of body frame expressed in meters per second (m/s) and resolved
+     *                     along ECI-frame axes.
+     * @param oldVx        x coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param oldVy        y coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param oldVz        z coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param x            cartesian x coordinate of body position expressed in meters (m) and resolved along
+     *                     ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @param y            cartesian y coordinate of body position expressed in meters (m) and resolved along
+     *                     ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @param z            cartesian z coordinate of body position expressed in meters (m) and resolved along
+     *                     ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @param result       instance where estimated body kinematics will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinates transformation matrices
+     *                                  are not ECI frame valid.
+     */
+    public void estimate(
+            final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final double vx, final double vy, final double vz,
+            final double oldVx, final double oldVy, final double oldVz,
+            final double x, final double y, final double z, final BodyKinematics result) {
+<span class="fc" id="L145">        estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz, x, y, z, result);</span>
+<span class="fc" id="L146">    }</span>
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates).
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param frame        body ECI frame containing current position, velocity and
+     *                     body-to-ECI frame coordinate transformation. The position contained in this
+     *                     frame is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval, hence when body position changes
+     *                     during the time interval, overloads receiving the previous frame or an explicit
+     *                     position should be used instead.
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param oldVx        x coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param oldVy        y coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param oldVz        z coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param result       instance where estimated body kinematics will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinates transformation matrices
+     *                                  are not ECI frame valid.
+     */
+    public void estimate(
+            final double timeInterval, final ECIFrame frame, final CoordinateTransformation oldC,
+            final double oldVx, final double oldVy, final double oldVz, final BodyKinematics result) {
+<span class="fc" id="L173">        estimateKinematics(timeInterval, frame, oldC, oldVx, oldVy, oldVz, result);</span>
+<span class="fc" id="L174">    }</span>
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates).
+     *
+     * @param timeInterval time interval between epochs.
+     * @param frame        body ECI frame containing current position, velocity and
+     *                     body-to-ECI frame coordinate transformation. The position contained in this
+     *                     frame is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval, hence when body position changes
+     *                     during the time interval, overloads receiving the previous frame or an explicit
+     *                     position should be used instead.
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param oldVx        x coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param oldVy        y coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param oldVz        z coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param result       instance where estimated body kinematics will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinates transformation matrices
+     *                                  are not ECI frame valid.
+     */
+    public void estimate(
+            final Time timeInterval, final ECIFrame frame, final CoordinateTransformation oldC,
+            final double oldVx, final double oldVy, final double oldVz, final BodyKinematics result) {
+<span class="fc" id="L201">        estimateKinematics(timeInterval, frame, oldC, oldVx, oldVy, oldVz, result);</span>
+<span class="fc" id="L202">    }</span>
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates).
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param frame        body ECI frame containing current position, velocity and
+     *                     body-to-ECI frame coordinate transformation. Notice that
+     *                     current position contained in this frame is ignored.
+     * @param oldFrame     body ECI frame containing previous position, velocity and
+     *                     body-to-ECI frame coordinate transformation. The previous position contained
+     *                     in this frame (the position at the start of the time interval) is the position
+     *                     where gravitation is evaluated, to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers).
+     * @param result       instance where body kinematics estimation will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public void estimate(
+            final double timeInterval, final ECIFrame frame, final ECIFrame oldFrame, final BodyKinematics result) {
+<span class="fc" id="L221">        estimateKinematics(timeInterval, frame, oldFrame, result);</span>
+<span class="fc" id="L222">    }</span>
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates).
+     *
+     * @param timeInterval time interval between epochs.
+     * @param frame        body ECI frame containing current position, velocity and
+     *                     body-to-ECI frame coordinate transformation. Notice that
+     *                     current position contained in this frame is ignored.
+     * @param oldFrame     body ECI frame containing previous position, velocity and
+     *                     body-to-ECI frame coordinate transformation. The previous position contained
+     *                     in this frame (the position at the start of the time interval) is the position
+     *                     where gravitation is evaluated, to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers).
+     * @param result       instance where body kinematics estimation will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public void estimate(
+            final Time timeInterval, final ECIFrame frame, final ECIFrame oldFrame, final BodyKinematics result) {
+<span class="fc" id="L241">        estimateKinematics(timeInterval, frame, oldFrame, result);</span>
+<span class="fc" id="L242">    }</span>
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates)..
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param c            body-to-ECI-frame coordinate transformation.
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param vx           x coordinate of velocity of body frame with respect ECI frame, resolved
+     *                     along ECI-frame axes.
+     * @param vy           y coordinate of velocity of body frame with respect ECI frame, resolved
+     *                     along ECI-frame axes.
+     * @param vz           z coordinate of velocity of body frame with respect ECI frame, resolved
+     *                     along ECI-frame axes.
+     * @param oldVx        x coordinate of previous velocity of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldVy        y coordinate of previous velocity of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldVz        z coordinate of previous velocity of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param x            cartesian x coordinate of body position expressed in meters (m) and resolved along
+     *                     ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @param y            cartesian y coordinate of body position expressed in meters (m) and resolved along
+     *                     ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @param z            cartesian z coordinate of body position expressed in meters (m) and resolved along
+     *                     ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @param result       instance where estimated body kinematics will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinates transformation matrices
+     *                                  are not ECI frame valid.
+     */
+    public void estimate(
+            final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final Speed vx, final Speed vy, final Speed vz, final Speed oldVx, final Speed oldVy, final Speed oldVz,
+            final double x, final double y, final double z, final BodyKinematics result) {
+<span class="fc" id="L285">        estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz, x, y, z, result);</span>
+<span class="fc" id="L286">    }</span>
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates)..
+     *
+     * @param timeInterval time interval between epochs.
+     * @param c            body-to-ECI-frame coordinate transformation.
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param vx           x coordinate of velocity of body frame with respect ECI frame, resolved
+     *                     along ECI-frame axes.
+     * @param vy           y coordinate of velocity of body frame with respect ECI frame, resolved
+     *                     along ECI-frame axes.
+     * @param vz           z coordinate of velocity of body frame with respect ECI frame, resolved
+     *                     along ECI-frame axes.
+     * @param oldVx        x coordinate of previous velocity of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldVy        y coordinate of previous velocity of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldVz        z coordinate of previous velocity of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param x            cartesian x coordinate of body position expressed in meters (m) and resolved along
+     *                     ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @param y            cartesian y coordinate of body position expressed in meters (m) and resolved along
+     *                     ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @param z            cartesian z coordinate of body position expressed in meters (m) and resolved along
+     *                     ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @param result       instance where estimated body kinematics will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinates transformation matrices
+     *                                  are not ECI frame valid.
+     */
+    public void estimate(
+            final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final Speed vx, final Speed vy, final Speed vz, final Speed oldVx, final Speed oldVy, final Speed oldVz,
+            final double x, final double y, final double z, final BodyKinematics result) {
+<span class="fc" id="L329">        estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz, x, y, z, result);</span>
+<span class="fc" id="L330">    }</span>
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates).
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param frame        body ECI frame containing current position, velocity and
+     *                     body-to-ECI frame coordinate transformation. The position contained in this
+     *                     frame is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval, hence when body position changes
+     *                     during the time interval, overloads receiving the previous frame or an explicit
+     *                     position should be used instead.
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param oldVx        x coordinate of previous velocity of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldVy        y coordinate of previous velocity of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldVz        z coordinate of previous velocity of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param result       instance where estimated body kinematics will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinates transformation matrices
+     *                                  are not ECI frame valid.
+     */
+    public void estimate(
+            final double timeInterval, final ECIFrame frame, final CoordinateTransformation oldC,
+            final Speed oldVx, final Speed oldVy, final Speed oldVz, final BodyKinematics result) {
+<span class="fc" id="L357">        estimateKinematics(timeInterval, frame, oldC, oldVx, oldVy, oldVz, result);</span>
+<span class="fc" id="L358">    }</span>
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates).
+     *
+     * @param timeInterval time interval between epochs.
+     * @param frame        body ECI frame containing current position, velocity and
+     *                     body-to-ECI frame coordinate transformation. The position contained in this
+     *                     frame is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval, hence when body position changes
+     *                     during the time interval, overloads receiving the previous frame or an explicit
+     *                     position should be used instead.
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param oldVx        x coordinate of previous velocity of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldVy        y coordinate of previous velocity of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldVz        z coordinate of previous velocity of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param result       instance where estimated body kinematics will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinates transformation matrices
+     *                                  are not ECI frame valid.
+     */
+    public void estimate(
+            final Time timeInterval, final ECIFrame frame, final CoordinateTransformation oldC,
+            final Speed oldVx, final Speed oldVy, final Speed oldVz, final BodyKinematics result) {
+<span class="fc" id="L385">        estimateKinematics(timeInterval, frame, oldC, oldVx, oldVy, oldVz, result);</span>
+<span class="fc" id="L386">    }</span>
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates)..
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param c            body-to-ECI-frame coordinate transformation.
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param vx           x coordinate of velocity of body frame expressed in meters per second (m/s) and resolved
+     *                     along ECI-frame axes.
+     * @param vy           y coordinate of velocity of body frame expressed in meters per second (m/s) and resolved
+     *                     along ECI-frame axes.
+     * @param vz           z coordinate of velocity of body frame expressed in meters per second (m/s) and resolved
+     *                     along ECI-frame axes.
+     * @param oldVx        x coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param oldVy        y coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param oldVz        z coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param position     body position expressed in meters (m) with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @param result       instance where estimated body kinematics will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinates transformation matrices
+     *                                  are not ECI frame valid.
+     */
+    public void estimate(
+            final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final double vx, final double vy, final double vz,
+            final double oldVx, final double oldVy, final double oldVz,
+            final Point3D position, final BodyKinematics result) {
+<span class="fc" id="L420">        estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz, position, result);</span>
+<span class="fc" id="L421">    }</span>
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates)..
+     *
+     * @param timeInterval time interval between epochs.
+     * @param c            body-to-ECI-frame coordinate transformation.
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param vx           x coordinate of velocity of body frame expressed in meters per second (m/s) and resolved
+     *                     along ECI-frame axes.
+     * @param vy           y coordinate of velocity of body frame expressed in meters per second (m/s) and resolved
+     *                     along ECI-frame axes.
+     * @param vz           z coordinate of velocity of body frame expressed in meters per second (m/s) and resolved
+     *                     along ECI-frame axes.
+     * @param oldVx        x coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param oldVy        y coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param oldVz        z coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param position     body position expressed in meters (m) with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @param result       instance where estimated body kinematics will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinates transformation matrices
+     *                                  are not ECI frame valid.
+     */
+    public void estimate(
+            final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final double vx, final double vy, final double vz,
+            final double oldVx, final double oldVy, final double oldVz,
+            final Point3D position, final BodyKinematics result) {
+<span class="fc" id="L455">        estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz, position, result);</span>
+<span class="fc" id="L456">    }</span>
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates)..
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param c            body-to-ECI-frame coordinate transformation.
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param vx           x coordinate of velocity of body frame with respect ECI frame, resolved
+     *                     along ECI-frame axes.
+     * @param vy           y coordinate of velocity of body frame with respect ECI frame, resolved
+     *                     along ECI-frame axes.
+     * @param vz           z coordinate of velocity of body frame with respect ECI frame, resolved
+     *                     along ECI-frame axes.
+     * @param oldVx        x coordinate of previous velocity of body frame respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldVy        y coordinate of previous velocity of body frame respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldVz        z coordinate of previous velocity of body frame respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param position     body position expressed in meters (m) with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @param result       instance where estimated body kinematics will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinates transformation matrices
+     *                                  are not ECI frame valid.
+     */
+    public void estimate(
+            final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final Speed vx, final Speed vy, final Speed vz, final Speed oldVx, final Speed oldVy, final Speed oldVz,
+            final Point3D position, final BodyKinematics result) {
+<span class="fc" id="L489">        estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz, position, result);</span>
+<span class="fc" id="L490">    }</span>
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates)..
+     *
+     * @param timeInterval time interval between epochs.
+     * @param c            body-to-ECI-frame coordinate transformation.
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param vx           x coordinate of velocity of body frame with respect ECI frame, resolved
+     *                     along ECI-frame axes.
+     * @param vy           y coordinate of velocity of body frame with respect ECI frame, resolved
+     *                     along ECI-frame axes.
+     * @param vz           z coordinate of velocity of body frame with respect ECI frame, resolved
+     *                     along ECI-frame axes.
+     * @param oldVx        x coordinate of previous velocity of body frame respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldVy        y coordinate of previous velocity of body frame respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldVz        z coordinate of previous velocity of body frame respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param position     body position expressed in meters (m) with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @param result       instance where estimated body kinematics will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinates transformation matrices
+     *                                  are not ECI frame valid.
+     */
+    public void estimate(
+            final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final Speed vx, final Speed vy, final Speed vz, final Speed oldVx, final Speed oldVy, final Speed oldVz,
+            final Point3D position, final BodyKinematics result) {
+<span class="fc" id="L523">        estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz, position, result);</span>
+<span class="fc" id="L524">    }</span>
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates)..
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param c            body-to-ECI-frame coordinate transformation.
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param vx           x coordinate of velocity of body frame expressed in meters per second (m/s) and resolved
+     *                     along ECI-frame axes.
+     * @param vy           y coordinate of velocity of body frame expressed in meters per second (m/s) and resolved
+     *                     along ECI-frame axes.
+     * @param vz           z coordinate of velocity of body frame expressed in meters per second (m/s) and resolved
+     *                     along ECI-frame axes.
+     * @param oldVx        x coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param oldVy        y coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param oldVz        z coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param x            cartesian x coordinate of body position expressed in meters (m) and resolved along
+     *                     ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @param y            cartesian y coordinate of body position expressed in meters (m) and resolved along
+     *                     ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @param z            cartesian z coordinate of body position expressed in meters (m) and resolved along
+     *                     ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @return a new body kinematics instance.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinates transformation matrices
+     *                                  are not ECI frame valid.
+     */
+    public BodyKinematics estimateAndReturnNew(
+            final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final double vx, final double vy, final double vz,
+            final double oldVx, final double oldVy, final double oldVz,
+            final double x, final double y, final double z) {
+<span class="fc" id="L568">        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz, x, y, z);</span>
+    }
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates)..
+     *
+     * @param timeInterval time interval between epochs.
+     * @param c            body-to-ECI-frame coordinate transformation.
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param vx           x coordinate of velocity of body frame expressed in meters per second (m/s) and resolved
+     *                     along ECI-frame axes.
+     * @param vy           y coordinate of velocity of body frame expressed in meters per second (m/s) and resolved
+     *                     along ECI-frame axes.
+     * @param vz           z coordinate of velocity of body frame expressed in meters per second (m/s) and resolved
+     *                     along ECI-frame axes.
+     * @param oldVx        x coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param oldVy        y coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param oldVz        z coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param x            cartesian x coordinate of body position expressed in meters (m) and resolved along
+     *                     ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @param y            cartesian y coordinate of body position expressed in meters (m) and resolved along
+     *                     ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @param z            cartesian z coordinate of body position expressed in meters (m) and resolved along
+     *                     ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @return a new body kinematics instance.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinates transformation matrices
+     *                                  are not ECI frame valid.
+     */
+    public BodyKinematics estimateAndReturnNew(
+            final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final double vx, final double vy, final double vz,
+            final double oldVx, final double oldVy, final double oldVz,
+            final double x, final double y, final double z) {
+<span class="fc" id="L613">        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz, x, y, z);</span>
+    }
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates).
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param frame        body ECI frame containing current position, velocity and
+     *                     body-to-ECI frame coordinate transformation. The position contained in this
+     *                     frame is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval, hence when body position changes
+     *                     during the time interval, overloads receiving the previous frame or an explicit
+     *                     position should be used instead.
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param oldVx        x coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param oldVy        y coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param oldVz        z coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @return a new body kinematics instance.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinates transformation matrices
+     *                                  are not ECI frame valid.
+     */
+    public BodyKinematics estimateAndReturnNew(
+            final double timeInterval, final ECIFrame frame, final CoordinateTransformation oldC,
+            final double oldVx, final double oldVy, final double oldVz) {
+<span class="fc" id="L641">        return estimateKinematicsAndReturnNew(timeInterval, frame, oldC, oldVx, oldVy, oldVz);</span>
+    }
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates).
+     *
+     * @param timeInterval time interval between epochs.
+     * @param frame        body ECI frame containing current position, velocity and
+     *                     body-to-ECI frame coordinate transformation. The position contained in this
+     *                     frame is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval, hence when body position changes
+     *                     during the time interval, overloads receiving the previous frame or an explicit
+     *                     position should be used instead.
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param oldVx        x coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param oldVy        y coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param oldVz        z coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @return a new body kinematics instance.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinates transformation matrices
+     *                                  are not ECI frame valid.
+     */
+    public BodyKinematics estimateAndReturnNew(
+            final Time timeInterval, final ECIFrame frame, final CoordinateTransformation oldC,
+            final double oldVx, final double oldVy, final double oldVz) {
+<span class="fc" id="L669">        return estimateKinematicsAndReturnNew(timeInterval, frame, oldC, oldVx, oldVy, oldVz);</span>
+    }
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates).
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param frame        body ECI frame containing current position, velocity and
+     *                     body-to-ECI frame coordinate transformation. Notice that
+     *                     current position contained in this frame is ignored.
+     * @param oldFrame     body ECI frame containing previous position, velocity and
+     *                     body-to-ECI frame coordinate transformation. The previous position contained
+     *                     in this frame (the position at the start of the time interval) is the position
+     *                     where gravitation is evaluated, to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers).
+     * @return a new body kinematics instance.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public BodyKinematics estimateAndReturnNew(
+            final double timeInterval, final ECIFrame frame, final ECIFrame oldFrame) {
+<span class="fc" id="L689">        return estimateKinematicsAndReturnNew(timeInterval, frame, oldFrame);</span>
+    }
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates).
+     *
+     * @param timeInterval time interval between epochs.
+     * @param frame        body ECI frame containing current position, velocity and
+     *                     body-to-ECI frame coordinate transformation. Notice that
+     *                     current position contained in this frame is ignored.
+     * @param oldFrame     body ECI frame containing previous position, velocity and
+     *                     body-to-ECI frame coordinate transformation. The previous position contained
+     *                     in this frame (the position at the start of the time interval) is the position
+     *                     where gravitation is evaluated, to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers).
+     * @return a new body kinematics instance.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public BodyKinematics estimateAndReturnNew(
+            final Time timeInterval, final ECIFrame frame, final ECIFrame oldFrame) {
+<span class="fc" id="L709">        return estimateKinematicsAndReturnNew(timeInterval, frame, oldFrame);</span>
+    }
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates)..
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param c            body-to-ECI-frame coordinate transformation.
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param vx           x coordinate of velocity of body frame with respect ECI frame, resolved
+     *                     along ECI-frame axes.
+     * @param vy           y coordinate of velocity of body frame with respect ECI frame, resolved
+     *                     along ECI-frame axes.
+     * @param vz           z coordinate of velocity of body frame with respect ECI frame, resolved
+     *                     along ECI-frame axes.
+     * @param oldVx        x coordinate of previous velocity of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldVy        y coordinate of previous velocity of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldVz        z coordinate of previous velocity of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param x            cartesian x coordinate of body position expressed in meters (m) and resolved along
+     *                     ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @param y            cartesian y coordinate of body position expressed in meters (m) and resolved along
+     *                     ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @param z            cartesian z coordinate of body position expressed in meters (m) and resolved along
+     *                     ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @return a new body kinematics instance.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinates transformation matrices
+     *                                  are not ECI frame valid.
+     */
+    public BodyKinematics estimateAndReturnNew(
+            final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final Speed vx, final Speed vy, final Speed vz, final Speed oldVx, final Speed oldVy, final Speed oldVz,
+            final double x, final double y, final double z) {
+<span class="fc" id="L753">        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz, x, y, z);</span>
+    }
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates)..
+     *
+     * @param timeInterval time interval between epochs.
+     * @param c            body-to-ECI-frame coordinate transformation.
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param vx           x coordinate of velocity of body frame with respect ECI frame, resolved
+     *                     along ECI-frame axes.
+     * @param vy           y coordinate of velocity of body frame with respect ECI frame, resolved
+     *                     along ECI-frame axes.
+     * @param vz           z coordinate of velocity of body frame with respect ECI frame, resolved
+     *                     along ECI-frame axes.
+     * @param oldVx        x coordinate of previous velocity of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldVy        y coordinate of previous velocity of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldVz        z coordinate of previous velocity of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param x            cartesian x coordinate of body position expressed in meters (m) and resolved along
+     *                     ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @param y            cartesian y coordinate of body position expressed in meters (m) and resolved along
+     *                     ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @param z            cartesian z coordinate of body position expressed in meters (m) and resolved along
+     *                     ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @return a new body kinematics instance.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinates transformation matrices
+     *                                  are not ECI frame valid.
+     */
+    public BodyKinematics estimateAndReturnNew(
+            final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final Speed vx, final Speed vy, final Speed vz, final Speed oldVx, final Speed oldVy, final Speed oldVz,
+            final double x, final double y, final double z) {
+<span class="fc" id="L797">        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz, x, y, z);</span>
+    }
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates).
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param frame        body ECI frame containing current position, velocity and
+     *                     body-to-ECI frame coordinate transformation. The position contained in this
+     *                     frame is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval, hence when body position changes
+     *                     during the time interval, overloads receiving the previous frame or an explicit
+     *                     position should be used instead.
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param oldVx        x coordinate of previous velocity of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldVy        y coordinate of previous velocity of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldVz        z coordinate of previous velocity of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @return a new body kinematics instance.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinates transformation matrices
+     *                                  are not ECI frame valid.
+     */
+    public BodyKinematics estimateAndReturnNew(
+            final double timeInterval, final ECIFrame frame, final CoordinateTransformation oldC,
+            final Speed oldVx, final Speed oldVy, final Speed oldVz) {
+<span class="fc" id="L825">        return estimateKinematicsAndReturnNew(timeInterval, frame, oldC, oldVx, oldVy, oldVz);</span>
+    }
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates).
+     *
+     * @param timeInterval time interval between epochs.
+     * @param frame        body ECI frame containing current position, velocity and
+     *                     body-to-ECI frame coordinate transformation. The position contained in this
+     *                     frame is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval, hence when body position changes
+     *                     during the time interval, overloads receiving the previous frame or an explicit
+     *                     position should be used instead.
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param oldVx        x coordinate of previous velocity of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldVy        y coordinate of previous velocity of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldVz        z coordinate of previous velocity of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @return a new body kinematics instance.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinates transformation matrices
+     *                                  are not ECI frame valid.
+     */
+    public BodyKinematics estimateAndReturnNew(
+            final Time timeInterval, final ECIFrame frame, final CoordinateTransformation oldC,
+            final Speed oldVx, final Speed oldVy, final Speed oldVz) {
+<span class="fc" id="L853">        return estimateKinematicsAndReturnNew(timeInterval, frame, oldC, oldVx, oldVy, oldVz);</span>
+    }
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates)..
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param c            body-to-ECI-frame coordinate transformation.
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param vx           x coordinate of velocity of body frame expressed in meters per second (m/s) and resolved
+     *                     along ECI-frame axes.
+     * @param vy           y coordinate of velocity of body frame expressed in meters per second (m/s) and resolved
+     *                     along ECI-frame axes.
+     * @param vz           z coordinate of velocity of body frame expressed in meters per second (m/s) and resolved
+     *                     along ECI-frame axes.
+     * @param oldVx        x coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param oldVy        y coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param oldVz        z coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param position     body position expressed in meters (m) with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @return a new body kinematics instance.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinates transformation matrices
+     *                                  are not ECI frame valid.
+     */
+    public BodyKinematics estimateAndReturnNew(
+            final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final double vx, final double vy, final double vz,
+            final double oldVx, final double oldVy, final double oldVz, final Point3D position) {
+<span class="fc" id="L887">        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz, position);</span>
+    }
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates)..
+     *
+     * @param timeInterval time interval between epochs.
+     * @param c            body-to-ECI-frame coordinate transformation.
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param vx           x coordinate of velocity of body frame expressed in meters per second (m/s) and resolved
+     *                     along ECI-frame axes.
+     * @param vy           y coordinate of velocity of body frame expressed in meters per second (m/s) and resolved
+     *                     along ECI-frame axes.
+     * @param vz           z coordinate of velocity of body frame expressed in meters per second (m/s) and resolved
+     *                     along ECI-frame axes.
+     * @param oldVx        x coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param oldVy        y coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param oldVz        z coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param position     body position expressed in meters (m) with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @return a new body kinematics instance.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinates transformation matrices
+     *                                  are not ECI frame valid.
+     */
+    public BodyKinematics estimateAndReturnNew(
+            final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final double vx, final double vy, final double vz,
+            final double oldVx, final double oldVy, final double oldVz, final Point3D position) {
+<span class="fc" id="L921">        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz, position);</span>
+    }
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates)..
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param c            body-to-ECI-frame coordinate transformation.
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param vx           x coordinate of velocity of body frame with respect ECI frame, resolved
+     *                     along ECI-frame axes.
+     * @param vy           y coordinate of velocity of body frame with respect ECI frame, resolved
+     *                     along ECI-frame axes.
+     * @param vz           z coordinate of velocity of body frame with respect ECI frame, resolved
+     *                     along ECI-frame axes.
+     * @param oldVx        x coordinate of previous velocity of body frame respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldVy        y coordinate of previous velocity of body frame respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldVz        z coordinate of previous velocity of body frame respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param position     body position expressed in meters (m) with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @return a new body kinematics instance.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinates transformation matrices
+     *                                  are not ECI frame valid.
+     */
+    public BodyKinematics estimateAndReturnNew(
+            final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final Speed vx, final Speed vy, final Speed vz, final Speed oldVx, final Speed oldVy, final Speed oldVz,
+            final Point3D position) {
+<span class="fc" id="L955">        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz, position);</span>
+    }
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates)..
+     *
+     * @param timeInterval time interval between epochs.
+     * @param c            body-to-ECI-frame coordinate transformation.
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param vx           x coordinate of velocity of body frame with respect ECI frame, resolved
+     *                     along ECI-frame axes.
+     * @param vy           y coordinate of velocity of body frame with respect ECI frame, resolved
+     *                     along ECI-frame axes.
+     * @param vz           z coordinate of velocity of body frame with respect ECI frame, resolved
+     *                     along ECI-frame axes.
+     * @param oldVx        x coordinate of previous velocity of body frame respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldVy        y coordinate of previous velocity of body frame respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldVz        z coordinate of previous velocity of body frame respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param position     body position expressed in meters (m) with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @return a new body kinematics instance.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinates transformation matrices
+     *                                  are not ECI frame valid.
+     */
+    public BodyKinematics estimateAndReturnNew(
+            final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final Speed vx, final Speed vy, final Speed vz, final Speed oldVx, final Speed oldVy, final Speed oldVz,
+            final Point3D position) {
+<span class="fc" id="L989">        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz, position);</span>
+    }
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates).
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param c            body-to-ECI-frame coordinate transformation.
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param vx           x coordinate of velocity of body frame expressed in meters per second (m/s) and resolved
+     *                     along ECI-frame axes.
+     * @param vy           y coordinate of velocity of body frame expressed in meters per second (m/s) and resolved
+     *                     along ECI-frame axes.
+     * @param vz           z coordinate of velocity of body frame expressed in meters per second (m/s) and resolved
+     *                     along ECI-frame axes.
+     * @param oldVx        x coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param oldVy        y coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param oldVz        z coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param x            cartesian x coordinate of body position expressed in meters (m) and resolved along
+     *                     ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @param y            cartesian y coordinate of body position expressed in meters (m) and resolved along
+     *                     ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @param z            cartesian z coordinate of body position expressed in meters (m) and resolved along
+     *                     ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @param result       instance where estimated body kinematics will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinates transformation matrices
+     *                                  are not ECI frame valid.
+     */
+    public static void estimateKinematics(
+            final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final double vx, final double vy, final double vz,
+            final double oldVx, final double oldVy, final double oldVz,
+            final double x, final double y, final double z, final BodyKinematics result) {
+<span class="fc bfc" id="L1034" title="All 4 branches covered.">        if (timeInterval &lt; 0.0 || !ECIFrame.isValidCoordinateTransformation(c)</span>
+<span class="fc bfc" id="L1035" title="All 2 branches covered.">                || !ECIFrame.isValidCoordinateTransformation(oldC)) {</span>
+<span class="fc" id="L1036">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc bfc" id="L1039" title="All 2 branches covered.">        if (timeInterval &gt; 0.0) {</span>
+            try {
+                // Obtain coordinate transformation matrix from the old attitude to the new
+                // initially c contains body-to-ECI transformation
+<span class="fc" id="L1043">                final var cib = c.getMatrix();</span>
+                // we transpose it to obtain the inverse
+<span class="fc" id="L1045">                cib.transpose();</span>
+
+<span class="fc" id="L1047">                final var oldCbi = oldC.getMatrix();</span>
+<span class="fc" id="L1048">                final var cOldNew = cib.multiplyAndReturnNew(oldCbi);</span>
+
+                // Calculate the approximate angular rate
+<span class="fc" id="L1051">                var alphaIbbX = 0.5 * (cOldNew.getElementAt(1, 2)</span>
+<span class="fc" id="L1052">                        - cOldNew.getElementAt(2, 1));</span>
+<span class="fc" id="L1053">                var alphaIbbY = 0.5 * (cOldNew.getElementAt(2, 0)</span>
+<span class="fc" id="L1054">                        - cOldNew.getElementAt(0, 2));</span>
+<span class="fc" id="L1055">                var alphaIbbZ = 0.5 * (cOldNew.getElementAt(0, 1)</span>
+<span class="fc" id="L1056">                        - cOldNew.getElementAt(1, 0));</span>
+
+                // Calculate and apply the scaling factor
+<span class="fc" id="L1059">                final var temp = Math.acos(0.5 * (cOldNew.getElementAt(0, 0)</span>
+<span class="fc" id="L1060">                        + cOldNew.getElementAt(1, 1)</span>
+<span class="fc" id="L1061">                        + cOldNew.getElementAt(2, 2) - 1.0));</span>
+<span class="pc bpc" id="L1062" title="1 of 2 branches missed.">                if (temp &gt; SCALING_THRESHOLD) {</span>
+                    // Scaling is 1 if temp is less than this
+<span class="fc" id="L1064">                    final var scaling = temp / Math.sin(temp);</span>
+<span class="fc" id="L1065">                    alphaIbbX *= scaling;</span>
+<span class="fc" id="L1066">                    alphaIbbY *= scaling;</span>
+<span class="fc" id="L1067">                    alphaIbbZ *= scaling;</span>
+                }
+
+                // Calculate the angular rate
+<span class="fc" id="L1071">                final var angularRateX = alphaIbbX / timeInterval;</span>
+<span class="fc" id="L1072">                final var angularRateY = alphaIbbY / timeInterval;</span>
+<span class="fc" id="L1073">                final var angularRateZ = alphaIbbZ / timeInterval;</span>
+
+                // Calculate the specific force resolved about ECI-frame axes
+                // From (5.18) and (5.20)
+<span class="fc" id="L1077">                final var vIbi = new Matrix(ROWS, 1);</span>
+<span class="fc" id="L1078">                vIbi.setElementAtIndex(0, vx);</span>
+<span class="fc" id="L1079">                vIbi.setElementAtIndex(1, vy);</span>
+<span class="fc" id="L1080">                vIbi.setElementAtIndex(2, vz);</span>
+
+<span class="fc" id="L1082">                final var oldVibi = new Matrix(ROWS, 1);</span>
+<span class="fc" id="L1083">                oldVibi.setElementAtIndex(0, oldVx);</span>
+<span class="fc" id="L1084">                oldVibi.setElementAtIndex(1, oldVy);</span>
+<span class="fc" id="L1085">                oldVibi.setElementAtIndex(2, oldVz);</span>
+
+<span class="fc" id="L1087">                final var gravitation = ECIGravitationEstimator.estimateGravitationAndReturnNew(x, y, z);</span>
+<span class="fc" id="L1088">                final var g = gravitation.asMatrix();</span>
+
+                // fIbi = ((vIbi - oldVibi) / timeInterval) - g
+<span class="fc" id="L1091">                vIbi.subtract(oldVibi);</span>
+<span class="fc" id="L1092">                vIbi.multiplyByScalar(1.0 / timeInterval);</span>
+<span class="fc" id="L1093">                vIbi.subtract(g);</span>
+                // vIbi now contains specific force resolved about ECI-frame axes
+
+                // Calculate the average body-to-ECI-frame coordinate transformation
+                // matrix over the update interval using (5.84)
+<span class="fc" id="L1098">                final var alphaNorm = Math.sqrt(alphaIbbX * alphaIbbX + alphaIbbY * alphaIbbY + alphaIbbZ * alphaIbbZ);</span>
+<span class="fc" id="L1099">                final var alphaSkew = Utils.skewMatrix(new double[]{alphaIbbX, alphaIbbY, alphaIbbZ});</span>
+
+<span class="pc bpc" id="L1101" title="1 of 2 branches missed.">                if (alphaNorm &gt; ALPHA_THRESHOLD) {</span>
+<span class="fc" id="L1102">                    final var alphaNorm2 = alphaNorm * alphaNorm;</span>
+<span class="fc" id="L1103">                    final var value1 = (1.0 - Math.cos(alphaNorm)) / alphaNorm2;</span>
+<span class="fc" id="L1104">                    final var value2 = (1.0 - Math.sin(alphaNorm) / alphaNorm) / alphaNorm2;</span>
+<span class="fc" id="L1105">                    final var tmp1 = alphaSkew.multiplyByScalarAndReturnNew(value1);</span>
+<span class="fc" id="L1106">                    final var tmp2 = alphaSkew.multiplyByScalarAndReturnNew(value2);</span>
+<span class="fc" id="L1107">                    tmp2.multiply(alphaSkew);</span>
+
+<span class="fc" id="L1109">                    final var tmp3 = Matrix.identity(ROWS, ROWS);</span>
+<span class="fc" id="L1110">                    tmp3.add(tmp1);</span>
+<span class="fc" id="L1111">                    tmp3.add(tmp2);</span>
+
+<span class="fc" id="L1113">                    oldCbi.multiply(tmp3);</span>
+                }
+
+                // oldCbi now contains the average body-to-ECI-frame coordinate transformation
+
+                // Transform specific force to body-frame resolving axes using (5.81)
+<span class="fc" id="L1119">                final var invAveCbi = Utils.inverse(oldCbi);</span>
+<span class="fc" id="L1120">                invAveCbi.multiply(vIbi);</span>
+
+<span class="fc" id="L1122">                final var specificForceX = invAveCbi.getElementAtIndex(0);</span>
+<span class="fc" id="L1123">                final var specificForceY = invAveCbi.getElementAtIndex(1);</span>
+<span class="fc" id="L1124">                final var specificForceZ = invAveCbi.getElementAtIndex(2);</span>
+
+                // save result data
+<span class="fc" id="L1127">                result.setSpecificForceCoordinates(specificForceX, specificForceY, specificForceZ);</span>
+<span class="fc" id="L1128">                result.setAngularRateCoordinates(angularRateX, angularRateY, angularRateZ);</span>
+
+<span class="nc" id="L1130">            } catch (final AlgebraException ignore) {</span>
+                // never happens
+<span class="pc" id="L1132">            }</span>
+        } else {
+            // If time interval is zero, set angular rate and specific force to zero
+<span class="fc" id="L1135">            result.setSpecificForceCoordinates(0.0, 0.0, 0.0);</span>
+<span class="fc" id="L1136">            result.setAngularRateCoordinates(0.0, 0.0, 0.0);</span>
+        }
+<span class="fc" id="L1138">    }</span>
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates)..
+     *
+     * @param timeInterval time interval between epochs.
+     * @param c            body-to-ECI-frame coordinate transformation.
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param vx           x coordinate of velocity of body frame expressed in meters per second (m/s) and resolved
+     *                     along ECI-frame axes.
+     * @param vy           y coordinate of velocity of body frame expressed in meters per second (m/s) and resolved
+     *                     along ECI-frame axes.
+     * @param vz           z coordinate of velocity of body frame expressed in meters per second (m/s) and resolved
+     *                     along ECI-frame axes.
+     * @param oldVx        x coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param oldVy        y coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param oldVz        z coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param x            cartesian x coordinate of body position expressed in meters (m) and resolved along
+     *                     ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @param y            cartesian y coordinate of body position expressed in meters (m) and resolved along
+     *                     ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @param z            cartesian z coordinate of body position expressed in meters (m) and resolved along
+     *                     ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @param result       instance where estimated body kinematics will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinates transformation matrices
+     *                                  are not ECI frame valid.
+     */
+    public static void estimateKinematics(
+            final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final double vx, final double vy, final double vz,
+            final double oldVx, final double oldVy, final double oldVz,
+            final double x, final double y, final double z, final BodyKinematics result) {
+<span class="fc" id="L1182">        estimateKinematics(</span>
+<span class="fc" id="L1183">                TimeConverter.convert(timeInterval.getValue().doubleValue(), timeInterval.getUnit(), TimeUnit.SECOND),</span>
+                c, oldC, vx, vy, vz, oldVx, oldVy, oldVz, x, y, z, result);
+<span class="fc" id="L1185">    }</span>
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates).
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param frame        body ECI frame containing current position, velocity and
+     *                     body-to-ECI frame coordinate transformation. The position contained in this
+     *                     frame is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval, hence when body position changes
+     *                     during the time interval, overloads receiving the previous frame or an explicit
+     *                     position should be used instead.
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param oldVx        x coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param oldVy        y coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param oldVz        z coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param result       instance where estimated body kinematics will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinates transformation matrices
+     *                                  are not ECI frame valid.
+     */
+    public static void estimateKinematics(
+            final double timeInterval, final ECIFrame frame, final CoordinateTransformation oldC,
+            final double oldVx, final double oldVy, final double oldVz, final BodyKinematics result) {
+<span class="fc" id="L1212">        estimateKinematics(timeInterval, frame.getCoordinateTransformation(), oldC,</span>
+<span class="fc" id="L1213">                frame.getVx(), frame.getVy(), frame.getVz(), oldVx, oldVy, oldVz,</span>
+<span class="fc" id="L1214">                frame.getX(), frame.getY(), frame.getZ(), result);</span>
+<span class="fc" id="L1215">    }</span>
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates).
+     *
+     * @param timeInterval time interval between epochs.
+     * @param frame        body ECI frame containing current position, velocity and
+     *                     body-to-ECI frame coordinate transformation. The position contained in this
+     *                     frame is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval, hence when body position changes
+     *                     during the time interval, overloads receiving the previous frame or an explicit
+     *                     position should be used instead.
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param oldVx        x coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param oldVy        y coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param oldVz        z coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param result       instance where estimated body kinematics will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinates transformation matrices
+     *                                  are not ECI frame valid.
+     */
+    public static void estimateKinematics(
+            final Time timeInterval, final ECIFrame frame, final CoordinateTransformation oldC,
+            final double oldVx, final double oldVy, final double oldVz, final BodyKinematics result) {
+<span class="fc" id="L1242">        estimateKinematics(</span>
+<span class="fc" id="L1243">                TimeConverter.convert(timeInterval.getValue().doubleValue(), timeInterval.getUnit(), TimeUnit.SECOND),</span>
+<span class="fc" id="L1244">                frame.getCoordinateTransformation(), oldC, frame.getVx(), frame.getVy(), frame.getVz(),</span>
+<span class="fc" id="L1245">                oldVx, oldVy, oldVz, frame.getX(), frame.getY(), frame.getZ(), result);</span>
+<span class="fc" id="L1246">    }</span>
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates).
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param frame        body ECI frame containing current position, velocity and
+     *                     body-to-ECI frame coordinate transformation. Notice that
+     *                     current position contained in this frame is ignored.
+     * @param oldFrame     body ECI frame containing previous position, velocity and
+     *                     body-to-ECI frame coordinate transformation. The previous position contained
+     *                     in this frame (the position at the start of the time interval) is the position
+     *                     where gravitation is evaluated, to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers).
+     * @param result       instance where body kinematics estimation will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public static void estimateKinematics(
+            final double timeInterval, final ECIFrame frame, final ECIFrame oldFrame, final BodyKinematics result) {
+        // gravitation is evaluated at the position at the start of the time interval (old frame position)
+<span class="fc" id="L1266">        estimateKinematics(timeInterval, frame.getCoordinateTransformation(),</span>
+<span class="fc" id="L1267">                oldFrame.getCoordinateTransformation(), frame.getVx(), frame.getVy(), frame.getVz(),</span>
+<span class="fc" id="L1268">                oldFrame.getVx(), oldFrame.getVy(), oldFrame.getVz(),</span>
+<span class="fc" id="L1269">                oldFrame.getX(), oldFrame.getY(), oldFrame.getZ(), result);</span>
+<span class="fc" id="L1270">    }</span>
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates).
+     *
+     * @param timeInterval time interval between epochs.
+     * @param frame        body ECI frame containing current position, velocity and
+     *                     body-to-ECI frame coordinate transformation. Notice that
+     *                     current position contained in this frame is ignored.
+     * @param oldFrame     body ECI frame containing previous position, velocity and
+     *                     body-to-ECI frame coordinate transformation. The previous position contained
+     *                     in this frame (the position at the start of the time interval) is the position
+     *                     where gravitation is evaluated, to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers).
+     * @param result       instance where body kinematics estimation will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public static void estimateKinematics(
+            final Time timeInterval, final ECIFrame frame, final ECIFrame oldFrame, final BodyKinematics result) {
+        // gravitation is evaluated at the position at the start of the time interval (old frame position)
+<span class="fc" id="L1290">        estimateKinematics(timeInterval, frame.getCoordinateTransformation(),</span>
+<span class="fc" id="L1291">                oldFrame.getCoordinateTransformation(), frame.getVx(), frame.getVy(), frame.getVz(),</span>
+<span class="fc" id="L1292">                oldFrame.getVx(), oldFrame.getVy(), oldFrame.getVz(),</span>
+<span class="fc" id="L1293">                oldFrame.getX(), oldFrame.getY(), oldFrame.getZ(), result);</span>
+<span class="fc" id="L1294">    }</span>
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates)..
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param c            body-to-ECI-frame coordinate transformation.
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param vx           x coordinate of velocity of body frame with respect ECI frame, resolved
+     *                     along ECI-frame axes.
+     * @param vy           y coordinate of velocity of body frame with respect ECI frame, resolved
+     *                     along ECI-frame axes.
+     * @param vz           z coordinate of velocity of body frame with respect ECI frame, resolved
+     *                     along ECI-frame axes.
+     * @param oldVx        x coordinate of previous velocity of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldVy        y coordinate of previous velocity of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldVz        z coordinate of previous velocity of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param x            cartesian x coordinate of body position expressed in meters (m) and resolved along
+     *                     ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @param y            cartesian y coordinate of body position expressed in meters (m) and resolved along
+     *                     ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @param z            cartesian z coordinate of body position expressed in meters (m) and resolved along
+     *                     ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @param result       instance where estimated body kinematics will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinates transformation matrices
+     *                                  are not ECI frame valid.
+     */
+    public static void estimateKinematics(
+            final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final Speed vx, final Speed vy, final Speed vz, final Speed oldVx, final Speed oldVy, final Speed oldVz,
+            final double x, final double y, final double z, final BodyKinematics result) {
+<span class="fc" id="L1337">        estimateKinematics(timeInterval, c, oldC,</span>
+<span class="fc" id="L1338">                SpeedConverter.convert(vx.getValue().doubleValue(), vx.getUnit(), SpeedUnit.METERS_PER_SECOND),</span>
+<span class="fc" id="L1339">                SpeedConverter.convert(vy.getValue().doubleValue(), vy.getUnit(), SpeedUnit.METERS_PER_SECOND),</span>
+<span class="fc" id="L1340">                SpeedConverter.convert(vz.getValue().doubleValue(), vz.getUnit(), SpeedUnit.METERS_PER_SECOND),</span>
+<span class="fc" id="L1341">                SpeedConverter.convert(oldVx.getValue().doubleValue(), oldVx.getUnit(), SpeedUnit.METERS_PER_SECOND),</span>
+<span class="fc" id="L1342">                SpeedConverter.convert(oldVy.getValue().doubleValue(), oldVy.getUnit(), SpeedUnit.METERS_PER_SECOND),</span>
+<span class="fc" id="L1343">                SpeedConverter.convert(oldVz.getValue().doubleValue(), oldVz.getUnit(), SpeedUnit.METERS_PER_SECOND),</span>
+                x, y, z, result);
+<span class="fc" id="L1345">    }</span>
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates)..
+     *
+     * @param timeInterval time interval between epochs.
+     * @param c            body-to-ECI-frame coordinate transformation.
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param vx           x coordinate of velocity of body frame with respect ECI frame, resolved
+     *                     along ECI-frame axes.
+     * @param vy           y coordinate of velocity of body frame with respect ECI frame, resolved
+     *                     along ECI-frame axes.
+     * @param vz           z coordinate of velocity of body frame with respect ECI frame, resolved
+     *                     along ECI-frame axes.
+     * @param oldVx        x coordinate of previous velocity of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldVy        y coordinate of previous velocity of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldVz        z coordinate of previous velocity of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param x            cartesian x coordinate of body position expressed in meters (m) and resolved along
+     *                     ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @param y            cartesian y coordinate of body position expressed in meters (m) and resolved along
+     *                     ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @param z            cartesian z coordinate of body position expressed in meters (m) and resolved along
+     *                     ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @param result       instance where estimated body kinematics will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinates transformation matrices
+     *                                  are not ECI frame valid.
+     */
+    public static void estimateKinematics(
+            final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final Speed vx, final Speed vy, final Speed vz, final Speed oldVx, final Speed oldVy, final Speed oldVz,
+            final double x, final double y, final double z, final BodyKinematics result) {
+<span class="fc" id="L1388">        estimateKinematics(timeInterval, c, oldC,</span>
+<span class="fc" id="L1389">                SpeedConverter.convert(vx.getValue().doubleValue(), vx.getUnit(), SpeedUnit.METERS_PER_SECOND),</span>
+<span class="fc" id="L1390">                SpeedConverter.convert(vy.getValue().doubleValue(), vy.getUnit(), SpeedUnit.METERS_PER_SECOND),</span>
+<span class="fc" id="L1391">                SpeedConverter.convert(vz.getValue().doubleValue(), vz.getUnit(), SpeedUnit.METERS_PER_SECOND),</span>
+<span class="fc" id="L1392">                SpeedConverter.convert(oldVx.getValue().doubleValue(), oldVx.getUnit(), SpeedUnit.METERS_PER_SECOND),</span>
+<span class="fc" id="L1393">                SpeedConverter.convert(oldVy.getValue().doubleValue(), oldVy.getUnit(), SpeedUnit.METERS_PER_SECOND),</span>
+<span class="fc" id="L1394">                SpeedConverter.convert(oldVz.getValue().doubleValue(), oldVz.getUnit(), SpeedUnit.METERS_PER_SECOND),</span>
+                x, y, z, result);
+<span class="fc" id="L1396">    }</span>
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates).
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param frame        body ECI frame containing current position, velocity and
+     *                     body-to-ECI frame coordinate transformation. The position contained in this
+     *                     frame is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval, hence when body position changes
+     *                     during the time interval, overloads receiving the previous frame or an explicit
+     *                     position should be used instead.
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param oldVx        x coordinate of previous velocity of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldVy        y coordinate of previous velocity of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldVz        z coordinate of previous velocity of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param result       instance where estimated body kinematics will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinates transformation matrices
+     *                                  are not ECI frame valid.
+     */
+    public static void estimateKinematics(
+            final double timeInterval, final ECIFrame frame, final CoordinateTransformation oldC,
+            final Speed oldVx, final Speed oldVy, final Speed oldVz, final BodyKinematics result) {
+<span class="fc" id="L1423">        estimateKinematics(timeInterval, frame, oldC,</span>
+<span class="fc" id="L1424">                SpeedConverter.convert(oldVx.getValue().doubleValue(), oldVx.getUnit(), SpeedUnit.METERS_PER_SECOND),</span>
+<span class="fc" id="L1425">                SpeedConverter.convert(oldVy.getValue().doubleValue(), oldVy.getUnit(), SpeedUnit.METERS_PER_SECOND),</span>
+<span class="fc" id="L1426">                SpeedConverter.convert(oldVz.getValue().doubleValue(), oldVz.getUnit(), SpeedUnit.METERS_PER_SECOND),</span>
+                result);
+<span class="fc" id="L1428">    }</span>
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates).
+     *
+     * @param timeInterval time interval between epochs.
+     * @param frame        body ECI frame containing current position, velocity and
+     *                     body-to-ECI frame coordinate transformation. The position contained in this
+     *                     frame is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval, hence when body position changes
+     *                     during the time interval, overloads receiving the previous frame or an explicit
+     *                     position should be used instead.
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param oldVx        x coordinate of previous velocity of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldVy        y coordinate of previous velocity of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldVz        z coordinate of previous velocity of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param result       instance where estimated body kinematics will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinates transformation matrices
+     *                                  are not ECI frame valid.
+     */
+    public static void estimateKinematics(
+            final Time timeInterval, final ECIFrame frame, final CoordinateTransformation oldC,
+            final Speed oldVx, final Speed oldVy, final Speed oldVz, final BodyKinematics result) {
+<span class="fc" id="L1455">        estimateKinematics(timeInterval, frame, oldC,</span>
+<span class="fc" id="L1456">                SpeedConverter.convert(oldVx.getValue().doubleValue(), oldVx.getUnit(), SpeedUnit.METERS_PER_SECOND),</span>
+<span class="fc" id="L1457">                SpeedConverter.convert(oldVy.getValue().doubleValue(), oldVy.getUnit(), SpeedUnit.METERS_PER_SECOND),</span>
+<span class="fc" id="L1458">                SpeedConverter.convert(oldVz.getValue().doubleValue(), oldVz.getUnit(), SpeedUnit.METERS_PER_SECOND),</span>
+                result);
+<span class="fc" id="L1460">    }</span>
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates)..
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param c            body-to-ECI-frame coordinate transformation.
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param vx           x coordinate of velocity of body frame expressed in meters per second (m/s) and resolved
+     *                     along ECI-frame axes.
+     * @param vy           y coordinate of velocity of body frame expressed in meters per second (m/s) and resolved
+     *                     along ECI-frame axes.
+     * @param vz           z coordinate of velocity of body frame expressed in meters per second (m/s) and resolved
+     *                     along ECI-frame axes.
+     * @param oldVx        x coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param oldVy        y coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param oldVz        z coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param position     body position expressed in meters (m) with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @param result       instance where estimated body kinematics will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinates transformation matrices
+     *                                  are not ECI frame valid.
+     */
+    public static void estimateKinematics(
+            final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final double vx, final double vy, final double vz,
+            final double oldVx, final double oldVy, final double oldVz, final Point3D position,
+            final BodyKinematics result) {
+<span class="fc" id="L1494">        estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz,</span>
+<span class="fc" id="L1495">                position.getInhomX(), position.getInhomY(), position.getInhomZ(), result);</span>
+<span class="fc" id="L1496">    }</span>
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates)..
+     *
+     * @param timeInterval time interval between epochs.
+     * @param c            body-to-ECI-frame coordinate transformation.
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param vx           x coordinate of velocity of body frame expressed in meters per second (m/s) and resolved
+     *                     along ECI-frame axes.
+     * @param vy           y coordinate of velocity of body frame expressed in meters per second (m/s) and resolved
+     *                     along ECI-frame axes.
+     * @param vz           z coordinate of velocity of body frame expressed in meters per second (m/s) and resolved
+     *                     along ECI-frame axes.
+     * @param oldVx        x coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param oldVy        y coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param oldVz        z coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param position     body position expressed in meters (m) with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @param result       instance where estimated body kinematics will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinates transformation matrices
+     *                                  are not ECI frame valid.
+     */
+    public static void estimateKinematics(
+            final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final double vx, final double vy, final double vz,
+            final double oldVx, final double oldVy, final double oldVz, final Point3D position,
+            final BodyKinematics result) {
+<span class="fc" id="L1530">        estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz,</span>
+<span class="fc" id="L1531">                position.getInhomX(), position.getInhomY(), position.getInhomZ(), result);</span>
+<span class="fc" id="L1532">    }</span>
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates)..
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param c            body-to-ECI-frame coordinate transformation.
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param vx           x coordinate of velocity of body frame with respect ECI frame, resolved
+     *                     along ECI-frame axes.
+     * @param vy           y coordinate of velocity of body frame with respect ECI frame, resolved
+     *                     along ECI-frame axes.
+     * @param vz           z coordinate of velocity of body frame with respect ECI frame, resolved
+     *                     along ECI-frame axes.
+     * @param oldVx        x coordinate of previous velocity of body frame respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldVy        y coordinate of previous velocity of body frame respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldVz        z coordinate of previous velocity of body frame respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param position     body position expressed in meters (m) with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @param result       instance where estimated body kinematics will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinates transformation matrices
+     *                                  are not ECI frame valid.
+     */
+    public static void estimateKinematics(
+            final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final Speed vx, final Speed vy, final Speed vz, final Speed oldVx, final Speed oldVy, final Speed oldVz,
+            final Point3D position, final BodyKinematics result) {
+<span class="fc" id="L1565">        estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz,</span>
+<span class="fc" id="L1566">                position.getInhomX(), position.getInhomY(), position.getInhomZ(), result);</span>
+<span class="fc" id="L1567">    }</span>
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates)..
+     *
+     * @param timeInterval time interval between epochs.
+     * @param c            body-to-ECI-frame coordinate transformation.
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param vx           x coordinate of velocity of body frame with respect ECI frame, resolved
+     *                     along ECI-frame axes.
+     * @param vy           y coordinate of velocity of body frame with respect ECI frame, resolved
+     *                     along ECI-frame axes.
+     * @param vz           z coordinate of velocity of body frame with respect ECI frame, resolved
+     *                     along ECI-frame axes.
+     * @param oldVx        x coordinate of previous velocity of body frame respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldVy        y coordinate of previous velocity of body frame respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldVz        z coordinate of previous velocity of body frame respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param position     body position expressed in meters (m) with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @param result       instance where estimated body kinematics will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinates transformation matrices
+     *                                  are not ECI frame valid.
+     */
+    public static void estimateKinematics(
+            final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final Speed vx, final Speed vy, final Speed vz, final Speed oldVx, final Speed oldVy, final Speed oldVz,
+            final Point3D position, final BodyKinematics result) {
+<span class="fc" id="L1600">        estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz,</span>
+<span class="fc" id="L1601">                position.getInhomX(), position.getInhomY(), position.getInhomZ(), result);</span>
+<span class="fc" id="L1602">    }</span>
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates)..
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param c            body-to-ECI-frame coordinate transformation.
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param vx           x coordinate of velocity of body frame expressed in meters per second (m/s) and resolved
+     *                     along ECI-frame axes.
+     * @param vy           y coordinate of velocity of body frame expressed in meters per second (m/s) and resolved
+     *                     along ECI-frame axes.
+     * @param vz           z coordinate of velocity of body frame expressed in meters per second (m/s) and resolved
+     *                     along ECI-frame axes.
+     * @param oldVx        x coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param oldVy        y coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param oldVz        z coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param x            cartesian x coordinate of body position expressed in meters (m) and resolved along
+     *                     ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @param y            cartesian y coordinate of body position expressed in meters (m) and resolved along
+     *                     ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @param z            cartesian z coordinate of body position expressed in meters (m) and resolved along
+     *                     ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @return a new body kinematics instance.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinates transformation matrices
+     *                                  are not ECI frame valid.
+     */
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final double vx, final double vy, final double vz,
+            final double oldVx, final double oldVy, final double oldVz,
+            final double x, final double y, final double z) {
+<span class="fc" id="L1646">        final var result = new BodyKinematics();</span>
+<span class="fc" id="L1647">        estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz, x, y, z, result);</span>
+<span class="fc" id="L1648">        return result;</span>
+    }
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates)..
+     *
+     * @param timeInterval time interval between epochs.
+     * @param c            body-to-ECI-frame coordinate transformation.
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param vx           x coordinate of velocity of body frame expressed in meters per second (m/s) and resolved
+     *                     along ECI-frame axes.
+     * @param vy           y coordinate of velocity of body frame expressed in meters per second (m/s) and resolved
+     *                     along ECI-frame axes.
+     * @param vz           z coordinate of velocity of body frame expressed in meters per second (m/s) and resolved
+     *                     along ECI-frame axes.
+     * @param oldVx        x coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param oldVy        y coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param oldVz        z coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param x            cartesian x coordinate of body position expressed in meters (m) and resolved along
+     *                     ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @param y            cartesian y coordinate of body position expressed in meters (m) and resolved along
+     *                     ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @param z            cartesian z coordinate of body position expressed in meters (m) and resolved along
+     *                     ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @return a new body kinematics instance.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinates transformation matrices
+     *                                  are not ECI frame valid.
+     */
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final double vx, final double vy, final double vz,
+            final double oldVx, final double oldVy, final double oldVz,
+            final double x, final double y, final double z) {
+<span class="fc" id="L1693">        final var result = new BodyKinematics();</span>
+<span class="fc" id="L1694">        estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz, x, y, z, result);</span>
+<span class="fc" id="L1695">        return result;</span>
+    }
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates).
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param frame        body ECI frame containing current position, velocity and
+     *                     body-to-ECI frame coordinate transformation. The position contained in this
+     *                     frame is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval, hence when body position changes
+     *                     during the time interval, overloads receiving the previous frame or an explicit
+     *                     position should be used instead.
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param oldVx        x coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param oldVy        y coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param oldVz        z coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @return a new body kinematics instance.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinates transformation matrices
+     *                                  are not ECI frame valid.
+     */
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final double timeInterval, final ECIFrame frame, final CoordinateTransformation oldC,
+            final double oldVx, final double oldVy, final double oldVz) {
+<span class="fc" id="L1723">        final var result = new BodyKinematics();</span>
+<span class="fc" id="L1724">        estimateKinematics(timeInterval, frame, oldC, oldVx, oldVy, oldVz, result);</span>
+<span class="fc" id="L1725">        return result;</span>
+    }
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates).
+     *
+     * @param timeInterval time interval between epochs.
+     * @param frame        body ECI frame containing current position, velocity and
+     *                     body-to-ECI frame coordinate transformation. The position contained in this
+     *                     frame is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval, hence when body position changes
+     *                     during the time interval, overloads receiving the previous frame or an explicit
+     *                     position should be used instead.
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param oldVx        x coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param oldVy        y coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param oldVz        z coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @return a new body kinematics instance.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinates transformation matrices
+     *                                  are not ECI frame valid.
+     */
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final Time timeInterval, final ECIFrame frame, final CoordinateTransformation oldC,
+            final double oldVx, final double oldVy, final double oldVz) {
+<span class="fc" id="L1753">        final var result = new BodyKinematics();</span>
+<span class="fc" id="L1754">        estimateKinematics(timeInterval, frame, oldC, oldVx, oldVy, oldVz, result);</span>
+<span class="fc" id="L1755">        return result;</span>
+    }
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates).
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param frame        body ECI frame containing current position, velocity and
+     *                     body-to-ECI frame coordinate transformation. Notice that
+     *                     current position contained in this frame is ignored.
+     * @param oldFrame     body ECI frame containing previous position, velocity and
+     *                     body-to-ECI frame coordinate transformation. The previous position contained
+     *                     in this frame (the position at the start of the time interval) is the position
+     *                     where gravitation is evaluated, to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers).
+     * @return a new body kinematics instance.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final double timeInterval, final ECIFrame frame, final ECIFrame oldFrame) {
+<span class="fc" id="L1775">        final var result = new BodyKinematics();</span>
+<span class="fc" id="L1776">        estimateKinematics(timeInterval, frame, oldFrame, result);</span>
+<span class="fc" id="L1777">        return result;</span>
+    }
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates).
+     *
+     * @param timeInterval time interval between epochs.
+     * @param frame        body ECI frame containing current position, velocity and
+     *                     body-to-ECI frame coordinate transformation. Notice that
+     *                     current position contained in this frame is ignored.
+     * @param oldFrame     body ECI frame containing previous position, velocity and
+     *                     body-to-ECI frame coordinate transformation. The previous position contained
+     *                     in this frame (the position at the start of the time interval) is the position
+     *                     where gravitation is evaluated, to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers).
+     * @return a new body kinematics instance.
+     * @throws IllegalArgumentException if provided time interval is negative.
+     */
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final Time timeInterval, final ECIFrame frame, final ECIFrame oldFrame) {
+<span class="fc" id="L1797">        final var result = new BodyKinematics();</span>
+<span class="fc" id="L1798">        estimateKinematics(timeInterval, frame, oldFrame, result);</span>
+<span class="fc" id="L1799">        return result;</span>
+    }
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates)..
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param c            body-to-ECI-frame coordinate transformation.
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param vx           x coordinate of velocity of body frame with respect ECI frame, resolved
+     *                     along ECI-frame axes.
+     * @param vy           y coordinate of velocity of body frame with respect ECI frame, resolved
+     *                     along ECI-frame axes.
+     * @param vz           z coordinate of velocity of body frame with respect ECI frame, resolved
+     *                     along ECI-frame axes.
+     * @param oldVx        x coordinate of previous velocity of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldVy        y coordinate of previous velocity of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldVz        z coordinate of previous velocity of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param x            cartesian x coordinate of body position expressed in meters (m) and resolved along
+     *                     ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @param y            cartesian y coordinate of body position expressed in meters (m) and resolved along
+     *                     ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @param z            cartesian z coordinate of body position expressed in meters (m) and resolved along
+     *                     ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @return a new body kinematics instance.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinates transformation matrices
+     *                                  are not ECI frame valid.
+     */
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final Speed vx, final Speed vy, final Speed vz, final Speed oldVx, final Speed oldVy, final Speed oldVz,
+            final double x, final double y, final double z) {
+<span class="fc" id="L1843">        final var result = new BodyKinematics();</span>
+<span class="fc" id="L1844">        estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz, x, y, z, result);</span>
+<span class="fc" id="L1845">        return result;</span>
+    }
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates)..
+     *
+     * @param timeInterval time interval between epochs.
+     * @param c            body-to-ECI-frame coordinate transformation.
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param vx           x coordinate of velocity of body frame with respect ECI frame, resolved
+     *                     along ECI-frame axes.
+     * @param vy           y coordinate of velocity of body frame with respect ECI frame, resolved
+     *                     along ECI-frame axes.
+     * @param vz           z coordinate of velocity of body frame with respect ECI frame, resolved
+     *                     along ECI-frame axes.
+     * @param oldVx        x coordinate of previous velocity of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldVy        y coordinate of previous velocity of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldVz        z coordinate of previous velocity of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param x            cartesian x coordinate of body position expressed in meters (m) and resolved along
+     *                     ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @param y            cartesian y coordinate of body position expressed in meters (m) and resolved along
+     *                     ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @param z            cartesian z coordinate of body position expressed in meters (m) and resolved along
+     *                     ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @return a new body kinematics instance.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinates transformation matrices
+     *                                  are not ECI frame valid.
+     */
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final Speed vx, final Speed vy, final Speed vz, final Speed oldVx, final Speed oldVy, final Speed oldVz,
+            final double x, final double y, final double z) {
+<span class="fc" id="L1889">        final var result = new BodyKinematics();</span>
+<span class="fc" id="L1890">        estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz, x, y, z, result);</span>
+<span class="fc" id="L1891">        return result;</span>
+    }
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates).
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param frame        body ECI frame containing current position, velocity and
+     *                     body-to-ECI frame coordinate transformation. The position contained in this
+     *                     frame is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval, hence when body position changes
+     *                     during the time interval, overloads receiving the previous frame or an explicit
+     *                     position should be used instead.
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param oldVx        x coordinate of previous velocity of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldVy        y coordinate of previous velocity of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldVz        z coordinate of previous velocity of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @return a new body kinematics instance.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinates transformation matrices
+     *                                  are not ECI frame valid.
+     */
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final double timeInterval, final ECIFrame frame,
+            final CoordinateTransformation oldC, final Speed oldVx, final Speed oldVy, final Speed oldVz) {
+<span class="fc" id="L1919">        final var result = new BodyKinematics();</span>
+<span class="fc" id="L1920">        estimateKinematics(timeInterval, frame, oldC, oldVx, oldVy, oldVz, result);</span>
+<span class="fc" id="L1921">        return result;</span>
+    }
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates).
+     *
+     * @param timeInterval time interval between epochs.
+     * @param frame        body ECI frame containing current position, velocity and
+     *                     body-to-ECI frame coordinate transformation. The position contained in this
+     *                     frame is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval, hence when body position changes
+     *                     during the time interval, overloads receiving the previous frame or an explicit
+     *                     position should be used instead.
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param oldVx        x coordinate of previous velocity of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldVy        y coordinate of previous velocity of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldVz        z coordinate of previous velocity of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @return a new body kinematics instance.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinates transformation matrices
+     *                                  are not ECI frame valid.
+     */
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final Time timeInterval, final ECIFrame frame, final CoordinateTransformation oldC,
+            final Speed oldVx, final Speed oldVy, final Speed oldVz) {
+<span class="fc" id="L1949">        final var result = new BodyKinematics();</span>
+<span class="fc" id="L1950">        estimateKinematics(timeInterval, frame, oldC, oldVx, oldVy, oldVz, result);</span>
+<span class="fc" id="L1951">        return result;</span>
+    }
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates)..
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param c            body-to-ECI-frame coordinate transformation.
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param vx           x coordinate of velocity of body frame expressed in meters per second (m/s) and resolved
+     *                     along ECI-frame axes.
+     * @param vy           y coordinate of velocity of body frame expressed in meters per second (m/s) and resolved
+     *                     along ECI-frame axes.
+     * @param vz           z coordinate of velocity of body frame expressed in meters per second (m/s) and resolved
+     *                     along ECI-frame axes.
+     * @param oldVx        x coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param oldVy        y coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param oldVz        z coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param position     body position expressed in meters (m) with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @return a new body kinematics instance.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinates transformation matrices
+     *                                  are not ECI frame valid.
+     */
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final double vx, final double vy, final double vz,
+            final double oldVx, final double oldVy, final double oldVz, final Point3D position) {
+<span class="fc" id="L1985">        final var result = new BodyKinematics();</span>
+<span class="fc" id="L1986">        estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz, position, result);</span>
+<span class="fc" id="L1987">        return result;</span>
+    }
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates)..
+     *
+     * @param timeInterval time interval between epochs.
+     * @param c            body-to-ECI-frame coordinate transformation.
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param vx           x coordinate of velocity of body frame expressed in meters per second (m/s) and resolved
+     *                     along ECI-frame axes.
+     * @param vy           y coordinate of velocity of body frame expressed in meters per second (m/s) and resolved
+     *                     along ECI-frame axes.
+     * @param vz           z coordinate of velocity of body frame expressed in meters per second (m/s) and resolved
+     *                     along ECI-frame axes.
+     * @param oldVx        x coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param oldVy        y coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param oldVz        z coordinate of previous velocity of body frame expressed in meters per second (m/s) and
+     *                     resolved along ECI-frame axes.
+     * @param position     body position expressed in meters (m) with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @return a new body kinematics instance.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinates transformation matrices
+     *                                  are not ECI frame valid.
+     */
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final double vx, final double vy, final double vz,
+            final double oldVx, final double oldVy, final double oldVz, final Point3D position) {
+<span class="fc" id="L2021">        final var result = new BodyKinematics();</span>
+<span class="fc" id="L2022">        estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz, position, result);</span>
+<span class="fc" id="L2023">        return result;</span>
+    }
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates)..
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param c            body-to-ECI-frame coordinate transformation.
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param vx           x coordinate of velocity of body frame with respect ECI frame, resolved
+     *                     along ECI-frame axes.
+     * @param vy           y coordinate of velocity of body frame with respect ECI frame, resolved
+     *                     along ECI-frame axes.
+     * @param vz           z coordinate of velocity of body frame with respect ECI frame, resolved
+     *                     along ECI-frame axes.
+     * @param oldVx        x coordinate of previous velocity of body frame respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldVy        y coordinate of previous velocity of body frame respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldVz        z coordinate of previous velocity of body frame respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param position     body position expressed in meters (m) with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @return a new body kinematics instance.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinates transformation matrices
+     *                                  are not ECI frame valid.
+     */
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final Speed vx, final Speed vy, final Speed vz, final Speed oldVx, final Speed oldVy, final Speed oldVz,
+            final Point3D position) {
+<span class="fc" id="L2057">        final var result = new BodyKinematics();</span>
+<span class="fc" id="L2058">        estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz, position, result);</span>
+<span class="fc" id="L2059">        return result;</span>
+    }
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates)..
+     *
+     * @param timeInterval time interval between epochs.
+     * @param c            body-to-ECI-frame coordinate transformation.
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param vx           x coordinate of velocity of body frame with respect ECI frame, resolved
+     *                     along ECI-frame axes.
+     * @param vy           y coordinate of velocity of body frame with respect ECI frame, resolved
+     *                     along ECI-frame axes.
+     * @param vz           z coordinate of velocity of body frame with respect ECI frame, resolved
+     *                     along ECI-frame axes.
+     * @param oldVx        x coordinate of previous velocity of body frame respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldVy        y coordinate of previous velocity of body frame respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldVz        z coordinate of previous velocity of body frame respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param position     body position expressed in meters (m) with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     *                     This is the position where gravitation is evaluated; to be consistent with
+     *                     {@code ECIInertialNavigator} (and {@code Kinematics_ECI.m} callers) this must be
+     *                     the position at the start of the time interval.
+     * @return a new body kinematics instance.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinates transformation matrices
+     *                                  are not ECI frame valid.
+     */
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final Speed vx, final Speed vy, final Speed vz, final Speed oldVx, final Speed oldVy, final Speed oldVz,
+            final Point3D position) {
+<span class="fc" id="L2093">        final var result = new BodyKinematics();</span>
+<span class="fc" id="L2094">        estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz, position, result);</span>
+<span class="fc" id="L2095">        return result;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

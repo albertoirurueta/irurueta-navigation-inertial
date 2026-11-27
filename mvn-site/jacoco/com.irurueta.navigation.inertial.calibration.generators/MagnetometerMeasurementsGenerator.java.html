@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MagnetometerMeasurementsGenerator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-inertial</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.inertial.calibration.generators</a> &gt; <span class="el_source">MagnetometerMeasurementsGenerator.java</span></div><h1>MagnetometerMeasurementsGenerator.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2020 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.inertial.calibration.generators;
+
+import com.irurueta.navigation.LockedException;
+import com.irurueta.navigation.inertial.BodyKinematicsAndMagneticFluxDensity;
+import com.irurueta.navigation.inertial.BodyMagneticFluxDensity;
+import com.irurueta.navigation.inertial.calibration.StandardDeviationBodyMagneticFluxDensity;
+import com.irurueta.navigation.inertial.calibration.intervals.TriadStaticIntervalDetector;
+import com.irurueta.navigation.inertial.calibration.noise.AccumulatedMagneticFluxDensityTriadNoiseEstimator;
+import java.util.ArrayDeque;
+
+/**
+ * Generates measurements for the calibration of magnetometers by alternating
+ * static and dynamic intervals where device is kept static or moved.
+ * Generated measurements must be used with magnetometer calibrators based
+ * on the knowledge of position on Earth and time instant.
+ * Such calibrators are the following ones:
+ * - {@link com.irurueta.navigation.inertial.calibration.magnetometer.KnownPositionAndInstantMagnetometerCalibrator}
+ * - {@link com.irurueta.navigation.inertial.calibration.magnetometer.KnownHardIronPositionAndInstantMagnetometerCalibrator}
+ * - {@link com.irurueta.navigation.inertial.calibration.magnetometer.RobustKnownPositionAndInstantMagnetometerCalibrator}
+ * and all its implementations.
+ * - {@link com.irurueta.navigation.inertial.calibration.magnetometer.RobustKnownHardIronPositionAndInstantMagnetometerCalibrator}
+ * and all its implementations.
+ * &lt;p&gt;
+ * Generated measurements contain the average magnetic flux density of each static interval, computed
+ * only with the samples that the (centred window) detector classified as static, and its standard deviation
+ * is the one of the average, that is, the mean standard deviation of the three coordinates divided by the
+ * square root of the number of averaged samples. The initialization period is static, so its samples are
+ * part of the first static interval.
+ */
+public class MagnetometerMeasurementsGenerator extends
+        MeasurementsGenerator&lt;StandardDeviationBodyMagneticFluxDensity,
+                MagnetometerMeasurementsGenerator, MagnetometerMeasurementsGeneratorListener,
+                BodyKinematicsAndMagneticFluxDensity&gt; {
+
+    /**
+     * Accumulated noise estimator for magnetic flux density measurements.
+     */
+<span class="fc" id="L53">    private final AccumulatedMagneticFluxDensityTriadNoiseEstimator accumulatedEstimator =</span>
+            new AccumulatedMagneticFluxDensityTriadNoiseEstimator();
+
+    /**
+     * Magnetic flux density samples that have been received but not yet classified by the detector,
+     * which classifies the sample at the centre of its window. Each entry contains x, y, z coordinates
+     * expressed in Teslas (T).
+     */
+<span class="fc" id="L61">    private final ArrayDeque&lt;double[]&gt; pendingSamples = new ArrayDeque&lt;&gt;();</span>
+
+    /**
+     * Indicates that the sample that completed initialization has not been processed yet.
+     */
+    private boolean initializationSamplePending;
+
+    /**
+     * Constructor.
+     */
+    public MagnetometerMeasurementsGenerator() {
+<span class="fc" id="L72">        super();</span>
+<span class="fc" id="L73">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param listener listener to handle events raised by this generator.
+     */
+    public MagnetometerMeasurementsGenerator(final MagnetometerMeasurementsGeneratorListener listener) {
+<span class="fc" id="L81">        super(listener);</span>
+<span class="fc" id="L82">    }</span>
+
+    /**
+     * Resets this generator.
+     *
+     * @throws LockedException if generator is busy.
+     */
+    @Override
+    public void reset() throws LockedException {
+<span class="fc" id="L91">        super.reset();</span>
+
+<span class="fc" id="L93">        accumulatedEstimator.reset();</span>
+<span class="fc" id="L94">        pendingSamples.clear();</span>
+<span class="fc" id="L95">        initializationSamplePending = false;</span>
+<span class="fc" id="L96">    }</span>
+
+    /**
+     * Post process provided input sample.
+     * Detector classifies the sample at the centre of its window, so samples are buffered until they
+     * are classified, and only samples classified as static contribute to the accumulated average.
+     * The initialization period is static, so its samples are part of the first static interval.
+     *
+     * @param sample an input sample.
+     * @throws LockedException if generator is busy.
+     */
+    @Override
+    protected void postProcess(final BodyKinematicsAndMagneticFluxDensity sample) throws LockedException {
+<span class="fc" id="L109">        final var b = sample.getMagneticFluxDensity();</span>
+<span class="fc" id="L110">        final var status = staticIntervalDetector.getStatus();</span>
+
+<span class="fc bfc" id="L112" title="All 2 branches covered.">        if (status == TriadStaticIntervalDetector.Status.INITIALIZING) {</span>
+<span class="fc" id="L113">            accumulatedEstimator.addTriad(b.getBx(), b.getBy(), b.getBz());</span>
+<span class="fc" id="L114">            return;</span>
+        }
+
+<span class="fc bfc" id="L117" title="All 4 branches covered.">        if (status == TriadStaticIntervalDetector.Status.INITIALIZATION_COMPLETED &amp;&amp; initializationSamplePending) {</span>
+            // sample that completed initialization belongs to the initialization period
+<span class="fc" id="L119">            initializationSamplePending = false;</span>
+<span class="fc" id="L120">            accumulatedEstimator.addTriad(b.getBx(), b.getBy(), b.getBz());</span>
+<span class="fc" id="L121">            return;</span>
+        }
+
+<span class="fc bfc" id="L124" title="All 6 branches covered.">        if (status != TriadStaticIntervalDetector.Status.INITIALIZATION_COMPLETED</span>
+                &amp;&amp; status != TriadStaticIntervalDetector.Status.STATIC_INTERVAL
+                &amp;&amp; status != TriadStaticIntervalDetector.Status.DYNAMIC_INTERVAL) {
+<span class="fc" id="L127">            return;</span>
+        }
+
+<span class="fc" id="L130">        pendingSamples.addLast(new double[]{b.getBx(), b.getBy(), b.getBz()});</span>
+
+<span class="fc bfc" id="L132" title="All 2 branches covered.">        if (status == TriadStaticIntervalDetector.Status.INITIALIZATION_COMPLETED) {</span>
+            // first classified sample has not been reached yet
+<span class="fc" id="L134">            return;</span>
+        }
+
+        // oldest pending sample is the one that has just been classified
+<span class="fc" id="L138">        final var classified = pendingSamples.pollFirst();</span>
+
+<span class="fc bfc" id="L140" title="All 2 branches covered.">        if (status == TriadStaticIntervalDetector.Status.STATIC_INTERVAL) {</span>
+<span class="fc" id="L141">            accumulatedEstimator.addTriad(classified[0], classified[1], classified[2]);</span>
+        }
+<span class="fc" id="L143">    }</span>
+
+    /**
+     * Gets corresponding acceleration triad from provided input sample.
+     * This method must store the result into {@link #triad}.
+     *
+     * @param sample input sample.
+     */
+    @Override
+    protected void getAccelerationTriadFromInputSample(final BodyKinematicsAndMagneticFluxDensity sample) {
+<span class="fc" id="L153">        sample.getKinematics().getSpecificForceTriad(triad);</span>
+<span class="fc" id="L154">    }</span>
+
+    /**
+     * Handles a static-to-dynamic interval change.
+     *
+     * @param accumulatedAvgX average x-coordinate of measurements during last
+     *                        static period expressed in meters per squared
+     *                        second (m/s^2).
+     * @param accumulatedAvgY average y-coordinate of specific force during last
+     *                        static period expressed in meters per squared
+     *                        second (m/s^2).
+     * @param accumulatedAvgZ average z-coordinate of specific force during last
+     *                        static period expressed in meters per squared
+     *                        second (m/s^2).
+     * @param accumulatedStdX standard deviation of x-coordinate of measurements
+     *                        during last static period expressed in meters per
+     *                        squared second (m/s^2).
+     * @param accumulatedStdY standard deviation of y-coordinate of measurements
+     *                        during last static period expressed in meters per
+     *                        squared second (m/s^2).
+     * @param accumulatedStdZ standard deviation of z-coordinate of measurements
+     *                        during last static period expressed in meters per
+     *                        squared second (m/s^2).
+     */
+    @Override
+    protected void handleStaticToDynamicChange(
+            final double accumulatedAvgX, final double accumulatedAvgY, final double accumulatedAvgZ,
+            final double accumulatedStdX, final double accumulatedStdY, final double accumulatedStdZ) {
+
+        // accumulated estimator only contains samples classified as static
+<span class="fc" id="L184">        final var n = accumulatedEstimator.getNumberOfProcessedSamples();</span>
+<span class="pc bpc" id="L185" title="1 of 4 branches missed.">        if (!isStaticIntervalSkipped() &amp;&amp; n &gt; 0) {</span>
+
+            // the standard deviation of the average of N static samples is sigma / sqrt(N), where
+            // sigma is the mean standard deviation of the three coordinates
+<span class="fc" id="L189">            final var avgStd = (accumulatedEstimator.getStandardDeviationX()</span>
+<span class="fc" id="L190">                    + accumulatedEstimator.getStandardDeviationY()</span>
+<span class="fc" id="L191">                    + accumulatedEstimator.getStandardDeviationZ()) / 3.0;</span>
+
+<span class="fc" id="L193">            final var measurement = new StandardDeviationBodyMagneticFluxDensity(</span>
+<span class="fc" id="L194">                    new BodyMagneticFluxDensity(accumulatedEstimator.getAvgX(), accumulatedEstimator.getAvgY(),</span>
+<span class="fc" id="L195">                            accumulatedEstimator.getAvgZ()), avgStd / Math.sqrt(n));</span>
+
+<span class="pc bpc" id="L197" title="1 of 2 branches missed.">            if (listener != null) {</span>
+<span class="fc" id="L198">                listener.onGeneratedMeasurement(this, measurement);</span>
+            }
+        }
+
+        try {
+<span class="fc" id="L203">            accumulatedEstimator.reset();</span>
+<span class="nc" id="L204">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L206">        }</span>
+<span class="fc" id="L207">    }</span>
+
+    /**
+     * Handles a dynamic-to-static interval change.
+     */
+    @Override
+    protected void handleDynamicToStaticChange() {
+        // no action needed.
+<span class="fc" id="L215">    }</span>
+
+    /**
+     * Handles an initialization completion.
+     */
+    @Override
+    protected void handleInitializationCompleted() {
+<span class="fc" id="L222">        pendingSamples.clear();</span>
+<span class="fc" id="L223">        initializationSamplePending = true;</span>
+<span class="fc" id="L224">    }</span>
+
+    /**
+     * Handles an error during initialization.
+     */
+    @Override
+    protected void handleInitializationFailed() {
+<span class="fc" id="L231">        pendingSamples.clear();</span>
+<span class="fc" id="L232">        initializationSamplePending = false;</span>
+        try {
+<span class="fc" id="L234">            accumulatedEstimator.reset();</span>
+<span class="nc" id="L235">        } catch (final LockedException ignore) {</span>
+            // no action needed
+<span class="fc" id="L237">        }</span>
+<span class="fc" id="L238">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

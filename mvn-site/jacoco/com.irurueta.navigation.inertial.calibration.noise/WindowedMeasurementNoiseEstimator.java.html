@@ -1,0 +1,691 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>WindowedMeasurementNoiseEstimator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-inertial</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.inertial.calibration.noise</a> &gt; <span class="el_source">WindowedMeasurementNoiseEstimator.java</span></div><h1>WindowedMeasurementNoiseEstimator.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2020 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.inertial.calibration.noise;
+
+import com.irurueta.navigation.LockedException;
+import com.irurueta.navigation.inertial.calibration.TimeIntervalEstimator;
+import com.irurueta.units.Measurement;
+import com.irurueta.units.Time;
+import com.irurueta.units.TimeConverter;
+import com.irurueta.units.TimeUnit;
+import java.util.Arrays;
+
+/**
+ * Base class to estimate measurement noise variances and PSD's (Power Spectral Densities)
+ * along with average values for a windowed amount of samples.
+ * Implementations of this estimator may use norms of measurement triads to estimate noise
+ * levels.
+ * To compute PSD's, this estimator assumes that measurement samples are obtained
+ * at a constant provided rate equal to {@link #getTimeInterval()} seconds.
+ * If not available, accelerometer sampling rate average can be estimated using
+ * {@link TimeIntervalEstimator}.
+ * Notice that if there are less than {@link #getWindowSize()} processed
+ * samples in the window, averages and unbiased variances are computed only over
+ * the samples currently in the window (i.e. dividing by the actual number of
+ * samples and by that number minus one respectively). If the window contains a
+ * single sample, its variance is zero.
+ *
+ * @param &lt;U&gt; a measurement unit type.
+ * @param &lt;M&gt; a measurement type.
+ * @param &lt;E&gt; an estimator type.
+ * @param &lt;L&gt; a listener type.
+ */
+public abstract class WindowedMeasurementNoiseEstimator&lt;U extends Enum&lt;?&gt;,
+        M extends Measurement&lt;U&gt;, E extends WindowedMeasurementNoiseEstimator&lt;U, M, E, L&gt;,
+        L extends WindowedMeasurementNoiseEstimatorListener&lt;U, M, E&gt;&gt; {
+
+    /**
+     * Number of samples to keep within the window by default.
+     * For an accelerometer generating 100 samples/second, this is equivalent to
+     * 1 second.
+     * For an accelerometer generating 50 samples/second, this is equivalent to
+     * 2 seconds.
+     */
+    public static final int DEFAULT_WINDOW_SIZE = 101;
+
+    /**
+     * Minimum allowed window size.
+     */
+    public static final int MIN_WINDOW_SIZE = 3;
+
+    /**
+     * Default time interval between accelerometer samples expressed in seconds
+     * (s).
+     */
+    public static final double DEFAULT_TIME_INTERVAL_SECONDS = 0.02;
+
+    /**
+     * Length of number of samples to keep within the window being processed.
+     * Window size must always be larger than allowed minimum value and must
+     * have and odd value.
+     */
+<span class="fc" id="L75">    private int windowSize = DEFAULT_WINDOW_SIZE;</span>
+
+    /**
+     * Time interval expressed in seconds (s) between consecutive measurements.
+     */
+<span class="fc" id="L80">    private double timeInterval = DEFAULT_TIME_INTERVAL_SECONDS;</span>
+
+    /**
+     * Keeps the window of measurements expressed in their default units.
+     * (m/s^2 for acceleration, rad/s for angular speed or T for magnetic flux density).
+     */
+<span class="fc" id="L86">    private double[] windowedMeasurements = new double[DEFAULT_WINDOW_SIZE];</span>
+
+    /**
+     * Listener to handle events raised by this estimator.
+     */
+    private L listener;
+
+    /**
+     * Contains estimated average of measurement expressed in its default unit
+     * (m/s^2 for acceleration, rad/s for angular speed or T for magnetic flux density).
+     */
+    private double avg;
+
+    /**
+     * Contains estimated variance of measurement expressed in its default squared unit
+     * (m^2/s^4 for acceleration, rad^2/s^2 for angular speed or T^2 for magnetic
+     * flux density).
+     */
+    private double variance;
+
+    /**
+     * Indicates position of first element in window.
+     */
+    private int firstCursor;
+
+    /**
+     * Indicates position of last element in window.
+     */
+    private int lastCursor;
+
+    /**
+     * Number of processed measurement samples.
+     */
+    private int numberOfProcessedSamples;
+
+    /**
+     * Number of added measurement samples.
+     */
+    private int numberOfAddedSamples;
+
+    /**
+     * Indicates whether estimator is running or not.
+     */
+    private boolean running;
+
+    /**
+     * Constructor.
+     */
+<span class="fc" id="L134">    protected WindowedMeasurementNoiseEstimator() {</span>
+<span class="fc" id="L135">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param listener listener to handle events raised by this estimator.
+     */
+<span class="fc" id="L142">    protected WindowedMeasurementNoiseEstimator(final L listener) {</span>
+<span class="fc" id="L143">        this.listener = listener;</span>
+<span class="fc" id="L144">    }</span>
+
+    /**
+     * Gets length of number of samples to keep within the window being processed.
+     * Window size must always be larger than allowed minimum value and must have
+     * and odd value.
+     *
+     * @return length of number of samples to keep within the window.
+     */
+    public int getWindowSize() {
+<span class="fc" id="L154">        return windowSize;</span>
+    }
+
+    /**
+     * Sets length of number of samples to keep within the window being processed.
+     * Window size must always be larger than allowed minimum value and must have
+     * an odd value.
+     *
+     * @param windowSize length of number of samples to keep within the window.
+     * @throws IllegalArgumentException if provided value is not valid.
+     * @throws LockedException          if estimator is currently running.
+     */
+    public void setWindowSize(final int windowSize) throws LockedException {
+<span class="fc bfc" id="L167" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L168">            throw new LockedException();</span>
+        }
+
+        // check that window is larger than minimum allowed value
+<span class="fc bfc" id="L172" title="All 2 branches covered.">        if (windowSize &lt; MIN_WINDOW_SIZE) {</span>
+<span class="fc" id="L173">            throw new IllegalArgumentException();</span>
+        }
+
+        // check that window size is not even
+<span class="pc bpc" id="L177" title="1 of 2 branches missed.">        if (windowSize % 2 == 0) {</span>
+<span class="nc" id="L178">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L181">        this.windowSize = windowSize;</span>
+<span class="fc" id="L182">        windowedMeasurements = new double[windowSize];</span>
+<span class="fc" id="L183">        reset();</span>
+<span class="fc" id="L184">    }</span>
+
+    /**
+     * Gets time interval between accelerometer triad samples expressed in
+     * seconds (s).
+     *
+     * @return time interval between accelerometer triad samples.
+     */
+    public double getTimeInterval() {
+<span class="fc" id="L193">        return timeInterval;</span>
+    }
+
+    /**
+     * Sets time interval between accelerometer triad samples expressed in
+     * seconds (s).
+     *
+     * @param timeInterval time interval between accelerometer triad samples.
+     * @throws IllegalArgumentException if provided value is negative.
+     * @throws LockedException          if estimator is currently running.
+     */
+    public void setTimeInterval(final double timeInterval) throws LockedException {
+<span class="fc bfc" id="L205" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L206">            throw new LockedException();</span>
+        }
+
+<span class="fc bfc" id="L209" title="All 2 branches covered.">        if (timeInterval &lt; 0.0) {</span>
+<span class="fc" id="L210">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L213">        this.timeInterval = timeInterval;</span>
+<span class="fc" id="L214">    }</span>
+
+    /**
+     * Gets time interval between accelerometer triad samples.
+     *
+     * @return time interval between accelerometer triad samples.
+     */
+    public Time getTimeIntervalAsTime() {
+<span class="fc" id="L222">        return new Time(timeInterval, TimeUnit.SECOND);</span>
+    }
+
+    /**
+     * Gets time interval between accelerometer triad samples.
+     *
+     * @param result instance where time interval will be stored.
+     */
+    public void getTimeIntervalAsTime(final Time result) {
+<span class="fc" id="L231">        result.setValue(timeInterval);</span>
+<span class="fc" id="L232">        result.setUnit(TimeUnit.SECOND);</span>
+<span class="fc" id="L233">    }</span>
+
+    /**
+     * Sets time interval between accelerometer triad samples.
+     *
+     * @param timeInterval time interval between accelerometer triad samples.
+     * @throws LockedException if estimator is currently running.
+     */
+    public void setTimeInterval(final Time timeInterval) throws LockedException {
+<span class="fc" id="L242">        setTimeInterval(TimeConverter.convert(timeInterval.getValue().doubleValue(), timeInterval.getUnit(),</span>
+                TimeUnit.SECOND));
+<span class="fc" id="L244">    }</span>
+
+    /**
+     * Gets listener to handle events raised by this estimator.
+     *
+     * @return listener to handle events raised by this estimator.
+     */
+    public L getListener() {
+<span class="fc" id="L252">        return listener;</span>
+    }
+
+    /**
+     * Sets listener to handle events raised by this estimator.
+     *
+     * @param listener listener to handle events raised by this estimator.
+     * @throws LockedException if this estimator is running.
+     */
+    public void setListener(final L listener) throws LockedException {
+<span class="fc bfc" id="L262" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L263">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L266">        this.listener = listener;</span>
+<span class="fc" id="L267">    }</span>
+
+    /**
+     * Gets first provided measurement value expressed in its default units.
+     * (m/s^2 for acceleration, rad/s for angular speed or T for magnetic flux density).
+     *
+     * @return first provided measurement value or null if not available.
+     */
+    public Double getFirstWindowedMeasurementValue() {
+<span class="fc bfc" id="L276" title="All 2 branches covered.">        if (numberOfAddedSamples == 0) {</span>
+<span class="fc" id="L277">            return null;</span>
+        } else {
+<span class="fc" id="L279">            return windowedMeasurements[firstCursor % windowSize];</span>
+        }
+    }
+
+    /**
+     * Gets last provided measurement value expressed in its default units.
+     * (m/s^2 for acceleration, rad/s for angular speed or T for magnetic flux density).
+     *
+     * @return last provided measurement value or null if not available.
+     */
+    public Double getLastWindowedMeasurementValue() {
+<span class="fc bfc" id="L290" title="All 2 branches covered.">        if (numberOfAddedSamples == 0) {</span>
+<span class="fc" id="L291">            return null;</span>
+        } else {
+<span class="fc" id="L293">            return windowedMeasurements[(lastCursor - 1 + windowSize) % windowSize];</span>
+        }
+    }
+
+    /**
+     * Gets first provided measurement within the window.
+     *
+     * @return first provided measurement within the window or null if not available.
+     */
+    public M getFirstWindowedMeasurement() {
+<span class="fc" id="L303">        final var value = getFirstWindowedMeasurementValue();</span>
+<span class="fc bfc" id="L304" title="All 2 branches covered.">        return value != null ? createMeasurement(value, getDefaultUnit()) : null;</span>
+    }
+
+    /**
+     * Gets first provided measurement within the window.
+     *
+     * @param result instance where first provided measurement will be stored.
+     * @return true if result was updated, false if first measurement is not available.
+     */
+    public boolean getFirstWindowedMeasurement(final M result) {
+<span class="fc" id="L314">        final var value = getFirstWindowedMeasurementValue();</span>
+<span class="fc bfc" id="L315" title="All 2 branches covered.">        if (value != null) {</span>
+<span class="fc" id="L316">            result.setValue(value);</span>
+<span class="fc" id="L317">            result.setUnit(getDefaultUnit());</span>
+<span class="fc" id="L318">            return true;</span>
+        } else {
+<span class="fc" id="L320">            return false;</span>
+        }
+    }
+
+    /**
+     * Gets last provided measurement within the window.
+     *
+     * @return last provided measurement within the window or null if not available.
+     */
+    public M getLastWindowedMeasurement() {
+<span class="fc" id="L330">        final var value = getLastWindowedMeasurementValue();</span>
+<span class="fc bfc" id="L331" title="All 2 branches covered.">        return value != null ? createMeasurement(value, getDefaultUnit()) : null;</span>
+    }
+
+    /**
+     * Gets last provided measurement within the window.
+     *
+     * @param result instance where last provided measurement will be stored.
+     * @return true if result was updated, false if last measurement is not available.
+     */
+    public boolean getLastWindowedMeasurement(final M result) {
+<span class="fc" id="L341">        final var value = getLastWindowedMeasurementValue();</span>
+<span class="fc bfc" id="L342" title="All 2 branches covered.">        if (value != null) {</span>
+<span class="fc" id="L343">            result.setValue(value);</span>
+<span class="fc" id="L344">            result.setUnit(getDefaultUnit());</span>
+<span class="fc" id="L345">            return true;</span>
+        } else {
+<span class="fc" id="L347">            return false;</span>
+        }
+    }
+
+    /**
+     * Gets estimated average of measurement expressed in its default unit
+     * (m/s^2 for acceleration, rad/s for angular speed or T for magnetic flux density).
+     * Values are computed over the samples currently in the window.
+     *
+     * @return average of measurement in current window.
+     */
+    public double getAvg() {
+<span class="fc" id="L359">        return avg;</span>
+    }
+
+    /**
+     * Gets estimated average of measurement within current window.
+     * Values are computed over the samples currently in the window.
+     *
+     * @return average of measurement in current window
+     */
+    public M getAvgAsMeasurement() {
+<span class="fc" id="L369">        return createMeasurement(avg, getDefaultUnit());</span>
+    }
+
+    /**
+     * Gets estimated average of measurement within current window.
+     * Values are computed over the samples currently in the window.
+     *
+     * @param result instance where average of measurement will be stored.
+     */
+    public void getAvgAsMeasurement(final M result) {
+<span class="fc" id="L379">        result.setValue(avg);</span>
+<span class="fc" id="L380">        result.setUnit(getDefaultUnit());</span>
+<span class="fc" id="L381">    }</span>
+
+    /**
+     * Gets estimated variance of measurement within current window
+     * expressed in its default squared unit (m^2/s^4 for acceleration,
+     * rad^2/s^2 for angular speed or T^2 for magnetic flux density).
+     * Values are computed over the samples currently in the window.
+     *
+     * @return estimated variance of measurement within current window.
+     */
+    public double getVariance() {
+<span class="fc" id="L392">        return variance;</span>
+    }
+
+    /**
+     * Gets estimated standard deviation of measurement within current window
+     * and expressed in its default unit (m/s^2 for acceleration, rad/s for
+     * angular speed or T for magnetic flux density).
+     * Values are computed over the samples currently in the window.
+     *
+     * @return estimated standard deviation of measurement.
+     */
+    public double getStandardDeviation() {
+<span class="fc" id="L404">        return Math.sqrt(variance);</span>
+    }
+
+    /**
+     * Gets estimated standard deviation of measurement within current window.
+     * Values are computed over the samples currently in the window.
+     *
+     * @return estimated standard deviation of measurement.
+     */
+    public M getStandardDeviationAsMeasurement() {
+<span class="fc" id="L414">        return createMeasurement(getStandardDeviation(), getDefaultUnit());</span>
+    }
+
+    /**
+     * Gets estimated standard deviation of measurement within current window.
+     * Values are computed over the samples currently in the window.
+     *
+     * @param result instance where estimated standard deviation of measurement
+     *               will be stored.
+     */
+    public void getStandardDeviationAsMeasurement(final M result) {
+<span class="fc" id="L425">        result.setValue(getStandardDeviation());</span>
+<span class="fc" id="L426">        result.setUnit(getDefaultUnit());</span>
+<span class="fc" id="L427">    }</span>
+
+    /**
+     * Gets measurement noise PSD (Power Spectral Density) expressed
+     * in (m^2 * s^-3) for accelerometer, (rad^2/s) for gyroscope or (T^2 * s) for
+     * magnetometer.
+     *
+     * @return measurement noise PSD.
+     */
+    public double getPsd() {
+<span class="fc" id="L437">        return variance * timeInterval;</span>
+    }
+
+    /**
+     * Gets measurement noise root PSD (Power Spectral Density) expressed in
+     * (m * s^-1.5) for accelerometer, (rad * s^-0.5) for gyroscope or (T * s^0.5) for
+     * magnetometer.
+     *
+     * @return measurement noise root PSD.
+     */
+    public double getRootPsd() {
+<span class="fc" id="L448">        return Math.sqrt(getPsd());</span>
+    }
+
+    /**
+     * Gets number of samples that have been processed so far.
+     *
+     * @return number of samples that have been processed so far.
+     */
+    public int getNumberOfProcessedSamples() {
+<span class="fc" id="L457">        return numberOfProcessedSamples;</span>
+    }
+
+    /**
+     * Gets number of samples that have been added so far.
+     *
+     * @return number of samples that have been added so far.
+     */
+    public int getNumberOfAddedSamples() {
+<span class="fc" id="L466">        return numberOfAddedSamples;</span>
+    }
+
+    /**
+     * Gets number of currently windowed samples.
+     *
+     * @return number of samples within the window.
+     */
+    public int getNumberOfSamplesInWindow() {
+<span class="fc" id="L475">        return Math.min(numberOfAddedSamples, windowSize);</span>
+    }
+
+    /**
+     * Indicates whether window of samples is filled or not.
+     *
+     * @return true if window is filled, false otherwise.
+     */
+    public boolean isWindowFilled() {
+<span class="fc bfc" id="L484" title="All 2 branches covered.">        return getNumberOfSamplesInWindow() == windowSize;</span>
+    }
+
+    /**
+     * Indicates whether estimator is currently running or not.
+     *
+     * @return true if estimator is running, false otherwise.
+     */
+    public boolean isRunning() {
+<span class="fc" id="L493">        return running;</span>
+    }
+
+    /**
+     * Adds a measurement value expressed in its default unit (m/s^2 for acceleration, rad/s for
+     * angular speed or T for magnetic flux density) and processes current window.
+     * Notice that if there are less than {@link #getWindowSize()} processed
+     * samples in the window, average values and standard deviation are computed
+     * only over the samples currently in the window.
+     *
+     * @param value value to be added.
+     * @throws LockedException if estimator is currently running.
+     */
+    public void addMeasurementAndProcess(final double value) throws LockedException {
+<span class="fc" id="L507">        internalAdd(value, true);</span>
+<span class="fc" id="L508">    }</span>
+
+    /**
+     * Adds a measurement and processes current window.
+     * Notice that if there are less than {@link #getWindowSize()} processed
+     * samples in the window, average values and standard deviation are computed
+     * only over the samples currently in the window.
+     *
+     * @param value value to be added.
+     * @throws LockedException if estimator is currently running.
+     */
+    public void addMeasurementAndProcess(final M value) throws LockedException {
+<span class="fc" id="L520">        internalAdd(convertToDefaultUnit(value), true);</span>
+<span class="fc" id="L521">    }</span>
+
+    /**
+     * Adds a measurement value expressed in its default unit (m/s^2 for acceleration, rad/s for
+     * angular speed or T for magnetic flux density).
+     * Notice that if there are less than {@link #getWindowSize()} processed
+     * samples in the window, average values and standard deviation are computed
+     * only over the samples currently in the window.
+     *
+     * @param value value to be added.
+     * @throws LockedException if estimator is currently running.
+     */
+    public void addMeasurement(final double value) throws LockedException {
+<span class="fc" id="L534">        internalAdd(value, false);</span>
+<span class="fc" id="L535">    }</span>
+
+    /**
+     * Adds a measurement.
+     * Notice that if there are less than {@link #getWindowSize()} processed
+     * samples in the window, average values and standard deviation are computed
+     * only over the samples currently in the window.
+     *
+     * @param value value to be added.
+     * @throws LockedException if estimator is currently running
+     */
+    public void addMeasurement(final M value) throws LockedException {
+<span class="fc" id="L547">        internalAdd(convertToDefaultUnit(value), false);</span>
+<span class="fc" id="L548">    }</span>
+
+    /**
+     * Resets current estimator.
+     *
+     * @return true if estimator was successfully reset, false if no reset was needed.
+     * @throws LockedException if estimator is currently running.
+     */
+    public boolean reset() throws LockedException {
+<span class="fc bfc" id="L557" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L558">            throw new LockedException();</span>
+        }
+
+<span class="fc bfc" id="L561" title="All 2 branches covered.">        if (numberOfProcessedSamples == 0) {</span>
+<span class="fc" id="L562">            return false;</span>
+        }
+
+<span class="fc" id="L565">        Arrays.fill(windowedMeasurements, 0.0);</span>
+<span class="fc" id="L566">        firstCursor = 0;</span>
+<span class="fc" id="L567">        lastCursor = 0;</span>
+<span class="fc" id="L568">        avg = 0.0;</span>
+<span class="fc" id="L569">        variance = 0.0;</span>
+<span class="fc" id="L570">        numberOfProcessedSamples = 0;</span>
+<span class="fc" id="L571">        numberOfAddedSamples = 0;</span>
+
+<span class="pc bpc" id="L573" title="1 of 2 branches missed.">        if (listener != null) {</span>
+            //noinspection unchecked
+<span class="fc" id="L575">            listener.onReset((E) this);</span>
+        }
+
+<span class="fc" id="L578">        return true;</span>
+    }
+
+    /**
+     * Gets default unit for a measurement.
+     *
+     * @return default unit for a measurement.
+     */
+    protected abstract U getDefaultUnit();
+
+    /**
+     * Creates a measurement with provided value and unit.
+     *
+     * @param value value to be set.
+     * @param unit  unit to be set.
+     * @return created measurement.
+     */
+    protected abstract M createMeasurement(double value, U unit);
+
+    /**
+     * Converts provided measurement into default unit.
+     *
+     * @param value measurement to be converted.
+     * @return converted value.
+     */
+    protected abstract double convertToDefaultUnit(M value);
+
+    /**
+     * Internally adds a measurement value and processes current window if indicated.
+     *
+     * @param value   measurement value to be added.
+     * @param process true if window of samples must also be processed, false otherwise.
+     * @throws LockedException if estimator is currently running.
+     */
+    private void internalAdd(final double value, final boolean process) throws LockedException {
+<span class="fc bfc" id="L613" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L614">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L617">        running = true;</span>
+
+<span class="fc bfc" id="L619" title="All 4 branches covered.">        if (numberOfAddedSamples == 0 &amp;&amp; listener != null) {</span>
+            //noinspection unchecked
+<span class="fc" id="L621">            listener.onStart((E) this);</span>
+        }
+
+<span class="fc" id="L624">        final var wasFilled = isWindowFilled();</span>
+<span class="fc bfc" id="L625" title="All 2 branches covered.">        if (wasFilled) {</span>
+            // increase first cursor
+<span class="fc" id="L627">            firstCursor = (firstCursor + 1) % windowSize;</span>
+        }
+<span class="fc" id="L629">        windowedMeasurements[lastCursor] = value;</span>
+<span class="fc" id="L630">        lastCursor = (lastCursor + 1) % windowSize;</span>
+<span class="fc" id="L631">        numberOfAddedSamples++;</span>
+
+        // process window
+<span class="fc bfc" id="L634" title="All 2 branches covered.">        if (process) {</span>
+<span class="fc" id="L635">            processWindow();</span>
+        }
+
+<span class="fc" id="L638">        running = false;</span>
+
+<span class="fc bfc" id="L640" title="All 2 branches covered.">        if (listener != null) {</span>
+            //noinspection unchecked
+<span class="fc" id="L642">            listener.onMeasurementAdded((E) this);</span>
+
+<span class="fc bfc" id="L644" title="All 4 branches covered.">            if (!wasFilled &amp;&amp; isWindowFilled()) {</span>
+                //noinspection unchecked
+<span class="fc" id="L646">                listener.onWindowFilled((E) this);</span>
+            }
+        }
+<span class="fc" id="L649">    }</span>
+
+    /**
+     * Processes current windowed samples.
+     */
+    private void processWindow() {
+<span class="fc" id="L655">        numberOfProcessedSamples++;</span>
+
+<span class="fc" id="L657">        final var n = getNumberOfSamplesInWindow();</span>
+
+<span class="fc" id="L659">        final var endPos = Math.min(n, windowSize);</span>
+
+        // compute averages
+<span class="fc" id="L662">        var localAverage = 0.0;</span>
+<span class="fc bfc" id="L663" title="All 2 branches covered.">        for (var i = 0; i &lt; endPos; i++) {</span>
+<span class="fc" id="L664">            final var value = windowedMeasurements[i];</span>
+<span class="fc" id="L665">            localAverage += value;</span>
+        }
+
+<span class="fc" id="L668">        localAverage /= n;</span>
+
+        // compute variances
+<span class="fc" id="L671">        var localVariance = 0.0;</span>
+<span class="fc bfc" id="L672" title="All 2 branches covered.">        for (var i = 0; i &lt; endPos; i++) {</span>
+<span class="fc" id="L673">            final var value = windowedMeasurements[i];</span>
+<span class="fc" id="L674">            final var diff = value - localAverage;</span>
+<span class="fc" id="L675">            final var diff2 = diff * diff;</span>
+
+<span class="fc" id="L677">            localVariance += diff2;</span>
+        }
+
+        // unbiased variance, which is zero when there is a single sample
+<span class="fc bfc" id="L681" title="All 2 branches covered.">        if (n &gt; 1) {</span>
+<span class="fc" id="L682">            localVariance /= n - 1;</span>
+        } else {
+<span class="fc" id="L684">            localVariance = 0.0;</span>
+        }
+
+<span class="fc" id="L687">        this.avg = localAverage;</span>
+<span class="fc" id="L688">        this.variance = localVariance;</span>
+<span class="fc" id="L689">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

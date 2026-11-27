@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StandardDeviationBodyKinematics.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-inertial</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.inertial.calibration</a> &gt; <span class="el_source">StandardDeviationBodyKinematics.java</span></div><h1>StandardDeviationBodyKinematics.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2020 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.inertial.calibration;
+
+import com.irurueta.navigation.inertial.BodyKinematics;
+import com.irurueta.units.Acceleration;
+import com.irurueta.units.AccelerationConverter;
+import com.irurueta.units.AccelerationUnit;
+import com.irurueta.units.AngularSpeed;
+import com.irurueta.units.AngularSpeedConverter;
+import com.irurueta.units.AngularSpeedUnit;
+import java.io.Serial;
+import java.io.Serializable;
+import java.util.Objects;
+
+/**
+ * Contains a body kinematics measurement (accelerometer + gyroscope) along with
+ * the corresponding standard deviations of measured specific force and angular
+ * rates.
+ */
+public class StandardDeviationBodyKinematics implements Serializable, Cloneable {
+
+    /**
+     * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
+     * instances.
+     */
+    @Serial
+    private static final long serialVersionUID = 0L;
+
+    /**
+     * Current body kinematics measurement. Contains accelerometer and gyroscope measurements.
+     */
+    private BodyKinematics kinematics;
+
+    /**
+     * Standard deviation of measured specific force expressed in meters per squared
+     * second (m/s^2).
+     */
+    private double specificForceStandardDeviation;
+
+    /**
+     * Standard deviation of measured angular rate expressed in radians per second (rad/s).
+     */
+    private double angularRateStandardDeviation;
+
+    /**
+     * Constructor.
+     */
+<span class="fc" id="L62">    public StandardDeviationBodyKinematics() {</span>
+<span class="fc" id="L63">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param kinematics current body kinematics measurement.
+     */
+<span class="fc" id="L70">    public StandardDeviationBodyKinematics(final BodyKinematics kinematics) {</span>
+<span class="fc" id="L71">        this.kinematics = kinematics;</span>
+<span class="fc" id="L72">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param specificForceStandardDeviation standard deviation of measured specific
+     *                                       force expressed in meters per squared
+     *                                       second (m/s^2).
+     * @param angularRateStandardDeviation   standard deviation of measured angular rate
+     *                                       expressed in radians per second (rad/s).
+     * @throws IllegalArgumentException if either specific force standard deviation or
+     *                                  angular rate standard deviation is negative.
+     */
+    public StandardDeviationBodyKinematics(
+<span class="fc" id="L86">            final double specificForceStandardDeviation, final double angularRateStandardDeviation) {</span>
+<span class="fc" id="L87">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
+<span class="fc" id="L88">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
+<span class="fc" id="L89">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param kinematics                     current body kinematics measurement.
+     * @param specificForceStandardDeviation standard deviation of measured specific
+     *                                       force expressed in meters per squared
+     *                                       second (m/s^2).
+     * @param angularRateStandardDeviation   standard deviation of measured angular rate
+     *                                       expressed in radians per second (rad/s).
+     * @throws IllegalArgumentException if either specific force standard deviation or
+     *                                  angular rate standard deviation is negative.
+     */
+    public StandardDeviationBodyKinematics(
+            final BodyKinematics kinematics, final double specificForceStandardDeviation,
+            final double angularRateStandardDeviation) {
+<span class="fc" id="L106">        this(kinematics);</span>
+<span class="fc" id="L107">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
+<span class="fc" id="L108">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
+<span class="fc" id="L109">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param specificForceStandardDeviation standard deviation of measured specific
+     *                                       force.
+     * @param angularRateStandardDeviation   standard deviation of measured angular
+     *                                       rate.
+     * @throws IllegalArgumentException if either specific force standard deviation or
+     *                                  angular rate standard deviation is negative.
+     */
+    public StandardDeviationBodyKinematics(
+            final Acceleration specificForceStandardDeviation, final AngularSpeed angularRateStandardDeviation) {
+<span class="fc" id="L123">        this(convertAcceleration(specificForceStandardDeviation),</span>
+<span class="fc" id="L124">                convertAngularSpeed(angularRateStandardDeviation));</span>
+<span class="fc" id="L125">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param kinematics                     current body kinematics measurement.
+     * @param specificForceStandardDeviation standard deviation of measured specific
+     *                                       force.
+     * @param angularRateStandardDeviation   standard deviation of measured angular
+     *                                       rate.
+     * @throws IllegalArgumentException if either specific force standard deviation or
+     *                                  angular rate standard deviation is negative.
+     */
+    public StandardDeviationBodyKinematics(
+            final BodyKinematics kinematics, final Acceleration specificForceStandardDeviation,
+            final AngularSpeed angularRateStandardDeviation) {
+<span class="fc" id="L141">        this(kinematics, convertAcceleration(specificForceStandardDeviation),</span>
+<span class="fc" id="L142">                convertAngularSpeed(angularRateStandardDeviation));</span>
+<span class="fc" id="L143">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param input instance to copy data from.
+     */
+<span class="fc" id="L150">    public StandardDeviationBodyKinematics(final StandardDeviationBodyKinematics input) {</span>
+<span class="fc" id="L151">        copyFrom(input);</span>
+<span class="fc" id="L152">    }</span>
+
+    /**
+     * Gets current body kinematics measurement. Contains accelerometer and gyroscope
+     * measurements.
+     *
+     * @return current body kinematics measurement.
+     */
+    public BodyKinematics getKinematics() {
+<span class="fc" id="L161">        return kinematics;</span>
+    }
+
+    /**
+     * Sets current body kinematics measurement. Contains accelerometer and gyroscope
+     * measurements.
+     *
+     * @param kinematics current body kinematics measurement to be set.
+     */
+    public void setKinematics(final BodyKinematics kinematics) {
+<span class="fc" id="L171">        this.kinematics = kinematics;</span>
+<span class="fc" id="L172">    }</span>
+
+    /**
+     * Gets standard deviation of measured specific force expressed in meters per squared
+     * second (m/s^2).
+     *
+     * @return standard deviation of measured specific force.
+     */
+    public double getSpecificForceStandardDeviation() {
+<span class="fc" id="L181">        return specificForceStandardDeviation;</span>
+    }
+
+    /**
+     * Sets standard deviation of measured specific force expressed in meters per squared
+     * second (m/s^2).
+     *
+     * @param specificForceStandardDeviation standard deviation of measured specific force.
+     * @throws IllegalArgumentException if provided value is negative.
+     */
+    public void setSpecificForceStandardDeviation(final double specificForceStandardDeviation) {
+<span class="fc bfc" id="L192" title="All 2 branches covered.">        if (specificForceStandardDeviation &lt; 0.0) {</span>
+<span class="fc" id="L193">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L196">        this.specificForceStandardDeviation = specificForceStandardDeviation;</span>
+<span class="fc" id="L197">    }</span>
+
+    /**
+     * Gets standard deviation of measured specific force.
+     *
+     * @return standard deviation of measured specific force.
+     */
+    public Acceleration getSpecificForceStandardDeviationAsAcceleration() {
+<span class="fc" id="L205">        return new Acceleration(specificForceStandardDeviation, AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+    }
+
+    /**
+     * Gets standard deviation of measured specific force.
+     *
+     * @param result instance where standard deviation of measured specific force will be
+     *               stored.
+     */
+    public void getSpecificForceStandardDeviationAsAcceleration(final Acceleration result) {
+<span class="fc" id="L215">        result.setValue(specificForceStandardDeviation);</span>
+<span class="fc" id="L216">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L217">    }</span>
+
+    /**
+     * Sets standard deviation of measured specific force.
+     *
+     * @param specificForceStandardDeviation standard deviation of measured specific force.
+     * @throws IllegalArgumentException if provided value is negative.
+     */
+    public void setSpecificForceStandardDeviation(final Acceleration specificForceStandardDeviation) {
+<span class="fc" id="L226">        setSpecificForceStandardDeviation(convertAcceleration(specificForceStandardDeviation));</span>
+<span class="fc" id="L227">    }</span>
+
+    /**
+     * Gets standard deviation of measured angular rate expressed in radians per second (rad/s).
+     *
+     * @return standard deviation of measured angular rate.
+     */
+    public double getAngularRateStandardDeviation() {
+<span class="fc" id="L235">        return angularRateStandardDeviation;</span>
+    }
+
+    /**
+     * Sets standard deviation of measured angular rate expressed in radians per second (rad/s).
+     *
+     * @param angularRateStandardDeviation standard deviation of measured angular rate.
+     * @throws IllegalArgumentException if provided value is negative.
+     */
+    public void setAngularRateStandardDeviation(final double angularRateStandardDeviation) {
+<span class="fc bfc" id="L245" title="All 2 branches covered.">        if (angularRateStandardDeviation &lt; 0.0) {</span>
+<span class="fc" id="L246">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L249">        this.angularRateStandardDeviation = angularRateStandardDeviation;</span>
+<span class="fc" id="L250">    }</span>
+
+    /**
+     * Gets standard deviation of measured angular rate.
+     *
+     * @return standard deviation of measured angular rate.
+     */
+    public AngularSpeed getAngularRateStandardDeviationAsAngularSpeed() {
+<span class="fc" id="L258">        return new AngularSpeed(angularRateStandardDeviation, AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+    }
+
+    /**
+     * Gets standard deviation of measured angular rate.
+     *
+     * @param result instance where standard deviation of measured angular rate will be
+     *               stored.
+     */
+    public void getAngularRateStandardDeviationAsAngularSpeed(final AngularSpeed result) {
+<span class="fc" id="L268">        result.setValue(angularRateStandardDeviation);</span>
+<span class="fc" id="L269">        result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+<span class="fc" id="L270">    }</span>
+
+    /**
+     * Sets standard deviation of measured angular rate.
+     *
+     * @param angularRateStandardDeviation standard deviation of measured angular rate.
+     * @throws IllegalArgumentException if provided value is negative.
+     */
+    public void setAngularRateStandardDeviation(final AngularSpeed angularRateStandardDeviation) {
+<span class="fc" id="L279">        setAngularRateStandardDeviation(convertAngularSpeed(angularRateStandardDeviation));</span>
+<span class="fc" id="L280">    }</span>
+
+    /**
+     * Copies data of provided instance into this instance.
+     *
+     * @param input instance to copy data from.
+     */
+    public void copyFrom(final StandardDeviationBodyKinematics input) {
+<span class="fc bfc" id="L288" title="All 2 branches covered.">        if (input.kinematics != null) {</span>
+<span class="fc bfc" id="L289" title="All 2 branches covered.">            if (kinematics == null) {</span>
+<span class="fc" id="L290">                kinematics = new BodyKinematics(input.kinematics);</span>
+            } else {
+<span class="fc" id="L292">                kinematics.copyFrom(input.kinematics);</span>
+            }
+        } else {
+<span class="fc" id="L295">            kinematics = null;</span>
+        }
+
+<span class="fc" id="L298">        specificForceStandardDeviation = input.specificForceStandardDeviation;</span>
+<span class="fc" id="L299">        angularRateStandardDeviation = input.angularRateStandardDeviation;</span>
+<span class="fc" id="L300">    }</span>
+
+    /**
+     * Copies this instance data into provided instance.
+     *
+     * @param output destination instance where data will be copied to.
+     */
+    public void copyTo(final StandardDeviationBodyKinematics output) {
+<span class="fc" id="L308">        output.copyFrom(this);</span>
+<span class="fc" id="L309">    }</span>
+
+    /**
+     * Computes and returns hash code for this instance. Hash codes are almost unique
+     * values that are useful for fast classification and storage of objects in collections.
+     *
+     * @return Hash code.
+     */
+    @Override
+    public int hashCode() {
+<span class="fc" id="L319">        return Objects.hash(kinematics, specificForceStandardDeviation, angularRateStandardDeviation);</span>
+    }
+
+    /**
+     * Checks if provided instance has exactly the same contents as this instance.
+     *
+     * @param other instance to be compared.
+     * @return true if both instances are considered to be equal, false otherwise.
+     */
+    public boolean equals(final StandardDeviationBodyKinematics other) {
+<span class="fc" id="L329">        return equals(other, 0.0);</span>
+    }
+
+    /**
+     * Checks if provided instance has contents similar to this instance up to provided
+     * threshold value.
+     *
+     * @param other     instance to be compared.
+     * @param threshold maximum allowed difference between kinematics and standard deviation
+     *                  values.
+     * @return true if both instances are considered to be equal (up to provided
+     * threshold), false otherwise.
+     */
+    public boolean equals(final StandardDeviationBodyKinematics other, final double threshold) {
+<span class="fc bfc" id="L343" title="All 2 branches covered.">        if (other == null) {</span>
+<span class="fc" id="L344">            return false;</span>
+        }
+
+<span class="pc bpc" id="L347" title="2 of 6 branches missed.">        return ((other.kinematics == null &amp;&amp; kinematics == null)</span>
+<span class="fc bfc" id="L348" title="All 2 branches covered.">                || (kinematics != null &amp;&amp; kinematics.equals(other.kinematics, threshold)))</span>
+<span class="pc bpc" id="L349" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(specificForceStandardDeviation - other.specificForceStandardDeviation) &lt;= threshold</span>
+<span class="pc bpc" id="L350" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(angularRateStandardDeviation - other.angularRateStandardDeviation) &lt;= threshold;</span>
+    }
+
+    /**
+     * Checks if provided object is a StandardDeviationBodyKinematics instance having exactly the
+     * same contents as this instance.
+     *
+     * @param obj object to be compared.
+     * @return true if both objects are considered to be equal, false otherwise.
+     */
+    @Override
+    public boolean equals(final Object obj) {
+<span class="fc bfc" id="L362" title="All 2 branches covered.">        if (this == obj) {</span>
+<span class="fc" id="L363">            return true;</span>
+        }
+<span class="pc bpc" id="L365" title="2 of 4 branches missed.">        if (obj == null || getClass() != obj.getClass()) {</span>
+<span class="nc" id="L366">            return false;</span>
+        }
+<span class="fc" id="L368">        final var other = (StandardDeviationBodyKinematics) obj;</span>
+<span class="fc" id="L369">        return equals(other);</span>
+    }
+
+    /**
+     * Makes a copy of this instance.
+     *
+     * @return a copy of this instance.
+     * @throws CloneNotSupportedException if clone fails for some reason.
+     */
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+<span class="fc" id="L380">        final var result = (StandardDeviationBodyKinematics) super.clone();</span>
+<span class="fc" id="L381">        copyFieldsTo(result);</span>
+<span class="fc" id="L382">        return result;</span>
+    }
+
+    /**
+     * Copies the mutable reference fields of this instance into provided output instance,
+     * allocating new instances so that output never shares them with this instance.
+     * Primitive fields are not copied here because {@link Object#clone()} already copies them.
+     * This method is private so that it cannot be overridden and can be safely called from
+     * {@link #clone()}.
+     *
+     * @param output instance where reference fields will be copied to.
+     */
+    private void copyFieldsTo(final StandardDeviationBodyKinematics output) {
+<span class="pc bpc" id="L395" title="1 of 2 branches missed.">        output.kinematics = kinematics != null ? new BodyKinematics(kinematics) : null;</span>
+<span class="fc" id="L396">    }</span>
+
+    /**
+     * Converts provided acceleration to meters per squared second (m/s^2).
+     *
+     * @param acceleration instance to be converted.
+     * @return converted value.
+     */
+    private static double convertAcceleration(final Acceleration acceleration) {
+<span class="fc" id="L405">        return AccelerationConverter.convert(acceleration.getValue().doubleValue(), acceleration.getUnit(),</span>
+                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+    }
+
+    /**
+     * Converts provided angular speed to radians per second (rad/s).
+     *
+     * @param angularSpeed instance to be converted.
+     * @return converted value.
+     */
+    private static double convertAngularSpeed(final AngularSpeed angularSpeed) {
+<span class="fc" id="L416">        return AngularSpeedConverter.convert(angularSpeed.getValue().doubleValue(), angularSpeed.getUnit(),</span>
+                AngularSpeedUnit.RADIANS_PER_SECOND);
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

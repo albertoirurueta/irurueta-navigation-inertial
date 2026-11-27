@@ -1,0 +1,616 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PROSACRobustKnownFrameMagnetometerCalibrator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-inertial</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.inertial.calibration.magnetometer</a> &gt; <span class="el_source">PROSACRobustKnownFrameMagnetometerCalibrator.java</span></div><h1>PROSACRobustKnownFrameMagnetometerCalibrator.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2020 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.inertial.calibration.magnetometer;
+
+import com.irurueta.navigation.LockedException;
+import com.irurueta.navigation.NotReadyException;
+import com.irurueta.navigation.inertial.calibration.CalibrationException;
+import com.irurueta.navigation.inertial.calibration.StandardDeviationFrameBodyMagneticFluxDensity;
+import com.irurueta.numerical.robust.PROSACRobustEstimator;
+import com.irurueta.numerical.robust.PROSACRobustEstimatorListener;
+import com.irurueta.numerical.robust.RobustEstimator;
+import com.irurueta.numerical.robust.RobustEstimatorException;
+import com.irurueta.numerical.robust.RobustEstimatorMethod;
+import java.io.IOException;
+import java.util.List;
+
+/**
+ * Robustly estimates magnetometer hard-iron biases, soft-iron cross
+ * couplings and scaling factors using PROSAC algorithm.
+ * &lt;p&gt;
+ * To use this calibrator at least 4 measurements at different known
+ * frames must be provided. In other words, magnetometer samples must
+ * be obtained at 4 different positions or orientations.
+ * Notice that frame velocities are ignored by this calibrator.
+ * &lt;p&gt;
+ * Measured magnetic flux density is assumed to follow the model shown below:
+ * &lt;pre&gt;
+ *     mBmeas = bm + (I + Mm) * mBtrue + w
+ * &lt;/pre&gt;
+ * Where:
+ * - mBmeas is the measured magnetic flux density. This is a 3x1 vector.
+ * - bm is magnetometer hard-iron bias. Ideally, on a perfect magnetometer,
+ * this should be a 3x1 zero vector.
+ * - I is the 3x3 identity matrix.
+ * - Mm is the 3x3 soft-iron matrix containing cross-couplings and scaling
+ * factors. Ideally, on a perfect magnetometer, this should be a 3x3 zero
+ * matrix.
+ * - mBtrue is ground-truth magnetic flux density. This is a 3x1 vector.
+ * - w is measurement noise. This is a 3x1 vector.
+ */
+public class PROSACRobustKnownFrameMagnetometerCalibrator extends RobustKnownFrameMagnetometerCalibrator {
+
+    /**
+     * Constant defining default threshold to determine whether samples are inliers or not.
+     */
+    public static final double DEFAULT_THRESHOLD = 500e-9;
+
+    /**
+     * Minimum value that can be set as threshold.
+     * Threshold must be strictly greater than 0.0.
+     */
+    public static final double MIN_THRESHOLD = 0.0;
+
+    /**
+     * Indicates that by default inliers will only be computed but not kept.
+     */
+    public static final boolean DEFAULT_COMPUTE_AND_KEEP_INLIERS = false;
+
+    /**
+     * Indicates that by default residuals will only be computed but not kept.
+     */
+    public static final boolean DEFAULT_COMPUTE_AND_KEEP_RESIDUALS = false;
+
+    /**
+     * Threshold to determine whether samples are inliers or not when testing possible solutions.
+     * The threshold refers to the amount of error on distance between estimated position and
+     * distances provided for each sample.
+     */
+<span class="fc" id="L82">    private double threshold = DEFAULT_THRESHOLD;</span>
+
+    /**
+     * Indicates whether inliers must be computed and kept.
+     */
+<span class="fc" id="L87">    private boolean computeAndKeepInliers = DEFAULT_COMPUTE_AND_KEEP_INLIERS;</span>
+
+    /**
+     * Indicates whether residuals must be computed and kept.
+     */
+<span class="fc" id="L92">    private boolean computeAndKeepResiduals = DEFAULT_COMPUTE_AND_KEEP_RESIDUALS;</span>
+
+    /**
+     * Quality scores corresponding to each provided sample.
+     * The larger the score value the better the quality of the sample.
+     */
+    private double[] qualityScores;
+
+    /**
+     * Constructor.
+     */
+    public PROSACRobustKnownFrameMagnetometerCalibrator() {
+<span class="fc" id="L104">        super();</span>
+<span class="fc" id="L105">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param listener listener to be notified of events such as when estimation
+     *                 starts, ends or its progress significantly changes.
+     */
+    public PROSACRobustKnownFrameMagnetometerCalibrator(final RobustKnownFrameMagnetometerCalibratorListener listener) {
+<span class="fc" id="L114">        super(listener);</span>
+<span class="fc" id="L115">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements list of body magnetic flux density measurements with standard
+     *                     deviations taken at different frames (positions and
+     *                     orientations).
+     */
+    public PROSACRobustKnownFrameMagnetometerCalibrator(
+            final List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements) {
+<span class="fc" id="L126">        super(measurements);</span>
+<span class="fc" id="L127">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements list of body magnetic flux density measurements with standard
+     *                     deviations taken at different frames (positions and
+     *                     orientations).
+     * @param listener     listener to handle events raised by this calibrator.
+     */
+    public PROSACRobustKnownFrameMagnetometerCalibrator(
+            final List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements,
+            final RobustKnownFrameMagnetometerCalibratorListener listener) {
+<span class="fc" id="L140">        super(measurements, listener);</span>
+<span class="fc" id="L141">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     */
+    public PROSACRobustKnownFrameMagnetometerCalibrator(final boolean commonAxisUsed) {
+<span class="fc" id="L150">        super(commonAxisUsed);</span>
+<span class="fc" id="L151">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     * @param listener       listener to handle events raised by this calibrator.
+     */
+    public PROSACRobustKnownFrameMagnetometerCalibrator(
+            final boolean commonAxisUsed, final RobustKnownFrameMagnetometerCalibratorListener listener) {
+<span class="fc" id="L162">        super(commonAxisUsed, listener);</span>
+<span class="fc" id="L163">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements   list of body magnetic flux density measurements with standard
+     *                       deviations taken at different frames (positions and
+     *                       orientations).
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     */
+    public PROSACRobustKnownFrameMagnetometerCalibrator(
+            final List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements, final boolean commonAxisUsed) {
+<span class="fc" id="L176">        super(measurements, commonAxisUsed);</span>
+<span class="fc" id="L177">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements   list of body magnetic flux density measurements with standard
+     *                       deviations taken at different frames (positions and
+     *                       orientations).
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     * @param listener       listener to handle events raised by this calibrator.
+     */
+    public PROSACRobustKnownFrameMagnetometerCalibrator(
+            final List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements, final boolean commonAxisUsed,
+            final RobustKnownFrameMagnetometerCalibratorListener listener) {
+<span class="fc" id="L192">        super(measurements, commonAxisUsed, listener);</span>
+<span class="fc" id="L193">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 4 samples.
+     */
+    public PROSACRobustKnownFrameMagnetometerCalibrator(final double[] qualityScores) {
+<span class="fc" id="L205">        super();</span>
+<span class="fc" id="L206">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L207">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param listener      listener to be notified of events such as when estimation
+     *                      starts, ends or its progress significantly changes.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 4 samples.
+     */
+    public PROSACRobustKnownFrameMagnetometerCalibrator(
+            final double[] qualityScores, final RobustKnownFrameMagnetometerCalibratorListener listener) {
+<span class="fc" id="L222">        super(listener);</span>
+<span class="fc" id="L223">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L224">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param measurements  list of body magnetic flux density measurements with standard
+     *                      deviations taken at different frames (positions and
+     *                      orientations).
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 4 samples.
+     */
+    public PROSACRobustKnownFrameMagnetometerCalibrator(
+            final double[] qualityScores, final List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements) {
+<span class="fc" id="L240">        super(measurements);</span>
+<span class="fc" id="L241">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L242">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param measurements  list of body magnetic flux density measurements with standard
+     *                      deviations taken at different frames (positions and
+     *                      orientations).
+     * @param listener      listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 4 samples.
+     */
+    public PROSACRobustKnownFrameMagnetometerCalibrator(
+            final double[] qualityScores, final List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements,
+            final RobustKnownFrameMagnetometerCalibratorListener listener) {
+<span class="fc" id="L260">        super(measurements, listener);</span>
+<span class="fc" id="L261">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L262">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 4 samples.
+     */
+    public PROSACRobustKnownFrameMagnetometerCalibrator(final double[] qualityScores, final boolean commonAxisUsed) {
+<span class="fc" id="L276">        super(commonAxisUsed);</span>
+<span class="fc" id="L277">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L278">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     * @param listener       listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 4 samples.
+     */
+    public PROSACRobustKnownFrameMagnetometerCalibrator(
+            final double[] qualityScores, final boolean commonAxisUsed,
+            final RobustKnownFrameMagnetometerCalibratorListener listener) {
+<span class="fc" id="L295">        super(commonAxisUsed, listener);</span>
+<span class="fc" id="L296">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L297">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param measurements   list of body magnetic flux density measurements with standard
+     *                       deviations taken at different frames (positions and
+     *                       orientations).
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 4 samples.
+     */
+    public PROSACRobustKnownFrameMagnetometerCalibrator(
+            final double[] qualityScores, final List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements,
+            final boolean commonAxisUsed) {
+<span class="fc" id="L316">        super(measurements, commonAxisUsed);</span>
+<span class="fc" id="L317">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L318">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param measurements   list of body magnetic flux density measurements with standard
+     *                       deviations taken at different frames (positions and
+     *                       orientations).
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     * @param listener       listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 4 samples.
+     */
+    public PROSACRobustKnownFrameMagnetometerCalibrator(
+            final double[] qualityScores, final List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements,
+            final boolean commonAxisUsed, final RobustKnownFrameMagnetometerCalibratorListener listener) {
+<span class="fc" id="L338">        super(measurements, commonAxisUsed, listener);</span>
+<span class="fc" id="L339">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L340">    }</span>
+
+    /**
+     * Gets threshold to determine whether samples are inliers or not when testing possible solutions.
+     * The threshold refers to the amount of error on norm between measured specific forces and the
+     * ones generated with estimated calibration parameters provided for each sample.
+     *
+     * @return threshold to determine whether samples are inliers or not.
+     */
+    public double getThreshold() {
+<span class="fc" id="L350">        return threshold;</span>
+    }
+
+    /**
+     * Sets threshold to determine whether samples are inliers or not when testing possible solutions.
+     * The threshold refers to the amount of error on norm between measured specific forces and the
+     * ones generated with estimated calibration parameters provided for each sample.
+     *
+     * @param threshold threshold to determine whether samples are inliers or not.
+     * @throws IllegalArgumentException if provided value is equal or less than zero.
+     * @throws LockedException          if calibrator is currently running.
+     */
+    public void setThreshold(final double threshold) throws LockedException {
+<span class="fc bfc" id="L363" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L364">            throw new LockedException();</span>
+        }
+<span class="pc bpc" id="L366" title="1 of 2 branches missed.">        if (threshold &lt;= MIN_THRESHOLD) {</span>
+<span class="nc" id="L367">            throw new IllegalArgumentException();</span>
+        }
+<span class="fc" id="L369">        this.threshold = threshold;</span>
+<span class="fc" id="L370">    }</span>
+
+    /**
+     * Returns quality scores corresponding to each provided sample.
+     * The larger the score value the better the quality of the sample.
+     *
+     * @return quality scores corresponding to each sample.
+     */
+    @Override
+    public double[] getQualityScores() {
+<span class="fc" id="L380">        return qualityScores;</span>
+    }
+
+    /**
+     * Sets quality scores corresponding to each provided sample.
+     * The larger the score value the better the quality of the sample.
+     *
+     * @param qualityScores quality scores corresponding to each sample.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than minimum required samples.
+     * @throws LockedException          if calibrator is currently running.
+     */
+    @Override
+    public void setQualityScores(final double[] qualityScores) throws LockedException {
+<span class="pc bpc" id="L394" title="1 of 2 branches missed.">        if (running) {</span>
+<span class="nc" id="L395">            throw new LockedException();</span>
+        }
+<span class="fc" id="L397">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L398">    }</span>
+
+    /**
+     * Indicates whether calibrator is ready to find a solution.
+     *
+     * @return true if calibrator is ready, false otherwise.
+     */
+    @Override
+    public boolean isReady() {
+<span class="fc bfc" id="L407" title="All 6 branches covered.">        return super.isReady() &amp;&amp; qualityScores != null &amp;&amp; qualityScores.length == measurements.size();</span>
+    }
+
+    /**
+     * Indicates whether inliers must be computed and kept.
+     *
+     * @return true if inliers must be computed and kept, false if inliers
+     * only need to be computed but not kept.
+     */
+    public boolean isComputeAndKeepInliersEnabled() {
+<span class="fc" id="L417">        return computeAndKeepInliers;</span>
+    }
+
+    /**
+     * Specifies whether inliers must be computed and kept.
+     *
+     * @param computeAndKeepInliersParam true if inliers must be computed and kept,
+     *                              false if inliers only need to be computed but not kept.
+     * @throws LockedException if calibrator is currently running.
+     */
+    public void setComputeAndKeepInliersEnabled(final boolean computeAndKeepInliersParam) throws LockedException {
+<span class="fc bfc" id="L428" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L429">            throw new LockedException();</span>
+        }
+<span class="fc" id="L431">        computeAndKeepInliers = computeAndKeepInliersParam;</span>
+<span class="fc" id="L432">    }</span>
+
+    /**
+     * Indicates whether residuals must be computed and kept.
+     *
+     * @return true if residuals must be computed and kept, false if residuals
+     * only need to be computed but not kept.
+     */
+    public boolean isComputeAndKeepResiduals() {
+<span class="fc" id="L441">        return computeAndKeepResiduals;</span>
+    }
+
+    /**
+     * Specifies whether residuals must be computed and kept.
+     *
+     * @param computeAndKeepResidualsParam true if residuals must be computed and kept,
+     *                                false if residuals only need to be computed but not kept.
+     * @throws LockedException if calibrator is currently running.
+     */
+    public void setComputeAndKeepResidualsEnabled(final boolean computeAndKeepResidualsParam) throws LockedException {
+<span class="fc bfc" id="L452" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L453">            throw new LockedException();</span>
+        }
+<span class="fc" id="L455">        computeAndKeepResiduals = computeAndKeepResidualsParam;</span>
+<span class="fc" id="L456">    }</span>
+
+    /**
+     * Estimates magnetometer calibration parameters containing hard-iron
+     * bias and soft-iron scale factors and cross-coupling errors.
+     *
+     * @throws LockedException      if calibrator is currently running.
+     * @throws NotReadyException    if calibrator is not ready.
+     * @throws CalibrationException if estimation fails for numerical reasons.
+     */
+    @SuppressWarnings(&quot;DuplicatedCode&quot;)
+    @Override
+    public void calibrate() throws LockedException, NotReadyException, CalibrationException {
+<span class="fc bfc" id="L469" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L470">            throw new LockedException();</span>
+        }
+<span class="pc bpc" id="L472" title="1 of 2 branches missed.">        if (!isReady()) {</span>
+<span class="nc" id="L473">            throw new NotReadyException();</span>
+        }
+
+<span class="fc" id="L476">        final var innerEstimator = new PROSACRobustEstimator&lt;&gt;(new PROSACRobustEstimatorListener&lt;PreliminaryResult&gt;() {</span>
+            @Override
+            public double[] getQualityScores() {
+<span class="fc" id="L479">                return qualityScores;</span>
+            }
+
+            @Override
+            public double getThreshold() {
+<span class="fc" id="L484">                return threshold;</span>
+            }
+
+            @Override
+            public int getTotalSamples() {
+<span class="fc" id="L489">                return measurements.size();</span>
+            }
+
+            @Override
+            public int getSubsetSize() {
+<span class="fc" id="L494">                return preliminarySubsetSize;</span>
+            }
+
+            @Override
+            public void estimatePreliminarSolutions(
+                    final int[] samplesIndices, final List&lt;PreliminaryResult&gt; solutions) {
+<span class="fc" id="L500">                computePreliminarySolutions(samplesIndices, solutions);</span>
+<span class="fc" id="L501">            }</span>
+
+            @Override
+            public double computeResidual(final PreliminaryResult currentEstimation, final int i) {
+<span class="fc" id="L505">                return computeError(measurements.get(i), currentEstimation);</span>
+            }
+
+            @Override
+            public boolean isReady() {
+<span class="fc" id="L510">                return PROSACRobustKnownFrameMagnetometerCalibrator.this.isReady();</span>
+            }
+
+            @Override
+            public void onEstimateStart(final RobustEstimator&lt;PreliminaryResult&gt; estimator) {
+                // no action needed
+<span class="fc" id="L516">            }</span>
+
+            @Override
+            public void onEstimateEnd(final RobustEstimator&lt;PreliminaryResult&gt; estimator) {
+                // no action needed
+<span class="fc" id="L521">            }</span>
+
+            @Override
+            public void onEstimateNextIteration(
+                    final RobustEstimator&lt;PreliminaryResult&gt; estimator, final int iteration) {
+<span class="pc bpc" id="L526" title="1 of 2 branches missed.">                if (listener != null) {</span>
+<span class="fc" id="L527">                    listener.onCalibrateNextIteration(</span>
+                            PROSACRobustKnownFrameMagnetometerCalibrator.this, iteration);
+                }
+<span class="fc" id="L530">            }</span>
+
+            @Override
+            public void onEstimateProgressChange(
+                    final RobustEstimator&lt;PreliminaryResult&gt; estimator, final float progress) {
+<span class="pc bpc" id="L535" title="1 of 2 branches missed.">                if (listener != null) {</span>
+<span class="fc" id="L536">                    listener.onCalibrateProgressChange(</span>
+                            PROSACRobustKnownFrameMagnetometerCalibrator.this, progress);
+                }
+<span class="fc" id="L539">            }</span>
+        });
+
+        try {
+<span class="fc" id="L543">            running = true;</span>
+
+<span class="pc bpc" id="L545" title="1 of 2 branches missed.">            if (listener != null) {</span>
+<span class="fc" id="L546">                listener.onCalibrateStart(this);</span>
+            }
+
+<span class="fc" id="L549">            inliersData = null;</span>
+
+<span class="fc" id="L551">            setupWmmEstimator();</span>
+
+<span class="pc bpc" id="L553" title="1 of 4 branches missed.">            innerEstimator.setComputeAndKeepInliersEnabled(computeAndKeepInliers || refineResult);</span>
+<span class="pc bpc" id="L554" title="1 of 4 branches missed.">            innerEstimator.setComputeAndKeepResidualsEnabled(computeAndKeepResiduals || refineResult);</span>
+<span class="fc" id="L555">            innerEstimator.setConfidence(confidence);</span>
+<span class="fc" id="L556">            innerEstimator.setMaxIterations(maxIterations);</span>
+<span class="fc" id="L557">            innerEstimator.setProgressDelta(progressDelta);</span>
+<span class="fc" id="L558">            final var preliminaryResult = innerEstimator.estimate();</span>
+<span class="fc" id="L559">            inliersData = innerEstimator.getInliersData();</span>
+
+<span class="fc" id="L561">            attemptRefine(preliminaryResult);</span>
+
+<span class="pc bpc" id="L563" title="1 of 2 branches missed.">            if (listener != null) {</span>
+<span class="fc" id="L564">                listener.onCalibrateEnd(this);</span>
+            }
+
+<span class="nc" id="L567">        } catch (final com.irurueta.numerical.LockedException e) {</span>
+<span class="nc" id="L568">            throw new LockedException(e);</span>
+<span class="nc" id="L569">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
+<span class="nc" id="L570">            throw new NotReadyException(e);</span>
+<span class="nc" id="L571">        } catch (final RobustEstimatorException | IOException e) {</span>
+<span class="nc" id="L572">            throw new CalibrationException(e);</span>
+        } finally {
+<span class="fc" id="L574">            running = false;</span>
+        }
+<span class="fc" id="L576">    }</span>
+
+    /**
+     * Returns method being used for robust estimation.
+     *
+     * @return method being used for robust estimation.
+     */
+    @Override
+    public RobustEstimatorMethod getMethod() {
+<span class="fc" id="L585">        return RobustEstimatorMethod.PROSAC;</span>
+    }
+
+    /**
+     * Indicates whether this calibrator requires quality scores for each
+     * measurement or not.
+     *
+     * @return true if quality scores are required, false otherwise.
+     */
+    @Override
+    public boolean isQualityScoresRequired() {
+<span class="fc" id="L596">        return true;</span>
+    }
+
+    /**
+     * Sets quality scores corresponding to each provided sample.
+     * This method is used internally and does not check whether instance is
+     * locked or not.
+     *
+     * @param qualityScoresParam quality scores to be set.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 4 samples.
+     */
+    private void internalSetQualityScores(final double[] qualityScoresParam) {
+<span class="pc bpc" id="L609" title="1 of 4 branches missed.">        if (qualityScoresParam == null || qualityScoresParam.length &lt; MINIMUM_MEASUREMENTS) {</span>
+<span class="fc" id="L610">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L613">        qualityScores = qualityScoresParam;</span>
+<span class="fc" id="L614">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

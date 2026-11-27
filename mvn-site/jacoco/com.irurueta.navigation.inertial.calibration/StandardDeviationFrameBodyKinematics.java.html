@@ -1,0 +1,1504 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StandardDeviationFrameBodyKinematics.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-inertial</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.inertial.calibration</a> &gt; <span class="el_source">StandardDeviationFrameBodyKinematics.java</span></div><h1>StandardDeviationFrameBodyKinematics.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2020 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.inertial.calibration;
+
+import com.irurueta.navigation.frames.ECEFFrame;
+import com.irurueta.navigation.frames.NEDFrame;
+import com.irurueta.navigation.inertial.BodyKinematics;
+import com.irurueta.units.Acceleration;
+import com.irurueta.units.AccelerationConverter;
+import com.irurueta.units.AccelerationUnit;
+import com.irurueta.units.AngularSpeed;
+import com.irurueta.units.AngularSpeedConverter;
+import com.irurueta.units.AngularSpeedUnit;
+import com.irurueta.units.Time;
+import java.io.Serial;
+import java.util.Objects;
+
+/**
+ * Extension of FrameBodyKinematics containing standard deviations of measured specific force
+ * and angular rates included on measured body kinematics (accelerometer + gyroscope) besides
+ * the corresponding frame (position, orientation and velocity) where the kinematics
+ * measurement was made.
+ */
+public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
+
+    /**
+     * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
+     * instances.
+     */
+    @Serial
+    private static final long serialVersionUID = 0L;
+
+    /**
+     * Standard deviation of measured specific force expressed in meters per squared
+     * second (m/s^2).
+     */
+    private double specificForceStandardDeviation;
+
+    /**
+     * Standard deviation of measured angular rate expressed in radians per second (rad/s).
+     */
+    private double angularRateStandardDeviation;
+
+    /**
+     * Constructor.
+     */
+<span class="fc" id="L60">    public StandardDeviationFrameBodyKinematics() {</span>
+<span class="fc" id="L61">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param kinematics current body kinematics measurement.
+     */
+    public StandardDeviationFrameBodyKinematics(final BodyKinematics kinematics) {
+<span class="fc" id="L69">        super(kinematics);</span>
+<span class="fc" id="L70">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param frame current ECEF frame associated to measurement.
+     */
+    public StandardDeviationFrameBodyKinematics(final ECEFFrame frame) {
+<span class="fc" id="L78">        super(frame);</span>
+<span class="fc" id="L79">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param frame current NED frame associated to measurement. Internally it will be
+     *              converted to its corresponding ECEF frame.
+     */
+    public StandardDeviationFrameBodyKinematics(final NEDFrame frame) {
+<span class="fc" id="L88">        super(frame);</span>
+<span class="fc" id="L89">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param timeInterval time interval expressed in seconds (s) between IMU measurements
+     *                     used to obtain current frame and previous frame.
+     * @throws IllegalArgumentException if provided value is negative.
+     */
+    public StandardDeviationFrameBodyKinematics(final double timeInterval) {
+<span class="fc" id="L99">        super(timeInterval);</span>
+<span class="fc" id="L100">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param timeInterval time interval between IMU measurements used to obtain
+     *                     current frame and previous frame.
+     * @throws IllegalArgumentException if provided value is negative.
+     */
+    public StandardDeviationFrameBodyKinematics(final Time timeInterval) {
+<span class="fc" id="L110">        super(timeInterval);</span>
+<span class="fc" id="L111">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param frame         current ECEF frame associated to measurement.
+     * @param previousFrame previous ECEF frame associated to measurement.
+     */
+    public StandardDeviationFrameBodyKinematics(final ECEFFrame frame, final ECEFFrame previousFrame) {
+<span class="fc" id="L120">        super(frame, previousFrame);</span>
+<span class="fc" id="L121">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param frame         current NED frame associated to measurement. Internally it will be
+     *                      converted to its corresponding ECEF frame.
+     * @param previousFrame previous NED frame associated to measurement. Internally it will be
+     *                      converted to its corresponding ECEF frame.
+     */
+    public StandardDeviationFrameBodyKinematics(final NEDFrame frame, final NEDFrame previousFrame) {
+<span class="fc" id="L132">        super(frame, previousFrame);</span>
+<span class="fc" id="L133">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param frame         current ECEF frame associated to measurement.
+     * @param previousFrame previous ECEF frame associated to measurement.
+     * @param timeInterval  time interval expressed in seconds (s) between IMU measurements
+     *                      used to obtain current frame and previous frame.
+     * @throws IllegalArgumentException if provided value is negative.
+     */
+    public StandardDeviationFrameBodyKinematics(
+            final ECEFFrame frame, final ECEFFrame previousFrame, final double timeInterval) {
+<span class="fc" id="L146">        super(frame, previousFrame, timeInterval);</span>
+<span class="fc" id="L147">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param frame         current ECEF frame associated to measurement.
+     * @param previousFrame previous ECEF frame associated to measurement.
+     * @param timeInterval  time interval between IMU measurements used to obtain
+     *                      current frame and previous frame.
+     * @throws IllegalArgumentException if provided value is negative.
+     */
+    public StandardDeviationFrameBodyKinematics(
+            final ECEFFrame frame, final ECEFFrame previousFrame, final Time timeInterval) {
+<span class="fc" id="L160">        super(frame, previousFrame, timeInterval);</span>
+<span class="fc" id="L161">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param frame         current NED frame associated to measurement. Internally it
+     *                      will be converted to its corresponding ECEF frame.
+     * @param previousFrame previous NED frame associated to measurement. Internally it
+     *                      will be converted to its corresponding ECEF frame.
+     * @param timeInterval  time interval expressed in seconds (s) between IMU measurements
+     *                      used to obtain current frame and previous frame.
+     * @throws IllegalArgumentException if provided value is negative.
+     */
+    public StandardDeviationFrameBodyKinematics(
+            final NEDFrame frame, final NEDFrame previousFrame, final double timeInterval) {
+<span class="fc" id="L176">        super(frame, previousFrame, timeInterval);</span>
+<span class="fc" id="L177">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param frame         current NED frame associated to measurement. Internally it
+     *                      will be converted to its corresponding ECEF frame.
+     * @param previousFrame previous NED frame associated to measurement. Internally it
+     *                      will be converted to its corresponding ECEF frame.
+     * @param timeInterval  time interval between IMU measurements used to obtain
+     *                      current frame and previous frame.
+     * @throws IllegalArgumentException if provided value is negative.
+     */
+    public StandardDeviationFrameBodyKinematics(
+            final NEDFrame frame, final NEDFrame previousFrame, final Time timeInterval) {
+<span class="fc" id="L192">        super(frame, previousFrame, timeInterval);</span>
+<span class="fc" id="L193">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param kinematics current body kinematics measurement.
+     * @param frame      ECEF frame associated to measurement.
+     */
+    public StandardDeviationFrameBodyKinematics(final BodyKinematics kinematics, final ECEFFrame frame) {
+<span class="fc" id="L202">        super(kinematics, frame);</span>
+<span class="fc" id="L203">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param kinematics current body kinematics measurement.
+     * @param frame      NED frame associated to measurement. Internally it will be
+     *                   converted to its corresponding ECEF frame.
+     */
+    public StandardDeviationFrameBodyKinematics(final BodyKinematics kinematics, final NEDFrame frame) {
+<span class="fc" id="L213">        super(kinematics, frame);</span>
+<span class="fc" id="L214">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param kinematics    current body kinematics measurement.
+     * @param frame         current ECEF frame associated to measurement.
+     * @param previousFrame previous ECEF frame associated to measurement.
+     */
+    public StandardDeviationFrameBodyKinematics(
+            final BodyKinematics kinematics, final ECEFFrame frame, final ECEFFrame previousFrame) {
+<span class="fc" id="L225">        super(kinematics, frame, previousFrame);</span>
+<span class="fc" id="L226">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param kinematics    current body kinematics measurement.
+     * @param frame         current NED frame associated to measurement. Internally it
+     *                      will be converted to its corresponding ECEF frame.
+     * @param previousFrame previous NED frame associated to measurement. Internally it
+     *                      will be converted to its corresponding ECEF frame.
+     */
+    public StandardDeviationFrameBodyKinematics(
+            final BodyKinematics kinematics, final NEDFrame frame, final NEDFrame previousFrame) {
+<span class="fc" id="L239">        super(kinematics, frame, previousFrame);</span>
+<span class="fc" id="L240">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param kinematics    current body kinematics measurement.
+     * @param frame         current ECEF frame associated to measurement.
+     * @param previousFrame previous ECEF frame associated to measurement.
+     * @param timeInterval  time interval expressed in seconds (s) between IMU
+     *                      measurements used to obtain current frame and previous
+     *                      frame.
+     * @throws IllegalArgumentException if provided value is negative.
+     */
+    public StandardDeviationFrameBodyKinematics(
+            final BodyKinematics kinematics, final ECEFFrame frame, final ECEFFrame previousFrame,
+            final double timeInterval) {
+<span class="fc" id="L256">        super(kinematics, frame, previousFrame, timeInterval);</span>
+<span class="fc" id="L257">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param kinematics    current body kinematics measurement.
+     * @param frame         current ECEF frame associated to measurement.
+     * @param previousFrame previous ECEF frame associated to measurement.
+     * @param timeInterval  time interval between IMU measurements used to obtain
+     *                      current frame and previous frame.
+     * @throws IllegalArgumentException if provided value is negative.
+     */
+    public StandardDeviationFrameBodyKinematics(
+            final BodyKinematics kinematics, final ECEFFrame frame, final ECEFFrame previousFrame,
+            final Time timeInterval) {
+<span class="fc" id="L272">        super(kinematics, frame, previousFrame, timeInterval);</span>
+<span class="fc" id="L273">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param kinematics    current body kinematics measurement.
+     * @param frame         current NED frame associated to measurement. Internally it
+     *                      will be converted to its corresponding ECEF frame.
+     * @param previousFrame previous NED frame associated to measurement. Internally it
+     *                      will be converted to its corresponding ECEF frame.
+     * @param timeInterval  time interval expressed in seconds (s) between IMU
+     *                      measurements used to obtain current frame and previous
+     *                      frame.
+     * @throws IllegalArgumentException if provided value is negative.
+     */
+    public StandardDeviationFrameBodyKinematics(
+            final BodyKinematics kinematics, final NEDFrame frame, final NEDFrame previousFrame,
+            final double timeInterval) {
+<span class="fc" id="L291">        super(kinematics, frame, previousFrame, timeInterval);</span>
+<span class="fc" id="L292">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param kinematics    current body kinematics measurement.
+     * @param frame         current NED frame associated to measurement. Internally it
+     *                      will be converted to its corresponding ECEF frame.
+     * @param previousFrame previous NED frame associated to measurement. Internally it
+     *                      will be converted to its corresponding ECEF frame.
+     * @param timeInterval  time interval between IMU measurements used to obtain
+     *                      current frame and previous frame.
+     * @throws IllegalArgumentException if provided value is negative.
+     */
+    public StandardDeviationFrameBodyKinematics(
+            final BodyKinematics kinematics, final NEDFrame frame, final NEDFrame previousFrame,
+            final Time timeInterval) {
+<span class="fc" id="L309">        super(kinematics, frame, previousFrame, timeInterval);</span>
+<span class="fc" id="L310">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param specificForceStandardDeviation standard deviation of measured specific
+     *                                       force expressed in meters per squared
+     *                                       second (m/s^2).
+     * @param angularRateStandardDeviation   standard deviation of measured angular rate
+     *                                       expressed in radians per second (rad/s).
+     * @throws IllegalArgumentException if either specific force standard deviation or
+     *                                  angular rate standard deviation is negative.
+     */
+    public StandardDeviationFrameBodyKinematics(
+<span class="fc" id="L324">            final double specificForceStandardDeviation, final double angularRateStandardDeviation) {</span>
+<span class="fc" id="L325">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
+<span class="fc" id="L326">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
+<span class="fc" id="L327">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param kinematics                     current body kinematics measurement.
+     * @param specificForceStandardDeviation standard deviation of measured specific
+     *                                       force expressed in meters per squared
+     *                                       second (m/s^2).
+     * @param angularRateStandardDeviation   standard deviation of measured angular rate
+     *                                       expressed in radians per second (rad/s).
+     * @throws IllegalArgumentException if either specific force standard deviation or
+     *                                  angular rate standard deviation is negative.
+     */
+    public StandardDeviationFrameBodyKinematics(
+            final BodyKinematics kinematics, final double specificForceStandardDeviation,
+            final double angularRateStandardDeviation) {
+<span class="fc" id="L344">        this(kinematics);</span>
+<span class="fc" id="L345">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
+<span class="fc" id="L346">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
+<span class="fc" id="L347">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param frame                          current ECEF frame associated to measurement.
+     * @param specificForceStandardDeviation standard deviation of measured specific
+     *                                       force expressed in meters per squared
+     *                                       second (m/s^2).
+     * @param angularRateStandardDeviation   standard deviation of measured angular rate
+     *                                       expressed in radians per second (rad/s).
+     * @throws IllegalArgumentException if either specific force standard deviation or
+     *                                  angular rate standard deviation is negative.
+     */
+    public StandardDeviationFrameBodyKinematics(
+            final ECEFFrame frame, final double specificForceStandardDeviation,
+            final double angularRateStandardDeviation) {
+<span class="fc" id="L364">        this(frame);</span>
+<span class="fc" id="L365">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
+<span class="fc" id="L366">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
+<span class="fc" id="L367">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param frame                          current NED frame associated to measurement.
+     *                                       Internally it will be converted to its
+     *                                       corresponding ECEF frame.
+     * @param specificForceStandardDeviation standard deviation of measured specific
+     *                                       force expressed in meters per squared
+     *                                       second (m/s^2).
+     * @param angularRateStandardDeviation   standard deviation of measured angular rate
+     *                                       expressed in radians per second (rad/s).
+     * @throws IllegalArgumentException if either specific force standard deviation or
+     *                                  angular rate standard deviation is negative.
+     */
+    public StandardDeviationFrameBodyKinematics(
+            final NEDFrame frame, final double specificForceStandardDeviation,
+            final double angularRateStandardDeviation) {
+<span class="fc" id="L386">        this(frame);</span>
+<span class="fc" id="L387">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
+<span class="fc" id="L388">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
+<span class="fc" id="L389">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param timeInterval                   time interval expressed in seconds (s)
+     *                                       between IMU measurements used to obtain
+     *                                       current frame and previous frame.
+     * @param specificForceStandardDeviation standard deviation of measured specific
+     *                                       force expressed in meters per squared
+     *                                       second (m/s^2).
+     * @param angularRateStandardDeviation   standard deviation of measured angular rate
+     *                                       expressed in radians per second (rad/s).
+     * @throws IllegalArgumentException if any provided value is negative.
+     */
+    public StandardDeviationFrameBodyKinematics(
+            final double timeInterval, final double specificForceStandardDeviation,
+            final double angularRateStandardDeviation) {
+<span class="fc" id="L407">        this(timeInterval);</span>
+<span class="fc" id="L408">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
+<span class="fc" id="L409">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
+<span class="fc" id="L410">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param timeInterval                   time interval between IMU measurements used
+     *                                       to obtain current frame and previous frame.
+     * @param specificForceStandardDeviation standard deviation of measured specific
+     *                                       force expressed in meters per squared
+     *                                       second (m/s^2).
+     * @param angularRateStandardDeviation   standard deviation of measured angular rate
+     *                                       expressed in radians per second (rad/s).
+     * @throws IllegalArgumentException if any provided value is negative.
+     */
+    public StandardDeviationFrameBodyKinematics(
+            final Time timeInterval, final double specificForceStandardDeviation,
+            final double angularRateStandardDeviation) {
+<span class="fc" id="L427">        this(timeInterval);</span>
+<span class="fc" id="L428">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
+<span class="fc" id="L429">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
+<span class="fc" id="L430">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param frame                          current ECEF frame associated to
+     *                                       measurement.
+     * @param previousFrame                  previous ECEF frame associated to
+     *                                       measurement.
+     * @param specificForceStandardDeviation standard deviation of measured specific
+     *                                       force expressed in meters per squared
+     *                                       second (m/s^2).
+     * @param angularRateStandardDeviation   standard deviation of measured angular rate
+     *                                       expressed in radians per second (rad/s).
+     * @throws IllegalArgumentException if either specific force standard deviation or
+     *                                  angular rate standard deviation is negative.
+     */
+    public StandardDeviationFrameBodyKinematics(
+            final ECEFFrame frame, final ECEFFrame previousFrame, final double specificForceStandardDeviation,
+            final double angularRateStandardDeviation) {
+<span class="fc" id="L450">        this(frame, previousFrame);</span>
+<span class="fc" id="L451">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
+<span class="fc" id="L452">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
+<span class="fc" id="L453">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param frame                          current NED frame associated to
+     *                                       measurement. Internally it will be
+     *                                       converted to its corresponding ECEF frame.
+     * @param previousFrame                  previous NED frame associated to
+     *                                       measurement. Internally it will be
+     *                                       converted to its corresponding ECEF frame.
+     * @param specificForceStandardDeviation standard deviation of measured specific
+     *                                       force expressed in meters per squared
+     *                                       second (m/s^2).
+     * @param angularRateStandardDeviation   standard deviation of measured angular rate
+     *                                       expressed in radians per second (rad/s).
+     * @throws IllegalArgumentException if either specific force standard deviation or
+     *                                  angular rate standard deviation is negative.
+     */
+    public StandardDeviationFrameBodyKinematics(
+            final NEDFrame frame, final NEDFrame previousFrame, final double specificForceStandardDeviation,
+            final double angularRateStandardDeviation) {
+<span class="fc" id="L475">        this(frame, previousFrame);</span>
+<span class="fc" id="L476">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
+<span class="fc" id="L477">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
+<span class="fc" id="L478">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param frame                          current ECEF frame associated to
+     *                                       measurement.
+     * @param previousFrame                  previous ECEF frame associated to
+     *                                       measurement.
+     * @param timeInterval                   time interval expressed in seconds (s)
+     *                                       between IMU measurements used to obtain
+     *                                       current frame and previous frame.
+     * @param specificForceStandardDeviation standard deviation of measured specific
+     *                                       force expressed in meters per squared
+     *                                       second (m/s^2).
+     * @param angularRateStandardDeviation   standard deviation of measured angular rate
+     *                                       expressed in radians per second (rad/s).
+     * @throws IllegalArgumentException if either time interval, specific force
+     *                                  standard deviation or angular rate standard
+     *                                  deviation is negative.
+     */
+    public StandardDeviationFrameBodyKinematics(
+            final ECEFFrame frame, final ECEFFrame previousFrame, final double timeInterval,
+            final double specificForceStandardDeviation, final double angularRateStandardDeviation) {
+<span class="fc" id="L502">        this(frame, previousFrame, timeInterval);</span>
+<span class="fc" id="L503">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
+<span class="fc" id="L504">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
+<span class="fc" id="L505">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param frame                          current ECEF frame associated to
+     *                                       measurement.
+     * @param previousFrame                  previous ECEF frame associated to
+     *                                       measurement.
+     * @param timeInterval                   time interval between IMU measurements
+     *                                       used to obtain current frame and previous
+     *                                       frame.
+     * @param specificForceStandardDeviation standard deviation of measured specific
+     *                                       force expressed in meters per squared
+     *                                       second (m/s^2).
+     * @param angularRateStandardDeviation   standard deviation of measured angular rate
+     *                                       expressed in radians per second (rad/s).
+     * @throws IllegalArgumentException if either time interval, specific force
+     *                                  standard deviation or angular rate standard
+     *                                  deviation is negative.
+     */
+    public StandardDeviationFrameBodyKinematics(
+            final ECEFFrame frame, final ECEFFrame previousFrame, final Time timeInterval,
+            final double specificForceStandardDeviation, final double angularRateStandardDeviation) {
+<span class="fc" id="L529">        this(frame, previousFrame, timeInterval);</span>
+<span class="fc" id="L530">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
+<span class="fc" id="L531">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
+<span class="fc" id="L532">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param frame                          current NED frame associated to measurement.
+     *                                       Internally it will be converted to its
+     *                                       corresponding ECEF frame.
+     * @param previousFrame                  previous NED frame associated to
+     *                                       measurement. Internally it will be
+     *                                       converted to its corresponding ECEF frame.
+     * @param timeInterval                   time interval expressed in seconds (s)
+     *                                       between IMU measurements used to obtain
+     *                                       current frame and previous frame.
+     * @param specificForceStandardDeviation standard deviation of measured specific
+     *                                       force expressed in meters per squared
+     *                                       second (m/s^2).
+     * @param angularRateStandardDeviation   standard deviation of measured angular rate
+     *                                       expressed in radians per second (rad/s).
+     * @throws IllegalArgumentException if either time interval, specific force
+     *                                  standard deviation or angular rate standard
+     *                                  deviation is negative.
+     */
+    public StandardDeviationFrameBodyKinematics(
+            final NEDFrame frame, final NEDFrame previousFrame, final double timeInterval,
+            final double specificForceStandardDeviation, final double angularRateStandardDeviation) {
+<span class="fc" id="L558">        this(frame, previousFrame, timeInterval);</span>
+<span class="fc" id="L559">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
+<span class="fc" id="L560">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
+<span class="fc" id="L561">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param frame                          current NED frame associated to measurement.
+     *                                       Internally it will be converted to its
+     *                                       corresponding ECEF frame.
+     * @param previousFrame                  previous NED frame associated to
+     *                                       measurement. Internally it will be
+     *                                       converted to its corresponding ECEF frame.
+     * @param timeInterval                   time interval between IMU measurements used
+     *                                       to obtain current frame and previous frame.
+     * @param specificForceStandardDeviation standard deviation of measured specific
+     *                                       force expressed in meters per squared
+     *                                       second (m/s^2).
+     * @param angularRateStandardDeviation   standard deviation of measured angular rate
+     *                                       expressed in radians per second (rad/s).
+     * @throws IllegalArgumentException if either time interval, specific force
+     *                                  standard deviation or angular rate standard
+     *                                  deviation is negative.
+     */
+    public StandardDeviationFrameBodyKinematics(
+            final NEDFrame frame, final NEDFrame previousFrame, final Time timeInterval,
+            final double specificForceStandardDeviation, final double angularRateStandardDeviation) {
+<span class="fc" id="L586">        this(frame, previousFrame, timeInterval);</span>
+<span class="fc" id="L587">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
+<span class="fc" id="L588">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
+<span class="fc" id="L589">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param kinematics                     current body kinematics measurement.
+     * @param frame                          ECEF frame associated to measurement.
+     * @param specificForceStandardDeviation standard deviation of measured specific
+     *                                       force expressed in meters per squared
+     *                                       second (m/s^2).
+     * @param angularRateStandardDeviation   standard deviation of measured angular rate
+     *                                       expressed in radians per second (rad/s).
+     * @throws IllegalArgumentException if either specific force standard deviation or
+     *                                  angular rate standard deviation is negative.
+     */
+    public StandardDeviationFrameBodyKinematics(
+            final BodyKinematics kinematics, final ECEFFrame frame, final double specificForceStandardDeviation,
+            final double angularRateStandardDeviation) {
+<span class="fc" id="L607">        this(kinematics, frame);</span>
+<span class="fc" id="L608">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
+<span class="fc" id="L609">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
+<span class="fc" id="L610">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param kinematics                     current body kinematics measurement.
+     * @param frame                          NED frame associated to measurements.
+     *                                       Internally it will be converted to its
+     *                                       corresponding ECEF frame.
+     * @param specificForceStandardDeviation standard deviation of measured specific
+     *                                       force expressed in meters per squared
+     *                                       second (m/s^2).
+     * @param angularRateStandardDeviation   standard deviation of measured angular rate
+     *                                       expressed in radians per second (rad/s).
+     * @throws IllegalArgumentException if either specific force standard deviation or
+     *                                  angular rate standard deviation is negative.
+     */
+    public StandardDeviationFrameBodyKinematics(
+            final BodyKinematics kinematics, final NEDFrame frame, final double specificForceStandardDeviation,
+            final double angularRateStandardDeviation) {
+<span class="fc" id="L630">        this(kinematics, frame);</span>
+<span class="fc" id="L631">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
+<span class="fc" id="L632">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
+<span class="fc" id="L633">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param kinematics                     current body kinematics measurement.
+     * @param frame                          current ECEF frame associated to
+     *                                       measurement.
+     * @param previousFrame                  previous ECEF frame associated to
+     *                                       measurement.
+     * @param specificForceStandardDeviation standard deviation of measured specific
+     *                                       force expressed in meters per squared
+     *                                       second (m/s^2).
+     * @param angularRateStandardDeviation   standard deviation of measured angular rate
+     *                                       expressed in radians per second (rad/s).
+     * @throws IllegalArgumentException if either specific force standard deviation or
+     *                                  angular rate standard deviation is negative.
+     */
+    public StandardDeviationFrameBodyKinematics(
+            final BodyKinematics kinematics, final ECEFFrame frame, final ECEFFrame previousFrame,
+            final double specificForceStandardDeviation, final double angularRateStandardDeviation) {
+<span class="fc" id="L654">        this(kinematics, frame, previousFrame);</span>
+<span class="fc" id="L655">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
+<span class="fc" id="L656">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
+<span class="fc" id="L657">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param kinematics                     current body kinematics measurement.
+     * @param frame                          current NED frame associated to measurement.
+     *                                       Internally it will be converted to its
+     *                                       corresponding ECEF frame.
+     * @param previousFrame                  previous NED frame associated to measurement.
+     *                                       Internally it will be converted to its
+     *                                       corresponding ECEF frame.
+     * @param specificForceStandardDeviation standard deviation of measured specific
+     *                                       force expressed in meters per squared
+     *                                       second (m/s^2).
+     * @param angularRateStandardDeviation   standard deviation of measured angular rate
+     *                                       expressed in radians per second (rad/s).
+     * @throws IllegalArgumentException if either specific force standard deviation or
+     *                                  angular rate standard deviation is negative.
+     */
+    public StandardDeviationFrameBodyKinematics(
+            final BodyKinematics kinematics, final NEDFrame frame, final NEDFrame previousFrame,
+            final double specificForceStandardDeviation, final double angularRateStandardDeviation) {
+<span class="fc" id="L680">        this(kinematics, frame, previousFrame);</span>
+<span class="fc" id="L681">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
+<span class="fc" id="L682">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
+<span class="fc" id="L683">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param kinematics                     current body kinematics measurement.
+     * @param frame                          current ECEF frame associated to
+     *                                       measurement.
+     * @param previousFrame                  previous ECEF frame associated to
+     *                                       measurement.
+     * @param timeInterval                   time interval expressed in seconds (s)
+     *                                       between IMU measurements used to obtain
+     *                                       current frame and previous frame.
+     * @param specificForceStandardDeviation standard deviation of measured specific
+     *                                       force expressed in meters per squared
+     *                                       second (m/s^2).
+     * @param angularRateStandardDeviation   standard deviation of measured angular rate
+     *                                       expressed in radians per second (rad/s).
+     * @throws IllegalArgumentException if either time interval, specific force
+     *                                  standard deviation or angular rate standard
+     *                                  deviation is negative.
+     */
+    public StandardDeviationFrameBodyKinematics(
+            final BodyKinematics kinematics, final ECEFFrame frame, final ECEFFrame previousFrame,
+            final double timeInterval, final double specificForceStandardDeviation,
+            final double angularRateStandardDeviation) {
+<span class="fc" id="L709">        this(kinematics, frame, previousFrame, timeInterval);</span>
+<span class="fc" id="L710">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
+<span class="fc" id="L711">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
+<span class="fc" id="L712">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param kinematics                     current body kinematics measurement.
+     * @param frame                          current ECEF frame associated to
+     *                                       measurement.
+     * @param previousFrame                  previous ECEF frame associated to
+     *                                       measurement.
+     * @param timeInterval                   time interval between IMU measurements used
+     *                                       to obtain current frame and previous frame.
+     * @param specificForceStandardDeviation standard deviation of measured specific
+     *                                       force expressed in meters per squared
+     *                                       second (m/s^2).
+     * @param angularRateStandardDeviation   standard deviation of measured angular rate
+     *                                       expressed in radians per second (rad/s).
+     * @throws IllegalArgumentException if either time interval, specific force
+     *                                  standard deviation or angular rate standard
+     *                                  deviation is negative.
+     */
+    public StandardDeviationFrameBodyKinematics(
+            final BodyKinematics kinematics, final ECEFFrame frame, final ECEFFrame previousFrame,
+            final Time timeInterval, final double specificForceStandardDeviation,
+            final double angularRateStandardDeviation) {
+<span class="fc" id="L737">        this(kinematics, frame, previousFrame, timeInterval);</span>
+<span class="fc" id="L738">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
+<span class="fc" id="L739">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
+<span class="fc" id="L740">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param kinematics                     current body kinematics measurement.
+     * @param frame                          current NED frame associated to measurement.
+     *                                       Internally it will be converted to its
+     *                                       corresponding ECEF frame.
+     * @param previousFrame                  previous NED frame associated to
+     *                                       measurement. Internally it will be
+     *                                       converted to its corresponding ECEF frame.
+     * @param timeInterval                   time interval expressed in seconds (s)
+     *                                       between IMU measurements used to obtain
+     *                                       current frame and previous frame.
+     * @param specificForceStandardDeviation standard deviation of measured specific
+     *                                       force expressed in meters per squared
+     *                                       second (m/s^2).
+     * @param angularRateStandardDeviation   standard deviation of measured angular rate
+     *                                       expressed in radians per second (rad/s).
+     * @throws IllegalArgumentException if either time interval, specific force
+     *                                  standard deviation or angular rate standard
+     *                                  deviation is negative.
+     */
+    public StandardDeviationFrameBodyKinematics(
+            final BodyKinematics kinematics, final NEDFrame frame, final NEDFrame previousFrame,
+            final double timeInterval, final double specificForceStandardDeviation,
+            final double angularRateStandardDeviation) {
+<span class="fc" id="L768">        this(kinematics, frame, previousFrame, timeInterval);</span>
+<span class="fc" id="L769">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
+<span class="fc" id="L770">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
+<span class="fc" id="L771">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param kinematics                     current body kinematics measurement.
+     * @param frame                          current NED frame associated to measurement.
+     *                                       Internally it will be converted to its
+     *                                       corresponding ECEF frame.
+     * @param previousFrame                  previous NED frame associated to
+     *                                       measurement. Internally it will be
+     *                                       converted to its corresponding ECEF frame.
+     * @param timeInterval                   time interval between IMU measurements used
+     *                                       to obtain current frame and previous frame.
+     * @param specificForceStandardDeviation standard deviation of measured specific
+     *                                       force expressed in meters per squared
+     *                                       second (m/s^2).
+     * @param angularRateStandardDeviation   standard deviation of measured angular rate
+     *                                       expressed in radians per second (rad/s).
+     * @throws IllegalArgumentException if either time interval, specific force
+     *                                  standard deviation or angular rate standard
+     *                                  deviation is negative.
+     */
+    public StandardDeviationFrameBodyKinematics(
+            final BodyKinematics kinematics, final NEDFrame frame, final NEDFrame previousFrame,
+            final Time timeInterval, final double specificForceStandardDeviation,
+            final double angularRateStandardDeviation) {
+<span class="fc" id="L798">        this(kinematics, frame, previousFrame, timeInterval);</span>
+<span class="fc" id="L799">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
+<span class="fc" id="L800">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
+<span class="fc" id="L801">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param specificForceStandardDeviation standard deviation of measured specific
+     *                                       force.
+     * @param angularRateStandardDeviation   standard deviation of measured angular
+     *                                       rate.
+     * @throws IllegalArgumentException if either specific force standard deviation or
+     *                                  angular rate standard deviation is negative.
+     */
+    public StandardDeviationFrameBodyKinematics(
+            final Acceleration specificForceStandardDeviation, final AngularSpeed angularRateStandardDeviation) {
+<span class="fc" id="L815">        this(convertAcceleration(specificForceStandardDeviation),</span>
+<span class="fc" id="L816">                convertAngularSpeed(angularRateStandardDeviation));</span>
+<span class="fc" id="L817">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param kinematics                     current body kinematics measurement.
+     * @param specificForceStandardDeviation standard deviation of measured specific
+     *                                       force.
+     * @param angularRateStandardDeviation   standard deviation of measured angular
+     *                                       rate.
+     * @throws IllegalArgumentException if either specific force standard deviation or
+     *                                  angular rate standard deviation is negative.
+     */
+    public StandardDeviationFrameBodyKinematics(
+            final BodyKinematics kinematics, final Acceleration specificForceStandardDeviation,
+            final AngularSpeed angularRateStandardDeviation) {
+<span class="fc" id="L833">        this(kinematics, convertAcceleration(specificForceStandardDeviation),</span>
+<span class="fc" id="L834">                convertAngularSpeed(angularRateStandardDeviation));</span>
+<span class="fc" id="L835">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param frame                          current ECEF frame associated to measurement.
+     * @param specificForceStandardDeviation standard deviation of measured specific
+     *                                       force.
+     * @param angularRateStandardDeviation   standard deviation of measured angular
+     *                                       rate.
+     * @throws IllegalArgumentException if either specific force standard deviation or
+     *                                  angular rate standard deviation is negative.
+     */
+    public StandardDeviationFrameBodyKinematics(
+            final ECEFFrame frame, final Acceleration specificForceStandardDeviation,
+            final AngularSpeed angularRateStandardDeviation) {
+<span class="fc" id="L851">        this(frame, convertAcceleration(specificForceStandardDeviation),</span>
+<span class="fc" id="L852">                convertAngularSpeed(angularRateStandardDeviation));</span>
+<span class="fc" id="L853">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param frame                          current NED frame associated to measurement.
+     *                                       Internally it will be converted to its
+     *                                       corresponding ECEF frame.
+     * @param specificForceStandardDeviation standard deviation of measured specific
+     *                                       force.
+     * @param angularRateStandardDeviation   standard deviation of measured angular
+     *                                       rate.
+     * @throws IllegalArgumentException if either specific force standard deviation or
+     *                                  angular rate standard deviation is negative.
+     */
+    public StandardDeviationFrameBodyKinematics(
+            final NEDFrame frame, final Acceleration specificForceStandardDeviation,
+            final AngularSpeed angularRateStandardDeviation) {
+<span class="fc" id="L871">        this(frame, convertAcceleration(specificForceStandardDeviation),</span>
+<span class="fc" id="L872">                convertAngularSpeed(angularRateStandardDeviation));</span>
+<span class="fc" id="L873">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param timeInterval                   time interval expressed in seconds (s)
+     *                                       between IMU measurements used to obtain
+     *                                       current frame and previous frame.
+     * @param specificForceStandardDeviation standard deviation of measured specific
+     *                                       force.
+     * @param angularRateStandardDeviation   standard deviation of measured angular
+     *                                       rate.
+     * @throws IllegalArgumentException if any provided value is negative.
+     */
+    public StandardDeviationFrameBodyKinematics(
+            final double timeInterval, final Acceleration specificForceStandardDeviation,
+            final AngularSpeed angularRateStandardDeviation) {
+<span class="fc" id="L890">        this(timeInterval, convertAcceleration(specificForceStandardDeviation),</span>
+<span class="fc" id="L891">                convertAngularSpeed(angularRateStandardDeviation));</span>
+<span class="fc" id="L892">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param timeInterval                   time interval between IMU measurements used
+     *                                       to obtain current frame and previous frame.
+     * @param specificForceStandardDeviation standard deviation of measured specific
+     *                                       force.
+     * @param angularRateStandardDeviation   standard deviation of measured angular
+     *                                       rate.
+     * @throws IllegalArgumentException if any provided value is negative.
+     */
+    public StandardDeviationFrameBodyKinematics(
+            final Time timeInterval, final Acceleration specificForceStandardDeviation,
+            final AngularSpeed angularRateStandardDeviation) {
+<span class="fc" id="L908">        this(timeInterval, convertAcceleration(specificForceStandardDeviation),</span>
+<span class="fc" id="L909">                convertAngularSpeed(angularRateStandardDeviation));</span>
+<span class="fc" id="L910">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param frame                          current ECEF frame associated to
+     *                                       measurement.
+     * @param previousFrame                  previous ECEF frame associated to
+     *                                       measurement.
+     * @param specificForceStandardDeviation standard deviation of measured specific
+     *                                       force.
+     * @param angularRateStandardDeviation   standard deviation of measured angular
+     *                                       rate.
+     * @throws IllegalArgumentException if either specific force standard deviation or
+     *                                  angular rate standard deviation is negative.
+     */
+    public StandardDeviationFrameBodyKinematics(
+            final ECEFFrame frame, final ECEFFrame previousFrame, final Acceleration specificForceStandardDeviation,
+            final AngularSpeed angularRateStandardDeviation) {
+<span class="fc" id="L929">        this(frame, previousFrame, convertAcceleration(specificForceStandardDeviation),</span>
+<span class="fc" id="L930">                convertAngularSpeed(angularRateStandardDeviation));</span>
+<span class="fc" id="L931">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param frame                          current NED frame associated to
+     *                                       measurement. Internally it will be
+     *                                       converted to its corresponding ECEF frame.
+     * @param previousFrame                  previous END frame associated to
+     *                                       measurement. Internally it will be
+     *                                       converted to its corresponding ECEF frame.
+     * @param specificForceStandardDeviation standard deviation of measured specific
+     *                                       force.
+     * @param angularRateStandardDeviation   standard deviation of measured angular
+     *                                       rate.
+     * @throws IllegalArgumentException if either specific force standard deviation or
+     *                                  angular rate standard deviation is negative.
+     */
+    public StandardDeviationFrameBodyKinematics(
+            final NEDFrame frame, final NEDFrame previousFrame, final Acceleration specificForceStandardDeviation,
+            final AngularSpeed angularRateStandardDeviation) {
+<span class="fc" id="L952">        this(frame, previousFrame, convertAcceleration(specificForceStandardDeviation),</span>
+<span class="fc" id="L953">                convertAngularSpeed(angularRateStandardDeviation));</span>
+<span class="fc" id="L954">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param frame                          current ECEF frame associated to
+     *                                       measurement.
+     * @param previousFrame                  previous ECEF frame associated to
+     *                                       measurement.
+     * @param timeInterval                   time interval expressed in seconds (s)
+     *                                       between IMU measurements used to obtain
+     *                                       current frame and previous frame.
+     * @param specificForceStandardDeviation standard deviation of measured specific
+     *                                       force.
+     * @param angularRateStandardDeviation   standard deviation of measured angular
+     *                                       rate.
+     * @throws IllegalArgumentException if either time interval, specific force
+     *                                  standard deviation or angular rate standard
+     *                                  deviation is negative.
+     */
+    public StandardDeviationFrameBodyKinematics(
+            final ECEFFrame frame, final ECEFFrame previousFrame, final double timeInterval,
+            final Acceleration specificForceStandardDeviation, final AngularSpeed angularRateStandardDeviation) {
+<span class="fc" id="L977">        this(frame, previousFrame, timeInterval, convertAcceleration(specificForceStandardDeviation),</span>
+<span class="fc" id="L978">                convertAngularSpeed(angularRateStandardDeviation));</span>
+<span class="fc" id="L979">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param frame                          current ECEF frame associated to
+     *                                       measurement.
+     * @param previousFrame                  previous ECEF frame associated ot
+     *                                       measurement.
+     * @param timeInterval                   time interval between IMU measurements
+     *                                       used to obtain current frame and previous
+     *                                       frame.
+     * @param specificForceStandardDeviation standard deviation of measured specific
+     *                                       force.
+     * @param angularRateStandardDeviation   standard deviation of measured angular
+     *                                       rate.
+     * @throws IllegalArgumentException if either time interval, specific force
+     *                                  standard deviation or angular rate standard
+     *                                  deviation is negative.
+     */
+    public StandardDeviationFrameBodyKinematics(
+            final ECEFFrame frame, final ECEFFrame previousFrame, final Time timeInterval,
+            final Acceleration specificForceStandardDeviation, final AngularSpeed angularRateStandardDeviation) {
+<span class="fc" id="L1002">        this(frame, previousFrame, timeInterval, convertAcceleration(specificForceStandardDeviation),</span>
+<span class="fc" id="L1003">                convertAngularSpeed(angularRateStandardDeviation));</span>
+<span class="fc" id="L1004">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param frame                          current NED frame associated to
+     *                                       measurement. Internally it will be
+     *                                       converted to its corresponding ECEF frame.
+     * @param previousFrame                  previous NED frame associated to
+     *                                       measurement. Internally it will be
+     *                                       converted to tis corresponding ECEF frame.
+     * @param timeInterval                   time interval expressed in seconds (s)
+     *                                       between IMU measurements used to obtain
+     *                                       current frame and previous frame.
+     * @param specificForceStandardDeviation standard deviation of measured specific
+     *                                       force.
+     * @param angularRateStandardDeviation   standard deviation of measured angular
+     *                                       rate.
+     * @throws IllegalArgumentException if either time interval, specific force
+     *                                  standard deviation or angular rate standard
+     *                                  deviation is negative.
+     */
+    public StandardDeviationFrameBodyKinematics(
+            final NEDFrame frame, final NEDFrame previousFrame, final double timeInterval,
+            final Acceleration specificForceStandardDeviation, final AngularSpeed angularRateStandardDeviation) {
+<span class="fc" id="L1029">        this(frame, previousFrame, timeInterval, convertAcceleration(specificForceStandardDeviation),</span>
+<span class="fc" id="L1030">                convertAngularSpeed(angularRateStandardDeviation));</span>
+<span class="fc" id="L1031">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param frame                          current NED frame associated to
+     *                                       measurement. Internally it will be
+     *                                       converted to its corresponding ECEF frame.
+     * @param previousFrame                  previous NED frame associated to
+     *                                       measurement. Internally it will be
+     *                                       converted to its corresponding ECEF frame.
+     * @param timeInterval                   time interval between IMU measurements used
+     *                                       to obtain current frame and previous frame.
+     * @param specificForceStandardDeviation standard deviation of measured specific
+     *                                       force.
+     * @param angularRateStandardDeviation   standard deviation of measured angular
+     *                                       rate.
+     * @throws IllegalArgumentException if either time interval, specific force
+     *                                  standard deviation or angular rate standard
+     *                                  deviation is negative.
+     */
+    public StandardDeviationFrameBodyKinematics(
+            final NEDFrame frame, final NEDFrame previousFrame, final Time timeInterval,
+            final Acceleration specificForceStandardDeviation, final AngularSpeed angularRateStandardDeviation) {
+<span class="fc" id="L1055">        this(frame, previousFrame, timeInterval, convertAcceleration(specificForceStandardDeviation),</span>
+<span class="fc" id="L1056">                convertAngularSpeed(angularRateStandardDeviation));</span>
+<span class="fc" id="L1057">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param kinematics                     current body kinematics measurement.
+     * @param frame                          ECEF frame associated to measurement.
+     * @param specificForceStandardDeviation standard deviation of measured specific
+     *                                       force.
+     * @param angularRateStandardDeviation   standard deviation of measured angular
+     *                                       rate.
+     * @throws IllegalArgumentException if either specific force standard deviation or
+     *                                  angular rate standard deviation is negative.
+     */
+    public StandardDeviationFrameBodyKinematics(
+            final BodyKinematics kinematics, final ECEFFrame frame, final Acceleration specificForceStandardDeviation,
+            final AngularSpeed angularRateStandardDeviation) {
+<span class="fc" id="L1074">        this(kinematics, frame, convertAcceleration(specificForceStandardDeviation),</span>
+<span class="fc" id="L1075">                convertAngularSpeed(angularRateStandardDeviation));</span>
+<span class="fc" id="L1076">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param kinematics                     current body kinematics measurement.
+     * @param frame                          NED frame associated to measurements.
+     *                                       Internally it will be converted to tis
+     *                                       corresponding ECEF frame.
+     * @param specificForceStandardDeviation standard deviation of measured specific
+     *                                       force.
+     * @param angularRateStandardDeviation   standard deviation of measured angular
+     *                                       rate.
+     * @throws IllegalArgumentException if either specific force standard deviation or
+     *                                  angular rate standard deviation is negative.
+     */
+    public StandardDeviationFrameBodyKinematics(
+            final BodyKinematics kinematics, final NEDFrame frame, final Acceleration specificForceStandardDeviation,
+            final AngularSpeed angularRateStandardDeviation) {
+<span class="fc" id="L1095">        this(kinematics, frame, convertAcceleration(specificForceStandardDeviation),</span>
+<span class="fc" id="L1096">                convertAngularSpeed(angularRateStandardDeviation));</span>
+<span class="fc" id="L1097">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param kinematics                     current body kinematics measurement.
+     * @param frame                          current ECEF frame associated to
+     *                                       measurement.
+     * @param previousFrame                  previous ECEF frame associated to
+     *                                       measurement.
+     * @param specificForceStandardDeviation standard deviation of measured specific
+     *                                       force.
+     * @param angularRateStandardDeviation   standard deviation of measured angular
+     *                                       rate.
+     * @throws IllegalArgumentException if either specific force standard deviation or
+     *                                  angular rate standard deviation is negative.
+     */
+    public StandardDeviationFrameBodyKinematics(
+            final BodyKinematics kinematics, final ECEFFrame frame, final ECEFFrame previousFrame,
+            final Acceleration specificForceStandardDeviation, final AngularSpeed angularRateStandardDeviation) {
+<span class="fc" id="L1117">        this(kinematics, frame, previousFrame, convertAcceleration(specificForceStandardDeviation),</span>
+<span class="fc" id="L1118">                convertAngularSpeed(angularRateStandardDeviation));</span>
+<span class="fc" id="L1119">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param kinematics                     current body kinematics measurement.
+     * @param frame                          current NED frame associated to
+     *                                       measurement. Internally it will be
+     *                                       converted to its corresponding ECEF frame.
+     * @param previousFrame                  previous NED frame associated ot
+     *                                       measurement. Internally it will be converted
+     *                                       to its corresponding ECEF frame.
+     * @param specificForceStandardDeviation standard deviation of measured specific
+     *                                       force.
+     * @param angularRateStandardDeviation   standard deviation of measured angular
+     *                                       rate.
+     * @throws IllegalArgumentException if either specific force standard deviation or
+     *                                  angular rate standard deviation is negative.
+     */
+    public StandardDeviationFrameBodyKinematics(
+            final BodyKinematics kinematics, final NEDFrame frame, final NEDFrame previousFrame,
+            final Acceleration specificForceStandardDeviation, final AngularSpeed angularRateStandardDeviation) {
+<span class="fc" id="L1141">        this(kinematics, frame, previousFrame, convertAcceleration(specificForceStandardDeviation),</span>
+<span class="fc" id="L1142">                convertAngularSpeed(angularRateStandardDeviation));</span>
+<span class="fc" id="L1143">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param kinematics                     current body kinematics measurement.
+     * @param frame                          current ECEF frame associated to
+     *                                       measurement.
+     * @param previousFrame                  previous ECEF frame associated to
+     *                                       measurement.
+     * @param timeInterval                   time interval expressed in seconds (s)
+     *                                       between IMU measurements used to obtain
+     *                                       current frame and previous frame.
+     * @param specificForceStandardDeviation standard deviation of measured specific
+     *                                       force.
+     * @param angularRateStandardDeviation   standard deviation of measured angular
+     *                                       rate.
+     * @throws IllegalArgumentException if either time interval, specific force
+     *                                  standard deviation or angular rate standard
+     *                                  deviation is negative.
+     */
+    public StandardDeviationFrameBodyKinematics(
+            final BodyKinematics kinematics, final ECEFFrame frame, final ECEFFrame previousFrame,
+            final double timeInterval, final Acceleration specificForceStandardDeviation,
+            final AngularSpeed angularRateStandardDeviation) {
+<span class="fc" id="L1168">        this(kinematics, frame, previousFrame, timeInterval, convertAcceleration(specificForceStandardDeviation),</span>
+<span class="fc" id="L1169">                convertAngularSpeed(angularRateStandardDeviation));</span>
+<span class="fc" id="L1170">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param kinematics                     current body kinematics measurement.
+     * @param frame                          current ECEF frame associated to
+     *                                       measurement.
+     * @param previousFrame                  previous ECEF frame associated to
+     *                                       measurement.
+     * @param timeInterval                   time interval between IMU measurements used
+     *                                       to obtain current frame and previous frame.
+     * @param specificForceStandardDeviation standard deviation of measured specific
+     *                                       force.
+     * @param angularRateStandardDeviation   standard deviation of measured angular
+     *                                       rate.
+     * @throws IllegalArgumentException if either time interval, specific force
+     *                                  standard deviation or angular rate standard
+     *                                  deviation is negative.
+     */
+    public StandardDeviationFrameBodyKinematics(
+            final BodyKinematics kinematics, final ECEFFrame frame, final ECEFFrame previousFrame,
+            final Time timeInterval, final Acceleration specificForceStandardDeviation,
+            final AngularSpeed angularRateStandardDeviation) {
+<span class="fc" id="L1194">        this(kinematics, frame, previousFrame, timeInterval, convertAcceleration(specificForceStandardDeviation),</span>
+<span class="fc" id="L1195">                convertAngularSpeed(angularRateStandardDeviation));</span>
+<span class="fc" id="L1196">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param kinematics                     current body kinematics measurement.
+     * @param frame                          current NED frame associated to
+     *                                       measurement. Internally it will be
+     *                                       converted to its corresponding ECEF frame.
+     * @param previousFrame                  previous NED frame associated to
+     *                                       measurement. Internally it will be
+     *                                       converted to its corresponding ECEF frame.
+     * @param timeInterval                   time interval expressed in seconds (s)
+     *                                       between IMU measurements used to obtain
+     *                                       current frame and previous frame.
+     * @param specificForceStandardDeviation standard deviation of measured specific
+     *                                       force.
+     * @param angularRateStandardDeviation   standard deviation of measured angular
+     *                                       rate.
+     * @throws IllegalArgumentException if either time interval, specific force
+     *                                  standard deviation or angular rate standard
+     *                                  deviation is negative.
+     */
+    public StandardDeviationFrameBodyKinematics(
+            final BodyKinematics kinematics, final NEDFrame frame, final NEDFrame previousFrame,
+            final double timeInterval, final Acceleration specificForceStandardDeviation,
+            final AngularSpeed angularRateStandardDeviation) {
+<span class="fc" id="L1223">        this(kinematics, frame, previousFrame, timeInterval, convertAcceleration(specificForceStandardDeviation),</span>
+<span class="fc" id="L1224">                convertAngularSpeed(angularRateStandardDeviation));</span>
+<span class="fc" id="L1225">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param kinematics                     current body kinematics measurement.
+     * @param frame                          current NED frame associated to
+     *                                       measurement. Internally it will be
+     *                                       converted to its corresponding ECEF frame.
+     * @param previousFrame                  previous NED frame associated to
+     *                                       measurement. Internally it will be
+     *                                       converted to its corresponding ECEF frame.
+     * @param timeInterval                   time interval between IMU measurements used
+     *                                       to obtain current frame and previous frame.
+     * @param specificForceStandardDeviation standard deviation of measured specific
+     *                                       force.
+     * @param angularRateStandardDeviation   standard deviation of measured angular
+     *                                       rate.
+     * @throws IllegalArgumentException if either time interval, specific force
+     *                                  standard deviation or angular rate standard
+     *                                  deviation is negative.
+     */
+    public StandardDeviationFrameBodyKinematics(
+            final BodyKinematics kinematics, final NEDFrame frame, final NEDFrame previousFrame,
+            final Time timeInterval, final Acceleration specificForceStandardDeviation,
+            final AngularSpeed angularRateStandardDeviation) {
+<span class="fc" id="L1251">        this(kinematics, frame, previousFrame, timeInterval, convertAcceleration(specificForceStandardDeviation),</span>
+<span class="fc" id="L1252">                convertAngularSpeed(angularRateStandardDeviation));</span>
+<span class="fc" id="L1253">    }</span>
+
+    /**
+     * Copy constructor.
+     *
+     * @param input instance to copy data from.
+     */
+<span class="fc" id="L1260">    public StandardDeviationFrameBodyKinematics(final StandardDeviationFrameBodyKinematics input) {</span>
+<span class="fc" id="L1261">        copyFrom(input);</span>
+<span class="fc" id="L1262">    }</span>
+
+    /**
+     * Gets standard deviation of measured specific force expressed in meters per squared
+     * second (m/s^2).
+     *
+     * @return standard deviation of measured specific force.
+     */
+    public double getSpecificForceStandardDeviation() {
+<span class="fc" id="L1271">        return specificForceStandardDeviation;</span>
+    }
+
+    /**
+     * Sets standard deviation of measured specific force expressed in meters per squared
+     * second (m/s^2).
+     *
+     * @param specificForceStandardDeviation standard deviation of measured specific force.
+     * @throws IllegalArgumentException if provided value is negative.
+     */
+    public void setSpecificForceStandardDeviation(final double specificForceStandardDeviation) {
+<span class="fc bfc" id="L1282" title="All 2 branches covered.">        if (specificForceStandardDeviation &lt; 0.0) {</span>
+<span class="fc" id="L1283">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L1286">        this.specificForceStandardDeviation = specificForceStandardDeviation;</span>
+<span class="fc" id="L1287">    }</span>
+
+    /**
+     * Gets standard deviation of measured specific force.
+     *
+     * @return standard deviation of measured specific force.
+     */
+    public Acceleration getSpecificForceStandardDeviationAsAcceleration() {
+<span class="fc" id="L1295">        return new Acceleration(specificForceStandardDeviation, AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+    }
+
+    /**
+     * Gets standard deviation of measured specific force.
+     *
+     * @param result instance where standard deviation of measured specific force will be
+     *               stored.
+     */
+    public void getSpecificForceStandardDeviationAsAcceleration(final Acceleration result) {
+<span class="fc" id="L1305">        result.setValue(specificForceStandardDeviation);</span>
+<span class="fc" id="L1306">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L1307">    }</span>
+
+    /**
+     * Sets standard deviation of measured specific force.
+     *
+     * @param specificForceStandardDeviation standard deviation of measured specific force.
+     * @throws IllegalArgumentException if provided value is negative.
+     */
+    public void setSpecificForceStandardDeviation(final Acceleration specificForceStandardDeviation) {
+<span class="fc" id="L1316">        setSpecificForceStandardDeviation(convertAcceleration(specificForceStandardDeviation));</span>
+<span class="fc" id="L1317">    }</span>
+
+    /**
+     * Gets standard deviation of measured angular rate expressed in radians per second (rad/s).
+     *
+     * @return standard deviation of measured angular rate.
+     */
+    public double getAngularRateStandardDeviation() {
+<span class="fc" id="L1325">        return angularRateStandardDeviation;</span>
+    }
+
+    /**
+     * Sets standard deviation of measured angular rate expressed in radians per second (rad/s).
+     *
+     * @param angularRateStandardDeviation standard deviation of measured angular rate.
+     * @throws IllegalArgumentException if provided value is negative.
+     */
+    public void setAngularRateStandardDeviation(final double angularRateStandardDeviation) {
+<span class="fc bfc" id="L1335" title="All 2 branches covered.">        if (angularRateStandardDeviation &lt; 0.0) {</span>
+<span class="fc" id="L1336">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L1339">        this.angularRateStandardDeviation = angularRateStandardDeviation;</span>
+<span class="fc" id="L1340">    }</span>
+
+    /**
+     * Gets standard deviation of measured angular rate.
+     *
+     * @return standard deviation of measured angular rate.
+     */
+    public AngularSpeed getAngularRateStandardDeviationAsAngularSpeed() {
+<span class="fc" id="L1348">        return new AngularSpeed(angularRateStandardDeviation, AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+    }
+
+    /**
+     * Gets standard deviation of measured angular rate.
+     *
+     * @param result instance where standard deviation of measured angular rate will be
+     *               stored.
+     */
+    public void getAngularRateStandardDeviationAsAngularSpeed(final AngularSpeed result) {
+<span class="fc" id="L1358">        result.setValue(angularRateStandardDeviation);</span>
+<span class="fc" id="L1359">        result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+<span class="fc" id="L1360">    }</span>
+
+    /**
+     * Sets standard deviation of measured angular rate.
+     *
+     * @param angularRateStandardDeviation standard deviation of measured angular rate.
+     * @throws IllegalArgumentException if provided value is negative.
+     */
+    public void setAngularRateStandardDeviation(final AngularSpeed angularRateStandardDeviation) {
+<span class="fc" id="L1369">        setAngularRateStandardDeviation(convertAngularSpeed(angularRateStandardDeviation));</span>
+<span class="fc" id="L1370">    }</span>
+
+    /**
+     * Copies data of provided instance into this instance.
+     *
+     * @param input instance to copy data from.
+     */
+    public void copyFrom(final StandardDeviationFrameBodyKinematics input) {
+<span class="fc" id="L1378">        super.copyFrom(input);</span>
+
+<span class="fc" id="L1380">        specificForceStandardDeviation = input.specificForceStandardDeviation;</span>
+<span class="fc" id="L1381">        angularRateStandardDeviation = input.angularRateStandardDeviation;</span>
+<span class="fc" id="L1382">    }</span>
+
+    /**
+     * Copies this instance data into provided instance.
+     *
+     * @param output destination instance where data will be copied to.
+     */
+    public void copyTo(final StandardDeviationFrameBodyKinematics output) {
+<span class="fc" id="L1390">        super.copyTo(output);</span>
+
+<span class="fc" id="L1392">        output.specificForceStandardDeviation = specificForceStandardDeviation;</span>
+<span class="fc" id="L1393">        output.angularRateStandardDeviation = angularRateStandardDeviation;</span>
+<span class="fc" id="L1394">    }</span>
+
+    /**
+     * Computes and returns hash code for this instance. Hash codes are almost unique
+     * values that are useful for fast classification and storage of objects in collections.
+     *
+     * @return Hash code.
+     */
+    @Override
+    public int hashCode() {
+<span class="fc" id="L1404">        return Objects.hash(super.hashCode(), specificForceStandardDeviation, angularRateStandardDeviation);</span>
+    }
+
+    /**
+     * Checks if provided instance has exactly the same contents as this instance.
+     *
+     * @param other instance to be compared.
+     * @return true if both instances are considered to be equal, false otherwise.
+     */
+    public boolean equals(final StandardDeviationFrameBodyKinematics other) {
+<span class="fc" id="L1414">        return equals(other, 0.0);</span>
+    }
+
+    /**
+     * Checks if provided instance has contents similar to this instance up to provided
+     * threshold value.
+     *
+     * @param other     instance to be compared.
+     * @param threshold maximum allowed difference between values.
+     * @return true if both instances are considered to be equal (up to provided
+     * threshold), false otherwise.
+     */
+    public boolean equals(final StandardDeviationFrameBodyKinematics other, final double threshold) {
+<span class="fc bfc" id="L1427" title="All 2 branches covered.">        return super.equals(other, threshold)</span>
+<span class="pc bpc" id="L1428" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(specificForceStandardDeviation - other.specificForceStandardDeviation) &lt;= threshold</span>
+<span class="pc bpc" id="L1429" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(angularRateStandardDeviation - other.angularRateStandardDeviation) &lt;= threshold;</span>
+    }
+
+    /**
+     * Checks if provided instance has contents similar to this instance up to provided
+     * threshold value.
+     *
+     * @param other     instance to be compared.
+     * @param threshold maximum allowed difference between kinematics and frame values.
+     * @return true if both instances are considered to be equal (up to provided
+     * threshold), false otherwise.
+     */
+    @Override
+    public boolean equals(final FrameBodyKinematics other, final double threshold) {
+<span class="nc bnc" id="L1443" title="All 2 branches missed.">        if (this == other) {</span>
+<span class="nc" id="L1444">            return true;</span>
+        }
+<span class="nc bnc" id="L1446" title="All 4 branches missed.">        if (other == null || getClass() != other.getClass()) {</span>
+<span class="nc" id="L1447">            return false;</span>
+        }
+<span class="nc" id="L1449">        return super.equals(other, threshold);</span>
+    }
+
+    /**
+     * Checks if provided object is a StandardDeviationFrameBodyKinematics instance
+     * having exactly the same contents as this instance.
+     *
+     * @param obj object to be compared.
+     * @return true if both objects are considered to be equal, false otherwise.
+     */
+    @Override
+    public boolean equals(final Object obj) {
+<span class="fc bfc" id="L1461" title="All 2 branches covered.">        if (this == obj) {</span>
+<span class="fc" id="L1462">            return true;</span>
+        }
+<span class="pc bpc" id="L1464" title="2 of 4 branches missed.">        if (obj == null || getClass() != obj.getClass()) {</span>
+<span class="nc" id="L1465">            return false;</span>
+        }
+<span class="fc" id="L1467">        final var other = (StandardDeviationFrameBodyKinematics) obj;</span>
+<span class="fc" id="L1468">        return equals(other);</span>
+    }
+
+    /**
+     * Makes a copy of this instance.
+     *
+     * @return a copy of this instance.
+     * @throws CloneNotSupportedException if clone fails for some reason.
+     */
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+<span class="fc" id="L1479">        return super.clone();</span>
+    }
+
+    /**
+     * Converts provided acceleration to meters per squared second (m/s^2).
+     *
+     * @param acceleration instance to be converted.
+     * @return converted value.
+     */
+    private static double convertAcceleration(final Acceleration acceleration) {
+<span class="fc" id="L1489">        return AccelerationConverter.convert(acceleration.getValue().doubleValue(), acceleration.getUnit(),</span>
+                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+    }
+
+    /**
+     * Converts provided angular speed to radians per second (rad/s).
+     *
+     * @param angularSpeed instance to be converted.
+     * @return converted value.
+     */
+    private static double convertAngularSpeed(final AngularSpeed angularSpeed) {
+<span class="fc" id="L1500">        return AngularSpeedConverter.convert(angularSpeed.getValue().doubleValue(), angularSpeed.getUnit(),</span>
+                AngularSpeedUnit.RADIANS_PER_SECOND);
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

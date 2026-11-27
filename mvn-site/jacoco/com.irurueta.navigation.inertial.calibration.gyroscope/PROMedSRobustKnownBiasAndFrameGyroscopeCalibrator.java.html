@@ -1,0 +1,1768 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-inertial</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.inertial.calibration.gyroscope</a> &gt; <span class="el_source">PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator.java</span></div><h1>PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2020 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.inertial.calibration.gyroscope;
+
+import com.irurueta.algebra.Matrix;
+import com.irurueta.navigation.LockedException;
+import com.irurueta.navigation.NotReadyException;
+import com.irurueta.navigation.inertial.calibration.CalibrationException;
+import com.irurueta.navigation.inertial.calibration.StandardDeviationFrameBodyKinematics;
+import com.irurueta.numerical.robust.PROMedSRobustEstimator;
+import com.irurueta.numerical.robust.PROMedSRobustEstimatorListener;
+import com.irurueta.numerical.robust.RobustEstimator;
+import com.irurueta.numerical.robust.RobustEstimatorException;
+import com.irurueta.numerical.robust.RobustEstimatorMethod;
+import com.irurueta.units.AngularSpeed;
+import java.util.List;
+
+/**
+ * Robustly estimates gyroscope cross couplings and scaling factors
+ * along with G-dependent cross biases introduced on the gyroscope by the
+ * specific forces sensed by the accelerometer using a PROMedS algorithm to discard
+ * outliers.
+ * This estimator assumes that biases are known.
+ * &lt;p&gt;
+ * To use this calibrator at least 6 measurements at different known frames must
+ * be provided. In other words, accelerometer and gyroscope (i.e. body kinematics)
+ * samples must be obtained at 6 different positions, orientations and velocities
+ * (although typically velocities are always zero).
+ * &lt;p&gt;
+ * Measured gyroscope angular rates is assumed to follow the model shown below:
+ * &lt;pre&gt;
+ *     Ωmeas = bg + (I + Mg) * Ωtrue + Gg * ftrue + w
+ * &lt;/pre&gt;
+ * Where:
+ * - Ωmeas is the measured gyroscope angular rates. This is a 3x1 vector.
+ * - bg is the gyroscope bias. Ideally, on a perfect gyroscope, this should be a
+ * 3x1 zero vector.
+ * - I is the 3x3 identity matrix.
+ * - Mg is the 3x3 matrix containing cross-couplings and scaling factors. Ideally, on
+ * a perfect gyroscope, this should be a 3x3 zero matrix.
+ * - Ωtrue is ground-truth gyroscope angular rates.
+ * - Gg is the G-dependent cross biases introduced by the specific forces sensed
+ * by the accelerometer. Ideally, on a perfect gyroscope, this should be a 3x3
+ * zero matrix.
+ * - ftrue is ground-truth specific force. This is a 3x1 vector.
+ * - w is measurement noise. This is a 3x1 vector.
+ */
+public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends RobustKnownBiasAndFrameGyroscopeCalibrator {
+
+    /**
+     * Default value to be used for stop threshold. Stop threshold can be used to
+     * avoid keeping the algorithm unnecessarily iterating in case that best
+     * estimated threshold using median of residuals is not small enough. Once a
+     * solution is found that generates a threshold below this value, the
+     * algorithm will stop.
+     * The stop threshold can be used to prevent the LMedS algorithm iterating
+     * too many times in cases where samples have a very similar accuracy.
+     * For instance, in cases where proportion of outliers is very small (close
+     * to 0%), and samples are very accurate (i.e. 1e-6), the algorithm would
+     * iterate for a long time trying to find the best solution when indeed
+     * there is no need to do that if a reasonable threshold has already been
+     * reached.
+     * Because of this behaviour the stop threshold can be set to a value much
+     * lower than the one typically used in RANSAC, and yet the algorithm could
+     * still produce even smaller thresholds in estimated results.
+     */
+    public static final double DEFAULT_STOP_THRESHOLD = 1e-5;
+
+    /**
+     * Minimum allowed stop threshold value.
+     */
+    public static final double MIN_STOP_THRESHOLD = 0.0;
+
+    /**
+     * Threshold to be used to keep the algorithm iterating in case that best
+     * estimated threshold using median of residuals is not small enough. Once
+     * a solution is found that generates a threshold below this value, the
+     * algorithm will stop.
+     * The stop threshold can be used to prevent the LMedS algorithm iterating
+     * too many times in cases where samples have a very similar accuracy.
+     * For instance, in cases where proportion of outliers is very small (close
+     * to 0%), and samples are very accurate (i.e. 1e-6), the algorithm would
+     * iterate for a long time trying to find the best solution when indeed
+     * there is no need to do that if a reasonable threshold has already been
+     * reached.
+     * Because of this behaviour the stop threshold can be set to a value much
+     * lower than the one typically used in RANSAC, and yet the algorithm could
+     * still produce even smaller thresholds in estimated results.
+     */
+<span class="fc" id="L103">    private double stopThreshold = DEFAULT_STOP_THRESHOLD;</span>
+
+    /**
+     * Quality scores corresponding to each provided sample.
+     * The larger the score value the better the quality of the sample.
+     */
+    private double[] qualityScores;
+
+    /**
+     * Constructor.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator() {
+<span class="fc" id="L115">        super();</span>
+<span class="fc" id="L116">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param listener listener to be notified of events such as when estimation
+     *                 starts, ends or its progress significantly changes.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
+<span class="fc" id="L126">        super(listener);</span>
+<span class="fc" id="L127">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements list of body kinematics measurements with standard
+     *                     deviations taken at different frames (positions, orientations
+     *                     and velocities).
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements) {
+<span class="fc" id="L138">        super(measurements);</span>
+<span class="fc" id="L139">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements list of body kinematics measurements with standard
+     *                     deviations taken at different frames (positions, orientations
+     *                     and velocities).
+     * @param listener     listener to handle events raised by this calibrator.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
+<span class="fc" id="L152">        super(measurements, listener);</span>
+<span class="fc" id="L153">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(final boolean commonAxisUsed) {
+<span class="fc" id="L162">        super(commonAxisUsed);</span>
+<span class="fc" id="L163">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param listener       listener to handle events raised by this calibrator.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final boolean commonAxisUsed, final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
+<span class="fc" id="L174">        super(commonAxisUsed, listener);</span>
+<span class="fc" id="L175">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements   list of body kinematics measurements with standard
+     *                       deviations taken at different frames (positions, orientations
+     *                       and velocities).
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements, final boolean commonAxisUsed) {
+<span class="fc" id="L188">        super(measurements, commonAxisUsed);</span>
+<span class="fc" id="L189">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements   list of body kinematics measurements with standard
+     *                       deviations taken at different frames (positions, orientations
+     *                       and velocities).
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param listener       listener to handle events raised by this calibrator.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements, final boolean commonAxisUsed,
+            final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
+<span class="fc" id="L204">        super(measurements, commonAxisUsed, listener);</span>
+<span class="fc" id="L205">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param biasX known x coordinate of gyroscope bias expressed in radians per
+     *              second (rad/s).
+     * @param biasY known y coordinate of gyroscope bias expressed in radians per
+     *              second (rad/s).
+     * @param biasZ known z coordinate of gyroscope bias expressed in radians per
+     *              second (rad/s).
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final double biasX, final double biasY, final double biasZ) {
+<span class="fc" id="L219">        super(biasX, biasY, biasZ);</span>
+<span class="fc" id="L220">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param biasX    known x coordinate of gyroscope bias expressed in radians per
+     *                 second (rad/s).
+     * @param biasY    known y coordinate of gyroscope bias expressed in radians per
+     *                 second (rad/s).
+     * @param biasZ    known z coordinate of gyroscope bias expressed in radians per
+     *                 second (rad/s).
+     * @param listener listener to be notified of events such as when estimation
+     *                 starts, ends or its progress significantly changes.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final double biasX, final double biasY, final double biasZ,
+            final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
+<span class="fc" id="L237">        super(biasX, biasY, biasZ, listener);</span>
+<span class="fc" id="L238">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements list of body kinematics measurements with standard
+     *                     deviations taken at different frames (positions, orientations
+     *                     and velocities).
+     * @param biasX        known x coordinate of gyroscope bias expressed in radians per
+     *                     second (rad/s).
+     * @param biasY        known y coordinate of gyroscope bias expressed in radians per
+     *                     second (rad/s).
+     * @param biasZ        known z coordinate of gyroscope bias expressed in radians per
+     *                     second (rad/s).
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final double biasX, final double biasY, final double biasZ) {
+<span class="fc" id="L256">        super(measurements, biasX, biasY, biasZ);</span>
+<span class="fc" id="L257">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements list of body kinematics measurements with standard
+     *                     deviations taken at different frames (positions, orientations
+     *                     and velocities).
+     * @param biasX        known x coordinate of gyroscope bias expressed in radians per
+     *                     second (rad/s).
+     * @param biasY        known y coordinate of gyroscope bias expressed in radians per
+     *                     second (rad/s).
+     * @param biasZ        known z coordinate of gyroscope bias expressed in radians per
+     *                     second (rad/s).
+     * @param listener     listener to handle events raised by this calibrator.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final double biasX, final double biasY, final double biasZ,
+            final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
+<span class="fc" id="L277">        super(measurements, biasX, biasY, biasZ, listener);</span>
+<span class="fc" id="L278">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param biasX          known x coordinate of gyroscope bias expressed in radians per
+     *                       second (rad/s).
+     * @param biasY          known y coordinate of gyroscope bias expressed in radians per
+     *                       second (rad/s).
+     * @param biasZ          known z coordinate of gyroscope bias expressed in radians per
+     *                       second (rad/s).
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final double biasX, final double biasY, final double biasZ, final boolean commonAxisUsed) {
+<span class="fc" id="L294">        super(biasX, biasY, biasZ, commonAxisUsed);</span>
+<span class="fc" id="L295">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param biasX          known x coordinate of gyroscope bias expressed in radians per
+     *                       second (rad/s).
+     * @param biasY          known y coordinate of gyroscope bias expressed in radians per
+     *                       second (rad/s).
+     * @param biasZ          known z coordinate of gyroscope bias expressed in radians per
+     *                       second (rad/s).
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param listener       listener to handle events raised by this calibrator.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final double biasX, final double biasY, final double biasZ, final boolean commonAxisUsed,
+            final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
+<span class="fc" id="L313">        super(biasX, biasY, biasZ, commonAxisUsed, listener);</span>
+<span class="fc" id="L314">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements   list of body kinematics measurements with standard
+     *                       deviations taken at different frames (positions, orientations
+     *                       and velocities).
+     * @param biasX          known x coordinate of gyroscope bias expressed in radians per
+     *                       second (rad/s).
+     * @param biasY          known y coordinate of gyroscope bias expressed in radians per
+     *                       second (rad/s).
+     * @param biasZ          known z coordinate of gyroscope bias expressed in radians per
+     *                       second (rad/s).
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final double biasX, final double biasY, final double biasZ, final boolean commonAxisUsed) {
+<span class="fc" id="L334">        super(measurements, biasX, biasY, biasZ, commonAxisUsed);</span>
+<span class="fc" id="L335">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements   list of body kinematics measurements with standard
+     *                       deviations taken at different frames (positions, orientations
+     *                       and velocities).
+     * @param biasX          known x coordinate of gyroscope bias expressed in radians per
+     *                       second (rad/s).
+     * @param biasY          known y coordinate of gyroscope bias expressed in radians per
+     *                       second (rad/s).
+     * @param biasZ          known z coordinate of gyroscope bias expressed in radians per
+     *                       second (rad/s).
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param listener       listener to handle events raised by this calibrator.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final double biasX, final double biasY, final double biasZ, final boolean commonAxisUsed,
+            final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
+<span class="fc" id="L357">        super(measurements, biasX, biasY, biasZ, commonAxisUsed, listener);</span>
+<span class="fc" id="L358">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param biasX known x coordinate of gyroscope bias.
+     * @param biasY known y coordinate of gyroscope bias.
+     * @param biasZ known z coordinate of gyroscope bias.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ) {
+<span class="fc" id="L369">        super(biasX, biasY, biasZ);</span>
+<span class="fc" id="L370">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param biasX    known x coordinate of gyroscope bias.
+     * @param biasY    known y coordinate of gyroscope bias.
+     * @param biasZ    known z coordinate of gyroscope bias.
+     * @param listener listener to be notified of events such as when estimation
+     *                 starts, ends or its progress significantly changes.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ,
+            final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
+<span class="fc" id="L384">        super(biasX, biasY, biasZ, listener);</span>
+<span class="fc" id="L385">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements list of body kinematics measurements with standard
+     *                     deviations taken at different frames (positions, orientations
+     *                     and velocities).
+     * @param biasX        known x coordinate of gyroscope bias.
+     * @param biasY        known y coordinate of gyroscope bias.
+     * @param biasZ        known z coordinate of gyroscope bias.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ) {
+<span class="fc" id="L400">        super(measurements, biasX, biasY, biasZ);</span>
+<span class="fc" id="L401">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements list of body kinematics measurements with standard
+     *                     deviations taken at different frames (positions, orientations
+     *                     and velocities).
+     * @param biasX        known x coordinate of gyroscope bias.
+     * @param biasY        known y coordinate of gyroscope bias.
+     * @param biasZ        known z coordinate of gyroscope bias.
+     * @param listener     listener to handle events raised by this calibrator.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ,
+            final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
+<span class="fc" id="L418">        super(measurements, biasX, biasY, biasZ, listener);</span>
+<span class="fc" id="L419">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param biasX          known x coordinate of gyroscope bias.
+     * @param biasY          known y coordinate of gyroscope bias.
+     * @param biasZ          known z coordinate of gyroscope bias.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ,
+            final boolean commonAxisUsed) {
+<span class="fc" id="L433">        super(biasX, biasY, biasZ, commonAxisUsed);</span>
+<span class="fc" id="L434">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param biasX          known x coordinate of gyroscope bias.
+     * @param biasY          known y coordinate of gyroscope bias.
+     * @param biasZ          known z coordinate of gyroscope bias.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param listener       listener to handle events raised by this calibrator.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ, final boolean commonAxisUsed,
+            final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
+<span class="fc" id="L449">        super(biasX, biasY, biasZ, commonAxisUsed, listener);</span>
+<span class="fc" id="L450">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements   list of body kinematics measurements with standard
+     *                       deviations taken at different frames (positions, orientations
+     *                       and velocities).
+     * @param biasX          known x coordinate of gyroscope bias.
+     * @param biasY          known y coordinate of gyroscope bias.
+     * @param biasZ          known z coordinate of gyroscope bias.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ,
+            final boolean commonAxisUsed) {
+<span class="fc" id="L468">        super(measurements, biasX, biasY, biasZ, commonAxisUsed);</span>
+<span class="fc" id="L469">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements   list of body kinematics measurements with standard
+     *                       deviations taken at different frames (positions, orientations
+     *                       and velocities).
+     * @param biasX          known x coordinate of gyroscope bias.
+     * @param biasY          known y coordinate of gyroscope bias.
+     * @param biasZ          known z coordinate of gyroscope bias.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param listener       listener to handle events raised by this calibrator.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ, final boolean commonAxisUsed,
+            final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
+<span class="fc" id="L488">        super(measurements, biasX, biasY, biasZ, commonAxisUsed, listener);</span>
+<span class="fc" id="L489">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param bias known gyroscope bias.
+     * @throws IllegalArgumentException if provided array does not have length 3.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(final double[] bias) {
+<span class="fc" id="L498">        super(bias);</span>
+<span class="fc" id="L499">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param bias     known gyroscope bias.
+     * @param listener listener to be notified of events such as when estimation
+     *                 starts, ends or its progress significantly changes.
+     * @throws IllegalArgumentException if provided array does not have length 3.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final double[] bias, final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
+<span class="fc" id="L511">        super(bias, listener);</span>
+<span class="fc" id="L512">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements list of body kinematics measurements with standard
+     *                     deviations taken at different frames (positions, orientations
+     *                     and velocities).
+     * @param bias         known gyroscope bias.
+     * @throws IllegalArgumentException if provided array does not have length 3.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements, final double[] bias) {
+<span class="fc" id="L525">        super(measurements, bias);</span>
+<span class="fc" id="L526">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements list of body kinematics measurements with standard
+     *                     deviations taken at different frames (positions, orientations
+     *                     and velocities).
+     * @param bias         known gyroscope bias.
+     * @param listener     listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided array does not have length 3.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements, final double[] bias,
+            final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
+<span class="fc" id="L541">        super(measurements, bias, listener);</span>
+<span class="fc" id="L542">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param bias           known gyroscope bias.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @throws IllegalArgumentException if provided array does not have length 3.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(final double[] bias, final boolean commonAxisUsed) {
+<span class="fc" id="L553">        super(bias, commonAxisUsed);</span>
+<span class="fc" id="L554">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param bias           known gyroscope bias.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param listener       listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided array does not have length 3.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final double[] bias, final boolean commonAxisUsed,
+            final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
+<span class="fc" id="L568">        super(bias, commonAxisUsed, listener);</span>
+<span class="fc" id="L569">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements   list of body kinematics measurements with standard
+     *                       deviations taken at different frames (positions, orientations
+     *                       and velocities).
+     * @param bias           known gyroscope bias.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @throws IllegalArgumentException if provided array does not have length 3.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements, final double[] bias,
+            final boolean commonAxisUsed) {
+<span class="fc" id="L585">        super(measurements, bias, commonAxisUsed);</span>
+<span class="fc" id="L586">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements   list of body kinematics measurements with standard
+     *                       deviations taken at different frames (positions, orientations
+     *                       and velocities).
+     * @param bias           known gyroscope bias.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param listener       listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided array does not have length 3.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final double[] bias, final boolean commonAxisUsed,
+            final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
+<span class="fc" id="L604">        super(measurements, bias, commonAxisUsed, listener);</span>
+<span class="fc" id="L605">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param bias known gyroscope bias.
+     * @throws IllegalArgumentException if provided matrix is not 3x1.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(final Matrix bias) {
+<span class="fc" id="L614">        super(bias);</span>
+<span class="fc" id="L615">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param bias     known gyroscope bias.
+     * @param listener listener to be notified of events such as when estimation
+     *                 starts, ends or its progress significantly changes.
+     * @throws IllegalArgumentException if provided matrix is not 3x1.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final Matrix bias, final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
+<span class="fc" id="L627">        super(bias, listener);</span>
+<span class="fc" id="L628">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements list of body kinematics measurements with standard
+     *                     deviations taken at different frames (positions, orientations
+     *                     and velocities).
+     * @param bias         known gyroscope bias.
+     * @throws IllegalArgumentException if provided matrix is not 3x1.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements, final Matrix bias) {
+<span class="fc" id="L641">        super(measurements, bias);</span>
+<span class="fc" id="L642">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements list of body kinematics measurements with standard
+     *                     deviations taken at different frames (positions, orientations
+     *                     and velocities).
+     * @param bias         known gyroscope bias.
+     * @param listener     listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided matrix is not 3x1.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements, final Matrix bias,
+            final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
+<span class="fc" id="L657">        super(measurements, bias, listener);</span>
+<span class="fc" id="L658">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param bias           known gyroscope bias.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @throws IllegalArgumentException if provided matrix is not 3x1.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(final Matrix bias, final boolean commonAxisUsed) {
+<span class="fc" id="L669">        super(bias, commonAxisUsed);</span>
+<span class="fc" id="L670">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param bias           known gyroscope bias.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param listener       listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided matrix is not 3x1.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final Matrix bias, final boolean commonAxisUsed,
+            final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
+<span class="fc" id="L684">        super(bias, commonAxisUsed, listener);</span>
+<span class="fc" id="L685">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements   list of body kinematics measurements with standard
+     *                       deviations taken at different frames (positions, orientations
+     *                       and velocities).
+     * @param bias           known gyroscope bias.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @throws IllegalArgumentException if provided matrix is not 3x1.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements, final Matrix bias,
+            final boolean commonAxisUsed) {
+<span class="fc" id="L701">        super(measurements, bias, commonAxisUsed);</span>
+<span class="fc" id="L702">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements   list of body kinematics measurements with standard
+     *                       deviations taken at different frames (positions, orientations
+     *                       and velocities).
+     * @param bias           known gyroscope bias.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param listener       listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided matrix is not 3x1.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final Matrix bias, final boolean commonAxisUsed,
+            final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
+<span class="fc" id="L720">        super(measurements, bias, commonAxisUsed, listener);</span>
+<span class="fc" id="L721">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param measurements  list of body kinematics measurements with standard
+     *                      deviations taken at different frames (positions, orientations
+     *                      and velocities).
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 6 samples.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final double[] qualityScores, final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements) {
+<span class="fc" id="L737">        super(measurements);</span>
+<span class="fc" id="L738">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L739">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param measurements  list of body kinematics measurements with standard
+     *                      deviations taken at different frames (positions, orientations
+     *                      and velocities).
+     * @param listener      listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 6 samples.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final double[] qualityScores, final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
+<span class="fc" id="L757">        super(measurements, listener);</span>
+<span class="fc" id="L758">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L759">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param measurements   list of body kinematics measurements with standard
+     *                       deviations taken at different frames (positions, orientations
+     *                       and velocities).
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 6 samples.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final double[] qualityScores, final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed) {
+<span class="fc" id="L778">        super(measurements, commonAxisUsed);</span>
+<span class="fc" id="L779">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L780">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param measurements   list of body kinematics measurements with standard
+     *                       deviations taken at different frames (positions, orientations
+     *                       and velocities).
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param listener       listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 6 samples.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final double[] qualityScores, final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed, final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
+<span class="fc" id="L800">        super(measurements, commonAxisUsed, listener);</span>
+<span class="fc" id="L801">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L802">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param biasX         known x coordinate of gyroscope bias expressed in radians per
+     *                      second (rad/s).
+     * @param biasY         known y coordinate of gyroscope bias expressed in radians per
+     *                      second (rad/s).
+     * @param biasZ         known z coordinate of gyroscope bias expressed in radians per
+     *                      second (rad/s).
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 6 samples.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final double[] qualityScores, final double biasX, final double biasY, final double biasZ) {
+<span class="fc" id="L821">        super(biasX, biasY, biasZ);</span>
+<span class="fc" id="L822">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L823">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param biasX         known x coordinate of gyroscope bias expressed in radians per
+     *                      second (rad/s).
+     * @param biasY         known y coordinate of gyroscope bias expressed in radians per
+     *                      second (rad/s).
+     * @param biasZ         known z coordinate of gyroscope bias expressed in radians per
+     *                      second (rad/s).
+     * @param listener      listener to be notified of events such as when estimation
+     *                      starts, ends or its progress significantly changes.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 6 samples.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final double[] qualityScores, final double biasX, final double biasY, final double biasZ,
+            final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
+<span class="fc" id="L845">        super(biasX, biasY, biasZ, listener);</span>
+<span class="fc" id="L846">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L847">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param measurements  list of body kinematics measurements with standard
+     *                      deviations taken at different frames (positions, orientations
+     *                      and velocities).
+     * @param biasX         known x coordinate of gyroscope bias expressed in radians per
+     *                      second (rad/s).
+     * @param biasY         known y coordinate of gyroscope bias expressed in radians per
+     *                      second (rad/s).
+     * @param biasZ         known z coordinate of gyroscope bias expressed in radians per
+     *                      second (rad/s).
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 6 samples.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final double[] qualityScores, final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final double biasX, final double biasY, final double biasZ) {
+<span class="fc" id="L870">        super(measurements, biasX, biasY, biasZ);</span>
+<span class="fc" id="L871">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L872">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param measurements  list of body kinematics measurements with standard
+     *                      deviations taken at different frames (positions, orientations
+     *                      and velocities).
+     * @param biasX         known x coordinate of gyroscope bias expressed in radians per
+     *                      second (rad/s).
+     * @param biasY         known y coordinate of gyroscope bias expressed in radians per
+     *                      second (rad/s).
+     * @param biasZ         known z coordinate of gyroscope bias expressed in radians per
+     *                      second (rad/s).
+     * @param listener      listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 6 samples.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final double[] qualityScores, final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final double biasX, final double biasY, final double biasZ,
+            final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
+<span class="fc" id="L897">        super(measurements, biasX, biasY, biasZ, listener);</span>
+<span class="fc" id="L898">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L899">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param biasX          known x coordinate of gyroscope bias expressed in radians per
+     *                       second (rad/s).
+     * @param biasY          known y coordinate of gyroscope bias expressed in radians per
+     *                       second (rad/s).
+     * @param biasZ          known z coordinate of gyroscope bias expressed in radians per
+     *                       second (rad/s).
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 6 samples.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final double[] qualityScores, final double biasX, final double biasY, final double biasZ,
+            final boolean commonAxisUsed) {
+<span class="fc" id="L921">        super(biasX, biasY, biasZ, commonAxisUsed);</span>
+<span class="fc" id="L922">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L923">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param biasX          known x coordinate of gyroscope bias expressed in radians per
+     *                       second (rad/s).
+     * @param biasY          known y coordinate of gyroscope bias expressed in radians per
+     *                       second (rad/s).
+     * @param biasZ          known z coordinate of gyroscope bias expressed in radians per
+     *                       second (rad/s).
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param listener       listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 6 samples.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final double[] qualityScores, final double biasX, final double biasY, final double biasZ,
+            final boolean commonAxisUsed, final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
+<span class="fc" id="L946">        super(biasX, biasY, biasZ, commonAxisUsed, listener);</span>
+<span class="fc" id="L947">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L948">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param measurements   list of body kinematics measurements with standard
+     *                       deviations taken at different frames (positions, orientations
+     *                       and velocities).
+     * @param biasX          known x coordinate of gyroscope bias expressed in radians per
+     *                       second (rad/s).
+     * @param biasY          known y coordinate of gyroscope bias expressed in radians per
+     *                       second (rad/s).
+     * @param biasZ          known z coordinate of gyroscope bias expressed in radians per
+     *                       second (rad/s).
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 6 samples.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final double[] qualityScores, final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final double biasX, final double biasY, final double biasZ, final boolean commonAxisUsed) {
+<span class="fc" id="L973">        super(measurements, biasX, biasY, biasZ, commonAxisUsed);</span>
+<span class="fc" id="L974">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L975">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param measurements   list of body kinematics measurements with standard
+     *                       deviations taken at different frames (positions, orientations
+     *                       and velocities).
+     * @param biasX          known x coordinate of gyroscope bias expressed in radians per
+     *                       second (rad/s).
+     * @param biasY          known y coordinate of gyroscope bias expressed in radians per
+     *                       second (rad/s).
+     * @param biasZ          known z coordinate of gyroscope bias expressed in radians per
+     *                       second (rad/s).
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param listener       listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 6 samples.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final double[] qualityScores, final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final double biasX, final double biasY, final double biasZ, final boolean commonAxisUsed,
+            final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
+<span class="fc" id="L1002">        super(measurements, biasX, biasY, biasZ, commonAxisUsed, listener);</span>
+<span class="fc" id="L1003">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1004">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param biasX         known x coordinate of gyroscope bias.
+     * @param biasY         known y coordinate of gyroscope bias.
+     * @param biasZ         known z coordinate of gyroscope bias.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 6 samples.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final double[] qualityScores,
+            final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ) {
+<span class="fc" id="L1021">        super(biasX, biasY, biasZ);</span>
+<span class="fc" id="L1022">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1023">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param biasX         known x coordinate of gyroscope bias.
+     * @param biasY         known y coordinate of gyroscope bias.
+     * @param biasZ         known z coordinate of gyroscope bias.
+     * @param listener      listener to be notified of events such as when estimation
+     *                      starts, ends or its progress significantly changes.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 6 samples.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final double[] qualityScores, final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ,
+            final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
+<span class="fc" id="L1042">        super(biasX, biasY, biasZ, listener);</span>
+<span class="fc" id="L1043">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1044">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param measurements  list of body kinematics measurements with standard
+     *                      deviations taken at different frames (positions, orientations
+     *                      and velocities).
+     * @param biasX         known x coordinate of gyroscope bias.
+     * @param biasY         known y coordinate of gyroscope bias.
+     * @param biasZ         known z coordinate of gyroscope bias.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 6 samples.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final double[] qualityScores, final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ) {
+<span class="fc" id="L1064">        super(measurements, biasX, biasY, biasZ);</span>
+<span class="fc" id="L1065">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1066">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param measurements  list of body kinematics measurements with standard
+     *                      deviations taken at different frames (positions, orientations
+     *                      and velocities).
+     * @param biasX         known x coordinate of gyroscope bias.
+     * @param biasY         known y coordinate of gyroscope bias.
+     * @param biasZ         known z coordinate of gyroscope bias.
+     * @param listener      listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 6 samples.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final double[] qualityScores, final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ,
+            final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
+<span class="fc" id="L1088">        super(measurements, biasX, biasY, biasZ, listener);</span>
+<span class="fc" id="L1089">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1090">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param biasX          known x coordinate of gyroscope bias.
+     * @param biasY          known y coordinate of gyroscope bias.
+     * @param biasZ          known z coordinate of gyroscope bias.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 6 samples.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final double[] qualityScores, final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ,
+            final boolean commonAxisUsed) {
+<span class="fc" id="L1109">        super(biasX, biasY, biasZ, commonAxisUsed);</span>
+<span class="fc" id="L1110">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1111">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param biasX          known x coordinate of gyroscope bias.
+     * @param biasY          known y coordinate of gyroscope bias.
+     * @param biasZ          known z coordinate of gyroscope bias.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param listener       listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 6 samples.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final double[] qualityScores, final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ,
+            final boolean commonAxisUsed, final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
+<span class="fc" id="L1131">        super(biasX, biasY, biasZ, commonAxisUsed, listener);</span>
+<span class="fc" id="L1132">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1133">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param measurements   list of body kinematics measurements with standard
+     *                       deviations taken at different frames (positions, orientations
+     *                       and velocities).
+     * @param biasX          known x coordinate of gyroscope bias.
+     * @param biasY          known y coordinate of gyroscope bias.
+     * @param biasZ          known z coordinate of gyroscope bias.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 6 samples.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final double[] qualityScores, final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ,
+            final boolean commonAxisUsed) {
+<span class="fc" id="L1156">        super(measurements, biasX, biasY, biasZ, commonAxisUsed);</span>
+<span class="fc" id="L1157">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1158">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param measurements   list of body kinematics measurements with standard
+     *                       deviations taken at different frames (positions, orientations
+     *                       and velocities).
+     * @param biasX          known x coordinate of gyroscope bias.
+     * @param biasY          known y coordinate of gyroscope bias.
+     * @param biasZ          known z coordinate of gyroscope bias.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param listener       listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 6 samples.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final double[] qualityScores, final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ,
+            final boolean commonAxisUsed, final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
+<span class="fc" id="L1182">        super(measurements, biasX, biasY, biasZ, commonAxisUsed, listener);</span>
+<span class="fc" id="L1183">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1184">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param bias          known gyroscope bias.
+     * @throws IllegalArgumentException if provided bias array does not have length 3 or
+     *                                  if provided quality scores length is smaller
+     *                                  than 6 samples.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(final double[] qualityScores, final double[] bias) {
+<span class="fc" id="L1198">        super(bias);</span>
+<span class="fc" id="L1199">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1200">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param bias          known gyroscope bias.
+     * @param listener      listener to be notified of events such as when estimation
+     *                      starts, ends or its progress significantly changes.
+     * @throws IllegalArgumentException if provided array does not have length 3 or
+     *                                  if provided quality scores length is smaller
+     *                                  than 6 samples.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final double[] qualityScores, final double[] bias,
+            final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
+<span class="fc" id="L1218">        super(bias, listener);</span>
+<span class="fc" id="L1219">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1220">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param measurements  list of body kinematics measurements with standard
+     *                      deviations taken at different frames (positions, orientations
+     *                      and velocities).
+     * @param bias          known gyroscope bias.
+     * @throws IllegalArgumentException if provided array does not have length 3 or
+     *                                  if provided quality scores length is smaller
+     *                                  than 6 samples.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final double[] qualityScores, final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final double[] bias) {
+<span class="fc" id="L1239">        super(measurements, bias);</span>
+<span class="fc" id="L1240">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1241">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param measurements  list of body kinematics measurements with standard
+     *                      deviations taken at different frames (positions, orientations
+     *                      and velocities).
+     * @param bias          known gyroscope bias.
+     * @param listener      listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided array does not have length 3 or
+     *                                  if provided quality scores length is smaller
+     *                                  than 6 samples.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final double[] qualityScores, final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final double[] bias, final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
+<span class="fc" id="L1261">        super(measurements, bias, listener);</span>
+<span class="fc" id="L1262">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1263">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param bias           known gyroscope bias.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @throws IllegalArgumentException if provided array does not have length 3 or
+     *                                  if provided quality scores length is smaller
+     *                                  than 6 samples.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final double[] qualityScores, final double[] bias, final boolean commonAxisUsed) {
+<span class="fc" id="L1280">        super(bias, commonAxisUsed);</span>
+<span class="fc" id="L1281">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1282">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param bias           known gyroscope bias.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param listener       listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided array does not have length 3 or
+     *                                  if provided quality scores length is smaller
+     *                                  than 6 samples.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final double[] qualityScores, final double[] bias, final boolean commonAxisUsed,
+            final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
+<span class="fc" id="L1301">        super(bias, commonAxisUsed, listener);</span>
+<span class="fc" id="L1302">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1303">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param measurements   list of body kinematics measurements with standard
+     *                       deviations taken at different frames (positions, orientations
+     *                       and velocities).
+     * @param bias           known gyroscope bias.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @throws IllegalArgumentException if provided array does not have length 3 or
+     *                                  if provided quality scores length is smaller
+     *                                  than 6 samples.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final double[] qualityScores, final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final double[] bias, final boolean commonAxisUsed) {
+<span class="fc" id="L1324">        super(measurements, bias, commonAxisUsed);</span>
+<span class="fc" id="L1325">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1326">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param measurements   list of body kinematics measurements with standard
+     *                       deviations taken at different frames (positions, orientations
+     *                       and velocities).
+     * @param bias           known gyroscope bias.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param listener       listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided array does not have length 3 or
+     *                                  if provided quality scores length is smaller
+     *                                  than 6 samples.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final double[] qualityScores, final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final double[] bias, final boolean commonAxisUsed,
+            final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
+<span class="fc" id="L1349">        super(measurements, bias, commonAxisUsed, listener);</span>
+<span class="fc" id="L1350">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1351">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param bias          known gyroscope bias.
+     * @throws IllegalArgumentException if provided matrix is not 3x1 or
+     *                                  if provided quality scores length is smaller
+     *                                  than 6 samples.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(final double[] qualityScores, final Matrix bias) {
+<span class="fc" id="L1365">        super(bias);</span>
+<span class="fc" id="L1366">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1367">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param bias          known gyroscope bias.
+     * @param listener      listener to be notified of events such as when estimation
+     *                      starts, ends or its progress significantly changes.
+     * @throws IllegalArgumentException if provided matrix is not 3x1 or
+     *                                  if provided quality scores length is smaller
+     *                                  than 6 samples.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final double[] qualityScores, final Matrix bias,
+            final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
+<span class="fc" id="L1385">        super(bias, listener);</span>
+<span class="fc" id="L1386">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1387">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param measurements  list of body kinematics measurements with standard
+     *                      deviations taken at different frames (positions, orientations
+     *                      and velocities).
+     * @param bias          known gyroscope bias.
+     * @throws IllegalArgumentException if provided matrix is not 3x1 or
+     *                                  if provided quality scores length is smaller
+     *                                  than 6 samples.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final double[] qualityScores, final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final Matrix bias) {
+<span class="fc" id="L1406">        super(measurements, bias);</span>
+<span class="fc" id="L1407">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1408">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param measurements  list of body kinematics measurements with standard
+     *                      deviations taken at different frames (positions, orientations
+     *                      and velocities).
+     * @param bias          known gyroscope bias.
+     * @param listener      listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided matrix is not 3x1 or
+     *                                  if provided quality scores length is smaller
+     *                                  than 6 samples.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final double[] qualityScores, final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final Matrix bias, final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
+<span class="fc" id="L1428">        super(measurements, bias, listener);</span>
+<span class="fc" id="L1429">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1430">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param bias           known gyroscope bias.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @throws IllegalArgumentException if provided matrix is not 3x1 or
+     *                                  if provided quality scores length is smaller
+     *                                  than 6 samples.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final double[] qualityScores, final Matrix bias, final boolean commonAxisUsed) {
+<span class="fc" id="L1447">        super(bias, commonAxisUsed);</span>
+<span class="fc" id="L1448">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1449">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param bias           known gyroscope bias.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param listener       listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided matrix is not 3x1 or
+     *                                  if provided quality scores length is smaller
+     *                                  than 6 samples.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final double[] qualityScores, final Matrix bias, final boolean commonAxisUsed,
+            final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
+<span class="fc" id="L1468">        super(bias, commonAxisUsed, listener);</span>
+<span class="fc" id="L1469">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1470">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param measurements   list of body kinematics measurements with standard
+     *                       deviations taken at different frames (positions, orientations
+     *                       and velocities).
+     * @param bias           known gyroscope bias.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @throws IllegalArgumentException if provided matrix is not 3x1 or
+     *                                  if provided quality scores length is smaller
+     *                                  than 6 samples.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final double[] qualityScores, final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final Matrix bias, final boolean commonAxisUsed) {
+<span class="fc" id="L1491">        super(measurements, bias, commonAxisUsed);</span>
+<span class="fc" id="L1492">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1493">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param measurements   list of body kinematics measurements with standard
+     *                       deviations taken at different frames (positions, orientations
+     *                       and velocities).
+     * @param bias           known gyroscope bias.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param listener       listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided matrix is not 3x1 or
+     *                                  if provided quality scores length is smaller
+     *                                  than 6 samples.
+     */
+    public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
+            final double[] qualityScores, final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final Matrix bias, final boolean commonAxisUsed,
+            final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
+<span class="fc" id="L1516">        super(measurements, bias, commonAxisUsed, listener);</span>
+<span class="fc" id="L1517">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1518">    }</span>
+
+    /**
+     * Returns threshold to be used to keep the algorithm iterating in case that
+     * best estimated threshold using median of residuals is not small enough.
+     * Once a solution is found that generates a threshold below this value, the
+     * algorithm will stop.
+     * The stop threshold can be used to prevent the LMedS algorithm to iterate
+     * too many times in cases where samples have a very similar accuracy.
+     * For instance, in cases where proportion of outliers is very small (close
+     * to 0%), and samples are very accurate (i.e. 1e-6), the algorithm would
+     * iterate for a long time trying to find the best solution when indeed
+     * there is no need to do that if a reasonable threshold has already been
+     * reached.
+     * Because of this behaviour the stop threshold can be set to a value much
+     * lower than the one typically used in RANSAC, and yet the algorithm could
+     * still produce even smaller thresholds in estimated results.
+     *
+     * @return stop threshold to stop the algorithm prematurely when a certain
+     * accuracy has been reached.
+     */
+    public double getStopThreshold() {
+<span class="fc" id="L1540">        return stopThreshold;</span>
+    }
+
+    /**
+     * Sets threshold to be used to keep the algorithm iterating in case that
+     * best estimated threshold using median of residuals is not small enough.
+     * Once a solution is found that generates a threshold below this value,
+     * the algorithm will stop.
+     * The stop threshold can be used to prevent the LMedS algorithm to iterate
+     * too many times in cases where samples have a very similar accuracy.
+     * For instance, in cases where proportion of outliers is very small (close
+     * to 0%), and samples are very accurate (i.e. 1e-6), the algorithm would
+     * iterate for a long time trying to find the best solution when indeed
+     * there is no need to do that if a reasonable threshold has already been
+     * reached.
+     * Because of this behaviour the stop threshold can be set to a value much
+     * lower than the one typically used in RANSAC, and yet the algorithm could
+     * still produce even smaller thresholds in estimated results.
+     *
+     * @param stopThreshold stop threshold to stop the algorithm prematurely
+     *                      when a certain accuracy has been reached.
+     * @throws IllegalArgumentException if provided value is zero or negative.
+     * @throws LockedException          if calibrator is currently running.
+     */
+    public void setStopThreshold(final double stopThreshold) throws LockedException {
+<span class="fc bfc" id="L1565" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1566">            throw new LockedException();</span>
+        }
+<span class="fc bfc" id="L1568" title="All 2 branches covered.">        if (stopThreshold &lt;= MIN_STOP_THRESHOLD) {</span>
+<span class="fc" id="L1569">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L1572">        this.stopThreshold = stopThreshold;</span>
+<span class="fc" id="L1573">    }</span>
+
+    /**
+     * Returns quality scores corresponding to each provided sample.
+     * The larger the score value the better the quality of the sample.
+     *
+     * @return quality scores corresponding to each sample.
+     */
+    @Override
+    public double[] getQualityScores() {
+<span class="fc" id="L1583">        return qualityScores;</span>
+    }
+
+    /**
+     * Sets quality scores corresponding to each provided sample.
+     * The larger the score value the better the quality of the sample.
+     *
+     * @param qualityScores quality scores corresponding to each sample.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than minimum required samples.
+     * @throws LockedException          if calibrator is currently running.
+     */
+    @Override
+    public void setQualityScores(final double[] qualityScores) throws LockedException {
+<span class="fc bfc" id="L1597" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1598">            throw new LockedException();</span>
+        }
+<span class="fc" id="L1600">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1601">    }</span>
+
+    /**
+     * Indicates whether solver is ready to find a solution.
+     *
+     * @return true if solver is ready, false otherwise.
+     */
+    @Override
+    public boolean isReady() {
+<span class="pc bpc" id="L1610" title="2 of 6 branches missed.">        return super.isReady() &amp;&amp; qualityScores != null &amp;&amp; qualityScores.length == measurements.size();</span>
+    }
+
+    /**
+     * Estimates gyroscope calibration parameters containing bias, scale factors
+     * cross-coupling errors and g-dependant cross biases.
+     *
+     * @throws LockedException      if calibrator is currently running.
+     * @throws NotReadyException    if calibrator is not ready.
+     * @throws CalibrationException if estimation fails for numerical reasons.
+     */
+    @SuppressWarnings(&quot;DuplicatedCode&quot;)
+    @Override
+    public void calibrate() throws LockedException, NotReadyException, CalibrationException {
+<span class="fc bfc" id="L1624" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L1625">            throw new LockedException();</span>
+        }
+<span class="pc bpc" id="L1627" title="1 of 2 branches missed.">        if (!isReady()) {</span>
+<span class="nc" id="L1628">            throw new NotReadyException();</span>
+        }
+
+<span class="fc" id="L1631">        final var innerEstimator = new PROMedSRobustEstimator&lt;&gt;(</span>
+<span class="fc" id="L1632">                new PROMedSRobustEstimatorListener&lt;PreliminaryResult&gt;() {</span>
+                    @Override
+                    public double[] getQualityScores() {
+<span class="fc" id="L1635">                        return qualityScores;</span>
+                    }
+
+                    @Override
+                    public double getThreshold() {
+<span class="fc" id="L1640">                        return stopThreshold;</span>
+                    }
+
+                    @Override
+                    public int getTotalSamples() {
+<span class="fc" id="L1645">                        return measurements.size();</span>
+                    }
+
+                    @Override
+                    public int getSubsetSize() {
+<span class="fc" id="L1650">                        return preliminarySubsetSize;</span>
+                    }
+
+                    @Override
+                    public void estimatePreliminarSolutions(
+                            final int[] samplesIndices, final List&lt;PreliminaryResult&gt; solutions) {
+<span class="fc" id="L1656">                        computePreliminarySolutions(samplesIndices, solutions);</span>
+<span class="fc" id="L1657">                    }</span>
+
+                    @Override
+                    public double computeResidual(final PreliminaryResult currentEstimation, final int i) {
+<span class="fc" id="L1661">                        return computeError(measurements.get(i), currentEstimation);</span>
+                    }
+
+                    @Override
+                    public boolean isReady() {
+<span class="fc" id="L1666">                        return PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator.this.isReady();</span>
+                    }
+
+                    @Override
+                    public void onEstimateStart(final RobustEstimator&lt;PreliminaryResult&gt; estimator) {
+                        // no action needed
+<span class="fc" id="L1672">                    }</span>
+
+                    @Override
+                    public void onEstimateEnd(final RobustEstimator&lt;PreliminaryResult&gt; estimator) {
+                        // no action needed
+<span class="fc" id="L1677">                    }</span>
+
+                    @Override
+                    public void onEstimateNextIteration(
+                            final RobustEstimator&lt;PreliminaryResult&gt; estimator, final int iteration) {
+<span class="pc bpc" id="L1682" title="1 of 2 branches missed.">                        if (listener != null) {</span>
+<span class="fc" id="L1683">                            listener.onCalibrateNextIteration(</span>
+                                    PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator.this, iteration);
+                        }
+<span class="fc" id="L1686">                    }</span>
+
+                    @Override
+                    public void onEstimateProgressChange(
+                            final RobustEstimator&lt;PreliminaryResult&gt; estimator, final float progress) {
+<span class="nc bnc" id="L1691" title="All 2 branches missed.">                        if (listener != null) {</span>
+<span class="nc" id="L1692">                            listener.onCalibrateProgressChange(</span>
+                                    PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator.this, progress);
+                        }
+<span class="nc" id="L1695">                    }</span>
+                });
+
+        try {
+<span class="fc" id="L1699">            running = true;</span>
+
+<span class="pc bpc" id="L1701" title="1 of 2 branches missed.">            if (listener != null) {</span>
+<span class="fc" id="L1702">                listener.onCalibrateStart(this);</span>
+            }
+
+<span class="fc" id="L1705">            inliersData = null;</span>
+<span class="fc" id="L1706">            innerEstimator.setUseInlierThresholds(true);</span>
+<span class="fc" id="L1707">            innerEstimator.setConfidence(confidence);</span>
+<span class="fc" id="L1708">            innerEstimator.setMaxIterations(maxIterations);</span>
+<span class="fc" id="L1709">            innerEstimator.setProgressDelta(progressDelta);</span>
+<span class="fc" id="L1710">            final var preliminaryResult = innerEstimator.estimate();</span>
+<span class="fc" id="L1711">            inliersData = innerEstimator.getInliersData();</span>
+
+<span class="fc" id="L1713">            attemptRefine(preliminaryResult);</span>
+
+<span class="pc bpc" id="L1715" title="1 of 2 branches missed.">            if (listener != null) {</span>
+<span class="fc" id="L1716">                listener.onCalibrateEnd(this);</span>
+            }
+
+<span class="nc" id="L1719">        } catch (final com.irurueta.numerical.LockedException e) {</span>
+<span class="nc" id="L1720">            throw new LockedException(e);</span>
+<span class="nc" id="L1721">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
+<span class="nc" id="L1722">            throw new NotReadyException(e);</span>
+<span class="nc" id="L1723">        } catch (final RobustEstimatorException e) {</span>
+<span class="nc" id="L1724">            throw new CalibrationException(e);</span>
+        } finally {
+<span class="fc" id="L1726">            running = false;</span>
+        }
+<span class="fc" id="L1728">    }</span>
+
+    /**
+     * Returns method being used for robust estimation.
+     *
+     * @return method being used for robust estimation.
+     */
+    @Override
+    public RobustEstimatorMethod getMethod() {
+<span class="fc" id="L1737">        return RobustEstimatorMethod.PROMEDS;</span>
+    }
+
+    /**
+     * Indicates whether this calibrator requires quality scores for each
+     * measurement/sequence or not.
+     *
+     * @return true if quality scores are required, false otherwise.
+     */
+    @Override
+    public boolean isQualityScoresRequired() {
+<span class="fc" id="L1748">        return true;</span>
+    }
+
+    /**
+     * Sets quality scores corresponding to each provided sample.
+     * This method is used internally and does not check whether instance is
+     * locked or not.
+     *
+     * @param qualityScoresParam quality scores to be set.
+     * @throws IllegalArgumentException if provided quality scores length is
+     *                                  smaller than 6 samples.
+     */
+    private void internalSetQualityScores(final double[] qualityScoresParam) {
+<span class="pc bpc" id="L1761" title="1 of 4 branches missed.">        if (qualityScoresParam == null || qualityScoresParam.length &lt; MINIMUM_MEASUREMENTS) {</span>
+<span class="fc" id="L1762">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L1765">        qualityScores = qualityScoresParam;</span>
+<span class="fc" id="L1766">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

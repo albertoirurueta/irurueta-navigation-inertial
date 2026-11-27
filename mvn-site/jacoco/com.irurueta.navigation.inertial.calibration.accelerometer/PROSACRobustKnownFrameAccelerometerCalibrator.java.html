@@ -1,0 +1,610 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PROSACRobustKnownFrameAccelerometerCalibrator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-inertial</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.inertial.calibration.accelerometer</a> &gt; <span class="el_source">PROSACRobustKnownFrameAccelerometerCalibrator.java</span></div><h1>PROSACRobustKnownFrameAccelerometerCalibrator.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2020 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.inertial.calibration.accelerometer;
+
+import com.irurueta.navigation.LockedException;
+import com.irurueta.navigation.NotReadyException;
+import com.irurueta.navigation.inertial.calibration.CalibrationException;
+import com.irurueta.navigation.inertial.calibration.StandardDeviationFrameBodyKinematics;
+import com.irurueta.numerical.robust.PROSACRobustEstimator;
+import com.irurueta.numerical.robust.PROSACRobustEstimatorListener;
+import com.irurueta.numerical.robust.RobustEstimator;
+import com.irurueta.numerical.robust.RobustEstimatorException;
+import com.irurueta.numerical.robust.RobustEstimatorMethod;
+import java.util.List;
+
+/**
+ * Robustly estimates accelerometer biases, cross couplings and scaling factors
+ * using a PROSAC algorithm to discard outliers.
+ * &lt;p&gt;
+ * To use this calibrator at least 4 measurements at different known frames must
+ * be provided. In other words, accelerometer samples must be obtained at 4
+ * different positions, orientations and velocities (although typically velocities are
+ * always zero).
+ * &lt;p&gt;
+ * Measured specific force is assumed to follow the model shown below:
+ * &lt;pre&gt;
+ *     fmeas = ba + (I + Ma) * ftrue + w
+ * &lt;/pre&gt;
+ * Where:
+ * - fmeas is the measured specific force. This is a 3x1 vector.
+ * - ba is accelerometer bias. Ideally, on a perfect accelerometer, this should be a
+ * 3x1 zero vector.
+ * - I is the 3x3 identity matrix.
+ * - Ma is the 3x3 matrix containing cross-couplings and scaling factors. Ideally, on
+ * a perfect accelerometer, this should be a 3x3 zero matrix.
+ * - ftrue is ground-truth specific force.
+ * - w is measurement noise.
+ */
+public class PROSACRobustKnownFrameAccelerometerCalibrator extends RobustKnownFrameAccelerometerCalibrator {
+
+    /**
+     * Constant defining default threshold to determine whether samples are inliers or not.
+     */
+    public static final double DEFAULT_THRESHOLD = 1e-2;
+
+    /**
+     * Minimum value that can be set as threshold.
+     * Threshold must be strictly greater than 0.0.
+     */
+    public static final double MIN_THRESHOLD = 0.0;
+
+    /**
+     * Indicates that by default inliers will only be computed but not kept.
+     */
+    public static final boolean DEFAULT_COMPUTE_AND_KEEP_INLIERS = false;
+
+    /**
+     * Indicates that by default residuals will only be computed but not kept.
+     */
+    public static final boolean DEFAULT_COMPUTE_AND_KEEP_RESIDUALS = false;
+
+    /**
+     * Threshold to determine whether samples are inliers or not when testing possible solutions.
+     * The threshold refers to the amount of error on distance between estimated position and
+     * distances provided for each sample.
+     */
+<span class="fc" id="L80">    private double threshold = DEFAULT_THRESHOLD;</span>
+
+    /**
+     * Indicates whether inliers must be computed and kept.
+     */
+<span class="fc" id="L85">    private boolean computeAndKeepInliers = DEFAULT_COMPUTE_AND_KEEP_INLIERS;</span>
+
+    /**
+     * Indicates whether residuals must be computed and kept.
+     */
+<span class="fc" id="L90">    private boolean computeAndKeepResiduals = DEFAULT_COMPUTE_AND_KEEP_RESIDUALS;</span>
+
+    /**
+     * Quality scores corresponding to each provided sample.
+     * The larger the score value the better the quality of the sample.
+     */
+    private double[] qualityScores;
+
+    /**
+     * Constructor.
+     */
+<span class="fc" id="L101">    public PROSACRobustKnownFrameAccelerometerCalibrator() {</span>
+<span class="fc" id="L102">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param listener listener to be notified of events such as when estimation
+     *                 starts, ends or its progress significantly changes.
+     */
+    public PROSACRobustKnownFrameAccelerometerCalibrator(
+            final RobustKnownFrameAccelerometerCalibratorListener listener) {
+<span class="fc" id="L112">        super(listener);</span>
+<span class="fc" id="L113">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements list of body kinematics measurements with standard
+     *                     deviations taken at different frames (positions, orientations
+     *                     and velocities).
+     */
+    public PROSACRobustKnownFrameAccelerometerCalibrator(
+            final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements) {
+<span class="fc" id="L124">        super(measurements);</span>
+<span class="fc" id="L125">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements list of body kinematics measurements with standard
+     *                     deviations taken at different frames (positions, orientations
+     *                     and velocities).
+     * @param listener     listener to handle events raised by this calibrator.
+     */
+    public PROSACRobustKnownFrameAccelerometerCalibrator(
+            final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final RobustKnownFrameAccelerometerCalibratorListener listener) {
+<span class="fc" id="L138">        super(measurements, listener);</span>
+<span class="fc" id="L139">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     */
+    public PROSACRobustKnownFrameAccelerometerCalibrator(final boolean commonAxisUsed) {
+<span class="fc" id="L148">        super(commonAxisUsed);</span>
+<span class="fc" id="L149">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param listener       listener to handle events raised by this calibrator.
+     */
+    public PROSACRobustKnownFrameAccelerometerCalibrator(
+            final boolean commonAxisUsed, final RobustKnownFrameAccelerometerCalibratorListener listener) {
+<span class="fc" id="L160">        super(commonAxisUsed, listener);</span>
+<span class="fc" id="L161">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements   list of body kinematics measurements with standard
+     *                       deviations taken at different frames (positions, orientations
+     *                       and velocities).
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     */
+    public PROSACRobustKnownFrameAccelerometerCalibrator(
+            final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements, final boolean commonAxisUsed) {
+<span class="fc" id="L174">        super(measurements, commonAxisUsed);</span>
+<span class="fc" id="L175">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements   list of body kinematics measurements with standard
+     *                       deviations taken at different frames (positions, orientations
+     *                       and velocities).
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param listener       listener to handle events raised by this calibrator.
+     */
+    public PROSACRobustKnownFrameAccelerometerCalibrator(
+            final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements, final boolean commonAxisUsed,
+            final RobustKnownFrameAccelerometerCalibratorListener listener) {
+<span class="fc" id="L190">        super(measurements, commonAxisUsed, listener);</span>
+<span class="fc" id="L191">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 4 samples.
+     */
+<span class="fc" id="L202">    public PROSACRobustKnownFrameAccelerometerCalibrator(final double[] qualityScores) {</span>
+<span class="fc" id="L203">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L204">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param listener      listener to be notified of events such as when estimation
+     *                      starts, ends or its progress significantly changes.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 4 samples.
+     */
+    public PROSACRobustKnownFrameAccelerometerCalibrator(
+            final double[] qualityScores, final RobustKnownFrameAccelerometerCalibratorListener listener) {
+<span class="fc" id="L219">        super(listener);</span>
+<span class="fc" id="L220">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L221">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param measurements  list of body kinematics measurements with standard
+     *                      deviations taken at different frames (positions, orientations
+     *                      and velocities).
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 4 samples.
+     */
+    public PROSACRobustKnownFrameAccelerometerCalibrator(
+            final double[] qualityScores, final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements) {
+<span class="fc" id="L237">        super(measurements);</span>
+<span class="fc" id="L238">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L239">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param measurements  list of body kinematics measurements with standard
+     *                      deviations taken at different frames (positions, orientations
+     *                      and velocities).
+     * @param listener      listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 4 samples.
+     */
+    public PROSACRobustKnownFrameAccelerometerCalibrator(
+            final double[] qualityScores, final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final RobustKnownFrameAccelerometerCalibratorListener listener) {
+<span class="fc" id="L257">        super(measurements, listener);</span>
+<span class="fc" id="L258">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L259">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 4 samples.
+     */
+    public PROSACRobustKnownFrameAccelerometerCalibrator(final double[] qualityScores, final boolean commonAxisUsed) {
+<span class="fc" id="L273">        super(commonAxisUsed);</span>
+<span class="fc" id="L274">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L275">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param listener       listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 4 samples.
+     */
+    public PROSACRobustKnownFrameAccelerometerCalibrator(
+            final double[] qualityScores, final boolean commonAxisUsed,
+            final RobustKnownFrameAccelerometerCalibratorListener listener) {
+<span class="fc" id="L292">        super(commonAxisUsed, listener);</span>
+<span class="fc" id="L293">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L294">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param measurements   list of body kinematics measurements with standard
+     *                       deviations taken at different frames (positions, orientations
+     *                       and velocities).
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 4 samples.
+     */
+    public PROSACRobustKnownFrameAccelerometerCalibrator(
+            final double[] qualityScores, final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed) {
+<span class="fc" id="L313">        super(measurements, commonAxisUsed);</span>
+<span class="fc" id="L314">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L315">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param measurements   list of body kinematics measurements with standard
+     *                       deviations taken at different frames (positions, orientations
+     *                       and velocities).
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     * @param listener       listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 4 samples.
+     */
+    public PROSACRobustKnownFrameAccelerometerCalibrator(
+            final double[] qualityScores, final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed, final RobustKnownFrameAccelerometerCalibratorListener listener) {
+<span class="fc" id="L335">        super(measurements, commonAxisUsed, listener);</span>
+<span class="fc" id="L336">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L337">    }</span>
+
+    /**
+     * Gets threshold to determine whether samples are inliers or not when testing possible solutions.
+     * The threshold refers to the amount of error on norm between measured specific forces and the
+     * ones generated with estimated calibration parameters provided for each sample.
+     *
+     * @return threshold to determine whether samples are inliers or not.
+     */
+    public double getThreshold() {
+<span class="fc" id="L347">        return threshold;</span>
+    }
+
+    /**
+     * Sets threshold to determine whether samples are inliers or not when testing possible solutions.
+     * The threshold refers to the amount of error on norm between measured specific forces and the
+     * ones generated with estimated calibration parameters provided for each sample.
+     *
+     * @param threshold threshold to determine whether samples are inliers or not.
+     * @throws IllegalArgumentException if provided value is equal or less than zero.
+     * @throws LockedException          if calibrator is currently running.
+     */
+    public void setThreshold(final double threshold) throws LockedException {
+<span class="fc bfc" id="L360" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L361">            throw new LockedException();</span>
+        }
+<span class="fc bfc" id="L363" title="All 2 branches covered.">        if (threshold &lt;= MIN_THRESHOLD) {</span>
+<span class="fc" id="L364">            throw new IllegalArgumentException();</span>
+        }
+<span class="fc" id="L366">        this.threshold = threshold;</span>
+<span class="fc" id="L367">    }</span>
+
+    /**
+     * Returns quality scores corresponding to each provided sample.
+     * The larger the score value the better the quality of the sample.
+     *
+     * @return quality scores corresponding to each sample.
+     */
+    @Override
+    public double[] getQualityScores() {
+<span class="fc" id="L377">        return qualityScores;</span>
+    }
+
+    /**
+     * Sets quality scores corresponding to each provided sample.
+     * The larger the score value the better the quality of the sample.
+     *
+     * @param qualityScores quality scores corresponding to each sample.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than minimum required samples.
+     * @throws LockedException          if calibrator is currently running.
+     */
+    @Override
+    public void setQualityScores(final double[] qualityScores) throws LockedException {
+<span class="fc bfc" id="L391" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L392">            throw new LockedException();</span>
+        }
+<span class="fc" id="L394">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L395">    }</span>
+
+    /**
+     * Indicates whether calibrator is ready to find a solution.
+     *
+     * @return true if calibrator is ready, false otherwise.
+     */
+    @Override
+    public boolean isReady() {
+<span class="pc bpc" id="L404" title="2 of 6 branches missed.">        return super.isReady() &amp;&amp; qualityScores != null &amp;&amp; qualityScores.length == measurements.size();</span>
+    }
+
+    /**
+     * Indicates whether inliers must be computed and kept.
+     *
+     * @return true if inliers must be computed and kept, false if inliers
+     * only need to be computed but not kept.
+     */
+    public boolean isComputeAndKeepInliersEnabled() {
+<span class="fc" id="L414">        return computeAndKeepInliers;</span>
+    }
+
+    /**
+     * Specifies whether inliers must be computed and kept.
+     *
+     * @param computeAndKeepInliersParam true if inliers must be computed and kept,
+     *                              false if inliers only need to be computed but not kept.
+     * @throws LockedException if calibrator is currently running.
+     */
+    public void setComputeAndKeepInliersEnabled(final boolean computeAndKeepInliersParam) throws LockedException {
+<span class="fc bfc" id="L425" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L426">            throw new LockedException();</span>
+        }
+<span class="fc" id="L428">        computeAndKeepInliers = computeAndKeepInliersParam;</span>
+<span class="fc" id="L429">    }</span>
+
+    /**
+     * Indicates whether residuals must be computed and kept.
+     *
+     * @return true if residuals must be computed and kept, false if residuals
+     * only need to be computed but not kept.
+     */
+    public boolean isComputeAndKeepResiduals() {
+<span class="fc" id="L438">        return computeAndKeepResiduals;</span>
+    }
+
+    /**
+     * Specifies whether residuals must be computed and kept.
+     *
+     * @param computeAndKeepResidualsParam true if residuals must be computed and kept,
+     *                                false if residuals only need to be computed but not kept.
+     * @throws LockedException if calibrator is currently running.
+     */
+    public void setComputeAndKeepResidualsEnabled(final boolean computeAndKeepResidualsParam) throws LockedException {
+<span class="fc bfc" id="L449" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L450">            throw new LockedException();</span>
+        }
+<span class="fc" id="L452">        computeAndKeepResiduals = computeAndKeepResidualsParam;</span>
+<span class="fc" id="L453">    }</span>
+
+    /**
+     * Estimates accelerometer calibration parameters containing bias, scale factors
+     * and cross-coupling errors.
+     *
+     * @throws LockedException      if calibrator is currently running.
+     * @throws NotReadyException    if calibrator is not ready.
+     * @throws CalibrationException if estimation fails for numerical reasons.
+     */
+    @SuppressWarnings(&quot;DuplicatedCode&quot;)
+    @Override
+    public void calibrate() throws LockedException, NotReadyException, CalibrationException {
+<span class="fc bfc" id="L466" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L467">            throw new LockedException();</span>
+        }
+<span class="pc bpc" id="L469" title="1 of 2 branches missed.">        if (!isReady()) {</span>
+<span class="nc" id="L470">            throw new NotReadyException();</span>
+        }
+
+<span class="fc" id="L473">        final var innerEstimator = new PROSACRobustEstimator&lt;&gt;(new PROSACRobustEstimatorListener&lt;PreliminaryResult&gt;() {</span>
+            @Override
+            public double[] getQualityScores() {
+<span class="fc" id="L476">                return qualityScores;</span>
+            }
+
+            @Override
+            public double getThreshold() {
+<span class="fc" id="L481">                return threshold;</span>
+            }
+
+            @Override
+            public int getTotalSamples() {
+<span class="fc" id="L486">                return measurements.size();</span>
+            }
+
+            @Override
+            public int getSubsetSize() {
+<span class="fc" id="L491">                return preliminarySubsetSize;</span>
+            }
+
+            @Override
+            public void estimatePreliminarSolutions(
+                    final int[] samplesIndices, final List&lt;PreliminaryResult&gt; solutions) {
+<span class="fc" id="L497">                computePreliminarySolutions(samplesIndices, solutions);</span>
+<span class="fc" id="L498">            }</span>
+
+            @Override
+            public double computeResidual(final PreliminaryResult currentEstimation, final int i) {
+<span class="fc" id="L502">                return computeError(measurements.get(i), currentEstimation);</span>
+            }
+
+            @Override
+            public boolean isReady() {
+<span class="fc" id="L507">                return PROSACRobustKnownFrameAccelerometerCalibrator.this.isReady();</span>
+            }
+
+            @Override
+            public void onEstimateStart(final RobustEstimator&lt;PreliminaryResult&gt; estimator) {
+                // no action needed
+<span class="fc" id="L513">            }</span>
+
+            @Override
+            public void onEstimateEnd(final RobustEstimator&lt;PreliminaryResult&gt; estimator) {
+                // no action needed
+<span class="fc" id="L518">            }</span>
+
+            @Override
+            public void onEstimateNextIteration(
+                    final RobustEstimator&lt;PreliminaryResult&gt; estimator, final int iteration) {
+<span class="pc bpc" id="L523" title="1 of 2 branches missed.">                if (listener != null) {</span>
+<span class="fc" id="L524">                    listener.onCalibrateNextIteration(</span>
+                            PROSACRobustKnownFrameAccelerometerCalibrator.this, iteration);
+                }
+<span class="fc" id="L527">            }</span>
+
+            @Override
+            public void onEstimateProgressChange(
+                    final RobustEstimator&lt;PreliminaryResult&gt; estimator, final float progress) {
+<span class="nc bnc" id="L532" title="All 2 branches missed.">                if (listener != null) {</span>
+<span class="nc" id="L533">                    listener.onCalibrateProgressChange(</span>
+                            PROSACRobustKnownFrameAccelerometerCalibrator.this, progress);
+                }
+<span class="nc" id="L536">            }</span>
+        });
+
+        try {
+<span class="fc" id="L540">            running = true;</span>
+
+<span class="pc bpc" id="L542" title="1 of 2 branches missed.">            if (listener != null) {</span>
+<span class="fc" id="L543">                listener.onCalibrateStart(this);</span>
+            }
+
+<span class="fc" id="L546">            inliersData = null;</span>
+<span class="pc bpc" id="L547" title="1 of 4 branches missed.">            innerEstimator.setComputeAndKeepInliersEnabled(computeAndKeepInliers || refineResult);</span>
+<span class="pc bpc" id="L548" title="1 of 4 branches missed.">            innerEstimator.setComputeAndKeepResidualsEnabled(computeAndKeepResiduals || refineResult);</span>
+<span class="fc" id="L549">            innerEstimator.setConfidence(confidence);</span>
+<span class="fc" id="L550">            innerEstimator.setMaxIterations(maxIterations);</span>
+<span class="fc" id="L551">            innerEstimator.setProgressDelta(progressDelta);</span>
+<span class="fc" id="L552">            final var preliminaryResult = innerEstimator.estimate();</span>
+<span class="fc" id="L553">            inliersData = innerEstimator.getInliersData();</span>
+
+<span class="fc" id="L555">            attemptRefine(preliminaryResult);</span>
+
+<span class="pc bpc" id="L557" title="1 of 2 branches missed.">            if (listener != null) {</span>
+<span class="fc" id="L558">                listener.onCalibrateEnd(this);</span>
+            }
+
+<span class="nc" id="L561">        } catch (final com.irurueta.numerical.LockedException e) {</span>
+<span class="nc" id="L562">            throw new LockedException(e);</span>
+<span class="nc" id="L563">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
+<span class="nc" id="L564">            throw new NotReadyException(e);</span>
+<span class="nc" id="L565">        } catch (final RobustEstimatorException e) {</span>
+<span class="nc" id="L566">            throw new CalibrationException(e);</span>
+        } finally {
+<span class="fc" id="L568">            running = false;</span>
+        }
+<span class="fc" id="L570">    }</span>
+
+    /**
+     * Returns method being used for robust estimation.
+     *
+     * @return method being used for robust estimation.
+     */
+    @Override
+    public RobustEstimatorMethod getMethod() {
+<span class="fc" id="L579">        return RobustEstimatorMethod.PROSAC;</span>
+    }
+
+    /**
+     * Indicates whether this calibrator requires quality scores for each
+     * measurement or not.
+     *
+     * @return true if quality scores are required, false otherwise.
+     */
+    @Override
+    public boolean isQualityScoresRequired() {
+<span class="fc" id="L590">        return true;</span>
+    }
+
+    /**
+     * Sets quality scores corresponding to each provided sample.
+     * This method is used internally and does not check whether instance is
+     * locked or not.
+     *
+     * @param qualityScoresParam quality scores to be set.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 4 samples.
+     */
+    private void internalSetQualityScores(final double[] qualityScoresParam) {
+<span class="pc bpc" id="L603" title="1 of 4 branches missed.">        if (qualityScoresParam == null || qualityScoresParam.length &lt; MINIMUM_MEASUREMENTS) {</span>
+<span class="fc" id="L604">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L607">        qualityScores = qualityScoresParam;</span>
+<span class="fc" id="L608">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

@@ -1,0 +1,2207 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-inertial</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.inertial.calibration.magnetometer</a> &gt; <span class="el_source">PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator.java</span></div><h1>PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2020 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.inertial.calibration.magnetometer;
+
+import com.irurueta.algebra.Matrix;
+import com.irurueta.navigation.LockedException;
+import com.irurueta.navigation.NotReadyException;
+import com.irurueta.navigation.frames.ECEFPosition;
+import com.irurueta.navigation.frames.NEDPosition;
+import com.irurueta.navigation.inertial.calibration.CalibrationException;
+import com.irurueta.navigation.inertial.calibration.StandardDeviationBodyMagneticFluxDensity;
+import com.irurueta.navigation.inertial.wmm.WorldMagneticModel;
+import com.irurueta.numerical.robust.PROMedSRobustEstimator;
+import com.irurueta.numerical.robust.PROMedSRobustEstimatorListener;
+import com.irurueta.numerical.robust.RobustEstimator;
+import com.irurueta.numerical.robust.RobustEstimatorException;
+import com.irurueta.numerical.robust.RobustEstimatorMethod;
+import java.io.IOException;
+import java.util.List;
+
+/**
+ * Robustly estimates magnetometer cross couplings and scaling factors
+ * using PROMedS algorithm.
+ * &lt;p&gt;
+ * To use this calibrator at least 7 measurements taken at a single known
+ * position and instant must be taken at 7 different unknown orientations and
+ * zero velocity when common z-axis is assumed, otherwise at least 10
+ * measurements are required.
+ * &lt;p&gt;
+ * Measured magnetic flux density is assumed to follow the model shown below:
+ * &lt;pre&gt;
+ *     mBmeas = bm + (I + Mm) * mBtrue + w
+ * &lt;/pre&gt;
+ * Where:
+ * - mBmeas is the measured magnetic flux density. This is a 3x1 vector.
+ * - bm is magnetometer hard-iron bias. Ideally, on a perfect magnetometer,
+ * this should be a 3x1 zero vector.
+ * - I is the 3x3 identity matrix.
+ * - Mm is the 3x3 soft-iron matrix containing cross-couplings and scaling
+ * factors. Ideally, on a perfect magnetometer, this should be a 3x3 zero
+ * matrix.
+ * - mBtrue is ground-truth magnetic flux density. This is a 3x1 vector.
+ * - w is measurement noise. This is a 3x1 vector.
+ * Notice that this calibrator assumes that all measurements are taken in
+ * a short span of time, where Earth magnetic field can be assumed to be
+ * constant at provided location and instant.
+ */
+public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator extends
+        RobustKnownHardIronPositionAndInstantMagnetometerCalibrator {
+
+    /**
+     * Default value to be used for stop threshold. Stop threshold can be used to
+     * avoid keeping the algorithm unnecessarily iterating in case that best
+     * estimated threshold using median of residuals is not small enough. Once a
+     * solution is found that generates a threshold below this value, the
+     * algorithm will stop.
+     * The stop threshold can be used to prevent the LMedS algorithm iterating
+     * too many times in cases where samples have a very similar accuracy.
+     * For instance, in cases where proportion of outliers is very small (close
+     * to 0%), and samples are very accurate (i.e. 1e-6), the algorithm would
+     * iterate for a long time trying to find the best solution when indeed
+     * there is no need to do that if a reasonable threshold has already been
+     * reached.
+     * Because of this behaviour the stop threshold can be set to a value much
+     * lower than the one typically used in RANSAC, and yet the algorithm could
+     * still produce even smaller thresholds in estimated results.
+     */
+    public static final double DEFAULT_STOP_THRESHOLD = 1e-9;
+
+    /**
+     * Minimum allowed stop threshold value.
+     */
+    public static final double MIN_STOP_THRESHOLD = 0.0;
+
+    /**
+     * Threshold to be used to keep the algorithm iterating in case that best
+     * estimated threshold using median of residuals is not small enough. Once
+     * a solution is found that generates a threshold below this value, the
+     * algorithm will stop.
+     * The stop threshold can be used to prevent the LMedS algorithm iterating
+     * too many times in cases where samples have a very similar accuracy.
+     * For instance, in cases where proportion of outliers is very small (close
+     * to 0%), and samples are very accurate (i.e. 1e-6), the algorithm would
+     * iterate for a long time trying to find the best solution when indeed
+     * there is no need to do that if a reasonable threshold has already been
+     * reached.
+     * Because of this behaviour the stop threshold can be set to a value much
+     * lower than the one typically used in RANSAC, and yet the algorithm could
+     * still produce even smaller thresholds in estimated results.
+     */
+<span class="fc" id="L104">    private double stopThreshold = DEFAULT_STOP_THRESHOLD;</span>
+
+    /**
+     * Quality scores corresponding to each provided sample.
+     * The larger the score value the better the quality of the sample.
+     */
+    private double[] qualityScores;
+
+    /**
+     * Constructor.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator() {
+<span class="fc" id="L116">        super();</span>
+<span class="fc" id="L117">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param listener listener to handle events raised by this calibrator.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
+<span class="fc" id="L126">        super(listener);</span>
+<span class="fc" id="L127">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements list of body magnetic flux density
+     *                     measurements with standard deviation of
+     *                     magnetometer measurements taken at the same
+     *                     position with zero velocity and unknown different
+     *                     orientations.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements) {
+<span class="fc" id="L140">        super(measurements);</span>
+<span class="fc" id="L141">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(final boolean commonAxisUsed) {
+<span class="fc" id="L150">        super(commonAxisUsed);</span>
+<span class="fc" id="L151">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param magneticModel Earth's magnetic model. If null, a default model
+     *                      will be used instead.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(final WorldMagneticModel magneticModel) {
+<span class="fc" id="L160">        super(magneticModel);</span>
+<span class="fc" id="L161">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param hardIron known hard-iron.
+     * @throws IllegalArgumentException if provided hard-iron array does
+     *                                  not have length 3.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(final double[] hardIron) {
+<span class="fc" id="L171">        super(hardIron);</span>
+<span class="fc" id="L172">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param hardIron known hard-iron.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(final Matrix hardIron) {
+<span class="fc" id="L182">        super(hardIron);</span>
+<span class="fc" id="L183">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param hardIron  known hard-iron.
+     * @param initialMm initial soft-iron matrix containing scale factors
+     *                  and cross coupling errors.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1 or if soft-iron matrix is not
+     *                                  3x3.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final Matrix hardIron, final Matrix initialMm) {
+<span class="fc" id="L197">        super(hardIron, initialMm);</span>
+<span class="fc" id="L198">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position position where body magnetic flux density measurements
+     *                 have been taken.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(final NEDPosition position) {
+<span class="fc" id="L207">        super(position);</span>
+<span class="fc" id="L208">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position     position where body magnetic flux density measurements
+     *                     have been taken.
+     * @param measurements collection of body magnetic flux density
+     *                     measurements with standard deviation of
+     *                     magnetometer measurements taken at the same
+     *                     position with zero velocity and unknown different
+     *                     orientations.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final NEDPosition position, final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements) {
+<span class="fc" id="L223">        super(position, measurements);</span>
+<span class="fc" id="L224">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position     position where body magnetic flux density measurements
+     *                     have been taken.
+     * @param measurements collection of body magnetic flux density
+     *                     measurements with standard deviation of
+     *                     magnetometer measurements taken at the same
+     *                     position with zero velocity and unknown different
+     *                     orientations.
+     * @param listener     listener to handle events raised by this calibrator.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final NEDPosition position, final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
+<span class="fc" id="L241">        super(position, measurements, listener);</span>
+<span class="fc" id="L242">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position       position where body magnetic flux density measurements
+     *                       have been taken.
+     * @param measurements   collection of body magnetic flux density
+     *                       measurements with standard deviation of
+     *                       magnetometer measurements taken at the same
+     *                       position with zero velocity and unknown different
+     *                       orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final NEDPosition position, final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final boolean commonAxisUsed) {
+<span class="fc" id="L260">        super(position, measurements, commonAxisUsed);</span>
+<span class="fc" id="L261">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position       position where body magnetic flux density measurements
+     *                       have been taken.
+     * @param measurements   collection of body magnetic flux density
+     *                       measurements with standard deviation of
+     *                       magnetometer measurements taken at the same
+     *                       position with zero velocity and unknown different
+     *                       orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     * @param listener       listener to handle events raised by this calibrator.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final NEDPosition position, final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final boolean commonAxisUsed,
+            final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
+<span class="fc" id="L281">        super(position, measurements, commonAxisUsed, listener);</span>
+<span class="fc" id="L282">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position     position where body magnetic flux density measurements
+     *                     have been taken.
+     * @param measurements collection of body magnetic flux density
+     *                     measurements with standard deviation of
+     *                     magnetometer measurements taken at the same
+     *                     position with zero velocity and unknown different
+     *                     orientations.
+     * @param hardIron     known hard-iron.
+     * @throws IllegalArgumentException if provided hard-iron array does
+     *                                  not have length 3.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final NEDPosition position, final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final double[] hardIron) {
+<span class="fc" id="L301">        super(position, measurements, hardIron);</span>
+<span class="fc" id="L302">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position     position where body magnetic flux density measurements
+     *                     have been taken.
+     * @param measurements collection of body magnetic flux density
+     *                     measurements with standard deviation of
+     *                     magnetometer measurements taken at the same
+     *                     position with zero velocity and unknown different
+     *                     orientations.
+     * @param hardIron     known hard-iron.
+     * @param listener     listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided hard-iron array does
+     *                                  not have length 3.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final NEDPosition position, final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final double[] hardIron,
+            final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
+<span class="fc" id="L323">        super(position, measurements, hardIron, listener);</span>
+<span class="fc" id="L324">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position       position where body magnetic flux density measurements
+     *                       have been taken.
+     * @param measurements   collection of body magnetic flux density
+     *                       measurements with standard deviation of
+     *                       magnetometer measurements taken at the same
+     *                       position with zero velocity and unknown different
+     *                       orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     * @param hardIron       known hard-iron.
+     * @throws IllegalArgumentException if provided hard-iron array does
+     *                                  not have length 3.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final NEDPosition position, final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final boolean commonAxisUsed, final double[] hardIron) {
+<span class="fc" id="L345">        super(position, measurements, commonAxisUsed, hardIron);</span>
+<span class="fc" id="L346">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position       position where body magnetic flux density measurements
+     *                       have been taken.
+     * @param measurements   collection of body magnetic flux density
+     *                       measurements with standard deviation of
+     *                       magnetometer measurements taken at the same
+     *                       position with zero velocity and unknown different
+     *                       orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     * @param hardIron       known hard-iron.
+     * @param listener       listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided hard-iron array does
+     *                                  not have length 3.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final NEDPosition position, final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final boolean commonAxisUsed, final double[] hardIron,
+            final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
+<span class="fc" id="L369">        super(position, measurements, commonAxisUsed, hardIron, listener);</span>
+<span class="fc" id="L370">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position     position where body magnetic flux density measurements
+     *                     have been taken.
+     * @param measurements collection of body magnetic flux density
+     *                     measurements with standard deviation of
+     *                     magnetometer measurements taken at the same
+     *                     position with zero velocity and unknown different
+     *                     orientations.
+     * @param hardIron     known hard-iron.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final NEDPosition position, final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final Matrix hardIron) {
+<span class="fc" id="L389">        super(position, measurements, hardIron);</span>
+<span class="fc" id="L390">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position     position where body magnetic flux density measurements
+     *                     have been taken.
+     * @param measurements collection of body magnetic flux density
+     *                     measurements with standard deviation of
+     *                     magnetometer measurements taken at the same
+     *                     position with zero velocity and unknown different
+     *                     orientations.
+     * @param hardIron     known hard-iron.
+     * @param listener     listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final NEDPosition position, final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final Matrix hardIron, final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
+<span class="fc" id="L410">        super(position, measurements, hardIron, listener);</span>
+<span class="fc" id="L411">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position       position where body magnetic flux density measurements
+     *                       have been taken.
+     * @param measurements   collection of body magnetic flux density
+     *                       measurements with standard deviation of
+     *                       magnetometer measurements taken at the same
+     *                       position with zero velocity and unknown different
+     *                       orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     * @param hardIron       known hard-iron.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final NEDPosition position, final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final boolean commonAxisUsed, final Matrix hardIron) {
+<span class="fc" id="L432">        super(position, measurements, commonAxisUsed, hardIron);</span>
+<span class="fc" id="L433">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position       position where body magnetic flux density measurements
+     *                       have been taken.
+     * @param measurements   collection of body magnetic flux density
+     *                       measurements with standard deviation of
+     *                       magnetometer measurements taken at the same
+     *                       position with zero velocity and unknown different
+     *                       orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     * @param hardIron       known hard-iron.
+     * @param listener       listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final NEDPosition position, final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final boolean commonAxisUsed, final Matrix hardIron,
+            final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
+<span class="fc" id="L456">        super(position, measurements, commonAxisUsed, hardIron, listener);</span>
+<span class="fc" id="L457">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position     position where body magnetic flux density measurements
+     *                     have been taken.
+     * @param measurements collection of body magnetic flux density
+     *                     measurements with standard deviation of
+     *                     magnetometer measurements taken at the same
+     *                     position with zero velocity and unknown different
+     *                     orientations.
+     * @param hardIron     known hard-iron.
+     * @param initialMm    initial soft-iron matrix containing scale factors
+     *                     and cross coupling errors.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1 or if soft-iron matrix is not
+     *                                  3x3.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final NEDPosition position, final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final Matrix hardIron, final Matrix initialMm) {
+<span class="fc" id="L479">        super(position, measurements, hardIron, initialMm);</span>
+<span class="fc" id="L480">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position     position where body magnetic flux density measurements
+     *                     have been taken.
+     * @param measurements collection of body magnetic flux density
+     *                     measurements with standard deviation of
+     *                     magnetometer measurements taken at the same
+     *                     position with zero velocity and unknown different
+     *                     orientations.
+     * @param hardIron     known hard-iron.
+     * @param initialMm    initial soft-iron matrix containing scale factors
+     *                     and cross coupling errors.
+     * @param listener     listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1 or if soft-iron matrix is not
+     *                                  3x3.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final NEDPosition position, final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final Matrix hardIron, final Matrix initialMm,
+            final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
+<span class="fc" id="L504">        super(position, measurements, hardIron, initialMm, listener);</span>
+<span class="fc" id="L505">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position       position where body magnetic flux density measurements
+     *                       have been taken.
+     * @param measurements   collection of body magnetic flux density
+     *                       measurements with standard deviation of
+     *                       magnetometer measurements taken at the same
+     *                       position with zero velocity and unknown different
+     *                       orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     * @param hardIron       known hard-iron.
+     * @param initialMm      initial soft-iron matrix containing scale factors
+     *                       and cross coupling errors.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1 or if soft-iron matrix is not
+     *                                  3x3.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final NEDPosition position, final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final boolean commonAxisUsed, final Matrix hardIron, final Matrix initialMm) {
+<span class="fc" id="L529">        super(position, measurements, commonAxisUsed, hardIron, initialMm);</span>
+<span class="fc" id="L530">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position       position where body magnetic flux density measurements
+     *                       have been taken.
+     * @param measurements   collection of body magnetic flux density
+     *                       measurements with standard deviation of
+     *                       magnetometer measurements taken at the same
+     *                       position with zero velocity and unknown different
+     *                       orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     * @param hardIron       known hard-iron.
+     * @param initialMm      initial soft-iron matrix containing scale factors
+     *                       and cross coupling errors.
+     * @param listener       listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1 or if soft-iron matrix is not
+     *                                  3x3.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final NEDPosition position, final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final boolean commonAxisUsed, final Matrix hardIron, final Matrix initialMm,
+            final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
+<span class="fc" id="L556">        super(position, measurements, commonAxisUsed, hardIron, initialMm, listener);</span>
+<span class="fc" id="L557">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position position where body magnetic flux density measurements
+     *                 have been taken.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(final ECEFPosition position) {
+<span class="fc" id="L566">        super(position);</span>
+<span class="fc" id="L567">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position     position where body magnetic flux density measurements
+     *                     have been taken.
+     * @param measurements collection of body magnetic flux density
+     *                     measurements with standard deviation of
+     *                     magnetometer measurements taken at the same
+     *                     position with zero velocity and unknown different
+     *                     orientations.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final ECEFPosition position, final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements) {
+<span class="fc" id="L582">        super(position, measurements);</span>
+<span class="fc" id="L583">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position     position where body magnetic flux density measurements
+     *                     have been taken.
+     * @param measurements collection of body magnetic flux density
+     *                     measurements with standard deviation of
+     *                     magnetometer measurements taken at the same
+     *                     position with zero velocity and unknown different
+     *                     orientations.
+     * @param listener     listener to handle events raised by this calibrator.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final ECEFPosition position, final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
+<span class="fc" id="L600">        super(position, measurements, listener);</span>
+<span class="fc" id="L601">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position       position where body magnetic flux density measurements
+     *                       have been taken.
+     * @param measurements   collection of body magnetic flux density
+     *                       measurements with standard deviation of
+     *                       magnetometer measurements taken at the same
+     *                       position with zero velocity and unknown different
+     *                       orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final ECEFPosition position, final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final boolean commonAxisUsed) {
+<span class="fc" id="L619">        super(position, measurements, commonAxisUsed);</span>
+<span class="fc" id="L620">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position       position where body magnetic flux density measurements
+     *                       have been taken.
+     * @param measurements   collection of body magnetic flux density
+     *                       measurements with standard deviation of
+     *                       magnetometer measurements taken at the same
+     *                       position with zero velocity and unknown different
+     *                       orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     * @param listener       listener to handle events raised by this calibrator.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final ECEFPosition position, final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final boolean commonAxisUsed,
+            final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
+<span class="fc" id="L640">        super(position, measurements, commonAxisUsed, listener);</span>
+<span class="fc" id="L641">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position     position where body magnetic flux density measurements
+     *                     have been taken.
+     * @param measurements collection of body magnetic flux density
+     *                     measurements with standard deviation of
+     *                     magnetometer measurements taken at the same
+     *                     position with zero velocity and unknown different
+     *                     orientations.
+     * @param hardIron     known hard-iron.
+     * @throws IllegalArgumentException if provided hard-iron array does
+     *                                  not have length 3.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final ECEFPosition position, final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final double[] hardIron) {
+<span class="fc" id="L660">        super(position, measurements, hardIron);</span>
+<span class="fc" id="L661">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position     position where body magnetic flux density measurements
+     *                     have been taken.
+     * @param measurements collection of body magnetic flux density
+     *                     measurements with standard deviation of
+     *                     magnetometer measurements taken at the same
+     *                     position with zero velocity and unknown different
+     *                     orientations.
+     * @param hardIron     known hard-iron.
+     * @param listener     listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided hard-iron array does
+     *                                  not have length 3.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final ECEFPosition position, final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final double[] hardIron,
+            final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
+<span class="fc" id="L682">        super(position, measurements, hardIron, listener);</span>
+<span class="fc" id="L683">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position       position where body magnetic flux density measurements
+     *                       have been taken.
+     * @param measurements   collection of body magnetic flux density
+     *                       measurements with standard deviation of
+     *                       magnetometer measurements taken at the same
+     *                       position with zero velocity and unknown different
+     *                       orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     * @param hardIron       known hard-iron.
+     * @throws IllegalArgumentException if provided hard-iron array does
+     *                                  not have length 3.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final ECEFPosition position, final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final boolean commonAxisUsed, final double[] hardIron) {
+<span class="fc" id="L704">        super(position, measurements, commonAxisUsed, hardIron);</span>
+<span class="fc" id="L705">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position       position where body magnetic flux density measurements
+     *                       have been taken.
+     * @param measurements   collection of body magnetic flux density
+     *                       measurements with standard deviation of
+     *                       magnetometer measurements taken at the same
+     *                       position with zero velocity and unknown different
+     *                       orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     * @param hardIron       known hard-iron.
+     * @param listener       listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided hard-iron array does
+     *                                  not have length 3.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final ECEFPosition position, final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final boolean commonAxisUsed, final double[] hardIron,
+            final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
+<span class="fc" id="L728">        super(position, measurements, commonAxisUsed, hardIron, listener);</span>
+<span class="fc" id="L729">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position        position where body magnetic flux density measurements
+     *                        have been taken.
+     * @param measurements    collection of body magnetic flux density
+     *                        measurements with standard deviation of
+     *                        magnetometer measurements taken at the same
+     *                        position with zero velocity and unknown different
+     *                        orientations.
+     * @param initialHardIron initial hard-iron to find a solution.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final ECEFPosition position, final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final Matrix initialHardIron) {
+<span class="fc" id="L748">        super(position, measurements, initialHardIron);</span>
+<span class="fc" id="L749">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position     position where body magnetic flux density measurements
+     *                     have been taken.
+     * @param measurements collection of body magnetic flux density
+     *                     measurements with standard deviation of
+     *                     magnetometer measurements taken at the same
+     *                     position with zero velocity and unknown different
+     *                     orientations.
+     * @param hardIron     known hard-iron.
+     * @param listener     listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final ECEFPosition position, final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final Matrix hardIron,
+            final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
+<span class="fc" id="L770">        super(position, measurements, hardIron, listener);</span>
+<span class="fc" id="L771">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position       position where body magnetic flux density measurements
+     *                       have been taken.
+     * @param measurements   collection of body magnetic flux density
+     *                       measurements with standard deviation of
+     *                       magnetometer measurements taken at the same
+     *                       position with zero velocity and unknown different
+     *                       orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     * @param hardIron       known hard-iron.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final ECEFPosition position, final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final boolean commonAxisUsed, final Matrix hardIron) {
+<span class="fc" id="L792">        super(position, measurements, commonAxisUsed, hardIron);</span>
+<span class="fc" id="L793">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position       position where body magnetic flux density measurements
+     *                       have been taken.
+     * @param measurements   collection of body magnetic flux density
+     *                       measurements with standard deviation of
+     *                       magnetometer measurements taken at the same
+     *                       position with zero velocity and unknown different
+     *                       orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     * @param hardIron       known hard-iron.
+     * @param listener       listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final ECEFPosition position, final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final boolean commonAxisUsed, final Matrix hardIron,
+            final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
+<span class="fc" id="L816">        super(position, measurements, commonAxisUsed, hardIron, listener);</span>
+<span class="fc" id="L817">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position     position where body magnetic flux density measurements
+     *                     have been taken.
+     * @param measurements collection of body magnetic flux density
+     *                     measurements with standard deviation of
+     *                     magnetometer measurements taken at the same
+     *                     position with zero velocity and unknown different
+     *                     orientations.
+     * @param hardIron     known hard-iron.
+     * @param initialMm    initial soft-iron matrix containing scale factors
+     *                     and cross coupling errors.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1 or if soft-iron matrix is not
+     *                                  3x3.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final ECEFPosition position, final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final Matrix hardIron, final Matrix initialMm) {
+<span class="fc" id="L839">        super(position, measurements, hardIron, initialMm);</span>
+<span class="fc" id="L840">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position     position where body magnetic flux density measurements
+     *                     have been taken.
+     * @param measurements collection of body magnetic flux density
+     *                     measurements with standard deviation of
+     *                     magnetometer measurements taken at the same
+     *                     position with zero velocity and unknown different
+     *                     orientations.
+     * @param hardIron     known hard-iron.
+     * @param initialMm    initial soft-iron matrix containing scale factors
+     *                     and cross coupling errors.
+     * @param listener     listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1 or if soft-iron matrix is not
+     *                                  3x3.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final ECEFPosition position, final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final Matrix hardIron, final Matrix initialMm,
+            final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
+<span class="fc" id="L864">        super(position, measurements, hardIron, initialMm, listener);</span>
+<span class="fc" id="L865">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position       position where body magnetic flux density measurements
+     *                       have been taken.
+     * @param measurements   collection of body magnetic flux density
+     *                       measurements with standard deviation of
+     *                       magnetometer measurements taken at the same
+     *                       position with zero velocity and unknown different
+     *                       orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     * @param hardIron       known hard-iron.
+     * @param initialMm      initial soft-iron matrix containing scale factors
+     *                       and cross coupling errors.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1 or if soft-iron matrix is not
+     *                                  3x3.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final ECEFPosition position, final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final boolean commonAxisUsed, final Matrix hardIron, final Matrix initialMm) {
+<span class="fc" id="L889">        super(position, measurements, commonAxisUsed, hardIron,</span>
+                initialMm);
+<span class="fc" id="L891">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position       position where body magnetic flux density measurements
+     *                       have been taken.
+     * @param measurements   collection of body magnetic flux density
+     *                       measurements with standard deviation of
+     *                       magnetometer measurements taken at the same
+     *                       position with zero velocity and unknown different
+     *                       orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     * @param hardIron       known hard-iron.
+     * @param initialMm      initial soft-iron matrix containing scale factors
+     *                       and cross coupling errors.
+     * @param listener       listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1 or if soft-iron matrix is not
+     *                                  3x3.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final ECEFPosition position, final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final boolean commonAxisUsed, final Matrix hardIron, final Matrix initialMm,
+            final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
+<span class="fc" id="L917">        super(position, measurements, commonAxisUsed, hardIron, initialMm, listener);</span>
+<span class="fc" id="L918">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param measurements  list of body magnetic flux density
+     *                      measurements with standard deviation of
+     *                      magnetometer measurements taken at the same
+     *                      position with zero velocity and unknown different
+     *                      orientations.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 7 samples.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final double[] qualityScores, final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements) {
+<span class="fc" id="L936">        super(measurements);</span>
+<span class="fc" id="L937">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L938">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 7 samples.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final double[] qualityScores, final boolean commonAxisUsed) {
+<span class="fc" id="L953">        super(commonAxisUsed);</span>
+<span class="fc" id="L954">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L955">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param magneticModel Earth's magnetic model. If null, a default model
+     *                      will be used instead.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 7 samples.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final double[] qualityScores, final WorldMagneticModel magneticModel) {
+<span class="fc" id="L970">        super(magneticModel);</span>
+<span class="fc" id="L971">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L972">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param hardIron      known hard-iron.
+     * @throws IllegalArgumentException if provided hard-iron array does
+     *                                  not have length 3 or if provided
+     *                                  quality scores length is smaller
+     *                                  than 7 samples.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final double[] qualityScores, final double[] hardIron) {
+<span class="fc" id="L988">        super(hardIron);</span>
+<span class="fc" id="L989">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L990">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param hardIron      known hard-iron.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1 or if provided quality scores
+     *                                  length is smaller than 7 samples.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final double[] qualityScores, final Matrix hardIron) {
+<span class="fc" id="L1005">        super(hardIron);</span>
+<span class="fc" id="L1006">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1007">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param hardIron      known hard-iron.
+     * @param initialMm     initial soft-iron matrix containing scale factors
+     *                      and cross coupling errors.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1 or if soft-iron matrix is not
+     *                                  3x3 or if provided quality scores
+     *                                  length is smaller than 7 samples.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final double[] qualityScores, final Matrix hardIron, final Matrix initialMm) {
+<span class="fc" id="L1025">        super(hardIron, initialMm);</span>
+<span class="fc" id="L1026">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1027">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param position      position where body magnetic flux density measurements
+     *                      have been taken.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 7 samples.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final double[] qualityScores, final NEDPosition position) {
+<span class="fc" id="L1042">        super(position);</span>
+<span class="fc" id="L1043">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1044">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param position      position where body magnetic flux density measurements
+     *                      have been taken.
+     * @param measurements  collection of body magnetic flux density
+     *                      measurements with standard deviation of
+     *                      magnetometer measurements taken at the same
+     *                      position with zero velocity and unknown different
+     *                      orientations.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 7 samples.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final double[] qualityScores, final NEDPosition position,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements) {
+<span class="fc" id="L1065">        super(position, measurements);</span>
+<span class="fc" id="L1066">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1067">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param position      position where body magnetic flux density measurements
+     *                      have been taken.
+     * @param measurements  collection of body magnetic flux density
+     *                      measurements with standard deviation of
+     *                      magnetometer measurements taken at the same
+     *                      position with zero velocity and unknown different
+     *                      orientations.
+     * @param listener      listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 7 samples.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final double[] qualityScores, final NEDPosition position,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
+<span class="fc" id="L1090">        super(position, measurements, listener);</span>
+<span class="fc" id="L1091">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1092">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param position       position where body magnetic flux density measurements
+     *                       have been taken.
+     * @param measurements   collection of body magnetic flux density
+     *                       measurements with standard deviation of
+     *                       magnetometer measurements taken at the same
+     *                       position with zero velocity and unknown different
+     *                       orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 7 samples.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final double[] qualityScores, final NEDPosition position,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final boolean commonAxisUsed) {
+<span class="fc" id="L1116">        super(position, measurements, commonAxisUsed);</span>
+<span class="fc" id="L1117">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1118">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param position       position where body magnetic flux density measurements
+     *                       have been taken.
+     * @param measurements   collection of body magnetic flux density
+     *                       measurements with standard deviation of
+     *                       magnetometer measurements taken at the same
+     *                       position with zero velocity and unknown different
+     *                       orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     * @param listener       listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 7 samples.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final double[] qualityScores, final NEDPosition position,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final boolean commonAxisUsed,
+            final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
+<span class="fc" id="L1143">        super(position, measurements, commonAxisUsed, listener);</span>
+<span class="fc" id="L1144">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1145">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param position      position where body magnetic flux density measurements
+     *                      have been taken.
+     * @param measurements  collection of body magnetic flux density
+     *                      measurements with standard deviation of
+     *                      magnetometer measurements taken at the same
+     *                      position with zero velocity and unknown different
+     *                      orientations.
+     * @param hardIron      known hard-iron.
+     * @throws IllegalArgumentException if provided hard-iron array does
+     *                                  not have length 3 or if provided
+     *                                  quality scores length is smaller
+     *                                  than 7 samples.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final double[] qualityScores, final NEDPosition position,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final double[] hardIron) {
+<span class="fc" id="L1169">        super(position, measurements, hardIron);</span>
+<span class="fc" id="L1170">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1171">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param position      position where body magnetic flux density measurements
+     *                      have been taken.
+     * @param measurements  collection of body magnetic flux density
+     *                      measurements with standard deviation of
+     *                      magnetometer measurements taken at the same
+     *                      position with zero velocity and unknown different
+     *                      orientations.
+     * @param hardIron      known hard-iron.
+     * @param listener      listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided hard-iron array does
+     *                                  not have length 3 or if provided
+     *                                  quality scores length is smaller
+     *                                  than 7 samples.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final double[] qualityScores, final NEDPosition position,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final double[] hardIron,
+            final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
+<span class="fc" id="L1197">        super(position, measurements, hardIron, listener);</span>
+<span class="fc" id="L1198">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1199">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param position       position where body magnetic flux density measurements
+     *                       have been taken.
+     * @param measurements   collection of body magnetic flux density
+     *                       measurements with standard deviation of
+     *                       magnetometer measurements taken at the same
+     *                       position with zero velocity and unknown different
+     *                       orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     * @param hardIron       known hard-iron.
+     * @throws IllegalArgumentException if provided hard-iron array does
+     *                                  not have length 3 or if provided
+     *                                  quality scores length is smaller
+     *                                  than 7 samples.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final double[] qualityScores, final NEDPosition position,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final boolean commonAxisUsed,
+            final double[] hardIron) {
+<span class="fc" id="L1226">        super(position, measurements, commonAxisUsed, hardIron);</span>
+<span class="fc" id="L1227">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1228">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param position       position where body magnetic flux density measurements
+     *                       have been taken.
+     * @param measurements   collection of body magnetic flux density
+     *                       measurements with standard deviation of
+     *                       magnetometer measurements taken at the same
+     *                       position with zero velocity and unknown different
+     *                       orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     * @param hardIron       known hard-iron.
+     * @param listener       listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided hard-iron array does
+     *                                  not have length 3 or if provided
+     *                                  quality scores length is smaller
+     *                                  than 7 samples.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final double[] qualityScores, final NEDPosition position,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final boolean commonAxisUsed,
+            final double[] hardIron,
+            final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
+<span class="fc" id="L1257">        super(position, measurements, commonAxisUsed, hardIron, listener);</span>
+<span class="fc" id="L1258">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1259">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param position      position where body magnetic flux density measurements
+     *                      have been taken.
+     * @param measurements  collection of body magnetic flux density
+     *                      measurements with standard deviation of
+     *                      magnetometer measurements taken at the same
+     *                      position with zero velocity and unknown different
+     *                      orientations.
+     * @param hardIron      known hard-iron.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1 or if provided quality scores
+     *                                  length is smaller than 7 samples.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final double[] qualityScores, final NEDPosition position,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final Matrix hardIron) {
+<span class="fc" id="L1282">        super(position, measurements, hardIron);</span>
+<span class="fc" id="L1283">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1284">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param position      position where body magnetic flux density measurements
+     *                      have been taken.
+     * @param measurements  collection of body magnetic flux density
+     *                      measurements with standard deviation of
+     *                      magnetometer measurements taken at the same
+     *                      position with zero velocity and unknown different
+     *                      orientations.
+     * @param hardIron      known hard-iron.
+     * @param listener      listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1 or if provided quality scores
+     *                                  length is smaller than 7 samples.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final double[] qualityScores, final NEDPosition position,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final Matrix hardIron,
+            final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
+<span class="fc" id="L1309">        super(position, measurements, hardIron, listener);</span>
+<span class="fc" id="L1310">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1311">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param position       position where body magnetic flux density measurements
+     *                       have been taken.
+     * @param measurements   collection of body magnetic flux density
+     *                       measurements with standard deviation of
+     *                       magnetometer measurements taken at the same
+     *                       position with zero velocity and unknown different
+     *                       orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     * @param hardIron       known hard-iron.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1 or if provided quality scores
+     *                                  length is smaller than 7 samples.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final double[] qualityScores, final NEDPosition position,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final boolean commonAxisUsed,
+            final Matrix hardIron) {
+<span class="fc" id="L1337">        super(position, measurements, commonAxisUsed, hardIron);</span>
+<span class="fc" id="L1338">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1339">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param position       position where body magnetic flux density measurements
+     *                       have been taken.
+     * @param measurements   collection of body magnetic flux density
+     *                       measurements with standard deviation of
+     *                       magnetometer measurements taken at the same
+     *                       position with zero velocity and unknown different
+     *                       orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     * @param hardIron       known hard-iron.
+     * @param listener       listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1 or if provided quality scores
+     *                                  length is smaller than 7 samples.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final double[] qualityScores, final NEDPosition position,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final boolean commonAxisUsed,
+            final Matrix hardIron, final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
+<span class="fc" id="L1366">        super(position, measurements, commonAxisUsed, hardIron, listener);</span>
+<span class="fc" id="L1367">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1368">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param position      position where body magnetic flux density measurements
+     *                      have been taken.
+     * @param measurements  collection of body magnetic flux density
+     *                      measurements with standard deviation of
+     *                      magnetometer measurements taken at the same
+     *                      position with zero velocity and unknown different
+     *                      orientations.
+     * @param hardIron      known hard-iron.
+     * @param initialMm     initial soft-iron matrix containing scale factors
+     *                      and cross coupling errors.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1 or if soft-iron matrix is not
+     *                                  3x3 or if provided quality scores
+     *                                  length is smaller than 7 samples.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final double[] qualityScores, final NEDPosition position,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final Matrix hardIron,
+            final Matrix initialMm) {
+<span class="fc" id="L1395">        super(position, measurements, hardIron, initialMm);</span>
+<span class="fc" id="L1396">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1397">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param position      position where body magnetic flux density measurements
+     *                      have been taken.
+     * @param measurements  collection of body magnetic flux density
+     *                      measurements with standard deviation of
+     *                      magnetometer measurements taken at the same
+     *                      position with zero velocity and unknown different
+     *                      orientations.
+     * @param hardIron      known hard-iron.
+     * @param initialMm     initial soft-iron matrix containing scale factors
+     *                      and cross coupling errors.
+     * @param listener      listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1 or if soft-iron matrix is not
+     *                                  3x3 or if provided quality scores
+     *                                  length is smaller than 7 samples.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final double[] qualityScores, final NEDPosition position,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final Matrix hardIron,
+            final Matrix initialMm,
+            final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
+<span class="fc" id="L1426">        super(position, measurements, hardIron, initialMm, listener);</span>
+<span class="fc" id="L1427">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1428">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param position       position where body magnetic flux density measurements
+     *                       have been taken.
+     * @param measurements   collection of body magnetic flux density
+     *                       measurements with standard deviation of
+     *                       magnetometer measurements taken at the same
+     *                       position with zero velocity and unknown different
+     *                       orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     * @param hardIron       known hard-iron.
+     * @param initialMm      initial soft-iron matrix containing scale factors
+     *                       and cross coupling errors.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1 or if soft-iron matrix is not
+     *                                  3x3 or if provided quality scores
+     *                                  length is smaller than 7 samples.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final double[] qualityScores, final NEDPosition position,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final boolean commonAxisUsed,
+            final Matrix hardIron, final Matrix initialMm) {
+<span class="fc" id="L1457">        super(position, measurements, commonAxisUsed, hardIron, initialMm);</span>
+<span class="fc" id="L1458">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1459">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param position       position where body magnetic flux density measurements
+     *                       have been taken.
+     * @param measurements   collection of body magnetic flux density
+     *                       measurements with standard deviation of
+     *                       magnetometer measurements taken at the same
+     *                       position with zero velocity and unknown different
+     *                       orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     * @param hardIron       known hard-iron.
+     * @param initialMm      initial soft-iron matrix containing scale factors
+     *                       and cross coupling errors.
+     * @param listener       listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1 or if soft-iron matrix is not
+     *                                  3x3 or if provided quality scores
+     *                                  length is smaller than 7 samples.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final double[] qualityScores, final NEDPosition position,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final boolean commonAxisUsed,
+            final Matrix hardIron, final Matrix initialMm,
+            final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
+<span class="fc" id="L1490">        super(position, measurements, commonAxisUsed, hardIron, initialMm, listener);</span>
+<span class="fc" id="L1491">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1492">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param position      position where body magnetic flux density measurements
+     *                      have been taken.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 7 samples.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final double[] qualityScores, final ECEFPosition position) {
+<span class="fc" id="L1507">        super(position);</span>
+<span class="fc" id="L1508">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1509">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param position      position where body magnetic flux density measurements
+     *                      have been taken.
+     * @param measurements  collection of body magnetic flux density
+     *                      measurements with standard deviation of
+     *                      magnetometer measurements taken at the same
+     *                      position with zero velocity and unknown different
+     *                      orientations.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 7 samples.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final double[] qualityScores, final ECEFPosition position,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements) {
+<span class="fc" id="L1530">        super(position, measurements);</span>
+<span class="fc" id="L1531">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1532">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param position      position where body magnetic flux density measurements
+     *                      have been taken.
+     * @param measurements  collection of body magnetic flux density
+     *                      measurements with standard deviation of
+     *                      magnetometer measurements taken at the same
+     *                      position with zero velocity and unknown different
+     *                      orientations.
+     * @param listener      listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 7 samples.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final double[] qualityScores, final ECEFPosition position,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
+<span class="fc" id="L1555">        super(position, measurements, listener);</span>
+<span class="fc" id="L1556">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1557">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param position       position where body magnetic flux density measurements
+     *                       have been taken.
+     * @param measurements   collection of body magnetic flux density
+     *                       measurements with standard deviation of
+     *                       magnetometer measurements taken at the same
+     *                       position with zero velocity and unknown different
+     *                       orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 7 samples.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final double[] qualityScores, final ECEFPosition position,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final boolean commonAxisUsed) {
+<span class="fc" id="L1580">        super(position, measurements, commonAxisUsed);</span>
+<span class="fc" id="L1581">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1582">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param position       position where body magnetic flux density measurements
+     *                       have been taken.
+     * @param measurements   collection of body magnetic flux density
+     *                       measurements with standard deviation of
+     *                       magnetometer measurements taken at the same
+     *                       position with zero velocity and unknown different
+     *                       orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     * @param listener       listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 7 samples.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final double[] qualityScores, final ECEFPosition position,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final boolean commonAxisUsed,
+            final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
+<span class="fc" id="L1607">        super(position, measurements, commonAxisUsed, listener);</span>
+<span class="fc" id="L1608">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1609">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param position      position where body magnetic flux density measurements
+     *                      have been taken.
+     * @param measurements  collection of body magnetic flux density
+     *                      measurements with standard deviation of
+     *                      magnetometer measurements taken at the same
+     *                      position with zero velocity and unknown different
+     *                      orientations.
+     * @param hardIron      known hard-iron.
+     * @throws IllegalArgumentException if provided hard-iron array does
+     *                                  not have length 3 or if provided
+     *                                  quality scores length is smaller
+     *                                  than 7 samples.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final double[] qualityScores, final ECEFPosition position,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final double[] hardIron) {
+<span class="fc" id="L1633">        super(position, measurements, hardIron);</span>
+<span class="fc" id="L1634">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1635">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param position      position where body magnetic flux density measurements
+     *                      have been taken.
+     * @param measurements  collection of body magnetic flux density
+     *                      measurements with standard deviation of
+     *                      magnetometer measurements taken at the same
+     *                      position with zero velocity and unknown different
+     *                      orientations.
+     * @param hardIron      known hard-iron.
+     * @param listener      listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided hard-iron array does
+     *                                  not have length 3 or if provided
+     *                                  quality scores length is smaller
+     *                                  than 7 samples.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final double[] qualityScores, final ECEFPosition position,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final double[] hardIron,
+            final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
+<span class="fc" id="L1661">        super(position, measurements, hardIron, listener);</span>
+<span class="fc" id="L1662">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1663">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param position       position where body magnetic flux density measurements
+     *                       have been taken.
+     * @param measurements   collection of body magnetic flux density
+     *                       measurements with standard deviation of
+     *                       magnetometer measurements taken at the same
+     *                       position with zero velocity and unknown different
+     *                       orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     * @param hardIron       known hard-iron.
+     * @throws IllegalArgumentException if provided hard-iron array does
+     *                                  not have length 3 or if provided
+     *                                  quality scores length is smaller
+     *                                  than 7 samples.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final double[] qualityScores, final ECEFPosition position,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final boolean commonAxisUsed,
+            final double[] hardIron) {
+<span class="fc" id="L1690">        super(position, measurements, commonAxisUsed, hardIron);</span>
+<span class="fc" id="L1691">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1692">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param position       position where body magnetic flux density measurements
+     *                       have been taken.
+     * @param measurements   collection of body magnetic flux density
+     *                       measurements with standard deviation of
+     *                       magnetometer measurements taken at the same
+     *                       position with zero velocity and unknown different
+     *                       orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     * @param hardIron       known hard-iron.
+     * @param listener       listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided hard-iron array does
+     *                                  not have length 3 or if provided
+     *                                  quality scores length is smaller
+     *                                  than 7 samples.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final double[] qualityScores, final ECEFPosition position,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final boolean commonAxisUsed,
+            final double[] hardIron,
+            final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
+<span class="fc" id="L1721">        super(position, measurements, commonAxisUsed, hardIron, listener);</span>
+<span class="fc" id="L1722">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1723">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param position      position where body magnetic flux density measurements
+     *                      have been taken.
+     * @param measurements  collection of body magnetic flux density
+     *                      measurements with standard deviation of
+     *                      magnetometer measurements taken at the same
+     *                      position with zero velocity and unknown different
+     *                      orientations.
+     * @param hardIron      known hard-iron.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1 or if provided quality scores
+     *                                  length is smaller than 7 samples.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final double[] qualityScores, final ECEFPosition position,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final Matrix hardIron) {
+<span class="fc" id="L1746">        super(position, measurements, hardIron);</span>
+<span class="fc" id="L1747">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1748">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param position      position where body magnetic flux density measurements
+     *                      have been taken.
+     * @param measurements  collection of body magnetic flux density
+     *                      measurements with standard deviation of
+     *                      magnetometer measurements taken at the same
+     *                      position with zero velocity and unknown different
+     *                      orientations.
+     * @param hardIron      known hard-iron.
+     * @param listener      listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1 or if provided quality scores
+     *                                  length is smaller than 7 samples.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final double[] qualityScores, final ECEFPosition position,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final Matrix hardIron,
+            final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
+<span class="fc" id="L1773">        super(position, measurements, hardIron, listener);</span>
+<span class="fc" id="L1774">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1775">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param position       position where body magnetic flux density measurements
+     *                       have been taken.
+     * @param measurements   collection of body magnetic flux density
+     *                       measurements with standard deviation of
+     *                       magnetometer measurements taken at the same
+     *                       position with zero velocity and unknown different
+     *                       orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     * @param hardIron       known hard-iron.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1 or if provided quality scores
+     *                                  length is smaller than 7 samples.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final double[] qualityScores, final ECEFPosition position,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final boolean commonAxisUsed,
+            final Matrix hardIron) {
+<span class="fc" id="L1801">        super(position, measurements, commonAxisUsed, hardIron);</span>
+<span class="fc" id="L1802">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1803">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param position       position where body magnetic flux density measurements
+     *                       have been taken.
+     * @param measurements   collection of body magnetic flux density
+     *                       measurements with standard deviation of
+     *                       magnetometer measurements taken at the same
+     *                       position with zero velocity and unknown different
+     *                       orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     * @param hardIron       known hard-iron.
+     * @param listener       listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1 or if provided quality scores
+     *                                  length is smaller than 7 samples.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final double[] qualityScores, final ECEFPosition position,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final boolean commonAxisUsed,
+            final Matrix hardIron, final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
+<span class="fc" id="L1830">        super(position, measurements, commonAxisUsed, hardIron, listener);</span>
+<span class="fc" id="L1831">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1832">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param position      position where body magnetic flux density measurements
+     *                      have been taken.
+     * @param measurements  collection of body magnetic flux density
+     *                      measurements with standard deviation of
+     *                      magnetometer measurements taken at the same
+     *                      position with zero velocity and unknown different
+     *                      orientations.
+     * @param hardIron      known hard-iron.
+     * @param initialMm     initial soft-iron matrix containing scale factors
+     *                      and cross coupling errors.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1 or if soft-iron matrix is not
+     *                                  3x3 or if provided quality scores
+     *                                  length is smaller than 7 samples.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final double[] qualityScores, final ECEFPosition position,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final Matrix hardIron,
+            final Matrix initialMm) {
+<span class="fc" id="L1859">        super(position, measurements, hardIron, initialMm);</span>
+<span class="fc" id="L1860">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1861">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param position      position where body magnetic flux density measurements
+     *                      have been taken.
+     * @param measurements  collection of body magnetic flux density
+     *                      measurements with standard deviation of
+     *                      magnetometer measurements taken at the same
+     *                      position with zero velocity and unknown different
+     *                      orientations.
+     * @param hardIron      known hard-iron.
+     * @param initialMm     initial soft-iron matrix containing scale factors
+     *                      and cross coupling errors.
+     * @param listener      listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1 or if soft-iron matrix is not
+     *                                  3x3 or if provided quality scores
+     *                                  length is smaller than 7 samples.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final double[] qualityScores, final ECEFPosition position,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final Matrix hardIron,
+            final Matrix initialMm,
+            final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
+<span class="fc" id="L1890">        super(position, measurements, hardIron, initialMm, listener);</span>
+<span class="fc" id="L1891">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1892">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param position       position where body magnetic flux density measurements
+     *                       have been taken.
+     * @param measurements   collection of body magnetic flux density
+     *                       measurements with standard deviation of
+     *                       magnetometer measurements taken at the same
+     *                       position with zero velocity and unknown different
+     *                       orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     * @param hardIron       known hard-iron.
+     * @param initialMm      initial soft-iron matrix containing scale factors
+     *                       and cross coupling errors.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1 or if soft-iron matrix is not
+     *                                  3x3 or if provided quality scores
+     *                                  length is smaller than 7 samples.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final double[] qualityScores, final ECEFPosition position,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final boolean commonAxisUsed,
+            final Matrix hardIron, final Matrix initialMm) {
+<span class="fc" id="L1921">        super(position, measurements, commonAxisUsed, hardIron, initialMm);</span>
+<span class="fc" id="L1922">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1923">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param position       position where body magnetic flux density measurements
+     *                       have been taken.
+     * @param measurements   collection of body magnetic flux density
+     *                       measurements with standard deviation of
+     *                       magnetometer measurements taken at the same
+     *                       position with zero velocity and unknown different
+     *                       orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     * @param hardIron       known hard-iron.
+     * @param initialMm      initial soft-iron matrix containing scale factors
+     *                       and cross coupling errors.
+     * @param listener       listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1 or if soft-iron matrix is not
+     *                                  3x3 or if provided quality scores
+     *                                  length is smaller than 7 samples.
+     */
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+            final double[] qualityScores, final ECEFPosition position,
+            final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements, final boolean commonAxisUsed,
+            final Matrix hardIron, final Matrix initialMm,
+            final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
+<span class="fc" id="L1954">        super(position, measurements, commonAxisUsed, hardIron, initialMm, listener);</span>
+<span class="fc" id="L1955">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1956">    }</span>
+
+    /**
+     * Returns threshold to be used to keep the algorithm iterating in case that
+     * best estimated threshold using median of residuals is not small enough.
+     * Once a solution is found that generates a threshold below this value, the
+     * algorithm will stop.
+     * The stop threshold can be used to prevent the LMedS algorithm to iterate
+     * too many times in cases where samples have a very similar accuracy.
+     * For instance, in cases where proportion of outliers is very small (close
+     * to 0%), and samples are very accurate (i.e. 1e-6), the algorithm would
+     * iterate for a long time trying to find the best solution when indeed
+     * there is no need to do that if a reasonable threshold has already been
+     * reached.
+     * Because of this behaviour the stop threshold can be set to a value much
+     * lower than the one typically used in RANSAC, and yet the algorithm could
+     * still produce even smaller thresholds in estimated results.
+     *
+     * @return stop threshold to stop the algorithm prematurely when a certain
+     * accuracy has been reached.
+     */
+    public double getStopThreshold() {
+<span class="fc" id="L1978">        return stopThreshold;</span>
+    }
+
+    /**
+     * Sets threshold to be used to keep the algorithm iterating in case that
+     * best estimated threshold using median of residuals is not small enough.
+     * Once a solution is found that generates a threshold below this value,
+     * the algorithm will stop.
+     * The stop threshold can be used to prevent the LMedS algorithm to iterate
+     * too many times in cases where samples have a very similar accuracy.
+     * For instance, in cases where proportion of outliers is very small (close
+     * to 0%), and samples are very accurate (i.e. 1e-6), the algorithm would
+     * iterate for a long time trying to find the best solution when indeed
+     * there is no need to do that if a reasonable threshold has already been
+     * reached.
+     * Because of this behaviour the stop threshold can be set to a value much
+     * lower than the one typically used in RANSAC, and yet the algorithm could
+     * still produce even smaller thresholds in estimated results.
+     *
+     * @param stopThreshold stop threshold to stop the algorithm prematurely
+     *                      when a certain accuracy has been reached.
+     * @throws IllegalArgumentException if provided value is zero or negative.
+     * @throws LockedException          if calibrator is currently running.
+     */
+    public void setStopThreshold(final double stopThreshold) throws LockedException {
+<span class="fc bfc" id="L2003" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L2004">            throw new LockedException();</span>
+        }
+<span class="fc bfc" id="L2006" title="All 2 branches covered.">        if (stopThreshold &lt;= MIN_STOP_THRESHOLD) {</span>
+<span class="fc" id="L2007">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L2010">        this.stopThreshold = stopThreshold;</span>
+<span class="fc" id="L2011">    }</span>
+
+    /**
+     * Returns quality scores corresponding to each provided sample.
+     * The larger the score value the better the quality of the sample.
+     *
+     * @return quality scores corresponding to each sample.
+     */
+    @Override
+    public double[] getQualityScores() {
+<span class="fc" id="L2021">        return qualityScores;</span>
+    }
+
+    /**
+     * Sets quality scores corresponding to each provided sample.
+     * The larger the score value the better the quality of the sample.
+     *
+     * @param qualityScores quality scores corresponding to each sample.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than minimum required samples.
+     * @throws LockedException          if calibrator is currently running.
+     */
+    @Override
+    public void setQualityScores(final double[] qualityScores) throws LockedException {
+<span class="pc bpc" id="L2035" title="1 of 2 branches missed.">        if (running) {</span>
+<span class="nc" id="L2036">            throw new LockedException();</span>
+        }
+<span class="fc" id="L2038">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L2039">    }</span>
+
+    /**
+     * Indicates whether solver is ready to find a solution.
+     *
+     * @return true if solver is ready, false otherwise.
+     */
+    @Override
+    public boolean isReady() {
+<span class="pc bpc" id="L2048" title="1 of 6 branches missed.">        return super.isReady() &amp;&amp; qualityScores != null &amp;&amp; qualityScores.length == measurements.size();</span>
+    }
+
+    /**
+     * Estimates magnetometer calibration parameters containing soft-iron
+     * scale factors and cross-coupling errors.
+     *
+     * @throws LockedException      if calibrator is currently running.
+     * @throws NotReadyException    if calibrator is not ready.
+     * @throws CalibrationException if estimation fails for numerical reasons.
+     */
+    @Override
+    public void calibrate() throws LockedException, NotReadyException, CalibrationException {
+<span class="fc bfc" id="L2061" title="All 2 branches covered.">        if (running) {</span>
+<span class="fc" id="L2062">            throw new LockedException();</span>
+        }
+<span class="pc bpc" id="L2064" title="1 of 2 branches missed.">        if (!isReady()) {</span>
+<span class="nc" id="L2065">            throw new NotReadyException();</span>
+        }
+
+<span class="fc" id="L2068">        final var innerEstimator = new PROMedSRobustEstimator&lt;&gt;(new PROMedSRobustEstimatorListener&lt;Matrix&gt;() {</span>
+            @Override
+            public double[] getQualityScores() {
+<span class="fc" id="L2071">                return qualityScores;</span>
+            }
+
+            @Override
+            public double getThreshold() {
+<span class="fc" id="L2076">                return stopThreshold;</span>
+            }
+
+            @Override
+            public int getTotalSamples() {
+<span class="fc" id="L2081">                return measurements.size();</span>
+            }
+
+            @Override
+            public int getSubsetSize() {
+<span class="fc" id="L2086">                return preliminarySubsetSize;</span>
+            }
+
+            @Override
+            public void estimatePreliminarSolutions(final int[] samplesIndices, final List&lt;Matrix&gt; solutions) {
+<span class="fc" id="L2091">                computePreliminarySolutions(samplesIndices, solutions);</span>
+<span class="fc" id="L2092">            }</span>
+
+            @Override
+            public double computeResidual(final Matrix currentEstimation, final int i) {
+<span class="fc" id="L2096">                return computeError(measurements.get(i), currentEstimation);</span>
+            }
+
+            @Override
+            public boolean isReady() {
+<span class="fc" id="L2101">                return PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator.this.isReady();</span>
+            }
+
+            @Override
+            public void onEstimateStart(final RobustEstimator&lt;Matrix&gt; estimator) {
+                // no action needed
+<span class="fc" id="L2107">            }</span>
+
+            @Override
+            public void onEstimateEnd(final RobustEstimator&lt;Matrix&gt; estimator) {
+                // no action needed
+<span class="fc" id="L2112">            }</span>
+
+            @Override
+            public void onEstimateNextIteration(final RobustEstimator&lt;Matrix&gt; estimator, int iteration) {
+<span class="pc bpc" id="L2116" title="1 of 2 branches missed.">                if (listener != null) {</span>
+<span class="fc" id="L2117">                    listener.onCalibrateNextIteration(</span>
+                            PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator.this,
+                            iteration);
+                }
+<span class="fc" id="L2121">            }</span>
+
+            @Override
+            public void onEstimateProgressChange(
+                    final RobustEstimator&lt;Matrix&gt; estimator, final float progress) {
+<span class="nc bnc" id="L2126" title="All 2 branches missed.">                if (listener != null) {</span>
+<span class="nc" id="L2127">                    listener.onCalibrateProgressChange(</span>
+                            PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator.this,
+                            progress);
+                }
+<span class="nc" id="L2131">            }</span>
+        });
+
+        try {
+<span class="fc" id="L2135">            running = true;</span>
+
+<span class="pc bpc" id="L2137" title="1 of 2 branches missed.">            if (listener != null) {</span>
+<span class="fc" id="L2138">                listener.onCalibrateStart(this);</span>
+            }
+
+<span class="fc" id="L2141">            inliersData = null;</span>
+
+<span class="fc" id="L2143">            initialize();</span>
+
+<span class="fc" id="L2145">            innerEstimator.setUseInlierThresholds(true);</span>
+<span class="fc" id="L2146">            innerEstimator.setConfidence(confidence);</span>
+<span class="fc" id="L2147">            innerEstimator.setMaxIterations(maxIterations);</span>
+<span class="fc" id="L2148">            innerEstimator.setProgressDelta(progressDelta);</span>
+<span class="fc" id="L2149">            final var preliminaryResult = innerEstimator.estimate();</span>
+<span class="fc" id="L2150">            inliersData = innerEstimator.getInliersData();</span>
+
+<span class="fc" id="L2152">            attemptRefine(preliminaryResult);</span>
+
+<span class="pc bpc" id="L2154" title="1 of 2 branches missed.">            if (listener != null) {</span>
+<span class="fc" id="L2155">                listener.onCalibrateEnd(this);</span>
+            }
+
+<span class="nc" id="L2158">        } catch (final com.irurueta.numerical.LockedException e) {</span>
+<span class="nc" id="L2159">            throw new LockedException(e);</span>
+<span class="nc" id="L2160">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
+<span class="nc" id="L2161">            throw new NotReadyException(e);</span>
+<span class="nc" id="L2162">        } catch (final RobustEstimatorException | IOException e) {</span>
+<span class="nc" id="L2163">            throw new CalibrationException(e);</span>
+        } finally {
+<span class="fc" id="L2165">            running = false;</span>
+        }
+<span class="fc" id="L2167">    }</span>
+
+    /**
+     * Returns method being used for robust estimation.
+     *
+     * @return method being used for robust estimation.
+     */
+    @Override
+    public RobustEstimatorMethod getMethod() {
+<span class="fc" id="L2176">        return RobustEstimatorMethod.PROMEDS;</span>
+    }
+
+    /**
+     * Indicates whether this calibrator requires quality scores for each
+     * measurement or not.
+     *
+     * @return true if quality scores are required, false otherwise.
+     */
+    @Override
+    public boolean isQualityScoresRequired() {
+<span class="fc" id="L2187">        return true;</span>
+    }
+
+    /**
+     * Sets quality scores corresponding to each provided sample.
+     * This method is used internally and does not check whether instance is
+     * locked or not.
+     *
+     * @param qualityScoresParam quality scores to be set.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than 4 samples.
+     */
+    private void internalSetQualityScores(final double[] qualityScoresParam) {
+<span class="pc bpc" id="L2200" title="1 of 4 branches missed.">        if (qualityScoresParam == null || qualityScoresParam.length &lt; MINIMUM_MEASUREMENTS_COMMON_Z_AXIS) {</span>
+<span class="fc" id="L2201">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L2204">        qualityScores = qualityScoresParam;</span>
+<span class="fc" id="L2205">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

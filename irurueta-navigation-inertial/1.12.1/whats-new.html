@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>What&#8217;s New :: Irurueta Inertial Navigation</title>
+    <meta name="description" content="Release notes for irurueta-navigation-inertial, listing fixes and changes for each version.">
+    <meta name="keywords" content="release notes, changelog, version history, irurueta-navigation-inertial">
+    <meta name="generator" content="Antora 3.2.2">
+    <link rel="stylesheet" href="../../_/css/site.css">
+    <link rel="stylesheet" href="../../pagefind/pagefind-ui.css">
+    <link rel="stylesheet" href="../../_/css/pagefind-site.css">
+<link rel="icon" type="image/svg+xml" href="../../_/img/logo.svg">
+  </head>
+  <body class="article">
+<script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs'; mermaid.initialize({"startOnLoad":true}); </script><header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="../.."><img src="../../_/img/logo.svg" alt="Irurueta Inertial Navigation" class="navbar-brand-logo">Irurueta Inertial Navigation</a>
+      <div class="navbar-item search hide-for-print">
+        <div id="search"></div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="irurueta-navigation-inertial" data-version="1.12.1">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="index.html">Irurueta Inertial Navigation</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="index.html">Overview</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="1">
+    <a class="nav-link" href="whats-new.html">What&#8217;s New</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="installation.html">Installation</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Estimators</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="estimators/index.html">Estimators</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="estimators/gravity.html">Gravity and Gravitation Estimators</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="estimators/kinematics.html">Kinematics Estimators</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="estimators/position-velocity.html">Radii of Curvature, Position and Velocity Estimators</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="estimators/attitude.html">Attitude Estimators: Leveling, Gyrocompassing, and Magnetic Heading</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Navigators</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="navigators/index.html">Navigators</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="navigators/navigation-equations.html">Precision Navigation Equations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="navigators/kalman-filtered-estimators.html">Kalman Filtered Estimators</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">World Magnetic Model</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="wmm/index.html">World Magnetic Model (WMM)</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="wmm/spherical-harmonic-model.html">The Spherical Harmonic Model</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="wmm/earth-magnetic-flux-density.html">Earth Magnetic Flux Density Container and Simple Estimator</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Calibration</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="calibration/index.html">IMU Calibration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="calibration/algorithms.html">Calibration algorithms</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="calibration/data-model.html">Calibration Data Model</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="calibration/fixers.html">Fixers: Undoing the Sensor Error Model</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="calibration/accelerometer.html">Accelerometer Calibration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="calibration/gyroscope.html">Gyroscope Calibration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="calibration/magnetometer.html">Magnetometer Calibration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="calibration/intervals-and-generators.html">Static/Dynamic Interval Detection and Measurement Generation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="calibration/noise-and-bias.html">Noise and Approximate-Bias Estimators</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="reference.html">Reference</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Irurueta Inertial Navigation</span>
+    <span class="version">1.12.1</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <div class="title"><a href="index.html">Irurueta Inertial Navigation</a></div>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">1.12.1</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">Irurueta Inertial Navigation</a></li>
+    <li><a href="whats-new.html">What&#8217;s New</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="https://github.com/albertoirurueta/irurueta-navigation-inertial/edit/develop/docs/modules/ROOT/pages/whats-new.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc" data-pagefind-body>
+<span data-pagefind-filter="component[data-component]" data-component="Irurueta Inertial Navigation" hidden></span>
+<h1 class="page">What&#8217;s New</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+This documentation was generated with the assistance of AI. Please report any inaccuracies.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_1_12_1"><a class="anchor" href="#_1_12_1"></a>1.12.1</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>🐛 <code>getEstimatedCovariance()</code> of <code>EasyGyroscopeCalibrator</code>, <code>TurntableGyroscopeCalibrator</code>, <code>KnownBiasEasyGyroscopeCalibrator</code> and <code>KnownBiasTurntableGyroscopeCalibrator</code> no longer overstates the uncertainty of <code>mzy</code> in the general (non common-axis) case: a wrong Jacobian entry (1.9 instead of 1.0) inflated its variance 3.61 times. Parameter estimates were not affected (<a href="https://github.com/albertoirurueta/irurueta-navigation-inertial/issues/56">#56</a>).</p>
+</li>
+<li>
+<p>🐛 <code>WMMLoader</code> now reads World Magnetic Model coefficient files as UTF-8 instead of the platform default charset (<a href="https://github.com/albertoirurueta/irurueta-navigation-inertial/issues/49">#49</a>).</p>
+</li>
+<li>
+<p>🐛 <code>clone()</code> of state, configuration and measurement classes no longer calls the overridable <code>copyTo</code> method, and clones no longer share mutable objects (matrices, arrays, nested values) with the original; <code>StandardDeviationBodyMagneticFluxDensity.clone()</code> now returns a deep copy instead of a shallow one (<a href="https://github.com/albertoirurueta/irurueta-navigation-inertial/issues/49">#49</a>).</p>
+</li>
+<li>
+<p>♻️ SpotBugs now applies the repository&#8217;s <code>spotbugs-exclude.xml</code> filter (only <code>CT_CONSTRUCTOR_THROW</code>, <code>EI_EXPOSE_REP</code> and <code>EI_EXPOSE_REP2</code>, see <a href="reference.html" class="xref page">Reference</a>) and reports no findings in the library source (<a href="https://github.com/albertoirurueta/irurueta-navigation-inertial/issues/49">#49</a>).</p>
+</li>
+<li>
+<p>🐛 Fixed flaky magnetometer calibrator tests (<a href="https://github.com/albertoirurueta/irurueta-navigation-inertial/issues/46">#46</a>): noisy known-position and robust norm/position tests now use the same 2 nT noise as their siblings, a realistic soft-iron range and tolerances tighter than the generated values, and robust retry loops skip attempts without a consensus. No changes to library source.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_1_12_0"><a class="anchor" href="#_1_12_0"></a>1.12.0</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>⚠️ Changed defaults: gravity-norm accelerometer calibrators (<code>KnownGravityNorm</code>, <code>KnownBiasAndGravityNorm</code>, <code>KnownPosition</code>, <code>KnownBiasAndPosition</code> and their robust variants) and norm-based magnetometer calibrators now default to <code>commonAxisUsed = true</code> (upper-triangular model, observable from norm constraints). The general mode is still available but is only defined up to a rotation. Easy gyroscope calibrators (<code>EasyGyroscopeCalibrator</code>, <code>KnownBiasEasyGyroscopeCalibrator</code> and their robust variants) now default to <code>commonAxisUsed = false</code> and <code>estimateGDependentCrossBiases = false</code>, as in the paper.</p>
+</li>
+<li>
+<p>⚠️ <code>TriadStaticIntervalDetector</code> now uses the variance-norm statistic of imu_tk instead of the standard-deviation norm, so the meaning of every <code>thresholdFactor</code>, <code>instantaneousNoiseLevelFactor</code> and absolute threshold changes (<code>k_reference ~ k^2</code>): <code>DEFAULT_THRESHOLD_FACTOR</code> goes from 2.0 to 4.0 and <code>DEFAULT_INSTANTANEOUS_NOISE_LEVEL_FACTOR</code> from 2.0 to 9.0. Detection uses a centred window, so status changes are delayed by half a window (<code>getDetectionDelaySamples()</code>).</p>
+</li>
+<li>
+<p>🐛 Fixed gyroscope sequence generation: sequences need a valid static interval on both sides, dynamic intervals around a too short static interval are joined, the "after" gravity vector is the average of the whole following static interval, and the initialization period is the first static average; <code>flush()</code> generates the last pending sequence when a recording ends at rest. <code>MagnetometerMeasurementsGenerator</code> only averages samples classified as static. Static averages now report the standard deviation of the mean (<code>sigma/sqrt(N)</code>), norm-based calibrators fit the squared norm with standard deviation <code>2*g*sigma</code>, gyroscope sequences carry <code>BodyKinematicsSequence.getGravityDirectionStandardDeviation()</code>, the easy gyroscope calibrators use a three-component residual fitted with <code>LevenbergMarquardtMultiVariateFitter</code>, and windowed noise estimators use the number of samples actually in the window.</p>
+</li>
+<li>
+<p>🔗 These changes affect <code>irurueta-navigation-inertial-extra</code> (<a href="https://github.com/albertoirurueta/irurueta-navigation-inertial-extra/issues/29">#29</a>), whose optimizers depend on the detector factors and calibrator defaults.</p>
+</li>
+<li>
+<p>♻️ Updated internal dependencies: <code>irurueta-numerical</code> 1.7.1, <code>irurueta-geometry</code> 1.6.2 and <code>irurueta-navigation</code> 1.8.3. The easy gyroscope calibrators now use the <code>JacobianEstimator</code> of <code>irurueta-numerical</code> with a minimum step.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_1_11_0"><a class="anchor" href="#_1_11_0"></a>1.11.0</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>🐛 The filtered estimators (<code>INSLooselyCoupledKalmanFilteredEstimator</code>, <code>INSGNSSLooselyCoupledKalmanFilteredEstimator</code> and <code>INSGNSSTightlyCoupledKalmanFilteredEstimator</code>) now follow Groves' reference algorithms: every IMU sample is integrated with the ECEF inertial navigation equations, and each Kalman epoch uses the INS-propagated solution as its predicted state and applies the closed-loop correction back to it.</p>
+</li>
+<li>
+<p>🐛 <code>INSGNSSLooselyCoupledKalmanFilteredEstimator</code> uses the GNSS least-squares solution as the Kalman measurement at its own timestamp; <code>INSGNSSTightlyCoupledKalmanFilteredEstimator</code> re-orthonormalises the attitude after each epoch, initialises the receiver clock offset and drift from the least-squares solution, and no longer loses IMU samples provided before the first GNSS measurements.</p>
+</li>
+<li>
+<p>🐛 <code>ECEFKinematicsEstimator</code> and <code>ECIKinematicsEstimator</code> are now the exact inverse of <code>ECEFInertialNavigator</code> / <code>ECIInertialNavigator</code> (Earth-rotation term and gravity evaluated at the start of the interval).</p>
+</li>
+<li>
+<p>🐛 The epoch gate of the filtered estimators accepts fixes/measurements arriving exactly one epoch interval after the previous epoch, and the first epoch propagates the covariance over the time elapsed since the first IMU sample.</p>
+</li>
+<li>
+<p>✨ New <code>INSLooselyCoupledKalmanFilteredEstimator.updatePositionAndVelocity(&#8230;&#8203;)</code> overloads, which provide a position and velocity fix and run a Kalman filter epoch with it.</p>
+</li>
+<li>
+<p>✨ New <code>getLastKinematicsTimestamp()</code> and <code>getLastKinematicsTimestampAsTime(&#8230;&#8203;)</code> on <code>INSLooselyCoupledKalmanFilteredEstimator</code> and <code>INSGNSSTightlyCoupledKalmanFilteredEstimator</code>.</p>
+</li>
+<li>
+<p>♻️ Behaviour change with unchanged signatures: <code>update</code> / <code>updateBodyKinematics</code> only integrate IMU samples and no longer run a Kalman epoch (their return value tells whether the sample was integrated); <code>updateMeasurements</code> runs the epoch itself. <code>INSLooselyCoupledKalmanFilteredEstimator.propagate</code> is deprecated in favour of <code>updatePositionAndVelocity</code>.</p>
+</li>
+<li>
+<p>📚 Documentation improvements: new calibration algorithms page (least squares, Levenberg-Marquardt, robust estimation and the Tedaldi et al. static-interval method), additional diagrams and equations across the calibration, estimator, navigator and WMM pages, and a more complete bibliography. No changes to library source.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_1_10_2"><a class="anchor" href="#_1_10_2"></a>1.10.2</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>♻️ Updated internal dependencies to their latest patch versions: <code>irurueta-numerical</code> 1.6.1, <code>irurueta-geometry</code> 1.6.1, <code>irurueta-units</code> 1.4.1, <code>irurueta-algebra</code> 1.4.1 and <code>irurueta-navigation</code> 1.8.2. No changes to this library&#8217;s own source.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_1_10_1"><a class="anchor" href="#_1_10_1"></a>1.10.1</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>🐛 Fixed flaky test assertions in magnetometer calibrator tests; no functional changes to library source.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_1_10_0"><a class="anchor" href="#_1_10_0"></a>1.10.0</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>♻️ Build now targets Java 21 (up from Java 17).</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>Made with ♥ from <strong>BCN</strong></p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+<script defer src="../../pagefind/pagefind-ui.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var el = document.getElementById('search')
+    if (!el || typeof PagefindUI === 'undefined') return
+    new PagefindUI({ element: '#search', showSubResults: true })
+    el.classList.add('is-ready')
+  })
+</script>
+  </body>
+</html>

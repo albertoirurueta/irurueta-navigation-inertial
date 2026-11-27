@@ -1,0 +1,628 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FrameBodyMagneticFluxDensity.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-inertial</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.inertial.calibration</a> &gt; <span class="el_source">FrameBodyMagneticFluxDensity.java</span></div><h1>FrameBodyMagneticFluxDensity.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2020 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.inertial.calibration;
+
+import com.irurueta.navigation.frames.ECEFFrame;
+import com.irurueta.navigation.frames.NEDFrame;
+import com.irurueta.navigation.frames.converters.ECEFtoNEDFrameConverter;
+import com.irurueta.navigation.frames.converters.NEDtoECEFFrameConverter;
+import com.irurueta.navigation.inertial.BodyMagneticFluxDensity;
+import com.irurueta.navigation.inertial.wmm.WMMEarthMagneticFluxDensityEstimator;
+import java.io.Serial;
+import java.io.Serializable;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Objects;
+
+/**
+ * Contains a body magnetic flux density along with the corresponding frame
+ * (position, orientation and velocity) where the measurement was made.
+ */
+public class FrameBodyMagneticFluxDensity implements Serializable, Cloneable {
+
+    /**
+     * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
+     * instances.
+     */
+    @Serial
+    private static final long serialVersionUID = 0L;
+
+    /**
+     * Current body magnetic flux density. Contains magnetometer measurements.
+     */
+    private BodyMagneticFluxDensity magneticFluxDensity;
+
+    /**
+     * Contains current body position, velocity (which will typically be zero)
+     * and orientation resolved around ECEF axes.
+     */
+    private ECEFFrame frame;
+
+    /**
+     * Contains year expressed in decimal format.
+     */
+    private double year;
+
+    /**
+     * Constructor.
+     */
+<span class="fc" id="L62">    public FrameBodyMagneticFluxDensity() {</span>
+<span class="fc" id="L63">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param magneticFluxDensity current body magnetic flux density.
+     */
+<span class="fc" id="L70">    public FrameBodyMagneticFluxDensity(final BodyMagneticFluxDensity magneticFluxDensity) {</span>
+<span class="fc" id="L71">        this.magneticFluxDensity = magneticFluxDensity;</span>
+<span class="fc" id="L72">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param frame current ECEF frame associated to measurement.
+     */
+<span class="fc" id="L79">    public FrameBodyMagneticFluxDensity(final ECEFFrame frame) {</span>
+<span class="fc" id="L80">        this.frame = frame;</span>
+<span class="fc" id="L81">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param frame current NED frame associated to measurement. Internally it
+     *              will be converted to its corresponding ECEF frame.
+     */
+<span class="fc" id="L89">    public FrameBodyMagneticFluxDensity(final NEDFrame frame) {</span>
+<span class="fc" id="L90">        setNedFrame(frame);</span>
+<span class="fc" id="L91">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param magneticFluxDensity current body magnetic flux density.
+     * @param frame               current ECEF frame associated to measurement.
+     */
+    public FrameBodyMagneticFluxDensity(final BodyMagneticFluxDensity magneticFluxDensity, final ECEFFrame frame) {
+<span class="fc" id="L100">        this(magneticFluxDensity);</span>
+<span class="fc" id="L101">        this.frame = frame;</span>
+<span class="fc" id="L102">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param magneticFluxDensity current body magnetic flux density.
+     * @param frame               current NED frame associated to measurement.
+     *                            Internally it will be converted to its
+     *                            corresponding ECEF frame.
+     */
+    public FrameBodyMagneticFluxDensity(final BodyMagneticFluxDensity magneticFluxDensity, final NEDFrame frame) {
+<span class="fc" id="L113">        this(magneticFluxDensity);</span>
+<span class="fc" id="L114">        setNedFrame(frame);</span>
+<span class="fc" id="L115">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param year time expressed as decimal year.
+     */
+<span class="fc" id="L122">    public FrameBodyMagneticFluxDensity(final double year) {</span>
+<span class="fc" id="L123">        this.year = year;</span>
+<span class="fc" id="L124">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param magneticFluxDensity current body magnetic flux density.
+     * @param year                time expressed as decimal year.
+     */
+<span class="fc" id="L132">    public FrameBodyMagneticFluxDensity(final BodyMagneticFluxDensity magneticFluxDensity, final double year) {</span>
+<span class="fc" id="L133">        this.magneticFluxDensity = magneticFluxDensity;</span>
+<span class="fc" id="L134">        this.year = year;</span>
+<span class="fc" id="L135">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param frame current ECEF frame associated to measurement.
+     * @param year  time expressed as decimal year.
+     */
+<span class="fc" id="L143">    public FrameBodyMagneticFluxDensity(final ECEFFrame frame, final double year) {</span>
+<span class="fc" id="L144">        this.frame = frame;</span>
+<span class="fc" id="L145">        this.year = year;</span>
+<span class="fc" id="L146">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param frame current NED frame associated to measurement. Internally it
+     *              will be converted to its corresponding ECEF frame.
+     * @param year  time expressed as decimal year.
+     */
+<span class="fc" id="L155">    public FrameBodyMagneticFluxDensity(final NEDFrame frame, final double year) {</span>
+<span class="fc" id="L156">        setNedFrame(frame);</span>
+<span class="fc" id="L157">        this.year = year;</span>
+<span class="fc" id="L158">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param magneticFluxDensity current body magnetic flux density.
+     * @param frame               current ECEF frame associated to measurement.
+     * @param year                time expressed as decimal year.
+     */
+    public FrameBodyMagneticFluxDensity(
+            final BodyMagneticFluxDensity magneticFluxDensity, final ECEFFrame frame, final double year) {
+<span class="fc" id="L169">        this(magneticFluxDensity);</span>
+<span class="fc" id="L170">        this.frame = frame;</span>
+<span class="fc" id="L171">        this.year = year;</span>
+<span class="fc" id="L172">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param magneticFluxDensity current body magnetic flux density.
+     * @param frame               current NED frame associated to measurement.
+     *                            Internally it will be converted to its
+     *                            corresponding ECEF frame.
+     * @param year                time expressed as decimal year.
+     */
+    public FrameBodyMagneticFluxDensity(
+            final BodyMagneticFluxDensity magneticFluxDensity, final NEDFrame frame, final double year) {
+<span class="fc" id="L185">        this(magneticFluxDensity);</span>
+<span class="fc" id="L186">        setNedFrame(frame);</span>
+<span class="fc" id="L187">        this.year = year;</span>
+<span class="fc" id="L188">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param time a timestamp.
+     */
+    public FrameBodyMagneticFluxDensity(final Date time) {
+<span class="fc" id="L196">        this(convertTime(time));</span>
+<span class="fc" id="L197">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param magneticFluxDensity current body magnetic flux density.
+     * @param time                a timestamp.
+     */
+    public FrameBodyMagneticFluxDensity(final BodyMagneticFluxDensity magneticFluxDensity, final Date time) {
+<span class="fc" id="L206">        this(magneticFluxDensity, convertTime(time));</span>
+<span class="fc" id="L207">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param frame current ECEF frame associated to measurement.
+     * @param time  a timestamp.
+     */
+    public FrameBodyMagneticFluxDensity(final ECEFFrame frame, final Date time) {
+<span class="fc" id="L216">        this(frame, convertTime(time));</span>
+<span class="fc" id="L217">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param frame current NED frame associated to measurement. Internally it
+     *              will be converted to its corresponding ECEF frame.
+     * @param time  a timestamp.
+     */
+    public FrameBodyMagneticFluxDensity(final NEDFrame frame, final Date time) {
+<span class="fc" id="L227">        this(frame, convertTime(time));</span>
+<span class="fc" id="L228">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param magneticFluxDensity current body magnetic flux density.
+     * @param frame               current ECEF frame associated to measurement.
+     * @param time                a timestamp.
+     */
+    public FrameBodyMagneticFluxDensity(
+            final BodyMagneticFluxDensity magneticFluxDensity, final ECEFFrame frame, final Date time) {
+<span class="fc" id="L239">        this(magneticFluxDensity, frame, convertTime(time));</span>
+<span class="fc" id="L240">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param magneticFluxDensity current body magnetic flux density.
+     * @param frame               current NED frame associated to measurement.
+     *                            Internally it will be converted to its
+     *                            corresponding ECEF frame.
+     * @param time                a timestamp.
+     */
+    public FrameBodyMagneticFluxDensity(
+            final BodyMagneticFluxDensity magneticFluxDensity, final NEDFrame frame, final Date time) {
+<span class="fc" id="L253">        this(magneticFluxDensity, frame, convertTime(time));</span>
+<span class="fc" id="L254">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param calendar calendar containing a timestamp.
+     */
+    public FrameBodyMagneticFluxDensity(final GregorianCalendar calendar) {
+<span class="fc" id="L262">        this(convertTime(calendar));</span>
+<span class="fc" id="L263">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param magneticFluxDensity current body magnetic flux density.
+     * @param calendar            calendar containing a timestamp.
+     */
+    public FrameBodyMagneticFluxDensity(
+            final BodyMagneticFluxDensity magneticFluxDensity, final GregorianCalendar calendar) {
+<span class="fc" id="L273">        this(magneticFluxDensity, convertTime(calendar));</span>
+<span class="fc" id="L274">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param frame    current ECEF frame associated to measurement.
+     * @param calendar calendar containing a timestamp.
+     */
+    public FrameBodyMagneticFluxDensity(final ECEFFrame frame, final GregorianCalendar calendar) {
+<span class="fc" id="L283">        this(frame, convertTime(calendar));</span>
+<span class="fc" id="L284">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param frame    current NED frame associated to measurement. Internally it
+     *                 will be converted to its corresponding ECEF frame.
+     * @param calendar calendar containing a timestamp.
+     */
+    public FrameBodyMagneticFluxDensity(final NEDFrame frame, final GregorianCalendar calendar) {
+<span class="fc" id="L294">        this(frame, convertTime(calendar));</span>
+<span class="fc" id="L295">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param magneticFluxDensity current body magnetic flux density.
+     * @param frame               current ECEF frame associated to measurement.
+     * @param calendar            calendar containing a timestamp.
+     */
+    public FrameBodyMagneticFluxDensity(
+            final BodyMagneticFluxDensity magneticFluxDensity, final ECEFFrame frame,
+            final GregorianCalendar calendar) {
+<span class="fc" id="L307">        this(magneticFluxDensity, frame, convertTime(calendar));</span>
+<span class="fc" id="L308">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param magneticFluxDensity current body magnetic flux density.
+     * @param frame               current NED frame associated to measurement.
+     *                            Internally it will be converted to its
+     *                            corresponding ECEF frame.
+     * @param calendar            calendar containing a timestamp.
+     */
+    public FrameBodyMagneticFluxDensity(
+            final BodyMagneticFluxDensity magneticFluxDensity, final NEDFrame frame,
+            final GregorianCalendar calendar) {
+<span class="fc" id="L322">        this(magneticFluxDensity, frame, convertTime(calendar));</span>
+<span class="fc" id="L323">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param input instance to copy data from.
+     */
+<span class="fc" id="L330">    public FrameBodyMagneticFluxDensity(final FrameBodyMagneticFluxDensity input) {</span>
+<span class="fc" id="L331">        copyFrom(input);</span>
+<span class="fc" id="L332">    }</span>
+
+    /**
+     * Gets current body magnetic flux density. Contains magnetometer
+     * measurements.
+     *
+     * @return current body magnetic flux density.
+     */
+    public BodyMagneticFluxDensity getMagneticFluxDensity() {
+<span class="fc" id="L341">        return magneticFluxDensity;</span>
+    }
+
+    /**
+     * Sets current body magnetic flux density. Contains magnetometer
+     * measurements.
+     *
+     * @param magneticFluxDensity current body magnetic flux density.
+     */
+    public void setMagneticFluxDensity(final BodyMagneticFluxDensity magneticFluxDensity) {
+<span class="fc" id="L351">        this.magneticFluxDensity = magneticFluxDensity;</span>
+<span class="fc" id="L352">    }</span>
+
+    /**
+     * Gets current body position (which will typically remain constant),
+     * velocity(which will typically be zero) and orientation (which usually
+     * changes with each measurement to perform calibration of a single device)
+     * resolved around ECEF axes associated to body magnetic flux density
+     * measurement.
+     *
+     * @return current ECEF frame associated to body magnetic flux density
+     * measurement or null if not available.
+     */
+    public ECEFFrame getFrame() {
+<span class="fc" id="L365">        return frame;</span>
+    }
+
+    /**
+     * Sets current body position (which will typically remain constant),
+     * velocity (which will typically be zero) and orientation (which usually
+     * changes with each measurement to perform calibration of a single
+     * device) resolved around ECEF axes associated to body magnetic flux
+     * density measurement.
+     *
+     * @param frame current ECEF frame.
+     */
+    public void setFrame(final ECEFFrame frame) {
+<span class="fc" id="L378">        this.frame = frame;</span>
+<span class="fc" id="L379">    }</span>
+
+    /**
+     * Gets current body position (which will typically remain constant),
+     * velocity (which will typically be zero) and orientation (which usually
+     * changes with each measurement to perform calibration of a single
+     * device) resolved around NED axes associated to body magnetic flux
+     * density measurement.
+     *
+     * @return current NED frame associated to body magnetic flux density
+     * measurement or null if not available.
+     */
+    public NEDFrame getNedFrame() {
+<span class="fc bfc" id="L392" title="All 2 branches covered.">        return frame != null ? ECEFtoNEDFrameConverter.convertECEFtoNEDAndReturnNew(frame) : null;</span>
+    }
+
+    /**
+     * Gets current body position (which will typically remain constant),
+     * velocity (which will typically be zero) and orientation (which usually
+     * changes with each measurement to perform calibration of a single
+     * device) resolved around NED axes associated to body magnetic flux
+     * density measurement.
+     *
+     * @param result instance where result data will be stored if available.
+     * @return true if result instance was updated, false otherwise.
+     */
+    public boolean getNedFrame(final NEDFrame result) {
+<span class="fc bfc" id="L406" title="All 2 branches covered.">        if (frame != null) {</span>
+<span class="fc" id="L407">            ECEFtoNEDFrameConverter.convertECEFtoNED(frame, result);</span>
+<span class="fc" id="L408">            return true;</span>
+        } else {
+<span class="fc" id="L410">            return false;</span>
+        }
+    }
+
+    /**
+     * Sets current body position (which will typically remain constant),
+     * velocity (which will typically be zero) and orientation (which usually
+     * changes with each measurement to perform calibration of a single
+     * device) resolved around NED axes associated to body magnetic flux
+     * density measurement.
+     * &lt;p&gt;
+     * This method will internally store the corresponding ECEF frame to provided
+     * NED frame value.
+     *
+     * @param nedFrame current NED frame associated to body magnetic flux
+     *                 density measurement to be set.
+     */
+    public void setNedFrame(final NEDFrame nedFrame) {
+<span class="pc bpc" id="L428" title="1 of 2 branches missed.">        if (nedFrame != null) {</span>
+<span class="pc bpc" id="L429" title="1 of 2 branches missed.">            if (frame != null) {</span>
+<span class="nc" id="L430">                NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, frame);</span>
+            } else {
+<span class="fc" id="L432">                frame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);</span>
+            }
+        } else {
+<span class="nc" id="L435">            frame = null;</span>
+        }
+<span class="fc" id="L437">    }</span>
+
+    /**
+     * Gets year expressed in decimal format.
+     *
+     * @return year expressed in decimal format.
+     */
+    public double getYear() {
+<span class="fc" id="L445">        return year;</span>
+    }
+
+    /**
+     * Sets year expressed in decimal format.
+     *
+     * @param year year expressed in decimal format.
+     */
+    public void setYear(final double year) {
+<span class="fc" id="L454">        this.year = year;</span>
+<span class="fc" id="L455">    }</span>
+
+    /**
+     * Sets decimal year from provided date instance.
+     *
+     * @param date a date instance containing a timestamp.
+     */
+    public void setTime(final Date date) {
+<span class="fc" id="L463">        year = convertTime(date);</span>
+<span class="fc" id="L464">    }</span>
+
+    /**
+     * Sets decimal year from provided calendar instance.
+     *
+     * @param calendar a calendar instance containing a timestamp.
+     */
+    public void setTime(final GregorianCalendar calendar) {
+<span class="fc" id="L472">        year = convertTime(calendar);</span>
+<span class="fc" id="L473">    }</span>
+
+    /**
+     * Converts a time instant contained ina date object to a
+     * decimal year.
+     *
+     * @param date a time instance to be converted.
+     * @return converted value expressed in decimal years.
+     */
+    public static double convertTime(final Date date) {
+<span class="fc" id="L483">        final var calendar = new GregorianCalendar();</span>
+<span class="fc" id="L484">        calendar.setTime(date);</span>
+<span class="fc" id="L485">        return convertTime(calendar);</span>
+    }
+
+    /**
+     * Converts a time instant contained in a gregorian calendar to a
+     * decimal year.
+     *
+     * @param calendar calendar containing a specific instant to be
+     *                 converted.
+     * @return converted value expressed in decimal years.
+     */
+    public static double convertTime(final GregorianCalendar calendar) {
+<span class="fc" id="L497">        return WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);</span>
+    }
+
+    /**
+     * Copies data of provided instance into this instance.
+     *
+     * @param input instance to copy dara from.
+     */
+    public void copyFrom(final FrameBodyMagneticFluxDensity input) {
+<span class="fc bfc" id="L506" title="All 2 branches covered.">        if (input.magneticFluxDensity != null) {</span>
+<span class="fc bfc" id="L507" title="All 2 branches covered.">            if (magneticFluxDensity == null) {</span>
+<span class="fc" id="L508">                magneticFluxDensity = new BodyMagneticFluxDensity(input.magneticFluxDensity);</span>
+            } else {
+<span class="fc" id="L510">                magneticFluxDensity.copyFrom(input.magneticFluxDensity);</span>
+            }
+        } else {
+<span class="fc" id="L513">            magneticFluxDensity = null;</span>
+        }
+
+<span class="fc bfc" id="L516" title="All 2 branches covered.">        if (input.frame != null) {</span>
+<span class="fc bfc" id="L517" title="All 2 branches covered.">            if (frame == null) {</span>
+<span class="fc" id="L518">                frame = new ECEFFrame(input.frame);</span>
+            } else {
+<span class="fc" id="L520">                frame.copyFrom(input.frame);</span>
+            }
+        } else {
+<span class="fc" id="L523">            frame = null;</span>
+        }
+
+<span class="fc" id="L526">        year = input.year;</span>
+<span class="fc" id="L527">    }</span>
+
+    /**
+     * Copies this instance data into provided instance.
+     *
+     * @param output destination instance where data will be copied to.
+     */
+    public void copyTo(final FrameBodyMagneticFluxDensity output) {
+<span class="fc" id="L535">        output.copyFrom(this);</span>
+<span class="fc" id="L536">    }</span>
+
+    /**
+     * Computes and returns hash code for this instance. Hash codes are almost unique
+     * values that are useful for fast classification and storage of objects in collections.
+     *
+     * @return Hash code.
+     */
+    @Override
+    public int hashCode() {
+<span class="fc" id="L546">        return Objects.hash(magneticFluxDensity, frame, year);</span>
+    }
+
+    /**
+     * Checks if provided instance has exactly the same contents as this instance.
+     *
+     * @param other instance to be compared.
+     * @return true if both instances are considered to be equal, false otherwise.
+     */
+    public boolean equals(final FrameBodyMagneticFluxDensity other) {
+<span class="fc" id="L556">        return equals(other, 0.0);</span>
+    }
+
+    /**
+     * Checks if provided instance has contents similar to this instance up to provided
+     * threshold value.
+     *
+     * @param other     instance to be compared.
+     * @param threshold maximum allowed difference between magnetic flux density and
+     *                  frame values.
+     * @return true if both instances are considered to be equal (up to provided
+     * threshold), false otherwise.
+     */
+    public boolean equals(final FrameBodyMagneticFluxDensity other, final double threshold) {
+<span class="fc bfc" id="L570" title="All 2 branches covered.">        if (other == null) {</span>
+<span class="fc" id="L571">            return false;</span>
+        }
+
+<span class="pc bpc" id="L574" title="2 of 6 branches missed.">        return ((other.magneticFluxDensity == null &amp;&amp; magneticFluxDensity == null)</span>
+<span class="pc bpc" id="L575" title="4 of 8 branches missed.">                || (magneticFluxDensity != null &amp;&amp; magneticFluxDensity.equals(other.magneticFluxDensity, threshold)))</span>
+                &amp;&amp; ((other.frame == null &amp;&amp; frame == null)
+<span class="pc bpc" id="L577" title="1 of 2 branches missed.">                || (frame != null &amp;&amp; frame.equals(other.frame, threshold)))</span>
+<span class="pc bpc" id="L578" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(other.year - year) &lt;= threshold;</span>
+    }
+
+    /**
+     * Checks if provided object is a FrameBodyMagneticFluxDensity instance
+     * having exactly the same contents as this instance.
+     *
+     * @param obj object to be compared.
+     * @return true if both objects are considered to be equal, false otherwise.
+     */
+    @Override
+    public boolean equals(final Object obj) {
+<span class="fc bfc" id="L590" title="All 2 branches covered.">        if (this == obj) {</span>
+<span class="fc" id="L591">            return true;</span>
+        }
+<span class="pc bpc" id="L593" title="2 of 4 branches missed.">        if (obj == null || getClass() != obj.getClass()) {</span>
+<span class="nc" id="L594">            return false;</span>
+        }
+<span class="fc" id="L596">        final var other = (FrameBodyMagneticFluxDensity) obj;</span>
+<span class="fc" id="L597">        return equals(other);</span>
+    }
+
+    /**
+     * Makes a copy of this instance.
+     *
+     * @return a copy of this instance.
+     * @throws CloneNotSupportedException if clone fails for some reason.
+     */
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+<span class="fc" id="L608">        final var result = (FrameBodyMagneticFluxDensity) super.clone();</span>
+<span class="fc" id="L609">        copyFieldsTo(result);</span>
+<span class="fc" id="L610">        return result;</span>
+    }
+
+    /**
+     * Copies the mutable reference fields of this instance into provided output instance,
+     * allocating new instances so that output never shares them with this instance.
+     * Primitive fields are not copied here because {@link Object#clone()} already copies them.
+     * This method is private so that it cannot be overridden and can be safely called from
+     * {@link #clone()}.
+     *
+     * @param output instance where reference fields will be copied to.
+     */
+    private void copyFieldsTo(final FrameBodyMagneticFluxDensity output) {
+<span class="pc bpc" id="L623" title="1 of 2 branches missed.">        output.magneticFluxDensity = magneticFluxDensity != null</span>
+<span class="pc" id="L624">                ? new BodyMagneticFluxDensity(magneticFluxDensity) : null;</span>
+<span class="pc bpc" id="L625" title="1 of 2 branches missed.">        output.frame = frame != null ? new ECEFFrame(frame) : null;</span>
+<span class="fc" id="L626">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

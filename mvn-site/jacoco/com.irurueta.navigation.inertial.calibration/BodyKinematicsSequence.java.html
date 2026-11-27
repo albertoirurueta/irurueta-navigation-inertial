@@ -1,0 +1,896 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BodyKinematicsSequence.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-inertial</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.inertial.calibration</a> &gt; <span class="el_source">BodyKinematicsSequence.java</span></div><h1>BodyKinematicsSequence.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2020 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.inertial.calibration;
+
+import com.irurueta.units.Acceleration;
+import com.irurueta.units.AccelerationConverter;
+import com.irurueta.units.AccelerationUnit;
+import java.io.Serial;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+/**
+ * Contains a collection of items containing body kinematics
+ * measurements ordered by the timestamp when the measurement was made.
+ * Measurements within a sequence will be made while the device is
+ * being moved.
+ * Samples between sequences will be ignored because it will be assumed
+ * that the device will be static.
+ * Hence, during static periods, only the mean accelerations will be measured.
+ * The mean accelerations during static periods will approximately match the
+ * gravity versor expressed in body coordinates.
+ *
+ * @param &lt;T&gt; a type of {@link TimedBodyKinematics}.
+ */
+public class BodyKinematicsSequence&lt;T extends TimedBodyKinematics&gt; implements Serializable, Cloneable {
+
+    /**
+     * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
+     * instances.
+     */
+    @Serial
+    private static final long serialVersionUID = 0L;
+
+    /**
+     * List of items.
+     * If items are provided unsorted, they are reordered by timestamp on
+     * getter method.
+     */
+    private ArrayList&lt;T&gt; items;
+
+    /**
+     * Contains sorted list of items.
+     * This list is kept for performance reasons to reduce the amount of
+     * required sorting.
+     */
+    private ArrayList&lt;T&gt; sortedItems;
+
+    /**
+     * X-coordinate of mean specific force during the static period happening
+     * right before this sequence was measured. Expressed in meters per
+     * squared second (m/s^2).
+     */
+    private double beforeMeanFx;
+
+    /**
+     * Y-coordinate of mean specific force during the static period happening
+     * right before this sequence was measured. Expressed in meters per
+     * squared second (m/s^2).
+     */
+    private double beforeMeanFy;
+
+    /**
+     * Z-coordinate of mean specific force during the static period happening
+     * right before this sequence was measured. Expressed in meters per
+     * squared second (m/s^2).
+     */
+    private double beforeMeanFz;
+
+    /**
+     * X-coordinate of mean specific force during the static period happening
+     * right after this sequence was measured. Expressed in meters per squared
+     * second (m/s^2).
+     */
+    private double afterMeanFx;
+
+    /**
+     * Y-coordinate of mean specific force during the static period happening
+     * right after this sequence was measured. Expressed in meters per squared
+     * second (m/s^2).
+     */
+    private double afterMeanFy;
+
+    /**
+     * Z-coordinate of mean specific force during the static period happening
+     * right after this sequence was measured. Expressed in meters per squared
+     * second (m/s^2).
+     */
+    private double afterMeanFz;
+
+    /**
+     * Standard deviation of each component of the gravity direction (unit vector of mean
+     * specific force) estimated from the static periods that surround this sequence. This
+     * value is dimensionless and is zero when unknown.
+     */
+    private double gravityDirectionStandardDeviation;
+
+    /**
+     * Constructor.
+     */
+<span class="fc" id="L115">    public BodyKinematicsSequence() {</span>
+<span class="fc" id="L116">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param items list of items containing body kinematics to be kept into
+     *              this sequence.
+     */
+<span class="fc" id="L124">    public BodyKinematicsSequence(final List&lt;T&gt; items) {</span>
+<span class="fc" id="L125">        setItems(items);</span>
+<span class="fc" id="L126">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param beforeMeanFx x-coordinate of mean specific force during the static
+     *                     period happening right before this sequence was measured.
+     *                     Expressed in meters per squared second (m/s^2).
+     * @param beforeMeanFy y-coordinate of mean specific force during the static
+     *                     period happening right before this sequence was measured.
+     *                     Expressed in meters per squared second (m/s^2).
+     * @param beforeMeanFz z-coordinate of mean specific force during the static
+     *                     period happening right before this sequence was measured.
+     *                     Expressed in meters per squared second (m/s^2).
+     * @param afterMeanFx  x-coordinate of mean specific force during the static
+     *                     period happening right after this sequence was measured.
+     *                     Expressed in meters per squared second (m/s^2).
+     * @param afterMeanFy  y-coordinate of mean specific force during the static
+     *                     period happening right after this sequence was measured.
+     *                     Expressed in meters per squared second (m/s^2).
+     * @param afterMeanFz  z-coordinate of mean specific force during the static
+     *                     period happening right after this sequence was measured.
+     *                     Expressed in meters per squared second (m/s^2).
+     */
+    public BodyKinematicsSequence(
+            final double beforeMeanFx, final double beforeMeanFy, final double beforeMeanFz,
+<span class="fc" id="L152">            final double afterMeanFx, final double afterMeanFy, final double afterMeanFz) {</span>
+<span class="fc" id="L153">        setBeforeMeanSpecificForceCoordinates(beforeMeanFx, beforeMeanFy, beforeMeanFz);</span>
+<span class="fc" id="L154">        setAfterMeanSpecificForceCoordinates(afterMeanFx, afterMeanFy, afterMeanFz);</span>
+<span class="fc" id="L155">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param beforeMeanSpecificForceX x-coordinate of mean specific force during
+     *                                 the static period happening right before this
+     *                                 sequence was measured.
+     * @param beforeMeanSpecificForceY y-coordinate of mean specific force during
+     *                                 the static period happening right before this
+     *                                 sequence was measured.
+     * @param beforeMeanSpecificForceZ z-coordinate of mean specific force during
+     *                                 the static period happening right before this
+     *                                 sequence was measured.
+     * @param afterMeanSpecificForceX  x-coordinate of mean specific force during
+     *                                 the static period happening right after this
+     *                                 sequence was measured.
+     * @param afterMeanSpecificForceY  y-coordinate of mean specific force during
+     *                                 the static period happening right after this
+     *                                 sequence was measured.
+     * @param afterMeanSpecificForceZ  z-coordinate of mean specific force during
+     *                                 the static period happening right after this
+     *                                 sequence was measured.
+     */
+    public BodyKinematicsSequence(
+            final Acceleration beforeMeanSpecificForceX,
+            final Acceleration beforeMeanSpecificForceY,
+            final Acceleration beforeMeanSpecificForceZ,
+            final Acceleration afterMeanSpecificForceX,
+            final Acceleration afterMeanSpecificForceY,
+<span class="fc" id="L185">            final Acceleration afterMeanSpecificForceZ) {</span>
+<span class="fc" id="L186">        setBeforeMeanSpecificForceCoordinates(</span>
+                beforeMeanSpecificForceX, beforeMeanSpecificForceY, beforeMeanSpecificForceZ);
+<span class="fc" id="L188">        setAfterMeanSpecificForceCoordinates(</span>
+                afterMeanSpecificForceX, afterMeanSpecificForceY, afterMeanSpecificForceZ);
+<span class="fc" id="L190">    }</span>
+
+    /**
+     * @param items        list of items containing body kinematics to be kept into
+     *                     this sequence.
+     * @param beforeMeanFx x-coordinate of mean specific force during the static
+     *                     period happening right before this sequence was measured.
+     *                     Expressed in meters per squared second (m/s^2).
+     * @param beforeMeanFy y-coordinate of mean specific force during the static
+     *                     period happening right before this sequence was measured.
+     *                     Expressed in meters per squared second (m/s^2).
+     * @param beforeMeanFz z-coordinate of mean specific force during the static
+     *                     period happening right before this sequence was measured.
+     *                     Expressed in meters per squared second (m/s^2).
+     * @param afterMeanFx  x-coordinate of mean specific force during the static
+     *                     period happening right after this sequence was measured.
+     *                     Expressed in meters per squared second (m/s^2).
+     * @param afterMeanFy  y-coordinate of mean specific force during the static
+     *                     period happening right after this sequence was measured.
+     *                     Expressed in meters per squared second (m/s^2).
+     * @param afterMeanFz  z-coordinate of mean specific force during the static
+     *                     period happening right after this sequence was measured.
+     *                     Expressed in meters per squared second (m/s^2).
+     */
+    public BodyKinematicsSequence(
+            final List&lt;T&gt; items, final double beforeMeanFx, final double beforeMeanFy, final double beforeMeanFz,
+            final double afterMeanFx, final double afterMeanFy, final double afterMeanFz) {
+<span class="fc" id="L217">        this(items);</span>
+<span class="fc" id="L218">        setBeforeMeanSpecificForceCoordinates(beforeMeanFx, beforeMeanFy, beforeMeanFz);</span>
+<span class="fc" id="L219">        setAfterMeanSpecificForceCoordinates(afterMeanFx, afterMeanFy, afterMeanFz);</span>
+<span class="fc" id="L220">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param items                    list of items containing body kinematics to be kept into
+     *                                 this sequence.
+     * @param beforeMeanSpecificForceX x-coordinate of mean specific force during
+     *                                 the static period happening right before this
+     *                                 sequence was measured.
+     * @param beforeMeanSpecificForceY y-coordinate of mean specific force during
+     *                                 the static period happening right before this
+     *                                 sequence was measured.
+     * @param beforeMeanSpecificForceZ z-coordinate of mean specific force during
+     *                                 the static period happening right before this
+     *                                 sequence was measured.
+     * @param afterMeanSpecificForceX  x-coordinate of mean specific force during
+     *                                 the static period happening right after this
+     *                                 sequence was measured.
+     * @param afterMeanSpecificForceY  y-coordinate of mean specific force during
+     *                                 the static period happening right after this
+     *                                 sequence was measured.
+     * @param afterMeanSpecificForceZ  z-coordinate of mean specific force during
+     *                                 the static period happening right after this
+     *                                 sequence was measured.
+     */
+    public BodyKinematicsSequence(
+            final List&lt;T&gt; items,
+            final Acceleration beforeMeanSpecificForceX,
+            final Acceleration beforeMeanSpecificForceY,
+            final Acceleration beforeMeanSpecificForceZ,
+            final Acceleration afterMeanSpecificForceX,
+            final Acceleration afterMeanSpecificForceY,
+            final Acceleration afterMeanSpecificForceZ) {
+<span class="fc" id="L254">        this(items);</span>
+<span class="fc" id="L255">        setBeforeMeanSpecificForceCoordinates(</span>
+                beforeMeanSpecificForceX, beforeMeanSpecificForceY, beforeMeanSpecificForceZ);
+<span class="fc" id="L257">        setAfterMeanSpecificForceCoordinates(</span>
+                afterMeanSpecificForceX, afterMeanSpecificForceY, afterMeanSpecificForceZ);
+<span class="fc" id="L259">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param input instance to copy data from.
+     */
+<span class="fc" id="L266">    public BodyKinematicsSequence(final BodyKinematicsSequence&lt;T&gt; input) {</span>
+<span class="fc" id="L267">        copyFrom(input);</span>
+<span class="fc" id="L268">    }</span>
+
+    /**
+     * Gets items in this sequence ordered by ascending timestamp.
+     *
+     * @param result instance where sorted items will be stored.
+     * @return true if sorted items could be retrieved, false if no items
+     * are available.
+     */
+    public boolean getSortedItems(final List&lt;T&gt; result) {
+        // already sorted items are available.
+<span class="fc bfc" id="L279" title="All 2 branches covered.">        if (sortedItems != null) {</span>
+<span class="fc" id="L280">            result.clear();</span>
+<span class="fc" id="L281">            result.addAll(sortedItems);</span>
+<span class="fc" id="L282">            return true;</span>
+        }
+
+<span class="fc bfc" id="L285" title="All 2 branches covered.">        if (items != null) {</span>
+<span class="fc" id="L286">            sortedItems = new ArrayList&lt;&gt;(items);</span>
+<span class="fc" id="L287">            sortedItems.sort((o1, o2) -&gt; {</span>
+<span class="fc" id="L288">                final var t1 = o1.getTimestampSeconds();</span>
+<span class="fc" id="L289">                final var t2 = o2.getTimestampSeconds();</span>
+<span class="fc" id="L290">                return Double.compare(t1, t2);</span>
+            });
+
+<span class="fc" id="L293">            result.clear();</span>
+<span class="fc" id="L294">            result.addAll(sortedItems);</span>
+<span class="fc" id="L295">            return true;</span>
+        }
+
+<span class="fc" id="L298">        return false;</span>
+    }
+
+    /**
+     * Gets items in this sequence ordered by ascending timestamp.
+     *
+     * @return a new list containing sorted items or null if sorted items
+     * could not be retrieved..
+     */
+    public List&lt;T&gt; getSortedItems() {
+<span class="fc" id="L308">        final var result = new ArrayList&lt;T&gt;();</span>
+<span class="fc bfc" id="L309" title="All 2 branches covered.">        if (getSortedItems(result)) {</span>
+<span class="fc" id="L310">            return result;</span>
+        } else {
+<span class="fc" id="L312">            return null;</span>
+        }
+    }
+
+    /**
+     * Sets list of items containing body kinematics to be kept into this
+     * sequence.
+     *
+     * @param items items to be kept.
+     */
+    public void setItems(final List&lt;T&gt; items) {
+<span class="fc bfc" id="L323" title="All 2 branches covered.">        if (items instanceof ArrayList) {</span>
+<span class="fc" id="L324">            this.items = (ArrayList&lt;T&gt;) items;</span>
+        } else {
+<span class="fc" id="L326">            this.items = new ArrayList&lt;&gt;(items);</span>
+        }
+<span class="fc" id="L328">        sortedItems = null;</span>
+<span class="fc" id="L329">    }</span>
+
+    /**
+     * Gets number of items in this sequence.
+     *
+     * @return number of items in this sequence.
+     */
+    public int getItemsCount() {
+<span class="fc bfc" id="L337" title="All 2 branches covered.">        return items != null ? items.size() : 0;</span>
+    }
+
+    /**
+     * Gets x-coordinate of mean specific force during the static period
+     * happening right before this sequence was measured. Expressed in
+     * meters per squared second (m/s^2).
+     *
+     * @return x-coordinate of mean specific force.
+     */
+    public double getBeforeMeanFx() {
+<span class="fc" id="L348">        return beforeMeanFx;</span>
+    }
+
+    /**
+     * Sets x-coordinate of mean specific force during the static period
+     * happening right before this sequence was measured. Expressed in
+     * meters per squared second (m/s^2).
+     *
+     * @param beforeMeanFx x-coordinate of mean specific force.
+     */
+    public void setBeforeMeanFx(final double beforeMeanFx) {
+<span class="fc" id="L359">        this.beforeMeanFx = beforeMeanFx;</span>
+<span class="fc" id="L360">    }</span>
+
+    /**
+     * Gets y-coordinate of mean specific force during the static period
+     * happening right before this sequence was measured. Expressed in
+     * meters per squared second (m/s^2).
+     *
+     * @return y-coordinate of mean specific force.
+     */
+    public double getBeforeMeanFy() {
+<span class="fc" id="L370">        return beforeMeanFy;</span>
+    }
+
+    /**
+     * Sets y-coordinate of mean specific force during the static period
+     * happening right before this sequence was measured. Expressed in
+     * meters per squared second (m/s^2).
+     *
+     * @param beforeMeanFy y-coordinate of mean specific force.
+     */
+    public void setBeforeMeanFy(final double beforeMeanFy) {
+<span class="fc" id="L381">        this.beforeMeanFy = beforeMeanFy;</span>
+<span class="fc" id="L382">    }</span>
+
+    /**
+     * Gets z-coordinate of mean specific force during the static period
+     * happening right before this sequence was measured. Expressed in
+     * meters per squared second (m/s^2).
+     *
+     * @return z-coordinate of mean specific force.
+     */
+    public double getBeforeMeanFz() {
+<span class="fc" id="L392">        return beforeMeanFz;</span>
+    }
+
+    /**
+     * Sets z-coordinate of mean specific force during the static period
+     * happening right before this sequence was measured. Expressed in
+     * meters per squared second (m/s^2).
+     *
+     * @param beforeMeanFz z-coordinate of mean specific force.
+     */
+    public void setBeforeMeanFz(final double beforeMeanFz) {
+<span class="fc" id="L403">        this.beforeMeanFz = beforeMeanFz;</span>
+<span class="fc" id="L404">    }</span>
+
+    /**
+     * Sets coordinates of mean specific force during the static period
+     * happening right before this sequence was measured. Expressed in
+     * meters per squared second (m/s^2).
+     *
+     * @param beforeMeanFxParam x-coordinate of mean specific force.
+     * @param beforeMeanFyParam y-coordinate of mean specific force.
+     * @param beforeMeanFzParam z-coordinate of mean specific force.
+     */
+    public void setBeforeMeanSpecificForceCoordinates(
+            final double beforeMeanFxParam, final double beforeMeanFyParam, final double beforeMeanFzParam) {
+<span class="fc" id="L417">        beforeMeanFx = beforeMeanFxParam;</span>
+<span class="fc" id="L418">        beforeMeanFy = beforeMeanFyParam;</span>
+<span class="fc" id="L419">        beforeMeanFz = beforeMeanFzParam;</span>
+<span class="fc" id="L420">    }</span>
+
+    /**
+     * Gets x-coordinate of mean specific force during the static period
+     * happening right before this sequence was measured.
+     *
+     * @param result x-coordinate of mean specific force.
+     */
+    public void getBeforeMeanSpecificForceX(final Acceleration result) {
+<span class="fc" id="L429">        result.setValue(beforeMeanFx);</span>
+<span class="fc" id="L430">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L431">    }</span>
+
+    /**
+     * Gets x-coordinate of mean specific force during the static period
+     * happening right before this sequence was measured.
+     *
+     * @return x-coordinate of mean specific force.
+     */
+    public Acceleration getBeforeMeanSpecificForceX() {
+<span class="fc" id="L440">        return new Acceleration(beforeMeanFx, AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+    }
+
+    /**
+     * Sets x-coordinate of mean specific force during the static period
+     * happening right before this sequence was measured.
+     *
+     * @param beforeMeanSpecificForceX x-coordinate of mean specific force.
+     */
+    public void setBeforeMeanSpecificForceX(final Acceleration beforeMeanSpecificForceX) {
+<span class="fc" id="L450">        beforeMeanFx = convertAcceleration(beforeMeanSpecificForceX);</span>
+<span class="fc" id="L451">    }</span>
+
+    /**
+     * Gets y-coordinate of mean specific force during the static period
+     * happening right before this sequence was measured.
+     *
+     * @param result y-coordinate of mean specific force.
+     */
+    public void getBeforeMeanSpecificForceY(final Acceleration result) {
+<span class="fc" id="L460">        result.setValue(beforeMeanFy);</span>
+<span class="fc" id="L461">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L462">    }</span>
+
+    /**
+     * Gets y-coordinate of mean specific force during the static period
+     * happening right before this sequence was measured.
+     *
+     * @return y-coordinate of mean specific force.
+     */
+    public Acceleration getBeforeMeanSpecificForceY() {
+<span class="fc" id="L471">        return new Acceleration(beforeMeanFy, AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+    }
+
+    /**
+     * Sets y-coordinate of mean specific force during the static period
+     * happening right before this sequence was measured.
+     *
+     * @param beforeMeanSpecificForceY y-coordinate of mean specific force.
+     */
+    public void setBeforeMeanSpecificForceY(final Acceleration beforeMeanSpecificForceY) {
+<span class="fc" id="L481">        beforeMeanFy = convertAcceleration(beforeMeanSpecificForceY);</span>
+<span class="fc" id="L482">    }</span>
+
+    /**
+     * Gets z-coordinate of mean specific force during the static period
+     * happening right before this sequence was measured.
+     *
+     * @param result z-coordinate of mean specific force.
+     */
+    public void getBeforeMeanSpecificForceZ(final Acceleration result) {
+<span class="fc" id="L491">        result.setValue(beforeMeanFz);</span>
+<span class="fc" id="L492">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L493">    }</span>
+
+    /**
+     * Gets z-coordinate of mean specific force during the static period
+     * happening right before this sequence was measured.
+     *
+     * @return z-coordinate of mean specific force.
+     */
+    public Acceleration getBeforeMeanSpecificForceZ() {
+<span class="fc" id="L502">        return new Acceleration(beforeMeanFz, AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+    }
+
+    /**
+     * Sets z-coordinate of mean specific force during the static period
+     * happening right before this sequence was measured.
+     *
+     * @param beforeMeanSpecificForceZ z-coordinate of mean specific force.
+     */
+    public void setBeforeMeanSpecificForceZ(final Acceleration beforeMeanSpecificForceZ) {
+<span class="fc" id="L512">        beforeMeanFz = convertAcceleration(beforeMeanSpecificForceZ);</span>
+<span class="fc" id="L513">    }</span>
+
+    /**
+     * Sets coordinates of mean specific force during the static period
+     * happening right before this sequence was measured.
+     *
+     * @param beforeMeanSpecificForceX x-coordinate of mean specific force.
+     * @param beforeMeanSpecificForceY y-coordinate of mean specific force.
+     * @param beforeMeanSpecificForceZ z-coordinate of mean specific force.
+     */
+    public void setBeforeMeanSpecificForceCoordinates(
+            final Acceleration beforeMeanSpecificForceX, final Acceleration beforeMeanSpecificForceY,
+            final Acceleration beforeMeanSpecificForceZ) {
+<span class="fc" id="L526">        setBeforeMeanSpecificForceX(beforeMeanSpecificForceX);</span>
+<span class="fc" id="L527">        setBeforeMeanSpecificForceY(beforeMeanSpecificForceY);</span>
+<span class="fc" id="L528">        setBeforeMeanSpecificForceZ(beforeMeanSpecificForceZ);</span>
+<span class="fc" id="L529">    }</span>
+
+    /**
+     * Gets x-coordinate of mean specific force during the static period
+     * happening right after this sequence was measured. Expressed in
+     * meters per squared second (m/s^2).
+     *
+     * @return x-coordinate of mean specific force.
+     */
+    public double getAfterMeanFx() {
+<span class="fc" id="L539">        return afterMeanFx;</span>
+    }
+
+    /**
+     * Sets x-coordinate of mean specific force during the static period
+     * happening right after this sequence was measured. Expressed in
+     * meters per squared second (m/s^2).
+     *
+     * @param afterMeanFx x-coordinate of mean specific force.
+     */
+    public void setAfterMeanFx(final double afterMeanFx) {
+<span class="fc" id="L550">        this.afterMeanFx = afterMeanFx;</span>
+<span class="fc" id="L551">    }</span>
+
+    /**
+     * Gets y-coordinate of mean specific force during the static period
+     * happening right after this sequence was measured. Expressed in
+     * meters per squared second (m/s^2).
+     *
+     * @return y-coordinate of mean specific force.
+     */
+    public double getAfterMeanFy() {
+<span class="fc" id="L561">        return afterMeanFy;</span>
+    }
+
+    /**
+     * Sets y-coordinate of mean specific force during the static period
+     * happening right after this sequence was measured. Expressed in
+     * meters per squared second (m/s^2).
+     *
+     * @param afterMeanFy y-coordinate of mean specific force.
+     */
+    public void setAfterMeanFy(final double afterMeanFy) {
+<span class="fc" id="L572">        this.afterMeanFy = afterMeanFy;</span>
+<span class="fc" id="L573">    }</span>
+
+    /**
+     * Gets z-coordinate of mean specific force during the static period
+     * happening right after this sequence was measured. Expressed in
+     * meters per squared second (m/s^2).
+     *
+     * @return z-coordinate of mean specific force.
+     */
+    public double getAfterMeanFz() {
+<span class="fc" id="L583">        return afterMeanFz;</span>
+    }
+
+    /**
+     * Sets z-coordinate of mean specific force during the static period
+     * happening right after this sequence was measured. Expressed in
+     * meters per squared second (m/s^2).
+     *
+     * @param afterMeanFz z-coordinate of mean specific force.
+     */
+    public void setAfterMeanFz(final double afterMeanFz) {
+<span class="fc" id="L594">        this.afterMeanFz = afterMeanFz;</span>
+<span class="fc" id="L595">    }</span>
+
+    /**
+     * Sets coordinates of mean specific force during the static period
+     * happening right after this sequence was measured. Expressed in
+     * meters per squared second (m/s^2).
+     *
+     * @param afterMeanFxParam x-coordinate of mean specific force.
+     * @param afterMeanFyParam y-coordinate of mean specific force.
+     * @param afterMeanFzParam z-coordinate of mean specific force.
+     */
+    public void setAfterMeanSpecificForceCoordinates(
+            final double afterMeanFxParam, final double afterMeanFyParam, final double afterMeanFzParam) {
+<span class="fc" id="L608">        afterMeanFx = afterMeanFxParam;</span>
+<span class="fc" id="L609">        afterMeanFy = afterMeanFyParam;</span>
+<span class="fc" id="L610">        afterMeanFz = afterMeanFzParam;</span>
+<span class="fc" id="L611">    }</span>
+
+    /**
+     * Gets x-coordinate of mean specific force during the static period
+     * happening right after this sequence was measured.
+     *
+     * @param result x-coordinate of mean specific force.
+     */
+    public void getAfterMeanSpecificForceX(final Acceleration result) {
+<span class="fc" id="L620">        result.setValue(afterMeanFx);</span>
+<span class="fc" id="L621">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L622">    }</span>
+
+    /**
+     * Gets x-coordinate of mean specific force during the static period
+     * happening right after this sequence was measured.
+     *
+     * @return x-coordinate of mean specific force.
+     */
+    public Acceleration getAfterMeanSpecificForceX() {
+<span class="fc" id="L631">        return new Acceleration(afterMeanFx, AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+    }
+
+    /**
+     * Sets x-coordinate of mean specific force during the static period
+     * happening right after this sequence was measured.
+     *
+     * @param afterMeanSpecificForceX x-coordinate of mean specific force.
+     */
+    public void setAfterMeanSpecificForceX(final Acceleration afterMeanSpecificForceX) {
+<span class="fc" id="L641">        afterMeanFx = convertAcceleration(afterMeanSpecificForceX);</span>
+<span class="fc" id="L642">    }</span>
+
+    /**
+     * Gets y-coordinate of mean specific force during the static period
+     * happening right after this sequence was measured.
+     *
+     * @param result y-coordinate of mean specific force.
+     */
+    public void getAfterMeanSpecificForceY(final Acceleration result) {
+<span class="fc" id="L651">        result.setValue(afterMeanFy);</span>
+<span class="fc" id="L652">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L653">    }</span>
+
+    /**
+     * Gets y-coordinate of mean specific force during the static period
+     * happening right after this sequence was measured.
+     *
+     * @return y-coordinate of mean specific force.
+     */
+    public Acceleration getAfterMeanSpecificForceY() {
+<span class="fc" id="L662">        return new Acceleration(afterMeanFy, AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+    }
+
+    /**
+     * Sets y-coordinate of mean specific force during the static period
+     * happening right after this sequence was measured.
+     *
+     * @param afterMeanSpecificForceY y-coordinate of mean specific force.
+     */
+    public void setAfterMeanSpecificForceY(final Acceleration afterMeanSpecificForceY) {
+<span class="fc" id="L672">        afterMeanFy = convertAcceleration(afterMeanSpecificForceY);</span>
+<span class="fc" id="L673">    }</span>
+
+    /**
+     * Gets z-coordinate of mean specific force during the static period
+     * happening right after this sequence was measured.
+     *
+     * @param result z-coordinate of mean specific force.
+     */
+    public void getAfterMeanSpecificForceZ(final Acceleration result) {
+<span class="fc" id="L682">        result.setValue(afterMeanFz);</span>
+<span class="fc" id="L683">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L684">    }</span>
+
+    /**
+     * Gets z-coordinate of mean specific force during the static period
+     * happening right after this sequence was measured.
+     *
+     * @return z-coordinate of mean specific force.
+     */
+    public Acceleration getAfterMeanSpecificForceZ() {
+<span class="fc" id="L693">        return new Acceleration(afterMeanFz, AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+    }
+
+    /**
+     * Sets z-coordinate of mean specific force during the static period
+     * happening right after this sequence was measured.
+     *
+     * @param afterMeanSpecificForceZ z-coordinate of mean specific force.
+     */
+    public void setAfterMeanSpecificForceZ(final Acceleration afterMeanSpecificForceZ) {
+<span class="fc" id="L703">        afterMeanFz = convertAcceleration(afterMeanSpecificForceZ);</span>
+<span class="fc" id="L704">    }</span>
+
+    /**
+     * Sets coordinates of mean specific force during the static period
+     * happening right after this sequence was measured.
+     *
+     * @param afterMeanSpecificForceX x-coordinate of mean specific force.
+     * @param afterMeanSpecificForceY y-coordinate of mean specific force.
+     * @param afterMeanSpecificForceZ z-coordinate of mean specific force.
+     */
+    public void setAfterMeanSpecificForceCoordinates(
+            final Acceleration afterMeanSpecificForceX, final Acceleration afterMeanSpecificForceY,
+            final Acceleration afterMeanSpecificForceZ) {
+<span class="fc" id="L717">        setAfterMeanSpecificForceX(afterMeanSpecificForceX);</span>
+<span class="fc" id="L718">        setAfterMeanSpecificForceY(afterMeanSpecificForceY);</span>
+<span class="fc" id="L719">        setAfterMeanSpecificForceZ(afterMeanSpecificForceZ);</span>
+<span class="fc" id="L720">    }</span>
+
+    /**
+     * Gets standard deviation of each component of the gravity direction (unit vector of
+     * mean specific force) estimated from the static periods that surround this sequence.
+     * This value is dimensionless and combines the uncertainty of the mean specific force
+     * of the static periods before and after the sequence (mean noise divided by gravity
+     * norm) with the uncertainty of the gyroscope integration during the sequence.
+     * A value of zero means that it is unknown.
+     *
+     * @return standard deviation of gravity direction components.
+     */
+    public double getGravityDirectionStandardDeviation() {
+<span class="fc" id="L733">        return gravityDirectionStandardDeviation;</span>
+    }
+
+    /**
+     * Sets standard deviation of each component of the gravity direction (unit vector of
+     * mean specific force) estimated from the static periods that surround this sequence.
+     *
+     * @param gravityDirectionStandardDeviation standard deviation of gravity direction
+     *                                          components (dimensionless).
+     * @throws IllegalArgumentException if provided value is negative.
+     */
+    public void setGravityDirectionStandardDeviation(final double gravityDirectionStandardDeviation) {
+<span class="fc bfc" id="L745" title="All 2 branches covered.">        if (gravityDirectionStandardDeviation &lt; 0.0) {</span>
+<span class="fc" id="L746">            throw new IllegalArgumentException();</span>
+        }
+<span class="fc" id="L748">        this.gravityDirectionStandardDeviation = gravityDirectionStandardDeviation;</span>
+<span class="fc" id="L749">    }</span>
+
+    /**
+     * Copies data of provided instance into this instance.
+     *
+     * @param input instance to copy data from.
+     */
+    public void copyFrom(final BodyKinematicsSequence&lt;T&gt; input) {
+<span class="fc bfc" id="L757" title="All 2 branches covered.">        if (input.items != null) {</span>
+<span class="fc" id="L758">            items = cloneList(input.items);</span>
+        } else {
+<span class="fc" id="L760">            items = null;</span>
+        }
+<span class="fc bfc" id="L762" title="All 2 branches covered.">        if (input.sortedItems != null) {</span>
+<span class="fc" id="L763">            sortedItems = cloneList(input.sortedItems);</span>
+        } else {
+<span class="fc" id="L765">            sortedItems = null;</span>
+        }
+
+<span class="fc" id="L768">        beforeMeanFx = input.beforeMeanFx;</span>
+<span class="fc" id="L769">        beforeMeanFy = input.beforeMeanFy;</span>
+<span class="fc" id="L770">        beforeMeanFz = input.beforeMeanFz;</span>
+
+<span class="fc" id="L772">        afterMeanFx = input.afterMeanFx;</span>
+<span class="fc" id="L773">        afterMeanFy = input.afterMeanFy;</span>
+<span class="fc" id="L774">        afterMeanFz = input.afterMeanFz;</span>
+
+<span class="fc" id="L776">        gravityDirectionStandardDeviation = input.gravityDirectionStandardDeviation;</span>
+<span class="fc" id="L777">    }</span>
+
+    /**
+     * Copies this instance data into provided instance.
+     *
+     * @param output destination instance where data will be copied to.
+     */
+    public void copyTo(final BodyKinematicsSequence&lt;T&gt; output) {
+<span class="fc" id="L785">        output.copyFrom(this);</span>
+<span class="fc" id="L786">    }</span>
+
+    /***
+     * Checks if provided instance is a BodyKinematicsSequence2 having exactly
+     * the same contents as this instance.
+     *
+     * @param o object to be compared.
+     * @return true if both objects are considered to be equal, false otherwise.
+     */
+    @Override
+    public boolean equals(Object o) {
+<span class="pc bpc" id="L797" title="1 of 2 branches missed.">        if (this == o) {</span>
+<span class="nc" id="L798">            return true;</span>
+        }
+<span class="pc bpc" id="L800" title="2 of 4 branches missed.">        if (o == null || getClass() != o.getClass()) {</span>
+<span class="nc" id="L801">            return false;</span>
+        }
+
+<span class="fc" id="L804">        final var that = (BodyKinematicsSequence&lt;?&gt;) o;</span>
+<span class="fc bfc" id="L805" title="All 2 branches covered.">        return Double.compare(that.beforeMeanFx, beforeMeanFx) == 0 &amp;&amp;</span>
+<span class="pc bpc" id="L806" title="1 of 2 branches missed.">                Double.compare(that.beforeMeanFy, beforeMeanFy) == 0 &amp;&amp;</span>
+<span class="pc bpc" id="L807" title="1 of 2 branches missed.">                Double.compare(that.beforeMeanFz, beforeMeanFz) == 0 &amp;&amp;</span>
+<span class="pc bpc" id="L808" title="1 of 2 branches missed.">                Double.compare(that.afterMeanFx, afterMeanFx) == 0 &amp;&amp;</span>
+<span class="pc bpc" id="L809" title="1 of 2 branches missed.">                Double.compare(that.afterMeanFy, afterMeanFy) == 0 &amp;&amp;</span>
+<span class="pc bpc" id="L810" title="1 of 2 branches missed.">                Double.compare(that.afterMeanFz, afterMeanFz) == 0 &amp;&amp;</span>
+<span class="fc bfc" id="L811" title="All 2 branches covered.">                Double.compare(that.gravityDirectionStandardDeviation, gravityDirectionStandardDeviation) == 0 &amp;&amp;</span>
+<span class="pc bpc" id="L812" title="1 of 2 branches missed.">                Objects.equals(items, that.items) &amp;&amp;</span>
+<span class="pc bpc" id="L813" title="1 of 2 branches missed.">                Objects.equals(sortedItems, that.sortedItems);</span>
+    }
+
+    /**
+     * Computes and returns hash code for this instance. Hash codes are almost unique
+     * values that are useful for fast classification and storage of objects in collections.
+     *
+     * @return Hash code.
+     */
+    @Override
+    public int hashCode() {
+<span class="fc" id="L824">        return Objects.hash(items, sortedItems, beforeMeanFx, beforeMeanFy, beforeMeanFz,</span>
+<span class="fc" id="L825">                afterMeanFx, afterMeanFy, afterMeanFz, gravityDirectionStandardDeviation);</span>
+    }
+
+    /**
+     * Makes a copy of this instance.
+     *
+     * @return a copy of this instance.
+     * @throws CloneNotSupportedException if clone fails for some reason.
+     */
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        //noinspection unchecked
+<span class="fc" id="L837">        final var result = (BodyKinematicsSequence&lt;T&gt;) super.clone();</span>
+<span class="fc" id="L838">        copyFieldsTo(result);</span>
+<span class="fc" id="L839">        return result;</span>
+    }
+
+    /**
+     * Copies the mutable reference fields of this instance into provided output instance,
+     * allocating new instances so that output never shares them with this instance.
+     * Primitive fields are not copied here because {@link Object#clone()} already copies them.
+     * This method is private so that it cannot be overridden and can be safely called from
+     * {@link #clone()}.
+     *
+     * @param output instance where reference fields will be copied to.
+     */
+    private void copyFieldsTo(final BodyKinematicsSequence&lt;T&gt; output) {
+<span class="fc bfc" id="L852" title="All 2 branches covered.">        output.items = items != null ? cloneList(items) : null;</span>
+<span class="pc bpc" id="L853" title="1 of 2 branches missed.">        output.sortedItems = sortedItems != null ? cloneList(sortedItems) : null;</span>
+<span class="fc" id="L854">    }</span>
+
+    /**
+     * Clones a list of {@link TimedBodyKinematics}.
+     *
+     * @param list list to be cloned.
+     * @return cloned list.
+     */
+    @SuppressWarnings(&quot;unchecked&quot;)
+    private ArrayList&lt;T&gt; cloneList(final List&lt;T&gt; list) {
+        // constructor with list only creates a new list containing the
+        // same instances as the original list.
+        // ArrayList is publicly Cloneable, so we clone it to get copies
+        // of the elements contained within.
+
+<span class="fc" id="L869">        final var result = new ArrayList&lt;T&gt;();</span>
+<span class="fc bfc" id="L870" title="All 2 branches covered.">        for (final var item : list) {</span>
+<span class="pc bpc" id="L871" title="1 of 2 branches missed.">            if (item instanceof StandardDeviationTimedBodyKinematics) {</span>
+<span class="fc" id="L872">                final var newItem = new StandardDeviationTimedBodyKinematics();</span>
+<span class="fc" id="L873">                newItem.copyFrom(item);</span>
+<span class="fc" id="L874">                result.add((T) newItem);</span>
+<span class="fc" id="L875">            } else {</span>
+<span class="nc" id="L876">                final var newItem = new TimedBodyKinematics(item);</span>
+<span class="nc" id="L877">                result.add((T) newItem);</span>
+            }
+<span class="fc" id="L879">        }</span>
+
+<span class="fc" id="L881">        return result;</span>
+    }
+
+    /**
+     * Converts an acceleration instance into its corresponding value
+     * expressed in meters per squared second.
+     *
+     * @param acceleration an acceleration to be converted.
+     * @return converted value.
+     */
+    private static double convertAcceleration(final Acceleration acceleration) {
+<span class="fc" id="L892">        return AccelerationConverter.convert(acceleration.getValue().doubleValue(),</span>
+<span class="fc" id="L893">                acceleration.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

@@ -1,0 +1,632 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GyroscopeMeasurementsGenerator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-inertial</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.inertial.calibration.generators</a> &gt; <span class="el_source">GyroscopeMeasurementsGenerator.java</span></div><h1>GyroscopeMeasurementsGenerator.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2020 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.inertial.calibration.generators;
+
+import com.irurueta.navigation.LockedException;
+import com.irurueta.navigation.inertial.BodyKinematics;
+import com.irurueta.navigation.inertial.calibration.AngularSpeedTriad;
+import com.irurueta.navigation.inertial.calibration.BodyKinematicsSequence;
+import com.irurueta.navigation.inertial.calibration.GyroscopeNoiseRootPsdSource;
+import com.irurueta.navigation.inertial.calibration.StandardDeviationTimedBodyKinematics;
+import com.irurueta.navigation.inertial.calibration.TimedBodyKinematics;
+import com.irurueta.navigation.inertial.calibration.intervals.TriadStaticIntervalDetector;
+import com.irurueta.navigation.inertial.calibration.noise.AccumulatedAngularSpeedTriadNoiseEstimator;
+import com.irurueta.units.AngularSpeed;
+import com.irurueta.units.AngularSpeedUnit;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Generates measurements for the calibration of gyroscopes by alternating
+ * static and dynamic intervals where device is kept static or moved.
+ * Generated measurements must be used with easy gyroscope calibrators.
+ * Notice that accuracy of the gyroscope calibration is very sensitive to the
+ * accuracy of detected dynamic intervals respect the average specific forces
+ * during static intervals.
+ * In order to increase the accuracy, calibration should be repeated trying different
+ * threshold factors {@link #getThresholdFactor()}.
+ * &lt;p&gt;
+ * Sequences are generated following the rules of Tedaldi et al. (ICRA 2014) / imu_tk:
+ * &lt;ul&gt;
+ *     &lt;li&gt;A sequence needs a valid static interval (at least {@link #getMinStaticSamples()} samples) both
+ *     before and after it. The average specific force of each of them is used as the &quot;before&quot; and &quot;after&quot;
+ *     gravity vectors. The initialization period is static, so its average is the first static average.&lt;/li&gt;
+ *     &lt;li&gt;If a static interval is too short to be valid, the dynamic intervals on both of its sides are
+ *     joined into a single sequence.&lt;/li&gt;
+ *     &lt;li&gt;A sequence is generated when the static interval that follows it ends, so that the &quot;after&quot;
+ *     vector is the average of the entire static interval. When no more samples are going to be processed,
+ *     {@link #flush()} generates the sequence that is still pending.&lt;/li&gt;
+ *     &lt;li&gt;Items of a sequence are aligned with the samples that the (centred window) detector classified as
+ *     dynamic, taking into account {@link #getDetectionDelaySamples()}.&lt;/li&gt;
+ *     &lt;li&gt;Generated sequences contain a gravity direction standard deviation
+ *     ({@link BodyKinematicsSequence#getGravityDirectionStandardDeviation()}) computed from the standard
+ *     deviation of the averaged static specific forces (noise divided by the square root of the number of
+ *     averaged samples and by gravity norm) combined with the integrated gyroscope noise (root PSD multiplied by
+ *     the square root of the sequence duration).&lt;/li&gt;
+ * &lt;/ul&gt;
+ * Such calibrators are the following ones:
+ * - {@link com.irurueta.navigation.inertial.calibration.gyroscope.EasyGyroscopeCalibrator}
+ * - {@link com.irurueta.navigation.inertial.calibration.gyroscope.KnownBiasEasyGyroscopeCalibrator}
+ * - {@link com.irurueta.navigation.inertial.calibration.gyroscope.RobustEasyGyroscopeCalibrator} and all its
+ * implementations.
+ * - {@link com.irurueta.navigation.inertial.calibration.gyroscope.RobustKnownBiasEasyGyroscopeCalibrator} and all its
+ * implementations.
+ */
+public class GyroscopeMeasurementsGenerator extends
+        MeasurementsGenerator&lt;BodyKinematicsSequence&lt;StandardDeviationTimedBodyKinematics&gt;,
+                GyroscopeMeasurementsGenerator, GyroscopeMeasurementsGeneratorListener, TimedBodyKinematics&gt;
+        implements GyroscopeNoiseRootPsdSource {
+
+    /**
+     * An angular speed triad.
+     * This is reused for memory efficiency.
+     */
+<span class="fc" id="L78">    protected final AngularSpeedTriad angularSpeedTriad = new AngularSpeedTriad();</span>
+
+    /**
+     * Items of the sequence that is being collected. A sequence starts with the first dynamic
+     * sample after a valid static interval and finishes when the next valid static interval ends.
+     * It is null when no sequence is being collected.
+     */
+    private List&lt;StandardDeviationTimedBodyKinematics&gt; currentSequenceItems;
+
+    /**
+     * Items of the static interval that is being processed. They are discarded if the static interval
+     * turns out to be valid (and hence is used as gravity reference) or appended to the current sequence
+     * if the static interval is too short and neighbouring dynamic intervals must be joined.
+     */
+    private List&lt;StandardDeviationTimedBodyKinematics&gt; currentStaticItems;
+
+    /**
+     * Samples (already converted to items) that have been received but not yet classified by the
+     * detector, which classifies the sample at the centre of its window.
+     */
+<span class="fc" id="L98">    private final ArrayDeque&lt;StandardDeviationTimedBodyKinematics&gt; pendingItems = new ArrayDeque&lt;&gt;();</span>
+
+    /**
+     * Indicates that the sample that completed initialization has not been processed yet.
+     */
+    private boolean initializationSamplePending;
+
+    /**
+     * Number of samples used to compute the average specific force of the static interval before the sequence.
+     */
+    private int previousAvgSamples;
+
+    /**
+     * Sum of x-coordinate of specific force of the samples of the static interval being processed,
+     * expressed in meters per squared second (m/s^2).
+     */
+    private double currentStaticSumX;
+
+    /**
+     * Sum of y-coordinate of specific force of the samples of the static interval being processed,
+     * expressed in meters per squared second (m/s^2).
+     */
+    private double currentStaticSumY;
+
+    /**
+     * Sum of z-coordinate of specific force of the samples of the static interval being processed,
+     * expressed in meters per squared second (m/s^2).
+     */
+    private double currentStaticSumZ;
+
+    /**
+     * Number of samples of the static interval being processed.
+     */
+    private int currentStaticSamples;
+
+    /**
+     * Accumulated noise estimator for angular speed measurements.
+     */
+<span class="fc" id="L136">    private final AccumulatedAngularSpeedTriadNoiseEstimator accumulatedEstimator =</span>
+            new AccumulatedAngularSpeedTriadNoiseEstimator();
+
+    /**
+     * Estimated acceleration standard deviation during initialization expressed
+     * in meters per squared second (m/s^2).
+     */
+    private double accelerationStandardDeviation;
+
+    /**
+     * Estimated angular speed standard deviation during initialization expressed
+     * in radians per second (rad/s).
+     */
+    private double angularSpeedStandardDeviation;
+
+    /**
+     * Estimated norm of gyroscope noise root PSD (Power Spectral Density)
+     * expressed as (rad * s^-0.5).
+     */
+    private double angularSpeedNoiseRootPsd;
+
+    /**
+     * Previous average x-coordinate of measurements expressed in meters
+     * per squared second (m/s^2).
+     */
+    private Double previousAvgX;
+
+    /**
+     * Previous average y-coordinate of measurements expressed in meters
+     * per squared second (m/s^2).
+     */
+    private Double previousAvgY;
+
+    /**
+     * Previous average z-coordinate of measurements expressed in meters
+     * per squared second (m/s^2).
+     */
+    private Double previousAvgZ;
+
+    /**
+     * Constructor.
+     */
+    public GyroscopeMeasurementsGenerator() {
+<span class="fc" id="L179">        super();</span>
+<span class="fc" id="L180">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param listener listener to handle events raised by this generator.
+     */
+    public GyroscopeMeasurementsGenerator(final GyroscopeMeasurementsGeneratorListener listener) {
+<span class="fc" id="L188">        super(listener);</span>
+<span class="fc" id="L189">    }</span>
+
+    /**
+     * Sets time interval between input samples expressed in seconds (s).
+     *
+     * @param timeInterval time interval between input samples.
+     * @throws IllegalArgumentException if provided value is negative.
+     * @throws LockedException          if generator is currently running.
+     */
+    @Override
+    public void setTimeInterval(final double timeInterval) throws LockedException {
+<span class="fc" id="L200">        super.setTimeInterval(timeInterval);</span>
+<span class="fc" id="L201">        accumulatedEstimator.setTimeInterval(timeInterval);</span>
+<span class="fc" id="L202">    }</span>
+
+    /**
+     * Resets this generator.
+     *
+     * @throws LockedException if generator is busy.
+     */
+    @Override
+    public void reset() throws LockedException {
+<span class="fc" id="L211">        super.reset();</span>
+
+<span class="fc" id="L213">        currentSequenceItems = null;</span>
+<span class="fc" id="L214">        currentStaticItems = null;</span>
+<span class="fc" id="L215">        pendingItems.clear();</span>
+<span class="fc" id="L216">        initializationSamplePending = false;</span>
+<span class="fc" id="L217">        previousAvgSamples = 0;</span>
+<span class="fc" id="L218">        resetCurrentStatic();</span>
+
+<span class="fc" id="L220">        accelerationStandardDeviation = 0.0;</span>
+<span class="fc" id="L221">        angularSpeedStandardDeviation = 0.0;</span>
+
+<span class="fc" id="L223">        previousAvgX = null;</span>
+<span class="fc" id="L224">        previousAvgY = null;</span>
+<span class="fc" id="L225">        previousAvgZ = null;</span>
+
+<span class="fc" id="L227">        accumulatedEstimator.reset();</span>
+
+<span class="fc" id="L229">    }</span>
+
+    /**
+     * Gets estimated average angular rate during initialization phase.
+     *
+     * @return estimated average angular rate during initialization phase.
+     */
+    public AngularSpeedTriad getInitialAvgAngularSpeedTriad() {
+<span class="fc" id="L237">        return accumulatedEstimator.getAvgTriad();</span>
+    }
+
+    /**
+     * Gets estimated average angular rate during initialization phase.
+     *
+     * @param result instance where result will be stored.
+     */
+    public void getInitialAvgAngularSpeedTriad(final AngularSpeedTriad result) {
+<span class="fc" id="L246">        accumulatedEstimator.getAvgTriad(result);</span>
+<span class="fc" id="L247">    }</span>
+
+    /**
+     * Gets estimated standard deviation of angular rate during initialization phase.
+     *
+     * @return estimated standard deviation of angular rate during initialization phase.
+     */
+    public AngularSpeedTriad getInitialAngularSpeedTriadStandardDeviation() {
+<span class="fc" id="L255">        return accumulatedEstimator.getStandardDeviationTriad();</span>
+    }
+
+    /**
+     * Gets estimated standard deviation of angular rate during initialization phase.
+     *
+     * @param result instance where result will be stored.
+     */
+    public void getInitialAngularSpeedTriadStandardDeviation(final AngularSpeedTriad result) {
+<span class="fc" id="L264">        accumulatedEstimator.getStandardDeviationTriad(result);</span>
+<span class="fc" id="L265">    }</span>
+
+    /**
+     * Gets gyroscope base noise level that has been detected during
+     * initialization expressed in radians per second (rad/s).
+     * This is equal to the standard deviation of the gyroscope measurements
+     * during initialization phase.
+     *
+     * @return gyroscope base noise level.
+     */
+    public double getGyroscopeBaseNoiseLevel() {
+<span class="fc" id="L276">        return angularSpeedStandardDeviation;</span>
+    }
+
+    /**
+     * Gets gyroscope base noise level that has been detected during
+     * initialization.
+     * This is equal to the standard deviation of the gyroscope measurements
+     * during initialization phase.
+     *
+     * @return gyroscope base noise level.
+     */
+    public AngularSpeed getGyroscopeBaseNoiseLevelAsMeasurement() {
+<span class="fc" id="L288">        return new AngularSpeed(angularSpeedStandardDeviation, AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+    }
+
+    /**
+     * Gets gyroscope base noise level that has been detected during
+     * initialization.
+     * This is equal to the standard deviation of the gyroscope measurements
+     * during initialization phase.
+     *
+     * @param result instance where result will be stored.
+     */
+    public void getGyroscopeBaseNoiseLevelAsMeasurement(final AngularSpeed result) {
+<span class="fc" id="L300">        result.setValue(angularSpeedStandardDeviation);</span>
+<span class="fc" id="L301">        result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+<span class="fc" id="L302">    }</span>
+
+    /**
+     * Gets gyroscope base noise level PSD (Power Spectral Density)
+     * expressed in (rad^2/s).
+     *
+     * @return gyroscope base noise level PSD.
+     */
+    public double getGyroscopeBaseNoiseLevelPsd() {
+<span class="fc" id="L311">        return angularSpeedNoiseRootPsd * angularSpeedNoiseRootPsd;</span>
+    }
+
+    /**
+     * Gets gyroscope base noise level root PSD (Power Spectral Density)
+     * expressed in (rad * s^-0.5).
+     *
+     * @return gyroscope base noise level root PSD.
+     */
+    @Override
+    public double getGyroscopeBaseNoiseLevelRootPsd() {
+<span class="fc" id="L322">        return angularSpeedNoiseRootPsd;</span>
+    }
+
+    /**
+     * Post process provided input sample.
+     * Detector classifies the sample at the centre of its window, so samples are buffered
+     * until they are classified in order to align items with detected intervals.
+     *
+     * @param sample an input sample.
+     * @throws LockedException if generator is busy.
+     */
+    @Override
+    protected void postProcess(final TimedBodyKinematics sample) throws LockedException {
+<span class="fc" id="L335">        final var status = staticIntervalDetector.getStatus();</span>
+
+<span class="fc bfc" id="L337" title="All 2 branches covered.">        if (status == TriadStaticIntervalDetector.Status.INITIALIZING) {</span>
+<span class="fc" id="L338">            sample.getKinematics().getAngularRateTriad(angularSpeedTriad);</span>
+<span class="fc" id="L339">            accumulatedEstimator.addTriad(angularSpeedTriad);</span>
+<span class="fc" id="L340">            return;</span>
+        }
+
+<span class="fc bfc" id="L343" title="All 4 branches covered.">        if (status == TriadStaticIntervalDetector.Status.INITIALIZATION_COMPLETED &amp;&amp; initializationSamplePending) {</span>
+            // sample that completed initialization belongs to the initialization period
+<span class="fc" id="L345">            initializationSamplePending = false;</span>
+<span class="fc" id="L346">            return;</span>
+        }
+
+<span class="fc bfc" id="L349" title="All 6 branches covered.">        if (status != TriadStaticIntervalDetector.Status.INITIALIZATION_COMPLETED</span>
+                &amp;&amp; status != TriadStaticIntervalDetector.Status.STATIC_INTERVAL
+                &amp;&amp; status != TriadStaticIntervalDetector.Status.DYNAMIC_INTERVAL) {
+<span class="fc" id="L352">            return;</span>
+        }
+
+<span class="fc" id="L355">        pendingItems.addLast(createItem(sample));</span>
+
+<span class="fc bfc" id="L357" title="All 2 branches covered.">        if (status == TriadStaticIntervalDetector.Status.INITIALIZATION_COMPLETED) {</span>
+            // first classified sample has not been reached yet
+<span class="fc" id="L359">            return;</span>
+        }
+
+        // oldest pending sample is the one that has just been classified
+<span class="fc" id="L363">        final var item = pendingItems.pollFirst();</span>
+
+<span class="fc bfc" id="L365" title="All 2 branches covered.">        if (status == TriadStaticIntervalDetector.Status.DYNAMIC_INTERVAL) {</span>
+<span class="fc bfc" id="L366" title="All 2 branches covered.">            if (isDynamicIntervalSkipped()) {</span>
+                // dynamic interval has been skipped because there were too many
+                // items in the sequence. Gravity reference is lost.
+<span class="fc" id="L369">                currentSequenceItems = null;</span>
+<span class="fc" id="L370">                currentStaticItems = null;</span>
+<span class="fc" id="L371">                previousAvgX = null;</span>
+<span class="fc" id="L372">                previousAvgY = null;</span>
+<span class="fc" id="L373">                previousAvgZ = null;</span>
+<span class="fc bfc" id="L374" title="All 2 branches covered.">            } else if (currentSequenceItems != null) {</span>
+<span class="fc" id="L375">                currentSequenceItems.add(item);</span>
+<span class="fc" id="L376">                discardSequenceIfTooLong();</span>
+            }
+<span class="fc bfc" id="L378" title="All 2 branches covered.">        } else if (currentSequenceItems != null) {</span>
+            // static interval, which might be too short to be valid and then be joined to the sequence
+<span class="fc bfc" id="L380" title="All 2 branches covered.">            if (currentStaticItems == null) {</span>
+<span class="fc" id="L381">                currentStaticItems = new ArrayList&lt;&gt;();</span>
+            }
+<span class="fc" id="L383">            currentStaticItems.add(item);</span>
+
+<span class="fc" id="L385">            final var kinematics = item.getKinematics();</span>
+<span class="fc" id="L386">            currentStaticSumX += kinematics.getFx();</span>
+<span class="fc" id="L387">            currentStaticSumY += kinematics.getFy();</span>
+<span class="fc" id="L388">            currentStaticSumZ += kinematics.getFz();</span>
+<span class="fc" id="L389">            currentStaticSamples++;</span>
+        }
+<span class="fc" id="L391">    }</span>
+
+    /**
+     * Generates the sequence that is pending, if any, without waiting for the end of the static interval
+     * that follows it.
+     * A sequence is normally generated when the static interval that follows it ends, so that the
+     * &quot;after&quot; gravity vector is the average of the entire static interval. Consequently, when no more
+     * samples are going to be processed (e.g. a recording ends while the device remains static), the last
+     * sequence would never be generated. This method generates it using the samples of the current static
+     * interval that have been classified so far, as long as there are at least
+     * {@link #getMinStaticSamples()} of them.
+     * If more samples are processed afterwards, the sequence is not generated again.
+     *
+     * @return true if a sequence has been generated, false otherwise.
+     * @throws LockedException if generator is busy.
+     */
+    public boolean flush() throws LockedException {
+<span class="pc bpc" id="L408" title="1 of 2 branches missed.">        if (isRunning()) {</span>
+<span class="nc" id="L409">            throw new LockedException();</span>
+        }
+
+<span class="pc bpc" id="L412" title="3 of 8 branches missed.">        if (listener == null || currentSequenceItems == null || currentSequenceItems.isEmpty()</span>
+<span class="fc bfc" id="L413" title="All 2 branches covered.">                || previousAvgX == null || currentStaticSamples &lt; Math.max(getMinStaticSamples(), 1)</span>
+<span class="pc bpc" id="L414" title="1 of 2 branches missed.">                || staticIntervalDetector.getStatus() != TriadStaticIntervalDetector.Status.STATIC_INTERVAL) {</span>
+<span class="fc" id="L415">            return false;</span>
+        }
+
+<span class="fc" id="L418">        emitSequence(currentStaticSumX / currentStaticSamples, currentStaticSumY / currentStaticSamples,</span>
+                currentStaticSumZ / currentStaticSamples, currentStaticSamples);
+<span class="fc" id="L420">        currentStaticItems = null;</span>
+<span class="fc" id="L421">        return true;</span>
+    }
+
+    /**
+     * Gets corresponding acceleration triad from provided input sample.
+     * This method must store the result into {@link #triad}.
+     *
+     * @param sample input sample.
+     */
+    @Override
+    protected void getAccelerationTriadFromInputSample(final TimedBodyKinematics sample) {
+<span class="fc" id="L432">        sample.getKinematics().getSpecificForceTriad(triad);</span>
+<span class="fc" id="L433">    }</span>
+
+    /**
+     * Handles a static-to-dynamic interval change, which means that a static interval has ended.
+     * If such static interval is valid, its average is the gravity reference of the sequence that
+     * finishes now (which is generated) and of the sequence that starts now. If the static interval is too
+     * short, the neighbouring dynamic intervals are joined into the same sequence.
+     *
+     * @param accumulatedAvgX average x-coordinate of measurements during last
+     *                        static period expressed in meters per squared
+     *                        second (m/s^2).
+     * @param accumulatedAvgY average y-coordinate of specific force during last
+     *                        static period expressed in meters per squared
+     *                        second (m/s^2).
+     * @param accumulatedAvgZ average z-coordinate of specific force during last
+     *                        static period expressed in meters per squared
+     *                        second (m/s^2).
+     * @param accumulatedStdX standard deviation of x-coordinate of measurements
+     *                        during last static period expressed in meters per
+     *                        squared second (m/s^2).
+     * @param accumulatedStdY standard deviation of y-coordinate of measurements
+     *                        during last static period expressed in meters per
+     *                        squared second (m/s^2).
+     * @param accumulatedStdZ standard deviation of z-coordinate of measurements
+     *                        during last static period expressed in meters per
+     *                        squared second (m/s^2).
+     */
+    @Override
+    protected void handleStaticToDynamicChange(
+            final double accumulatedAvgX, final double accumulatedAvgY, final double accumulatedAvgZ,
+            final double accumulatedStdX, final double accumulatedStdY, final double accumulatedStdZ) {
+        // the interval that starts with the initialization period includes the initialization samples,
+        // whose average is the first static average
+<span class="fc bfc" id="L466" title="All 2 branches covered.">        final var valid = !isStaticIntervalSkipped();</span>
+<span class="fc" id="L467">        final var samples = Math.max(getAccumulatedStaticSamples(), 1);</span>
+
+<span class="fc bfc" id="L469" title="All 2 branches covered.">        if (valid) {</span>
+<span class="pc bpc" id="L470" title="2 of 6 branches missed.">            if (currentSequenceItems != null &amp;&amp; !currentSequenceItems.isEmpty() &amp;&amp; previousAvgX != null) {</span>
+                // static interval is valid so sequence is complete
+<span class="fc" id="L472">                emitSequence(accumulatedAvgX, accumulatedAvgY, accumulatedAvgZ, samples);</span>
+            }
+
+            // static interval is the gravity reference (&quot;before&quot; vector) of next sequence
+<span class="fc" id="L476">            previousAvgX = accumulatedAvgX;</span>
+<span class="fc" id="L477">            previousAvgY = accumulatedAvgY;</span>
+<span class="fc" id="L478">            previousAvgZ = accumulatedAvgZ;</span>
+<span class="fc" id="L479">            previousAvgSamples = samples;</span>
+<span class="fc" id="L480">            currentSequenceItems = new ArrayList&lt;&gt;();</span>
+<span class="pc bpc" id="L481" title="2 of 4 branches missed.">        } else if (currentSequenceItems != null &amp;&amp; currentStaticItems != null) {</span>
+            // static interval is too short: neighbouring dynamic intervals are joined
+<span class="fc" id="L483">            currentSequenceItems.addAll(currentStaticItems);</span>
+<span class="fc" id="L484">            discardSequenceIfTooLong();</span>
+        }
+        // when there is no previous valid static interval, no sequence is being collected, and
+        // items are discarded until a valid static interval is found
+
+<span class="fc" id="L489">        currentStaticItems = null;</span>
+<span class="fc" id="L490">        resetCurrentStatic();</span>
+<span class="fc" id="L491">    }</span>
+
+    /**
+     * Handles a dynamic-to-static interval change.
+     */
+    @Override
+    protected void handleDynamicToStaticChange() {
+<span class="fc" id="L498">        currentStaticItems = null;</span>
+<span class="fc" id="L499">        resetCurrentStatic();</span>
+<span class="fc" id="L500">    }</span>
+
+    /**
+     * Handles an initialization completion.
+     */
+    @Override
+    protected void handleInitializationCompleted() {
+        // base noise level is variance based, so the standard deviation is recovered from the root PSD
+<span class="fc" id="L508">        final var timeInterval = staticIntervalDetector.getTimeInterval();</span>
+<span class="pc bpc" id="L509" title="1 of 2 branches missed.">        accelerationStandardDeviation = timeInterval &gt; 0.0</span>
+<span class="pc" id="L510">                ? staticIntervalDetector.getBaseNoiseLevelRootPsd() / Math.sqrt(timeInterval) : 0.0;</span>
+<span class="fc" id="L511">        angularSpeedStandardDeviation = accumulatedEstimator.getStandardDeviationNorm();</span>
+<span class="fc" id="L512">        angularSpeedNoiseRootPsd = accumulatedEstimator.getNoiseRootPsdNorm();</span>
+
+<span class="fc" id="L514">        currentSequenceItems = null;</span>
+<span class="fc" id="L515">        currentStaticItems = null;</span>
+<span class="fc" id="L516">        pendingItems.clear();</span>
+<span class="fc" id="L517">        initializationSamplePending = true;</span>
+<span class="fc" id="L518">        resetCurrentStatic();</span>
+<span class="fc" id="L519">    }</span>
+
+    /**
+     * Handles an error during initialization.
+     */
+    @Override
+    protected void handleInitializationFailed() {
+<span class="fc" id="L526">        currentSequenceItems = null;</span>
+<span class="fc" id="L527">        currentStaticItems = null;</span>
+<span class="fc" id="L528">        pendingItems.clear();</span>
+<span class="fc" id="L529">        initializationSamplePending = false;</span>
+
+        try {
+<span class="fc" id="L532">            accumulatedEstimator.reset();</span>
+<span class="nc" id="L533">        } catch (final LockedException ignore) {</span>
+            // no action needed
+<span class="fc" id="L535">        }</span>
+<span class="fc" id="L536">    }</span>
+
+    /**
+     * Discards the sequence being collected when it exceeds the maximum number of samples allowed in
+     * dynamic intervals. This can only happen when dynamic intervals are joined around too short static
+     * intervals, since single dynamic intervals that are too long are already skipped.
+     * Gravity reference is lost, so no sequence is collected until a new valid static interval is found.
+     */
+    private void discardSequenceIfTooLong() {
+<span class="pc bpc" id="L545" title="1 of 4 branches missed.">        if (currentSequenceItems == null || currentSequenceItems.size() &lt;= getMaxDynamicSamples()) {</span>
+<span class="fc" id="L546">            return;</span>
+        }
+
+<span class="fc bfc" id="L549" title="All 2 branches covered.">        final var joined = currentSequenceItems.size() &gt; getProcessedDynamicSamples();</span>
+
+<span class="fc" id="L551">        currentSequenceItems = null;</span>
+<span class="fc" id="L552">        currentStaticItems = null;</span>
+<span class="fc" id="L553">        previousAvgX = null;</span>
+<span class="fc" id="L554">        previousAvgY = null;</span>
+<span class="fc" id="L555">        previousAvgZ = null;</span>
+
+        // a single dynamic interval that is too long is notified by the base class
+<span class="pc bpc" id="L558" title="1 of 4 branches missed.">        if (listener != null &amp;&amp; joined) {</span>
+<span class="fc" id="L559">            listener.onDynamicIntervalSkipped(this);</span>
+        }
+<span class="fc" id="L561">    }</span>
+
+    /**
+     * Resets accumulated specific force of the static interval being processed.
+     */
+    private void resetCurrentStatic() {
+<span class="fc" id="L567">        currentStaticSumX = 0.0;</span>
+<span class="fc" id="L568">        currentStaticSumY = 0.0;</span>
+<span class="fc" id="L569">        currentStaticSumZ = 0.0;</span>
+<span class="fc" id="L570">        currentStaticSamples = 0;</span>
+<span class="fc" id="L571">    }</span>
+
+    /**
+     * Creates a sequence item from provided sample.
+     *
+     * @param sample sample to generate a sequence item from.
+     * @return created item.
+     */
+    private StandardDeviationTimedBodyKinematics createItem(final TimedBodyKinematics sample) {
+<span class="fc" id="L580">        final var kinematics = new BodyKinematics(sample.getKinematics());</span>
+<span class="fc" id="L581">        final var timestampSeconds = sample.getTimestampSeconds();</span>
+<span class="fc" id="L582">        return new StandardDeviationTimedBodyKinematics(kinematics, timestampSeconds,</span>
+                accelerationStandardDeviation, angularSpeedStandardDeviation);
+    }
+
+    /**
+     * Generates a sequence with current items, whose &quot;after&quot; gravity vector is the average of the whole
+     * static interval that has just ended.
+     *
+     * @param afterAvgX x-coordinate of the average specific force of the static interval after the sequence.
+     * @param afterAvgY y-coordinate of the average specific force of the static interval after the sequence.
+     * @param afterAvgZ z-coordinate of the average specific force of the static interval after the sequence.
+     * @param afterSamples number of samples of the static interval after the sequence.
+     */
+    private void emitSequence(final double afterAvgX, final double afterAvgY, final double afterAvgZ,
+                              final int afterSamples) {
+<span class="pc bpc" id="L597" title="1 of 2 branches missed.">        if (listener == null) {</span>
+<span class="nc" id="L598">            return;</span>
+        }
+
+<span class="fc" id="L601">        final var items = currentSequenceItems;</span>
+<span class="fc" id="L602">        final var sequence = new BodyKinematicsSequence&lt;StandardDeviationTimedBodyKinematics&gt;();</span>
+<span class="fc" id="L603">        sequence.setBeforeMeanSpecificForceCoordinates(previousAvgX, previousAvgY, previousAvgZ);</span>
+<span class="fc" id="L604">        sequence.setItems(items);</span>
+<span class="fc" id="L605">        sequence.setAfterMeanSpecificForceCoordinates(afterAvgX, afterAvgY, afterAvgZ);</span>
+
+        // standard deviation of gravity direction: uncertainty of the mean specific force of the static periods
+        // before and after (mean noise divided by gravity norm), combined with the uncertainty of the integrated
+        // gyroscope noise (root PSD multiplied by square root of sequence duration)
+<span class="fc" id="L610">        final var beforeNorm = Math.sqrt(previousAvgX * previousAvgX + previousAvgY * previousAvgY</span>
+<span class="fc" id="L611">                + previousAvgZ * previousAvgZ);</span>
+<span class="fc" id="L612">        final var afterNorm = Math.sqrt(afterAvgX * afterAvgX + afterAvgY * afterAvgY + afterAvgZ * afterAvgZ);</span>
+        // accelerationStandardDeviation and angularSpeedNoiseRootPsd are norms of the three coordinates, so
+        // they are converted to per-coordinate variances, since the result is a per-component standard deviation
+<span class="fc" id="L615">        final var accelerationVariance = accelerationStandardDeviation * accelerationStandardDeviation</span>
+                / BodyKinematics.COMPONENTS;
+<span class="pc bpc" id="L617" title="1 of 2 branches missed.">        final var beforeVariance = beforeNorm &gt; 0.0</span>
+<span class="pc" id="L618">                ? accelerationVariance / (previousAvgSamples * beforeNorm * beforeNorm) : 0.0;</span>
+<span class="pc bpc" id="L619" title="1 of 2 branches missed.">        final var afterVariance = afterNorm &gt; 0.0</span>
+<span class="pc" id="L620">                ? accelerationVariance / (afterSamples * afterNorm * afterNorm) : 0.0;</span>
+<span class="fc" id="L621">        final var duration = Math.max(</span>
+<span class="fc" id="L622">                items.get(items.size() - 1).getTimestampSeconds() - items.get(0).getTimestampSeconds(), 0.0);</span>
+<span class="fc" id="L623">        final var gyroVariance = angularSpeedNoiseRootPsd * angularSpeedNoiseRootPsd * duration</span>
+                / BodyKinematics.COMPONENTS;
+<span class="fc" id="L625">        sequence.setGravityDirectionStandardDeviation(Math.sqrt(beforeVariance + afterVariance + gyroVariance));</span>
+
+<span class="fc" id="L627">        currentSequenceItems = null;</span>
+
+<span class="fc" id="L629">        listener.onGeneratedMeasurement(this, sequence);</span>
+<span class="fc" id="L630">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>
