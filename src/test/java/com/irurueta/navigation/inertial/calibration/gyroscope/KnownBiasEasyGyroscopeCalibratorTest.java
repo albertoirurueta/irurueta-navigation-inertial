@@ -5508,8 +5508,8 @@ class KnownBiasEasyGyroscopeCalibratorTest implements KnownBiasEasyGyroscopeCali
 
             assertNotNull(calibrator.getEstimatedCovariance());
             checkGeneralCovariance(calibrator.getEstimatedCovariance());
-            GyroscopeCovariancePropagationAssert.assertScaleAndCrossCouplingCovariancePropagated(calibrator,
-                    calibrator.getEstimatedCovariance(), 0, 0);
+            GyroscopeCovariancePropagationAssert.assertCovariancePropagated(calibrator,
+                    calibrator.getEstimatedCovariance(), false, false);
             assertTrue(calibrator.getEstimatedChiSq() >= 0.0);
             assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
             assertTrue(calibrator.getEstimatedReducedChiSq() >= 0.0);
@@ -5711,8 +5711,8 @@ class KnownBiasEasyGyroscopeCalibratorTest implements KnownBiasEasyGyroscopeCali
 
             assertNotNull(calibrator.getEstimatedCovariance());
             checkGeneralCovariance(calibrator.getEstimatedCovariance());
-            GyroscopeCovariancePropagationAssert.assertScaleAndCrossCouplingCovariancePropagated(calibrator,
-                    calibrator.getEstimatedCovariance(), 0, 0);
+            GyroscopeCovariancePropagationAssert.assertCovariancePropagated(calibrator,
+                    calibrator.getEstimatedCovariance(), false, false);
             assertTrue(calibrator.getEstimatedChiSq() >= 0.0);
             assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
             assertTrue(calibrator.getEstimatedReducedChiSq() >= 0.0);
@@ -6307,8 +6307,8 @@ class KnownBiasEasyGyroscopeCalibratorTest implements KnownBiasEasyGyroscopeCali
 
             assertNotNull(calibrator.getEstimatedCovariance());
             checkGeneralAndGDependantCrossBiasesCovariance(calibrator.getEstimatedCovariance());
-            GyroscopeCovariancePropagationAssert.assertScaleAndCrossCouplingCovariancePropagated(calibrator,
-                    calibrator.getEstimatedCovariance(), 0, 0);
+            GyroscopeCovariancePropagationAssert.assertCovariancePropagated(calibrator,
+                    calibrator.getEstimatedCovariance(), false, true);
             assertTrue(calibrator.getEstimatedChiSq() >= 0.0);
             assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
             assertTrue(calibrator.getEstimatedReducedChiSq() >= 0.0);
@@ -6513,8 +6513,8 @@ class KnownBiasEasyGyroscopeCalibratorTest implements KnownBiasEasyGyroscopeCali
 
             assertNotNull(calibrator.getEstimatedCovariance());
             checkGeneralAndGDependantCrossBiasesCovariance(calibrator.getEstimatedCovariance());
-            GyroscopeCovariancePropagationAssert.assertScaleAndCrossCouplingCovariancePropagated(calibrator,
-                    calibrator.getEstimatedCovariance(), 0, 0);
+            GyroscopeCovariancePropagationAssert.assertCovariancePropagated(calibrator,
+                    calibrator.getEstimatedCovariance(), false, true);
             assertTrue(calibrator.getEstimatedChiSq() >= 0.0);
             assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
             assertTrue(calibrator.getEstimatedReducedChiSq() >= 0.0);

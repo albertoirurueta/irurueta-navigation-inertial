@@ -10179,8 +10179,8 @@ class TurntableGyroscopeCalibratorTest implements TurntableGyroscopeCalibratorLi
 
             assertNotNull(calibrator.getEstimatedCovariance());
             checkGeneralCovariance(calibrator.getEstimatedCovariance());
-            GyroscopeCovariancePropagationAssert.assertScaleAndCrossCouplingCovariancePropagated(calibrator,
-                    calibrator.getEstimatedCovariance(), 3, 3);
+            GyroscopeCovariancePropagationAssert.assertCovariancePropagated(calibrator,
+                    calibrator.getEstimatedCovariance(), true, false);
             assertTrue(calibrator.getEstimatedMse() >= 0.0);
             assertTrue(calibrator.getEstimatedChiSq() >= 0.0);
             assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
@@ -10445,8 +10445,8 @@ class TurntableGyroscopeCalibratorTest implements TurntableGyroscopeCalibratorLi
 
             assertNotNull(calibrator.getEstimatedCovariance());
             checkGeneralAndGDependantCrossBiasesCovariance(calibrator.getEstimatedCovariance());
-            GyroscopeCovariancePropagationAssert.assertScaleAndCrossCouplingCovariancePropagated(calibrator,
-                    calibrator.getEstimatedCovariance(), 3, 3);
+            GyroscopeCovariancePropagationAssert.assertCovariancePropagated(calibrator,
+                    calibrator.getEstimatedCovariance(), true, true);
             assertTrue(calibrator.getEstimatedMse() >= 0.0);
             assertTrue(calibrator.getEstimatedChiSq() >= 0.0);
             assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
@@ -10709,8 +10709,8 @@ class TurntableGyroscopeCalibratorTest implements TurntableGyroscopeCalibratorLi
 
             assertNotNull(calibrator.getEstimatedCovariance());
             checkGeneralCovariance(calibrator.getEstimatedCovariance());
-            GyroscopeCovariancePropagationAssert.assertScaleAndCrossCouplingCovariancePropagated(calibrator,
-                    calibrator.getEstimatedCovariance(), 3, 3);
+            GyroscopeCovariancePropagationAssert.assertCovariancePropagated(calibrator,
+                    calibrator.getEstimatedCovariance(), true, false);
             assertTrue(calibrator.getEstimatedMse() > 0.0);
             assertTrue(calibrator.getEstimatedChiSq() > 0.0);
             assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
@@ -10982,8 +10982,8 @@ class TurntableGyroscopeCalibratorTest implements TurntableGyroscopeCalibratorLi
 
             assertNotNull(calibrator.getEstimatedCovariance());
             checkGeneralAndGDependantCrossBiasesCovariance(calibrator.getEstimatedCovariance());
-            GyroscopeCovariancePropagationAssert.assertScaleAndCrossCouplingCovariancePropagated(calibrator,
-                    calibrator.getEstimatedCovariance(), 3, 3);
+            GyroscopeCovariancePropagationAssert.assertCovariancePropagated(calibrator,
+                    calibrator.getEstimatedCovariance(), true, true);
             assertTrue(calibrator.getEstimatedMse() > 0.0);
             assertTrue(calibrator.getEstimatedChiSq() > 0.0);
             assertTrue(calibrator.getEstimatedChiSqDegreesOfFreedom() > 0);
