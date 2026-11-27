@@ -254,28 +254,29 @@ public class INSLooselyCoupledKalmanConfig implements Serializable, Cloneable {
     /**
      * Sets configuration parameters.
      *
-     * @param gyroNoisePSD          gyro noise PSD (Power Spectral Density) expressed in
+     * @param gyroNoisePSDParam          gyro noise PSD (Power Spectral Density) expressed in
      *                              squared radians per second (rad^2/s).
-     * @param accelerometerNoisePSD accelerometer noise PSD (Power Spectral Density)
+     * @param accelerometerNoisePSDParam accelerometer noise PSD (Power Spectral Density)
      *                              expressed in (m^2 * s^-3).
-     * @param accelerometerBiasPSD  accelerometer bias random walk PSD (Power Spectral
+     * @param accelerometerBiasPSDParam  accelerometer bias random walk PSD (Power Spectral
      *                              Density) expressed in (m^2 * s^-5).
-     * @param gyroBiasPSD           gyro bias random walk PSD (Power Spectral Density)
+     * @param gyroBiasPSDParam           gyro bias random walk PSD (Power Spectral Density)
      *                              expressed in (rad^2 * s^-3).
-     * @param positionNoiseSD       position measurement noise SD (Standard Deviation)
+     * @param positionNoiseSDParam       position measurement noise SD (Standard Deviation)
      *                              per axis expressed in meters (m).
-     * @param velocityNoiseSD       velocity measurement noise SD (Standard Deviation)
+     * @param velocityNoiseSDParam       velocity measurement noise SD (Standard Deviation)
      *                              per axis expressed in meters per second (m/s).
      */
     public void setValues(
-            final double gyroNoisePSD, final double accelerometerNoisePSD, final double accelerometerBiasPSD,
-            final double gyroBiasPSD, final double positionNoiseSD, final double velocityNoiseSD) {
-        this.gyroNoisePSD = gyroNoisePSD;
-        this.accelerometerNoisePSD = accelerometerNoisePSD;
-        this.accelerometerBiasPSD = accelerometerBiasPSD;
-        this.gyroBiasPSD = gyroBiasPSD;
-        this.positionNoiseSD = positionNoiseSD;
-        this.velocityNoiseSD = velocityNoiseSD;
+            final double gyroNoisePSDParam, final double accelerometerNoisePSDParam,
+            final double accelerometerBiasPSDParam,
+            final double gyroBiasPSDParam, final double positionNoiseSDParam, final double velocityNoiseSDParam) {
+        gyroNoisePSD = gyroNoisePSDParam;
+        accelerometerNoisePSD = accelerometerNoisePSDParam;
+        accelerometerBiasPSD = accelerometerBiasPSDParam;
+        gyroBiasPSD = gyroBiasPSDParam;
+        positionNoiseSD = positionNoiseSDParam;
+        velocityNoiseSD = velocityNoiseSDParam;
     }
 
     /**
@@ -339,26 +340,27 @@ public class INSLooselyCoupledKalmanConfig implements Serializable, Cloneable {
     /**
      * Sets configuration parameters.
      *
-     * @param gyroNoisePSD          gyro noise PSD (Power Spectral Density) expressed in
+     * @param gyroNoisePSDParam          gyro noise PSD (Power Spectral Density) expressed in
      *                              squared radians per second (rad^2/s).
-     * @param accelerometerNoisePSD accelerometer noise PSD (Power Spectral Density)
+     * @param accelerometerNoisePSDParam accelerometer noise PSD (Power Spectral Density)
      *                              expressed in (m^2 * s^-3).
-     * @param accelerometerBiasPSD  accelerometer bias random walk PSD (Power Spectral
+     * @param accelerometerBiasPSDParam  accelerometer bias random walk PSD (Power Spectral
      *                              Density) expressed in (m^2 * s^-5).
-     * @param gyroBiasPSD           gyro bias random walk PSD (Power Spectral Density)
+     * @param gyroBiasPSDParam           gyro bias random walk PSD (Power Spectral Density)
      *                              expressed in (rad^2 * s^-3).
-     * @param positionNoiseSD       position measurement noise SD (Standard Deviation)
+     * @param positionNoiseSDParam       position measurement noise SD (Standard Deviation)
      *                              per axis.
-     * @param velocityNoiseSD       velocity measurement noise SD (Standard Deviation)
+     * @param velocityNoiseSDParam       velocity measurement noise SD (Standard Deviation)
      *                              per axis.
      */
     public void setValues(
-            final double gyroNoisePSD, final double accelerometerNoisePSD, final double accelerometerBiasPSD,
-            final double gyroBiasPSD, final Distance positionNoiseSD, final Speed velocityNoiseSD) {
-        setValues(gyroNoisePSD, accelerometerNoisePSD, accelerometerBiasPSD, gyroBiasPSD,
-                DistanceConverter.convert(positionNoiseSD.getValue().doubleValue(), positionNoiseSD.getUnit(),
+            final double gyroNoisePSDParam, final double accelerometerNoisePSDParam,
+            final double accelerometerBiasPSDParam,
+            final double gyroBiasPSDParam, final Distance positionNoiseSDParam, final Speed velocityNoiseSDParam) {
+        setValues(gyroNoisePSDParam, accelerometerNoisePSDParam, accelerometerBiasPSDParam, gyroBiasPSDParam,
+                DistanceConverter.convert(positionNoiseSDParam.getValue().doubleValue(), positionNoiseSDParam.getUnit(),
                         DistanceUnit.METER),
-                SpeedConverter.convert(velocityNoiseSD.getValue().doubleValue(), velocityNoiseSD.getUnit(),
+                SpeedConverter.convert(velocityNoiseSDParam.getValue().doubleValue(), velocityNoiseSDParam.getUnit(),
                         SpeedUnit.METERS_PER_SECOND));
     }
 

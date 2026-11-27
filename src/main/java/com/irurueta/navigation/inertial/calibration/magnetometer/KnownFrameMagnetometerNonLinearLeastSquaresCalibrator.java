@@ -2961,45 +2961,45 @@ public class KnownFrameMagnetometerNonLinearLeastSquaresCalibrator implements
      * Sets initial hard-iron bias coordinates of magnetometer used to find
      * a solution expressed in Teslas (T).
      *
-     * @param initialHardIronX initial x-coordinate of magnetometer
+     * @param initialHardIronXParam initial x-coordinate of magnetometer
      *                         hard-iron bias.
-     * @param initialHardIronY initial y-coordinate of magnetometer
+     * @param initialHardIronYParam initial y-coordinate of magnetometer
      *                         hard-iron bias.
-     * @param initialHardIronZ initial z-coordinate of magnetometer
+     * @param initialHardIronZParam initial z-coordinate of magnetometer
      *                         hard-iron bias.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
     public void setInitialHardIron(
-            final double initialHardIronX, final double initialHardIronY, final double initialHardIronZ)
+            final double initialHardIronXParam, final double initialHardIronYParam, final double initialHardIronZParam)
             throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        this.initialHardIronX = initialHardIronX;
-        this.initialHardIronY = initialHardIronY;
-        this.initialHardIronZ = initialHardIronZ;
+        initialHardIronX = initialHardIronXParam;
+        initialHardIronY = initialHardIronYParam;
+        initialHardIronZ = initialHardIronZParam;
     }
 
     /**
      * Sets initial hard iron coordinates of magnetometer used to find a solution.
      *
-     * @param initialHardIronX initial x-coordinate of magnetometer bias.
-     * @param initialHardIronY initial y-coordinate of magnetometer bias.
-     * @param initialHardIronZ initial z-coordinate of magnetometer bias.
+     * @param initialHardIronXParam initial x-coordinate of magnetometer bias.
+     * @param initialHardIronYParam initial y-coordinate of magnetometer bias.
+     * @param initialHardIronZParam initial z-coordinate of magnetometer bias.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
     public void setInitialHardIron(
-            final MagneticFluxDensity initialHardIronX, final MagneticFluxDensity initialHardIronY,
-            final MagneticFluxDensity initialHardIronZ) throws LockedException {
+            final MagneticFluxDensity initialHardIronXParam, final MagneticFluxDensity initialHardIronYParam,
+            final MagneticFluxDensity initialHardIronZParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
 
-        this.initialHardIronX = convertMagneticFluxDensity(initialHardIronX);
-        this.initialHardIronY = convertMagneticFluxDensity(initialHardIronY);
-        this.initialHardIronZ = convertMagneticFluxDensity(initialHardIronZ);
+        initialHardIronX = convertMagneticFluxDensity(initialHardIronXParam);
+        initialHardIronY = convertMagneticFluxDensity(initialHardIronYParam);
+        initialHardIronZ = convertMagneticFluxDensity(initialHardIronZParam);
     }
 
     /**
@@ -3260,72 +3260,76 @@ public class KnownFrameMagnetometerNonLinearLeastSquaresCalibrator implements
     /**
      * Sets initial scaling factors.
      *
-     * @param initialSx initial x scaling factor.
-     * @param initialSy initial y scaling factor.
-     * @param initialSz initial z scaling factor.
+     * @param initialSxParam initial x scaling factor.
+     * @param initialSyParam initial y scaling factor.
+     * @param initialSzParam initial z scaling factor.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
     public void setInitialScalingFactors(
-            final double initialSx, final double initialSy, final double initialSz) throws LockedException {
+            final double initialSxParam, final double initialSyParam,
+            final double initialSzParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        this.initialSx = initialSx;
-        this.initialSy = initialSy;
-        this.initialSz = initialSz;
+        initialSx = initialSxParam;
+        initialSy = initialSyParam;
+        initialSz = initialSzParam;
     }
 
     /**
      * Sets initial cross coupling errors.
      *
-     * @param initialMxy initial x-y cross coupling error.
-     * @param initialMxz initial x-z cross coupling error.
-     * @param initialMyx initial y-x cross coupling error.
-     * @param initialMyz initial y-z cross coupling error.
-     * @param initialMzx initial z-x cross coupling error.
-     * @param initialMzy initial z-y cross coupling error.
+     * @param initialMxyParam initial x-y cross coupling error.
+     * @param initialMxzParam initial x-z cross coupling error.
+     * @param initialMyxParam initial y-x cross coupling error.
+     * @param initialMyzParam initial y-z cross coupling error.
+     * @param initialMzxParam initial z-x cross coupling error.
+     * @param initialMzyParam initial z-y cross coupling error.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
     public void setInitialCrossCouplingErrors(
-            final double initialMxy, final double initialMxz, final double initialMyx,
-            final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
+            final double initialMxyParam, final double initialMxzParam, final double initialMyxParam,
+            final double initialMyzParam, final double initialMzxParam,
+            final double initialMzyParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        this.initialMxy = initialMxy;
-        this.initialMxz = initialMxz;
-        this.initialMyx = initialMyx;
-        this.initialMyz = initialMyz;
-        this.initialMzx = initialMzx;
-        this.initialMzy = initialMzy;
+        initialMxy = initialMxyParam;
+        initialMxz = initialMxzParam;
+        initialMyx = initialMyxParam;
+        initialMyz = initialMyzParam;
+        initialMzx = initialMzxParam;
+        initialMzy = initialMzyParam;
     }
 
     /**
      * Sets initial scaling factors and cross coupling errors.
      *
-     * @param initialSx  initial x scaling factor.
-     * @param initialSy  initial y scaling factor.
-     * @param initialSz  initial z scaling factor.
-     * @param initialMxy initial x-y cross coupling error.
-     * @param initialMxz initial x-z cross coupling error.
-     * @param initialMyx initial y-x cross coupling error.
-     * @param initialMyz initial y-z cross coupling error.
-     * @param initialMzx initial z-x cross coupling error.
-     * @param initialMzy initial z-y cross coupling error.
+     * @param initialSxParam  initial x scaling factor.
+     * @param initialSyParam  initial y scaling factor.
+     * @param initialSzParam  initial z scaling factor.
+     * @param initialMxyParam initial x-y cross coupling error.
+     * @param initialMxzParam initial x-z cross coupling error.
+     * @param initialMyxParam initial y-x cross coupling error.
+     * @param initialMyzParam initial y-z cross coupling error.
+     * @param initialMzxParam initial z-x cross coupling error.
+     * @param initialMzyParam initial z-y cross coupling error.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
     public void setInitialScalingFactorsAndCrossCouplingErrors(
-            final double initialSx, final double initialSy, final double initialSz,
-            final double initialMxy, final double initialMxz, final double initialMyx,
-            final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
+            final double initialSxParam, final double initialSyParam, final double initialSzParam,
+            final double initialMxyParam, final double initialMxzParam, final double initialMyxParam,
+            final double initialMyzParam, final double initialMzxParam,
+            final double initialMzyParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        setInitialScalingFactors(initialSx, initialSy, initialSz);
-        setInitialCrossCouplingErrors(initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
+        setInitialScalingFactors(initialSxParam, initialSyParam, initialSzParam);
+        setInitialCrossCouplingErrors(initialMxyParam, initialMxzParam, initialMyxParam, initialMyzParam,
+                initialMzxParam, initialMzyParam);
     }
 
     /**

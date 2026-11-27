@@ -153,14 +153,14 @@ public abstract class GravityOrGravitation<T extends GravityOrGravitation<?>> im
     /**
      * Sets gravity coordinates resolved about ECI or ECEF frame and expressed in meters per squared second (m/s^2).
      *
-     * @param gx acceleration due to gravity through ECI or ECEF x-axis expressed in meters per squared second (m/s^2).
-     * @param gy acceleration due to gravity through ECI or ECEF y-axis expressed in meters per squared second (m/s^2).
-     * @param gz acceleration due to gravity through ECI or ECEF z-axis expressed in meters per squared second (m/s^2).
+     * @param gxParam acceleration due to gravity through ECI or ECEF x-axis expressed in meters per squared second (m/s^2).
+     * @param gyParam acceleration due to gravity through ECI or ECEF y-axis expressed in meters per squared second (m/s^2).
+     * @param gzParam acceleration due to gravity through ECI or ECEF z-axis expressed in meters per squared second (m/s^2).
      */
-    public void setCoordinates(final double gx, final double gy, final double gz) {
-        this.gx = gx;
-        this.gy = gy;
-        this.gz = gz;
+    public void setCoordinates(final double gxParam, final double gyParam, final double gzParam) {
+        gx = gxParam;
+        gy = gyParam;
+        gz = gzParam;
     }
 
     /**

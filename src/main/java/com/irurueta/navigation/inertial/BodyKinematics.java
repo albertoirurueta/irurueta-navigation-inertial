@@ -273,17 +273,17 @@ public class BodyKinematics implements Serializable, Cloneable {
      * Sets specific force coordinates of body frame with respect ECI, ECEF or NED frame resolved along body-frame
      * axes, averaged over time interval and expressed in meters per squared second (m/s^2).
      *
-     * @param fx Specific force of body frame with respect ECI, ECEF or NED frame resolved along body-frame x-axis,
+     * @param fxParam Specific force of body frame with respect ECI, ECEF or NED frame resolved along body-frame x-axis,
      *           averaged over time interval and expressed in meters per squared second (m/s^2).
-     * @param fy Specific force of body frame with respect ECI, ECEF or NED frame resolved along body-frame y-axis,
+     * @param fyParam Specific force of body frame with respect ECI, ECEF or NED frame resolved along body-frame y-axis,
      *           averaged over time interval and expressed in meters per squared second (m/s^2).
-     * @param fz Specific force of body frame with respect ECI, ECEF or NED frame resolved along body-frame z-axis,
+     * @param fzParam Specific force of body frame with respect ECI, ECEF or NED frame resolved along body-frame z-axis,
      *           averaged over time interval and expressed in meters per squared second (m/s^2).
      */
-    public void setSpecificForceCoordinates(final double fx, final double fy, final double fz) {
-        this.fx = fx;
-        this.fy = fy;
-        this.fz = fz;
+    public void setSpecificForceCoordinates(final double fxParam, final double fyParam, final double fzParam) {
+        fx = fxParam;
+        fy = fyParam;
+        fz = fzParam;
     }
 
     /**
@@ -506,18 +506,18 @@ public class BodyKinematics implements Serializable, Cloneable {
      * Sets angular rate coordinates of body frame with respect ECI, ECEF or NED frame, resolved about body-frame axes,
      * averaged over time interval and expressed in radians per second (rad/s).
      *
-     * @param angularRateX Angular rate of body frame with respect ECI, ECEF or NED frame, resolved about body-frame
+     * @param angularRateXParam Angular rate of body frame with respect ECI, ECEF or NED frame, resolved about body-frame
      *                     x-axis, averaged over time interval and expressed in radians per second (rad/s).
-     * @param angularRateY Angular rate of body frame with respect ECI, ECEF or NED frame, resolved about body-frame
+     * @param angularRateYParam Angular rate of body frame with respect ECI, ECEF or NED frame, resolved about body-frame
      *                     y-axis, averaged over time interval and expressed in radians per second (rad/s).
-     * @param angularRateZ Angular rate of body frame with respect ECI, ECEF or NED frame, resolved about body-frame
+     * @param angularRateZParam Angular rate of body frame with respect ECI, ECEF or NED frame, resolved about body-frame
      *                     z-axis, averaged over time interval and expressed in radians per second (rad/s).
      */
     public void setAngularRateCoordinates(
-            final double angularRateX, final double angularRateY, final double angularRateZ) {
-        this.angularRateX = angularRateX;
-        this.angularRateY = angularRateY;
-        this.angularRateZ = angularRateZ;
+            final double angularRateXParam, final double angularRateYParam, final double angularRateZParam) {
+        angularRateX = angularRateXParam;
+        angularRateY = angularRateYParam;
+        angularRateZ = angularRateZParam;
     }
 
     /**

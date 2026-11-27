@@ -66,6 +66,11 @@ public class INSLooselyCoupledKalmanEpochEstimator {
     private static final int POS_AND_VEL_COMPONENTS = 6;
 
     /**
+     * Factor applied to gravity when propagating the state (-2 / geocentric radius).
+     */
+    private static final double GRAVITY_PROPAGATION_FACTOR = -2.0;
+
+    /**
      * Constructor.
      * Prevents instantiation of helper class.
      */
@@ -685,7 +690,7 @@ public class INSLooselyCoupledKalmanEpochEstimator {
         estRebeOld.setElementAtIndex(2, prevZ);
 
         final var g = gravity.asMatrix();
-        g.multiplyByScalar(-2.0 * propagationInterval / geocentricRadius);
+        g.multiplyByScalar(GRAVITY_PROPAGATION_FACTOR * propagationInterval / geocentricRadius);
 
         final var estRebeOldTrans = estRebeOld.transposeAndReturnNew();
         estRebeOldTrans.multiplyByScalar(1.0 / previousPositionNorm);

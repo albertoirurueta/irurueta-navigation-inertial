@@ -79,6 +79,16 @@ public class WMMEarthMagneticFluxDensityEstimator {
     private static final double FROM_NANO = 1e-9;
 
     /**
+     * Number of days in a leap year.
+     */
+    private static final double DAYS_IN_LEAP_YEAR = 366.0;
+
+    /**
+     * Number of days in a non-leap year.
+     */
+    private static final double DAYS_IN_NON_LEAP_YEAR = 365.0;
+
+    /**
      * Time value used in the previous calculation.
      * This is used to save on calculation time if some
      * inputs don't change.
@@ -2579,9 +2589,9 @@ public class WMMEarthMagneticFluxDensityEstimator {
         final var year = calendar.get(Calendar.YEAR);
         final double daysInYear;
         if (calendar.isLeapYear(year)) {
-            daysInYear = 366.0;
+            daysInYear = DAYS_IN_LEAP_YEAR;
         } else {
-            daysInYear = 365.0;
+            daysInYear = DAYS_IN_NON_LEAP_YEAR;
         }
 
         return year + Math.max(0, calendar.get(Calendar.DAY_OF_YEAR) - 1) / daysInYear;

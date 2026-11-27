@@ -2252,40 +2252,42 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      * Sets initial bias coordinates of accelerometer used to find a solution
      * expressed in meters per squared second (m/s^2).
      *
-     * @param initialBiasX initial x-coordinate of accelerometer bias.
-     * @param initialBiasY initial y-coordinate of accelerometer bias.
-     * @param initialBiasZ initial z-coordinate of accelerometer bias.
+     * @param initialBiasXParam initial x-coordinate of accelerometer bias.
+     * @param initialBiasYParam initial y-coordinate of accelerometer bias.
+     * @param initialBiasZParam initial z-coordinate of accelerometer bias.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
     public void setInitialBias(
-            final double initialBiasX, final double initialBiasY, final double initialBiasZ) throws LockedException {
+            final double initialBiasXParam, final double initialBiasYParam,
+            final double initialBiasZParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        this.initialBiasX = initialBiasX;
-        this.initialBiasY = initialBiasY;
-        this.initialBiasZ = initialBiasZ;
+        initialBiasX = initialBiasXParam;
+        initialBiasY = initialBiasYParam;
+        initialBiasZ = initialBiasZParam;
     }
 
     /**
      * Sets initial bias coordinates of accelerometer used to find a solution.
      *
-     * @param initialBiasX initial x-coordinate of accelerometer bias.
-     * @param initialBiasY initial y-coordinate of accelerometer bias.
-     * @param initialBiasZ initial z-coordinate of accelerometer bias.
+     * @param initialBiasXParam initial x-coordinate of accelerometer bias.
+     * @param initialBiasYParam initial y-coordinate of accelerometer bias.
+     * @param initialBiasZParam initial z-coordinate of accelerometer bias.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
     public void setInitialBias(
-            final Acceleration initialBiasX, final Acceleration initialBiasY, final Acceleration initialBiasZ)
+            final Acceleration initialBiasXParam, final Acceleration initialBiasYParam,
+            final Acceleration initialBiasZParam)
             throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        this.initialBiasX = convertAcceleration(initialBiasX);
-        this.initialBiasY = convertAcceleration(initialBiasY);
-        this.initialBiasZ = convertAcceleration(initialBiasZ);
+        initialBiasX = convertAcceleration(initialBiasXParam);
+        initialBiasY = convertAcceleration(initialBiasYParam);
+        initialBiasZ = convertAcceleration(initialBiasZParam);
     }
 
     /**
@@ -2546,72 +2548,76 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
     /**
      * Sets initial scaling factors.
      *
-     * @param initialSx initial x scaling factor.
-     * @param initialSy initial y scaling factor.
-     * @param initialSz initial z scaling factor.
+     * @param initialSxParam initial x scaling factor.
+     * @param initialSyParam initial y scaling factor.
+     * @param initialSzParam initial z scaling factor.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
     public void setInitialScalingFactors(
-            final double initialSx, final double initialSy, final double initialSz) throws LockedException {
+            final double initialSxParam, final double initialSyParam,
+            final double initialSzParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        this.initialSx = initialSx;
-        this.initialSy = initialSy;
-        this.initialSz = initialSz;
+        initialSx = initialSxParam;
+        initialSy = initialSyParam;
+        initialSz = initialSzParam;
     }
 
     /**
      * Sets initial cross coupling errors.
      *
-     * @param initialMxy initial x-y cross coupling error.
-     * @param initialMxz initial x-z cross coupling error.
-     * @param initialMyx initial y-x cross coupling error.
-     * @param initialMyz initial y-z cross coupling error.
-     * @param initialMzx initial z-x cross coupling error.
-     * @param initialMzy initial z-y cross coupling error.
+     * @param initialMxyParam initial x-y cross coupling error.
+     * @param initialMxzParam initial x-z cross coupling error.
+     * @param initialMyxParam initial y-x cross coupling error.
+     * @param initialMyzParam initial y-z cross coupling error.
+     * @param initialMzxParam initial z-x cross coupling error.
+     * @param initialMzyParam initial z-y cross coupling error.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
     public void setInitialCrossCouplingErrors(
-            final double initialMxy, final double initialMxz, final double initialMyx,
-            final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
+            final double initialMxyParam, final double initialMxzParam, final double initialMyxParam,
+            final double initialMyzParam, final double initialMzxParam,
+            final double initialMzyParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        this.initialMxy = initialMxy;
-        this.initialMxz = initialMxz;
-        this.initialMyx = initialMyx;
-        this.initialMyz = initialMyz;
-        this.initialMzx = initialMzx;
-        this.initialMzy = initialMzy;
+        initialMxy = initialMxyParam;
+        initialMxz = initialMxzParam;
+        initialMyx = initialMyxParam;
+        initialMyz = initialMyzParam;
+        initialMzx = initialMzxParam;
+        initialMzy = initialMzyParam;
     }
 
     /**
      * Sets initial scaling factors and cross coupling errors.
      *
-     * @param initialSx  initial x scaling factor.
-     * @param initialSy  initial y scaling factor.
-     * @param initialSz  initial z scaling factor.
-     * @param initialMxy initial x-y cross coupling error.
-     * @param initialMxz initial x-z cross coupling error.
-     * @param initialMyx initial y-x cross coupling error.
-     * @param initialMyz initial y-z cross coupling error.
-     * @param initialMzx initial z-x cross coupling error.
-     * @param initialMzy initial z-y cross coupling error.
+     * @param initialSxParam  initial x scaling factor.
+     * @param initialSyParam  initial y scaling factor.
+     * @param initialSzParam  initial z scaling factor.
+     * @param initialMxyParam initial x-y cross coupling error.
+     * @param initialMxzParam initial x-z cross coupling error.
+     * @param initialMyxParam initial y-x cross coupling error.
+     * @param initialMyzParam initial y-z cross coupling error.
+     * @param initialMzxParam initial z-x cross coupling error.
+     * @param initialMzyParam initial z-y cross coupling error.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
     public void setInitialScalingFactorsAndCrossCouplingErrors(
-            final double initialSx, final double initialSy, final double initialSz,
-            final double initialMxy, final double initialMxz, final double initialMyx,
-            final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
+            final double initialSxParam, final double initialSyParam, final double initialSzParam,
+            final double initialMxyParam, final double initialMxzParam, final double initialMyxParam,
+            final double initialMyzParam, final double initialMzxParam,
+            final double initialMzyParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        setInitialScalingFactors(initialSx, initialSy, initialSz);
-        setInitialCrossCouplingErrors(initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
+        setInitialScalingFactors(initialSxParam, initialSyParam, initialSzParam);
+        setInitialCrossCouplingErrors(initialMxyParam, initialMxzParam, initialMyxParam, initialMyzParam,
+                initialMzxParam, initialMzyParam);
     }
 
     /**

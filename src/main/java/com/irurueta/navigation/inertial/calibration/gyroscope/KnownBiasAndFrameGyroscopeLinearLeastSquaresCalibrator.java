@@ -906,40 +906,42 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator implements
      * Sets known gyroscope bias coordinates expressed in radians per second
      * (rad/s).
      *
-     * @param biasX x coordinate of gyroscope bias.
-     * @param biasY y coordinate of gyroscope bias.
-     * @param biasZ z coordinate of gyroscope bias.
+     * @param biasXParam x coordinate of gyroscope bias.
+     * @param biasYParam y coordinate of gyroscope bias.
+     * @param biasZParam z coordinate of gyroscope bias.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setBiasCoordinates(final double biasX, final double biasY, final double biasZ) throws LockedException {
+    public void setBiasCoordinates(final double biasXParam, final double biasYParam,
+            final double biasZParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
 
-        this.biasX = biasX;
-        this.biasY = biasY;
-        this.biasZ = biasZ;
+        biasX = biasXParam;
+        biasY = biasYParam;
+        biasZ = biasZParam;
     }
 
     /**
      * Sets known gyroscope bias coordinates.
      *
-     * @param biasX x coordinate of gyroscope bias.
-     * @param biasY y coordinate of gyroscope bias.
-     * @param biasZ z coordinate of gyroscope bias.
+     * @param biasXParam x coordinate of gyroscope bias.
+     * @param biasYParam y coordinate of gyroscope bias.
+     * @param biasZParam z coordinate of gyroscope bias.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setBiasCoordinates(final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ)
+    public void setBiasCoordinates(final AngularSpeed biasXParam, final AngularSpeed biasYParam,
+            final AngularSpeed biasZParam)
             throws LockedException {
         if (running) {
             throw new LockedException();
         }
 
-        this.biasX = convertAngularSpeed(biasX);
-        this.biasY = convertAngularSpeed(biasY);
-        this.biasZ = convertAngularSpeed(biasZ);
+        biasX = convertAngularSpeed(biasXParam);
+        biasY = convertAngularSpeed(biasYParam);
+        biasZ = convertAngularSpeed(biasZParam);
     }
 
     /**

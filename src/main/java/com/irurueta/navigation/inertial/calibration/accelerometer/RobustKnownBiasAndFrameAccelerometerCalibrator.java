@@ -1221,36 +1221,38 @@ public abstract class RobustKnownBiasAndFrameAccelerometerCalibrator implements
      * Sets known accelerometer bias coordinates expressed in meters per squared
      * second (m/s^2).
      *
-     * @param biasX x coordinate of accelerometer bias.
-     * @param biasY y coordinate of accelerometer bias.
-     * @param biasZ z coordinate of accelerometer bias.
+     * @param biasXParam x coordinate of accelerometer bias.
+     * @param biasYParam y coordinate of accelerometer bias.
+     * @param biasZParam z coordinate of accelerometer bias.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setBiasCoordinates(final double biasX, final double biasY, final double biasZ) throws LockedException {
+    public void setBiasCoordinates(final double biasXParam, final double biasYParam,
+            final double biasZParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
 
-        internalSetBiasCoordinates(biasX, biasY, biasZ);
+        internalSetBiasCoordinates(biasXParam, biasYParam, biasZParam);
     }
 
     /**
      * Sets known accelerometer bias coordinates.
      *
-     * @param biasX x coordinate of accelerometer bias.
-     * @param biasY y coordinate of accelerometer bias.
-     * @param biasZ z coordinate of accelerometer bias.
+     * @param biasXParam x coordinate of accelerometer bias.
+     * @param biasYParam y coordinate of accelerometer bias.
+     * @param biasZParam z coordinate of accelerometer bias.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setBiasCoordinates(final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ)
+    public void setBiasCoordinates(final Acceleration biasXParam, final Acceleration biasYParam,
+            final Acceleration biasZParam)
             throws LockedException {
         if (running) {
             throw new LockedException();
         }
 
-        internalSetBiasCoordinates(biasX, biasY, biasZ);
+        internalSetBiasCoordinates(biasXParam, biasYParam, biasZParam);
     }
 
     /**
@@ -1625,74 +1627,78 @@ public abstract class RobustKnownBiasAndFrameAccelerometerCalibrator implements
      * Sets initial scaling factors.
      * This is only taken into account if non-linear preliminary solutions are used.
      *
-     * @param initialSx initial x scaling factor.
-     * @param initialSy initial y scaling factor.
-     * @param initialSz initial z scaling factor.
+     * @param initialSxParam initial x scaling factor.
+     * @param initialSyParam initial y scaling factor.
+     * @param initialSzParam initial z scaling factor.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
     public void setInitialScalingFactors(
-            final double initialSx, final double initialSy, final double initialSz) throws LockedException {
+            final double initialSxParam, final double initialSyParam,
+            final double initialSzParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        this.initialSx = initialSx;
-        this.initialSy = initialSy;
-        this.initialSz = initialSz;
+        initialSx = initialSxParam;
+        initialSy = initialSyParam;
+        initialSz = initialSzParam;
     }
 
     /**
      * Sets initial cross coupling errors.
      * This is only taken into account if non-linear preliminary solutions are used.
      *
-     * @param initialMxy initial x-y cross coupling error.
-     * @param initialMxz initial x-z cross coupling error.
-     * @param initialMyx initial y-x cross coupling error.
-     * @param initialMyz initial y-z cross coupling error.
-     * @param initialMzx initial z-x cross coupling error.
-     * @param initialMzy initial z-y cross coupling error.
+     * @param initialMxyParam initial x-y cross coupling error.
+     * @param initialMxzParam initial x-z cross coupling error.
+     * @param initialMyxParam initial y-x cross coupling error.
+     * @param initialMyzParam initial y-z cross coupling error.
+     * @param initialMzxParam initial z-x cross coupling error.
+     * @param initialMzyParam initial z-y cross coupling error.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
     public void setInitialCrossCouplingErrors(
-            final double initialMxy, final double initialMxz, final double initialMyx,
-            final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
+            final double initialMxyParam, final double initialMxzParam, final double initialMyxParam,
+            final double initialMyzParam, final double initialMzxParam,
+            final double initialMzyParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        this.initialMxy = initialMxy;
-        this.initialMxz = initialMxz;
-        this.initialMyx = initialMyx;
-        this.initialMyz = initialMyz;
-        this.initialMzx = initialMzx;
-        this.initialMzy = initialMzy;
+        initialMxy = initialMxyParam;
+        initialMxz = initialMxzParam;
+        initialMyx = initialMyxParam;
+        initialMyz = initialMyzParam;
+        initialMzx = initialMzxParam;
+        initialMzy = initialMzyParam;
     }
 
     /**
      * Sets initial scaling factors and cross coupling errors.
      * This is only taken into account if non-linear preliminary solutions are used.
      *
-     * @param initialSx  initial x scaling factor.
-     * @param initialSy  initial y scaling factor.
-     * @param initialSz  initial z scaling factor.
-     * @param initialMxy initial x-y cross coupling error.
-     * @param initialMxz initial x-z cross coupling error.
-     * @param initialMyx initial y-x cross coupling error.
-     * @param initialMyz initial y-z cross coupling error.
-     * @param initialMzx initial z-x cross coupling error.
-     * @param initialMzy initial z-y cross coupling error.
+     * @param initialSxParam  initial x scaling factor.
+     * @param initialSyParam  initial y scaling factor.
+     * @param initialSzParam  initial z scaling factor.
+     * @param initialMxyParam initial x-y cross coupling error.
+     * @param initialMxzParam initial x-z cross coupling error.
+     * @param initialMyxParam initial y-x cross coupling error.
+     * @param initialMyzParam initial y-z cross coupling error.
+     * @param initialMzxParam initial z-x cross coupling error.
+     * @param initialMzyParam initial z-y cross coupling error.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
     public void setInitialScalingFactorsAndCrossCouplingErrors(
-            final double initialSx, final double initialSy, final double initialSz,
-            final double initialMxy, final double initialMxz, final double initialMyx,
-            final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
+            final double initialSxParam, final double initialSyParam, final double initialSzParam,
+            final double initialMxyParam, final double initialMxzParam, final double initialMyxParam,
+            final double initialMyzParam, final double initialMzxParam,
+            final double initialMzyParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        setInitialScalingFactors(initialSx, initialSy, initialSz);
-        setInitialCrossCouplingErrors(initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
+        setInitialScalingFactors(initialSxParam, initialSyParam, initialSzParam);
+        setInitialCrossCouplingErrors(initialMxyParam, initialMxzParam, initialMyxParam, initialMyzParam,
+                initialMzxParam, initialMzyParam);
     }
 
     /**
@@ -2094,15 +2100,15 @@ public abstract class RobustKnownBiasAndFrameAccelerometerCalibrator implements
     /**
      * Specifies whether result must be refined using a non-linear solver over found inliers.
      *
-     * @param refineResult true to refine result, false to simply use result found by robust
+     * @param refineResultParam true to refine result, false to simply use result found by robust
      *                     estimator without further refining.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setResultRefined(final boolean refineResult) throws LockedException {
+    public void setResultRefined(final boolean refineResultParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        this.refineResult = refineResult;
+        refineResult = refineResultParam;
     }
 
     /**
@@ -2119,15 +2125,15 @@ public abstract class RobustKnownBiasAndFrameAccelerometerCalibrator implements
      * Specifies whether covariance must be kept after refining result.
      * This setting is only taken into account if result is refined.
      *
-     * @param keepCovariance true if covariance must be kept after refining result,
+     * @param keepCovarianceParam true if covariance must be kept after refining result,
      *                       false otherwise.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setCovarianceKept(final boolean keepCovariance) throws LockedException {
+    public void setCovarianceKept(final boolean keepCovarianceParam) throws LockedException {
         if (running) {
             throw new LockedException();
         }
-        this.keepCovariance = keepCovariance;
+        keepCovariance = keepCovarianceParam;
     }
 
     /**
@@ -5405,31 +5411,31 @@ public abstract class RobustKnownBiasAndFrameAccelerometerCalibrator implements
     /**
      * Internally sets bias coordinates.
      *
-     * @param biasX known x coordinate of accelerometer bias expressed in meters per
+     * @param biasXParam known x coordinate of accelerometer bias expressed in meters per
      *              squared second (m/s^2).
-     * @param biasY known y coordinate of accelerometer bias expressed in meters per
+     * @param biasYParam known y coordinate of accelerometer bias expressed in meters per
      *              squared second (m/s^2).
-     * @param biasZ known z coordinate of accelerometer bias expressed in meters per
+     * @param biasZParam known z coordinate of accelerometer bias expressed in meters per
      *              squared second (m/s^2).
      */
-    private void internalSetBiasCoordinates(final double biasX, final double biasY, final double biasZ) {
-        this.biasX = biasX;
-        this.biasY = biasY;
-        this.biasZ = biasZ;
+    private void internalSetBiasCoordinates(final double biasXParam, final double biasYParam, final double biasZParam) {
+        biasX = biasXParam;
+        biasY = biasYParam;
+        biasZ = biasZParam;
     }
 
     /**
      * Internally sets bias coordinates.
      *
-     * @param biasX known x coordinate of accelerometer bias.
-     * @param biasY known y coordinate of accelerometer bias.
-     * @param biasZ known z coordinate of accelerometer bias.
+     * @param biasXParam known x coordinate of accelerometer bias.
+     * @param biasYParam known y coordinate of accelerometer bias.
+     * @param biasZParam known z coordinate of accelerometer bias.
      */
     private void internalSetBiasCoordinates(
-            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ) {
-        this.biasX = convertAcceleration(biasX);
-        this.biasY = convertAcceleration(biasY);
-        this.biasZ = convertAcceleration(biasZ);
+            final Acceleration biasXParam, final Acceleration biasYParam, final Acceleration biasZParam) {
+        biasX = convertAcceleration(biasXParam);
+        biasY = convertAcceleration(biasYParam);
+        biasZ = convertAcceleration(biasZParam);
     }
 
     /**
