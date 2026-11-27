@@ -57,7 +57,8 @@
 		<module name="EmptyStatement"/>
 		<module name="EqualsHashCode"/>
 		<!-- relaxed: constructors and builder-style setters (which may return their class) intentionally
-		     reuse field names for their parameters -->
+		     reuse field names for their parameters; anywhere else, a parameter or local variable that
+		     would shadow a field takes the "Param" or "Local" suffix (e.g. initialSxParam, bLocal) -->
 		<module name="HiddenField">
 			<property name="ignoreConstructorParameter" value="true"/>
 			<property name="ignoreSetter" value="true"/>
